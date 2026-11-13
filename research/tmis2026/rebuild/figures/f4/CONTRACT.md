@@ -66,3 +66,5 @@ readiness 4, comprehensibility 3 (not tested). Weighted about 76: below the meth
 Weakest point: the 100 open-dependent marks rest on 86 documents from 32 claims (63 from 9 claims); the unit picture
 looks more general than that. Second: the free-text questions of the prompts are not scored, so the dot appears only
 for CasePath.
+
+Palette: brief values with the coordinator's change of 2026-11-13 (request now #008571, reading blue #4A8FD6), in `../f4/theme.py`.

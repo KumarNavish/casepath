@@ -819,17 +819,24 @@ def estimator_params(groups, sp, rs, adaptive, stages):
             if u["status"] == "completed" and u["words"] is not None]
     terra = {u["case"]: u for n, g in groups.items() if n.startswith("lint/clean/") and g["model"] == TERRA for u in g["_units"]
              if u["status"] == "completed"}
-    names = ["intercept", "words", "attachments", "facts_read"]
-    X = [[1, u["words"], u["attachments"], u["n_facts_read"]] for u in luna]
     core = {}
-    for s in STAGES:
-        core[s] = {}
-        for k in ("uncached", "cached", "output"):
-            y = [u["stage"].get(s, {}).get(k, 0) for u in luna]
-            if not any(y):
-                continue
-            f = ols(X, y, names)
-            core[s][k] = {"coef": f["coef"], "r2": f["r2"]}
+    for s_ in STAGES:
+        withc = [u for u in luna if u["stage"].get(s_, {}).get("calls")]
+        if not withc:
+            continue
+        # input per call = base + per_word x words (each call carries the instructions and, for most stages, the file)
+        fi = ols([[1, u["words"]] for u in withc],
+                 [(u["stage"][s_]["uncached"] + u["stage"][s_]["cached"]) / u["stage"][s_]["calls"] for u in withc],
+                 ["base", "per_word"])
+        # calls per file and output per file: linear in attachments and facts read (output also in words)
+        fc = ols([[1, u["attachments"], u["n_facts_read"]] for u in luna], [u["stage"].get(s_, {}).get("calls", 0) for u in luna],
+                 ["intercept", "attachments", "facts_read"])
+        fo = ols([[1, u["words"], u["attachments"], u["n_facts_read"]] for u in luna],
+                 [u["stage"].get(s_, {}).get("output", 0) for u in luna], ["intercept", "words", "attachments", "facts_read"])
+        ti = sum(u["stage"][s_]["uncached"] + u["stage"][s_]["cached"] for u in withc)
+        core[s_] = {"input_per_call": {"coef": fi["coef"], "r2": fi["r2"]}, "calls": {"coef": fc["coef"], "r2": fc["r2"]},
+                    "output": {"coef": fo["coef"], "r2": fo["r2"]},
+                    "cached_share": sum(u["stage"][s_]["cached"] for u in withc) / ti if ti else 0.0}
     ratio = {}
     paired = [(u, terra[u["case"]]) for u in luna if u["case"] in terra and u["regime"] == "tenancy"]
     for s in STAGES:
@@ -890,36 +897,29 @@ def _params():
     return PARAMS
 
 
-def _lin(c, w, a, f):
-    return max(0.0, c["intercept"] + c["words"] * w + c["attachments"] * a + c["facts_read"] * f)
-
-
 def core_cost(model, words_, n_att, n_facts, rule_tokens, policy):
     P = _params()
     core, ratio = P["core_stage_tokens_luna"], P["frontier_over_cost_efficient_token_ratio_by_stage"]
     R1 = P["rule_text_tokens_one_regime"]
     p = P["adaptive_p_needing_rereading"][model]
     tot, parts = 0.0, {}
-    for s, kinds in core.items():
-        unc = _lin(kinds["uncached"]["coef"], words_, n_att, n_facts) if "uncached" in kinds else 0.0
-        cac = _lin(kinds["cached"]["coef"], words_, n_att, n_facts) if "cached" in kinds else 0.0
-        out = _lin(kinds["output"]["coef"], words_, n_att, n_facts) if "output" in kinds else 0.0
+    for s, m_ in core.items():
+        c, ip, o = m_["calls"]["coef"], m_["input_per_call"]["coef"], m_["output"]["coef"]
+        calls = max(0.0, c["intercept"] + c["attachments"] * n_att + c["facts_read"] * n_facts)
+        per_call = max(0.0, ip["base"] + ip["per_word"] * words_)
         if s == "routing" and rule_tokens is not None:
-            fixed = kinds["uncached"]["coef"]["intercept"] + kinds.get("cached", {}).get("coef", {}).get("intercept", 0.0)
-            unc += max(0.0, fixed) * (rule_tokens / R1 - 1)
+            per_call += max(0.0, ip["base"]) * (rule_tokens / R1 - 1)
+        inp = calls * per_call
+        out = max(0.0, o["intercept"] + o["words"] * words_ + o["attachments"] * n_att + o["facts_read"] * n_facts)
+        cs = m_["cached_share"]
         if s == "fact readings 2-3" and policy == "adaptive":
             any_re = 1 - (1 - p) ** max(n_facts, 1)
-            unc, cac, out = unc * any_re, cac * any_re, out * p
+            inp, out = inp * any_re, out * p
         if model == TERRA:
             r = ratio.get(s) or {}
-            ri, ro, cs = r.get("input"), r.get("output"), r.get("cached_share_frontier")
-            if ri is None:  # stage the frontier run did not make: keep the cost-efficient tokens
-                ri, ro, cs = 1.0, 1.0, (cac / (unc + cac) if unc + cac else 0.0)
-            inp = (unc + cac) * ri
-            cac = inp * (cs or 0.0)
-            unc = inp - cac
-            out = out * (ro if ro is not None else 1.0)
-        usd = usd_of(model, unc, cac, out)
+            if r.get("input") is not None:
+                inp, out, cs = inp * r["input"], out * (r.get("output") or 1.0), r.get("cached_share_frontier") or 0.0
+        usd = usd_of(model, inp * (1 - cs), inp * cs, out)
         parts[s] = usd
         tot += usd
     return tot, parts
@@ -974,7 +974,7 @@ def estimate(design, model, words, n_attachments, n_facts, rule_text_tokens=None
             flags.append("frontier tokens = cost-efficient tokens x per-stage ratio from 38 tenancy files")
         return {"usd": usd, "by_stage": parts, "extrapolated": bool([f for f in flags if "outside" in f or "larger" in f]),
                 "flags": flags, "assumptions": [
-                    "per-stage token regressions on the benchmark's clean arm (cost-efficient model, 176 files)",
+                    "per stage: calls x (base + per_word x words) input tokens, calls and output linear in attachments and facts read; fitted on the benchmark's clean arm (cost-efficient model, 173 files with texts)",
                     "adaptive: readings 2-3 are paid for a file with probability 1-(1-p)^facts, their output in proportion p, "
                     f"p = {P['adaptive_p_needing_rereading'][model]:.3f} (share of facts whose first reading is not a quoted value)"
                     if pol == "adaptive" else "three readings of every deciding fact, as tested",

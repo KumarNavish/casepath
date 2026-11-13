@@ -7,11 +7,11 @@ import matplotlib.pyplot as plt  # noqa: E402
 PAPER = "#FBF8F1"
 INK = "#1F2A44"
 SAND = "#C9BFA8"
-TEAL = "#1F7A6D"     # request now
+TEAL = "#008571"     # request now
 AMBER = "#D9962B"    # open fact / held request with its question
 RUST = "#B5482F"     # requested too early (error)
 INDIGO = "#4B4A9C"   # dropped (error)
-BLUE = "#2F5D9E"     # a model's reading
+BLUE = "#4A8FD6"     # a model's reading
 
 plt.rcParams.update({
     "font.family": "Inter", "font.size": 7.5, "axes.edgecolor": INK, "axes.labelcolor": INK,

@@ -19,7 +19,7 @@ HERE = Path(__file__).resolve().parent
 D = json.loads((HERE / "f1_data.json").read_text())
 
 PAPER, INK, SAND = "#FBF8F1", "#1F2A44", "#C9BFA8"
-TEAL, AMBER, BLUE = "#00846F", "#D9962B", "#3A7DD6"   # re-stepped by the validator (see CONTRACT.md)
+TEAL, AMBER, BLUE = "#008571", "#D9962B", "#4A8FD6"   # coordinator palette update (FIGURE_BRIEF.md)
 FILL = {"request": TEAL, "hold": AMBER}
 
 plt.rcParams.update({"font.family": "Inter", "font.size": 7, "svg.fonttype": "none", "pdf.fonttype": 42,

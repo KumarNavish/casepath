@@ -105,6 +105,7 @@ def main():
             d["repeat"] = {"runs": 3, "claims": len(cids), "identical_all_runs": same,
                            "identical_share": same / len(cids), "mean_lines_differing_per_pair": sum(dl) / len(dl),
                            "checklist_lines_per_claim": sum(len(D.reference(c)["document_states"]) for c in cids) / len(cids) + 1}
+            d["repeat"]["share_lines_differing_per_pair"] = d["repeat"]["mean_lines_differing_per_pair"] / d["repeat"]["checklist_lines_per_claim"]
         out["designs"].append(d)
     sc = fb["F4"]["self_consistency"]["tenancy"]["by_m"]
     rd = fb["F4"]["readings"]["tenancy"]["by_k"]

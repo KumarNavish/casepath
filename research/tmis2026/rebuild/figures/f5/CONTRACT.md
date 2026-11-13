@@ -60,3 +60,5 @@ Insight 3, fidelity 5, intuition 4, hierarchy 4, originality 3, composition 4, a
 readiness 4, comprehensibility 3 (not tested). Weighted about 77; status `needs_independent_review`.
 Weakest point: the three panels repeat the same nine numbers; a reader may take the identical levels for three
 measurements. The caption says it is one measurement.
+
+Palette: brief values with the coordinator's change of 2026-11-13 (request now #008571, reading blue #4A8FD6), in `../f4/theme.py`.

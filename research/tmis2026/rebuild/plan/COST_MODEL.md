@@ -191,24 +191,24 @@ Facts read fixed at the benchmark's median (7). One regime's rule text = 12,194 
 
 | Design | Words | Att. | 1 regime | 3 regimes | 4 regimes |
 |---|---|---|---|---|---|
-| Product core, three readings | 250 | 0 | 0.002253 | 0.002462* | 0.002566* |
-| Product core, three readings | 250 | 3 | 0.005781 | 0.005990* | 0.006094* |
-| Product core, three readings | 250 | 6 | 0.009310* | 0.009519* | 0.009623* |
-| Product core, three readings | 800 | 0 | 0.009026* | 0.009234* | 0.009339* |
-| Product core, three readings | 800 | 3 | 0.0126* | 0.0128* | 0.0129* |
-| Product core, three readings | 800 | 6 | 0.0161* | 0.0163* | 0.0164* |
-| Product core, three readings | 2,500 | 0 | 0.0300* | 0.0302* | 0.0303* |
-| Product core, three readings | 2,500 | 3 | 0.0335* | 0.0337* | 0.0338* |
-| Product core, three readings | 2,500 | 6 | 0.0370* | 0.0372* | 0.0373* |
-| Product core, adaptive readings | 250 | 0 | 0.001981 | 0.002190* | 0.002295* |
-| Product core, adaptive readings | 250 | 3 | 0.005591 | 0.005799* | 0.005904* |
-| Product core, adaptive readings | 250 | 6 | 0.009200* | 0.009408* | 0.009513* |
-| Product core, adaptive readings | 800 | 0 | 0.008581* | 0.008790* | 0.008894* |
-| Product core, adaptive readings | 800 | 3 | 0.0122* | 0.0124* | 0.0125* |
-| Product core, adaptive readings | 800 | 6 | 0.0158* | 0.0160* | 0.0161* |
-| Product core, adaptive readings | 2,500 | 0 | 0.0290* | 0.0292* | 0.0293* |
-| Product core, adaptive readings | 2,500 | 3 | 0.0326* | 0.0328* | 0.0329* |
-| Product core, adaptive readings | 2,500 | 6 | 0.0362* | 0.0364* | 0.0365* |
+| Product core, three readings | 250 | 0 | 0.002238 | 0.002322* | 0.002364* |
+| Product core, three readings | 250 | 3 | 0.005796 | 0.005878* | 0.005919* |
+| Product core, three readings | 250 | 6 | 0.009355* | 0.009434* | 0.009474* |
+| Product core, three readings | 800 | 0 | 0.007223* | 0.007307* | 0.007349* |
+| Product core, three readings | 800 | 3 | 0.0132* | 0.0132* | 0.0133* |
+| Product core, three readings | 800 | 6 | 0.0191* | 0.0192* | 0.0192* |
+| Product core, three readings | 2,500 | 0 | 0.0226* | 0.0227* | 0.0228* |
+| Product core, three readings | 2,500 | 3 | 0.0359* | 0.0360* | 0.0360* |
+| Product core, three readings | 2,500 | 6 | 0.0491* | 0.0492* | 0.0493* |
+| Product core, adaptive readings | 250 | 0 | 0.001966 | 0.002050* | 0.002092* |
+| Product core, adaptive readings | 250 | 3 | 0.005605 | 0.005687* | 0.005728* |
+| Product core, adaptive readings | 250 | 6 | 0.009244* | 0.009324* | 0.009364* |
+| Product core, adaptive readings | 800 | 0 | 0.006780* | 0.006864* | 0.006906* |
+| Product core, adaptive readings | 800 | 3 | 0.0128* | 0.0129* | 0.0129* |
+| Product core, adaptive readings | 800 | 6 | 0.0188* | 0.0189* | 0.0189* |
+| Product core, adaptive readings | 2,500 | 0 | 0.0217* | 0.0217* | 0.0218* |
+| Product core, adaptive readings | 2,500 | 3 | 0.0350* | 0.0351* | 0.0351* |
+| Product core, adaptive readings | 2,500 | 6 | 0.0483* | 0.0484* | 0.0484* |
 | Prompt that may hold | 250 | 0 | 0.000805 | 0.001085* | 0.001225* |
 | Prompt that may hold | 250 | 3 | 0.000805 | 0.001085* | 0.001225* |
 | Prompt that may hold | 250 | 6 | 0.000805 | 0.001085* | 0.001225* |
@@ -221,12 +221,12 @@ Facts read fixed at the benchmark's median (7). One regime's rule text = 12,194 
 | Self-consistency, cost-matched to the core | 250 | 0 | 0.002087 (m=3) | 0.001906* (m=2) | 0.002163* (m=2) |
 | Self-consistency, cost-matched to the core | 250 | 3 | 0.005566 (m=8) | 0.005717* (m=6) | 0.005407* (m=5) |
 | Self-consistency, cost-matched to the core | 250 | 6 | 0.009045 (m=13) | 0.008576* (m=9) | 0.008652* (m=8) |
-| Self-consistency, cost-matched to the core | 800 | 0 | 0.008482* (m=12) | 0.008676* (m=9) | 0.008740* (m=8) |
-| Self-consistency, cost-matched to the core | 800 | 3 | 0.0120* (m=17) | 0.0125* (m=13) | 0.0120* (m=11) |
-| Self-consistency, cost-matched to the core | 800 | 6 | 0.0156* (m=22) | 0.0154* (m=16) | 0.0164* (m=15) |
-| Self-consistency, cost-matched to the core | 2,500 | 0 | 0.0296* (m=40) | 0.0299* (m=30) | 0.0293* (m=26) |
-| Self-consistency, cost-matched to the core | 2,500 | 3 | 0.0333* (m=45) | 0.0329* (m=33) | 0.0327* (m=29) |
-| Self-consistency, cost-matched to the core | 2,500 | 6 | 0.0363* (m=49) | 0.0369* (m=37) | 0.0372* (m=33) |
+| Self-consistency, cost-matched to the core | 800 | 0 | 0.007068* (m=10) | 0.006748* (m=7) | 0.006555* (m=6) |
+| Self-consistency, cost-matched to the core | 800 | 3 | 0.0127* (m=18) | 0.0125* (m=13) | 0.0131* (m=12) |
+| Self-consistency, cost-matched to the core | 800 | 6 | 0.0184* (m=26) | 0.0183* (m=19) | 0.0186* (m=17) |
+| Self-consistency, cost-matched to the core | 2,500 | 0 | 0.0222* (m=30) | 0.0220* (m=22) | 0.0225* (m=20) |
+| Self-consistency, cost-matched to the core | 2,500 | 3 | 0.0356* (m=48) | 0.0359* (m=36) | 0.0349* (m=31) |
+| Self-consistency, cost-matched to the core | 2,500 | 6 | 0.0489* (m=66) | 0.0489* (m=49) | 0.0485* (m=43) |
 | Model executes rules | 250 | 0 | 0.001219 | 0.001518* | 0.001667* |
 | Model executes rules | 250 | 3 | 0.001219 | 0.001518* | 0.001667* |
 | Model executes rules | 250 | 6 | 0.001219 | 0.001518* | 0.001667* |
@@ -250,24 +250,24 @@ Facts read fixed at the benchmark's median (7). One regime's rule text = 12,194 
 
 | Design | Words | Att. | 1 regime | 3 regimes | 4 regimes |
 |---|---|---|---|---|---|
-| Product core, three readings | 250 | 0 | 0.0175 | 0.0195* | 0.0205* |
-| Product core, three readings | 250 | 3 | 0.0458 | 0.0478* | 0.0488* |
-| Product core, three readings | 250 | 6 | 0.0741* | 0.0761* | 0.0771* |
-| Product core, three readings | 800 | 0 | 0.0669* | 0.0690* | 0.0700* |
-| Product core, three readings | 800 | 3 | 0.0952* | 0.0973* | 0.0983* |
-| Product core, three readings | 800 | 6 | 0.1235* | 0.1256* | 0.1266* |
-| Product core, three readings | 2,500 | 0 | 0.2200* | 0.2220* | 0.2230* |
-| Product core, three readings | 2,500 | 3 | 0.2482* | 0.2502* | 0.2512* |
-| Product core, three readings | 2,500 | 6 | 0.2765* | 0.2785* | 0.2795* |
-| Product core, adaptive readings | 250 | 0 | 0.0154 | 0.0174* | 0.0184* |
-| Product core, adaptive readings | 250 | 3 | 0.0442 | 0.0463* | 0.0473* |
-| Product core, adaptive readings | 250 | 6 | 0.0731* | 0.0751* | 0.0762* |
-| Product core, adaptive readings | 800 | 0 | 0.0635* | 0.0655* | 0.0665* |
-| Product core, adaptive readings | 800 | 3 | 0.0924* | 0.0944* | 0.0954* |
-| Product core, adaptive readings | 800 | 6 | 0.1212* | 0.1233* | 0.1243* |
-| Product core, adaptive readings | 2,500 | 0 | 0.2124* | 0.2144* | 0.2154* |
-| Product core, adaptive readings | 2,500 | 3 | 0.2412* | 0.2432* | 0.2442* |
-| Product core, adaptive readings | 2,500 | 6 | 0.2701* | 0.2721* | 0.2731* |
+| Product core, three readings | 250 | 0 | 0.0175 | 0.0184* | 0.0188* |
+| Product core, three readings | 250 | 3 | 0.0448 | 0.0456* | 0.0460* |
+| Product core, three readings | 250 | 6 | 0.0720* | 0.0728* | 0.0731* |
+| Product core, three readings | 800 | 0 | 0.0519* | 0.0527* | 0.0531* |
+| Product core, three readings | 800 | 3 | 0.1012* | 0.1020* | 0.1024* |
+| Product core, three readings | 800 | 6 | 0.1505* | 0.1513* | 0.1517* |
+| Product core, three readings | 2,500 | 0 | 0.1581* | 0.1589* | 0.1593* |
+| Product core, three readings | 2,500 | 3 | 0.2757* | 0.2765* | 0.2769* |
+| Product core, three readings | 2,500 | 6 | 0.3933* | 0.3940* | 0.3944* |
+| Product core, adaptive readings | 250 | 0 | 0.0154 | 0.0162* | 0.0167* |
+| Product core, adaptive readings | 250 | 3 | 0.0432 | 0.0440* | 0.0444* |
+| Product core, adaptive readings | 250 | 6 | 0.0711* | 0.0718* | 0.0722* |
+| Product core, adaptive readings | 800 | 0 | 0.0484* | 0.0492* | 0.0497* |
+| Product core, adaptive readings | 800 | 3 | 0.0983* | 0.0991* | 0.0995* |
+| Product core, adaptive readings | 800 | 6 | 0.1482* | 0.1490* | 0.1494* |
+| Product core, adaptive readings | 2,500 | 0 | 0.1504* | 0.1512* | 0.1517* |
+| Product core, adaptive readings | 2,500 | 3 | 0.2686* | 0.2694* | 0.2698* |
+| Product core, adaptive readings | 2,500 | 6 | 0.3867* | 0.3875* | 0.3879* |
 | Prompt that may hold | 250 | 0 | 0.005930 | 0.008256* | 0.009419* |
 | Prompt that may hold | 250 | 3 | 0.005930 | 0.008256* | 0.009419* |
 | Prompt that may hold | 250 | 6 | 0.005930 | 0.008256* | 0.009419* |
@@ -278,14 +278,14 @@ Facts read fixed at the benchmark's median (7). One regime's rule text = 12,194 
 | Prompt that may hold | 2,500 | 3 | 0.006356* | 0.008682* | 0.009845* |
 | Prompt that may hold | 2,500 | 6 | 0.006356* | 0.008682* | 0.009845* |
 | Self-consistency, cost-matched to the core | 250 | 0 | 0.0126* (m=2) | 0.0153* (m=2) | 0.0166* (m=2) |
-| Self-consistency, cost-matched to the core | 250 | 3 | 0.0440* (m=7) | 0.0459* (m=6) | 0.0416* (m=5) |
-| Self-consistency, cost-matched to the core | 250 | 6 | 0.0692* (m=11) | 0.0688* (m=9) | 0.0749* (m=9) |
-| Self-consistency, cost-matched to the core | 800 | 0 | 0.0635* (m=10) | 0.0616* (m=8) | 0.0671* (m=8) |
-| Self-consistency, cost-matched to the core | 800 | 3 | 0.0952* (m=15) | 0.0924* (m=12) | 0.0922* (m=11) |
-| Self-consistency, cost-matched to the core | 800 | 6 | 0.1206* (m=19) | 0.1232* (m=16) | 0.1257* (m=15) |
-| Self-consistency, cost-matched to the core | 2,500 | 0 | 0.2153* (m=33) | 0.2207* (m=28) | 0.2226* (m=26) |
-| Self-consistency, cost-matched to the core | 2,500 | 3 | 0.2480* (m=38) | 0.2444* (m=31) | 0.2483* (m=29) |
-| Self-consistency, cost-matched to the core | 2,500 | 6 | 0.2741* (m=42) | 0.2759* (m=35) | 0.2740* (m=32) |
+| Self-consistency, cost-matched to the core | 250 | 3 | 0.0440* (m=7) | 0.0382* (m=5) | 0.0416* (m=5) |
+| Self-consistency, cost-matched to the core | 250 | 6 | 0.0692* (m=11) | 0.0688* (m=9) | 0.0666* (m=8) |
+| Self-consistency, cost-matched to the core | 800 | 0 | 0.0508* (m=8) | 0.0462* (m=6) | 0.0503* (m=6) |
+| Self-consistency, cost-matched to the core | 800 | 3 | 0.0952* (m=15) | 0.1001* (m=13) | 0.1006* (m=12) |
+| Self-consistency, cost-matched to the core | 800 | 6 | 0.1459* (m=23) | 0.1464* (m=19) | 0.1509* (m=18) |
+| Self-consistency, cost-matched to the core | 2,500 | 0 | 0.1566* (m=24) | 0.1577* (m=20) | 0.1541* (m=18) |
+| Self-consistency, cost-matched to the core | 2,500 | 3 | 0.2741* (m=42) | 0.2759* (m=35) | 0.2740* (m=32) |
+| Self-consistency, cost-matched to the core | 2,500 | 6 | 0.3915* (m=60) | 0.3863* (m=49) | 0.3939* (m=46) |
 | Model executes rules | 250 | 0 | 0.0105 | 0.0131* | 0.0144* |
 | Model executes rules | 250 | 3 | 0.0105 | 0.0131* | 0.0144* |
 | Model executes rules | 250 | 6 | 0.0105 | 0.0131* | 0.0144* |

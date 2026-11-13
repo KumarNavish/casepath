@@ -5896,23 +5896,20 @@
  "estimator_params": {
   "core_stage_tokens_luna": {
    "routing": {
-    "uncached": {
+    "input_per_call": {
      "coef": {
-      "intercept": 816.9254377494908,
-      "words": 0.8355199341578738,
-      "attachments": 202.73116826967197,
-      "facts_read": 2.420326497679857
+      "base": 330.63091609266615,
+      "per_word": 2.971766328676592
      },
-     "r2": 0.87719853194414
+     "r2": 0.8381820946761551
     },
-    "cached": {
+    "calls": {
      "coef": {
-      "intercept": 18.111402922696954,
-      "words": -0.043027079828216,
-      "attachments": 2.6271952216524785,
-      "facts_read": 0.18306108753533687
+      "intercept": 1.0025711467215495,
+      "attachments": -0.008219734105678696,
+      "facts_read": 0.002602584101964586
      },
-     "r2": 0.0003657579737215144
+     "r2": 0.009128077804829493
     },
     "output": {
      "coef": {
@@ -5922,26 +5919,24 @@
       "facts_read": 5.888898452706232
      },
      "r2": 0.09119344093338078
-    }
+    },
+    "cached_share": 0.005829418267237806
    },
    "fact reading 1": {
-    "uncached": {
+    "input_per_call": {
      "coef": {
-      "intercept": -228.12947384844176,
-      "words": 1.8792073834524803,
-      "attachments": 17.256922835937207,
-      "facts_read": 80.01243834588041
+      "base": 793.1003601960581,
+      "per_word": 1.8866453018257523
      },
-     "r2": 0.35581012010054736
+     "r2": 0.23397825821263374
     },
-    "cached": {
+    "calls": {
      "coef": {
-      "intercept": -163.15886210679943,
-      "words": -0.2642214221492718,
-      "attachments": 30.67574398165598,
-      "facts_read": 106.80794827568542
+      "intercept": 0.22612742939329122,
+      "attachments": 0.023922452095390043,
+      "facts_read": 0.11091171192001514
      },
-     "r2": 0.18121922287306502
+     "r2": 0.43215123428357405
     },
     "output": {
      "coef": {
@@ -5951,26 +5946,24 @@
       "facts_read": 69.00026967031357
      },
      "r2": 0.7068653060998493
-    }
+    },
+    "cached_share": 0.3467006741608143
    },
    "fact readings 2-3": {
-    "uncached": {
+    "input_per_call": {
      "coef": {
-      "intercept": -566.6639810411247,
-      "words": 3.792834193232884,
-      "attachments": 68.51177900169414,
-      "facts_read": 164.48436856745258
+      "base": 759.9271468442196,
+      "per_word": 1.9815017733259217
      },
-     "r2": 0.4167999274636015
+     "r2": 0.25184971605427486
     },
-    "cached": {
+    "calls": {
      "coef": {
-      "intercept": -547.9127598677973,
-      "words": -0.38621211532398153,
-      "attachments": 144.1478863868235,
-      "facts_read": 215.36578412487208
+      "intercept": 0.3030474737402792,
+      "attachments": 0.0957366264158336,
+      "facts_read": 0.225962678927921
      },
-     "r2": 0.24131111058611598
+     "r2": 0.5992955733674271
     },
     "output": {
      "coef": {
@@ -5980,26 +5973,24 @@
       "facts_read": 134.42290149660803
      },
      "r2": 0.8149058976002114
-    }
+    },
+    "cached_share": 0.33384962381658123
    },
    "document judgment: finder": {
-    "uncached": {
+    "input_per_call": {
      "coef": {
-      "intercept": -5746.011076462256,
-      "words": 19.779331430791004,
-      "attachments": 3018.4493767407253,
-      "facts_read": 519.9600716215311
+      "base": 2678.9738936635754,
+      "per_word": 6.542039239507223
      },
-     "r2": 0.6013083343981314
+     "r2": 0.304360211335573
     },
-    "cached": {
+    "calls": {
      "coef": {
-      "intercept": -15842.405607400551,
-      "words": 53.27892963993884,
-      "attachments": 8825.817465873035,
-      "facts_read": 1240.304401126818
+      "intercept": 0.034335070248605756,
+      "attachments": 2.9827414274615816,
+      "facts_read": 0.29474272349294195
      },
-     "r2": 0.5499156515473878
+     "r2": 0.5003110998853426
     },
     "output": {
      "coef": {
@@ -6009,17 +6000,24 @@
       "facts_read": 148.63565655438984
      },
      "r2": 0.46532572615827494
-    }
+    },
+    "cached_share": 0.7222587739713519
    },
    "document judgment: second": {
-    "uncached": {
+    "input_per_call": {
      "coef": {
-      "intercept": -765.4170154906072,
-      "words": 2.61273996902135,
-      "attachments": 189.41310016275256,
-      "facts_read": 25.46411500551254
+      "base": 140.22220350910104,
+      "per_word": 2.5425745186143707
      },
-     "r2": 0.4188385771527492
+     "r2": 0.6545079712411193
+    },
+    "calls": {
+     "coef": {
+      "intercept": -0.03329865080397256,
+      "attachments": 0.28418796105517036,
+      "facts_read": 0.021857979605759983
+     },
+     "r2": 0.314382680882653
     },
     "output": {
      "coef": {
@@ -6029,17 +6027,24 @@
       "facts_read": 4.528326650243014
      },
      "r2": 0.28264179124431266
-    }
+    },
+    "cached_share": 0.0
    },
    "quote check": {
-    "uncached": {
+    "input_per_call": {
      "coef": {
-      "intercept": -2256.4947793552624,
-      "words": 7.476461844373274,
-      "attachments": 623.4126120659558,
-      "facts_read": 77.09231397321994
+      "base": -1389.191655195686,
+      "per_word": 7.728301821600396
      },
-     "r2": 0.541851813096272
+     "r2": 0.3078597515430007
+    },
+    "calls": {
+     "coef": {
+      "intercept": -0.017590989032663443,
+      "attachments": 0.5278304903208783,
+      "facts_read": 0.05389600835693451
+     },
+     "r2": 0.498512030222817
     },
     "output": {
      "coef": {
@@ -6049,10 +6054,9 @@
       "facts_read": 31.04712338014025
      },
      "r2": 0.45219462812151
-    }
-   },
-   "other (brief, process builder, result checker)": {},
-   "not attributed": {}
+    },
+    "cached_share": 0.0
+   }
   },
   "frontier_over_cost_efficient_token_ratio_by_stage": {
    "routing": {
@@ -6248,7 +6252,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.002252768536058975,
+    "usd": 0.002237657471969194,
     "extrapolated": false,
     "flags": []
    },
@@ -6261,7 +6265,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.002461527746227022,
+    "usd": 0.002321581077381877,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)"
@@ -6276,7 +6280,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.0025659073513110454,
+    "usd": 0.0023635428800882186,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)"
@@ -6291,7 +6295,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.005781279995954804,
+    "usd": 0.0057961423234399664,
     "extrapolated": false,
     "flags": []
    },
@@ -6304,7 +6308,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.005990039206122851,
+    "usd": 0.005878038586583347,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)"
@@ -6319,7 +6323,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.006094418811206876,
+    "usd": 0.005918986718155038,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)"
@@ -6334,7 +6338,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.009309791455850636,
+    "usd": 0.00935462717491074,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]"
@@ -6349,7 +6353,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.009518550666018684,
+    "usd": 0.009434496095784818,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -6365,7 +6369,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.009622930271102706,
+    "usd": 0.009474430556221857,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -6381,7 +6385,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.009025648569014976,
+    "usd": 0.007222765944467126,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -6396,7 +6400,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.009234407779183024,
+    "usd": 0.007306689549879809,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6412,7 +6416,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.009338787384267046,
+    "usd": 0.007348651352586151,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6428,7 +6432,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.012554081213054156,
+    "usd": 0.013150401382921614,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -6443,7 +6447,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.012762840423222205,
+    "usd": 0.013232297646064994,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6459,7 +6463,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.012867220028306228,
+    "usd": 0.013273245777636684,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6475,7 +6479,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.016082521200473366,
+    "usd": 0.019078036821376102,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6491,7 +6495,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.01629128041064141,
+    "usd": 0.01915790574225018,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6508,7 +6512,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.016395660015725438,
+    "usd": 0.019197840202687222,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6525,7 +6529,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.02996109136068539,
+    "usd": 0.022631283041278913,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -6540,7 +6544,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.030169850570853435,
+    "usd": 0.022715206646691594,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6556,7 +6560,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.030274230175937458,
+    "usd": 0.022757168449397937,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6572,7 +6576,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.03348870461133603,
+    "usd": 0.03588174756677398,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -6587,7 +6591,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.03369746382150408,
+    "usd": 0.03596364382991736,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6603,7 +6607,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.033801843426588096,
+    "usd": 0.036004591961489044,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6619,7 +6623,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.037017137255375206,
+    "usd": 0.049132212092269034,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6635,7 +6639,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.03722589646554326,
+    "usd": 0.04921208101314311,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6652,7 +6656,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.037330276070627284,
+    "usd": 0.04925201547358015,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6669,7 +6673,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.017463966003586635,
+    "usd": 0.017533628919372064,
     "extrapolated": false,
     "flags": [
      "frontier tokens = cost-efficient tokens x per-stage ratio from 38 tenancy files"
@@ -6684,7 +6688,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.019488176447102983,
+    "usd": 0.018351772574806257,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -6700,7 +6704,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.020500281668861153,
+    "usd": 0.01876084440252335,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -6716,7 +6720,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.04576587765980813,
+    "usd": 0.0447555833186488,
     "extrapolated": false,
     "flags": [
      "frontier tokens = cost-efficient tokens x per-stage ratio from 38 tenancy files"
@@ -6731,7 +6735,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.047790088103324475,
+    "usd": 0.04555396308039818,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -6747,7 +6751,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.04880219332508264,
+    "usd": 0.04595315296127287,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -6763,7 +6767,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.07406778931602966,
+    "usd": 0.07197753771792555,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -6779,7 +6783,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.076091999759546,
+    "usd": 0.0727561535859901,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -6796,7 +6800,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.07710410498130417,
+    "usd": 0.07314546152002237,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -6813,7 +6817,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.06694116746293866,
+    "usd": 0.051882863696774154,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6829,7 +6833,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.068965377906455,
+    "usd": 0.05270100735220835,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6846,7 +6850,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.06997748312821318,
+    "usd": 0.05311007917992544,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6863,7 +6867,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.09523352625440175,
+    "usd": 0.10119808448635617,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6879,7 +6883,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.0972577366979181,
+    "usd": 0.10199646424810555,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6896,7 +6900,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.09826984191967626,
+    "usd": 0.10239565412898022,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6913,7 +6917,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.12352677509920254,
+    "usd": 0.1505133052759382,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6930,7 +6934,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.1255509855427189,
+    "usd": 0.15129192114400275,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6948,7 +6952,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.12656309076447705,
+    "usd": 0.15168122907803505,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6966,7 +6970,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.2199843890188939,
+    "usd": 0.158053225736017,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6982,7 +6986,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.22200859946241025,
+    "usd": 0.1588713693914512,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -6999,7 +7003,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.2230207046841684,
+    "usd": 0.1592804412191683,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7016,7 +7020,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.24819541158788508,
+    "usd": 0.27565672445926986,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7032,7 +7036,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.2502196220314014,
+    "usd": 0.27645510422101927,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7049,7 +7053,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.2512317272531596,
+    "usd": 0.27685429410189394,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7066,7 +7070,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.27648777037934813,
+    "usd": 0.39326022318252285,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7083,7 +7087,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.27851198082286444,
+    "usd": 0.3940388390505874,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7101,7 +7105,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.27952408604462264,
+    "usd": 0.3944281469846197,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7119,50 +7123,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.0019814957224355517,
-    "extrapolated": false,
-    "flags": []
-   },
-   {
-    "design": "core_adaptive",
-    "label": "Product core, adaptive readings",
-    "model": "gpt-6-luna",
-    "words": 250,
-    "attachments": 0,
-    "regimes": 3,
-    "rule_text_tokens": 36580.68077523399,
-    "facts_read": 7,
-    "usd": 0.002190254932603599,
-    "extrapolated": true,
-    "flags": [
-     "rule catalogue larger than any measured (routing input scaled)"
-    ]
-   },
-   {
-    "design": "core_adaptive",
-    "label": "Product core, adaptive readings",
-    "model": "gpt-6-luna",
-    "words": 250,
-    "attachments": 0,
-    "regimes": 4,
-    "rule_text_tokens": 48774.24103364532,
-    "facts_read": 7,
-    "usd": 0.002294634537687622,
-    "extrapolated": true,
-    "flags": [
-     "rule catalogue larger than any measured (routing input scaled)"
-    ]
-   },
-   {
-    "design": "core_adaptive",
-    "label": "Product core, adaptive readings",
-    "model": "gpt-6-luna",
-    "words": 250,
-    "attachments": 3,
-    "regimes": 1,
-    "rule_text_tokens": 12193.56025841133,
-    "facts_read": 7,
-    "usd": 0.005590611434845578,
+    "usd": 0.001966292359179968,
     "extrapolated": false,
     "flags": []
    },
@@ -7171,11 +7132,54 @@
     "label": "Product core, adaptive readings",
     "model": "gpt-6-luna",
     "words": 250,
+    "attachments": 0,
+    "regimes": 3,
+    "rule_text_tokens": 36580.68077523399,
+    "facts_read": 7,
+    "usd": 0.002050215964592651,
+    "extrapolated": true,
+    "flags": [
+     "rule catalogue larger than any measured (routing input scaled)"
+    ]
+   },
+   {
+    "design": "core_adaptive",
+    "label": "Product core, adaptive readings",
+    "model": "gpt-6-luna",
+    "words": 250,
+    "attachments": 0,
+    "regimes": 4,
+    "rule_text_tokens": 48774.24103364532,
+    "facts_read": 7,
+    "usd": 0.0020921777672989928,
+    "extrapolated": true,
+    "flags": [
+     "rule catalogue larger than any measured (routing input scaled)"
+    ]
+   },
+   {
+    "design": "core_adaptive",
+    "label": "Product core, adaptive readings",
+    "model": "gpt-6-luna",
+    "words": 250,
+    "attachments": 3,
+    "regimes": 1,
+    "rule_text_tokens": 12193.56025841133,
+    "facts_read": 7,
+    "usd": 0.0056053575396802745,
+    "extrapolated": false,
+    "flags": []
+   },
+   {
+    "design": "core_adaptive",
+    "label": "Product core, adaptive readings",
+    "model": "gpt-6-luna",
+    "words": 250,
     "attachments": 3,
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.005799370645013625,
+    "usd": 0.005687253802823655,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)"
@@ -7190,7 +7194,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.005903750250097648,
+    "usd": 0.005728201934395346,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)"
@@ -7205,7 +7209,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.009199727147255605,
+    "usd": 0.009244422720180582,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]"
@@ -7220,7 +7224,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.009408486357423652,
+    "usd": 0.009324291641054661,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -7236,7 +7240,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.009512865962507675,
+    "usd": 0.0093642261014917,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -7252,7 +7256,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.008581233386675114,
+    "usd": 0.00677985650024994,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -7267,7 +7271,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.008789992596843162,
+    "usd": 0.0068637801056626235,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7283,7 +7287,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.008894372201927186,
+    "usd": 0.006905741908368965,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7299,7 +7303,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.012190270283228492,
+    "usd": 0.012787535679787642,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -7314,7 +7318,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.012399029493396538,
+    "usd": 0.012869431942931024,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7330,7 +7334,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.01250340909848056,
+    "usd": 0.012910380074502714,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7346,7 +7350,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.015799314523161898,
+    "usd": 0.018795214859325345,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7362,7 +7366,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.016008073733329943,
+    "usd": 0.018875083780199427,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7379,7 +7383,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.016112453338413966,
+    "usd": 0.018915018240636464,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7396,7 +7400,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.02898150769247435,
+    "usd": 0.021658145663557126,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -7411,7 +7415,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.029190266902642398,
+    "usd": 0.021742069268969808,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7427,7 +7431,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.02929464650772642,
+    "usd": 0.02178403107167615,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7443,7 +7447,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.03258972636002319,
+    "usd": 0.03498699538557405,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]"
@@ -7458,7 +7462,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.032798485570191244,
+    "usd": 0.03506889164871743,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7474,7 +7478,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.03290286517527527,
+    "usd": 0.03510983978028913,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7490,7 +7494,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.036198763256576574,
+    "usd": 0.048315845107590974,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7506,7 +7510,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.03640752246674462,
+    "usd": 0.048395714028465056,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7523,7 +7527,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.03651190207182864,
+    "usd": 0.04843564848890209,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7540,7 +7544,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.015357832758295718,
+    "usd": 0.015428874841794811,
     "extrapolated": false,
     "flags": [
      "frontier tokens = cost-efficient tokens x per-stage ratio from 38 tenancy files"
@@ -7555,7 +7559,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.017382043201812067,
+    "usd": 0.016247018497229003,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -7571,7 +7575,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.01839414842357024,
+    "usd": 0.0166560903249461,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -7587,7 +7591,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.044236829254512534,
+    "usd": 0.04324064637825476,
     "extrapolated": false,
     "flags": [
      "frontier tokens = cost-efficient tokens x per-stage ratio from 38 tenancy files"
@@ -7602,7 +7606,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.04626103969802888,
+    "usd": 0.044039026140004135,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -7618,7 +7622,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.04727314491978705,
+    "usd": 0.04443821602087882,
     "extrapolated": true,
     "flags": [
      "rule catalogue larger than any measured (routing input scaled)",
@@ -7634,7 +7638,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.07311582575072938,
+    "usd": 0.07105241791471471,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -7650,7 +7654,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.07514003619424572,
+    "usd": 0.07183103378277926,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -7667,7 +7671,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.07615214141600389,
+    "usd": 0.07222034171681153,
     "extrapolated": true,
     "flags": [
      "attachments outside the benchmark's [0, 4]",
@@ -7684,7 +7688,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.06349430985342533,
+    "usd": 0.04842910428508369,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7700,7 +7704,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.06551852029694168,
+    "usd": 0.049247247940517894,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7717,7 +7721,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.06653062551869984,
+    "usd": 0.04965631976823499,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7734,7 +7738,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.09236375348488372,
+    "usd": 0.09831977778033552,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7750,7 +7754,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.09438796392840007,
+    "usd": 0.09911815754208489,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7767,7 +7771,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.09540006915015825,
+    "usd": 0.09951734742295956,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7784,7 +7788,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.12123408716967984,
+    "usd": 0.14821045127558735,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7801,7 +7805,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.12325829761319618,
+    "usd": 0.1489890671436519,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7819,7 +7823,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.12427040283495436,
+    "usd": 0.1493783750776842,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7837,7 +7841,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.21239320432434283,
+    "usd": 0.15042981347343115,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7853,7 +7857,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.2144174147678592,
+    "usd": 0.15124795712886535,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7870,7 +7874,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.21542951998961735,
+    "usd": 0.15165702895658245,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7887,7 +7891,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.24118158169258866,
+    "usd": 0.2685643657504033,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7903,7 +7907,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.243205792136105,
+    "usd": 0.26936274551215267,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7920,7 +7924,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.24421789735786317,
+    "usd": 0.2697619353930274,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7937,7 +7941,7 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.270051025324047,
+    "usd": 0.38669891802737555,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7954,7 +7958,7 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.2720752357675634,
+    "usd": 0.3874775338954401,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -7972,7 +7976,7 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.2730873409893215,
+    "usd": 0.3878668418294724,
     "extrapolated": true,
     "flags": [
      "words outside the benchmark's [183, 575]",
@@ -8815,7 +8819,7 @@
     "usd": 0.0020873242072402846,
     "extrapolated": false,
     "flags": [
-     "3 samples at USD 0.000696 each match the core's USD 0.002253"
+     "3 samples at USD 0.000696 each match the core's USD 0.002238"
     ]
    },
    {
@@ -8830,7 +8834,7 @@
     "usd": 0.0019058116794868792,
     "extrapolated": true,
     "flags": [
-     "2 samples at USD 0.000953 each match the core's USD 0.002462",
+     "2 samples at USD 0.000953 each match the core's USD 0.002322",
      "rule text larger than any measured"
     ]
    },
@@ -8846,7 +8850,7 @@
     "usd": 0.002162942783483557,
     "extrapolated": true,
     "flags": [
-     "2 samples at USD 0.001081 each match the core's USD 0.002566",
+     "2 samples at USD 0.001081 each match the core's USD 0.002364",
      "rule text larger than any measured"
     ]
    },
@@ -8862,7 +8866,7 @@
     "usd": 0.005566197885974093,
     "extrapolated": false,
     "flags": [
-     "8 samples at USD 0.000696 each match the core's USD 0.005781"
+     "8 samples at USD 0.000696 each match the core's USD 0.005796"
     ]
    },
    {
@@ -8877,7 +8881,7 @@
     "usd": 0.005717435038460637,
     "extrapolated": true,
     "flags": [
-     "6 samples at USD 0.000953 each match the core's USD 0.005990",
+     "6 samples at USD 0.000953 each match the core's USD 0.005878",
      "rule text larger than any measured"
     ]
    },
@@ -8893,7 +8897,7 @@
     "usd": 0.005407356958708892,
     "extrapolated": true,
     "flags": [
-     "5 samples at USD 0.001081 each match the core's USD 0.006094",
+     "5 samples at USD 0.001081 each match the core's USD 0.005919",
      "rule text larger than any measured"
     ]
    },
@@ -8909,7 +8913,7 @@
     "usd": 0.0090450715647079,
     "extrapolated": false,
     "flags": [
-     "13 samples at USD 0.000696 each match the core's USD 0.009310"
+     "13 samples at USD 0.000696 each match the core's USD 0.009355"
     ]
    },
    {
@@ -8924,7 +8928,7 @@
     "usd": 0.008576152557690956,
     "extrapolated": true,
     "flags": [
-     "9 samples at USD 0.000953 each match the core's USD 0.009519",
+     "9 samples at USD 0.000953 each match the core's USD 0.009434",
      "rule text larger than any measured"
     ]
    },
@@ -8940,7 +8944,7 @@
     "usd": 0.008651771133934227,
     "extrapolated": true,
     "flags": [
-     "8 samples at USD 0.001081 each match the core's USD 0.009623",
+     "8 samples at USD 0.001081 each match the core's USD 0.009474",
      "rule text larger than any measured"
     ]
    },
@@ -8953,10 +8957,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.008482123459244498,
+    "usd": 0.0070684362160370814,
     "extrapolated": true,
     "flags": [
-     "12 samples at USD 0.000707 each match the core's USD 0.009026",
+     "10 samples at USD 0.000707 each match the core's USD 0.007223",
      "words outside the measured [77, 367]"
     ]
    },
@@ -8969,10 +8973,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.008675772530403471,
+    "usd": 0.0067478230792027,
     "extrapolated": true,
     "flags": [
-     "9 samples at USD 0.000964 each match the core's USD 0.009234",
+     "7 samples at USD 0.000964 each match the core's USD 0.007307",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -8986,10 +8990,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.008740322220789796,
+    "usd": 0.006555241665592347,
     "extrapolated": true,
     "flags": [
-     "8 samples at USD 0.001093 each match the core's USD 0.009339",
+     "6 samples at USD 0.001093 each match the core's USD 0.007349",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9003,10 +9007,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.012016341567263038,
+    "usd": 0.012723185188866747,
     "extrapolated": true,
     "flags": [
-     "17 samples at USD 0.000707 each match the core's USD 0.012554",
+     "18 samples at USD 0.000707 each match the core's USD 0.013150",
      "words outside the measured [77, 367]"
     ]
    },
@@ -9022,7 +9026,7 @@
     "usd": 0.012531671432805013,
     "extrapolated": true,
     "flags": [
-     "13 samples at USD 0.000964 each match the core's USD 0.012763",
+     "13 samples at USD 0.000964 each match the core's USD 0.013232",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9036,10 +9040,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.01201794305358597,
+    "usd": 0.013110483331184693,
     "extrapolated": true,
     "flags": [
-     "11 samples at USD 0.001093 each match the core's USD 0.012867",
+     "12 samples at USD 0.001093 each match the core's USD 0.013273",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9053,10 +9057,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.01555055967528158,
+    "usd": 0.018377934161696412,
     "extrapolated": true,
     "flags": [
-     "22 samples at USD 0.000707 each match the core's USD 0.016083",
+     "26 samples at USD 0.000707 each match the core's USD 0.019078",
      "words outside the measured [77, 367]"
     ]
    },
@@ -9069,10 +9073,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.015423595609606171,
+    "usd": 0.018315519786407327,
     "extrapolated": true,
     "flags": [
-     "16 samples at USD 0.000964 each match the core's USD 0.016291",
+     "19 samples at USD 0.000964 each match the core's USD 0.019158",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9086,10 +9090,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.016388104163980868,
+    "usd": 0.018573184719178317,
     "extrapolated": true,
     "flags": [
-     "15 samples at USD 0.001093 each match the core's USD 0.016396",
+     "17 samples at USD 0.001093 each match the core's USD 0.019198",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9103,10 +9107,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.02964226166100717,
+    "usd": 0.022231696245755377,
     "extrapolated": true,
     "flags": [
-     "40 samples at USD 0.000741 each match the core's USD 0.029961",
+     "30 samples at USD 0.000741 each match the core's USD 0.022631",
      "words outside the measured [77, 367]"
     ]
    },
@@ -9119,10 +9123,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.0299456293656557,
+    "usd": 0.021960128201480848,
     "extrapolated": true,
     "flags": [
-     "30 samples at USD 0.000998 each match the core's USD 0.030170",
+     "22 samples at USD 0.000998 each match the core's USD 0.022715",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9136,10 +9140,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.029295583135525074,
+    "usd": 0.022535063950403902,
     "extrapolated": true,
     "flags": [
-     "26 samples at USD 0.001127 each match the core's USD 0.030274",
+     "20 samples at USD 0.001127 each match the core's USD 0.022757",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9153,10 +9157,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.03334754436863306,
+    "usd": 0.0355707139932086,
     "extrapolated": true,
     "flags": [
-     "45 samples at USD 0.000741 each match the core's USD 0.033489",
+     "48 samples at USD 0.000741 each match the core's USD 0.035882",
      "words outside the measured [77, 367]"
     ]
    },
@@ -9169,10 +9173,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.03294019230222127,
+    "usd": 0.035934755238786836,
     "extrapolated": true,
     "flags": [
-     "33 samples at USD 0.000998 each match the core's USD 0.033697",
+     "36 samples at USD 0.000998 each match the core's USD 0.035964",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9186,10 +9190,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.03267584272808566,
+    "usd": 0.03492934912312605,
     "extrapolated": true,
     "flags": [
-     "29 samples at USD 0.001127 each match the core's USD 0.033802",
+     "31 samples at USD 0.001127 each match the core's USD 0.036005",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9203,10 +9207,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.03631177053473378,
+    "usd": 0.04890973174066183,
     "extrapolated": true,
     "flags": [
-     "49 samples at USD 0.000741 each match the core's USD 0.037017",
+     "66 samples at USD 0.000741 each match the core's USD 0.049132",
      "words outside the measured [77, 367]"
     ]
    },
@@ -9219,10 +9223,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.0369329428843087,
+    "usd": 0.048911194630570975,
     "extrapolated": true,
     "flags": [
-     "37 samples at USD 0.000998 each match the core's USD 0.037226",
+     "49 samples at USD 0.000998 each match the core's USD 0.049212",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9236,10 +9240,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.03718285551816644,
+    "usd": 0.04845038749336839,
     "extrapolated": true,
     "flags": [
-     "33 samples at USD 0.001127 each match the core's USD 0.037330",
+     "43 samples at USD 0.001127 each match the core's USD 0.049252",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
     ]
@@ -9256,7 +9260,7 @@
     "usd": 0.012573156849685315,
     "extrapolated": true,
     "flags": [
-     "2 samples at USD 0.006287 each match the core's USD 0.017464",
+     "2 samples at USD 0.006287 each match the core's USD 0.017534",
      "no run on this model: cost-efficient model's tokens at this model's prices"
     ]
    },
@@ -9272,7 +9276,7 @@
     "usd": 0.015288597224743959,
     "extrapolated": true,
     "flags": [
-     "2 samples at USD 0.007644 each match the core's USD 0.019488",
+     "2 samples at USD 0.007644 each match the core's USD 0.018352",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "rule text larger than any measured"
     ]
@@ -9289,7 +9293,7 @@
     "usd": 0.016646317412273275,
     "extrapolated": true,
     "flags": [
-     "2 samples at USD 0.008323 each match the core's USD 0.020500",
+     "2 samples at USD 0.008323 each match the core's USD 0.018761",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "rule text larger than any measured"
     ]
@@ -9306,7 +9310,7 @@
     "usd": 0.04400604897389861,
     "extrapolated": true,
     "flags": [
-     "7 samples at USD 0.006287 each match the core's USD 0.045766",
+     "7 samples at USD 0.006287 each match the core's USD 0.044756",
      "no run on this model: cost-efficient model's tokens at this model's prices"
     ]
    },
@@ -9319,10 +9323,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.045865791674231875,
+    "usd": 0.038221493061859894,
     "extrapolated": true,
     "flags": [
-     "6 samples at USD 0.007644 each match the core's USD 0.047790",
+     "5 samples at USD 0.007644 each match the core's USD 0.045554",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "rule text larger than any measured"
     ]
@@ -9339,7 +9343,7 @@
     "usd": 0.04161579353068319,
     "extrapolated": true,
     "flags": [
-     "5 samples at USD 0.008323 each match the core's USD 0.048802",
+     "5 samples at USD 0.008323 each match the core's USD 0.045953",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "rule text larger than any measured"
     ]
@@ -9356,7 +9360,7 @@
     "usd": 0.06915236267326924,
     "extrapolated": true,
     "flags": [
-     "11 samples at USD 0.006287 each match the core's USD 0.074068",
+     "11 samples at USD 0.006287 each match the core's USD 0.071978",
      "no run on this model: cost-efficient model's tokens at this model's prices"
     ]
    },
@@ -9372,7 +9376,7 @@
     "usd": 0.06879868751134781,
     "extrapolated": true,
     "flags": [
-     "9 samples at USD 0.007644 each match the core's USD 0.076092",
+     "9 samples at USD 0.007644 each match the core's USD 0.072756",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "rule text larger than any measured"
     ]
@@ -9386,10 +9390,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.07490842835522973,
+    "usd": 0.0665852696490931,
     "extrapolated": true,
     "flags": [
-     "9 samples at USD 0.008323 each match the core's USD 0.077104",
+     "8 samples at USD 0.008323 each match the core's USD 0.073145",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "rule text larger than any measured"
     ]
@@ -9403,10 +9407,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.06345025067616876,
+    "usd": 0.050760200540935003,
     "extrapolated": true,
     "flags": [
-     "10 samples at USD 0.006345 each match the core's USD 0.066941",
+     "8 samples at USD 0.006345 each match the core's USD 0.051883",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]"
     ]
@@ -9420,10 +9424,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.06162196204116954,
+    "usd": 0.04621647153087716,
     "extrapolated": true,
     "flags": [
-     "8 samples at USD 0.007703 each match the core's USD 0.068965",
+     "6 samples at USD 0.007703 each match the core's USD 0.052701",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9438,10 +9442,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.0670528427912868,
+    "usd": 0.0502896320934651,
     "extrapolated": true,
     "flags": [
-     "8 samples at USD 0.008382 each match the core's USD 0.069977",
+     "6 samples at USD 0.008382 each match the core's USD 0.053110",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9459,7 +9463,7 @@
     "usd": 0.09517537601425313,
     "extrapolated": true,
     "flags": [
-     "15 samples at USD 0.006345 each match the core's USD 0.095234",
+     "15 samples at USD 0.006345 each match the core's USD 0.101198",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]"
     ]
@@ -9473,10 +9477,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.09243294306175431,
+    "usd": 0.1001356883169005,
     "extrapolated": true,
     "flags": [
-     "12 samples at USD 0.007703 each match the core's USD 0.097258",
+     "13 samples at USD 0.007703 each match the core's USD 0.101996",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9491,10 +9495,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.09219765883801935,
+    "usd": 0.1005792641869302,
     "extrapolated": true,
     "flags": [
-     "11 samples at USD 0.008382 each match the core's USD 0.098270",
+     "12 samples at USD 0.008382 each match the core's USD 0.102396",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9509,10 +9513,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.12055547628472063,
+    "usd": 0.14593557655518813,
     "extrapolated": true,
     "flags": [
-     "19 samples at USD 0.006345 each match the core's USD 0.123527",
+     "23 samples at USD 0.006345 each match the core's USD 0.150513",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]"
     ]
@@ -9526,10 +9530,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.12324392408233908,
+    "usd": 0.14635215984777766,
     "extrapolated": true,
     "flags": [
-     "16 samples at USD 0.007703 each match the core's USD 0.125551",
+     "19 samples at USD 0.007703 each match the core's USD 0.151292",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9544,10 +9548,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.12572408023366274,
+    "usd": 0.1508688962803953,
     "extrapolated": true,
     "flags": [
-     "15 samples at USD 0.008382 each match the core's USD 0.126563",
+     "18 samples at USD 0.008382 each match the core's USD 0.151681",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9562,10 +9566,10 @@
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
-    "usd": 0.21534738479432713,
+    "usd": 0.15661627985041973,
     "extrapolated": true,
     "flags": [
-     "33 samples at USD 0.006526 each match the core's USD 0.219984",
+     "24 samples at USD 0.006526 each match the core's USD 0.158053",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]"
     ]
@@ -9579,10 +9583,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.22073515840964383,
+    "usd": 0.15766797029260274,
     "extrapolated": true,
     "flags": [
-     "28 samples at USD 0.007883 each match the core's USD 0.222009",
+     "20 samples at USD 0.007883 each match the core's USD 0.158871",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9597,10 +9601,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.2226187238182647,
+    "usd": 0.15412065495110633,
     "extrapolated": true,
     "flags": [
-     "26 samples at USD 0.008562 each match the core's USD 0.223021",
+     "18 samples at USD 0.008562 each match the core's USD 0.159280",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9612,66 +9616,66 @@
     "model": "gpt-6.1-terra",
     "words": 2500,
     "attachments": 3,
-    "regimes": 1,
-    "rule_text_tokens": 12193.56025841133,
-    "facts_read": 7,
-    "usd": 0.24797577642983124,
-    "extrapolated": true,
-    "flags": [
-     "38 samples at USD 0.006526 each match the core's USD 0.248195",
-     "no run on this model: cost-efficient model's tokens at this model's prices",
-     "words outside the measured [77, 367]"
-    ]
-   },
-   {
-    "design": "self_consistency_matched",
-    "label": "Self-consistency, cost-matched to the core",
-    "model": "gpt-6.1-terra",
-    "words": 2500,
-    "attachments": 3,
-    "regimes": 3,
-    "rule_text_tokens": 36580.68077523399,
-    "facts_read": 7,
-    "usd": 0.24438535395353425,
-    "extrapolated": true,
-    "flags": [
-     "31 samples at USD 0.007883 each match the core's USD 0.250220",
-     "no run on this model: cost-efficient model's tokens at this model's prices",
-     "words outside the measured [77, 367]",
-     "rule text larger than any measured"
-    ]
-   },
-   {
-    "design": "self_consistency_matched",
-    "label": "Self-consistency, cost-matched to the core",
-    "model": "gpt-6.1-terra",
-    "words": 2500,
-    "attachments": 3,
-    "regimes": 4,
-    "rule_text_tokens": 48774.24103364532,
-    "facts_read": 7,
-    "usd": 0.24830549964344908,
-    "extrapolated": true,
-    "flags": [
-     "29 samples at USD 0.008562 each match the core's USD 0.251232",
-     "no run on this model: cost-efficient model's tokens at this model's prices",
-     "words outside the measured [77, 367]",
-     "rule text larger than any measured"
-    ]
-   },
-   {
-    "design": "self_consistency_matched",
-    "label": "Self-consistency, cost-matched to the core",
-    "model": "gpt-6.1-terra",
-    "words": 2500,
-    "attachments": 6,
     "regimes": 1,
     "rule_text_tokens": 12193.56025841133,
     "facts_read": 7,
     "usd": 0.2740784897382345,
     "extrapolated": true,
     "flags": [
-     "42 samples at USD 0.006526 each match the core's USD 0.276488",
+     "42 samples at USD 0.006526 each match the core's USD 0.275657",
+     "no run on this model: cost-efficient model's tokens at this model's prices",
+     "words outside the measured [77, 367]"
+    ]
+   },
+   {
+    "design": "self_consistency_matched",
+    "label": "Self-consistency, cost-matched to the core",
+    "model": "gpt-6.1-terra",
+    "words": 2500,
+    "attachments": 3,
+    "regimes": 3,
+    "rule_text_tokens": 36580.68077523399,
+    "facts_read": 7,
+    "usd": 0.2759189480120548,
+    "extrapolated": true,
+    "flags": [
+     "35 samples at USD 0.007883 each match the core's USD 0.276455",
+     "no run on this model: cost-efficient model's tokens at this model's prices",
+     "words outside the measured [77, 367]",
+     "rule text larger than any measured"
+    ]
+   },
+   {
+    "design": "self_consistency_matched",
+    "label": "Self-consistency, cost-matched to the core",
+    "model": "gpt-6.1-terra",
+    "words": 2500,
+    "attachments": 3,
+    "regimes": 4,
+    "rule_text_tokens": 48774.24103364532,
+    "facts_read": 7,
+    "usd": 0.2739922754686335,
+    "extrapolated": true,
+    "flags": [
+     "32 samples at USD 0.008562 each match the core's USD 0.276854",
+     "no run on this model: cost-efficient model's tokens at this model's prices",
+     "words outside the measured [77, 367]",
+     "rule text larger than any measured"
+    ]
+   },
+   {
+    "design": "self_consistency_matched",
+    "label": "Self-consistency, cost-matched to the core",
+    "model": "gpt-6.1-terra",
+    "words": 2500,
+    "attachments": 6,
+    "regimes": 1,
+    "rule_text_tokens": 12193.56025841133,
+    "facts_read": 7,
+    "usd": 0.3915406996260493,
+    "extrapolated": true,
+    "flags": [
+     "60 samples at USD 0.006526 each match the core's USD 0.393260",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]"
     ]
@@ -9685,10 +9689,10 @@
     "regimes": 3,
     "rule_text_tokens": 36580.68077523399,
     "facts_read": 7,
-    "usd": 0.2759189480120548,
+    "usd": 0.38628652721687673,
     "extrapolated": true,
     "flags": [
-     "35 samples at USD 0.007883 each match the core's USD 0.278512",
+     "49 samples at USD 0.007883 each match the core's USD 0.394039",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
@@ -9703,10 +9707,10 @@
     "regimes": 4,
     "rule_text_tokens": 48774.24103364532,
     "facts_read": 7,
-    "usd": 0.2739922754686335,
+    "usd": 0.3938638959861606,
     "extrapolated": true,
     "flags": [
-     "32 samples at USD 0.008562 each match the core's USD 0.279524",
+     "46 samples at USD 0.008562 each match the core's USD 0.394428",
      "no run on this model: cost-efficient model's tokens at this model's prices",
      "words outside the measured [77, 367]",
      "rule text larger than any measured"
