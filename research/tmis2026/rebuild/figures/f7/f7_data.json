@@ -1,0 +1,279 @@
+{
+ "figure": "f7",
+ "regime": "tenancy (Study 3 sealed claims)",
+ "error": "all deviations per claim-run",
+ "cost": "USD per case-run from ledgers",
+ "designs": [
+  {
+   "key": "casepath",
+   "name": "CasePath, full",
+   "model": "cost-efficient",
+   "role": "the product",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 0.7291666666666666,
+   "usd_per_file": 0.013385480555555563,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.casepath.regimes.tenancy.cost (method plan_keys)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 69,
+    "identical_share": 0.71875,
+    "mean_lines_differing_per_pair": 0.6631944444444444,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  },
+  {
+   "key": "casepath_checklist",
+   "name": "CasePath, checklist only",
+   "model": "cost-efficient",
+   "role": "the product",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 0.7326388888888888,
+   "usd_per_file": 0.002960830920138894,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.casepath_checklist.regimes.tenancy.cost (method plan_keys)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 70,
+    "identical_share": 0.7291666666666666,
+    "mean_lines_differing_per_pair": 0.5868055555555555,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  },
+  {
+   "key": "casepath_frontier_checklist",
+   "name": "CasePath, checklist only",
+   "model": "frontier",
+   "role": "the product",
+   "runs": 1,
+   "claim_runs": 96,
+   "all_dev_per_file": 0.6979166666666666,
+   "usd_per_file": 0.02140785624999998,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.casepath_frontier_checklist.regimes.tenancy.cost (method plan_keys)"
+  },
+  {
+   "key": "hold_prompt_frontier",
+   "name": "Prompt that may hold",
+   "model": "frontier",
+   "role": "strongest prompt",
+   "runs": 1,
+   "claim_runs": 96,
+   "all_dev_per_file": 0.5833333333333334,
+   "usd_per_file": 0.006315447395833332,
+   "cost_source": "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl (method A, 96 distinct calls)"
+  },
+  {
+   "key": "hold_prompt",
+   "name": "Prompt that may hold",
+   "model": "cost-efficient",
+   "role": "prompt",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 0.8888888888888888,
+   "usd_per_file": 0.0006716417187499997,
+   "cost_source": "study4/baseline_check/runs/ledger_gpt-6-luna.jsonl (method A, 288 distinct calls)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 56,
+    "identical_share": 0.5833333333333334,
+    "mean_lines_differing_per_pair": 0.8958333333333334,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  },
+  {
+   "key": "ric_frontier",
+   "name": "Rules in context",
+   "model": "frontier",
+   "role": "prompt",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 2.0868055555555554,
+   "usd_per_file": 0.0063028598958333355,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.ric_frontier.regimes.tenancy.cost (method ledger)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 78,
+    "identical_share": 0.8125,
+    "mean_lines_differing_per_pair": 0.5416666666666666,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  },
+  {
+   "key": "ric",
+   "name": "Rules in context",
+   "model": "cost-efficient",
+   "role": "prompt",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 2.329861111111111,
+   "usd_per_file": 0.0006764197222222225,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.ric.regimes.tenancy.cost (method ledger)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 48,
+    "identical_share": 0.5,
+    "mean_lines_differing_per_pair": 0.9166666666666666,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  },
+  {
+   "key": "self_consistency",
+   "name": "Self-consistency (5 votes)",
+   "model": "cost-efficient",
+   "role": "prompt",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 2.3125,
+   "usd_per_file": 0.0033882387847222212,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.self_consistency.regimes.tenancy.cost (method ledger)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 63,
+    "identical_share": 0.65625,
+    "mean_lines_differing_per_pair": 0.4756944444444444,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  },
+  {
+   "key": "mer_hold_frontier",
+   "name": "Model executes rules",
+   "model": "frontier",
+   "role": "agent",
+   "runs": 1,
+   "claim_runs": 96,
+   "all_dev_per_file": 0.5416666666666666,
+   "usd_per_file": 0.0062012890624999996,
+   "cost_source": "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl (method B, 96 distinct calls)"
+  },
+  {
+   "key": "model_executes_rules",
+   "name": "Model executes rules",
+   "model": "cost-efficient",
+   "role": "agent",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 1.4930555555555556,
+   "usd_per_file": 0.0006751665624999999,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.model_executes_rules.regimes.tenancy.cost (method ledger)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 48,
+    "identical_share": 0.5,
+    "mean_lines_differing_per_pair": 1.1354166666666667,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  },
+  {
+   "key": "react",
+   "name": "ReAct",
+   "model": "cost-efficient",
+   "role": "agent",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 2.0034722222222223,
+   "usd_per_file": 0.0011875515104166636,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.react.regimes.tenancy.cost (method ledger)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 33,
+    "identical_share": 0.34375,
+    "mean_lines_differing_per_pair": 1.8993055555555556,
+    "checklist_lines_per_claim": 11.666666666666666
+   }
+  }
+ ],
+ "budget_self_consistency": [
+  {
+   "m": 1,
+   "usd_per_file": 0.0006776477569444443,
+   "all_dev_per_file": 2.332638888888889,
+   "votes_per_case": 15
+  },
+  {
+   "m": 3,
+   "usd_per_file": 0.002032943270833333,
+   "all_dev_per_file": 2.33125,
+   "votes_per_case": 5
+  },
+  {
+   "m": 5,
+   "usd_per_file": 0.0033882387847222212,
+   "all_dev_per_file": 2.3125,
+   "votes_per_case": 3
+  },
+  {
+   "m": 7,
+   "usd_per_file": 0.00474353429861111,
+   "all_dev_per_file": 2.2864583333333335,
+   "votes_per_case": 2
+  },
+  {
+   "m": 9,
+   "usd_per_file": 0.006098829812499999,
+   "all_dev_per_file": 2.25,
+   "votes_per_case": 1
+  },
+  {
+   "m": 11,
+   "usd_per_file": 0.007454125326388887,
+   "all_dev_per_file": 2.2291666666666665,
+   "votes_per_case": 1
+  },
+  {
+   "m": 13,
+   "usd_per_file": 0.008809420840277776,
+   "all_dev_per_file": 2.2708333333333335,
+   "votes_per_case": 1
+  },
+  {
+   "m": 15,
+   "usd_per_file": 0.010164716354166664,
+   "all_dev_per_file": 2.28125,
+   "votes_per_case": 1
+  }
+ ],
+ "readings_casepath_checklist": [
+  {
+   "k": 1,
+   "usd_per_file": 0.002442034513888889,
+   "all_dev_per_file": 0.5451388888888888
+  },
+  {
+   "k": 2,
+   "usd_per_file": 0.002699582829861111,
+   "all_dev_per_file": 0.6875
+  },
+  {
+   "k": 3,
+   "usd_per_file": 0.002960830920138889,
+   "all_dev_per_file": 0.7361111111111112
+  }
+ ],
+ "not_yet_measured": "ten runs of the same file (Study 4); here three",
+ "inputs": {
+  "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist.json": "54d6217431b7ef799601fd74586c7502cfb026360d741cc4f27d43e5f40190cf",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json": "882ad0df87ed4d7fd61eba5bb51b34c90247f2467c9e20dc8c07237b30822fb8",
+  "runs/study3/confirm/plans_tenancy_model_executes_rules.json": "abc0d2f5d7fd543db99480cbab94a23fbad6c95e61f4f2fca4c03f326de99c7f",
+  "runs/study3/confirm/plans_tenancy_react.json": "c094c8c9ed33c08ea200ddb504cec46510c6b1405a23b51ef32a1528552f92c0",
+  "runs/study3/confirm/plans_tenancy_ric_luna.json": "9ef392d68ab8d589e047d6a227f5ca8d2cc847a3edeb663f2748dcccb90174b6",
+  "runs/study3/confirm/plans_tenancy_ric_terra.json": "74f8362129b03a9abcb7932886e248f48aa2c479d95f0b1b31d207df176f7a61",
+  "runs/study3/confirm/samples_tenancy_ric_luna.json": "1016547eced137672b44dfd832843652869a637b461d0cea2253afcbcc2b1fa4",
+  "study4/baseline_check/runs/plans_A-luna-tenancy.json": "492248c9d75b62e6ce9afae2507e67cd8e638a5f3e61edd7e255778d20aeddc5",
+  "study4/baseline_check/runs/plans_A-terra-tenancy.json": "bda583f2c64c11868b6b9c97c0dad10f2cb2ebe9ce5b9dc5c8fdf1963744c883",
+  "study4/baseline_check/runs/plans_B-terra-tenancy.json": "0bd4e18190ed3b09280887d8b9c8bdaf4cc55e862adbf50e3794892a3ef38481",
+  "analysis/study3_results_fresh2_confirm.json": "8017fbaef220e89ed34e56e66080f79ecce02aede73f5217f677f74d490d77a6",
+  "analysis/study3_feedback.json": "81f85d2e1c52e10f36208498dea4e27f04d9e303eb2b4fc5a8f67d344c50a6bf",
+  "study4/baseline_check/runs/ledger_gpt-6-luna.jsonl": "a5d843e75455d52923b959099d92ae6b1fb66626615cbf7daa1be153a694c921",
+  "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl": "caeaca9b16a4d05b709bab75c24da7adea10af8372d515891c17b7445ceb8016"
+ },
+ "script_sha256": "2437480b0c47def79b7d74086e24766e04909df8658948bf81b196a58493a394"
+}

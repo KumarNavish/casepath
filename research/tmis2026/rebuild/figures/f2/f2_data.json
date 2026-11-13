@@ -1,0 +1,168 @@
+{
+ "fact": "g042_rev_92ab8925",
+ "fact_question": "Does this hold for the claim: CSS has paid benefits for which the policyholder could assert claims against third parties, or the loss was caused or increased through the fault of a third party.",
+ "doc": "d15",
+ "doc_title": "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+ "rule": {
+  "fact": "g042_rev_92ab8925",
+  "is": true
+ },
+ "source": {
+  "records": "research/tmis2026/runs/study3/confirm/plans_theft_casepath.json",
+  "readings": "research/tmis2026/runs/product/cache/<key>.json (keys listed in each record)",
+  "workflow": "research/tmis2026/harness/product/workflows/theft-reviewed/household_theft.json"
+ },
+ "a": {
+  "text_id": "s13-on-PR_third_party_causer",
+  "sentence": "An identified building contractor caused the loss and their identity is known.",
+  "readings": [
+   {
+    "key": "533e73967044a04c7aeddf82c95e6bc32e8ccf6ed4a735ebc94bdaa413c42c62",
+    "verdict": "true",
+    "quote": "An identified building contractor caused the loss and their identity is known.",
+    "found_in_file": true
+   },
+   {
+    "key": "e1024ddc0b1afd137f3d1c3140da56d00c9c0a7084fd2269846d8481960df68e",
+    "verdict": "true",
+    "quote": "An identified building contractor caused the loss and their identity is known.",
+    "found_in_file": true
+   },
+   {
+    "key": "275a0ccbc5175157654c083aedabcffd13d0d837d54d62d37cf2d7b1e0188292",
+    "verdict": "true",
+    "quote": "An identified building contractor caused the loss",
+    "found_in_file": true
+   }
+  ],
+  "fact_stored": {
+   "by": "claim_reader",
+   "cited": true,
+   "status": "established",
+   "value": true,
+   "verdict": "accepted"
+  },
+  "line": "request",
+  "question": false,
+  "reached": [
+   "intake"
+  ],
+  "document_judgment": {
+   "shows": [],
+   "status": "missing",
+   "verdict": "not_checked"
+  },
+  "suggested_by_model": [
+   "Mrs Bernasconi’s written authorisation empowering Sara Pedrazzini to represent her in this claim (including correspondence and claim handling)"
+  ],
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ },
+ "b": {
+  "text_id": "s13-unres-PR_third_party_causer",
+  "sentence": "The policyholder suspects that a building contractor may have left the entrance insecure, but whether an identifiable third party caused or enlarged the loss has not been established.",
+  "readings": [
+   {
+    "key": "2f72c23dd6ef72f8ca6f889c5f87c6962d1203a40129421fec9f5286e80b25fa",
+    "verdict": "open",
+    "quote": "whether an identifiable third party caused or enlarged the loss has not been established.",
+    "found_in_file": true
+   },
+   {
+    "key": "7af22d66a9707855e21301cda1f780acfd3fee3ef3076c856cd926d4a337d7ff",
+    "verdict": "open",
+    "quote": "whether an identifiable third party caused or enlarged the loss has not been established.",
+    "found_in_file": true
+   },
+   {
+    "key": "1135a72d4ef2361c52382cffe7f574347c0bcbe45597c1d4bdd83bc58ba371c7",
+    "verdict": "open",
+    "quote": "whether an identifiable third party caused or enlarged the loss has not been established.",
+    "found_in_file": true
+   }
+  ],
+  "fact_stored": {
+   "by": "claim_reader",
+   "cited": true,
+   "status": "unknown",
+   "value": null,
+   "verdict": "not_checked"
+  },
+  "line": "hold",
+  "question": true,
+  "reached": [
+   "intake"
+  ],
+  "document_judgment": {
+   "shows": [],
+   "status": "missing",
+   "verdict": "not_checked"
+  },
+  "suggested_by_model": [
+   "Bauauftrag, Arbeitsrapport und vorhandene Schlüssel- oder Zutrittsnachweise des Bauunternehmens, soweit der Unternehmer Zugang zur Wohnung hatte"
+  ],
+  "agents": [
+   "router",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "claim_reader",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "process_builder",
+   "claim_reader",
+   "source_checker",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "source_checker",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "document_finder",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker",
+   "result_checker"
+  ]
+ }
+}

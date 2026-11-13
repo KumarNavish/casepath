@@ -1,0 +1,49 @@
+{
+ "label": "POST HOC, Study 3 files (fresh2), stored runs; same file, same rules, no edit",
+ "designs": {
+  "hold_prompt": {
+   "tenancy": {
+    "cases": 96,
+    "runs_per_case": 3,
+    "run_pairs": 288,
+    "run_pairs_with_any_line_different": 83,
+    "lines_compared": 3072,
+    "lines_different": 258,
+    "lines_different_per_pair": 0.8958333333333334,
+    "names_outside_catalogue": 0
+   },
+   "theft": {
+    "cases": 128,
+    "runs_per_case": 3,
+    "run_pairs": 384,
+    "run_pairs_with_any_line_different": 341,
+    "lines_compared": 12672,
+    "lines_different": 829,
+    "lines_different_per_pair": 2.1588541666666665,
+    "names_outside_catalogue": 0
+   }
+  },
+  "casepath": {
+   "tenancy": {
+    "cases": 96,
+    "runs_per_case": 3,
+    "run_pairs": 288,
+    "run_pairs_with_any_line_different": 56,
+    "lines_compared": 3072,
+    "lines_different": 187,
+    "lines_different_per_pair": 0.6493055555555556,
+    "names_outside_catalogue": 0
+   },
+   "theft": {
+    "cases": 128,
+    "runs_per_case": 3,
+    "run_pairs": 384,
+    "run_pairs_with_any_line_different": 320,
+    "lines_compared": 12672,
+    "lines_different": 748,
+    "lines_different_per_pair": 1.9479166666666667,
+    "names_outside_catalogue": 0
+   }
+  }
+ }
+}

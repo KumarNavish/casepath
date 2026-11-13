@@ -37,12 +37,12 @@ is in German, show it in German with the decisive words translated beneath in sm
 - Paper `#FBF8F1` (or white inside the PDF), ink `#1F2A44` for text and lines, structure lines `#C9BFA8` (sand).
   **No grey and no pink anywhere**, including light tints.
 - States, the same everywhere:
-  - request now: teal `#1F7A6D`
+  - request now: teal `#008571` (moved from `#1F7A6D` after the palette validator, 2026-11-13)
   - open fact, and the held request with its question: amber `#D9962B` (the open fact *becomes* the hold: one colour)
   - requested too early (error): rust `#B5482F`
   - dropped, not asked and not held (error): indigo `#4B4A9C`
   - not needed: an empty outline in sand
-- Who acts: a model's reading and its quoted words in blue `#2F5D9E`; code in ink. Where a figure has the line
+- Who acts: a model's reading and its quoted words in blue `#4A8FD6` (moved from `#2F5D9E` after the validator); code in ink. Where a figure has the line
   "above it models read, below it code decides", it is one horizontal rule across the full width.
 - Fact values true and false are shown by form (filled and hollow marker), not by colour.
 - Run the palette through the validator of the dataviz method if you have it

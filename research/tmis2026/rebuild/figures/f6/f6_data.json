@@ -1,0 +1,4003 @@
+{
+ "label": "Figure 6 left: DEVELOPMENT data (Study 4 public-rule benchmark, theft, clean arm revision 3); replay, no model call",
+ "edit": {
+  "workflow": "rules/theft/workflow/simple_theft_away.json (copied)",
+  "line": 379,
+  "before": "\"optional\": true",
+  "after": "\"optional\": false",
+  "document": "police_report"
+ },
+ "model_calls_in_this_recomputation": 0,
+ "model_calls_how_known": "this script imports no model client and opens no network connection; it reads stored records and runs workflows.evaluate (pure function)",
+ "model_calls_of_the_stored_runs_being_reused": 581,
+ "checks": {
+  "reference_replay_equal": 421,
+  "stored_replay_reproduces_plan": 46
+ },
+ "measures": {
+  "changed_and_should_same_new_state": 14,
+  "collateral_changed_should_not": 1,
+  "collateral_on_edited_document": 1,
+  "files": 56,
+  "files_checklist_changed": 15,
+  "files_reference_changed": 15,
+  "lines_changed": 15,
+  "lines_reference_changed": 15,
+  "lines_total": 421,
+  "missed_should_change_did_not": 1,
+  "ref transition optional -> hold": 1,
+  "ref transition optional -> request": 14,
+  "transition optional -> request": 15
+ },
+ "files": [
+  {
+   "file": "the_003fbcb4d365",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_06baabbe2a0d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_0aad75365ee3",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_0cd1b047049a",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_0d6569d32db1",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_1024620d6055",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_12e3d532c09d",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_12ee892d56f4",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_1487759fc403",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_1595e412e131",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_1dfba8facf5e",
+   "type": "theft_at_home",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_2412f755f636",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_248aa95805a8",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_2774fb90433e",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_27cd334c5026",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_281214c010bb",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_314b305efe2d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_32a656cb56cf",
+   "type": "simple_theft_away",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_38afd648a68a",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_488b39c60106",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_493f21bd27be",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_4c02d7c9601d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_506c9909edc4",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_57501c7d1230",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_5ee356013cfc",
+   "type": "simple_theft_away",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_6634ab23ee99",
+   "type": "theft_at_home",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_685edf55333b",
+   "type": "theft_at_home",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_7d2b6a2bdce4",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_7f7ad7ab95d0",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_819379d12c03",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_86b4e22a87e7",
+   "type": "theft_at_home",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_86e739ec9184",
+   "type": "simple_theft_away",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_875040108b5b",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_8a719e0bd89a",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_91cf197b270e",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_9355c558630a",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_93929f818110",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_9b58c5abd02f",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_a529fff2269d",
+   "type": "simple_theft_away",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_a86e098e517e",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_b05370369093",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_b68c834f7972",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_bd8ee148bc3a",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_c0b61a3ae7cb",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_c3a5e8c74185",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_c7620535798b",
+   "type": "simple_theft_away",
+   "routed": null,
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_c8b40fd1824d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_cd857962dd2a",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_d37fc3c54b4b",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ]
+  },
+  {
+   "file": "the_d70abf016562",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_d76f5df60f83",
+   "type": "simple_theft_away",
+   "routed": null,
+   "changed": [],
+   "reference_changed": [
+    [
+     "police_report",
+     "optional",
+     "hold"
+    ]
+   ]
+  },
+  {
+   "file": "the_e0b1e1d56fb2",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_eb579978f91b",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_efac75d20bd0",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "changed": [],
+   "reference_changed": []
+  },
+  {
+   "file": "the_fefc066e8269",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "changed": [
+    [
+     "police_report",
+     "optional",
+     "request"
+    ]
+   ],
+   "reference_changed": []
+  }
+ ],
+ "detail": [
+  {
+   "file": "the_003fbcb4d365",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 20,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_06baabbe2a0d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_0aad75365ee3",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 18,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_0cd1b047049a",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 15,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    }
+   ]
+  },
+  {
+   "file": "the_0d6569d32db1",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 20,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_1024620d6055",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 18,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_12e3d532c09d",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_12ee892d56f4",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 17,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_1487759fc403",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 13,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_1595e412e131",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 16,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    }
+   ]
+  },
+  {
+   "file": "the_1dfba8facf5e",
+   "type": "theft_at_home",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_2412f755f636",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_248aa95805a8",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 5,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    }
+   ]
+  },
+  {
+   "file": "the_2774fb90433e",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 12,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_27cd334c5026",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 16,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_281214c010bb",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 18,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_314b305efe2d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 17,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_32a656cb56cf",
+   "type": "simple_theft_away",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_38afd648a68a",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    }
+   ]
+  },
+  {
+   "file": "the_488b39c60106",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 19,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_493f21bd27be",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 10,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_4c02d7c9601d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    }
+   ]
+  },
+  {
+   "file": "the_506c9909edc4",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 12,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    }
+   ]
+  },
+  {
+   "file": "the_57501c7d1230",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 20,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_5ee356013cfc",
+   "type": "simple_theft_away",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_656f9aad39e5",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    }
+   ]
+  },
+  {
+   "file": "the_6634ab23ee99",
+   "type": "theft_at_home",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_685edf55333b",
+   "type": "theft_at_home",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_7d2b6a2bdce4",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 17,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    }
+   ]
+  },
+  {
+   "file": "the_7f7ad7ab95d0",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 14,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_819379d12c03",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 20,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_86b4e22a87e7",
+   "type": "theft_at_home",
+   "routed": null,
+   "calls_stored_run": 2,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_86e739ec9184",
+   "type": "simple_theft_away",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_875040108b5b",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 5,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_8a719e0bd89a",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 5,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_91cf197b270e",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 15,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_9355c558630a",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 16,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_93929f818110",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 15,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_9b58c5abd02f",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 12,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    }
+   ]
+  },
+  {
+   "file": "the_a529fff2269d",
+   "type": "simple_theft_away",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_a86e098e517e",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 15,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_b05370369093",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_b68c834f7972",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_bd8ee148bc3a",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    }
+   ]
+  },
+  {
+   "file": "the_c0b61a3ae7cb",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    }
+   ]
+  },
+  {
+   "file": "the_c3a5e8c74185",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 15,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    }
+   ]
+  },
+  {
+   "file": "the_c7620535798b",
+   "type": "simple_theft_away",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_c8b40fd1824d",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 12,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    }
+   ]
+  },
+  {
+   "file": "the_cd857962dd2a",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 17,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_d37fc3c54b4b",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 16,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "request",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_d70abf016562",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 20,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_d76f5df60f83",
+   "type": "simple_theft_away",
+   "routed": null,
+   "calls_stored_run": 1,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "hold",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "unrouted",
+     "stored_after": "unrouted"
+    }
+   ]
+  },
+  {
+   "file": "the_e0b1e1d56fb2",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 15,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_eb579978f91b",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 14,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "hold",
+     "ref_after": "hold",
+     "stored_before": "hold",
+     "stored_after": "hold"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_efac75d20bd0",
+   "type": "theft_at_home",
+   "routed": "theft_at_home",
+   "calls_stored_run": 4,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "lock_change_invoice",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "optional",
+     "ref_after": "optional",
+     "stored_before": "optional",
+     "stored_after": "optional"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  },
+  {
+   "file": "the_fefc066e8269",
+   "type": "simple_theft_away",
+   "routed": "simple_theft_away",
+   "calls_stored_run": 17,
+   "lines": [
+    {
+     "document": "bicycle_voucher",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "insurance_policy",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    },
+    {
+     "document": "notification_record",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "on_file",
+     "stored_after": "on_file"
+    },
+    {
+     "document": "original_vouchers",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_consent",
+     "ref_before": "not_needed",
+     "ref_after": "not_needed",
+     "stored_before": "not_needed",
+     "stored_after": "not_needed"
+    },
+    {
+     "document": "police_report",
+     "ref_before": "on_file",
+     "ref_after": "on_file",
+     "stored_before": "optional",
+     "stored_after": "request"
+    },
+    {
+     "document": "stolen_items_list",
+     "ref_before": "request",
+     "ref_after": "request",
+     "stored_before": "request",
+     "stored_after": "request"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,179 @@
+{
+ "file": "study4/dev/theft/final/the_12ee892d56f4",
+ "workflow": "study4/rules/theft/workflow/simple_theft_away.json",
+ "facts_given": {
+  "claim_type": "simple_theft_away",
+  "away_cover_missing": false,
+  "bicycle": false,
+  "measures_pending": true,
+  "theft_away": true,
+  "vouchers_unobtainable": true,
+  "imminent_danger": false
+ },
+ "readings": {
+  "true": {
+   "documents": {
+    "notification_record": {
+     "state": "request",
+     "questions": []
+    },
+    "insurance_policy": {
+     "state": "request",
+     "questions": []
+    },
+    "police_report": {
+     "state": "optional",
+     "questions": []
+    },
+    "police_consent": {
+     "state": "request",
+     "questions": []
+    },
+    "stolen_items_list": {
+     "state": "request",
+     "questions": []
+    },
+    "original_vouchers": {
+     "state": "not_on_list",
+     "questions": []
+    },
+    "bicycle_voucher": {
+     "state": "not_on_list",
+     "questions": []
+    }
+   },
+   "waiting_for": [],
+   "reached": [
+    "a_cover",
+    "a_event",
+    "a_instruction",
+    "a_instruction_check",
+    "a_loss",
+    "a_notify",
+    "a_police",
+    "a_traces"
+   ],
+   "deferral": null
+  },
+  "false": {
+   "documents": {
+    "notification_record": {
+     "state": "request",
+     "questions": []
+    },
+    "insurance_policy": {
+     "state": "request",
+     "questions": []
+    },
+    "police_report": {
+     "state": "optional",
+     "questions": []
+    },
+    "stolen_items_list": {
+     "state": "request",
+     "questions": []
+    },
+    "police_consent": {
+     "state": "not_on_list",
+     "questions": []
+    },
+    "original_vouchers": {
+     "state": "not_on_list",
+     "questions": []
+    },
+    "bicycle_voucher": {
+     "state": "not_on_list",
+     "questions": []
+    }
+   },
+   "waiting_for": [],
+   "reached": [
+    "a_cover",
+    "a_event",
+    "a_instruction",
+    "a_instruction_check",
+    "a_loss",
+    "a_notify",
+    "a_police"
+   ],
+   "deferral": null
+  },
+  "open": {
+   "documents": {
+    "notification_record": {
+     "state": "request",
+     "questions": []
+    },
+    "insurance_policy": {
+     "state": "request",
+     "questions": []
+    },
+    "police_report": {
+     "state": "optional",
+     "questions": []
+    },
+    "police_consent": {
+     "state": "hold",
+     "questions": [
+      "traces_changed"
+     ]
+    },
+    "stolen_items_list": {
+     "state": "request",
+     "questions": []
+    },
+    "original_vouchers": {
+     "state": "not_on_list",
+     "questions": []
+    },
+    "bicycle_voucher": {
+     "state": "not_on_list",
+     "questions": []
+    }
+   },
+   "waiting_for": [
+    "traces_changed"
+   ],
+   "reached": [
+    "a_cover",
+    "a_event",
+    "a_instruction",
+    "a_instruction_check",
+    "a_loss",
+    "a_notify",
+    "a_police"
+   ],
+   "deferral": {
+    "mode": "exact",
+    "open_facts": [
+     "traces_changed"
+    ],
+    "completions": 2
+   }
+  }
+ },
+ "stored_run_traces_changed": {
+  "status": "unknown",
+  "open_readings": [
+   true,
+   true,
+   true
+  ],
+  "quotes": [
+   "Ob er das inzwischen gemacht hat oder ob alles noch so ist wie am Parkplatz, weiss ich nicht",
+   "Ob er das inzwischen gemacht hat oder ob alles noch so ist wie am Parkplatz, weiss ich nicht",
+   "Ob er das inzwischen gemacht hat oder ob alles noch so ist wie am Parkplatz, weiss ich nicht"
+  ]
+ },
+ "reference_police_consent": {
+  "request": false,
+  "state": "hold",
+  "waits_for": [
+   "traces_changed"
+  ]
+ },
+ "reference_stolen_items_list": {
+  "request": true,
+  "state": "request"
+ }
+}

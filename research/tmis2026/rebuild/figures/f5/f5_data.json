@@ -1,0 +1,270 @@
+{
+ "figure": "f5",
+ "measure": "all deviations per claim-run (study3 all_dev)",
+ "data": "Study 3 sealed tenancy claims (fresh2, confirm); fair-prompt designs post hoc",
+ "length": {
+  "definition": "words of message body + attachment text",
+  "min": 77,
+  "max": 367,
+  "attachments": [
+   0,
+   1,
+   2
+  ],
+  "tercile_bounds": [
+   [
+    77,
+    138
+   ],
+   [
+    141,
+    199
+   ],
+   [
+    203,
+    367
+   ]
+  ],
+  "tercile_medians": [
+   117.0,
+   172.0,
+   255.5
+  ],
+  "tercile_composition": [
+   {
+    "denied_event": 21,
+    "nothing_open_or_denied": 5,
+    "open_event": 5,
+    "open_branch_fact": 1
+   },
+   {
+    "open_branch_fact": 6,
+    "nothing_open_or_denied": 19,
+    "denied_event": 3,
+    "open_event": 4
+   },
+   {
+    "open_branch_fact": 16,
+    "nothing_open_or_denied": 16
+   }
+  ],
+  "claims_per_tercile": [
+   32,
+   32,
+   32
+  ]
+ },
+ "rules": {
+  "claim_types_in_catalogue": 3,
+  "regimes": 1,
+  "catalogue": "harness/product/workflows/fresh-serial-sync",
+  "planned_max_note": "all types of four regimes; three built regimes hold 3 + 2 + 3 = 8 types (study4/rules/*/rules.json); the fourth regime does not exist yet"
+ },
+ "open_share": {
+  "claims_with_open_fact": 32,
+  "claims": 96,
+  "share": 0.3333333333333333
+ },
+ "planned": {
+  "length_words": [
+   150,
+   2500
+  ],
+  "attachments": [
+   0,
+   6
+  ],
+  "open_share": [
+   0,
+   0.5
+  ],
+  "rules": "one claim type up to all types of four regimes in one catalogue"
+ },
+ "designs": [
+  {
+   "key": "casepath",
+   "name": "CasePath",
+   "model": "cost-efficient",
+   "role": "the product",
+   "runs": 3,
+   "overall": 0.7291666666666666,
+   "claim_runs": 288,
+   "tercile_error": [
+    1.4166666666666667,
+    0.34375,
+    0.4270833333333333
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
+  },
+  {
+   "key": "hold_prompt_frontier",
+   "name": "Prompt that may hold",
+   "model": "frontier",
+   "role": "strongest prompt",
+   "runs": 1,
+   "overall": 0.5833333333333334,
+   "claim_runs": 96,
+   "tercile_error": [
+    0.5625,
+    0.3125,
+    0.875
+   ],
+   "tercile_claim_runs": [
+    32,
+    32,
+    32
+   ]
+  },
+  {
+   "key": "hold_prompt",
+   "name": "Prompt that may hold",
+   "model": "cost-efficient",
+   "role": "prompt",
+   "runs": 3,
+   "overall": 0.8888888888888888,
+   "claim_runs": 288,
+   "tercile_error": [
+    1.15625,
+    0.46875,
+    1.0416666666666667
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
+  },
+  {
+   "key": "ric_frontier",
+   "name": "Rules in context",
+   "model": "frontier",
+   "role": "prompt",
+   "runs": 3,
+   "overall": 2.0868055555555554,
+   "claim_runs": 288,
+   "tercile_error": [
+    4.104166666666667,
+    1.5520833333333333,
+    0.6041666666666666
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
+  },
+  {
+   "key": "ric",
+   "name": "Rules in context",
+   "model": "cost-efficient",
+   "role": "prompt",
+   "runs": 3,
+   "overall": 2.329861111111111,
+   "claim_runs": 288,
+   "tercile_error": [
+    4.8125,
+    1.3645833333333333,
+    0.8125
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
+  },
+  {
+   "key": "self_consistency",
+   "name": "Self-consistency (5 votes)",
+   "model": "cost-efficient",
+   "role": "prompt",
+   "runs": 3,
+   "overall": 2.3125,
+   "claim_runs": 288,
+   "tercile_error": [
+    5.03125,
+    1.2395833333333333,
+    0.6666666666666666
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
+  },
+  {
+   "key": "mer_hold_frontier",
+   "name": "Model executes rules",
+   "model": "frontier",
+   "role": "agent",
+   "runs": 1,
+   "overall": 0.5416666666666666,
+   "claim_runs": 96,
+   "tercile_error": [
+    0.5,
+    0.34375,
+    0.78125
+   ],
+   "tercile_claim_runs": [
+    32,
+    32,
+    32
+   ]
+  },
+  {
+   "key": "model_executes_rules",
+   "name": "Model executes rules",
+   "model": "cost-efficient",
+   "role": "agent",
+   "runs": 3,
+   "overall": 1.4930555555555556,
+   "claim_runs": 288,
+   "tercile_error": [
+    3.0416666666666665,
+    0.7604166666666666,
+    0.6770833333333334
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
+  },
+  {
+   "key": "react",
+   "name": "ReAct",
+   "model": "cost-efficient",
+   "role": "agent",
+   "runs": 3,
+   "overall": 2.0034722222222223,
+   "claim_runs": 288,
+   "tercile_error": [
+    3.1666666666666665,
+    1.5208333333333333,
+    1.3229166666666667
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
+  }
+ ],
+ "f2_read_not_plotted": "analysis/study3_feedback.json (F2): E(q) = (1-q) S + q O, linear by construction",
+ "inputs": {
+  "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
+  "runs/study3/confirm/plans_tenancy_model_executes_rules.json": "abc0d2f5d7fd543db99480cbab94a23fbad6c95e61f4f2fca4c03f326de99c7f",
+  "runs/study3/confirm/plans_tenancy_react.json": "c094c8c9ed33c08ea200ddb504cec46510c6b1405a23b51ef32a1528552f92c0",
+  "runs/study3/confirm/plans_tenancy_ric_luna.json": "9ef392d68ab8d589e047d6a227f5ca8d2cc847a3edeb663f2748dcccb90174b6",
+  "runs/study3/confirm/plans_tenancy_ric_terra.json": "74f8362129b03a9abcb7932886e248f48aa2c479d95f0b1b31d207df176f7a61",
+  "runs/study3/confirm/samples_tenancy_ric_luna.json": "1016547eced137672b44dfd832843652869a637b461d0cea2253afcbcc2b1fa4",
+  "study4/baseline_check/runs/plans_A-luna-tenancy.json": "492248c9d75b62e6ce9afae2507e67cd8e638a5f3e61edd7e255778d20aeddc5",
+  "study4/baseline_check/runs/plans_A-terra-tenancy.json": "bda583f2c64c11868b6b9c97c0dad10f2cb2ebe9ce5b9dc5c8fdf1963744c883",
+  "study4/baseline_check/runs/plans_B-terra-tenancy.json": "0bd4e18190ed3b09280887d8b9c8bdaf4cc55e862adbf50e3794892a3ef38481",
+  "analysis/study3_feedback.json": "81f85d2e1c52e10f36208498dea4e27f04d9e303eb2b4fc5a8f67d344c50a6bf"
+ },
+ "script_sha256": "53004d6fff5212ce9543d9f1ef776754a901c63d6104d1b0f9e291e19dd18fc9"
+}
