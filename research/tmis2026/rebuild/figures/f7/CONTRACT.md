@@ -93,3 +93,5 @@ lines change; three runs, not ten.
 - Caption (45 words): Arrows lead from the prompt that may hold to CasePath: on the cost-efficient model 4.4 times the
   cost buys 0.16 fewer errors per file; on the frontier model 3.4 times buys 0.12 more. Run three times, CasePath
   repeats 70 of 96 checklists, the prompt 56.
+
+- Revision 2b: arrow ends labelled on the cost-efficient arrow ("prompt that may hold" at the tail, "CasePath" at the head, bold); "frontier" moved below its arrow; grid legend added as two stacked lines (filled: "same checklist in all three runs"; outline: "not the same"). Inside the figure now 27 words plus 2 counts (over 15).

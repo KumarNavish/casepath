@@ -19,10 +19,10 @@ from matplotlib.patches import FancyBboxPatch, Rectangle, Circle  # noqa: E402
 D = json.loads((HERE / "f1_data.json").read_text())
 STATE = {"request": "requested", "hold": "held", "not_needed": "left"}
 
-W, H = 5.5, 2.75
+W, H = 5.5, 2.95
 X0 = 3.42                      # first need of the strip
-YA, YB = 2.2, 0.98             # strip heights of claim A (stated) and claim B (left open)
-DOT = 0.016                    # question dot radius
+YA, YB = 2.42, 1.2             # strip heights of claim A (stated) and claim B (left open)
+DOT = 0.02                    # question dot radius
 DOT_STEP = 0.048
 
 
@@ -76,6 +76,15 @@ def strip(ax, rows, y):
         ax.add_patch(Circle((cx, y - S.MARK / 2 - 0.04 - DOT_STEP * k), DOT, fc=S.AMBER, ec="none", zorder=3))
 
 
+def legend(ax, x, y):
+    """Four entries; the question dot is drawn at its in-figure size."""
+    x = S.legend(ax, x, y, [("requested", "requested"), ("held", "held")])
+    ax.add_patch(Circle((x + DOT, y), DOT, fc=S.AMBER, ec="none"))
+    t = ax.text(x + 2 * DOT + 0.05, y, "question", va="center", ha="left", fontsize=S.SIZE_LABEL)
+    x += 2 * DOT + 0.05 + S.text_width(ax, t) + 2 * S.UNIT
+    S.legend(ax, x, y, [("left", "not needed")])
+
+
 def draw_a(stem, rails):
     fig, ax = S.canvas(W, H)
     rows_a, rows_b = D["a"]["rows"], D["b"]["rows"]
@@ -94,8 +103,7 @@ def draw_a(stem, rails):
     x = X0 + S.PITCH * i15
     ax.add_patch(FancyBboxPatch((x - S.PITCH / 2 + 0.003, YB - 0.12), S.PITCH - 0.006, YA - YB + 0.17,
                                 boxstyle="round,pad=0,rounding_size=0.025", fc="none", ec=S.INK, lw=S.LW, zorder=4))
-    S.legend(ax, X0, 0.2, [("requested", "requested"), ("held", "held"), (("dot", S.AMBER), "question"),
-                           ("left", "not needed")], gap=S.UNIT)
+    legend(ax, 0.1, 0.16)
     if stem:
         S.save(fig, HERE, stem)
     else:
@@ -116,7 +124,7 @@ def draw_b(stem):
     page(ax, D["a"], 0.1, y + 0.55)
     sentence(ax, D["sentence_a"], 1.0, y + 0.55)
     sentence(ax, D["sentence_b"], 1.0, y - 0.1)
-    S.legend(ax, X0, 0.2, [("requested", "requested"), ("held", "held"), ("left", "not needed")], gap=S.UNIT)
+    legend(ax, 0.1, 0.16)
     S.save(fig, HERE, stem)
 
 

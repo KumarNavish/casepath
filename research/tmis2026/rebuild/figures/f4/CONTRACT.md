@@ -109,3 +109,5 @@ on a 0.064 in pitch, `checklist_mark`, `legend`). References re-opened: flow, ne
   plain prompt asks too early; the prompt that may hold strays where the file settles; CasePath strays where nothing
   is needed. Circle: cost-efficient model; square: frontier.
 - Self-review: weakest point, the frontier CasePath and prompt rows rest on one run (86 open documents).
+
+- Revision 2b: "cost-efficient model" and "frontier model" written once, small type, beside CasePath's circle and square. Inside the figure now 19 words (over 15).
