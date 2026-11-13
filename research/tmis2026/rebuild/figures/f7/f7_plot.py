@@ -44,10 +44,17 @@ def bold(d):
 
 # label offsets (points), placed by eye at print size; a leader is drawn when the label is far from its mark
 OFF = {"casepath_checklist": (-14, 26), "casepath_frontier_checklist": (7, 0), "casepath": (0, 12),
-       "hold_prompt_frontier": (12, -16), "mer_hold_frontier": (12, -28), "hold_prompt": (6, 0),
+       "hold_prompt_frontier": (12, -16), "mer_hold_frontier": (12, -28), "hold_prompt": (-3, 11),
        "ric_frontier": (6, 0), "ric": (6, -8), "self_consistency": (0, 9), "model_executes_rules": (6, 0),
        "react": (6, 0)}
-HA = {"casepath_checklist": "right", "casepath": "center", "self_consistency": "center"}
+HA = {"self_consistency": "center"}
+OFF.update({"casepath": (5, 8), "casepath_frontier_checklist": (6, -8)})
+# lower cluster: label positions in data coordinates (USD, error), with a sand leader to the mark
+DATA_POS = {"casepath_checklist": ((0.0030, 0.30), "center"),
+            "hold_prompt_frontier": ((0.0098, 0.43), "left"),
+            "mer_hold_frontier": ((0.0098, 0.29), "left"),
+            "casepath": ((0.0134, 1.12), "center"),
+            "casepath_frontier_checklist": ((0.030, 0.96), "center")}
 
 
 def scatter(ax):
@@ -63,15 +70,22 @@ def scatter(ax):
         ax.plot(x["usd_per_file"], x["all_dev_per_file"], marker="o", ms=1.6, color=INK, zorder=2)
     ax.annotate("1 reading", (rd[0]["usd_per_file"], rd[0]["all_dev_per_file"]), xytext=(-4, 0),
                 textcoords="offset points", fontsize=7, ha="right", va="center")
-    ax.annotate("3", (rd[-1]["usd_per_file"], rd[-1]["all_dev_per_file"]), xytext=(5, -6),
+    ax.annotate("3", (rd[-1]["usd_per_file"], rd[-1]["all_dev_per_file"]), xytext=(-6, 5),
                 textcoords="offset points", fontsize=7, ha="left", va="center")
     for d in DS:
         ax.plot(d["usd_per_file"], d["all_dev_per_file"], marker=mk(d), ms=5.6 if bold(d) else 3.6, color=INK,
                 mec=PAPER, mew=0.6, zorder=4)
+        fw = "semibold" if bold(d) else "normal"
+        if d["key"] in DATA_POS:
+            (tx, ty), ha = DATA_POS[d["key"]]
+            ax.annotate(nm(d), (d["usd_per_file"], d["all_dev_per_file"]), xytext=(tx, ty), textcoords="data",
+                        fontsize=7, va="center", ha=ha, fontweight=fw,
+                        arrowprops=dict(arrowstyle="-", color=SAND, lw=0.5, shrinkA=1, shrinkB=3,
+                                        relpos=(0, 0.5) if ha == "left" else (0.5, 0 if ty > d["all_dev_per_file"] else 1)))
+            continue
         dx, dy = OFF.get(d["key"], (5, 0))
         ax.annotate(nm(d), (d["usd_per_file"], d["all_dev_per_file"]), xytext=(dx, dy), textcoords="offset points",
-                    fontsize=7, va="center", ha=HA.get(d["key"], "left"), fontweight="semibold" if bold(d) else "normal",
-                    arrowprops=dict(arrowstyle="-", color=SAND, lw=0.5, shrinkA=4, shrinkB=3) if abs(dy) > 15 else None)
+                    fontsize=7, va="center", ha=HA.get(d["key"], "left"), fontweight=fw)
     ax.set_xscale("log")
     ax.set_xlim(4.5e-4, 8e-2)
     ax.set_xticks([0.001, 0.003, 0.01, 0.03], ["0.001", "0.003", "0.01", "0.03"])
@@ -110,10 +124,10 @@ def repeat(axl, axr):
 
 def draw_a():
     fig = plt.figure(figsize=(5.5, 3.5))
-    ax = fig.add_axes([0.08, 0.20, 0.44, 0.76])
+    ax = fig.add_axes([0.08, 0.20, 0.43, 0.76])
     scatter(ax)
-    axl = fig.add_axes([0.725, 0.26, 0.115, 0.62])
-    axr = fig.add_axes([0.87, 0.26, 0.115, 0.62])
+    axl = fig.add_axes([0.705, 0.26, 0.11, 0.62])
+    axr = fig.add_axes([0.85, 0.26, 0.11, 0.62])
     repeat(axl, axr)
     fig.text(0.08, 0.02, "circle: cost-efficient model (c)    square: frontier model (f)    "
              "thin line: stored budget curve", fontsize=7)
