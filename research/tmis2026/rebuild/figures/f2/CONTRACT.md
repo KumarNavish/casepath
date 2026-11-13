@@ -98,11 +98,11 @@ Palette: the coordinator's shared values (see `../f1/CONTRACT.md`): teal `#00857
 ink `#1F2A44`, paper `#FBF8F1`.
 
 ## Caption (≤ 45 words)
-One sentence, stated (top) or left open (bottom). Three readings each quote the file's words. Below the line, code
-checks each quotation, admits a value only when all three agree, and the fact decides its one rule: request now, or
-hold with one question.
+One sentence, stated (top) or left open (bottom). Three readings quote the file. Below the line, code checks each
+quotation, admits a value only when all three agree, and the fact decides its rule: request now, or hold with a
+question (marks as Figure 1).
 
-(44 words.)
+(45 words.)
 
 ## Self-review (self-assessed; not a reader test)
 Cold read at print size: the eye enters at the sentences, follows the blue lines down, and the two lanes' end marks
@@ -128,3 +128,11 @@ so the reader must take "one of 27 needs" from Figure 1. The two figures depend 
 
 ## Files
 `extract.py` → `f2_data.json`; `f2.py` → `f2.svg`, `f2.pdf`, `f2.png` (kept b), `f2_a.*` (rejected a).
+
+## House-style revision (coordinator, 2026-11-13)
+Ported to `../common/style.py`: white ground, one label size (7.5 pt), the shared checklist mark. The legend has 5
+entries: quoted, reading true / open, quote found, fact true / open, requested / held. The question dot is defined by
+the caption ("marks as in Figure 1"). Words inside apart from the two sentences: 15 ("models read", "code decides" and
+the legend). The readings' lines are thinned to 0.35 pt and the underlines to 0.6 pt, one stroke per text line, so the
+sentences stay the heaviest marks above the rule. The quote-to-reading links are kept as the mechanism itself.
+Inspected at print size and at 4× on the underlines and the bracket → diamond → line joins.

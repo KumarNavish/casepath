@@ -83,17 +83,17 @@ def column(ax, cx, top, reading, labels):
 
 
 def main():
-    W, H = 5.5, 2.75
+    W, H = 5.5, 2.45
     fig, ax = S.canvas(W, H)
     ax.text(W / 2, H - U, QUOTE, ha="center", va="center", fontsize=S.SIZE_LABEL, color=S.BLUE, style="italic")
     ax.text(W / 2, H - 2 * U, QUOTE_EN, ha="center", va="center", fontsize=S.SIZE_LABEL, color=S.INK)
     top = H - 5 * U
-    for i, (r, cx) in enumerate((("true", 0.95), ("false", 2.65), ("open", 4.35))):
+    for i, (r, cx) in enumerate((("true", 1.15), ("false", 2.85), ("open", 4.45))):
         column(ax, cx, top, r, labels=(i == 0))
     # legend: four states with the shared marks, one entry for the paths
     y = 1.5 * U
-    x = S.legend(ax, 0.3, y, [("requested", "requested"), ("held", "held, one question"), ("early", "too early"),
-                              ("dropped", "dropped")])
+    x = S.legend(ax, 0.2, y, [("requested", "requested"), ("held", "held, one question"), ("early", "too early"),
+                              ("dropped", "dropped")], gap=1.5 * U)
     for k, kind in enumerate(("taken", "open")):
         st = EDGE[kind]
         ax.add_line(Line2D([x + k * 0.3, x + k * 0.3 + 0.22], [y, y], color=st["color"], lw=st["lw"], ls=st["ls"]))

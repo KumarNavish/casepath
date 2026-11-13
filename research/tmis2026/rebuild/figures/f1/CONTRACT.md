@@ -80,13 +80,13 @@ d15 = assignment of third-party claims (g042), which moves in other conditions' 
 | Meaning | Visual | Evidence |
 |---|---|---|
 | a sentence of the claim | sand bar, length ∝ characters | text |
-| the changed sentence | ink bar + leader to its words | text, `changed_sentence_index` |
+| the changed sentence | ink bars; its words start at the same height | text, `changed_sentence_index` |
 | need requested now | teal filled square | plan_ids.requests |
 | need held | amber filled square | plan_ids.holds |
 | question to the customer | amber circle, one per open fact the held line waits for (d10 waits for three); a short bracket when one question serves two holds | plan_ids.questions, required_when |
 | need not needed | sand outline square | neither list |
-| same need in both claims | thin sand rail (same x) | workflow id |
-| the changed need | ink rail + ink frame across both claims | diff |
+| same need in both claims | the same x position (no rail; see the revision note) | workflow id |
+| the changed need | one ink frame across both claims | diff |
 
 ## Palette
 The coordinator's update is used: teal `#008571`, blue `#4A8FD6`; amber `#D9962B`, rust `#B5482F`, indigo `#4B4A9C`
@@ -126,3 +126,11 @@ general. The registered twins should fix it; drawing cannot.
 ## Files
 `extract.py` → `f1_data.json`; `f1.py` → `f1.svg`, `f1.pdf`, `f1.png` (kept a) and `f1_b.*` (rejected b);
 `find_pair.py` → `pair_search.json`, `pair_summary.json`.
+
+## House-style revision (coordinator, 2026-11-13)
+Ported to `../common/style.py`: white ground, the shared mark (0.052 in at 0.064 in pitch), 7.5 pt labels. The legend
+has 4 entries: requested, held, question, not needed. Words inside apart from the two sentences: 5. The page-to-sentence
+leader is removed; each sentence starts at the height of its changed (ink) lines. **Rails: both variants were drawn**
+(`f1_rails.png`, hairline sand rails, and `f1.png`, none). The variant without rails is kept: the identical x positions
+and identical mark sequences already show "same need, unchanged", and the single framed column stands out more without
+26 lines beside it. The caption is unchanged. Inspected at print size and at 4× on the framed column.
