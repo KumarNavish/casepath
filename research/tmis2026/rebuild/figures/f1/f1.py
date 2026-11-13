@@ -111,7 +111,7 @@ def legend(ax, x, y):
             S.checklist_mark(ax, x + MARK / 2, y, key, s=MARK)
             dx = MARK
         t = ax.text(x + dx + 0.05, y, label, va="center", ha="left", fontsize=S.SIZE_LABEL)
-        x += dx + 0.05 + S.text_width(ax, t) + S.UNIT
+        x += dx + 0.05 + S.text_width(ax, t) + 0.11
     return x
 
 
@@ -129,7 +129,7 @@ def draw_a(stem):
                                 fc="none", ec=S.INK, lw=S.LW, zorder=4))
     ax.text(x, YA + MARK / 2 + 0.07, LINE_LABEL, ha="center", va="bottom", fontsize=S.SIZE_LABEL, color=S.INK)
     ax.text(x, YB - MARK / 2 - 0.2, Q_LABEL, ha="center", va="top", fontsize=S.SIZE_LABEL, color=S.INK)
-    legend(ax, X0 - MARK / 2, 0.16)
+    legend(ax, X0 - MARK / 2 - 0.1, 0.16)
     S.save(fig, HERE, stem)
 
 

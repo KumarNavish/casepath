@@ -136,3 +136,14 @@ the caption ("marks as in Figure 1"). Words inside apart from the two sentences:
 the legend). The readings' lines are thinned to 0.35 pt and the underlines to 0.6 pt, one stroke per text line, so the
 sentences stay the heaviest marks above the rule. The quote-to-reading links are kept as the mechanism itself.
 Inspected at print size and at 4× on the underlines and the bracket → diamond → line joins.
+
+## Cold-reader revision (coordinator, 2026-11-13)
+- No line crosses. Within each lane the top reading mark takes the rightmost line, and the rightmost line ends at the
+  top tick. The stated lane's lines run right of the open lane's lines.
+- An open reading is now a hollow amber ring (open is amber everywhere), against a solid blue dot for true. Its line
+  stays blue.
+- "3 readings" is written once where the stated sentence's lines leave, and "all agree" once at the stated lane's
+  bracket.
+- Words inside, apart from the sentences: 19. That is 4 over the house limit of 15, because the coordinator asked for
+  these 4 mechanism words. The legend has 5 entries.
+- Height is 3.3 in. Inspected at print size and 4×.

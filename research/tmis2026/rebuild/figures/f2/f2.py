@@ -72,8 +72,8 @@ def reading_mark(ax, x, y, verdict, r=0.034):
         ax.add_patch(Circle((x, y), r, fc=BLUE, ec="none", zorder=4))
     elif verdict == "false":
         ax.add_patch(Circle((x, y), r, fc=PAPER, ec=BLUE, lw=0.8, zorder=4))
-    else:  # open
-        ax.add_patch(Circle((x, y), r, fc=PAPER, ec=BLUE, lw=0.8, ls=(0, (1.4, 0.9)), zorder=4))
+    else:  # open: a hollow amber ring (open is amber everywhere)
+        ax.add_patch(Circle((x, y), r, fc=PAPER, ec=AMBER, lw=1.3, zorder=4))
 
 
 def diamond(ax, x, y, fact, r=0.085):
@@ -103,8 +103,8 @@ def below(ax, side, y, xs, lanes):
     xa, xr, xl = xs
     dy = 0.075
     for j, xx in enumerate(lanes):
-        rd = Sd["readings"][Sd.get("mark_order", [0, 1, 2])[j]]
-        yy = y + dy * (1 - j)
+        rd = Sd["readings"][Sd.get("mark_order", [0, 1, 2])[2 - j]]
+        yy = y + dy * (j - 1)                                     # rightmost line -> top tick: no crossing
         ax.plot([xx, xx, xa - 0.05], [RULE_Y[0], yy, yy], color=INK, lw=THIN, zorder=1)
         if rd["found_in_file"]:
             tick(ax, xa, yy)
@@ -133,7 +133,7 @@ def above(ax, side, y_top, xread, lanes, width):
     order = sorted(range(3), key=lambda k: -ends[k][1])
     Sd["mark_order"] = order
     for pos, k in enumerate(order):
-        rd, end, xx = Sd["readings"][k], ends[k], lanes[pos]
+        rd, end, xx = Sd["readings"][k], ends[k], lanes[2 - pos]   # top mark -> rightmost line: no crossing
         yk = ymid + 0.085 * (1 - pos)
         reading_mark(ax, xread, yk, rd["verdict"], r=0.026)
         ax.plot([end[0], xread - 0.04], [end[1], yk], color=BLUE, lw=THIN, zorder=1)
@@ -182,20 +182,23 @@ def legend_items(ax):
 
 
 def draw_two_lanes(stem):
-    H = 3.55
+    H = 3.3
     fig, ax = canvas(H)
-    RULE = RULE_Y[0] = 1.9
+    RULE = RULE_Y[0] = 1.65
     ax.plot([0, W], [RULE, RULE], color=INK, lw=S.LW)
     ax.text(3.42, RULE + 0.06, "models read", color=BLUE, fontsize=S.SIZE_LABEL, va="bottom")
     ax.text(3.42, RULE - 0.06, "code decides", color=INK, fontsize=S.SIZE_LABEL, va="top")
     xread, width = 2.78, 2.55
     lanes = {"a": (3.12, 3.17, 3.22), "b": (2.92, 2.97, 3.02)}
-    rows = {"a": 1.48, "b": 0.93}
+    rows = {"a": 1.23, "b": 0.7}
     xs = (3.42, 4.1, 4.95)
-    ya = above(ax, "a", 3.35, xread, lanes["a"], width)
-    yb = above(ax, "b", 2.75, xread, lanes["b"], width)
+    ya = above(ax, "a", 3.1, xread, lanes["a"], width)
+    yb = above(ax, "b", 2.5, xread, lanes["b"], width)
     for side, ym in (("a", ya), ("b", yb)):
         below(ax, side, rows[side], xs, lanes[side])
+    # the two mechanism words, once each
+    ax.text(xread + 0.07, ya + 0.085 + 0.05, "3 readings", color=S.INK, fontsize=S.SIZE_LABEL, va="bottom", ha="left")
+    ax.text(xs[0] + 0.14, rows["a"] + 0.04, "all agree", color=S.INK, fontsize=S.SIZE_LABEL, va="bottom", ha="left")
     legend(ax, 0.2, legend_items(ax))
     save(fig, stem)
 

@@ -134,3 +134,12 @@ leader is removed; each sentence starts at the height of its changed (ink) lines
 (`f1_rails.png`, hairline sand rails, and `f1.png`, none). The variant without rails is kept: the identical x positions
 and identical mark sequences already show "same need, unchanged", and the single framed column stands out more without
 26 lines beside it. The caption is unchanged. Inspected at print size and at 4× on the framed column.
+
+## Cold-reader revision (coordinator, 2026-11-13)
+The strips are now the hero: marks 0.074 in at 0.09 in pitch, and each sentence sits directly left of its strip. The
+page thumbnails are reduced to a small page mark at the start of each sentence (a measured miniature with the changed
+sentence in ink). In the second sentence the words the three stored readings quoted as open ("whether … established.")
+carry an amber underline. The framed column is named above the frame, "assignment of claims against third parties"
+(abridged from the stored title of d15). The dot under the held mark is named "third party at fault?" (abridged from
+the stored question of g042). The legend (4 entries) sits directly under the strips. Words inside, apart from the two
+sentences: 15. The rails variant is withdrawn. The caption is unchanged. Inspected at print size and 4×.
