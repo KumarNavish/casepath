@@ -93,18 +93,39 @@ def main():
         d = {"key": key, "name": name, "model": model, "role": role, "runs": runs, "claim_runs": len(rows),
              "all_dev_per_file": err, "usd_per_file": cost, "cost_source": src}
         if runs == 3:
-            same, dl = 0, []
-            for c in cids:
+            same, dl, flags = 0, [], []
+            for c in sorted(cids):
                 docs = list(D.reference(c)["document_states"])
                 L = [lines(p, docs) for p in study.plans[(key, "tenancy")][c]]
                 pair = [diff(a, b) for a, b in combinations(L, 2)]
                 same += all(x == 0 for x in pair)
+                flags.append(all(x == 0 for x in pair))
                 dl.append(sum(pair) / len(pair))
             d["repeat"] = {"runs": 3, "claims": len(cids), "identical_all_runs": same,
                            "identical_share": same / len(cids), "mean_lines_differing_per_pair": sum(dl) / len(dl),
                            "checklist_lines_per_claim": sum(len(D.reference(c)["document_states"]) for c in cids) / len(cids) + 1}
+            d["repeat"]["identical_by_claim_id_order"] = flags
             d["repeat"]["share_lines_differing_per_pair"] = d["repeat"]["mean_lines_differing_per_pair"] / d["repeat"]["checklist_lines_per_claim"]
         out["designs"].append(d)
+    # strips construction: per design, the claim at the design's median number of differing lines (mean over the three
+    # run pairs; ties: first claim id), with its three stored checklists in the reference's document order.
+    out["strips"] = {}
+    for key in ("casepath_checklist", "hold_prompt"):
+        per = []
+        for c in sorted(cids):
+            docs = list(D.reference(c)["document_states"])
+            L = [lines(p, docs) for p in study.plans[(key, "tenancy")][c]]
+            per.append((sum(diff(a, b) for a, b in combinations(L, 2)) / 3, c, L, docs))
+        vals = sorted(v for v, *_ in per)
+        med = (vals[len(vals) // 2 - 1] + vals[len(vals) // 2]) / 2
+        v, c, L, docs = min(per, key=lambda t: (abs(t[0] - med), t[1]))
+        ref = D.reference(c)["document_states"]
+        out["strips"][key] = {"rule": "claim whose mean differing lines over the three run pairs is closest to the design's "
+                                      "median (ties: first claim id)", "median": med, "claim": c, "mean_differing": v,
+                              "documents": docs, "reference": [ref[d] for d in docs],
+                              "runs": [[L[r][d] for d in docs] for r in range(3)],
+                              "handed_over": [L[r]["__handed_over__"] for r in range(3)],
+                              "distribution": dict(sorted({str(x): vals.count(x) for x in set(vals)}.items()))}
     sc = fb["F4"]["self_consistency"]["tenancy"]["by_m"]
     rd = fb["F4"]["readings"]["tenancy"]["by_k"]
     out["budget_self_consistency"] = [{"m": int(m), "usd_per_file": v["cost_per_case_run"], "all_dev_per_file": v["all_deviations_per_claim"],

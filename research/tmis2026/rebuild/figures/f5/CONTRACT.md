@@ -78,3 +78,18 @@ Palette: brief values with the coordinator's change of 2026-11-13 (request now #
 Study 3 measures each design at one point per axis: 77 to 367 words (message plus attachments; bracket), one
 catalogue of three claim types, a third of files with an open fact. The registered test's ranges (dashed) are empty:
 the question is unanswered.
+
+## Revision 2 (redrawn from scratch; r1 kept as f5_r1.*, f5_plot_r1.py)
+- Three panels, cost-efficient model, two designs: CasePath (core, 0.733 errors per file) and the prompt that may hold
+  (0.889). Solid dot = the one measured value at its true x (median length 172 words, message plus attachments; one
+  regime; 33% of files with an open fact). Dashed arrow = the predicted direction (CasePath level, prompt upward), one
+  length and one angle in every panel, no value. x ticks only at the planned levels (330, 800, 2,500 words; 1, 3, 4
+  regimes; 0, 10, 25, 50%). No frames, no "not yet measured" text.
+- Two constructions: a, dot + dashed arrow (kept); b, dots alone (`f5_b.png`; rejected: the hypothesis then lives
+  only in the caption and the panels look like a finished result at one point).
+- Risk recorded: an arrow's slope can be read as a predicted size. Alternative if the cold reader does so: replace each
+  arrow by a small direction glyph beside the dot ("→" / "↗") with no length.
+- Inside the figure: 15 words (titles 7, y label 3, two labels 5); legend 2 entries.
+- Caption (42 words): Each design has one measured point today (dot): Study 3's short files (median 172 words), one
+  regime's rules, a third of files with an open fact. Arrows show what the registered test predicts, not data:
+  CasePath level, the prompt rising. Cost-efficient model.

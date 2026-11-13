@@ -1,12 +1,13 @@
-"""Figure 4 drawing from f4_data.json (no computation of results here).
+"""Figure 4, revision 2: the fate of 100 requests. Reads f4_data.json only.
 
-    python3 -I f4_plot.py     # f4.svg/.pdf/.png (kept: construction a), f4_b.png (rejected: construction b)
+    python3 -I f4_plot.py     # f4.{png,svg,pdf} (kept: a, marks), f4_b.png (rejected: continuous bars)
 
-a: unit picture. Per design and panel, 100 marks in a 5 x 20 grid, filled column by column in fate order; counts
-   are the per-100 shares rounded by largest remainder (exact values in f4_data.json). Right of the settled grid,
-   inside a sand outline (reference: not needed), the extra actions on documents the file does not need, on the
-   same per-100-settled scale.
-b: aligned bars of the errors only, per 100 (exact values), on a common zero.
+Columns: the reference state of a document (an open fact decides; the file settles it; not needed), each scaled to
+100 marks (5 x 20, filled column by column: the right fate first, then the errors, so each block reads as a bar).
+Rows: CasePath core, the prompt that may hold, the plain prompt (Rules in context); per design two sub-rows, the
+cost-efficient model (circle) above the frontier model (square). Colour = what the design did.
+"Dropped" includes a claim handed to a person (CasePath core, cost-efficient: 0.9 of 100 settled; caption).
+Counts per 100: largest remainder of the exact shares in f4_data.json.
 """
 import json
 import sys
@@ -14,108 +15,119 @@ from pathlib import Path
 
 sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE))
-from theme import AMBER, INDIGO, INK, PAPER, RUST, SAND, TEAL, plt, save  # noqa: E402
-from matplotlib.patches import Rectangle  # noqa: E402
+sys.path.insert(0, str(HERE.parents[0] / "common"))
+import style as S  # noqa: E402
+from matplotlib.patches import Circle, Rectangle  # noqa: E402
 
-D = json.loads((HERE / "f4_data.json").read_text())["designs"]
-COL = {"held": AMBER, "too_early": RUST, "dropped": INDIGO, "handed": INK, "requested": TEAL,
-       "held_needlessly": AMBER, "requested_needlessly": RUST}
-OPEN_ORDER = ["held", "too_early", "dropped", "handed"]
-SET_ORDER = ["requested", "held_needlessly", "dropped", "handed"]
-MODEL = {"cost-efficient": "cost-efficient", "frontier": "frontier"}
-
-
-def lr(shares, order, total=100):
-    """Largest-remainder rounding of shares (sum 100) to integer marks."""
-    v = [shares.get(k, 0.0) for k in order]
-    base = [int(x) for x in v]
-    rest = total - sum(base)
-    for i in sorted(range(len(v)), key=lambda i: -(v[i] - base[i]))[:rest]:
-        base[i] += 1
-    return dict(zip(order, base))
+J = {d["key"]: d for d in json.loads((HERE / "f4_data.json").read_text())["designs"]}
+ROWS = [("CasePath", "casepath_checklist", "casepath_frontier_checklist"),
+        ("prompt that may hold", "hold_prompt", "hold_prompt_frontier"),
+        ("plain prompt", "ric", "ric_frontier")]
+COLS = ["open fact decides", "file settles", "not needed"]
 
 
-CELL = 0.056
-PITCH = 0.335
-BLOCK_GAP = 0.20
+def lr(v, total=100):
+    keys = list(v)
+    base = {k: int(v[k]) for k in keys}
+    rest = total - sum(base.values())
+    for k in sorted(keys, key=lambda k: -(v[k] - int(v[k])))[:rest]:
+        base[k] += 1
+    return base
 
 
-def row_y(i):
-    """Rows top to bottom; a block header gap before the first row of each model block."""
-    blocks = sum(1 for d in D[:i + 1] if d is D[0] or d["model"] != D[D.index(d) - 1]["model"])
-    return 3.66 - i * PITCH - blocks * BLOCK_GAP
+def shares(d):
+    """Per 100 in each reference column, in display order (right fate first)."""
+    o = d["open"]["per100"]
+    st = d["settled"]["per100"]
+    nn = d["not_needed"]["counts"]
+    n_nn = sum(nn.values())
+    return [
+        {"held": o.get("held", 0), "early": o.get("too_early", 0), "dropped": o.get("dropped", 0) + o.get("handed", 0)},
+        {"requested": st.get("requested", 0), "held": st.get("held_needlessly", 0),
+         "dropped": st.get("dropped", 0) + st.get("handed", 0)},
+        {"left": 100 * nn.get("left_alone", 0) / n_nn, "held": 100 * nn.get("held_needlessly", 0) / n_nn,
+         "early": 100 * nn.get("requested_needlessly", 0) / n_nn},
+    ], n_nn
 
 
-def grid(ax, x0, y0, seq, cell=CELL, rows=5):
-    for k, c in enumerate(seq):
-        col, r = divmod(k, rows)
-        x, y = x0 + col * cell, y0 + (rows - 1 - r) * cell
-        ax.add_patch(Rectangle((x, y), cell * 0.84, cell * 0.84, fc=COL[c], ec="none", lw=0))
+W, H = 5.5, 3.30
+X0, GAP = 1.30, 0.12
+GW = 20 * S.PITCH
+XS = [X0 + i * (GW + GAP) for i in range(3)]
+SUB = 5 * S.PITCH            # height of one sub-row of marks
+TOP = H - 0.40               # top of the first row
+
+
+def row_top(r, m):
+    return TOP - r * (2 * SUB + S.PITCH + 0.24) - m * (SUB + S.PITCH)
+
+
+def frame(ax):
+    for x, t in zip(XS, COLS):
+        ax.text(x, H - 0.20, t, fontsize=S.SIZE_LABEL, fontweight="semibold", va="center")
+    for r, (name, kc, kf) in enumerate(ROWS):
+        y_mid = row_top(r, 0) - SUB - S.PITCH / 2
+        ax.text(X0 - 0.17, y_mid, name, ha="right", va="center", fontsize=S.SIZE_LABEL,
+                fontweight="semibold" if r == 0 else "normal")
+        for m in (0, 1):
+            yc = row_top(r, m) - SUB / 2
+            if m == 0:
+                ax.add_patch(Circle((X0 - 0.075, yc), 0.022, fc=S.INK, ec="none"))
+            else:
+                ax.add_patch(Rectangle((X0 - 0.097, yc - 0.022), 0.044, 0.044, fc=S.INK, ec="none"))
+    S.legend(ax, 0.10, 0.14, [("held", "held"), ("requested", "requested"), ("early", "too early or not needed"),
+                              ("dropped", "dropped"), ("left", "left alone")])
 
 
 def draw_a():
-    fig = plt.figure(figsize=(5.5, 4.2))
-    ax = fig.add_axes([0, 0, 1, 1])
-    ax.set_xlim(0, 5.5), ax.set_ylim(0, 4.2), ax.axis("off")
-    XO, XS, XN = 1.40, 2.80, 4.20
-    for x, t in ((XO, "depends on an open fact"), (XS, "settled by the file"), (XN, "nothing needed")):
-        ax.text(x, 4.10, t, fontsize=7.5, fontweight="semibold", va="center")
-    for i, d in enumerate(D):
-        y = row_y(i)
-        if i == 0 or d["model"] != D[i - 1]["model"]:
-            ax.text(0.10, y + 5 * CELL + 0.09, f"{d['model']} model", fontsize=7, style="italic", va="center")
-            ax.plot([0.10, 5.40], [y + 5 * CELL + 0.035] * 2, color=SAND, lw=0.6)
-        ax.text(1.30, y + 2.5 * CELL, d["name"], ha="right", va="center", fontsize=7.5,
-                fontweight="semibold" if d["role"] == "the product" else "normal")
-        o = lr(d["open"]["per100"], OPEN_ORDER)
-        grid(ax, XO, y, [k for k in OPEN_ORDER for _ in range(o[k])])
-        st = lr(d["settled"]["per100"], SET_ORDER)
-        grid(ax, XS, y, [k for k in SET_ORDER for _ in range(st[k])])
-        nn = d["not_needed"]
-        h, r = round(nn["needless_holds_per100_settled"]), round(nn["needless_requests_per100_settled"])
-        seq = ["held_needlessly"] * h + ["requested_needlessly"] * r
-        cols = max(1, -(-len(seq) // 5))
-        ax.add_patch(Rectangle((XN - 0.02, y - 0.02), cols * CELL + 0.03, 5 * CELL + 0.03, fc="none", ec=SAND, lw=0.7))
-        grid(ax, XN, y, seq)
-    x = 0.10
-    for c, t in [(AMBER, "held"), (TEAL, "requested now"), (RUST, "requested too early, or not needed"),
-                 (INDIGO, "dropped: neither"), (INK, "claim handed over")]:
-        ax.add_patch(Rectangle((x, 0.10 - 0.027), 0.054, 0.054, fc=c, ec="none", lw=0))
-        ax.text(x + 0.085, 0.10, t, fontsize=7, va="center")
-        x += 0.24 + 0.050 * len(t)
+    fig, ax = S.canvas(W, H)
+    frame(ax)
+    for r, (name, kc, kf) in enumerate(ROWS):
+        for m, key in enumerate((kc, kf)):
+            cols, _ = shares(J[key])
+            for c, sh in enumerate(cols):
+                counts = lr(sh)
+                seq = [k for k in sh for _ in range(counts[k])]
+                for i, st in enumerate(seq):
+                    col, row = divmod(i, 5)
+                    S.checklist_mark(ax, XS[c] + col * S.PITCH + S.MARK / 2,
+                                     row_top(r, m) - row * S.PITCH - S.MARK / 2, st)
     return fig
 
 
 def draw_b():
-    fig, axes = plt.subplots(1, 3, figsize=(5.5, 3.6), sharey=True, gridspec_kw={"width_ratios": [1.3, 0.8, 0.8]})
-    ys = [-row_y(i) for i in range(len(D))]
-    for ax, title in zip(axes, ["open fact: errors per 100", "settled: errors per 100", "not needed: extra per 100 settled"]):
-        ax.set_title(title, fontsize=7.5, loc="left", color=INK)
-    for d, y in zip(D, ys):
-        x = 0
-        for k in ["too_early", "dropped", "handed"]:
-            v = d["open"]["per100"].get(k, 0)
-            axes[0].barh(y, v, left=x, height=0.25, color=COL[k]); x += v
-        x = 0
-        for k in ["held_needlessly", "dropped", "handed"]:
-            v = d["settled"]["per100"].get(k, 0)
-            axes[1].barh(y, v, left=x, height=0.25, color=COL[k]); x += v
-        nn = d["not_needed"]
-        axes[2].barh(y, nn["needless_holds_per100_settled"], height=0.25, color=AMBER)
-        axes[2].barh(y, nn["needless_requests_per100_settled"], left=nn["needless_holds_per100_settled"], height=0.25, color=RUST)
-    axes[0].set_yticks(ys, [f"{d['name']} · {d['model'][:4]}." for d in D], fontsize=7)
-    axes[0].set_xlim(0, 70), axes[1].set_xlim(0, 20), axes[2].set_xlim(0, 40)
-    for ax in axes:
-        ax.set_facecolor(PAPER)
-    fig.subplots_adjust(left=0.30, right=0.98, top=0.9, bottom=0.08, wspace=0.12)
+    fig, ax = S.canvas(W, H)
+    frame(ax)
+    for r, (name, kc, kf) in enumerate(ROWS):
+        for m, key in enumerate((kc, kf)):
+            cols, _ = shares(J[key])
+            for c, sh in enumerate(cols):
+                x = XS[c]
+                y = row_top(r, m) - SUB + 0.02
+                for k, v in sh.items():
+                    w = GW * v / 100
+                    col = S.STATE[k]
+                    ax.add_patch(Rectangle((x, y), w, SUB - 0.04, fc=col or "none", ec=S.SAND if col is None else "none",
+                                           lw=S.LW))
+                    x += w
     return fig
 
 
+def numbers():
+    out = {}
+    for name, kc, kf in ROWS:
+        for key in (kc, kf):
+            cols, n_nn = shares(J[key])
+            out[key] = {"open_per100": cols[0], "settled_per100": cols[1], "not_needed_per100": cols[2],
+                        "not_needed_document_runs": n_nn,
+                        "open_document_runs": J[key]["open"]["denominator_document_runs"],
+                        "settled_document_runs": J[key]["settled"]["denominator_document_runs"], "runs": J[key]["runs"]}
+    (HERE / "f4_plotted.json").write_text(json.dumps(out, indent=1) + "\n")
+    return out
+
+
 if __name__ == "__main__":
-    fa = draw_a()
-    save(fa, "f4", HERE)
-    save(fa, "f4_a", HERE, png_only=True)
-    fb = draw_b()
-    save(fb, "f4_b", HERE, png_only=True)
-    print("ok")
+    S.save(draw_a(), HERE, "f4")
+    S.save_png(draw_b(), HERE, "f4_b")
+    for k, v in numbers().items():
+        print(k, v["runs"], {c: round(x, 1) for c, x in v["not_needed_per100"].items()}, "of", v["not_needed_document_runs"])

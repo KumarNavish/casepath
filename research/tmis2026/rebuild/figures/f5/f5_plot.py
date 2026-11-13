@@ -1,131 +1,82 @@
-"""Figure 5 drawing from f5_data.json.
+"""Figure 5, revision 2: as cases get real. Reads f5_data.json only.
 
-    python3 -I f5_plot.py    # f5.svg/.pdf/.png (kept: b), f5_a.png (rejected: tercile lines)
+    python3 -I f5_plot.py    # f5.{png,svg,pdf} (kept: a, dot + predicted arrow), f5_b.png (rejected: dots alone)
 
-Shared y: all deviations per claim (Study 3 measure; needless holds count).
-Dashed ink outline = the planned range of the registered test (Study 4), not yet run: an empty region.
-Solid ink = measured on Study 3's sealed tenancy claims. Designs are identified by the label column at the right.
+Cost-efficient model, two designs: CasePath (core) and the prompt that may hold.
+Solid dot = the one measured value per design (all deviations per file, Study 3 sealed tenancy), at its true x:
+median file length 172 words (message plus attachments); one regime's rules; 32 of 96 files with an open fact (33%).
+Dashed arrow = the direction the registered hypothesis predicts (CasePath level, the prompt upward); its length and
+end carry no value. x ticks only at the planned levels of the registered test.
 """
 import json
+import math
 import sys
 from pathlib import Path
 
 sys.dont_write_bytecode = True
 HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE.parent / "f4"))
-from theme import AMBER, INK, PAPER, SAND, plt, save  # noqa: E402
-from matplotlib.patches import Rectangle  # noqa: E402
+sys.path.insert(0, str(HERE.parents[0] / "common"))
+import style as S  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
 
 J = json.loads((HERE / "f5_data.json").read_text())
-DS = J["designs"]
-YMAX = 2.6
-RULE_CATS = ["1", "3", "8", "all"]
+D = {d["key"]: d for d in J["designs"]}
+CP, PR = D["casepath_checklist"], D["hold_prompt"]
+X_LEN = J["length"]["tercile_medians"][1]              # 172 words
+X_SHARE = 100 * J["open_share"]["share"]               # 33.3 %
+PANELS = [("longer files", "log", (110, 3200), [330, 800, 2500], ["330", "800", "2,500"], X_LEN),
+          ("more rules", "lin", (0.6, 4.4), [1, 3, 4], ["1", "3", "4"], 1),
+          ("more open facts", "lin", (-3, 55), [0, 10, 25, 50], ["0", "10", "25", "50%"], X_SHARE)]
+YMAX = 1.6
+W, H = 5.5, 2.35
 
 
-def short(d):
-    return f"{d['name']} ({'f' if d['model'] == 'frontier' else 'c'})"
+def arrow(ax, scale, x0, y0, up, frac=0.30):
+    """A short dashed arrow from the dot: a fixed fraction of the axis width; rise is a fixed angle, no value."""
+    lo, hi = ax.get_xlim()
+    if scale == "log":
+        x1 = math.exp(math.log(x0) + frac * (math.log(hi) - math.log(lo)))
+    else:
+        x1 = x0 + frac * (hi - lo)
+    y1 = y0 + (0.38 * frac / 0.30 if up else 0.0)
+    ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
+                arrowprops=dict(arrowstyle="-|>,head_length=0.35,head_width=0.18", color=S.INK, lw=1.0,
+                                ls=(0, (3, 2)), shrinkA=4, shrinkB=0), zorder=2)
+    return x1, y1
 
 
-FOCUS = {"casepath_checklist": 2.0, "hold_prompt_frontier": 1.4}
-
-
-def lw(d):
-    return FOCUS.get(d["key"], 0.6)
-
-
-def empty(ax, x0, x1, label=True, ymax=YMAX):
-    ax.add_patch(Rectangle((x0, 0), x1 - x0, ymax * 0.97, fc="none", ec=INK, lw=0.6, ls=(0, (3, 2.5)), zorder=1))
-    if label:
-        ax.annotate("not yet\nmeasured", (x1, 0), xytext=(-4, 4), textcoords="offset points", ha="right",
-                    va="bottom", fontsize=7, style="italic", zorder=3)
-
-
-def frame(fig, width_right=1.42):
-    L, R, B, T = 0.085, 1 - width_right / 5.5, 0.235, 0.90
-    gap = 0.035
-    w = (R - L - 2 * gap) / 3
-    axes = [fig.add_axes([L + i * (w + gap), B, w, T - B]) for i in range(3)]
-    for ax in axes:
-        ax.set_facecolor(PAPER)
+def draw(with_arrows=True):
+    fig = plt.figure(figsize=(W, H))
+    L, B, w, h, gap = 0.09, 0.30, 0.255, 0.60, 0.045
+    axes = [fig.add_axes([L + i * (w + gap), B, w, h]) for i in range(3)]
+    for i, (ax, (title, scale, xl, ticks, tl, x)) in enumerate(zip(axes, PANELS)):
+        if scale == "log":
+            ax.set_xscale("log")
+        ax.set_xlim(*xl)
+        ax.set_xticks(ticks, tl)
+        ax.minorticks_off()
         ax.set_ylim(0, YMAX)
-        ax.tick_params(length=2.5, pad=1.5)
-    for ax in axes[1:]:
-        ax.set_yticklabels([])
-    axes[0].set_ylabel("errors per file (all deviations)", fontsize=7.5)
-    # length
-    a = axes[0]
-    a.set_xscale("log")
-    a.set_xlim(70, 2750)
-    a.set_xticks([77, 150, 367, 2500], ["77", "150", "367", "2,500"])
-    a.minorticks_off()
-    a.set_xlabel("words, with attachments", fontsize=7.5)
-    empty(a, 367, 2500)
-    # rules (ordinal)
-    a = axes[1]
-    a.set_xlim(-0.6, 3.6)
-    a.set_xticks(range(4), RULE_CATS, fontsize=7)
-    a.set_xlabel("claim types given", fontsize=7.5)
-    empty(a, -0.4, 3.4)
-    # share
-    a = axes[2]
-    a.set_xlim(-4, 54)
-    a.set_xticks([0, 10, 25, 33.3, 50], ["0", "10", "25", "33", "50%"])
-    a.set_xlabel("files with an open fact", fontsize=7.5)
-    empty(a, 0, 50)
-    for ax, t in zip(axes, ["Longer files", "More rules", "More open facts"]):
-        ax.set_title(t, fontsize=7.5, fontweight="semibold", loc="left", pad=4)
-    return axes
-
-
-def labels(fig, axes, ys):
-    """Direct labels for CasePath core (c) and the strongest prompt only; one shared label for the rest."""
-    ax = axes[2]
-    for i, d in enumerate(DS):
-        if d["key"] in FOCUS:
-            dy = 0.10 if d["key"] == "casepath_checklist" else -0.10
-            ax.annotate(short(d), xy=(35.5, ys[i]), xytext=(57, ys[i] + dy), textcoords="data", fontsize=7,
-                        va="center", fontweight="semibold", annotation_clip=False,
-                        arrowprops=dict(arrowstyle="-", color=SAND, lw=0.5, shrinkA=0, shrinkB=1))
-    ax.text(57, 1.55, "thin marks: the other\n8 designs of Figure 4", fontsize=7, va="center")
-
-
-def draw_b():
-    fig = plt.figure(figsize=(5.5, 3.4))
-    axes = frame(fig)
-    lo, hi = J["length"]["min"], J["length"]["max"]
-    med = J["length"]["tercile_medians"][1]
-    ys = [d["overall"] for d in DS]
-    for d, y in zip(DS, ys):
-        axes[0].plot([med / 1.13, med * 1.13], [y, y], color=INK, lw=lw(d), solid_capstyle="butt", zorder=4)
-        axes[1].plot([0.82, 1.18], [y, y], color=INK, lw=lw(d), solid_capstyle="butt", zorder=4)
-        axes[2].plot([31.5, 35.1], [y, y], color=INK, lw=lw(d), solid_capstyle="butt", zorder=4)
-    axes[0].plot([lo, lo, hi, hi], [0.10, 0.03, 0.03, 0.10], color=INK, lw=0.6, zorder=4)
-    labels(fig, axes, ys)
-    fig.text(0.085, 0.03, "Ink: measured on Study 3's 96 sealed tenancy claims.   Dashed: planned range of the registered test, "
-             "not run.\nBracket: measured length span.   (c) cost-efficient model, (f) frontier model.", fontsize=7, va="bottom", linespacing=1.3)
-    return fig
-
-
-def draw_a():
-    fig = plt.figure(figsize=(5.5, 3.2))
-    axes = frame(fig)
-    med = J["length"]["tercile_medians"]
-    ys = [d["overall"] for d in DS]
-    for d in DS:
-        axes[0].plot(med, d["tercile_error"], color=INK, lw=lw(d), marker="o", ms=2.5, zorder=4)
-        axes[1].plot([1], [d["overall"]], marker="_", ms=8, color=INK, mew=lw(d))
-        axes[2].plot([33.3], [d["overall"]], marker="_", ms=8, color=INK, mew=lw(d))
-    axes[0].set_ylim(0, 5.3)
-    for ax in axes[1:]:
-        ax.set_ylim(0, 5.3)
-    # composition strip (share of denied-event claims per tercile)
-    for m, c in zip(med, J["length"]["tercile_composition"]):
-        axes[0].text(m, 5.0, f"{c.get('denied_event', 0)} denied", fontsize=7, ha="center", color=AMBER)
-    labels(fig, axes, ys)
+        ax.set_yticks([0, 0.5, 1.0, 1.5], ["0", "0.5", "1", "1.5"] if i == 0 else [""] * 4)
+        ax.set_title(title, fontsize=S.SIZE_LABEL, fontweight="semibold", loc="left", pad=6)
+        for d, up in ((CP, False), (PR, True)):
+            if with_arrows:
+                arrow(ax, scale, x, d["overall"], up, frac=0.17)
+            ax.plot(x, d["overall"], "o", ms=5.5, color=S.INK, zorder=3)
+        if i == 2:
+            ax.text(x + 4, CP["overall"] - 0.17, "CasePath", fontsize=S.SIZE_LABEL, va="center",
+                    fontweight="semibold")
+            ax.text(x + 2, PR["overall"] + 0.30, "prompt that may hold", fontsize=S.SIZE_LABEL, va="center", ha="center")
+    axes[0].set_ylabel("errors per file")
+    lg = fig.add_axes([0, 0, 1, 0.12])
+    lg.set_xlim(0, W), lg.set_ylim(0, 0.12 * H), lg.axis("off")
+    items = [(("dot", S.INK), "measured")]
+    if with_arrows:
+        items.append((("dash-arrow", S.INK), "predicted, to be tested"))
+    S.legend(lg, 0.50, 0.12, items)
     return fig
 
 
 if __name__ == "__main__":
-    save(draw_b(), "f5", HERE)
-    save(draw_a(), "f5_a", HERE, png_only=True)
-    print("ok")
+    S.save(draw(True), HERE, "f5")
+    S.save_png(draw(False), HERE, "f5_b")
+    print("CasePath", round(CP["overall"], 3), "prompt that may hold", round(PR["overall"], 3), "x", X_LEN, round(X_SHARE, 1))

@@ -90,3 +90,22 @@ Palette: brief values with the coordinator's change of 2026-11-13 (request now #
 Where the need hangs on an open fact, CasePath's core and prompts allowed to hold keep nearly all requests waiting;
 earlier prompts ask early. CasePath's price: holds where nothing is needed. 86 open, 481 settled documents, 1 to 3
 runs; CasePath's question names the fact.
+
+## Revision 2 (redrawn from scratch; supersedes everything above for the figure; r1 kept as f4_r1.*, f4_plot_r1.py)
+Style: `../common/style.py` (white ground, state colours, one label size 7.5 pt, one number size 7 pt, mark 0.052 in
+on a 0.064 in pitch, `checklist_mark`, `legend`). References re-opened: flow, nerf, aardvark; f1.png and f3.png.
+- Columns = reference state, each 100 marks (5 x 20, column-major, right fate first): open fact decides (right:
+  held); file settles (right: requested); not needed (right: left alone, sand outline). Rows: CasePath (core), prompt
+  that may hold, plain prompt (Rules in context); circle sub-row = cost-efficient model, square = frontier. Colour =
+  what the design did. "Dropped" includes a claim handed to a person (CasePath core, cost-efficient: 0.9 of 100 settled).
+- Two constructions: a, marks (kept: the unit is the checklist line, the same mark as Figure 1; slivers under 1 in
+  100 stay visible); b, continuous bars (`f4_b.png`, rejected: loses the line as unit, erases slivers).
+- Inside the figure: 14 words (column heads 7, design names 7); legend 5 entries. No numbers.
+- Not-needed column, per 100 not-needed document-runs (left alone / needless holds / needless requests), denominator:
+  CasePath core (c) 88.5 / 6.3 / 5.1 of 1,371; CasePath core (f) 89.9 / 8.1 / 2.0 of 457; prompt that may hold (c)
+  92.2 / 5.5 / 2.3 of 1,371; (f) 98.5 / 0.7 / 0.9 of 457; plain prompt (c) 65.4 / 3.5 / 31.1 of 1,371; (f) 71.9 / 3.9 /
+  24.2 of 1,371. Open column denominators 258 (3 runs) or 86 (1 run); settled 1,443 or 481. Values: `f4_plotted.json`.
+- Caption (43 words): Each block is 100 checklist lines of one reference kind; colour is what the design did. The
+  plain prompt asks too early; the prompt that may hold strays where the file settles; CasePath strays where nothing
+  is needed. Circle: cost-efficient model; square: frontier.
+- Self-review: weakest point, the frontier CasePath and prompt rows rest on one run (86 open documents).

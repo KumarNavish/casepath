@@ -1,0 +1,128 @@
+{
+ "casepath_checklist": {
+  "open_per100": {
+   "held": 99.6124031007752,
+   "early": 0,
+   "dropped": 0.3875968992248062
+  },
+  "settled_per100": {
+   "requested": 96.32709632709633,
+   "held": 1.7325017325017324,
+   "dropped": 1.9404019404019404
+  },
+  "not_needed_per100": {
+   "left": 88.54850474106492,
+   "held": 6.3457330415754925,
+   "early": 5.105762217359591
+  },
+  "not_needed_document_runs": 1371,
+  "open_document_runs": 258,
+  "settled_document_runs": 1443,
+  "runs": 3
+ },
+ "casepath_frontier_checklist": {
+  "open_per100": {
+   "held": 87.20930232558139,
+   "early": 11.627906976744185,
+   "dropped": 1.1627906976744187
+  },
+  "settled_per100": {
+   "requested": 97.92099792099792,
+   "held": 0.2079002079002079,
+   "dropped": 1.8711018711018712
+  },
+  "not_needed_per100": {
+   "left": 89.93435448577681,
+   "held": 8.096280087527353,
+   "early": 1.9693654266958425
+  },
+  "not_needed_document_runs": 457,
+  "open_document_runs": 86,
+  "settled_document_runs": 481,
+  "runs": 1
+ },
+ "hold_prompt": {
+  "open_per100": {
+   "held": 96.89922480620154,
+   "early": 1.937984496124031,
+   "dropped": 1.1627906976744187
+  },
+  "settled_per100": {
+   "requested": 90.22869022869023,
+   "held": 5.544005544005544,
+   "dropped": 4.227304227304227
+  },
+  "not_needed_per100": {
+   "left": 92.19547775346463,
+   "held": 5.543398978847557,
+   "early": 2.261123267687819
+  },
+  "not_needed_document_runs": 1371,
+  "open_document_runs": 258,
+  "settled_document_runs": 1443,
+  "runs": 3
+ },
+ "hold_prompt_frontier": {
+  "open_per100": {
+   "held": 97.67441860465117,
+   "early": 2.3255813953488373,
+   "dropped": 0
+  },
+  "settled_per100": {
+   "requested": 90.22869022869023,
+   "held": 7.276507276507276,
+   "dropped": 2.494802494802495
+  },
+  "not_needed_per100": {
+   "left": 98.46827133479212,
+   "held": 0.6564551422319475,
+   "early": 0.87527352297593
+  },
+  "not_needed_document_runs": 457,
+  "open_document_runs": 86,
+  "settled_document_runs": 481,
+  "runs": 1
+ },
+ "ric": {
+  "open_per100": {
+   "held": 48.44961240310077,
+   "early": 49.6124031007752,
+   "dropped": 1.937984496124031
+  },
+  "settled_per100": {
+   "requested": 95.63409563409563,
+   "held": 0.4851004851004851,
+   "dropped": 3.8808038808038807
+  },
+  "not_needed_per100": {
+   "left": 65.35375638220277,
+   "held": 3.50109409190372,
+   "early": 31.14514952589351
+  },
+  "not_needed_document_runs": 1371,
+  "open_document_runs": 258,
+  "settled_document_runs": 1443,
+  "runs": 3
+ },
+ "ric_frontier": {
+  "open_per100": {
+   "held": 34.883720930232556,
+   "early": 65.11627906976744,
+   "dropped": 0
+  },
+  "settled_per100": {
+   "requested": 96.67359667359668,
+   "held": 0.7623007623007623,
+   "dropped": 2.5641025641025643
+  },
+  "not_needed_per100": {
+   "left": 71.91830780452224,
+   "held": 3.8657913931436907,
+   "early": 24.215900802334062
+  },
+  "not_needed_document_runs": 1371,
+  "open_document_runs": 258,
+  "settled_document_runs": 1443,
+  "runs": 3
+ }
+}

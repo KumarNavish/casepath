@@ -76,3 +76,20 @@ Lines differing as a share of a claim's checklist lines (11.7 on average): CaseP
 On Study 3's claims CasePath's core costs four times the same-model prompt that may hold, with fewer
 deviations; the frontier prompt errs less at twice the cost. One reading errs less than three. Run again, 5 to 8% of
 lines change; three runs, not ten.
+
+## Revision 2 (redrawn from scratch; r1 kept as f7_r1.*, f7_plot_r1.py)
+- Left: four points, CasePath (core) and the prompt that may hold per model (circle cost-efficient, square
+  frontier), log USD per file, errors per file (all deviations) from 0. Arrow per model from the prompt to CasePath.
+  Cost-efficient: USD 0.00067, 0.889 to USD 0.00296, 0.733 (4.4 times the cost, 0.16 fewer errors). Frontier: USD
+  0.00632, 0.583 to USD 0.0214, 0.698 (3.4 times, 0.12 more errors).
+- Right: the 96 claims as a 4 x 24 grid per design, cost-efficient model, claim-id order (same claim, same place in
+  both grids); ink filled = same checklist in all three stored runs, ink outline = not. CasePath 70/96, prompt that
+  may hold 56/96.
+- Two constructions: a, grids (kept); b, three stored checklists of the median file as strips (`f7_b.png`). Rule:
+  the claim whose mean differing lines over the three run pairs is closest to the design's median (ties: first claim
+  id). The median is 0 for both designs (claim f2cl_03fdd7ee632bb267), so the strips are identical: true for the
+  median, but it hides the 26 and 40 claims that change. Rejected.
+- Inside the figure: 13 words (axis labels 6, models 2, design names 5) and 2 counts; no legend.
+- Caption (45 words): Arrows lead from the prompt that may hold to CasePath: on the cost-efficient model 4.4 times the
+  cost buys 0.16 fewer errors per file; on the frontier model 3.4 times buys 0.12 more. Run three times, CasePath
+  repeats 70 of 96 checklists, the prompt 56.
