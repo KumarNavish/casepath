@@ -96,7 +96,7 @@ def single_high(key, model, words, rule_tokens, calls=None):
     return base + cm.usd_of(model, 0, 0, extra_out)
 
 
-MEAN_WORDS_SINGLE = 183.0   # mean words of Study 3's files (single prompts' fit data), set in main()
+MEAN_WORDS_SINGLE = None   # mean words of Study 3's files (the single prompts' fit data), set in main()
 
 
 def price(design, model, level, catalogue_regimes=1):
@@ -225,8 +225,11 @@ def main():
     global SHORT, MEAN_WORDS_SINGLE
     cm._params()
     SHORT = short_mix()
-    MEAN_WORDS_SINGLE = 183.0
-    res = {"generated_by": "rebuild/plan/study4_cost.py", "model_calls": 0, "design": DESIGN, "short_files": SHORT,
+    pd_ = json.loads(cm.OUT_JSON.read_text())["per_design"]
+    rows = [pd_[f"baseline_check/A/{r}/{LUNA}"] for r in ("tenancy", "theft")]
+    MEAN_WORDS_SINGLE = sum(r["words_per_file"]["mean"] * r["files"] for r in rows) / sum(r["files"] for r in rows)
+    res_mean_words_single = MEAN_WORDS_SINGLE
+    res = {"generated_by": "rebuild/plan/study4_cost.py", "model_calls": 0, "design": DESIGN, "short_files": SHORT, "single_prompt_fit_mean_words": res_mean_words_single,
            "unit_prices": {}, "options": {}}
     for model in MODELS:
         for d in DESIGNS:

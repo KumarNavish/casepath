@@ -1,0 +1,6182 @@
+{
+ "generated_by": "rebuild/plan/study4_cost.py",
+ "model_calls": 0,
+ "design": {
+  "levels": {
+   "medium": {
+    "words": 800,
+    "attachments": 3
+   },
+   "long": {
+    "words": 2500,
+    "attachments": 6
+   }
+  },
+  "facts_read": null,
+  "extrapolation_margin": 0.25,
+  "sealed": {
+   "regimes": 3,
+   "cells": {
+    "open_share": {
+     "level": "short",
+     "files": 160
+    },
+    "length_medium": {
+     "level": "medium",
+     "files": 40
+    },
+    "length_long": {
+     "level": "long",
+     "files": 40
+    },
+    "catalogue_3": {
+     "level": "short",
+     "files": 40,
+     "catalogue_regimes": 3
+    },
+    "catalogue_4": {
+     "level": "short",
+     "files": 40,
+     "catalogue_regimes": 4
+    },
+    "twins": {
+     "level": "short",
+     "files": 30
+    },
+    "repeats": {
+     "level": "short",
+     "files": 20,
+     "repeat_runs": {
+      "gpt-6-luna": 9,
+      "gpt-6.1-terra": 2
+     }
+    },
+    "rule_change": {
+     "level": "short",
+     "files": 160,
+     "core_share_of_files": 0.3333333333333333,
+     "core_readings": 3
+    }
+   }
+  },
+  "fourth_regime": {
+   "level": "short",
+   "files": 120
+  },
+  "development": {
+   "pilot": {
+    "models": [
+     "gpt-6-luna",
+     "gpt-6.1-terra"
+    ],
+    "designs": [
+     "core",
+     "hold_prompt"
+    ],
+    "files": {
+     "medium": 12,
+     "long": 12
+    },
+    "rounds": 1
+   },
+   "luna_core": {
+    "models": [
+     "gpt-6-luna"
+    ],
+    "designs": [
+     "core"
+    ],
+    "files": {
+     "short": 173,
+     "medium": 30,
+     "long": 15
+    },
+    "rounds": 8
+   },
+   "luna_baselines": {
+    "models": [
+     "gpt-6-luna"
+    ],
+    "designs": [
+     "hold_prompt",
+     "self_consistency",
+     "mer",
+     "react"
+    ],
+    "files": {
+     "short": 173,
+     "medium": 30,
+     "long": 15
+    },
+    "rounds": 3
+   },
+   "terra_gates": {
+    "models": [
+     "gpt-6.1-terra"
+    ],
+    "designs": [
+     "core",
+     "hold_prompt",
+     "mer"
+    ],
+    "files": {
+     "short": 60,
+     "medium": 12,
+     "long": 6
+    },
+    "rounds": 3
+   }
+  },
+  "options": {
+   "A": {
+    "frontier_file_factor": 1.0,
+    "frontier_skip": []
+   },
+   "B": {
+    "frontier_file_factor": 0.5,
+    "frontier_skip": []
+   },
+   "C": {
+    "frontier_file_factor": 0.5,
+    "frontier_skip": [
+     "self_consistency",
+     "react"
+    ]
+   }
+  }
+ },
+ "short_files": {
+  "files": 173,
+  "mean_words": 334.35838150289015,
+  "attachment_mix": {
+   "0": 0.35260115606936415,
+   "1": 0.32947976878612717,
+   "2": 0.21965317919075145,
+   "3": 0.08670520231213873,
+   "4": 0.011560693641618497
+  }
+ },
+ "single_prompt_fit_mean_words": 252.62053571428572,
+ "unit_prices": {
+  "core/gpt-6-luna/short": {
+   "low": 0.0044080506877097496,
+   "high": 0.004407790781944721,
+   "extrapolated": false,
+   "notes": []
+  },
+  "core/gpt-6-luna/medium": {
+   "low": 0.01085284748463372,
+   "high": 0.016438001728652018,
+   "extrapolated": true,
+   "notes": []
+  },
+  "core/gpt-6-luna/long": {
+   "low": 0.03619850707566765,
+   "high": 0.06141526511533629,
+   "extrapolated": true,
+   "notes": []
+  },
+  "core/gpt-6-luna/short, 3-regime catalogue": {
+   "low": 0.004662659495682665,
+   "high": 0.0046623928298704966,
+   "extrapolated": false,
+   "notes": [
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "core/gpt-6-luna/short, 4-regime catalogue": {
+   "low": 0.004662659495682665,
+   "high": 0.0046623928298704966,
+   "extrapolated": false,
+   "notes": [
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "hold_prompt/gpt-6-luna/short": {
+   "low": 0.0008071475272088824,
+   "high": 0.0008503334446472602,
+   "extrapolated": false,
+   "notes": []
+  },
+  "hold_prompt/gpt-6-luna/medium": {
+   "low": 0.0008177486790083355,
+   "high": 0.0013836934852175153,
+   "extrapolated": true,
+   "notes": []
+  },
+  "hold_prompt/gpt-6-luna/long": {
+   "low": 0.000856452174020739,
+   "high": 0.0025548094966135904,
+   "extrapolated": true,
+   "notes": []
+  },
+  "hold_prompt/gpt-6-luna/short, 3-regime catalogue": {
+   "low": 0.0010868974490971803,
+   "high": 0.001412604208169448,
+   "extrapolated": true,
+   "notes": []
+  },
+  "hold_prompt/gpt-6-luna/short, 4-regime catalogue": {
+   "low": 0.0012267724100413298,
+   "high": 0.0015874479093496347,
+   "extrapolated": true,
+   "notes": []
+  },
+  "self_consistency/gpt-6-luna/short": {
+   "low": 0.0044080506877097496,
+   "high": 0.004407790781944721,
+   "extrapolated": false,
+   "notes": [
+    "m about 11 samples",
+    "m about 14 samples",
+    "m about 3 samples",
+    "m about 6 samples",
+    "m about 8 samples"
+   ]
+  },
+  "self_consistency/gpt-6-luna/medium": {
+   "low": 0.01085284748463372,
+   "high": 0.016438001728652018,
+   "extrapolated": true,
+   "notes": [
+    "m = 15 samples at short/this level"
+   ]
+  },
+  "self_consistency/gpt-6-luna/long": {
+   "low": 0.03619850707566765,
+   "high": 0.06141526511533629,
+   "extrapolated": true,
+   "notes": [
+    "m = 48 samples at short/this level"
+   ]
+  },
+  "self_consistency/gpt-6-luna/short, 3-regime catalogue": {
+   "low": 0.004662659495682665,
+   "high": 0.0046623928298704966,
+   "extrapolated": false,
+   "notes": [
+    "m about 10 samples",
+    "m about 2 samples",
+    "m about 4 samples",
+    "m about 6 samples",
+    "m about 8 samples",
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "self_consistency/gpt-6-luna/short, 4-regime catalogue": {
+   "low": 0.004662659495682665,
+   "high": 0.0046623928298704966,
+   "extrapolated": false,
+   "notes": [
+    "m about 2 samples",
+    "m about 4 samples",
+    "m about 5 samples",
+    "m about 7 samples",
+    "m about 9 samples",
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "mer/gpt-6-luna/short": {
+   "low": 0.0012208800272522997,
+   "high": 0.0013056652248369888,
+   "extrapolated": false,
+   "notes": []
+  },
+  "mer/gpt-6-luna/medium": {
+   "low": 0.0012349531814712389,
+   "high": 0.0022534250706459677,
+   "extrapolated": true,
+   "notes": []
+  },
+  "mer/gpt-6-luna/long": {
+   "low": 0.001286332528208788,
+   "high": 0.00452187354122893,
+   "extrapolated": true,
+   "notes": []
+  },
+  "mer/gpt-6-luna/short, 3-regime catalogue": {
+   "low": 0.001520175085024785,
+   "high": 0.002006200353261843,
+   "extrapolated": true,
+   "notes": []
+  },
+  "mer/gpt-6-luna/short, 4-regime catalogue": {
+   "low": 0.0016694371498380209,
+   "high": 0.002192777934278388,
+   "extrapolated": true,
+   "notes": []
+  },
+  "react/gpt-6-luna/short": {
+   "low": 0.0012005158272170675,
+   "high": 0.0012005158272170675,
+   "extrapolated": false,
+   "notes": []
+  },
+  "react/gpt-6-luna/medium": {
+   "low": 0.0013018053051345054,
+   "high": 0.0016272566314181319,
+   "extrapolated": true,
+   "notes": []
+  },
+  "react/gpt-6-luna/long": {
+   "low": 0.0016716006705389263,
+   "high": 0.002089500838173658,
+   "extrapolated": true,
+   "notes": []
+  },
+  "react/gpt-6-luna/short, 3-regime catalogue": {
+   "low": 0.004854371309278209,
+   "high": 0.006067964136597761,
+   "extrapolated": true,
+   "notes": []
+  },
+  "react/gpt-6-luna/short, 4-regime catalogue": {
+   "low": 0.006190816823480329,
+   "high": 0.007738521029350411,
+   "extrapolated": true,
+   "notes": []
+  },
+  "core reading call/gpt-6-luna": {
+   "low": 0.0003519210285714286,
+   "high": 0.0003519210285714286,
+   "extrapolated": false,
+   "notes": []
+  },
+  "core/gpt-6.1-terra/short": {
+   "low": 0.033773925271654105,
+   "high": 0.033772346874540116,
+   "extrapolated": false,
+   "notes": []
+  },
+  "core/gpt-6.1-terra/medium": {
+   "low": 0.0872451333393126,
+   "high": 0.1264976056079452,
+   "extrapolated": true,
+   "notes": []
+  },
+  "core/gpt-6.1-terra/long": {
+   "low": 0.3147143599575552,
+   "high": 0.49157527897815356,
+   "extrapolated": true,
+   "notes": []
+  },
+  "core/gpt-6.1-terra/short, 3-regime catalogue": {
+   "low": 0.03612506466250936,
+   "high": 0.036123430424471754,
+   "extrapolated": false,
+   "notes": [
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "core/gpt-6.1-terra/short, 4-regime catalogue": {
+   "low": 0.03612506466250936,
+   "high": 0.036123430424471754,
+   "extrapolated": false,
+   "notes": [
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "hold_prompt/gpt-6.1-terra/short": {
+   "low": 0.005945526719987523,
+   "high": 0.006390398791873091,
+   "extrapolated": false,
+   "notes": []
+  },
+  "hold_prompt/gpt-6.1-terra/medium": {
+   "low": 0.006033684417366976,
+   "high": 0.011266112345521235,
+   "extrapolated": true,
+   "notes": []
+  },
+  "hold_prompt/gpt-6.1-terra/long": {
+   "low": 0.006355537274997652,
+   "high": 0.023234100887100373,
+   "extrapolated": true,
+   "notes": []
+  },
+  "hold_prompt/gpt-6.1-terra/short, 3-regime catalogue": {
+   "low": 0.008271887989243774,
+   "high": 0.010895950076411679,
+   "extrapolated": true,
+   "notes": []
+  },
+  "hold_prompt/gpt-6.1-terra/short, 4-regime catalogue": {
+   "low": 0.009435068623871898,
+   "high": 0.012349925869696835,
+   "extrapolated": true,
+   "notes": []
+  },
+  "self_consistency/gpt-6.1-terra/short": {
+   "low": 0.033773925271654105,
+   "high": 0.033772346874540116,
+   "extrapolated": false,
+   "notes": [
+    "m about 11 samples",
+    "m about 3 samples",
+    "m about 5 samples",
+    "m about 7 samples",
+    "m about 9 samples",
+    "no stored frontier run of self-consistency; priced equal to the core by construction"
+   ]
+  },
+  "self_consistency/gpt-6.1-terra/medium": {
+   "low": 0.0872451333393126,
+   "high": 0.1264976056079452,
+   "extrapolated": true,
+   "notes": [
+    "m = 13 samples at short/this level",
+    "no stored frontier run of self-consistency; priced equal to the core by construction"
+   ]
+  },
+  "self_consistency/gpt-6.1-terra/long": {
+   "low": 0.3147143599575552,
+   "high": 0.49157527897815356,
+   "extrapolated": true,
+   "notes": [
+    "m = 48 samples at short/this level",
+    "no stored frontier run of self-consistency; priced equal to the core by construction"
+   ]
+  },
+  "self_consistency/gpt-6.1-terra/short, 3-regime catalogue": {
+   "low": 0.03612506466250936,
+   "high": 0.036123430424471754,
+   "extrapolated": false,
+   "notes": [
+    "m about 2 samples",
+    "m about 4 samples",
+    "m about 6 samples",
+    "m about 8 samples",
+    "m about 9 samples",
+    "no stored frontier run of self-consistency; priced equal to the core by construction",
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "self_consistency/gpt-6.1-terra/short, 4-regime catalogue": {
+   "low": 0.03612506466250936,
+   "high": 0.036123430424471754,
+   "extrapolated": false,
+   "notes": [
+    "m about 2 samples",
+    "m about 4 samples",
+    "m about 5 samples",
+    "m about 7 samples",
+    "m about 9 samples",
+    "no stored frontier run of self-consistency; priced equal to the core by construction",
+    "one routing-sized call added for the larger catalogue"
+   ]
+  },
+  "mer/gpt-6.1-terra/short": {
+   "low": 0.010506965215511912,
+   "high": 0.011497541127031347,
+   "extrapolated": false,
+   "notes": []
+  },
+  "mer/gpt-6.1-terra/medium": {
+   "low": 0.01060533088303856,
+   "high": 0.02154873606042018,
+   "extrapolated": true,
+   "notes": []
+  },
+  "mer/gpt-6.1-terra/long": {
+   "low": 0.010964451778062975,
+   "high": 0.047750381109140025,
+   "extrapolated": true,
+   "notes": []
+  },
+  "mer/gpt-6.1-terra/short, 3-regime catalogue": {
+   "low": 0.013095624504962681,
+   "high": 0.017607750520602646,
+   "extrapolated": true,
+   "notes": []
+  },
+  "mer/gpt-6.1-terra/short, 4-regime catalogue": {
+   "low": 0.014393492337045295,
+   "high": 0.019230085310705913,
+   "extrapolated": true,
+   "notes": []
+  },
+  "react/gpt-6.1-terra/short": {
+   "low": 0.011708754875182008,
+   "high": 0.014635943593977511,
+   "extrapolated": true,
+   "notes": [
+    "estimate: cost-efficient ReAct tokens at frontier token prices"
+   ]
+  },
+  "react/gpt-6.1-terra/medium": {
+   "low": 0.012663643212924307,
+   "high": 0.015829554016155385,
+   "extrapolated": true,
+   "notes": [
+    "estimate: cost-efficient ReAct tokens at frontier token prices"
+   ]
+  },
+  "react/gpt-6.1-terra/long": {
+   "low": 0.01614982251837653,
+   "high": 0.020187278147970663,
+   "extrapolated": true,
+   "notes": [
+    "estimate: cost-efficient ReAct tokens at frontier token prices"
+   ]
+  },
+  "react/gpt-6.1-terra/short, 3-regime catalogue": {
+   "low": 0.04615482034369864,
+   "high": 0.0576935254296233,
+   "extrapolated": true,
+   "notes": [
+    "estimate: cost-efficient ReAct tokens at frontier token prices"
+   ]
+  },
+  "react/gpt-6.1-terra/short, 4-regime catalogue": {
+   "low": 0.0587539200900693,
+   "high": 0.07344240011258663,
+   "extrapolated": true,
+   "notes": [
+    "estimate: cost-efficient ReAct tokens at frontier token prices"
+   ]
+  },
+  "core reading call/gpt-6.1-terra": {
+   "low": 0.002815848484848485,
+   "high": 0.002815848484848485,
+   "extrapolated": false,
+   "notes": []
+  }
+ },
+ "options": {
+  "A": {
+   "totals": {
+    "low": 327.39230249077576,
+    "high": 424.21985098478825,
+    "by_model": {
+     "gpt-6-luna": {
+      "low": 55.70247294532462,
+      "high": 71.598417814503
+     },
+     "gpt-6.1-terra": {
+      "low": 271.6898295454511,
+      "high": 352.6214331702852
+     }
+    },
+    "by_design": {
+     "core": {
+      "low": 131.2920331230083,
+      "high": 172.84518849826304
+     },
+     "hold_prompt": {
+      "low": 15.241653108109583,
+      "high": 20.57599408153902
+     },
+     "self_consistency": {
+      "low": 119.6699532161873,
+      "high": 150.93413595953297
+     },
+     "mer": {
+      "low": 25.487138935162502,
+      "high": 35.906614754784876
+     },
+     "react": {
+      "low": 35.70152410830808,
+      "high": 43.957917690668395
+     }
+    },
+    "by_phase": {
+     "sealed test": {
+      "low": 270.0558786642091,
+      "high": 350.2040278718977
+     },
+     "fourth regime": {
+      "low": 12.930449053330488,
+      "high": 13.468880798706353
+     },
+     "development": {
+      "low": 44.40597477323613,
+      "high": 60.546942314184015
+     }
+    }
+   },
+   "top5": [
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "low": 37.76572319490663,
+     "high": 58.98903347737843
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "low": 37.76572319490663,
+     "high": 58.98903347737843
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "low": 16.21148413039397,
+     "high": 16.210726499779256
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "low": 16.21148413039397,
+     "high": 16.210726499779256
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "low": 16.21148413039397,
+     "high": 16.210726499779256
+    }
+   ],
+   "items": [
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.38743081306026356,
+     "high": 0.4081600534306849
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5860224130811039,
+     "high": 0.6267193079217546
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5762475970641924,
+     "high": 0.5762475970641924
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.3023416981560465,
+     "high": 1.9725602074382422
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.09812984148100026,
+     "high": 0.16604321822610185
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [
+      "m = 15 samples at short/this level"
+     ],
+     "low": 1.3023416981560465,
+     "high": 1.9725602074382422
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0012349531814712389,
+     "usd_per_run_high": 0.0022534250706459677,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.14819438177654867,
+     "high": 0.27041100847751615
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0013018053051345054,
+     "usd_per_run_high": 0.0016272566314181319,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.15621663661614066,
+     "high": 0.1952707957701758
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.10277426088248867,
+     "high": 0.30657713959363087
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level"
+     ],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.001286332528208788,
+     "usd_per_run_high": 0.00452187354122893,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.15435990338505456,
+     "high": 0.5426248249474716
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.0016716006705389263,
+     "usd_per_run_high": 0.002089500838173658,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.20059208046467117,
+     "high": 0.25074010058083895
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0010868974490971803,
+     "usd_per_run_high": 0.001412604208169448,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.13042769389166164,
+     "high": 0.16951250498033377
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "m about 10 samples",
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 6 samples",
+      "m about 8 samples",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.001520175085024785,
+     "usd_per_run_high": 0.002006200353261843,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.18242101020297422,
+     "high": 0.24074404239142116
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004854371309278209,
+     "usd_per_run_high": 0.006067964136597761,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.582524557113385,
+     "high": 0.7281556963917314
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012267724100413298,
+     "usd_per_run_high": 0.0015874479093496347,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.14721268920495958,
+     "high": 0.19049374912195616
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0016694371498380209,
+     "usd_per_run_high": 0.002192777934278388,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.2003324579805625,
+     "high": 0.26313335211340655
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.006190816823480329,
+     "usd_per_run_high": 0.007738521029350411,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.7428980188176395,
+     "high": 0.9286225235220493
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.39672456189387745,
+     "high": 0.3967011703750249
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.07264327744879942,
+     "high": 0.07653001001825342
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 0.39672456189387745,
+     "high": 0.3967011703750249
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.10987920245270698,
+     "high": 0.117509870235329
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.10804642444953608,
+     "high": 0.10804642444953608
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.3803473713632646,
+     "high": 2.3802070222501492
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.43585966469279647,
+     "high": 0.4591800601095205
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.3803473713632646,
+     "high": 2.3802070222501492
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6592752147162418,
+     "high": 0.705059221411974
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6482785466972164,
+     "high": 0.6482785466972164
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.38743081306026356,
+     "high": 0.4081600534306849
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5860224130811039,
+     "high": 0.6267193079217546
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5762475970641924,
+     "high": 0.5762475970641924
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change (core: 3 readings of the added fact, a third of the files)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0003519210285714286,
+     "usd_per_run_high": 0.0003519210285714286,
+     "extrapolated": false,
+     "notes": [
+      "priced as one first-reading call of the benchmark"
+     ],
+     "low": 0.1689220937142857,
+     "high": 0.1689220937142857
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.52896608252517,
+     "high": 0.5289348938333664
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.09685770326506589,
+     "high": 0.10204001335767122
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 0.52896608252517,
+     "high": 0.5289348938333664
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.14650560327027598,
+     "high": 0.15667982698043864
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.1440618992660481,
+     "high": 0.1440618992660481
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 16.21148413039397,
+     "high": 16.210726499779256
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.853852825594011,
+     "high": 3.0673914200990837
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 16.21148413039397,
+     "high": 16.210726499779256
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 5.043343303445718,
+     "high": 5.518819740975046
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 5.620202340087364,
+     "high": 7.025252925109205
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 10.469416000717512,
+     "high": 15.179712672953425
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.7240421300840372,
+     "high": 1.351933481462548
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [
+      "m = 13 samples at short/this level",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 10.469416000717512,
+     "high": 15.179712672953425
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01060533088303856,
+     "usd_per_run_high": 0.02154873606042018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.2726397059646273,
+     "high": 2.585848327250422
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.012663643212924307,
+     "usd_per_run_high": 0.015829554016155385,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 1.5196371855509168,
+     "high": 1.8995464819386463
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 37.76572319490663,
+     "high": 58.98903347737843
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.7626644729997182,
+     "high": 2.7880921064520447
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 37.76572319490663,
+     "high": 58.98903347737843
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.010964451778062975,
+     "usd_per_run_high": 0.047750381109140025,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.315734213367557,
+     "high": 5.730045733096803
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.01614982251837653,
+     "usd_per_run_high": 0.020187278147970663,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 1.9379787022051835,
+     "high": 2.4224733777564795
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 4.335007759501123,
+     "high": 4.334811650936611
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.008271887989243774,
+     "usd_per_run_high": 0.010895950076411679,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.9926265587092529,
+     "high": 1.3075140091694015
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 6 samples",
+      "m about 8 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 4.335007759501123,
+     "high": 4.334811650936611
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.013095624504962681,
+     "usd_per_run_high": 0.017607750520602646,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.5714749405955217,
+     "high": 2.1129300624723175
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.04615482034369864,
+     "usd_per_run_high": 0.0576935254296233,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 5.538578441243836,
+     "high": 6.923223051554796
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 4.335007759501123,
+     "high": 4.334811650936611
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.009435068623871898,
+     "usd_per_run_high": 0.012349925869696835,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.1322082348646278,
+     "high": 1.4819911043636202
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 4.335007759501123,
+     "high": 4.334811650936611
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.014393492337045295,
+     "usd_per_run_high": 0.019230085310705913,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.7272190804454355,
+     "high": 2.3076102372847096
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0587539200900693,
+     "usd_per_run_high": 0.07344240011258663,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 7.050470410808316,
+     "high": 8.813088013510395
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 3.0396532744488693,
+     "high": 3.0395112187086104
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5350974047988771,
+     "high": 0.5751358912685782
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 3.0396532744488693,
+     "high": 3.0395112187086104
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.9456268693960721,
+     "high": 1.0347787014328214
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 1.0537879387663807,
+     "high": 1.317234923457976
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 4.0528710325984925,
+     "high": 4.052681624944814
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.7134632063985028,
+     "high": 0.7668478550247709
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 4.0528710325984925,
+     "high": 4.052681624944814
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.2608358258614294,
+     "high": 1.3797049352437616
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 1.405050585021841,
+     "high": 1.7563132312773013
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.853852825594011,
+     "high": 3.0673914200990837
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 16.21148413039397,
+     "high": 16.210726499779256
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 5.043343303445718,
+     "high": 5.518819740975046
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 5.620202340087364,
+     "high": 7.025252925109205
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change (core: 3 readings of the added fact, a third of the files)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.002815848484848485,
+     "usd_per_run_high": 0.002815848484848485,
+     "extrapolated": false,
+     "notes": [
+      "priced as one first-reading call of the benchmark"
+     ],
+     "low": 1.3516072727272728,
+     "high": 1.3516072727272728
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 4.0528710325984925,
+     "high": 4.052681624944814
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.7134632063985028,
+     "high": 0.7668478550247709
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 4.0528710325984925,
+     "high": 4.052681624944814
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.2608358258614294,
+     "high": 1.3797049352437616
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 1.405050585021841,
+     "high": 1.7563132312773013
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.13023416981560465,
+     "high": 0.1972560207438242
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.4343820849080118,
+     "high": 0.7369831813840355
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.009812984148100026,
+     "high": 0.016604321822610183
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.010277426088248868,
+     "high": 0.030657713959363085
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.046941600071751,
+     "high": 1.5179712672953425
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 3.776572319490662,
+     "high": 5.898903347737843
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07240421300840372,
+     "high": 0.13519334814625483
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07626644729997183,
+     "high": 0.2788092106452045
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (short)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 1384,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 6.1007421517902936,
+     "high": 6.100382442211494
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (medium)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 240,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 2.604683396312093,
+     "high": 3.9451204148764845
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (long)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.41890956662140993,
+     "high": 0.44132305777192804
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.0735973811107502,
+     "high": 0.12453241366957638
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.038540347830933255,
+     "high": 0.11496642734761157
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.28777830692136,
+     "high": 2.28764341582931
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [
+      "m = 15 samples at short/this level"
+     ],
+     "low": 0.9767562736170349,
+     "high": 1.4794201555786817
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level"
+     ],
+     "low": 1.6289328184050442,
+     "high": 2.7636869301901332
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6336367341439436,
+     "high": 0.6776402516903972
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0012349531814712389,
+     "usd_per_run_high": 0.0022534250706459677,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.1111457863324115,
+     "high": 0.2028082563581371
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.001286332528208788,
+     "usd_per_run_high": 0.00452187354122893,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.05788496376939546,
+     "high": 0.20348430935530185
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.623067714325658,
+     "high": 0.623067714325658
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0013018053051345054,
+     "usd_per_run_high": 0.0016272566314181319,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.11716247746210548,
+     "high": 0.14645309682763186
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.0016716006705389263,
+     "usd_per_run_high": 0.002089500838173658,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07522203017425169,
+     "high": 0.09402753771781461
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 6.079306548897739,
+     "high": 6.079022437417221
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 3.1408248002152535,
+     "high": 4.5539138018860275
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 5.664858479235994,
+     "high": 8.848355021606764
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.0701948095977543,
+     "high": 1.1502717825371565
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.21721263902521115,
+     "high": 0.40558004443876444
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.11439967094995773,
+     "high": 0.4182138159678067
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.8912537387921442,
+     "high": 2.0695574028656427
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.01060533088303856,
+     "usd_per_run_high": 0.02154873606042018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.38179191178938815,
+     "high": 0.7757544981751265
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.010964451778062975,
+     "usd_per_run_high": 0.047750381109140025,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.19736013200513355,
+     "high": 0.8595068599645205
+    }
+   ]
+  },
+  "B": {
+   "totals": {
+    "low": 203.41208137323986,
+    "high": 264.4046608189875,
+    "by_model": {
+     "gpt-6-luna": {
+      "low": 55.70247294532462,
+      "high": 71.598417814503
+     },
+     "gpt-6.1-terra": {
+      "low": 147.7096084279152,
+      "high": 192.80624300448443
+     }
+    },
+    "by_design": {
+     "core": {
+      "low": 88.48521239431153,
+      "high": 117.07239965160812
+     },
+     "hold_prompt": {
+      "low": 9.60101767538881,
+      "high": 12.989421510057067
+     },
+     "self_consistency": {
+      "low": 69.43319405865721,
+      "high": 87.73178749935204
+     },
+     "mer": {
+      "low": 15.766612400970745,
+      "high": 22.122483547797536
+     },
+     "react": {
+      "low": 20.126044843911558,
+      "high": 24.488568610172738
+     }
+    },
+    "by_phase": {
+     "sealed test": {
+      "low": 151.8182033879126,
+      "high": 196.39295234181478
+     },
+     "fourth regime": {
+      "low": 7.1879032120911095,
+      "high": 7.464766162988622
+     },
+     "development": {
+      "low": 44.40597477323613,
+      "high": 60.546942314184015
+     }
+    }
+   },
+   "top5": [
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "low": 18.882861597453314,
+     "high": 29.494516738689214
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "low": 18.882861597453314,
+     "high": 29.494516738689214
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    }
+   ],
+   "items": [
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.38743081306026356,
+     "high": 0.4081600534306849
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5860224130811039,
+     "high": 0.6267193079217546
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5762475970641924,
+     "high": 0.5762475970641924
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.3023416981560465,
+     "high": 1.9725602074382422
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.09812984148100026,
+     "high": 0.16604321822610185
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [
+      "m = 15 samples at short/this level"
+     ],
+     "low": 1.3023416981560465,
+     "high": 1.9725602074382422
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0012349531814712389,
+     "usd_per_run_high": 0.0022534250706459677,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.14819438177654867,
+     "high": 0.27041100847751615
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0013018053051345054,
+     "usd_per_run_high": 0.0016272566314181319,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.15621663661614066,
+     "high": 0.1952707957701758
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.10277426088248867,
+     "high": 0.30657713959363087
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level"
+     ],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.001286332528208788,
+     "usd_per_run_high": 0.00452187354122893,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.15435990338505456,
+     "high": 0.5426248249474716
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.0016716006705389263,
+     "usd_per_run_high": 0.002089500838173658,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.20059208046467117,
+     "high": 0.25074010058083895
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0010868974490971803,
+     "usd_per_run_high": 0.001412604208169448,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.13042769389166164,
+     "high": 0.16951250498033377
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "m about 10 samples",
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 6 samples",
+      "m about 8 samples",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.001520175085024785,
+     "usd_per_run_high": 0.002006200353261843,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.18242101020297422,
+     "high": 0.24074404239142116
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004854371309278209,
+     "usd_per_run_high": 0.006067964136597761,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.582524557113385,
+     "high": 0.7281556963917314
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012267724100413298,
+     "usd_per_run_high": 0.0015874479093496347,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.14721268920495958,
+     "high": 0.19049374912195616
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0016694371498380209,
+     "usd_per_run_high": 0.002192777934278388,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.2003324579805625,
+     "high": 0.26313335211340655
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.006190816823480329,
+     "usd_per_run_high": 0.007738521029350411,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.7428980188176395,
+     "high": 0.9286225235220493
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.39672456189387745,
+     "high": 0.3967011703750249
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.07264327744879942,
+     "high": 0.07653001001825342
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 0.39672456189387745,
+     "high": 0.3967011703750249
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.10987920245270698,
+     "high": 0.117509870235329
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.10804642444953608,
+     "high": 0.10804642444953608
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.3803473713632646,
+     "high": 2.3802070222501492
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.43585966469279647,
+     "high": 0.4591800601095205
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.3803473713632646,
+     "high": 2.3802070222501492
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6592752147162418,
+     "high": 0.705059221411974
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6482785466972164,
+     "high": 0.6482785466972164
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.38743081306026356,
+     "high": 0.4081600534306849
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5860224130811039,
+     "high": 0.6267193079217546
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5762475970641924,
+     "high": 0.5762475970641924
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change (core: 3 readings of the added fact, a third of the files)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0003519210285714286,
+     "usd_per_run_high": 0.0003519210285714286,
+     "extrapolated": false,
+     "notes": [
+      "priced as one first-reading call of the benchmark"
+     ],
+     "low": 0.1689220937142857,
+     "high": 0.1689220937142857
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.52896608252517,
+     "high": 0.5289348938333664
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.09685770326506589,
+     "high": 0.10204001335767122
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 0.52896608252517,
+     "high": 0.5289348938333664
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.14650560327027598,
+     "high": 0.15667982698043864
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.1440618992660481,
+     "high": 0.1440618992660481
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.4269264127970056,
+     "high": 1.5336957100495419
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.521671651722859,
+     "high": 2.759409870487523
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 2.810101170043682,
+     "high": 3.5126264625546026
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 5.234708000358756,
+     "high": 7.589856336476712
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.3620210650420186,
+     "high": 0.675966740731274
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [
+      "m = 13 samples at short/this level",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 5.234708000358756,
+     "high": 7.589856336476712
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01060533088303856,
+     "usd_per_run_high": 0.02154873606042018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.6363198529823136,
+     "high": 1.292924163625211
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.012663643212924307,
+     "usd_per_run_high": 0.015829554016155385,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 0.7598185927754584,
+     "high": 0.9497732409693231
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 18.882861597453314,
+     "high": 29.494516738689214
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.3813322364998591,
+     "high": 1.3940460532260224
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 18.882861597453314,
+     "high": 29.494516738689214
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.010964451778062975,
+     "usd_per_run_high": 0.047750381109140025,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.6578671066837785,
+     "high": 2.8650228665484017
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.01614982251837653,
+     "usd_per_run_high": 0.020187278147970663,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 0.9689893511025918,
+     "high": 1.2112366888782398
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 2.1675038797505617,
+     "high": 2.1674058254683053
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.008271887989243774,
+     "usd_per_run_high": 0.010895950076411679,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.49631327935462644,
+     "high": 0.6537570045847008
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 6 samples",
+      "m about 8 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 2.1675038797505617,
+     "high": 2.1674058254683053
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.013095624504962681,
+     "usd_per_run_high": 0.017607750520602646,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.7857374702977609,
+     "high": 1.0564650312361588
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.04615482034369864,
+     "usd_per_run_high": 0.0576935254296233,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 2.769289220621918,
+     "high": 3.461611525777398
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 2.1675038797505617,
+     "high": 2.1674058254683053
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.009435068623871898,
+     "usd_per_run_high": 0.012349925869696835,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.5661041174323139,
+     "high": 0.7409955521818101
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 2.1675038797505617,
+     "high": 2.1674058254683053
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.014393492337045295,
+     "usd_per_run_high": 0.019230085310705913,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.8636095402227177,
+     "high": 1.1538051186423548
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.0587539200900693,
+     "usd_per_run_high": 0.07344240011258663,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 3.525235205404158,
+     "high": 4.4065440067551975
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.5198266372244347,
+     "high": 1.5197556093543052
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.26754870239943856,
+     "high": 0.2875679456342891
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 1.5198266372244347,
+     "high": 1.5197556093543052
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.47281343469803605,
+     "high": 0.5173893507164107
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 0.5268939693831903,
+     "high": 0.658617461728988
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.0264355162992462,
+     "high": 2.026340812472407
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.3567316031992514,
+     "high": 0.38342392751238547
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 2.0264355162992462,
+     "high": 2.026340812472407
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6304179129307147,
+     "high": 0.6898524676218808
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 0.7025252925109206,
+     "high": 0.8781566156386507
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.4269264127970056,
+     "high": 1.5336957100495419
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.521671651722859,
+     "high": 2.759409870487523
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 2.810101170043682,
+     "high": 3.5126264625546026
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change (core: 3 readings of the added fact, a third of the files)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.002815848484848485,
+     "usd_per_run_high": 0.002815848484848485,
+     "extrapolated": false,
+     "notes": [
+      "priced as one first-reading call of the benchmark"
+     ],
+     "low": 0.6758036363636364,
+     "high": 0.6758036363636364
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.0264355162992462,
+     "high": 2.026340812472407
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.3567316031992514,
+     "high": 0.38342392751238547
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "self_consistency",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 3 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "no stored frontier run of self-consistency; priced equal to the core by construction"
+     ],
+     "low": 2.0264355162992462,
+     "high": 2.026340812472407
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6304179129307147,
+     "high": 0.6898524676218808
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "react",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.011708754875182008,
+     "usd_per_run_high": 0.014635943593977511,
+     "extrapolated": true,
+     "notes": [
+      "estimate: cost-efficient ReAct tokens at frontier token prices"
+     ],
+     "low": 0.7025252925109206,
+     "high": 0.8781566156386507
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.13023416981560465,
+     "high": 0.1972560207438242
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.4343820849080118,
+     "high": 0.7369831813840355
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.009812984148100026,
+     "high": 0.016604321822610183
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.010277426088248868,
+     "high": 0.030657713959363085
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.046941600071751,
+     "high": 1.5179712672953425
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 3.776572319490662,
+     "high": 5.898903347737843
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07240421300840372,
+     "high": 0.13519334814625483
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07626644729997183,
+     "high": 0.2788092106452045
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (short)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 1384,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 6.1007421517902936,
+     "high": 6.100382442211494
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (medium)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 240,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 2.604683396312093,
+     "high": 3.9451204148764845
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (long)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.41890956662140993,
+     "high": 0.44132305777192804
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.0735973811107502,
+     "high": 0.12453241366957638
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.038540347830933255,
+     "high": 0.11496642734761157
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.28777830692136,
+     "high": 2.28764341582931
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [
+      "m = 15 samples at short/this level"
+     ],
+     "low": 0.9767562736170349,
+     "high": 1.4794201555786817
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level"
+     ],
+     "low": 1.6289328184050442,
+     "high": 2.7636869301901332
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6336367341439436,
+     "high": 0.6776402516903972
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0012349531814712389,
+     "usd_per_run_high": 0.0022534250706459677,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.1111457863324115,
+     "high": 0.2028082563581371
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.001286332528208788,
+     "usd_per_run_high": 0.00452187354122893,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.05788496376939546,
+     "high": 0.20348430935530185
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.623067714325658,
+     "high": 0.623067714325658
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0013018053051345054,
+     "usd_per_run_high": 0.0016272566314181319,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.11716247746210548,
+     "high": 0.14645309682763186
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.0016716006705389263,
+     "usd_per_run_high": 0.002089500838173658,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07522203017425169,
+     "high": 0.09402753771781461
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 6.079306548897739,
+     "high": 6.079022437417221
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 3.1408248002152535,
+     "high": 4.5539138018860275
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 5.664858479235994,
+     "high": 8.848355021606764
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.0701948095977543,
+     "high": 1.1502717825371565
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.21721263902521115,
+     "high": 0.40558004443876444
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.11439967094995773,
+     "high": 0.4182138159678067
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.8912537387921442,
+     "high": 2.0695574028656427
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.01060533088303856,
+     "usd_per_run_high": 0.02154873606042018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.38179191178938815,
+     "high": 0.7757544981751265
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.010964451778062975,
+     "usd_per_run_high": 0.047750381109140025,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.19736013200513355,
+     "high": 0.8595068599645205
+    }
+   ]
+  },
+  "C": {
+   "totals": {
+    "low": 137.59984295131326,
+    "high": 181.7329632783109,
+    "by_model": {
+     "gpt-6-luna": {
+      "low": 55.70247294532462,
+      "high": 71.598417814503
+     },
+     "gpt-6.1-terra": {
+      "low": 81.89737000598863,
+      "high": 110.1345454638079
+     }
+    },
+    "by_design": {
+     "core": {
+      "low": 88.48521239431153,
+      "high": 117.07239965160812
+     },
+     "hold_prompt": {
+      "low": 9.60101767538881,
+      "high": 12.989421510057067
+     },
+     "self_consistency": {
+      "low": 19.196434901127112,
+      "high": 24.529439039171116
+     },
+     "mer": {
+      "low": 15.766612400970745,
+      "high": 22.122483547797536
+     },
+     "react": {
+      "low": 4.5505655795150375,
+      "high": 5.019219529677085
+     }
+    },
+    "by_phase": {
+     "sealed test": {
+      "low": 88.73492577479617,
+      "high": 116.62575222924931
+     },
+     "fourth regime": {
+      "low": 4.458942403280942,
+      "high": 4.560268734877564
+     },
+     "development": {
+      "low": 44.40597477323613,
+      "high": 60.546942314184015
+     }
+    }
+   },
+   "top5": [
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "low": 18.882861597453314,
+     "high": 29.494516738689214
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (short)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 1384.0,
+     "low": 6.1007421517902936,
+     "high": 6.100382442211494
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 180.0,
+     "low": 6.079306548897739,
+     "high": 6.079022437417221
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 18.0,
+     "low": 5.664858479235994,
+     "high": 8.848355021606764
+    }
+   ],
+   "items": [
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.38743081306026356,
+     "high": 0.4081600534306849
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5860224130811039,
+     "high": 0.6267193079217546
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5762475970641924,
+     "high": 0.5762475970641924
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.3023416981560465,
+     "high": 1.9725602074382422
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.09812984148100026,
+     "high": 0.16604321822610185
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [
+      "m = 15 samples at short/this level"
+     ],
+     "low": 1.3023416981560465,
+     "high": 1.9725602074382422
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0012349531814712389,
+     "usd_per_run_high": 0.0022534250706459677,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.14819438177654867,
+     "high": 0.27041100847751615
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0013018053051345054,
+     "usd_per_run_high": 0.0016272566314181319,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.15621663661614066,
+     "high": 0.1952707957701758
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.10277426088248867,
+     "high": 0.30657713959363087
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level"
+     ],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.001286332528208788,
+     "usd_per_run_high": 0.00452187354122893,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.15435990338505456,
+     "high": 0.5426248249474716
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "long",
+     "usd_per_run_low": 0.0016716006705389263,
+     "usd_per_run_high": 0.002089500838173658,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.20059208046467117,
+     "high": 0.25074010058083895
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0010868974490971803,
+     "usd_per_run_high": 0.001412604208169448,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.13042769389166164,
+     "high": 0.16951250498033377
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "m about 10 samples",
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 6 samples",
+      "m about 8 samples",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.001520175085024785,
+     "usd_per_run_high": 0.002006200353261843,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.18242101020297422,
+     "high": 0.24074404239142116
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004854371309278209,
+     "usd_per_run_high": 0.006067964136597761,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.582524557113385,
+     "high": 0.7281556963917314
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012267724100413298,
+     "usd_per_run_high": 0.0015874479093496347,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.14721268920495958,
+     "high": 0.19049374912195616
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.004662659495682665,
+     "usd_per_run_high": 0.0046623928298704966,
+     "extrapolated": false,
+     "notes": [
+      "m about 2 samples",
+      "m about 4 samples",
+      "m about 5 samples",
+      "m about 7 samples",
+      "m about 9 samples",
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 0.5595191394819198,
+     "high": 0.5594871395844596
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0016694371498380209,
+     "usd_per_run_high": 0.002192777934278388,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.2003324579805625,
+     "high": 0.26313335211340655
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.006190816823480329,
+     "usd_per_run_high": 0.007738521029350411,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.7428980188176395,
+     "high": 0.9286225235220493
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.39672456189387745,
+     "high": 0.3967011703750249
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.07264327744879942,
+     "high": 0.07653001001825342
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 0.39672456189387745,
+     "high": 0.3967011703750249
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.10987920245270698,
+     "high": 0.117509870235329
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 90.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.10804642444953608,
+     "high": 0.10804642444953608
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.3803473713632646,
+     "high": 2.3802070222501492
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.43585966469279647,
+     "high": 0.4591800601095205
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.3803473713632646,
+     "high": 2.3802070222501492
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6592752147162418,
+     "high": 0.705059221411974
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 540.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6482785466972164,
+     "high": 0.6482785466972164
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.38743081306026356,
+     "high": 0.4081600534306849
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.11586433010068,
+     "high": 2.115739575333466
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5860224130811039,
+     "high": 0.6267193079217546
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.5762475970641924,
+     "high": 0.5762475970641924
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change (core: 3 readings of the added fact, a third of the files)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 480.0,
+     "level": "short",
+     "usd_per_run_low": 0.0003519210285714286,
+     "usd_per_run_high": 0.0003519210285714286,
+     "extrapolated": false,
+     "notes": [
+      "priced as one first-reading call of the benchmark"
+     ],
+     "low": 0.1689220937142857,
+     "high": 0.1689220937142857
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.52896608252517,
+     "high": 0.5289348938333664
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.09685770326506589,
+     "high": 0.10204001335767122
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 0.52896608252517,
+     "high": 0.5289348938333664
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.14650560327027598,
+     "high": 0.15667982698043864
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 120.0,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.1440618992660481,
+     "high": 0.1440618992660481
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 8.105742065196985,
+     "high": 8.105363249889628
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.4269264127970056,
+     "high": 1.5336957100495419
+    },
+    {
+     "phase": "sealed test",
+     "item": "open_share",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.521671651722859,
+     "high": 2.759409870487523
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 5.234708000358756,
+     "high": 7.589856336476712
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.3620210650420186,
+     "high": 0.675966740731274
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_medium",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "medium",
+     "usd_per_run_low": 0.01060533088303856,
+     "usd_per_run_high": 0.02154873606042018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.6363198529823136,
+     "high": 1.292924163625211
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 18.882861597453314,
+     "high": 29.494516738689214
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.3813322364998591,
+     "high": 1.3940460532260224
+    },
+    {
+     "phase": "sealed test",
+     "item": "length_long",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "long",
+     "usd_per_run_low": 0.010964451778062975,
+     "usd_per_run_high": 0.047750381109140025,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.6578671066837785,
+     "high": 2.8650228665484017
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 2.1675038797505617,
+     "high": 2.1674058254683053
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.008271887989243774,
+     "usd_per_run_high": 0.010895950076411679,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.49631327935462644,
+     "high": 0.6537570045847008
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_3",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.013095624504962681,
+     "usd_per_run_high": 0.017607750520602646,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.7857374702977609,
+     "high": 1.0564650312361588
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.03612506466250936,
+     "usd_per_run_high": 0.036123430424471754,
+     "extrapolated": false,
+     "notes": [
+      "one routing-sized call added for the larger catalogue"
+     ],
+     "low": 2.1675038797505617,
+     "high": 2.1674058254683053
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.009435068623871898,
+     "usd_per_run_high": 0.012349925869696835,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.5661041174323139,
+     "high": 0.7409955521818101
+    },
+    {
+     "phase": "sealed test",
+     "item": "catalogue_4",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.014393492337045295,
+     "usd_per_run_high": 0.019230085310705913,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.8636095402227177,
+     "high": 1.1538051186423548
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.5198266372244347,
+     "high": 1.5197556093543052
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.26754870239943856,
+     "high": 0.2875679456342891
+    },
+    {
+     "phase": "sealed test",
+     "item": "twins",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 45.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.47281343469803605,
+     "high": 0.5173893507164107
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.0264355162992462,
+     "high": 2.026340812472407
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.3567316031992514,
+     "high": 0.38342392751238547
+    },
+    {
+     "phase": "sealed test",
+     "item": "repeats",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6304179129307147,
+     "high": 0.6898524676218808
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.4269264127970056,
+     "high": 1.5336957100495419
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.521671651722859,
+     "high": 2.759409870487523
+    },
+    {
+     "phase": "sealed test",
+     "item": "rule_change (core: 3 readings of the added fact, a third of the files)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 240.0,
+     "level": "short",
+     "usd_per_run_low": 0.002815848484848485,
+     "usd_per_run_high": 0.002815848484848485,
+     "extrapolated": false,
+     "notes": [
+      "priced as one first-reading call of the benchmark"
+     ],
+     "low": 0.6758036363636364,
+     "high": 0.6758036363636364
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 2.0264355162992462,
+     "high": 2.026340812472407
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.3567316031992514,
+     "high": 0.38342392751238547
+    },
+    {
+     "phase": "fourth regime",
+     "item": "fourth regime",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 60.0,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6304179129307147,
+     "high": 0.6898524676218808
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.13023416981560465,
+     "high": 0.1972560207438242
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.4343820849080118,
+     "high": 0.7369831813840355
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.009812984148100026,
+     "high": 0.016604321822610183
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.010277426088248868,
+     "high": 0.030657713959363085
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 1.046941600071751,
+     "high": 1.5179712672953425
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 3.776572319490662,
+     "high": 5.898903347737843
+    },
+    {
+     "phase": "development",
+     "item": "pilot (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07240421300840372,
+     "high": 0.13519334814625483
+    },
+    {
+     "phase": "development",
+     "item": "pilot (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 12,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07626644729997183,
+     "high": 0.2788092106452045
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (short)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 1384,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [],
+     "low": 6.1007421517902936,
+     "high": 6.100382442211494
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (medium)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 240,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 2.604683396312093,
+     "high": 3.9451204148764845
+    },
+    {
+     "phase": "development",
+     "item": "luna_core (long)",
+     "design": "core",
+     "model": "gpt-6-luna",
+     "runs": 120,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [],
+     "low": 4.343820849080118,
+     "high": 7.369831813840355
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0008071475272088824,
+     "usd_per_run_high": 0.0008503334446472602,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.41890956662140993,
+     "high": 0.44132305777192804
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0008177486790083355,
+     "usd_per_run_high": 0.0013836934852175153,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.0735973811107502,
+     "high": 0.12453241366957638
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.000856452174020739,
+     "usd_per_run_high": 0.0025548094966135904,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.038540347830933255,
+     "high": 0.11496642734761157
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0044080506877097496,
+     "usd_per_run_high": 0.004407790781944721,
+     "extrapolated": false,
+     "notes": [
+      "m about 11 samples",
+      "m about 14 samples",
+      "m about 3 samples",
+      "m about 6 samples",
+      "m about 8 samples"
+     ],
+     "low": 2.28777830692136,
+     "high": 2.28764341582931
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.01085284748463372,
+     "usd_per_run_high": 0.016438001728652018,
+     "extrapolated": true,
+     "notes": [
+      "m = 15 samples at short/this level"
+     ],
+     "low": 0.9767562736170349,
+     "high": 1.4794201555786817
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "self_consistency",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.03619850707566765,
+     "usd_per_run_high": 0.06141526511533629,
+     "extrapolated": true,
+     "notes": [
+      "m = 48 samples at short/this level"
+     ],
+     "low": 1.6289328184050442,
+     "high": 2.7636869301901332
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0012208800272522997,
+     "usd_per_run_high": 0.0013056652248369888,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.6336367341439436,
+     "high": 0.6776402516903972
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0012349531814712389,
+     "usd_per_run_high": 0.0022534250706459677,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.1111457863324115,
+     "high": 0.2028082563581371
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "mer",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.001286332528208788,
+     "usd_per_run_high": 0.00452187354122893,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.05788496376939546,
+     "high": 0.20348430935530185
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (short)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 519,
+     "level": "short",
+     "usd_per_run_low": 0.0012005158272170675,
+     "usd_per_run_high": 0.0012005158272170675,
+     "extrapolated": false,
+     "notes": [],
+     "low": 0.623067714325658,
+     "high": 0.623067714325658
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (medium)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 90,
+     "level": "medium",
+     "usd_per_run_low": 0.0013018053051345054,
+     "usd_per_run_high": 0.0016272566314181319,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.11716247746210548,
+     "high": 0.14645309682763186
+    },
+    {
+     "phase": "development",
+     "item": "luna_baselines (long)",
+     "design": "react",
+     "model": "gpt-6-luna",
+     "runs": 45,
+     "level": "long",
+     "usd_per_run_low": 0.0016716006705389263,
+     "usd_per_run_high": 0.002089500838173658,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.07522203017425169,
+     "high": 0.09402753771781461
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.033773925271654105,
+     "usd_per_run_high": 0.033772346874540116,
+     "extrapolated": false,
+     "notes": [],
+     "low": 6.079306548897739,
+     "high": 6.079022437417221
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.0872451333393126,
+     "usd_per_run_high": 0.1264976056079452,
+     "extrapolated": true,
+     "notes": [],
+     "low": 3.1408248002152535,
+     "high": 4.5539138018860275
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "core",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.3147143599575552,
+     "usd_per_run_high": 0.49157527897815356,
+     "extrapolated": true,
+     "notes": [],
+     "low": 5.664858479235994,
+     "high": 8.848355021606764
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.005945526719987523,
+     "usd_per_run_high": 0.006390398791873091,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.0701948095977543,
+     "high": 1.1502717825371565
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.006033684417366976,
+     "usd_per_run_high": 0.011266112345521235,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.21721263902521115,
+     "high": 0.40558004443876444
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "hold_prompt",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.006355537274997652,
+     "usd_per_run_high": 0.023234100887100373,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.11439967094995773,
+     "high": 0.4182138159678067
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (short)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 180,
+     "level": "short",
+     "usd_per_run_low": 0.010506965215511912,
+     "usd_per_run_high": 0.011497541127031347,
+     "extrapolated": false,
+     "notes": [],
+     "low": 1.8912537387921442,
+     "high": 2.0695574028656427
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (medium)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 36,
+     "level": "medium",
+     "usd_per_run_low": 0.01060533088303856,
+     "usd_per_run_high": 0.02154873606042018,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.38179191178938815,
+     "high": 0.7757544981751265
+    },
+    {
+     "phase": "development",
+     "item": "terra_gates (long)",
+     "design": "mer",
+     "model": "gpt-6.1-terra",
+     "runs": 18,
+     "level": "long",
+     "usd_per_run_low": 0.010964451778062975,
+     "usd_per_run_high": 0.047750381109140025,
+     "extrapolated": true,
+     "notes": [],
+     "low": 0.19736013200513355,
+     "high": 0.8595068599645205
+    }
+   ]
+  }
+ },
+ "option_A_core_halved": {
+  "totals": {
+   "low": 201.91130932117795,
+   "high": 262.3301887558903,
+   "by_model": {
+    "gpt-6-luna": {
+     "low": 33.11931153590936,
+     "high": 42.13297583041247
+    },
+    "gpt-6.1-terra": {
+     "low": 168.79199778526853,
+     "high": 220.19721292547774
+    }
+   },
+   "by_design": {
+    "core": {
+     "low": 65.64601656150415,
+     "high": 86.42259424913152
+    },
+    "hold_prompt": {
+     "low": 15.241653108109583,
+     "high": 20.57599408153902
+    },
+    "self_consistency": {
+     "low": 59.83497660809365,
+     "high": 75.46706797976648
+    },
+    "mer": {
+     "low": 25.487138935162502,
+     "high": 35.906614754784876
+    },
+    "react": {
+     "low": 35.70152410830808,
+     "high": 43.957917690668395
+    }
+   },
+   "by_phase": {
+    "sealed test": {
+     "low": 168.26463950911545,
+     "high": 218.78522728707682
+    },
+    "fourth regime": {
+     "low": 8.348611938206826,
+     "high": 8.887264279928173
+    },
+    "development": {
+     "low": 25.298057873855658,
+     "high": 34.657697188885265
+    }
+   }
+  },
+  "top5": [
+   {
+    "phase": "sealed test",
+    "item": "length_long",
+    "design": "core",
+    "model": "gpt-6.1-terra",
+    "runs": 120.0,
+    "low": 18.882861597453314,
+    "high": 29.494516738689214
+   },
+   {
+    "phase": "sealed test",
+    "item": "length_long",
+    "design": "self_consistency",
+    "model": "gpt-6.1-terra",
+    "runs": 120.0,
+    "low": 18.882861597453314,
+    "high": 29.494516738689214
+   },
+   {
+    "phase": "sealed test",
+    "item": "open_share",
+    "design": "core",
+    "model": "gpt-6.1-terra",
+    "runs": 480.0,
+    "low": 8.105742065196985,
+    "high": 8.105363249889628
+   },
+   {
+    "phase": "sealed test",
+    "item": "open_share",
+    "design": "self_consistency",
+    "model": "gpt-6.1-terra",
+    "runs": 480.0,
+    "low": 8.105742065196985,
+    "high": 8.105363249889628
+   },
+   {
+    "phase": "sealed test",
+    "item": "rule_change",
+    "design": "self_consistency",
+    "model": "gpt-6.1-terra",
+    "runs": 480.0,
+    "low": 8.105742065196985,
+    "high": 8.105363249889628
+   }
+  ],
+  "note": "every core cost per run x 0.5 (rule-change readings and development included); self-consistency follows by construction"
+ }
+}
