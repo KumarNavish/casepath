@@ -18,7 +18,7 @@ from matplotlib.lines import Line2D  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 D = json.loads((HERE / "f6_data.json").read_text(encoding="utf-8"))
-RD = json.loads((HERE / "rerun_drift.json").read_text(encoding="utf-8"))
+RD_UNUSED = json.loads((HERE / "rerun_drift.json").read_text(encoding="utf-8"))
 WB = json.loads((HERE / "simple_theft_away.before.json").read_text(encoding="utf-8"))
 WA = json.loads((HERE / "simple_theft_away.after.json").read_text(encoding="utf-8"))
 
@@ -53,7 +53,7 @@ def t(ax, x, y, s, **kw):
 
 
 # ------------------------------------------------------------------------------------------------ workflow strip
-def workflow_strip(ax, x0, y, wf, w, label):
+def workflow_strip(ax, x0, y, wf, w, label, mark_edit=False):
     """The simple_theft_away graph as one row: steps on a line (branches as bumps that rejoin), documents as small
     squares under their step (solid = required, dashed = optional). Stop steps are short ticks downward."""
     order = ["a_event", "a_cover", "a_notify", "a_police", "a_traces", "a_instruction_check", "a_instruction", "a_loss"]
@@ -90,9 +90,8 @@ def workflow_strip(ax, x0, y, wf, w, label):
             edited = d == "police_report"
             ax.add_patch(Rectangle((x + dxd - 0.028, dy - 0.028), 0.056, 0.056, fc=PAPER, ec=INK,
                                    lw=1.3 if edited else 0.8, ls=(0, (1.6, 1.1)) if opt else "-", zorder=4))
-            if edited:
-                ax.text(x + 0.06, dy, "police report", fontsize=7, color=INK, va="center", ha="left",
-                        fontweight="semibold")
+            if edited and mark_edit:
+                ax.add_patch(Circle((x + dxd, dy), 0.058, fc="none", ec=INK, lw=1.0, zorder=5))
     t(ax, x0 - 0.12, y, label, ha="right", fontweight="semibold")
 
 
@@ -166,87 +165,102 @@ def hatched(ax, x, y, w, h, text):
 
 
 # ------------------------------------------------------------------------------------------------ figure a
+DX, DY, GAP = 0.08, 0.056, 0.2  # file column pitch, line pitch, gap between the two type blocks (inches)
+
+
+def blocks():
+    """File order and (block, column) per file: block 0 = simple theft away (routed, then not routed), 1 = at home."""
+    files = file_order()
+    first_home = next(i for i, f in enumerate(files) if f["type"] == "theft_at_home")
+    return files, [(0, i) if i < first_home else (1, i - first_home) for i in range(len(files))]
+
+
+def calls_rows(ax, x0, ytop, filled):
+    """One call mark per file at the file's matrix column; an empty sand baseline where no call is made."""
+    files, bc = blocks()
+    for b in (0, 1):
+        n = sum(1 for bb, _ in bc if bb == b)
+        y = ytop - b * 0.1
+        if filled:
+            for (bb, c) in bc:
+                if bb == b:
+                    ax.add_patch(Circle((x0 + c * DX, y), 0.022, fc=MODEL, ec="none", zorder=4))
+        else:
+            ax.add_line(Line2D([x0 - 0.02, x0 + (n - 1) * DX + 0.02], [y, y], color=SAND, lw=0.6, ls=(0, (1, 2))))
+
+
 def draw_a(stem):
     plt.rcParams["hatch.color"] = SAND
     plt.rcParams["hatch.linewidth"] = 0.4
-    W, H = 5.5, 4.0
+    W, H = 5.5, 3.6
     fig, ax = new_axes(W, H)
     M = D["measures"]
-    # columns
-    xl, xr = 0.55, 3.72
-    t(ax, 0.08, H - 0.12, "CasePath", fontweight="semibold", fontsize=8, ha="left")
-    t(ax, xr - 0.08, H - 0.12, "A prompt", fontweight="semibold", fontsize=8, ha="left")
-    ax.add_line(Line2D([xr - 0.2, xr - 0.2], [0.12, H - 0.05], color=SAND, lw=0.6))
-    # workflow before / after
-    workflow_strip(ax, xl, H - 0.42, WB, 2.55, "before")
-    workflow_strip(ax, xl, H - 0.86, WA, 2.55, "after")
-    t(ax, xl + 2.55 * 3 / 5 - 0.03, H - 1.08, '"optional": true → false', fontsize=7, family="DejaVu Sans Mono",
-      ha="left", color=INK)
-    # file grid
-    ytop = H - 1.36
-    files, pos = file_grid(ax, xl - 0.02, ytop)
-    # row label for the edited line and group brackets
-    t(ax, xl - 0.1, ytop - 2 * 0.062, "police\nreport", ha="right", fontsize=7, linespacing=1.0)
+    files, bc = blocks()
+    xl, xr = 0.5, 3.05            # left edge of the CasePath matrix and of the prompt frame (same size)
+    width = 28 * DX               # widest block has 29 files
+    # shared rule edit across the top
+    workflow_strip(ax, 1.0, H - 0.3, WB, 3.2, "before")
+    workflow_strip(ax, 1.0, H - 0.72, WA, 3.2, "after", mark_edit=True)
+    pol_x = 1.0 + 3.2 * 3 / 5
+    t(ax, pol_x - 0.12, H - 0.95, '"optional": true → false', fontsize=7, family="DejaVu Sans Mono", ha="left")
+    ax.add_line(Line2D([0.08, W - 0.08], [H - 1.07, H - 1.07], color=SAND, lw=0.6))
+    # design headers, calls, matrices
+    yh, yc, ym = H - 1.22, H - 1.42, H - 1.74
+    t(ax, xl - 0.42, yh, "CasePath", ha="left", fontweight="semibold", fontsize=8)
+    t(ax, xr, yh, "single prompt", ha="left", fontweight="semibold", fontsize=8)
+    calls_rows(ax, xl, yc, filled=False)
+    calls_rows(ax, xr, yc, filled=True)
+    t(ax, xl + width + 0.02, yh, "0 calls", ha="right", fontsize=7)
+    t(ax, xr + width + 0.02, yh, f"{M['files']} calls", ha="right", fontsize=7)
+    ax.add_line(Line2D([2.93, 2.93], [0.62, H - 1.12], color=SAND, lw=0.6))
+    for f, (b, c) in zip(files, bc):
+        X = xl + c * DX
+        Y0 = ym - b * (len(ORDER) * DY + GAP)
+        docs = {l["document"]: l for l in f["lines"]}
+        for j, d in enumerate(ORDER):
+            if d in docs:
+                kind, st = line_mark(docs[d])
+                draw_mark(ax, X, Y0 - j * DY, kind, st, s=0.046)
+    t(ax, xl - 0.07, ym - 2 * DY, "police\nreport", ha="right", fontsize=7, linespacing=1.0)
     groups = Counter((f["type"], f["routed"] is not None) for f in files)
-    for r, (tp, name) in enumerate((("simple_theft_away", "theft away (edited workflow)"), ("theft_at_home", "theft at home"))):
-        a, b = 0, groups[(tp, True)] - 1
-        ya = ytop - r * (len(ORDER) * 0.062 + 0.22) - len(ORDER) * 0.062 + 0.01
-        for lo, hi, lab, col in ((a, b, f"{name}: {groups[(tp, True)]} files", INK),
-                                 (b + 1, b + groups[(tp, False)], f"not routed: {groups[(tp, False)]}", SAND)):
-            x1 = xl - 0.02 + lo * 0.1 - 0.03
-            x2 = xl - 0.02 + hi * 0.1 + 0.03
-            ax.add_line(Line2D([x1, x2], [ya, ya], color=col, lw=0.7))
-            t(ax, (x1 + x2) / 2 if col == INK else x2, ya - 0.075, lab, ha="center" if col == INK else "right", fontsize=7)
-    # measured legend with counts
-    ly = 0.78
-    unrouted = sum(len(f["lines"]) for f in files if f["routed"] is None)
-    n_unrouted = sum(1 for f in files if f["routed"] is None)
-    other_doc = sum(1 for f in files for l in f["lines"]
-                    if l["stored_before"] != l["stored_after"] and l["document"] != "police_report")
-    rows = [("exact", "request", f"{M['changed_and_should_same_new_state']} lines changed as the edited rule requires"),
-            ("collateral", "request", f"{M.get('collateral_changed_should_not', 0)} changed, should not: report on file, stored finding rejected"),
-            ("missed", "hold", f"{M.get('missed_should_change_did_not', 0)} should have become a hold, did not: file not routed"),
-            ("same", None, f"{M['lines_total'] - unrouted - M['lines_changed']} unchanged; {other_doc} changed on any other document"),
-            ("unrouted", None, f"{unrouted - M.get('missed_should_change_did_not', 0)} more in {n_unrouted} files not routed (no checklist)")]
-    for k, (kind, st, lab) in enumerate(rows):
-        yy = ly - k * 0.135
-        draw_mark(ax, 0.2, yy, kind, st)
-        t(ax, 0.32, yy, lab, ha="left")
-    t(ax, 0.08, ly + 0.19, f"{M['files_checklist_changed']} of {M['files']} files, {M['lines_changed']} of {M['lines_total']} lines changed;"
-      f"  0 model calls", ha="left", fontweight="semibold")
-    # right: the prompt
-    prompt_grid(ax, xr, H - 0.45, M["files"])
-    t(ax, xr, H - 0.45 - 4 * 0.104 - 0.02, f"{M['files']} calls, one per file", ha="left")
-    hatched(ax, xr - 0.05, H - 1.55, 1.72, 0.48, "lines changed by the edit:\nnot yet measured")
-    # measured: same file read again, no edit (Study 3 files, theft)
-    p = RD["designs"]["hold_prompt"]["theft"]
-    c = RD["designs"]["casepath"]["theft"]
-    bars = [(p["lines_different"] / p["lines_compared"], MODEL, "fill", "prompt, read again"),
-            (c["lines_different"] / c["lines_compared"], MODEL, "hollow", "CasePath, read again"),
-            (M.get("collateral_changed_should_not", 0) / M["lines_total"], INK, "fill", "CasePath, rule edit")]
-    by, bx, scale = 1.8, xr + 0.02, 1.3 / 0.07  # 7 % of lines = 1.3 in
-    t(ax, xr - 0.05, by + 0.3, "share of lines changed\nthat no rule asked for", ha="left", fontweight="semibold",
-      linespacing=1.1)
-    for k, (v, col, style, lab) in enumerate(bars):
-        yy = by - k * 0.34
-        t(ax, bx, yy + 0.1, lab, ha="left", fontsize=7)
-        ax.add_patch(Rectangle((bx, yy - 0.045), max(v * scale, 0.012), 0.09, fc=col if style == "fill" else PAPER, ec=col, lw=0.9))
-        t(ax, bx + v * scale + 0.05, yy, f"{100 * v:.1f} %", ha="left")
-    ax.add_line(Line2D([bx, bx], [by - 2 * 0.34 - 0.1, by + 0.08], color=INK, lw=0.6))
-    t(ax, xr - 0.05, by - 1.03, "read again: same file, same rules,\nno edit (Study 3 theft files,\n384 pairs of runs per design)",
-      ha="left", fontsize=7, linespacing=1.1)
-    # graph symbols
-    gy = 0.3
-    gx = xr - 0.05
-    r = 0.04
-    ax.add_patch(Polygon([(gx + 0.04, gy + r), (gx + 0.04 + r, gy), (gx + 0.04, gy - r), (gx + 0.04 - r, gy)], fc=PAPER, ec=INK, lw=0.9))
-    t(ax, gx + 0.13, gy, "fact decides", ha="left")
-    ax.add_patch(Circle((gx + 0.04, gy - 0.15), 0.022, fc=PAPER, ec=INK, lw=0.9))
-    t(ax, gx + 0.13, gy - 0.15, "step", ha="left")
-    ax.add_patch(Rectangle((gx + 0.82, gy - 0.028), 0.056, 0.056, fc=PAPER, ec=INK, lw=0.8))
-    t(ax, gx + 0.93, gy, "required", ha="left")
-    ax.add_patch(Rectangle((gx + 0.82, gy - 0.15 - 0.028), 0.056, 0.056, fc=PAPER, ec=INK, lw=0.8, ls=(0, (1.6, 1.1))))
-    t(ax, gx + 0.93, gy - 0.15, "optional", ha="left")
+    for b, (tp, name) in enumerate((("simple_theft_away", "theft away"), ("theft_at_home", "theft at home"))):
+        ya = ym - b * (len(ORDER) * DY + GAP) - len(ORDER) * DY + 0.015
+        n1, n2 = groups[(tp, True)], groups[(tp, False)]
+        for lo, hi, lab, col, ha in ((0, n1 - 1, f"{name} · {n1} files", INK, "center"),
+                                     (n1, n1 + n2 - 1, f"not routed · {n2}", SAND, "right")):
+            x1, x2 = xl + lo * DX - 0.025, xl + hi * DX + 0.025
+            ax.add_line(Line2D([x1, x2], [ya, ya], color=col, lw=0.6))
+            t(ax, (x1 + x2) / 2 if ha == "center" else x2, ya - 0.065, lab, ha=ha, fontsize=7)
+    # the prompt's matrix: same size and place, not yet measured
+    top = ym + DY / 2 + 0.02
+    bottom = ym - (len(ORDER) * DY + GAP) - (len(ORDER) - 1) * DY - DY / 2 - 0.02
+    ax.add_patch(Rectangle((xr - 0.04, bottom), width + 0.08, top - bottom, fc="none", ec=SAND, lw=0.8, hatch="/////"))
+    ax.add_patch(FancyBboxPatch((xr + width / 2 - 0.55, (top + bottom) / 2 - 0.09), 1.1, 0.18,
+                                boxstyle="round,pad=0,rounding_size=0.03", fc=PAPER, ec="none", zorder=2))
+    t(ax, xr + width / 2, (top + bottom) / 2, "not yet measured", ha="center", zorder=3)
+    # count line and short legend
+    t(ax, 0.08, 0.5, f"{M['lines_changed']} of {M['lines_total']} lines changed · 0 model calls", ha="left",
+      fontweight="semibold")
+    items = [("exact", "request", "changed as required"), ("collateral", "request", "changed, should not"),
+             ("missed", "hold", "should change, did not"), ("same", None, "unchanged"), ("unrouted", None, "not routed")]
+    XS = [0.2, 1.4, 2.6, 3.95, 4.7]
+    for x, (kind, st, lab) in zip(XS, items):
+        draw_mark(ax, x, 0.3, kind, st, s=0.046)
+        t(ax, x + 0.09, 0.3, lab, ha="left")
+    gy = 0.12
+    r = 0.035
+    ax.add_patch(Polygon([(0.2, gy + r), (0.2 + r, gy), (0.2, gy - r), (0.2 - r, gy)], fc=PAPER, ec=INK, lw=0.9))
+    t(ax, 0.29, gy, "fact decides", ha="left")
+    ax.add_patch(Circle((1.4, gy), 0.02, fc=PAPER, ec=INK, lw=0.9))
+    t(ax, 1.49, gy, "step", ha="left")
+    ax.add_patch(Rectangle((2.6 - 0.025, gy - 0.025), 0.05, 0.05, fc=PAPER, ec=INK, lw=0.8))
+    t(ax, 2.69, gy, "required", ha="left")
+    ax.add_patch(Rectangle((3.25 - 0.025, gy - 0.025), 0.05, 0.05, fc=PAPER, ec=INK, lw=0.8, ls=(0, (1.6, 1.1))))
+    t(ax, 3.34, gy, "optional", ha="left")
+    ax.add_patch(Circle((3.95, gy), 0.058, fc="none", ec=INK, lw=1.0))
+    t(ax, 4.06, gy, "edited", ha="left")
+    ax.add_patch(Circle((4.7, gy), 0.022, fc=MODEL, ec="none"))
+    t(ax, 4.79, gy, "model call", ha="left")
     for ext in ("svg", "pdf", "png"):
         fig.savefig(HERE / f"{stem}.{ext}", dpi=300 if ext == "png" else None, facecolor=PAPER)
     plt.close(fig)

@@ -27,18 +27,13 @@ again, **because** CasePath stores one reading per fact and the rules are data.
 - Model calls: **0**. How known: `compute.py` imports no model client and opens no connection; it reads stored records
   (gzip JSON) and calls the pure function `workflows.evaluate`. The stored runs it reuses cost 581 calls once.
 
-## 3. Formal / not yet measured / measured (right)
+## 3. Formal / not yet measured (right, revision 2)
 - **Formal**: a single prompt stores no per-fact reading, so after any edit it must read every file again: one call per
-  file, **56 calls** (one call per case-run confirmed in the cost-efficient model's ledger under `study4/baseline_check/runs/`: 672 calls
-  for 224 cases × 3 runs).
-- **Not yet measured**: the prompt's exact and collateral changes after this edit (hatched empty box).
-- **Measured, labelled for what it is** (`rerun_drift.py` → `rerun_drift.json`; Study 3 fresh2 files, stored runs, same
-  file, same rules, no edit): share of checklist lines that differ between two runs.
-  Prompt that may hold, theft: 829 of 12,672 line comparisons (6.5 %; 341 of 384 run pairs differ); tenancy 258 of
-  3,072 (8.4 %). CasePath itself, if it reads again: theft 748 of 12,672 (5.9 %), tenancy 187 of 3,072 (6.1 %). Shown
-  beside them: CasePath's collateral under the edit, 1 of 421 (0.2 %, Study 4 dev files: different files, not matched).
-  CasePath's re-read drift is drawn so the figure does not imply that CasePath's readings are stable; the gain comes from
-  not reading again.
+  file, **56 calls**, drawn as one blue dot per file at that file's matrix column; CasePath's call row is drawn empty
+  ("0 calls"). One call per case-run confirmed in the cost-efficient model's ledger under `study4/baseline_check/runs/`.
+- **Not yet measured**: the prompt's changed lines after this edit: the same files × lines matrix, same size and place,
+  as a hatched sand frame.
+- Planner's decision: re-read drift (`rerun_drift.json`, kept as data) belongs to Figure 7 and is not drawn here.
 
 ## 4. Two constructions
 - **a (kept, `f6.svg`)**: workflow strip before/after with the one changed node; every file as a column of its
@@ -60,37 +55,31 @@ again, **because** CasePath stores one reading per fact and the rules are data.
 ## 6. Encoding
 | Mark | Meaning | Evidence |
 |---|---|---|
-| Diamond / circle / square in strip | fact decides / step / document (solid required, dashed optional) | workflow JSON copies |
+| Strip, drawn once for both designs | the workflow before / after; diamond = fact decides, circle = step, square = document (solid required, dashed optional) | workflow JSON copies |
+| Ink ring | the one edited node | diff of the copies (line 379) |
 | Grid column | one file; dot = one checklist line, rows in fixed catalogue order | f6_data.json |
-| Sand dot | line unchanged | replay |
-| Sand ring | line of a file the product did not route (no checklist) | stored plan |
+| Sand dot / sand ring | line unchanged / line of a file not routed (no checklist) | replay, stored plan |
 | Teal square | changed to request, as the reference changes | replay vs reference |
-| Teal square, rust ring | changed though the reference does not (collateral) | replay vs reference |
-| Amber outline square | should have become a hold, did not | reference |
-| Brackets | file groups by type and routing | design, stored plan |
-| Blue dot | one model call | formal; ledger |
-| Hatched box | not yet measured | none |
-| Bar length | share of lines changed that no rule asked for, linear, 7 % = 1.3 in | rerun_drift.json, f6_data.json |
-| Blue filled / hollow bar | prompt / CasePath reading again (model readings) | rerun_drift.json |
-| Ink bar | CasePath after the edit (code only) | f6_data.json |
+| Teal square, rust ring | changed, should not | replay vs reference |
+| Amber outline square | should change (to hold), did not | reference |
+| Blue dot | one model call; dotted sand rule = no call | formal; ledger |
+| Hatched sand frame | not yet measured | none |
 
 ## 7. Caption (≤ 45 words)
-One rule line made the police report required. From stored readings, code recomputed all 56 theft checklists with no
-model call: 15 lines changed, all police reports; 14 as the edited rule requires. A prompt must read all 56 files again;
-what that changes is not yet measured.
+One line made the police report required. From stored readings, code recomputed all 56 checklists with no model call;
+only police-report lines changed. One extra request: a report on file whose finding was rejected; one missed hold: a
+file never routed. A prompt reads every file again.
 
 Files: `f6.svg`, `f6.pdf`, `f6.png` (5.5 × 4.0 in), `f6.py`, `compute.py`, `rerun_drift.py`, `f6_data.json`,
 `rerun_drift.json`, `simple_theft_away.before.json`, `simple_theft_away.after.json`.
 
-## 8. Self-review (self-assessed)
-Scores: insight 4, fidelity 4, intuition 3, hierarchy 3, originality 4, composition 3, annotation 4, aesthetics 3,
-readiness 4, comprehensibility 3.
-- Weakest point: the right-hand bars mix file sets (Study 3 re-reads versus Study 4 edit) and the reader can take the
-  0.2 % against 6.5 % as a matched contrast. It is not; the footnote says so, but the bar layout invites it. Option for
-  the planner: drop the ink bar and keep only the two re-read bars.
-- Size 5.5 × 4.0 in (within 4.2 in). Text is heavier than the house rule wants (the legend carries the
-  counts); a cold reader may need it, so it stays for now.
-- One edit on one regime is one instance, not the rule-change experiment (a set of edits); it must not be read as that.
+## 8. Self-review (self-assessed, revision 2 after the planner's decisions)
+Scores: insight 4, fidelity 5, intuition 4, hierarchy 4, originality 4, composition 4, annotation 4, aesthetics 4,
+readiness 4, comprehensibility 4. Inspected at print size (5.5 × 3.6 in) and at 4× on the edited node.
+- Weakest point: the matrix marks are small (0.046 in); the 15 teal squares read as one row, but the two exceptions
+  depend on the legend and caption to be understood.
+- The workflow strip omits the two stop steps and the conditions of the last step's documents (schematic).
+- One edit in one regime is one instance, not the planned rule-change experiment (a set of edits).
 
 ## 9. A rule edit that adds a new fact (for the planner)
 CasePath must then read that fact in every file whose type uses it: by default 3 readings per file (plus a requote

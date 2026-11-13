@@ -831,11 +831,14 @@ def estimator_params(groups, sp, rs, adaptive, stages):
         # calls per file and output per file: linear in attachments and facts read (output also in words)
         fc = ols([[1, u["attachments"], u["n_facts_read"]] for u in luna], [u["stage"].get(s_, {}).get("calls", 0) for u in luna],
                  ["intercept", "attachments", "facts_read"])
-        fo = ols([[1, u["words"], u["attachments"], u["n_facts_read"]] for u in luna],
-                 [u["stage"].get(s_, {}).get("output", 0) for u in luna], ["intercept", "words", "attachments", "facts_read"])
+        fo = ols([[1, u["attachments"], u["n_facts_read"]] for u in luna],
+                 [u["stage"].get(s_, {}).get("output", 0) for u in luna], ["intercept", "attachments", "facts_read"])
+        fow = ols([[1, u["words"], u["attachments"], u["n_facts_read"]] for u in luna],
+                  [u["stage"].get(s_, {}).get("output", 0) for u in luna], ["intercept", "words", "attachments", "facts_read"])
         ti = sum(u["stage"][s_]["uncached"] + u["stage"][s_]["cached"] for u in withc)
         core[s_] = {"input_per_call": {"coef": fi["coef"], "r2": fi["r2"]}, "calls": {"coef": fc["coef"], "r2": fc["r2"]},
                     "output": {"coef": fo["coef"], "r2": fo["r2"]},
+                    "output_with_words (sensitivity)": {"coef": fow["coef"], "r2": fow["r2"]},
                     "cached_share": sum(u["stage"][s_]["cached"] for u in withc) / ti if ti else 0.0}
     ratio = {}
     paired = [(u, terra[u["case"]]) for u in luna if u["case"] in terra and u["regime"] == "tenancy"]
@@ -897,7 +900,7 @@ def _params():
     return PARAMS
 
 
-def core_cost(model, words_, n_att, n_facts, rule_tokens, policy):
+def core_cost(model, words_, n_att, n_facts, rule_tokens, policy, output_scales_with_words=False):
     P = _params()
     core, ratio = P["core_stage_tokens_luna"], P["frontier_over_cost_efficient_token_ratio_by_stage"]
     R1 = P["rule_text_tokens_one_regime"]
@@ -910,7 +913,11 @@ def core_cost(model, words_, n_att, n_facts, rule_tokens, policy):
         if s == "routing" and rule_tokens is not None:
             per_call += max(0.0, ip["base"]) * (rule_tokens / R1 - 1)
         inp = calls * per_call
-        out = max(0.0, o["intercept"] + o["words"] * words_ + o["attachments"] * n_att + o["facts_read"] * n_facts)
+        if output_scales_with_words:
+            o = m_["output_with_words (sensitivity)"]["coef"]
+            out = max(0.0, o["intercept"] + o["words"] * words_ + o["attachments"] * n_att + o["facts_read"] * n_facts)
+        else:
+            out = max(0.0, o["intercept"] + o["attachments"] * n_att + o["facts_read"] * n_facts)
         cs = m_["cached_share"]
         if s == "fact readings 2-3" and policy == "adaptive":
             any_re = 1 - (1 - p) ** max(n_facts, 1)

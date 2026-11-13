@@ -88,12 +88,11 @@ state, because that line is the only need whose rule names the fact the sentence
 | the changed need | ink rail + ink frame across both claims | diff |
 | a model's suggestion outside the rules | dashed blue square; ≠ when the two differ | agent_added_needs |
 
-## Palette (validator of the dataviz method, light, paper `#FBF8F1`, all pairs)
-The brief's values failed: blue `#2F5D9E` against indigo `#4B4A9C` (normal ΔE 5.7, deutan 3.0), teal chroma below the
-floor, and blue against teal (normal ΔE 13.5). Re-stepped, keeping the hues: **teal `#00846F`, blue `#3A7DD6`,
-indigo `#4E3F98`**, with rust `#B5482F` and amber `#D9962B` unchanged. This passes the lightness, chroma, CVD
-(worst 9.4) and normal-vision (worst 16.6) checks. Amber against paper warns at 2.37:1, so amber marks are always
-also told apart by shape (square = hold, circle = question). **All seven figures should use the re-stepped values.**
+## Palette
+The coordinator's update is used: teal `#008571`, blue `#4A8FD6`; amber `#D9962B`, rust `#B5482F`, indigo `#4B4A9C`
+unchanged. Validator (dataviz method, light, paper `#FBF8F1`, all pairs): lightness, chroma, CVD (worst 9.6) and
+normal-vision (worst 16.4) pass. Amber against paper warns at 2.37:1, so amber marks are also told apart by shape
+(square = hold, circle = question). This session's own re-step (`#00846F`, `#3A7DD6`, `#4E3F98`) is superseded.
 
 ## Caption (≤ 45 words)
 Two stored claims, one sentence apart: the second leaves open whether a third party caused the loss. Of 27 document

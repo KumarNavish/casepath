@@ -98,7 +98,7 @@ quoted.
 | checklist line | teal square = requested now; amber square + amber circle = held, with its question | plan_ids |
 | a model's suggestion outside the rules | blue dot, dashed blue line, dashed blue square | agent_added_needs |
 
-Palette: the re-stepped shared values (see `../f1/CONTRACT.md`): teal `#00846F`, blue `#3A7DD6`, amber `#D9962B`,
+Palette: the coordinator's shared values (see `../f1/CONTRACT.md`): teal `#008571`, blue `#4A8FD6`, amber `#D9962B`,
 ink `#1F2A44`, paper `#FBF8F1`.
 
 ## Caption (≤ 45 words)
