@@ -1256,8 +1256,11 @@ def texts(res):
 
     def risk(c):
         sq = c.get("first reading a quoted value", 0)
-        return (c.get("  ... nothing admitted after three readings", 0) + c.get("  ... readings 2 and 3 agree with each other against it", 0)
-                + c.get("  ... admitted value differs", 0)) / sq if sq else 0
+        return (sq - c.get("  ... equals the admitted value", 0)) / sq if sq else 0
+
+    def against(c):
+        sq = c.get("first reading a quoted value", 0)
+        return c.get("  ... readings 2 and 3 agree with each other against it", 0) / sq if sq else 0
     ad = res["adaptive_readings"]
     sav = [v["saving_share"] for k, v in ad.items() if k.startswith("lint/") and v.get("saving_share") is not None]
     sav3 = [v["saving_share"] for k, v in ad.items() if k.startswith("study3/") and v.get("saving_share") is not None]
@@ -1274,7 +1277,9 @@ def texts(res):
         f"{100 * min(sav3):.0f}-{100 * max(sav3):.0f} % on Study 3 (largest on theft, where readings of about 90 rule conditions "
         "are most of the cost). The risk: of the quoted first readings, "
         f"{100 * risk(a_l):.1f} % (cost-efficient) and {100 * risk(a_t):.1f} % (frontier) end differently after three readings "
-        "(nothing admitted, or readings 2 and 3 agreeing against the first); adaptive reading would admit those first values. "
+        "(nothing admitted, or another value admitted); adaptive reading would admit those first values. In "
+        f"{100 * against(a_l):.1f} % and {100 * against(a_t):.1f} % the second and third readings agreed with each other against "
+        "the first (the first reading alone 'wrong' where the other two agreed otherwise). "
         "Whether they are right cannot be said here: that needs the evaluator's gold, which this model does not read.")
     sp = res["single_prompts"]
     hl = sp[f"hold_prompt/{LUNA}"]
@@ -1287,10 +1292,10 @@ def texts(res):
         f"({100 * 2500 * tpw / (fx_t + 2500 * tpw):.0f} %). One regime's rule text is taken as {P['rule_text_tokens_one_regime']:,.0f} "
         "tokens; three and four regimes multiply it. Token counts are linear in text, so scaling by words is safe in form even "
         "though the fitted files are 77-367 words; what is not known is whether output and accuracy hold on a 2,500-word file "
-        "or a 50,000-token prompt. With prefix caching as measured (95-100 % of single-prompt input billed as cached), the rule "
-        "text costs about a tenth of its uncached price; without caching a single prompt costs several times more (input "
-        f"{PRICE[LUNA]['uncached_input'] / PRICE[LUNA]['cached_input']:.1f}x / {PRICE[TERRA]['uncached_input'] / PRICE[TERRA]['cached_input']:.0f}x "
-        "the cached price on the cost-efficient / frontier model).")
+        "or a 50,000-token prompt. With prefix caching as measured (95-100 % of single-prompt input billed as cached), cached input "
+        f"costs {100 * PRICE[LUNA]['cached_input'] / PRICE[LUNA]['uncached_input']:.0f} % (cost-efficient) and "
+        f"{100 * PRICE[TERRA]['cached_input'] / PRICE[TERRA]['uncached_input']:.0f} % (frontier) of uncached input; without "
+        "caching a single prompt's input costs 12.5 and 25 times as much, and the single prompts' cost per file rises several-fold.")
     limits = "\n".join([
         "- Prices are those the ledgers billed (uncached, cached input and output per million tokens); the cached share of input "
         "is what these runs got from prefix caching and will differ with batch order and deployment.",

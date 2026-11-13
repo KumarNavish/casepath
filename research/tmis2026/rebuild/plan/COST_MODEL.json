@@ -166,6 +166,312 @@
   }
  },
  "ledger_fields": "product and benchmark ledgers: key, case, run, arm, input_tokens (includes cached), cached_tokens,\noutput_tokens, usd. v2 and fair-prompt ledgers: key, tag.case, tag.method, tag.exp, run, prompt_tokens (includes cached),\ncached_tokens, completion_tokens (includes reasoning_tokens), reasoning_tokens, cost, latency_s, error.",
+ "summary_today": [
+  {
+   "design": "Product, full scope",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.02287398674107143,
+    "median": 0.025755785,
+    "p90": 0.0336918125,
+    "min": 0.0001782,
+    "max": 0.043578885
+   },
+   "calls": 29.230654761904763,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Product core (checklist only)",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.00406988394345238,
+    "median": 0.0046951200000000005,
+    "p90": 0.005851487,
+    "min": 0.0001782,
+    "max": 0.01440919
+   },
+   "calls": 6.486607142857143,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Rules in context",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.0006998400744047618,
+    "median": 0.00070262,
+    "p90": 0.0008356995,
+    "min": 7.804e-05,
+    "max": 0.003053675
+   },
+   "calls": 1.0,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Rules in context",
+   "model": "gpt-6.1-terra",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.005031669122023809,
+    "median": 0.004518675,
+    "p90": 0.0068676,
+    "min": 0.00287125,
+    "max": 0.027638
+   },
+   "calls": 1.0,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Self-consistency (5 samples)",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.0034579002901785716,
+    "median": 0.0034843808333333334,
+    "p90": 0.0037769699999999997,
+    "min": 0.0022468483333333332,
+    "max": 0.0045211083333333325
+   },
+   "calls": 5.0,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Model executes rules",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.0012842767633928572,
+    "median": 0.0016020449999999999,
+    "p90": 0.0018329515,
+    "min": 0.0,
+    "max": 0.004003425
+   },
+   "calls": 1.0,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "ReAct",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.0015775754315476192,
+    "median": 0.0017955875000000001,
+    "p90": 0.0020439815,
+    "min": 5.327e-05,
+    "max": 0.00230688
+   },
+   "calls": 5.132440476190476,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Core reading (two readings)",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 384,
+   "usd": {
+    "n": 384,
+    "mean": 0.0028117435937500003,
+    "median": 0.0028109449999999996,
+    "p90": 0.003234581,
+    "min": 0.0007016,
+    "max": 0.00367035
+   },
+   "calls": 2.0,
+   "words": [
+    258,
+    334
+   ]
+  },
+  {
+   "design": "Rules in context (original rules)",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 384,
+   "usd": {
+    "n": 384,
+    "mean": 0.0007567438411458334,
+    "median": 0.0007436599999999999,
+    "p90": 0.0008758725,
+    "min": 0.00022338,
+    "max": 0.0030523
+   },
+   "calls": 1.0,
+   "words": [
+    258,
+    334
+   ]
+  },
+  {
+   "design": "Rules in context (original rules)",
+   "model": "gpt-6.1-terra",
+   "data": "Study 3 data",
+   "files": 384,
+   "usd": {
+    "n": 384,
+    "mean": 0.004023438020833333,
+    "median": 0.003895275,
+    "p90": 0.00448105,
+    "min": 0.00261445,
+    "max": 0.02750425
+   },
+   "calls": 1.0,
+   "words": [
+    258,
+    334
+   ]
+  },
+  {
+   "design": "Product core (checklist only)",
+   "model": "gpt-6.1-terra",
+   "data": "Study 3 data",
+   "files": 224,
+   "usd": {
+    "n": 224,
+    "mean": 0.031224066741071428,
+    "median": 0.03752805,
+    "p90": 0.0428981,
+    "min": 0.005802,
+    "max": 0.0654786
+   },
+   "calls": 5.571428571428571,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Prompt that may hold",
+   "model": "gpt-6-luna",
+   "data": "Study 3 data",
+   "files": 672,
+   "usd": {
+    "n": 672,
+    "mean": 0.0008197894866071428,
+    "median": 0.00086155,
+    "p90": 0.001010517,
+    "min": 0.00039672,
+    "max": 0.00116924
+   },
+   "calls": 1.0,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Prompt that may hold",
+   "model": "gpt-6.1-terra",
+   "data": "Study 3 data",
+   "files": 224,
+   "usd": {
+    "n": 224,
+    "mean": 0.005740428348214285,
+    "median": 0.005671000000000001,
+    "p90": 0.007160325000000001,
+    "min": 0.00333395,
+    "max": 0.01015895
+   },
+   "calls": 1.0,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Model executes rules (with hold rule)",
+   "model": "gpt-6.1-terra",
+   "data": "Study 3 data",
+   "files": 224,
+   "usd": {
+    "n": 224,
+    "mean": 0.010942156919642856,
+    "median": 0.01336945,
+    "p90": 0.014899825,
+    "min": 0.00329145,
+    "max": 0.03834675
+   },
+   "calls": 1.0,
+   "words": [
+    77,
+    367
+   ]
+  },
+  {
+   "design": "Product core (checklist only)",
+   "model": "gpt-6-luna",
+   "data": "benchmark",
+   "files": 176,
+   "usd": {
+    "n": 176,
+    "mean": 0.004398363607954546,
+    "median": 0.00451879,
+    "p90": 0.008718315,
+    "min": 0.0001158,
+    "max": 0.012267015000000001
+   },
+   "calls": 10.414772727272727,
+   "words": [
+    183,
+    575
+   ]
+  },
+  {
+   "design": "Product core (checklist only)",
+   "model": "gpt-6.1-terra",
+   "data": "benchmark",
+   "files": 39,
+   "usd": {
+    "n": 39,
+    "mean": 0.029830029487179485,
+    "median": 0.0315468,
+    "p90": 0.055193030000000004,
+    "min": 0.001247,
+    "max": 0.06818935
+   },
+   "calls": 8.538461538461538,
+   "words": [
+    183,
+    575
+   ]
+  }
+ ],
  "per_design": {
   "study3/casepath/tenancy": {
    "design": "Product, full scope",

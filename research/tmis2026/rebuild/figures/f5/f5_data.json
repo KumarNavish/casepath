@@ -82,17 +82,17 @@
  },
  "designs": [
   {
-   "key": "casepath",
-   "name": "CasePath",
+   "key": "casepath_checklist",
+   "name": "CasePath core",
    "model": "cost-efficient",
    "role": "the product",
    "runs": 3,
-   "overall": 0.7291666666666666,
+   "overall": 0.7326388888888888,
    "claim_runs": 288,
    "tercile_error": [
-    1.4166666666666667,
+    1.3541666666666667,
     0.34375,
-    0.4270833333333333
+    0.5
    ],
    "tercile_claim_runs": [
     96,
@@ -101,29 +101,10 @@
    ]
   },
   {
-   "key": "hold_prompt_frontier",
-   "name": "Prompt that may hold",
-   "model": "frontier",
-   "role": "strongest prompt",
-   "runs": 1,
-   "overall": 0.5833333333333334,
-   "claim_runs": 96,
-   "tercile_error": [
-    0.5625,
-    0.3125,
-    0.875
-   ],
-   "tercile_claim_runs": [
-    32,
-    32,
-    32
-   ]
-  },
-  {
    "key": "hold_prompt",
    "name": "Prompt that may hold",
    "model": "cost-efficient",
-   "role": "prompt",
+   "role": "strongest prompt",
    "runs": 3,
    "overall": 0.8888888888888888,
    "claim_runs": 288,
@@ -139,17 +120,17 @@
    ]
   },
   {
-   "key": "ric_frontier",
-   "name": "Rules in context",
-   "model": "frontier",
-   "role": "prompt",
+   "key": "model_executes_rules",
+   "name": "Model executes rules",
+   "model": "cost-efficient",
+   "role": "agent",
    "runs": 3,
-   "overall": 2.0868055555555554,
+   "overall": 1.4930555555555556,
    "claim_runs": 288,
    "tercile_error": [
-    4.104166666666667,
-    1.5520833333333333,
-    0.6041666666666666
+    3.0416666666666665,
+    0.7604166666666666,
+    0.6770833333333334
    ],
    "tercile_claim_runs": [
     96,
@@ -178,7 +159,7 @@
   },
   {
    "key": "self_consistency",
-   "name": "Self-consistency (5 votes)",
+   "name": "Self-consistency",
    "model": "cost-efficient",
    "role": "prompt",
    "runs": 3,
@@ -188,44 +169,6 @@
     5.03125,
     1.2395833333333333,
     0.6666666666666666
-   ],
-   "tercile_claim_runs": [
-    96,
-    96,
-    96
-   ]
-  },
-  {
-   "key": "mer_hold_frontier",
-   "name": "Model executes rules",
-   "model": "frontier",
-   "role": "agent",
-   "runs": 1,
-   "overall": 0.5416666666666666,
-   "claim_runs": 96,
-   "tercile_error": [
-    0.5,
-    0.34375,
-    0.78125
-   ],
-   "tercile_claim_runs": [
-    32,
-    32,
-    32
-   ]
-  },
-  {
-   "key": "model_executes_rules",
-   "name": "Model executes rules",
-   "model": "cost-efficient",
-   "role": "agent",
-   "runs": 3,
-   "overall": 1.4930555555555556,
-   "claim_runs": 288,
-   "tercile_error": [
-    3.0416666666666665,
-    0.7604166666666666,
-    0.6770833333333334
    ],
    "tercile_claim_runs": [
     96,
@@ -251,11 +194,88 @@
     96,
     96
    ]
+  },
+  {
+   "key": "casepath_frontier_checklist",
+   "name": "CasePath core",
+   "model": "frontier",
+   "role": "the product",
+   "runs": 1,
+   "overall": 0.6979166666666666,
+   "claim_runs": 96,
+   "tercile_error": [
+    1.53125,
+    0.15625,
+    0.40625
+   ],
+   "tercile_claim_runs": [
+    32,
+    32,
+    32
+   ]
+  },
+  {
+   "key": "hold_prompt_frontier",
+   "name": "Prompt that may hold",
+   "model": "frontier",
+   "role": "strongest prompt",
+   "runs": 1,
+   "overall": 0.5833333333333334,
+   "claim_runs": 96,
+   "tercile_error": [
+    0.5625,
+    0.3125,
+    0.875
+   ],
+   "tercile_claim_runs": [
+    32,
+    32,
+    32
+   ]
+  },
+  {
+   "key": "mer_hold_frontier",
+   "name": "Model executes rules",
+   "model": "frontier",
+   "role": "agent",
+   "runs": 1,
+   "overall": 0.5416666666666666,
+   "claim_runs": 96,
+   "tercile_error": [
+    0.5,
+    0.34375,
+    0.78125
+   ],
+   "tercile_claim_runs": [
+    32,
+    32,
+    32
+   ]
+  },
+  {
+   "key": "ric_frontier",
+   "name": "Rules in context",
+   "model": "frontier",
+   "role": "prompt",
+   "runs": 3,
+   "overall": 2.0868055555555554,
+   "claim_runs": 288,
+   "tercile_error": [
+    4.104166666666667,
+    1.5520833333333333,
+    0.6041666666666666
+   ],
+   "tercile_claim_runs": [
+    96,
+    96,
+    96
+   ]
   }
  ],
  "f2_read_not_plotted": "analysis/study3_feedback.json (F2): E(q) = (1-q) S + q O, linear by construction",
  "inputs": {
-  "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist.json": "54d6217431b7ef799601fd74586c7502cfb026360d741cc4f27d43e5f40190cf",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json": "882ad0df87ed4d7fd61eba5bb51b34c90247f2467c9e20dc8c07237b30822fb8",
   "runs/study3/confirm/plans_tenancy_model_executes_rules.json": "abc0d2f5d7fd543db99480cbab94a23fbad6c95e61f4f2fca4c03f326de99c7f",
   "runs/study3/confirm/plans_tenancy_react.json": "c094c8c9ed33c08ea200ddb504cec46510c6b1405a23b51ef32a1528552f92c0",
   "runs/study3/confirm/plans_tenancy_ric_luna.json": "9ef392d68ab8d589e047d6a227f5ca8d2cc847a3edeb663f2748dcccb90174b6",

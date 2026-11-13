@@ -8,7 +8,7 @@
   "is": true
  },
  "source": {
-  "records": "research/tmis2026/runs/study3/confirm/plans_theft_casepath.json",
+  "records": "research/tmis2026/runs/study3/confirm/plans_theft_casepath_checklist.json (core)",
   "readings": "research/tmis2026/runs/product/cache/<key>.json (keys listed in each record)",
   "workflow": "research/tmis2026/harness/product/workflows/theft-reviewed/household_theft.json"
  },
@@ -47,48 +47,15 @@
   "reached": [
    "intake"
   ],
-  "document_judgment": {
-   "shows": [],
-   "status": "missing",
-   "verdict": "not_checked"
-  },
-  "suggested_by_model": [
-   "Mrs Bernasconi’s written authorisation empowering Sara Pedrazzini to represent her in this claim (including correspondence and claim handling)"
-  ],
+  "document_judgment": null,
+  "suggested_by_model": [],
+  "readings_shared_with_full_product": true,
   "agents": [
    "router",
    "claim_reader",
    "claim_reader",
-   "claim_reader",
-   "claim_reader",
-   "process_builder",
-   "process_builder",
-   "process_builder",
-   "process_builder",
-   "claim_reader",
-   "claim_reader",
    "source_checker",
-   "source_checker",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "source_checker",
-   "claim_reader",
-   "claim_reader",
-   "claim_reader",
-   "claim_reader",
-   "claim_reader",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "result_checker",
-   "result_checker",
-   "result_checker",
-   "result_checker"
+   "source_checker"
   ]
  },
  "b": {
@@ -126,43 +93,14 @@
   "reached": [
    "intake"
   ],
-  "document_judgment": {
-   "shows": [],
-   "status": "missing",
-   "verdict": "not_checked"
-  },
-  "suggested_by_model": [
-   "Bauauftrag, Arbeitsrapport und vorhandene Schlüssel- oder Zutrittsnachweise des Bauunternehmens, soweit der Unternehmer Zugang zur Wohnung hatte"
-  ],
+  "document_judgment": null,
+  "suggested_by_model": [],
+  "readings_shared_with_full_product": true,
   "agents": [
    "router",
    "claim_reader",
-   "claim_reader",
-   "claim_reader",
-   "claim_reader",
-   "process_builder",
-   "process_builder",
-   "process_builder",
-   "process_builder",
-   "claim_reader",
    "source_checker",
-   "source_checker",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "source_checker",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "document_finder",
-   "result_checker",
-   "result_checker",
-   "result_checker",
-   "result_checker",
-   "result_checker",
-   "result_checker"
+   "source_checker"
   ]
  }
 }

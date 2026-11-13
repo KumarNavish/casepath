@@ -30,6 +30,27 @@ Fitted by least squares of the billed cost on (uncached input, cached input, out
 | gpt-6.1-terra | `runs/product/ledger_dev_gpt-6.1-terra.jsonl` | 2,377 | 1.21298 / 0.05069 / 5.00198 | 7.06e-04 |
 | gpt-6.1-terra | `study4/lint/runs/ledger_dev_gpt-6.1-terra.jsonl` | 333 | 1.23163 / 0.04978 / 4.99059 | 2.34e-04 |
 
+## Summary: USD per file at today's file sizes (pooled over regimes)
+
+| Design | Model | Data | Files | Words per file | Calls | USD mean | USD median | USD p90 |
+|---|---|---|---|---|---|---|---|---|
+| Product, full scope | gpt-6-luna | Study 3 data | 672 | 77-367 | 29.2 | 0.0229 | 0.0258 | 0.0337 |
+| Product core (checklist only) | gpt-6-luna | Study 3 data | 672 | 77-367 | 6.5 | 0.004070 | 0.004695 | 0.005851 |
+| Rules in context | gpt-6-luna | Study 3 data | 672 | 77-367 | 1.0 | 0.000700 | 0.000703 | 0.000836 |
+| Rules in context | gpt-6.1-terra | Study 3 data | 672 | 77-367 | 1.0 | 0.005032 | 0.004519 | 0.006868 |
+| Self-consistency (5 samples) | gpt-6-luna | Study 3 data | 672 | 77-367 | 5.0 | 0.003458 | 0.003484 | 0.003777 |
+| Model executes rules | gpt-6-luna | Study 3 data | 672 | 77-367 | 1.0 | 0.001284 | 0.001602 | 0.001833 |
+| ReAct | gpt-6-luna | Study 3 data | 672 | 77-367 | 5.1 | 0.001578 | 0.001796 | 0.002044 |
+| Core reading (two readings) | gpt-6-luna | Study 3 data | 384 | 258-334 | 2.0 | 0.002812 | 0.002811 | 0.003235 |
+| Rules in context (original rules) | gpt-6-luna | Study 3 data | 384 | 258-334 | 1.0 | 0.000757 | 0.000744 | 0.000876 |
+| Rules in context (original rules) | gpt-6.1-terra | Study 3 data | 384 | 258-334 | 1.0 | 0.004023 | 0.003895 | 0.004481 |
+| Product core (checklist only) | gpt-6.1-terra | Study 3 data | 224 | 77-367 | 5.6 | 0.0312 | 0.0375 | 0.0429 |
+| Prompt that may hold | gpt-6-luna | Study 3 data | 672 | 77-367 | 1.0 | 0.000820 | 0.000862 | 0.001011 |
+| Prompt that may hold | gpt-6.1-terra | Study 3 data | 224 | 77-367 | 1.0 | 0.005740 | 0.005671 | 0.007160 |
+| Model executes rules (with hold rule) | gpt-6.1-terra | Study 3 data | 224 | 77-367 | 1.0 | 0.0109 | 0.0134 | 0.0149 |
+| Product core (checklist only) | gpt-6-luna | benchmark | 176 | 183-575 | 10.4 | 0.004398 | 0.004519 | 0.008718 |
+| Product core (checklist only) | gpt-6.1-terra | benchmark | 39 | 183-575 | 8.5 | 0.0298 | 0.0315 | 0.0552 |
+
 ## 1. USD per file by design × model × data set
 
 Files = case-runs on Study 3 and the fair-prompt check (each case run 1 or 3 times), files on the benchmark (one run). Tokens are per file, summed over paid calls; input includes cached.
@@ -145,7 +166,7 @@ Cells: share of the run's cost (calls per file).
 | Study 3, core (checklist only), cost-efficient model, tenancy (case-runs) | 288 | attachments | 3.361e-03 | 1.2e-04 | 0.001175 | 0.73 | [0, 2] |
 | Study 3, core (checklist only), cost-efficient model, tenancy (case-runs) | 288 | joint: words / attachments / facts | -1.39e-06 / 3.33e-03 / 4.43e-04 | 2e-06 / 2e-04 / 1e-04 | -0.001047 | 0.75 | – |
 
-(verdict pending)
+**Verdict on extrapolation.** The benchmark files are short and narrow: 183-575 words (file plus attachments), 0-4 attachments, 0-10 deciding facts read; Study 3's claims are 77-367 words with 0-2 attachments. Within that range the per-file fits are usable but loose: on the cost-efficient model words alone explain R² 0.51, attachments 0.52, facts read 0.20, all three 0.64 (residual SD USD 0.0020 on a mean of USD 0.0044); words and attachments are correlated (r 0.88), so their separate coefficients are not well identified. The frontier model's fit (R² 0.88) rests on 38 tenancy files. The single-predictor lines have negative intercepts and cannot be read outside the range in either direction. Document judgments are the largest stage and grow with attachments (about three finder calls per attachment) and, per call, with the file's length, so the shape of cost on long files is set by how many tool turns the document finder takes on a long document, which these files never show. The estimator therefore uses a structural form (calls × (base + tokens per word × words), calls and output linear in attachments and facts) instead of the per-file lines, but every cell above 575 words or 4 attachments is an extrapolation by a factor of up to 4.3 in words and 1.5 in attachments. Sensitivity for 2,500 words and 6 attachments: if output also grows with words, the core's cost on the cost-efficient model goes from USD 0.0362 to 0.0491 (frontier 0.3147 to 0.3933). Treat the 800- and 2,500-word cells as order of magnitude and cost a study only after a priced pilot on 10-20 long files.
 
 ## 3. Single prompts: fixed rule text against the file
 
@@ -162,11 +183,11 @@ Per call, input tokens = fixed text of the regime + tokens per word × words of 
 | sc_sample on the cost-efficient model (gpt-6-luna) | 6,613 | 18,738 | 1.91 | 477 / 4,772 | 1,107 | 1.00 | 5.0 | 0.999 |
 | react on the cost-efficient model (gpt-6-luna) | 2,247 | 4,749 | 2.88 | 720 / 7,203 | 248 | 0.62 | 5.5 | 0.806 |
 
-The fixed text dominates: at today's file sizes it is 85-98 % of a single prompt's input. A file ten times longer adds tokens per word × words; a catalogue four times larger multiplies the rule part. Tokens per word come from files of 77-367 words, so a 2,500-word file is an extrapolation of a linear term (token counts are linear in text, so this one is safe in form; cost is then linear too).
+The fixed text dominates. For the prompt that may hold, the fixed part is 7,167 tokens on tenancy and 18,951 on theft; the file adds 1.98 tokens per word, so a 250-word file adds 496 tokens (6 % of a tenancy prompt) and a 2,500-word file 4,962 (41 %). One regime's rule text is taken as 12,194 tokens; three and four regimes multiply it. Token counts are linear in text, so scaling by words is safe in form even though the fitted files are 77-367 words; what is not known is whether output and accuracy hold on a 2,500-word file or a 50,000-token prompt. With prefix caching as measured (95-100 % of single-prompt input billed as cached), cached input costs 8 % (cost-efficient) and 4 % (frontier) of uncached input; without caching a single prompt's input costs 12.5 and 25 times as much, and the single prompts' cost per file rises several-fold.
 
 ## 4. Adaptive re-reading: what the first reading alone would have given
 
-Per deciding fact read (the routing fact excluded): is the first reading a quoted value (true/false, or an enum value answered true, whose quote occurs in the file text after case and whitespace normalization)? Admitted = the product's stored fact after three readings (status established, verdict accepted). Readings 2 and 3 are the later reading groups of the same run. Without the evaluator's gold, 'wrong' can only mean 'against what three readings gave'.
+Per deciding fact read (the routing fact excluded): is the first reading a quoted value (true/false, or an enum value answered true, whose quote occurs in the file text after case and whitespace normalization)? Admitted = the product's stored fact after three readings (status established and not rejected by the source check). Readings 2 and 3 are the later reading groups of the same run. Without the evaluator's gold, 'wrong' can only mean 'against what three readings gave'.
 
 | Run | Facts read | First reading quoted value | = admitted value | Nothing admitted after three | 2 and 3 agree against it | Needs re-reading (p) | Files with any re-read | USD three → adaptive |
 |---|---|---|---|---|---|---|---|---|
@@ -181,7 +202,7 @@ Per deciding fact read (the routing fact excluded): is the first reading a quote
 | benchmark pooled, gpt-6-luna | 1035 | – | 53.3 % | – | – | 42.9 % | – | – |
 | benchmark pooled, gpt-6.1-terra | 174 | – | 63.8 % | – | – | 36.2 % | – | – |
 
-(note pending)
+**What adaptive re-reading saves and risks.** On the benchmark the first reading alone is a quoted value for 57 % of deciding facts on the cost-efficient model and 64 % on the frontier model, so p = 43 % and 36 % of facts would still be read twice more. Because 87-100 % of files have at least one such fact and every re-reading call carries the whole file, the saving is small: 6-7 % of the core's cost per file on the benchmark (counterfactual on the stored calls: re-reading calls kept in full input, their output cut to the share of facts re-read), 7-20 % on Study 3 (largest on theft, where readings of about 90 rule conditions are most of the cost). The risk: of the quoted first readings, 6.6 % (cost-efficient) and 0.0 % (frontier) end differently after three readings (nothing admitted, or another value admitted); adaptive reading would admit those first values. In 2.2 % and 0.9 % the second and third readings agreed with each other against the first (the first reading alone 'wrong' where the other two agreed otherwise). Whether they are right cannot be said here: that needs the evaluator's gold, which this model does not read.
 
 ## 5. Grid of estimate() (USD per file)
 
@@ -347,5 +368,13 @@ Wall time of the whole run from the run record (product designs; calls run one a
 
 ## Limits
 
-(limits pending)
+- Prices are those the ledgers billed (uncached, cached input and output per million tokens); the cached share of input is what these runs got from prefix caching and will differ with batch order and deployment.
+- The product and benchmark ledgers count about 25 more input tokens per call than were billed; their `usd` is used as recorded.
+- The frontier model ran the benchmark core on 38 completed tenancy files only (one failed); its per-stage token ratios to the cost-efficient model come from those files and are applied to all regimes. Self-consistency and ReAct never ran on the frontier model: their frontier cells are the cost-efficient model's tokens at frontier prices (marked *).
+- Three benchmark theft files (59 runs) have no text under study4/dev/theft/final (56 folders); they are in the cost tables but not in the regressions or the estimator fit.
+- Study 3's self-consistency ledger rows are not keyed by run; each case's 15 samples are spread evenly over its three case-runs (the mean reproduces the stored table; the per-case-run spread is understated).
+- Study 3's core on theft reads about 90 rule conditions per file and calls no document finder (no attachments); the estimator is fitted to the benchmark's workflows (0-10 deciding facts) and does not cover theft-style guard catalogues.
+- Only routing sees the whole catalogue in the product; a larger catalogue is modelled as a proportionally larger routing prompt. Single prompts are assumed to carry the whole catalogue. Larger workflows (more facts or documents per workflow) enter only through facts read and attachments.
+- Wall time is the run record's elapsed time of a file (calls in sequence, cache hits included, other files running in parallel); latency is the sum of the paid calls' `latency_s`. Neither is a throughput figure.
+- No evaluator gold, expected answers or reference files were read; 'wrong' in the adaptive analysis means 'different from what three readings gave'.
 

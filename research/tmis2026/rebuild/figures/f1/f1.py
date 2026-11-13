@@ -3,7 +3,7 @@
 Input: f1_data.json (written by extract.py from stored files). No model call. Every mark is from that file:
 page bars = the claim's sentences (length in characters), squares = the 27 document needs of the workflow in
 workflow order with the state the stored checklist gives, circles = the stored questions attached to the hold
-whose rule names them, dashed blue square = the stored suggestion a model added outside the rules.
+whose rule names them (one per open fact the line waits for). Checklists of the core (checklist-only scope).
 """
 import json
 import sys
@@ -19,7 +19,7 @@ HERE = Path(__file__).resolve().parent
 D = json.loads((HERE / "f1_data.json").read_text())
 
 PAPER, INK, SAND = "#FBF8F1", "#1F2A44", "#C9BFA8"
-TEAL, AMBER, BLUE = "#008571", "#D9962B", "#4A8FD6"   # coordinator palette update (FIGURE_BRIEF.md)
+TEAL, AMBER = "#008571", "#D9962B"   # coordinator palette update (FIGURE_BRIEF.md)
 FILL = {"request": TEAL, "hold": AMBER}
 
 plt.rcParams.update({"font.family": "Inter", "font.size": 7, "svg.fonttype": "none", "pdf.fonttype": 42,
@@ -85,11 +85,6 @@ def square(ax, cx, cy, state, s=MARK):
                                     fc=FILL[state], ec="none", zorder=3))
 
 
-def suggested(ax, cx, cy, s=MARK):
-    ax.add_patch(FancyBboxPatch((cx - s / 2, cy - s / 2), s, s, boxstyle="round,pad=0,rounding_size=0.012",
-                                fc="none", ec=BLUE, lw=0.9, ls=(0, (2, 1.2)), zorder=3))
-
-
 def questions(ax, rows, y):
     """One amber circle per stored question, under the hold(s) whose rule names it; shared facts drawn once."""
     seen = {}
@@ -112,16 +107,14 @@ def questions(ax, rows, y):
 
 
 def legend(ax, y):
-    items = [("sq", "request", "requested now"), ("sq", "hold", "held"), ("q", None, "question"),
-             ("sq", "not_needed", "not needed"), ("sug", None, "suggested by a model, outside the rules")]
+    items = [("sq", "request", "requested now"), ("sq", "hold", "held"), ("q", None, "question: one per open fact the line waits for"),
+             ("sq", "not_needed", "not needed")]
     x = 0.08
     for kind, st, label in items:
         if kind == "sq":
             square(ax, x, y, st, s=0.06)
-        elif kind == "q":
-            ax.add_patch(Circle((x, y), 0.021, fc=AMBER, ec="none"))
         else:
-            suggested(ax, x, y, s=0.06)
+            ax.add_patch(Circle((x, y), 0.021, fc=AMBER, ec="none"))
         t = ax.text(x + 0.06, y, label, va="center", ha="left", fontsize=7, color=INK)
         bb = t.get_window_extent(renderer=ax.figure.canvas.get_renderer())
         x += 0.06 + bb.width / ax.figure.dpi + 0.16
@@ -133,20 +126,15 @@ def draw_a(stem):
     rows_a, rows_b = D["a"]["rows"], D["b"]["rows"]
     n = len(rows_a)
     xs = [X0 + PITCH * i for i in range(n)]
-    xsug = X0 + PITCH * (n - 1) + 0.24
     # rails: same need, same position, in both claims
     for i, x in enumerate(xs):
         same = rows_a[i]["state"] == rows_b[i]["state"]
         ax.plot([x, x], [ya - 0.30, yb + MARK / 2 + 0.03], color=SAND if same else INK,
                 lw=0.35 if same else 0.9, zorder=1)
-    ax.plot([xsug, xsug], [ya - 0.30, yb + MARK / 2 + 0.03], color=BLUE, lw=0.5, ls=(0, (2, 2)), zorder=1)
-    ax.text(xsug + 0.035, (ya + yb) / 2 - 0.1, "≠", ha="left", va="center", fontsize=8, color=BLUE)
     for side, y, rows in (("a", ya, rows_a), ("b", yb, rows_b)):
         for x, r in zip(xs, rows):
             square(ax, x, y, r["state"])
         questions(ax, rows, y)
-        for _ in D[side]["suggested_by_model"]:
-            suggested(ax, xsug, y)
         # page miniature and the sentence itself
         (sx, sy), _ = page(ax, D[side], 0.05, y + 0.5)
         tx = 0.98

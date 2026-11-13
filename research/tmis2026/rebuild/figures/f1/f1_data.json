@@ -1,7 +1,7 @@
 {
  "source": {
   "texts": "research/tmis2026/fresh2/theft/BENCHMARK_FRESH2.json via fresh2/theft_fresh2.py",
-  "checklists": "research/tmis2026/runs/study3/confirm/plans_theft_casepath.json",
+  "checklists": "research/tmis2026/runs/study3/confirm/plans_theft_casepath_checklist.json (core, checklist-only scope)",
   "workflow": "research/tmis2026/harness/product/workflows/theft-reviewed/household_theft.json"
  },
  "a": {
@@ -226,12 +226,7 @@
   ],
   "added_requests": [],
   "added_holds": [],
-  "suggested_by_model": [
-   {
-    "title": "Mrs Bernasconi’s written authorisation empowering Sara Pedrazzini to represent her in this claim (including correspondence and claim handling)",
-    "required": "suggested"
-   }
-  ],
+  "suggested_by_model": [],
   "fact_g042": {
    "by": "claim_reader",
    "cited": true,
@@ -465,12 +460,7 @@
   ],
   "added_requests": [],
   "added_holds": [],
-  "suggested_by_model": [
-   {
-    "title": "Bauauftrag, Arbeitsrapport und vorhandene Schlüssel- oder Zutrittsnachweise des Bauunternehmens, soweit der Unternehmer Zugang zur Wohnung hatte",
-    "required": "suggested"
-   }
-  ],
+  "suggested_by_model": [],
   "fact_g042": {
    "by": "claim_reader",
    "cited": true,

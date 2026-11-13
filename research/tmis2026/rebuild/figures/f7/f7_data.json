@@ -5,28 +5,8 @@
  "cost": "USD per case-run from ledgers",
  "designs": [
   {
-   "key": "casepath",
-   "name": "CasePath, full",
-   "model": "cost-efficient",
-   "role": "the product",
-   "runs": 3,
-   "claim_runs": 288,
-   "all_dev_per_file": 0.7291666666666666,
-   "usd_per_file": 0.013385480555555563,
-   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.casepath.regimes.tenancy.cost (method plan_keys)",
-   "repeat": {
-    "runs": 3,
-    "claims": 96,
-    "identical_all_runs": 69,
-    "identical_share": 0.71875,
-    "mean_lines_differing_per_pair": 0.6631944444444444,
-    "checklist_lines_per_claim": 11.666666666666666,
-    "share_lines_differing_per_pair": 0.056845238095238095
-   }
-  },
-  {
    "key": "casepath_checklist",
-   "name": "CasePath, checklist only",
+   "name": "CasePath core",
    "model": "cost-efficient",
    "role": "the product",
    "runs": 3,
@@ -45,32 +25,10 @@
    }
   },
   {
-   "key": "casepath_frontier_checklist",
-   "name": "CasePath, checklist only",
-   "model": "frontier",
-   "role": "the product",
-   "runs": 1,
-   "claim_runs": 96,
-   "all_dev_per_file": 0.6979166666666666,
-   "usd_per_file": 0.02140785624999998,
-   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.casepath_frontier_checklist.regimes.tenancy.cost (method plan_keys)"
-  },
-  {
-   "key": "hold_prompt_frontier",
-   "name": "Prompt that may hold",
-   "model": "frontier",
-   "role": "strongest prompt",
-   "runs": 1,
-   "claim_runs": 96,
-   "all_dev_per_file": 0.5833333333333334,
-   "usd_per_file": 0.006315447395833332,
-   "cost_source": "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl (method A, 96 distinct calls)"
-  },
-  {
    "key": "hold_prompt",
    "name": "Prompt that may hold",
    "model": "cost-efficient",
-   "role": "prompt",
+   "role": "strongest prompt",
    "runs": 3,
    "claim_runs": 288,
    "all_dev_per_file": 0.8888888888888888,
@@ -87,23 +45,23 @@
    }
   },
   {
-   "key": "ric_frontier",
-   "name": "Rules in context",
-   "model": "frontier",
-   "role": "prompt",
+   "key": "model_executes_rules",
+   "name": "Model executes rules",
+   "model": "cost-efficient",
+   "role": "agent",
    "runs": 3,
    "claim_runs": 288,
-   "all_dev_per_file": 2.0868055555555554,
-   "usd_per_file": 0.0063028598958333355,
-   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.ric_frontier.regimes.tenancy.cost (method ledger)",
+   "all_dev_per_file": 1.4930555555555556,
+   "usd_per_file": 0.0006751665624999999,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.model_executes_rules.regimes.tenancy.cost (method ledger)",
    "repeat": {
     "runs": 3,
     "claims": 96,
-    "identical_all_runs": 78,
-    "identical_share": 0.8125,
-    "mean_lines_differing_per_pair": 0.5416666666666666,
+    "identical_all_runs": 48,
+    "identical_share": 0.5,
+    "mean_lines_differing_per_pair": 1.1354166666666667,
     "checklist_lines_per_claim": 11.666666666666666,
-    "share_lines_differing_per_pair": 0.04642857142857143
+    "share_lines_differing_per_pair": 0.09732142857142859
    }
   },
   {
@@ -128,7 +86,7 @@
   },
   {
    "key": "self_consistency",
-   "name": "Self-consistency (5 votes)",
+   "name": "Self-consistency",
    "model": "cost-efficient",
    "role": "prompt",
    "runs": 3,
@@ -144,37 +102,6 @@
     "mean_lines_differing_per_pair": 0.4756944444444444,
     "checklist_lines_per_claim": 11.666666666666666,
     "share_lines_differing_per_pair": 0.040773809523809525
-   }
-  },
-  {
-   "key": "mer_hold_frontier",
-   "name": "Model executes rules",
-   "model": "frontier",
-   "role": "agent",
-   "runs": 1,
-   "claim_runs": 96,
-   "all_dev_per_file": 0.5416666666666666,
-   "usd_per_file": 0.0062012890624999996,
-   "cost_source": "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl (method B, 96 distinct calls)"
-  },
-  {
-   "key": "model_executes_rules",
-   "name": "Model executes rules",
-   "model": "cost-efficient",
-   "role": "agent",
-   "runs": 3,
-   "claim_runs": 288,
-   "all_dev_per_file": 1.4930555555555556,
-   "usd_per_file": 0.0006751665624999999,
-   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.model_executes_rules.regimes.tenancy.cost (method ledger)",
-   "repeat": {
-    "runs": 3,
-    "claims": 96,
-    "identical_all_runs": 48,
-    "identical_share": 0.5,
-    "mean_lines_differing_per_pair": 1.1354166666666667,
-    "checklist_lines_per_claim": 11.666666666666666,
-    "share_lines_differing_per_pair": 0.09732142857142859
    }
   },
   {
@@ -195,6 +122,79 @@
     "mean_lines_differing_per_pair": 1.8993055555555556,
     "checklist_lines_per_claim": 11.666666666666666,
     "share_lines_differing_per_pair": 0.16279761904761905
+   }
+  },
+  {
+   "key": "casepath_frontier_checklist",
+   "name": "CasePath core",
+   "model": "frontier",
+   "role": "the product",
+   "runs": 1,
+   "claim_runs": 96,
+   "all_dev_per_file": 0.6979166666666666,
+   "usd_per_file": 0.02140785624999998,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.casepath_frontier_checklist.regimes.tenancy.cost (method plan_keys)"
+  },
+  {
+   "key": "hold_prompt_frontier",
+   "name": "Prompt that may hold",
+   "model": "frontier",
+   "role": "strongest prompt",
+   "runs": 1,
+   "claim_runs": 96,
+   "all_dev_per_file": 0.5833333333333334,
+   "usd_per_file": 0.006315447395833332,
+   "cost_source": "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl (method A, 96 distinct calls)"
+  },
+  {
+   "key": "mer_hold_frontier",
+   "name": "Model executes rules",
+   "model": "frontier",
+   "role": "agent",
+   "runs": 1,
+   "claim_runs": 96,
+   "all_dev_per_file": 0.5416666666666666,
+   "usd_per_file": 0.0062012890624999996,
+   "cost_source": "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl (method B, 96 distinct calls)"
+  },
+  {
+   "key": "ric_frontier",
+   "name": "Rules in context",
+   "model": "frontier",
+   "role": "prompt",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 2.0868055555555554,
+   "usd_per_file": 0.0063028598958333355,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.ric_frontier.regimes.tenancy.cost (method ledger)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 78,
+    "identical_share": 0.8125,
+    "mean_lines_differing_per_pair": 0.5416666666666666,
+    "checklist_lines_per_claim": 11.666666666666666,
+    "share_lines_differing_per_pair": 0.04642857142857143
+   }
+  },
+  {
+   "key": "casepath",
+   "name": "CasePath, full",
+   "model": "cost-efficient",
+   "role": "the product, full scope",
+   "runs": 3,
+   "claim_runs": 288,
+   "all_dev_per_file": 0.7291666666666666,
+   "usd_per_file": 0.013385480555555563,
+   "cost_source": "analysis/study3_results_fresh2_confirm.json designs.casepath.regimes.tenancy.cost (method plan_keys)",
+   "repeat": {
+    "runs": 3,
+    "claims": 96,
+    "identical_all_runs": 69,
+    "identical_share": 0.71875,
+    "mean_lines_differing_per_pair": 0.6631944444444444,
+    "checklist_lines_per_claim": 11.666666666666666,
+    "share_lines_differing_per_pair": 0.056845238095238095
    }
   }
  ],
@@ -283,5 +283,5 @@
   "study4/baseline_check/runs/ledger_gpt-6-luna.jsonl": "a5d843e75455d52923b959099d92ae6b1fb66626615cbf7daa1be153a694c921",
   "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl": "caeaca9b16a4d05b709bab75c24da7adea10af8372d515891c17b7445ceb8016"
  },
- "script_sha256": "097f4f2a1c99d917e4b9b90c6ef7f891ab3041f03efb4b82cbca36510604871e"
+ "script_sha256": "be02195ec32139d5727b8b7f7febb6352e74dbc77971ddde0102168894b4224f"
 }

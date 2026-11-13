@@ -34,17 +34,19 @@ import analyse as BC  # noqa: E402  (fair-prompt check; spec_with_new only)
 
 s3, s2 = BC.s3, BC.s2
 
-# Order: the product; the strongest prompt; the others (same order in Figures 5 and 7).
+# Order (coordinator, revision 1): two blocks by model; in each, the product (its checklist-only core, the minimal
+# artefact), the strongest prompt, then the others. Same order in Figures 5 and 7.
 DESIGNS = [
-    ("casepath", "CasePath", "cost-efficient", "the product"),
-    ("hold_prompt_frontier", "Prompt that may hold", "frontier", "strongest prompt"),
-    ("hold_prompt", "Prompt that may hold", "cost-efficient", "prompt"),
-    ("ric_frontier", "Rules in context", "frontier", "prompt"),
-    ("ric", "Rules in context", "cost-efficient", "prompt"),
-    ("self_consistency", "Self-consistency (5 votes)", "cost-efficient", "prompt"),
-    ("mer_hold_frontier", "Model executes rules", "frontier", "agent"),
+    ("casepath_checklist", "CasePath core", "cost-efficient", "the product"),
+    ("hold_prompt", "Prompt that may hold", "cost-efficient", "strongest prompt"),
     ("model_executes_rules", "Model executes rules", "cost-efficient", "agent"),
+    ("ric", "Rules in context", "cost-efficient", "prompt"),
+    ("self_consistency", "Self-consistency", "cost-efficient", "prompt"),
     ("react", "ReAct", "cost-efficient", "agent"),
+    ("casepath_frontier_checklist", "CasePath core", "frontier", "the product"),
+    ("hold_prompt_frontier", "Prompt that may hold", "frontier", "strongest prompt"),
+    ("mer_hold_frontier", "Model executes rules", "frontier", "agent"),
+    ("ric_frontier", "Rules in context", "frontier", "prompt"),
 ]
 
 
@@ -134,7 +136,7 @@ def main():
                 for _, rs, f in fs:
                     cnt[(rs, f)] += 1
                     by_sub["denied_event" if denied else "other"][(rs, f)] += 1
-                if key == "casepath" and plan and ref.get("open_fact"):
+                if key.startswith("casepath") and plan and ref.get("open_fact"):
                     held = [d for d, rs, f in fs if rs == "hold" and f == "held"]
                     if held:
                         q_total += len(held)
@@ -157,7 +159,7 @@ def main():
                             "needless_requests_per100_settled": 100 * cnt[("not_needed", "requested_needlessly")] / req_n,
                             "needless_holds_on_denied_event_claims": by_sub["denied_event"][("not_needed", "held_needlessly")],
                             "needless_requests_on_denied_event_claims": by_sub["denied_event"][("not_needed", "requested_needlessly")]}}
-        if key == "casepath":
+        if key.startswith("casepath"):
             d["question_names_open_fact"] = {"right": q_right, "of_held": q_total,
                                              "rule": "open-fact flag id in plan.questions (product states fact ids)"}
         else:

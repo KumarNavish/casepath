@@ -3,8 +3,8 @@
 Input: f2_data.json (written by extract.py from stored files). No model call.
 Above the rule: what models produced (blue): the quoted words and each reading's verdict, as stored.
 Below the rule: what code computed (ink, and the state colours): the quotation found word for word in the file, the
-agreement of the three readings, the fact's value, the workflow rule that names the fact, the checklist line.
-Exception drawn as the record shows it: the full product stores one extra line a model suggested (blue, dashed).
+agreement of the three readings, the rule node that the fact decides (the diamond of Figure 3, with the fact's value
+inside), and the one document line it governs. Records: the core (checklist-only scope); no model adds lines there.
 """
 import json
 import sys
@@ -82,11 +82,16 @@ def reading_mark(ax, x, y, verdict, r=0.034):
         ax.add_patch(Circle((x, y), r, fc=PAPER, ec=BLUE, lw=1.0, ls=(0, (1.6, 1.0)), zorder=4))
 
 
-def value_mark(ax, x, y, fact, r=0.045):
-    if fact["status"] == "established":
-        ax.add_patch(Circle((x, y), r, fc=INK if fact["value"] else PAPER, ec=INK, lw=1.0, zorder=4))
+def diamond(ax, x, y, fact, r=0.085):
+    """The "fact decides" node of Figure 3 (f3.py::diamond): hollow ink diamond with the value inside
+    (filled dot = true, hollow = false); amber diamond with "?" when the fact is open."""
+    pts = [(x, y + r), (x + r, y), (x, y - r), (x - r, y)]
+    if fact.get("status") != "established":
+        ax.add_patch(Polygon(pts, closed=True, fc=AMBER, ec=AMBER, lw=1.1, zorder=5))
+        ax.text(x, y - 0.004, "?", ha="center", va="center", fontsize=7.5 if r > 0.07 else 7, color="white", fontweight="bold", zorder=6)
     else:
-        ax.add_patch(Circle((x, y), r, fc=AMBER, ec="none", zorder=4))
+        ax.add_patch(Polygon(pts, closed=True, fc=PAPER, ec=INK, lw=1.1, zorder=5))
+        ax.add_patch(Circle((x, y), 0.032 * r / 0.085, fc=INK if fact["value"] else PAPER, ec=INK, lw=0.9, zorder=6))
 
 
 def sq(ax, x, y, fc=None, ec=None, s=0.075, ls="-"):
@@ -102,7 +107,7 @@ def tick(ax, x, y):
 def below(ax, side, y, xs, lanes):
     """Code's part of one lane, at height y. `lanes`: the x of the three reading lines that come down."""
     S = D[side]
-    xa, xv, xr, xl = xs
+    xa, xr, xl = xs
     dy = 0.075
     for j, xx in enumerate(lanes):
         rd = S["readings"][S.get("mark_order", [0, 1, 2])[j]]
@@ -110,19 +115,15 @@ def below(ax, side, y, xs, lanes):
         ax.plot([xx, xx, xa - 0.05], [RULE_Y[0], yy, yy], color=INK, lw=0.6, zorder=1)
         if rd["found_in_file"]:
             tick(ax, xa, yy)
-    # all three agree: one bracket joins them into the fact's value
+    # all three agree: one bracket joins them; the admitted fact enters the one rule node it decides
     ax.plot([xa + 0.05, xa + 0.08, xa + 0.08, xa + 0.05], [y + dy, y + dy, y - dy, y - dy], color=INK, lw=0.7)
-    ax.plot([xa + 0.08, xv - 0.05], [y, y], color=INK, lw=0.7, zorder=2)
-    value_mark(ax, xv, y, S["fact_stored"])
-    # the workflow rule that names the fact: diamond = the condition "fact is true", square = the need it gates
+    ax.plot([xa + 0.08, xr - 0.085], [y, y], color=INK, lw=0.7, zorder=2)
+    diamond(ax, xr, y, S["fact_stored"])
+    # its one outgoing document line, as in Figure 3: path taken (ink) or path open (amber, dashed)
     open_ = S["fact_stored"]["status"] != "established"
-    col = AMBER if open_ else INK
-    ax.plot([xv + 0.05, xr - 0.06], [y, y], color=col, lw=0.9, ls=(0, (2, 1.4)) if open_ else "-", zorder=2)
-    d = 0.06
-    ax.add_patch(Polygon([(xr - d, y), (xr, y + d), (xr + d, y), (xr, y - d)], closed=True,
-                         fc=AMBER if open_ else INK, ec="none", zorder=4))
     lc = STATE[S["line"]]
-    ax.plot([xr + d, xl - 0.05], [y, y], color=lc, lw=0.9, ls=(0, (2, 1.4)) if open_ else "-", zorder=2)
+    ax.plot([xr + 0.085, xl - 0.05], [y, y], color=AMBER if open_ else INK, lw=1.4,
+            ls=(0, (3, 1.6)) if open_ else "-", zorder=2)
     sq(ax, xl, y, fc=lc)
     if S["question"]:
         ax.add_patch(Circle((xl, y - 0.1), 0.022, fc=AMBER, ec="none", zorder=4))
@@ -156,23 +157,20 @@ def legend(ax, y, items):
     x = 0.08
     for draw, label in items:
         draw(x, y)
-        t = ax.text(x + 0.07, y, label, va="center", ha="left", fontsize=7)
-        x += 0.07 + t.get_window_extent(r).width / ax.figure.dpi + 0.16
+        t = ax.text(x + 0.09, y, label, va="center", ha="left", fontsize=7)
+        x += 0.09 + t.get_window_extent(r).width / ax.figure.dpi + 0.16
 
 
 def legend_items(ax):
     return [(lambda x, y: ax.plot([x - 0.04, x + 0.04], [y - 0.01, y - 0.01], color=BLUE, lw=0.9), "quoted words"),
             (lambda x, y: reading_mark(ax, x, y, "true", 0.03), "reading: true"),
             (lambda x, y: reading_mark(ax, x, y, "open", 0.03), "reading: open"),
-            (lambda x, y: tick(ax, x, y), "quote found in the file"),
-            (lambda x, y: value_mark(ax, x, y, {"status": "established", "value": True}, 0.035), "fact true"),
-            (lambda x, y: value_mark(ax, x, y, {"status": "unknown"}, 0.035), "fact open")], \
-           [(lambda x, y: ax.add_patch(Polygon([(x - 0.045, y), (x, y + 0.045), (x + 0.045, y), (x, y - 0.045)],
-                                               fc=INK)), "rule of the workflow"),
+            (lambda x, y: tick(ax, x, y), "quote found in the file")], \
+           [(lambda x, y: diamond(ax, x, y, {"status": "established", "value": True}, r=0.06), "fact true decides"),
+            (lambda x, y: diamond(ax, x, y, {"status": "unknown"}, r=0.06), "fact open"),
             (lambda x, y: sq(ax, x, y, fc=TEAL, s=0.06), "requested now"),
             (lambda x, y: sq(ax, x, y, fc=AMBER, s=0.06), "held"),
-            (lambda x, y: ax.add_patch(Circle((x, y), 0.022, fc=AMBER)), "question"),
-            (lambda x, y: sq(ax, x, y, ec=BLUE, s=0.06, ls=(0, (2, 1.2))), "suggested by a model, outside the rules")]
+            (lambda x, y: ax.add_patch(Circle((x, y), 0.022, fc=AMBER)), "question")]
 
 
 def draw_two_lanes(stem):
@@ -185,17 +183,11 @@ def draw_two_lanes(stem):
     xread, width = 2.78, 2.55
     lanes = {"a": (3.12, 3.17, 3.22), "b": (2.92, 2.97, 3.02)}
     rows = {"a": 1.48, "b": 0.93}
-    xs = (3.42, 3.85, 4.35, 4.9)
+    xs = (3.42, 4.1, 4.95)
     ya = above(ax, "a", 3.35, xread, lanes["a"], width)
     yb = above(ax, "b", 2.75, xread, lanes["b"], width)
     for side, ym in (("a", ya), ("b", yb)):
         below(ax, side, rows[side], xs, lanes[side])
-        # the stored extra line: a model, reading the whole file, suggested it; it lands beside the checklist
-        xm = xs[3] + 0.3
-        for _ in D[side]["suggested_by_model"]:
-            ax.add_patch(Circle((xm, ym), 0.03, fc=BLUE, ec="none", zorder=4))
-            ax.plot([xm, xm], [ym - 0.04, rows[side] + 0.045], color=BLUE, lw=0.6, ls=(0, (2, 1.6)), zorder=1)
-            sq(ax, xm, rows[side], ec=BLUE, ls=(0, (2, 1.2)))
     a, b = legend_items(ax)
     legend(ax, 0.45, a)
     legend(ax, 0.2, b)
@@ -210,7 +202,7 @@ def draw_one_lane(stem):
     ax.plot([0, W], [RULE, RULE], color=INK, lw=0.8)
     lanes = (2.95, 3.0, 3.05)
     yb = above(ax, "b", 2.45, 2.78, lanes, 2.55)
-    below(ax, "b", 0.95, (3.42, 3.85, 4.35, 4.9), lanes)
+    below(ax, "b", 0.95, (3.42, 4.1, 4.95), lanes)
     a, b = legend_items(ax)
     legend(ax, 0.3, a)
     save(fig, stem)

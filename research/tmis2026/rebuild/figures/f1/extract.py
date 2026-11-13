@@ -4,7 +4,8 @@ Pair: fresh2 theft story 13 (a social worker's e-mail), condition PR_third_party
   claim A = s13-on-PR_third_party_causer   (the sentence states the fact)
   claim B = s13-unres-PR_third_party_causer (the sentence leaves it open)
 The two texts differ in exactly one sentence (fresh2/theft_fresh2.py builds both from the same off text by one
-replacement). Checklists: the full product, run index 0 of each (runs/study3/confirm/plans_theft_casepath.json).
+replacement). Checklists: the core (checklist-only scope, CASEPATH_RUN_SCOPE=checklist), run index 0 of each
+(runs/study3/confirm/plans_theft_casepath_checklist.json). The core runs no agent that adds lines.
 """
 import json, re, sys
 from pathlib import Path
@@ -15,7 +16,7 @@ import theft_fresh2  # noqa: E402
 
 A, B, RUN = "s13-on-PR_third_party_causer", "s13-unres-PR_third_party_causer", 0
 texts = theft_fresh2.texts()
-plans = json.loads((T / "runs/study3/confirm/plans_theft_casepath.json").read_text())
+plans = json.loads((T / "runs/study3/confirm/plans_theft_casepath_checklist.json").read_text())
 wf = json.loads((T / "harness/product/workflows/theft-reviewed/household_theft.json").read_text())
 
 
@@ -58,11 +59,14 @@ changed = [i for i, (x, y) in enumerate(zip(pa, pb)) if x != y]
 assert len(pa) == len(pb) and len(changed) == 1, (len(pa), len(pb), changed)
 diff_lines = [r["doc"] for r, s in zip(a["rows"], b["rows"]) if r["state"] != s["state"]]
 diff_q = sorted(set(a["questions"]) ^ set(b["questions"]))
+assert not a["suggested_by_model"] and not b["suggested_by_model"] and not a["added_requests"] + a["added_holds"] + b["added_requests"] + b["added_holds"]
+assert diff_lines == ["d15"] and diff_q == ["g042_rev_92ab8925"], (diff_lines, diff_q)
 out = {"source": {"texts": "research/tmis2026/fresh2/theft/BENCHMARK_FRESH2.json via fresh2/theft_fresh2.py",
-                  "checklists": "research/tmis2026/runs/study3/confirm/plans_theft_casepath.json",
+                  "checklists": "research/tmis2026/runs/study3/confirm/plans_theft_casepath_checklist.json (core, checklist-only scope)",
                   "workflow": "research/tmis2026/harness/product/workflows/theft-reviewed/household_theft.json"},
        "a": a, "b": b, "changed_sentence_index": changed[0], "sentence_a": pa[changed[0]], "sentence_b": pb[changed[0]],
        "checklist_lines_changed": diff_lines, "questions_changed": diff_q}
 (Path(__file__).parent / "f1_data.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
 print("changed sentence", changed, "lines", diff_lines, "questions", diff_q)
-print("suggested A", a["suggested_by_model"]); print("suggested B", b["suggested_by_model"])
+print("requests/holds/questions A", sum(r["state"] == "request" for r in a["rows"]), sum(r["state"] == "hold" for r in a["rows"]), len(a["questions"]))
+print("requests/holds/questions B", sum(r["state"] == "request" for r in b["rows"]), sum(r["state"] == "hold" for r in b["rows"]), len(b["questions"]))

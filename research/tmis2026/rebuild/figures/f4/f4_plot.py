@@ -36,70 +36,54 @@ def lr(shares, order, total=100):
     return dict(zip(order, base))
 
 
-CELL = 0.064
+CELL = 0.056
+PITCH = 0.335
+BLOCK_GAP = 0.20
 
 
 def row_y(i):
-    gap = (0.08 if i >= 1 else 0) + (0.08 if i >= 2 else 0)
-    return 3.46 - i * 0.355 - gap
+    """Rows top to bottom; a block header gap before the first row of each model block."""
+    blocks = sum(1 for d in D[:i + 1] if d is D[0] or d["model"] != D[D.index(d) - 1]["model"])
+    return 3.66 - i * PITCH - blocks * BLOCK_GAP
 
 
-def label(ax, d, y):
-    ax.text(1.30, y + 0.20, d["name"], ha="right", va="center", fontsize=7.5,
-            fontweight="semibold" if d["key"] == "casepath" else "normal")
-    ax.text(1.30, y + 0.07, f"{MODEL[d['model']]} model, {d['runs']} run{'s' if d['runs'] > 1 else ''}",
-            ha="right", va="center", fontsize=7)
-
-
-def grid(ax, x0, y0, seq, cell=CELL, rows=5, dots=False):
+def grid(ax, x0, y0, seq, cell=CELL, rows=5):
     for k, c in enumerate(seq):
         col, r = divmod(k, rows)
         x, y = x0 + col * cell, y0 + (rows - 1 - r) * cell
         ax.add_patch(Rectangle((x, y), cell * 0.84, cell * 0.84, fc=COL[c], ec="none", lw=0))
-        if dots and c == "held":
-            ax.add_patch(Rectangle((x + cell * 0.31, y + cell * 0.31), cell * 0.22, cell * 0.22, fc=INK, ec="none", lw=0))
 
 
 def draw_a():
     fig = plt.figure(figsize=(5.5, 4.2))
     ax = fig.add_axes([0, 0, 1, 1])
     ax.set_xlim(0, 5.5), ax.set_ylim(0, 4.2), ax.axis("off")
-    XO, XS, XN = 1.40, 2.80, 4.22
-    n_open = D[0]["open"]["denominator_document_runs"] // D[0]["runs"]
-    n_set = D[0]["settled"]["denominator_document_runs"] // D[0]["runs"]
-    heads = [(XO, "Depends on an open fact", "right: hold with one question", f"{n_open} documents, 32 claims"),
-             (XS, "Settled by the file", "right: request now", f"{n_set} documents, 63 claims"),
-             (XN, "Needs nothing", "extra, per the same 100", "mostly: event denied")]
-    for x, a, b, c in heads:
-        ax.text(x, 4.11, a, fontsize=7.5, fontweight="semibold", va="center")
-        ax.text(x, 3.99, b, fontsize=7, va="center")
-        ax.text(x, 3.87, c, fontsize=7, va="center")
+    XO, XS, XN = 1.40, 2.80, 4.20
+    for x, t in ((XO, "depends on an open fact"), (XS, "settled by the file"), (XN, "nothing needed")):
+        ax.text(x, 4.10, t, fontsize=7.5, fontweight="semibold", va="center")
     for i, d in enumerate(D):
         y = row_y(i)
-        label(ax, d, y)
+        if i == 0 or d["model"] != D[i - 1]["model"]:
+            ax.text(0.10, y + 5 * CELL + 0.09, f"{d['model']} model", fontsize=7, style="italic", va="center")
+            ax.plot([0.10, 5.40], [y + 5 * CELL + 0.035] * 2, color=SAND, lw=0.6)
+        ax.text(1.30, y + 2.5 * CELL, d["name"], ha="right", va="center", fontsize=7.5,
+                fontweight="semibold" if d["role"] == "the product" else "normal")
         o = lr(d["open"]["per100"], OPEN_ORDER)
-        grid(ax, XO, y, [k for k in OPEN_ORDER for _ in range(o[k])], dots=(d["key"] == "casepath"))
-        s = lr(d["settled"]["per100"], SET_ORDER)
-        grid(ax, XS, y, [k for k in SET_ORDER for _ in range(s[k])])
+        grid(ax, XO, y, [k for k in OPEN_ORDER for _ in range(o[k])])
+        st = lr(d["settled"]["per100"], SET_ORDER)
+        grid(ax, XS, y, [k for k in SET_ORDER for _ in range(st[k])])
         nn = d["not_needed"]
         h, r = round(nn["needless_holds_per100_settled"]), round(nn["needless_requests_per100_settled"])
         seq = ["held_needlessly"] * h + ["requested_needlessly"] * r
         cols = max(1, -(-len(seq) // 5))
-        ax.add_patch(Rectangle((XN - 0.022, y - 0.022), cols * CELL + 0.035, 5 * CELL + 0.035, fc="none", ec=SAND, lw=0.7))
+        ax.add_patch(Rectangle((XN - 0.02, y - 0.02), cols * CELL + 0.03, 5 * CELL + 0.03, fc="none", ec=SAND, lw=0.7))
         grid(ax, XN, y, seq)
-    # legend, two rows
-    def key(x, y, c, t, dot=False):
-        ax.add_patch(Rectangle((x, y - 0.027), 0.054, 0.054, fc=c, ec="none", lw=0))
-        if dot:
-            ax.add_patch(Rectangle((x + 0.017, y - 0.010), 0.02, 0.02, fc=INK, ec="none", lw=0))
-        ax.text(x + 0.085, y, t, fontsize=7, va="center")
-    key(0.10, 0.27, AMBER, "held")
-    key(0.55, 0.27, TEAL, "requested now")
-    key(1.40, 0.27, RUST, "requested too early, or not needed")
-    key(3.30, 0.27, INDIGO, "dropped: neither requested nor held")
-    key(0.10, 0.10, AMBER, "held; its question names the open fact (CasePath only: its questions are fact ids)", dot=True)
-    key(4.35, 0.10, INK, "claim handed over")
-    ax.add_patch(Rectangle((3.42 + 0.0, 0.10 - 0.03), 0.0, 0.0))
+    x = 0.10
+    for c, t in [(AMBER, "held"), (TEAL, "requested now"), (RUST, "requested too early, or not needed"),
+                 (INDIGO, "dropped: neither"), (INK, "claim handed over")]:
+        ax.add_patch(Rectangle((x, 0.10 - 0.027), 0.054, 0.054, fc=c, ec="none", lw=0))
+        ax.text(x + 0.085, 0.10, t, fontsize=7, va="center")
+        x += 0.24 + 0.050 * len(t)
     return fig
 
 

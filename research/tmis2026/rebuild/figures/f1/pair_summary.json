@@ -1,17 +1,138 @@
 {
- "pair_runs": 144,
- "dependent_line_request_to_hold": 113,
- "exactly_dependent_line_and_its_question": 15,
- "checklists_identical": 3,
- "other_lines_changed_hist": {
-  "2": 40,
-  "3": 39,
-  "1": 34,
-  "0": 18,
-  "4": 8,
-  "10": 1,
-  "6": 1,
-  "12": 1,
-  "5": 2
+ "definition": "pair-run = the stated text and the open text of one theft pair, same run index; governed lines = the needs whose rule names the condition's fact; questions compared as sets",
+ "core_checklist_only": {
+  "pairs": {
+   "pair_runs": 144,
+   "governed_lines_request_to_hold": 118,
+   "exactly_governed_lines_and_their_questions_nothing_else": 12,
+   "something_else_also_moves": 130,
+   "checklists_identical": 2,
+   "other_lines_moved_per_pair_run": {
+    "1": 45,
+    "2": 43,
+    "0": 14,
+    "3": 28,
+    "4": 10,
+    "6": 1,
+    "7": 1,
+    "5": 2
+   },
+   "most_often_moving_other_lines": {
+    "d20": {
+     "pair_runs": 70,
+     "title": "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+     "governed_by": [
+      "g070",
+      "g098"
+     ]
+    },
+    "d23": {
+     "pair_runs": 57,
+     "title": "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+     "governed_by": [
+      "g020_rev_b4712e29"
+     ]
+    },
+    "d15": {
+     "pair_runs": 48,
+     "title": "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+     "governed_by": [
+      "g042_rev_92ab8925"
+     ]
+    },
+    "d21": {
+     "pair_runs": 30,
+     "title": "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+     "governed_by": [
+      "g022",
+      "g023"
+     ]
+    },
+    "d32": {
+     "pair_runs": 22,
+     "title": "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+     "governed_by": [
+      "g084",
+      "g088"
+     ]
+    }
+   }
+  },
+  "stability_theft": {
+   "texts_with_3_runs": 128,
+   "identical_checklist_in_all_runs": 8
+  },
+  "stability_tenancy": {
+   "texts_with_3_runs": 96,
+   "identical_checklist_in_all_runs": 70
+  }
+ },
+ "full_product": {
+  "pairs": {
+   "pair_runs": 144,
+   "governed_lines_request_to_hold": 113,
+   "exactly_governed_lines_and_their_questions_nothing_else": 15,
+   "something_else_also_moves": 126,
+   "checklists_identical": 3,
+   "other_lines_moved_per_pair_run": {
+    "2": 40,
+    "3": 39,
+    "1": 34,
+    "0": 18,
+    "4": 8,
+    "10": 1,
+    "6": 1,
+    "12": 1,
+    "5": 2
+   },
+   "most_often_moving_other_lines": {
+    "d20": {
+     "pair_runs": 71,
+     "title": "Insurer's written demand for the communications, under warning of the consequences of default, setting the period (10 days in the Generali wording)",
+     "governed_by": [
+      "g070",
+      "g098"
+     ]
+    },
+    "d23": {
+     "pair_runs": 54,
+     "title": "Joint expert's determination of the loss, where the parties appoint one expert instead of running the full expert procedure",
+     "governed_by": [
+      "g020_rev_b4712e29"
+     ]
+    },
+    "d15": {
+     "pair_runs": 50,
+     "title": "Written assignment to the insurer of the claims against third parties up to the amount of the benefits rendered, with the evidence needed to pursue them",
+     "governed_by": [
+      "g042_rev_92ab8925"
+     ]
+    },
+    "d21": {
+     "pair_runs": 36,
+     "title": "Written appointment of a Sachverstaendiger by each party, and the appointment of an umpire before determination begins",
+     "governed_by": [
+      "g022",
+      "g023"
+     ]
+    },
+    "d32": {
+     "pair_runs": 25,
+     "title": "Report of the SIM-card theft to the insurer or to the mobile provider within 24 hours",
+     "governed_by": [
+      "g084",
+      "g088"
+     ]
+    }
+   }
+  },
+  "stability_theft": {
+   "texts_with_3_runs": 128,
+   "identical_checklist_in_all_runs": 9
+  },
+  "stability_tenancy": {
+   "texts_with_3_runs": 96,
+   "identical_checklist_in_all_runs": 69
+  }
  }
 }

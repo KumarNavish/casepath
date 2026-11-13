@@ -35,15 +35,19 @@ def mk(d):
     return "o" if d["model"] == "cost-efficient" else "s"
 
 
+FOCUS = {"casepath_checklist", "casepath_frontier_checklist", "hold_prompt", "hold_prompt_frontier"}
+
+
 def bold(d):
-    return d["role"] == "the product"
+    return d["key"] in FOCUS
 
 
-# label offsets (points) for the scatter, chosen by eye after the first render; keys = (key)
-OFF = {"casepath": (4, 11), "casepath_checklist": (0, 24), "casepath_frontier_checklist": (6, 0),
-       "hold_prompt_frontier": (6, -2), "hold_prompt": (6, 0), "ric_frontier": (6, 0), "ric": (6, -8),
-       "self_consistency": (0, 9), "mer_hold_frontier": (6, -9), "model_executes_rules": (6, 0), "react": (6, 0)}
-HA = {"casepath_checklist": "center", "self_consistency": "center"}
+# label offsets (points), placed by eye at print size; a leader is drawn when the label is far from its mark
+OFF = {"casepath_checklist": (-14, 26), "casepath_frontier_checklist": (7, 0), "casepath": (0, 12),
+       "hold_prompt_frontier": (12, -16), "mer_hold_frontier": (12, -28), "hold_prompt": (6, 0),
+       "ric_frontier": (6, 0), "ric": (6, -8), "self_consistency": (0, 9), "model_executes_rules": (6, 0),
+       "react": (6, 0)}
+HA = {"casepath_checklist": "right", "casepath": "center", "self_consistency": "center"}
 
 
 def scatter(ax):
@@ -57,10 +61,12 @@ def scatter(ax):
     ax.plot([x["usd_per_file"] for x in rd], [x["all_dev_per_file"] for x in rd], color=INK, lw=0.6, zorder=2)
     for x in rd:
         ax.plot(x["usd_per_file"], x["all_dev_per_file"], marker="o", ms=1.6, color=INK, zorder=2)
-    ax.annotate("1, 2, 3 readings", (rd[0]["usd_per_file"], rd[0]["all_dev_per_file"]), xytext=(-4, 0),
+    ax.annotate("1 reading", (rd[0]["usd_per_file"], rd[0]["all_dev_per_file"]), xytext=(-4, 0),
                 textcoords="offset points", fontsize=7, ha="right", va="center")
+    ax.annotate("3", (rd[-1]["usd_per_file"], rd[-1]["all_dev_per_file"]), xytext=(5, -6),
+                textcoords="offset points", fontsize=7, ha="left", va="center")
     for d in DS:
-        ax.plot(d["usd_per_file"], d["all_dev_per_file"], marker=mk(d), ms=5.2 if bold(d) else 4, color=INK,
+        ax.plot(d["usd_per_file"], d["all_dev_per_file"], marker=mk(d), ms=5.6 if bold(d) else 3.6, color=INK,
                 mec=PAPER, mew=0.6, zorder=4)
         dx, dy = OFF.get(d["key"], (5, 0))
         ax.annotate(nm(d), (d["usd_per_file"], d["all_dev_per_file"]), xytext=(dx, dy), textcoords="offset points",
@@ -83,18 +89,18 @@ def repeat(axl, axr):
         r = d["repeat"]
         axl.plot([0, 100 * r["identical_share"]], [y, y], color=SAND, lw=0.6, zorder=1)
         axl.plot(100 * r["identical_share"], y, marker=mk(d), ms=4.5 if bold(d) else 3.8, color=INK, mec=PAPER, mew=0.5)
-        axr.plot([0, r["mean_lines_differing_per_pair"]], [y, y], color=SAND, lw=0.6, zorder=1)
-        axr.plot(r["mean_lines_differing_per_pair"], y, marker=mk(d), ms=4.5 if bold(d) else 3.8, color=INK, mec=PAPER, mew=0.5)
+        axr.plot([0, 100 * r["share_lines_differing_per_pair"]], [y, y], color=SAND, lw=0.6, zorder=1)
+        axr.plot(100 * r["share_lines_differing_per_pair"], y, marker=mk(d), ms=4.5 if bold(d) else 3.8, color=INK, mec=PAPER, mew=0.5)
     axl.set_yticks(ys, [nm(d) for d in R], fontsize=7)
     for t, d in zip(axl.get_yticklabels(), R):
         if bold(d):
             t.set_fontweight("semibold")
     axr.set_yticks(ys, [""] * len(R))
-    axl.set_xlim(0, 100), axr.set_xlim(0, 2)
-    axl.set_xticks([0, 100], ["0", "100%"])
-    axr.set_xticks([0, 1, 2])
-    axl.set_xlabel("same checklist\nin all 3 runs", fontsize=7)
-    axr.set_xlabel("lines differing,\ntwo runs", fontsize=7)
+    axl.set_xlim(0, 100), axr.set_xlim(0, 20)
+    axl.set_xticks([0, 50, 100])
+    axr.set_xticks([0, 10, 20])
+    axl.set_xlabel("same checklist\nin 3 runs, %", fontsize=7)
+    axr.set_xlabel("lines that differ\nbetween 2 runs, %", fontsize=7)
     for a in (axl, axr):
         a.set_ylim(-0.6, len(R) - 0.4)
         a.set_facecolor(PAPER)
@@ -104,10 +110,10 @@ def repeat(axl, axr):
 
 def draw_a():
     fig = plt.figure(figsize=(5.5, 3.5))
-    ax = fig.add_axes([0.08, 0.20, 0.47, 0.76])
+    ax = fig.add_axes([0.08, 0.20, 0.44, 0.76])
     scatter(ax)
-    axl = fig.add_axes([0.765, 0.26, 0.10, 0.62])
-    axr = fig.add_axes([0.895, 0.26, 0.10, 0.62])
+    axl = fig.add_axes([0.725, 0.26, 0.115, 0.62])
+    axr = fig.add_axes([0.87, 0.26, 0.115, 0.62])
     repeat(axl, axr)
     fig.text(0.08, 0.02, "circle: cost-efficient model (c)    square: frontier model (f)    "
              "thin line: stored budget curve", fontsize=7)

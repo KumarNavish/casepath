@@ -26,15 +26,18 @@ def short(d):
     return f"{d['name']} ({'f' if d['model'] == 'frontier' else 'c'})"
 
 
+FOCUS = {"casepath_checklist": 2.0, "hold_prompt_frontier": 1.4}
+
+
 def lw(d):
-    return 1.8 if d["key"] == "casepath" else (1.2 if d["role"] == "strongest prompt" else 0.7)
+    return FOCUS.get(d["key"], 0.6)
 
 
 def empty(ax, x0, x1, label=True, ymax=YMAX):
     ax.add_patch(Rectangle((x0, 0), x1 - x0, ymax * 0.97, fc="none", ec=INK, lw=0.6, ls=(0, (3, 2.5)), zorder=1))
     if label:
-        ax.text(x1, ymax * 0.03, "not yet\nmeasured ", ha="right", va="bottom", fontsize=7, style="italic", zorder=3,
-                transform=ax.transData)
+        ax.annotate("not yet\nmeasured", (x1, 0), xytext=(-4, 4), textcoords="offset points", ha="right",
+                    va="bottom", fontsize=7, style="italic", zorder=3)
 
 
 def frame(fig, width_right=1.42):
@@ -52,10 +55,10 @@ def frame(fig, width_right=1.42):
     # length
     a = axes[0]
     a.set_xscale("log")
-    a.set_xlim(60, 3200)
+    a.set_xlim(70, 2750)
     a.set_xticks([77, 150, 367, 2500], ["77", "150", "367", "2,500"])
     a.minorticks_off()
-    a.set_xlabel("file length, words", fontsize=7.5)
+    a.set_xlabel("words, with attachments", fontsize=7.5)
     empty(a, 367, 2500)
     # rules (ordinal)
     a = axes[1]
@@ -75,37 +78,31 @@ def frame(fig, width_right=1.42):
 
 
 def labels(fig, axes, ys):
-    """Right label column at each design's measured level, nudged apart; thin sand leaders."""
+    """Direct labels for CasePath core (c) and the strongest prompt only; one shared label for the rest."""
     ax = axes[2]
-    order = sorted(range(len(DS)), key=lambda i: ys[i])
-    placed, minsep = {}, 0.155
-    last = -1
-    for i in order:
-        y = max(ys[i], last + minsep)
-        placed[i] = y
-        last = y
-    over = last - (YMAX - 0.05)
-    if over > 0:
-        for i in placed:
-            placed[i] -= over
     for i, d in enumerate(DS):
-        ax.annotate(short(d), xy=(33.3, ys[i]), xytext=(56, placed[i]), textcoords="data", fontsize=7, va="center",
-                    fontweight="semibold" if d["key"] == "casepath" else "normal", annotation_clip=False,
-                    arrowprops=dict(arrowstyle="-", color=SAND, lw=0.5, shrinkA=0, shrinkB=2))
+        if d["key"] in FOCUS:
+            dy = 0.10 if d["key"] == "casepath_checklist" else -0.10
+            ax.annotate(short(d), xy=(35.5, ys[i]), xytext=(57, ys[i] + dy), textcoords="data", fontsize=7,
+                        va="center", fontweight="semibold", annotation_clip=False,
+                        arrowprops=dict(arrowstyle="-", color=SAND, lw=0.5, shrinkA=0, shrinkB=1))
+    ax.text(57, 1.55, "thin marks: the other\n8 designs of Figure 4", fontsize=7, va="center")
 
 
 def draw_b():
     fig = plt.figure(figsize=(5.5, 3.4))
     axes = frame(fig)
     lo, hi = J["length"]["min"], J["length"]["max"]
+    med = J["length"]["tercile_medians"][1]
     ys = [d["overall"] for d in DS]
     for d, y in zip(DS, ys):
-        axes[0].plot([lo, hi], [y, y], color=INK, lw=lw(d), solid_capstyle="butt", zorder=4)
+        axes[0].plot([med / 1.13, med * 1.13], [y, y], color=INK, lw=lw(d), solid_capstyle="butt", zorder=4)
         axes[1].plot([0.82, 1.18], [y, y], color=INK, lw=lw(d), solid_capstyle="butt", zorder=4)
         axes[2].plot([31.5, 35.1], [y, y], color=INK, lw=lw(d), solid_capstyle="butt", zorder=4)
+    axes[0].plot([lo, lo, hi, hi], [0.10, 0.03, 0.03, 0.10], color=INK, lw=0.6, zorder=4)
     labels(fig, axes, ys)
     fig.text(0.085, 0.03, "Ink: measured on Study 3's 96 sealed tenancy claims.   Dashed: planned range of the registered test, "
-             "not run.\n(c) cost-efficient model, (f) frontier model.", fontsize=7, va="bottom", linespacing=1.3)
+             "not run.\nBracket: measured length span.   (c) cost-efficient model, (f) frontier model.", fontsize=7, va="bottom", linespacing=1.3)
     return fig
 
 

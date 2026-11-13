@@ -5,108 +5,62 @@
  "pooling": "document-runs pooled over runs",
  "designs": [
   {
-   "key": "casepath",
-   "name": "CasePath",
+   "key": "casepath_checklist",
+   "name": "CasePath core",
    "model": "cost-efficient",
    "role": "the product",
    "runs": 3,
-   "file": "runs/study3/confirm/plans_tenancy_casepath.json",
+   "file": "runs/study3/confirm/plans_tenancy_casepath_checklist.json",
    "failed_outputs": 0,
    "claim_runs": 288,
    "open": {
     "denominator_document_runs": 258,
     "counts": {
-     "held": 251,
-     "too_early": 7
+     "dropped": 1,
+     "held": 257
     },
     "per100": {
-     "held": 97.28682170542636,
-     "too_early": 2.7131782945736433
+     "dropped": 0.3875968992248062,
+     "held": 99.6124031007752
     }
    },
    "settled": {
     "denominator_document_runs": 1443,
     "counts": {
-     "dropped": 11,
+     "dropped": 15,
      "handed": 13,
-     "held_needlessly": 26,
-     "requested": 1393
+     "held_needlessly": 25,
+     "requested": 1390
     },
     "per100": {
-     "dropped": 0.7623007623007623,
+     "dropped": 1.0395010395010396,
      "handed": 0.9009009009009009,
-     "held_needlessly": 1.8018018018018018,
-     "requested": 96.53499653499654
+     "held_needlessly": 1.7325017325017324,
+     "requested": 96.32709632709633
     }
    },
    "not_needed": {
     "counts": {
-     "held_needlessly": 94,
-     "left_alone": 1218,
-     "requested_needlessly": 59
+     "held_needlessly": 87,
+     "left_alone": 1214,
+     "requested_needlessly": 70
     },
-    "needless_holds_per100_settled": 6.514206514206514,
-    "needless_requests_per100_settled": 4.088704088704088,
-    "needless_holds_on_denied_event_claims": 84,
-    "needless_requests_on_denied_event_claims": 44
+    "needless_holds_per100_settled": 6.029106029106029,
+    "needless_requests_per100_settled": 4.851004851004851,
+    "needless_holds_on_denied_event_claims": 76,
+    "needless_requests_on_denied_event_claims": 52
    },
    "question_names_open_fact": {
-    "right": 251,
-    "of_held": 251,
+    "right": 257,
+    "of_held": 257,
     "rule": "open-fact flag id in plan.questions (product states fact ids)"
    }
-  },
-  {
-   "key": "hold_prompt_frontier",
-   "name": "Prompt that may hold",
-   "model": "frontier",
-   "role": "strongest prompt",
-   "runs": 1,
-   "file": "study4/baseline_check/runs/plans_A-terra-tenancy.json",
-   "failed_outputs": 0,
-   "claim_runs": 96,
-   "open": {
-    "denominator_document_runs": 86,
-    "counts": {
-     "held": 84,
-     "too_early": 2
-    },
-    "per100": {
-     "held": 97.67441860465117,
-     "too_early": 2.3255813953488373
-    }
-   },
-   "settled": {
-    "denominator_document_runs": 481,
-    "counts": {
-     "dropped": 12,
-     "held_needlessly": 35,
-     "requested": 434
-    },
-    "per100": {
-     "dropped": 2.494802494802495,
-     "held_needlessly": 7.276507276507276,
-     "requested": 90.22869022869023
-    }
-   },
-   "not_needed": {
-    "counts": {
-     "held_needlessly": 3,
-     "left_alone": 450,
-     "requested_needlessly": 4
-    },
-    "needless_holds_per100_settled": 0.6237006237006237,
-    "needless_requests_per100_settled": 0.8316008316008316,
-    "needless_holds_on_denied_event_claims": 0,
-    "needless_requests_on_denied_event_claims": 0
-   },
-   "question_names_open_fact": "not scored: free-text questions, no registered scorer"
   },
   {
    "key": "hold_prompt",
    "name": "Prompt that may hold",
    "model": "cost-efficient",
-   "role": "prompt",
+   "role": "strongest prompt",
    "runs": 3,
    "file": "study4/baseline_check/runs/plans_A-luna-tenancy.json",
    "failed_outputs": 0,
@@ -151,48 +105,50 @@
    "question_names_open_fact": "not scored: free-text questions, no registered scorer"
   },
   {
-   "key": "ric_frontier",
-   "name": "Rules in context",
-   "model": "frontier",
-   "role": "prompt",
+   "key": "model_executes_rules",
+   "name": "Model executes rules",
+   "model": "cost-efficient",
+   "role": "agent",
    "runs": 3,
-   "file": "runs/study3/confirm/plans_tenancy_ric_terra.json",
-   "failed_outputs": 0,
+   "file": "runs/study3/confirm/plans_tenancy_model_executes_rules.json",
+   "failed_outputs": 2,
    "claim_runs": 288,
    "open": {
     "denominator_document_runs": 258,
     "counts": {
-     "held": 90,
-     "too_early": 168
+     "dropped": 2,
+     "held": 221,
+     "too_early": 35
     },
     "per100": {
-     "held": 34.883720930232556,
-     "too_early": 65.11627906976744
+     "dropped": 0.7751937984496124,
+     "held": 85.65891472868218,
+     "too_early": 13.565891472868216
     }
    },
    "settled": {
     "denominator_document_runs": 1443,
     "counts": {
-     "dropped": 37,
-     "held_needlessly": 11,
-     "requested": 1395
+     "dropped": 50,
+     "held_needlessly": 24,
+     "requested": 1369
     },
     "per100": {
-     "dropped": 2.5641025641025643,
-     "held_needlessly": 0.7623007623007623,
-     "requested": 96.67359667359668
+     "dropped": 3.465003465003465,
+     "held_needlessly": 1.6632016632016633,
+     "requested": 94.87179487179488
     }
    },
    "not_needed": {
     "counts": {
-     "held_needlessly": 53,
-     "left_alone": 986,
-     "requested_needlessly": 332
+     "held_needlessly": 167,
+     "left_alone": 1052,
+     "requested_needlessly": 152
     },
-    "needless_holds_per100_settled": 3.672903672903673,
-    "needless_requests_per100_settled": 23.007623007623007,
-    "needless_holds_on_denied_event_claims": 45,
-    "needless_requests_on_denied_event_claims": 319
+    "needless_holds_per100_settled": 11.573111573111573,
+    "needless_requests_per100_settled": 10.533610533610533,
+    "needless_holds_on_denied_event_claims": 153,
+    "needless_requests_on_denied_event_claims": 140
    },
    "question_names_open_fact": "not scored: free-text questions, no registered scorer"
   },
@@ -246,7 +202,7 @@
   },
   {
    "key": "self_consistency",
-   "name": "Self-consistency (5 votes)",
+   "name": "Self-consistency",
    "model": "cost-efficient",
    "role": "prompt",
    "runs": 3,
@@ -287,100 +243,6 @@
     "needless_requests_per100_settled": 30.284130284130285,
     "needless_holds_on_denied_event_claims": 48,
     "needless_requests_on_denied_event_claims": 426
-   },
-   "question_names_open_fact": "not scored: free-text questions, no registered scorer"
-  },
-  {
-   "key": "mer_hold_frontier",
-   "name": "Model executes rules",
-   "model": "frontier",
-   "role": "agent",
-   "runs": 1,
-   "file": "study4/baseline_check/runs/plans_B-terra-tenancy.json",
-   "failed_outputs": 0,
-   "claim_runs": 96,
-   "open": {
-    "denominator_document_runs": 86,
-    "counts": {
-     "held": 83,
-     "too_early": 3
-    },
-    "per100": {
-     "held": 96.51162790697674,
-     "too_early": 3.488372093023256
-    }
-   },
-   "settled": {
-    "denominator_document_runs": 481,
-    "counts": {
-     "dropped": 11,
-     "held_needlessly": 25,
-     "requested": 445
-    },
-    "per100": {
-     "dropped": 2.286902286902287,
-     "held_needlessly": 5.197505197505198,
-     "requested": 92.51559251559252
-    }
-   },
-   "not_needed": {
-    "counts": {
-     "held_needlessly": 9,
-     "left_alone": 444,
-     "requested_needlessly": 4
-    },
-    "needless_holds_per100_settled": 1.8711018711018712,
-    "needless_requests_per100_settled": 0.8316008316008316,
-    "needless_holds_on_denied_event_claims": 6,
-    "needless_requests_on_denied_event_claims": 0
-   },
-   "question_names_open_fact": "not scored: free-text questions, no registered scorer"
-  },
-  {
-   "key": "model_executes_rules",
-   "name": "Model executes rules",
-   "model": "cost-efficient",
-   "role": "agent",
-   "runs": 3,
-   "file": "runs/study3/confirm/plans_tenancy_model_executes_rules.json",
-   "failed_outputs": 2,
-   "claim_runs": 288,
-   "open": {
-    "denominator_document_runs": 258,
-    "counts": {
-     "dropped": 2,
-     "held": 221,
-     "too_early": 35
-    },
-    "per100": {
-     "dropped": 0.7751937984496124,
-     "held": 85.65891472868218,
-     "too_early": 13.565891472868216
-    }
-   },
-   "settled": {
-    "denominator_document_runs": 1443,
-    "counts": {
-     "dropped": 50,
-     "held_needlessly": 24,
-     "requested": 1369
-    },
-    "per100": {
-     "dropped": 3.465003465003465,
-     "held_needlessly": 1.6632016632016633,
-     "requested": 94.87179487179488
-    }
-   },
-   "not_needed": {
-    "counts": {
-     "held_needlessly": 167,
-     "left_alone": 1052,
-     "requested_needlessly": 152
-    },
-    "needless_holds_per100_settled": 11.573111573111573,
-    "needless_requests_per100_settled": 10.533610533610533,
-    "needless_holds_on_denied_event_claims": 153,
-    "needless_requests_on_denied_event_claims": 140
    },
    "question_names_open_fact": "not scored: free-text questions, no registered scorer"
   },
@@ -431,10 +293,201 @@
     "needless_requests_on_denied_event_claims": 216
    },
    "question_names_open_fact": "not scored: free-text questions, no registered scorer"
+  },
+  {
+   "key": "casepath_frontier_checklist",
+   "name": "CasePath core",
+   "model": "frontier",
+   "role": "the product",
+   "runs": 1,
+   "file": "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json",
+   "failed_outputs": 0,
+   "claim_runs": 96,
+   "open": {
+    "denominator_document_runs": 86,
+    "counts": {
+     "dropped": 1,
+     "held": 75,
+     "too_early": 10
+    },
+    "per100": {
+     "dropped": 1.1627906976744187,
+     "held": 87.20930232558139,
+     "too_early": 11.627906976744185
+    }
+   },
+   "settled": {
+    "denominator_document_runs": 481,
+    "counts": {
+     "dropped": 9,
+     "held_needlessly": 1,
+     "requested": 471
+    },
+    "per100": {
+     "dropped": 1.8711018711018712,
+     "held_needlessly": 0.2079002079002079,
+     "requested": 97.92099792099792
+    }
+   },
+   "not_needed": {
+    "counts": {
+     "held_needlessly": 37,
+     "left_alone": 411,
+     "requested_needlessly": 9
+    },
+    "needless_holds_per100_settled": 7.6923076923076925,
+    "needless_requests_per100_settled": 1.8711018711018712,
+    "needless_holds_on_denied_event_claims": 36,
+    "needless_requests_on_denied_event_claims": 7
+   },
+   "question_names_open_fact": {
+    "right": 75,
+    "of_held": 75,
+    "rule": "open-fact flag id in plan.questions (product states fact ids)"
+   }
+  },
+  {
+   "key": "hold_prompt_frontier",
+   "name": "Prompt that may hold",
+   "model": "frontier",
+   "role": "strongest prompt",
+   "runs": 1,
+   "file": "study4/baseline_check/runs/plans_A-terra-tenancy.json",
+   "failed_outputs": 0,
+   "claim_runs": 96,
+   "open": {
+    "denominator_document_runs": 86,
+    "counts": {
+     "held": 84,
+     "too_early": 2
+    },
+    "per100": {
+     "held": 97.67441860465117,
+     "too_early": 2.3255813953488373
+    }
+   },
+   "settled": {
+    "denominator_document_runs": 481,
+    "counts": {
+     "dropped": 12,
+     "held_needlessly": 35,
+     "requested": 434
+    },
+    "per100": {
+     "dropped": 2.494802494802495,
+     "held_needlessly": 7.276507276507276,
+     "requested": 90.22869022869023
+    }
+   },
+   "not_needed": {
+    "counts": {
+     "held_needlessly": 3,
+     "left_alone": 450,
+     "requested_needlessly": 4
+    },
+    "needless_holds_per100_settled": 0.6237006237006237,
+    "needless_requests_per100_settled": 0.8316008316008316,
+    "needless_holds_on_denied_event_claims": 0,
+    "needless_requests_on_denied_event_claims": 0
+   },
+   "question_names_open_fact": "not scored: free-text questions, no registered scorer"
+  },
+  {
+   "key": "mer_hold_frontier",
+   "name": "Model executes rules",
+   "model": "frontier",
+   "role": "agent",
+   "runs": 1,
+   "file": "study4/baseline_check/runs/plans_B-terra-tenancy.json",
+   "failed_outputs": 0,
+   "claim_runs": 96,
+   "open": {
+    "denominator_document_runs": 86,
+    "counts": {
+     "held": 83,
+     "too_early": 3
+    },
+    "per100": {
+     "held": 96.51162790697674,
+     "too_early": 3.488372093023256
+    }
+   },
+   "settled": {
+    "denominator_document_runs": 481,
+    "counts": {
+     "dropped": 11,
+     "held_needlessly": 25,
+     "requested": 445
+    },
+    "per100": {
+     "dropped": 2.286902286902287,
+     "held_needlessly": 5.197505197505198,
+     "requested": 92.51559251559252
+    }
+   },
+   "not_needed": {
+    "counts": {
+     "held_needlessly": 9,
+     "left_alone": 444,
+     "requested_needlessly": 4
+    },
+    "needless_holds_per100_settled": 1.8711018711018712,
+    "needless_requests_per100_settled": 0.8316008316008316,
+    "needless_holds_on_denied_event_claims": 6,
+    "needless_requests_on_denied_event_claims": 0
+   },
+   "question_names_open_fact": "not scored: free-text questions, no registered scorer"
+  },
+  {
+   "key": "ric_frontier",
+   "name": "Rules in context",
+   "model": "frontier",
+   "role": "prompt",
+   "runs": 3,
+   "file": "runs/study3/confirm/plans_tenancy_ric_terra.json",
+   "failed_outputs": 0,
+   "claim_runs": 288,
+   "open": {
+    "denominator_document_runs": 258,
+    "counts": {
+     "held": 90,
+     "too_early": 168
+    },
+    "per100": {
+     "held": 34.883720930232556,
+     "too_early": 65.11627906976744
+    }
+   },
+   "settled": {
+    "denominator_document_runs": 1443,
+    "counts": {
+     "dropped": 37,
+     "held_needlessly": 11,
+     "requested": 1395
+    },
+    "per100": {
+     "dropped": 2.5641025641025643,
+     "held_needlessly": 0.7623007623007623,
+     "requested": 96.67359667359668
+    }
+   },
+   "not_needed": {
+    "counts": {
+     "held_needlessly": 53,
+     "left_alone": 986,
+     "requested_needlessly": 332
+    },
+    "needless_holds_per100_settled": 3.672903672903673,
+    "needless_requests_per100_settled": 23.007623007623007,
+    "needless_holds_on_denied_event_claims": 45,
+    "needless_requests_on_denied_event_claims": 319
+   },
+   "question_names_open_fact": "not scored: free-text questions, no registered scorer"
   }
  ],
  "inputs": {
-  "runs/study3/confirm/plans_tenancy_casepath.json": "303a30b6d239e17850318e2da26b92014b496809fb39e46df03d90156069cc4e",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist.json": "54d6217431b7ef799601fd74586c7502cfb026360d741cc4f27d43e5f40190cf",
+  "runs/study3/confirm/plans_tenancy_casepath_checklist_frontier.json": "882ad0df87ed4d7fd61eba5bb51b34c90247f2467c9e20dc8c07237b30822fb8",
   "runs/study3/confirm/plans_tenancy_model_executes_rules.json": "abc0d2f5d7fd543db99480cbab94a23fbad6c95e61f4f2fca4c03f326de99c7f",
   "runs/study3/confirm/plans_tenancy_react.json": "c094c8c9ed33c08ea200ddb504cec46510c6b1405a23b51ef32a1528552f92c0",
   "runs/study3/confirm/plans_tenancy_ric_luna.json": "9ef392d68ab8d589e047d6a227f5ca8d2cc847a3edeb663f2748dcccb90174b6",
@@ -444,5 +497,5 @@
   "study4/baseline_check/runs/plans_A-terra-tenancy.json": "bda583f2c64c11868b6b9c97c0dad10f2cb2ebe9ce5b9dc5c8fdf1963744c883",
   "study4/baseline_check/runs/plans_B-terra-tenancy.json": "0bd4e18190ed3b09280887d8b9c8bdaf4cc55e862adbf50e3794892a3ef38481"
  },
- "script_sha256": "11caccc5c16b1456520f839a3312e762a5bb0d6056ede0ba4fa12522e2680257"
+ "script_sha256": "48f28620c500b6015da8ba158bcbcdb123961b7646f9794ab58e85fecbbead2b"
 }

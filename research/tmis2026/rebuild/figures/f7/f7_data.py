@@ -36,10 +36,8 @@ LEDGER = {"cost-efficient": "study4/baseline_check/runs/ledger_gpt-6-luna.jsonl"
           "frontier": "study4/baseline_check/runs/ledger_gpt-6.1-terra.jsonl"}
 FAIR = {"hold_prompt": ("A", "cost-efficient"), "hold_prompt_frontier": ("A", "frontier"),
         "mer_hold_frontier": ("B", "frontier")}
-# product first (full scope, its checklist-only core on both models), then Figure 4's order
-DESIGNS = [("casepath", "CasePath, full", "cost-efficient", "the product"),
-           ("casepath_checklist", "CasePath, checklist only", "cost-efficient", "the product"),
-           ("casepath_frontier_checklist", "CasePath, checklist only", "frontier", "the product")] + F4.DESIGNS[1:]
+# Figure 4's order, then the product's full scope (registered design)
+DESIGNS = F4.DESIGNS + [("casepath", "CasePath, full", "cost-efficient", "the product, full scope")]
 
 
 def sha(rel):
