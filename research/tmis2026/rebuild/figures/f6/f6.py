@@ -98,7 +98,7 @@ def mark(ax, x, y, k):
         ax.add_patch(Circle((x, y), 0.008, fc=S.SAND, ec="none", zorder=3))
 
 
-BLOCK = len(ORDER) * P + 1 * U   # height of one type block plus the gap below it
+BLOCK = (len(ORDER) - 1) * P + 1.5 * U   # theft away has 7 catalogue lines, theft at home 8   # height of one type block plus the gap below it
 
 
 def matrix(ax, x0, ytop):
@@ -112,7 +112,7 @@ def matrix(ax, x0, ytop):
 
 
 def main():
-    W, H = 5.5, 3.7
+    W, H = 5.5, 3.45
     fig, ax = S.canvas(W, H)
     M = D["measures"]
     # the rule edit, shared by both designs (top row before, bottom row after)
@@ -142,7 +142,7 @@ def main():
                                 boxstyle="round,pad=0,rounding_size=0.03", fc=S.WHITE, ec=S.SAND, lw=S.LW,
                                 ls=(0, (3, 2.5))))
     ax.text(xr + width / 2, (top + bottom) / 2, "not yet measured", ha="center", va="center", fontsize=S.SIZE_LABEL)
-    ax.text(xl - S.MARK / 2, bottom - 1.5 * U, f"{M['lines_changed']} of {M['lines_total']} lines changed", va="center",
+    ax.text(xl - S.MARK / 2, bottom - 1.2 * U, f"{M['lines_changed']} of {M['lines_total']} lines changed", va="center",
             fontsize=S.SIZE_LABEL)
     # legend: three change marks and the model call
     y = 0.9 * U

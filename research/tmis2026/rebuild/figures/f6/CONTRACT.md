@@ -66,7 +66,8 @@ again, **because** CasePath stores one reading per fact and the rules are data.
 | Hatched sand frame | not yet measured | none |
 
 ## 7. Caption (≤ 45 words)
-One line made the police report required. From stored readings, code recomputed all 56 checklists, no model call; only police-report lines changed. One extra request: a report on file, finding rejected; one missed hold: a file never routed. A prompt reads every file again.
+One line made the police report required (ringed). From stored readings, code recomputed every checklist: blocks are theft away (21 files) and theft at home (25); 10 files were never routed. Rust: a report on file whose finding was rejected; amber outline: an unrouted file.
+
 
 Files: `f6.svg`, `f6.pdf`, `f6.png` (5.5 × 4.0 in), `f6.py`, `compute.py`, `rerun_drift.py`, `f6_data.json`,
 `rerun_drift.json`, `simple_theft_away.before.json`, `simple_theft_away.after.json`.
@@ -85,3 +86,14 @@ call where a quotation is not found). For a new fact in simple_theft_away that i
 routed), or 63 for the routed files only; a prompt needs 1 call per file it re-runs (27 to 56). So for a new fact
 CasePath costs more calls than a prompt, each answering one fact; the zero-call claim holds only for edits that use
 facts already read. Not checked: whether the tested commit can re-read a single fact without a full run.
+
+## Revision 3 (house style, coordinator 2026-11-13)
+Redrawn with `common/style.py`: white ground, workflow drawn once (top row before, bottom after, edited node ringed in
+ink, the code fragment the only text there); below, "CasePath · 0 calls" with an empty dotted call row and the files x
+lines matrix, "single prompt · 56 calls" with one blue dot per file and the same-size frame, thin sand dashed border,
+"not yet measured". Marks: teal = changed as required, rust = changed, should not, amber outline = should change, did
+not, sand dot = everything else (incl. the 10 unrouted files). Group labels moved to the caption. Words inside: 15
+(headers 7, frame 3, "15 of 421 lines changed" 5; the code fragment excluded as the object); legend: 4 entries. To
+stay at 15 the count line drops "· 0 model calls", which the CasePath header already states. Diamond = fact decides,
+circle = step, square = document (dashed optional) go in the caption if space allows. Construction b stays as drawn by
+`f6_draft2.py`. Inspected at print size and 4x on the matrix's changed row.

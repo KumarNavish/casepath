@@ -60,9 +60,8 @@ list of stolen items, which both branches need after they rejoin, and hold only 
 | Sand vertical rules | column separators | none |
 
 ## 5. Caption (≤ 45 words)
-The same file, read three ways. Read as true, the police consent is asked too early; read as false, it is dropped.
-Kept open, both branches stay possible: code still requests the list of stolen items, needed after they rejoin, and
-holds only the consent, with one question.
+One file, read three ways (diamond filled: true; hollow: false; amber: open). Read as true, the police consent is asked too early; as false, it is dropped. Kept open, code requests the stolen-items list, needed after the branches rejoin, and holds only the consent.
+
 
 Files: `f3.svg`, `f3.pdf`, `f3.png` (5.5 × 3.0 in, 300 dpi), `f3.py`, `compute.py` (needs the lint venv), `f3_data.json`.
 
@@ -76,3 +75,11 @@ readiness 4, comprehensibility 4 (self-assessed). Inspected at print size and 4�
 - Palette: the validator (dataviz `validate_palette.js`, light) failed teal #1F7A6D (chroma floor) and model blue
   #2F5D9E vs indigo #4B4A9C (ΔE 5.7). Moved the step, kept the hue: teal **#008571**, model blue **#4A8FD6**; then all
   checks pass (amber keeps the advised relief: it always carries a direct label).
+
+## Revision 2 (house style, coordinator 2026-11-13)
+Redrawn with `common/style.py`: white ground, one label size (7.5 pt), document lines as the shared checklist mark
+(enlarged to 0.124 in), dropped now filled indigo as in Figure 4, sand dividers removed. Words inside apart from the
+quoted sentence and its translation: 15 (labels on the first column only); legend: 5 entries (requested; held, one
+question; too early; dropped; taken / open). "Not taken" sand paths are left undefined as background; fact true/false
+and diamond/circle are defined in the caption. Construction b stays as drawn by `f3_draft1.py`. Inspected at print
+size and 4x on the rejoin.
