@@ -68,3 +68,25 @@ looks more general than that. Second: the free-text questions of the prompts are
 for CasePath.
 
 Palette: brief values with the coordinator's change of 2026-11-13 (request now #008571, reading blue #4A8FD6), in `../f4/theme.py`.
+
+## Revision 1 (coordinator's round; supersedes the above where they differ)
+- Rows grouped by model. Cost-efficient block: CasePath core (checklist only; 3 tenancy runs are stored,
+  `runs/study3/confirm/plans_tenancy_casepath_checklist.json`, chosen because the artefact is now the minimal core),
+  prompt that may hold, Model executes rules, Rules in context, Self-consistency, ReAct. Frontier block: CasePath core
+  (S7c, one run, `plans_tenancy_casepath_checklist_frontier.json`), prompt that may hold, Model executes rules, Rules in
+  context. Runs: 3 each, except frontier core, prompt and Model executes rules (1); Rules in context frontier has 3.
+- Headers cut to three short words each; the legend is one row; the question dots are removed (they applied to
+  CasePath only). The third column ("nothing needed") is kept: it is where CasePath's needless holds show, which
+  the partner rule requires, and it reads at a glance as a short or long box.
+- Numbers changed with the core in place of the full product. Open, per 100 (held / too early / dropped): core (c)
+  99.6 / 0 / 0.4; core (f) 87.2 / 11.6 / 1.2. Settled (right / held needlessly / dropped / handed): core (c)
+  96.3 / 1.7 / 1.0 / 0.9; core (f) 97.9 / 0.2 / 1.9 / 0. Nothing needed, per 100 settled (holds + requests):
+  core (c) 6.0 + 4.9 (76 of 87 holds on denied-event claims); core (f) 7.7 + 1.9. The core's question names the open
+  fact in 257 of 257 held document-runs.
+- Teal #008571 fails the dataviz validator's chroma floor (0.098 against its floor; it reads as low-chroma); kept as
+  instructed. Separation from the other three state colours passes (worst pair 16.7 ΔE, protan).
+
+### Caption (45 words)
+Where the need hangs on an open fact, CasePath's core and prompts allowed to hold keep nearly all requests waiting;
+earlier prompts ask early. CasePath's price: holds where nothing is needed. 86 open, 481 settled documents, 1 to 3
+runs; CasePath's question names the fact.

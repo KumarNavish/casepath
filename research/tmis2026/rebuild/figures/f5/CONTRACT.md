@@ -62,3 +62,19 @@ Weakest point: the three panels repeat the same nine numbers; a reader may take 
 measurements. The caption says it is one measurement.
 
 Palette: brief values with the coordinator's change of 2026-11-13 (request now #008571, reading blue #4A8FD6), in `../f4/theme.py`.
+
+## Revision 1 (supersedes the above where they differ)
+- Designs and order follow Figure 4's two model blocks (CasePath core in place of the full product). Overall error
+  per file: core (c) 0.733, prompt that may hold (c) 0.889, Model executes rules (c) 1.493, Rules in context (c) 2.330,
+  self-consistency 2.312, ReAct 2.003; core (f) 0.698, prompt that may hold (f) 0.583, Model executes rules (f) 0.542,
+  Rules in context (f) 2.087.
+- Length panel: short marks at the median length (172 words), as in the other panels, plus one thin bracket on the
+  axis for the measured span 77 to 367 words (message plus attachments). No line across length.
+- Direct labels only for CasePath core (c) and the strongest prompt (prompt that may hold, frontier); one shared label
+  for the other eight. "Not yet measured" labels padded off the frames.
+- Teal is not used in this figure; the chroma-floor warning for #008571 is recorded in f4/CONTRACT.md.
+
+### Caption (43 words)
+Study 3 measures each design at one point per axis: 77 to 367 words (message plus attachments; bracket), one
+catalogue of three claim types, a third of files with an open fact. The registered test's ranges (dashed) are empty:
+the question is unanswered.

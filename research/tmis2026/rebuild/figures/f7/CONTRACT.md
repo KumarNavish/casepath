@@ -58,3 +58,21 @@ labels needed a leader.
 
 Palette: brief values with the coordinator's change of 2026-11-13 (request now #008571, reading blue #4A8FD6), in `../f4/theme.py`.
 Lines differing as a share of a claim's checklist lines (11.7 on average): CasePath full 5.7%, core 5.0%, prompt that may hold (c) 7.7%, Rules in context (c) 7.9%, (f) 4.6%, self-consistency 4.1%, Model executes rules (c) 9.7%, ReAct 16.3%. No large gap.
+
+## Revision 1 (supersedes the above where they differ)
+- Designs in Figure 4's order, plus the registered full product. Weight marks the two designs to find first (CasePath
+  core; prompt that may hold): bold label, larger mark; no colour.
+- Labels: no collisions at print size or 4x; the lower cluster's labels sit at fixed data positions with sand leaders.
+- Readings path labelled at its ends ("1 reading", "3"): one reading 0.545 deviations at USD 0.00244; three 0.736 at
+  0.00296 (= the stored core).
+- Right panel rows in Figure 4's cost-efficient order, then Rules in context (f) and CasePath full (c), the other two
+  designs with three stored runs. Axes: "same checklist in 3 runs, %" and "lines that differ between 2 runs, %"
+  (share of a claim's 11.7 checklist lines). Values: core 73% / 5.0%; prompt that may hold (c) 58% / 7.7%; Model
+  executes rules (c) 50% / 9.7%; Rules in context (c) 50% / 7.9%; self-consistency 66% / 4.1%; ReAct 34% / 16.3%;
+  Rules in context (f) 81% / 4.6%; CasePath full 72% / 5.7%.
+- Teal is not used in this figure; the chroma-floor warning for #008571 is recorded in f4/CONTRACT.md.
+
+### Caption (45 words)
+On Study 3's claims CasePath's core costs four times the same-model prompt that may hold, with fewer
+deviations; the frontier prompt errs less at twice the cost. One reading errs less than three. Run again, 5 to 8% of
+lines change; three runs, not ten.
