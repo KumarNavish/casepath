@@ -47,9 +47,14 @@ def scatter(fig):
                                     shrinkA=5, shrinkB=5))
         for d in (p, c):
             ax.plot(d["usd_per_file"], d["all_dev_per_file"], mk, ms=6, color=S.INK, zorder=3)
+        if model == "cost-efficient":
+            ax.annotate("prompt that may hold", (p["usd_per_file"], p["all_dev_per_file"]), xytext=(-4, 10),
+                        textcoords="offset points", fontsize=S.SIZE_LABEL, ha="left", va="center")
+            ax.annotate("CasePath", (c["usd_per_file"], c["all_dev_per_file"]), xytext=(7, 0),
+                        textcoords="offset points", fontsize=S.SIZE_LABEL, ha="left", va="center", fontweight="semibold")
         xm = (p["usd_per_file"] * c["usd_per_file"]) ** 0.5
         ym = (p["all_dev_per_file"] + c["all_dev_per_file"]) / 2
-        ax.text(xm, ym + (-0.19 if model == "cost-efficient" else 0.11), model, ha="center", va="center",
+        ax.text(xm, ym + (-0.19 if model == "cost-efficient" else -0.13), model, ha="center", va="center",
                 fontsize=S.SIZE_LABEL)
     ax.set_xlabel("USD per file")
     ax.set_ylabel("errors per file")
@@ -76,6 +81,9 @@ def grids(fig):
         ax.text(x0 + 24 * S.PITCH + 0.08, top - 2 * S.PITCH, f"{r['identical_all_runs']}/{r['claims']}",
                 fontsize=S.SIZE_NUMBER, va="center")
         assert sum(flags) == r["identical_all_runs"]
+    yl = H - 0.55 - 0.90 - 4 * S.PITCH - 0.30
+    S.legend(ax, x0, yl, [(("ink", None), "same checklist in all three runs")])
+    S.legend(ax, x0, yl - 0.16, [(("ink-outline", None), "not the same")])
     return ax
 
 

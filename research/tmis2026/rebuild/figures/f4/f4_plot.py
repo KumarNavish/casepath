@@ -71,6 +71,9 @@ def frame(ax):
                 fontweight="semibold" if r == 0 else "normal")
         for m in (0, 1):
             yc = row_top(r, m) - SUB / 2
+            if r == 0:
+                ax.text(X0 - 0.17, yc, "cost-efficient model" if m == 0 else "frontier model", ha="right", va="center",
+                        fontsize=S.SIZE_NUMBER)
             if m == 0:
                 ax.add_patch(Circle((X0 - 0.075, yc), 0.022, fc=S.INK, ec="none"))
             else:
