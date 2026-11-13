@@ -1,10 +1,12 @@
 # Figure 5: As cases get real (draft for gate 1)
 
 ## Contract
-**The reader should see that** stored data measure each design's error at one point on each of the three axes
+**The reader should see that** today each design is measured at one point only (short files, one regime's rules, a third of the files open), and which direction the registered test predicts for each as files get longer, rules more numerous and open facts more frequent, because a design that reads one fact at a time and decides in code should hold its level where a single prompt does not.
+
+(Sentence revised by the planner on 2026-11-13 after the redraw. Earlier wording: tored data measure each design's error at one point on each of the three axes
 (files of 77 to 367 words, one catalogue of three claim types, one third of files with an open fact), and that the
 planned ranges are empty, **because** the registered test (Study 4) has not run, so whether a design that reads
-one fact at a time and decides in code holds its level where a single prompt does not is still unanswered.
+one fact at a time and decides in code holds its level where a single prompt does not is still unanswered.)
 
 - Intervention / prediction (for Study 4, not tested here): longer files, larger catalogues, more open facts; the
   thesis predicts CasePath's error stays flat while the strongest prompt's rises.

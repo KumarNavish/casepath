@@ -1,10 +1,12 @@
 # Figure 7: The price (draft for gate 1)
 
 ## Contract
-**The reader should see that** on Study 3's tenancy claims the full product costs about 20 times the same-model
+**The reader should see that** on the cost-efficient model CasePath costs about four times the prompt that may hold and makes fewer errors, that on the frontier model it costs more and makes more, and that the same file gives the same checklist in all three runs more often with CasePath, because a lower error is only useful at a price and when it repeats.
+
+(Sentence revised by the planner on 2026-11-13 after the redraw. Earlier wording: n Study 3's tenancy claims the full product costs about 20 times the same-model
 prompt and twice the frontier prompt that may hold, which has fewer deviations; that its checklist-only core costs
 4 times the prompt for the same error; and how often the same file gives the same checklist again, **because** a lower
-error that costs many times more, or changes from run to run, is not useful.
+error that costs many times more, or changes from run to run, is not useful.)
 
 - Intervention / prediction: more readings or samples per file. Self-consistency 1 to 15 samples: cost x15, error
   2.33 to 2.28 (flat). CasePath core 1 to 3 readings: cost x1.2, all deviations 0.55 to 0.74 (rises: disagreeing

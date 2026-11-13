@@ -1,11 +1,13 @@
 # Figure 4: The fate of 100 open facts (draft for gate 1)
 
 ## Contract
-**The reader should see that** of 100 requests whose need hangs on a fact the file leaves open, CasePath and the
+**The reader should see that** a plain prompt asks too early for half of the requests an open fact decides, that a prompt told the hold rules holds them as CasePath does but then strays where the file settles the request, and that CasePath's own stray marks sit where nothing is needed, because each design is judged on all three states of the reference.
+
+(Sentence revised by the planner on 2026-11-13 after the redraw. Earlier wording: f 100 requests whose need hangs on a fact the file leaves open, CasePath and the
 prompts told they may hold keep about 97 waiting with a question, while the Study 3 prompts ask for half or more too
 early; and that CasePath pays with holds the file does not need (mostly where the claim denies its defining event),
 **because** a hold is the right fate only where the need depends on the open fact, so the partner panel must
-show what each design does where the file settles the need.
+show what each design does where the file settles the need.)
 
 - Intervention / prediction: give a design an explicit hold value. Prediction: the "too early" (rust) block shrinks
   to a few marks. Observed: Rules in context 50 to 65 too early, the prompt that may hold 2 to 2.3, CasePath 2.7.

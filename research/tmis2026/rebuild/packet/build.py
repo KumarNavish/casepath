@@ -15,33 +15,38 @@ TITLES = ["One changed sentence", "The journey of one sentence", 'Why \u201copen
           "The fate of 100 open facts", "As cases get real", "A rule changes", "The price"]
 
 # Hand-condensed from each CONTRACT.md (element status / status lines; the rejected construction).
+# Number fixes where the contract sentence and the latest caption disagree and the data JSON confirms the caption.
+# f7: core cost / cost-efficient prompt that may hold = 0.0029608 / 0.00067164 = 4.41 (f7_data.json).
+SENTENCE_FIXES = {}  # f7 fix retired: the planner rewrote the sentence
+
 FIG_NOTES = {
-    1: ("Measured: page miniatures, the two sentences, the 27 squares per claim and their states, the question circles "
-        "(attachment formal, from required\\_when). Formal: rails linking the same need; ink rail and frame on d15. "
-        "Not yet measured: no element.",
+    1: ("Measured: the two sentences and their page marks, the 27 marks per claim and their states, the question dots "
+        "(attachment formal, from required\\_when), the amber underline on the words quoted as open. Formal: the frame "
+        "on d15. Not yet measured: no element.",
         "b, one page and one fused strip: it shows a computed diff, not the two stored records; it draws one file for "
         "two and drops the questions."),
     2: ("Measured: sentences and words, quotation underlines, reading marks, ticks (recomputed by substring), the "
-        "fact\u2019s value, the checklist line. Formal: agreement bracket (team.py rule, measured inputs), diamond node, "
+        "fact’s value, the checklist line. Formal: agreement bracket (team.py rule, measured inputs), diamond node, "
         "outgoing edge. Schematic: horizontal positions. Not yet measured: no element.",
-        "a, one lane, the open sentence alone: no partner; amber can\u2019t be read as a change without the stated lane."),
-    3: ("Formal: follows from the definitions, computed by the product\u2019s own evaluator, on a real instance. "
+        "a, one lane, the open sentence alone: no partner; amber can’t be read as a change without the stated lane."),
+    3: ("Formal: follows from the definitions, computed by the product’s own evaluator, on a real instance. "
         "Measured: all three stored readings answer open, quoting the sentence. Schematic simplification: a\\_instruction "
         "contracted. Not yet measured: no element.",
-        "b, the fragment once beside a 2\u2009\u00d7\u20093 matrix: the mechanism (branch walked, rejoin) is not visible "
+        "b, the fragment once beside a 2 × 3 matrix: the mechanism (branch walked, rejoin) is not visible "
         "per reading; it hides the cause."),
-    4: ("Measured: every mark. Formal: grouping into 5\u2009\u00d7\u200920 grids and largest-remainder rounding. "
-        "Not yet measured: free-text questions of the other designs (no registered scorer).",
-        "b, aligned error bars: three different x-scales make 3 settled errors look like 30 open ones, and the right "
-        "share disappears from view."),
-    5: ("Measured: ink levels (Study 3 sealed tenancy). Not yet measured: the dashed regions (planned ranges of the "
-        "registered test).",
-        "a, tercile lines: a steep \u201clength effect\u201d that is the denied-event claims."),
-    6: ("Measured (left): stored replay, changed and collateral lines, 0 model calls. Formal (right): the prompt reads "
-        "every file again, 56 calls. Not yet measured: the prompt\u2019s changed lines (hatched frame).",
-        "b, a before\u2192after transition table: loses which file and which document changed, and the graph."),
-    7: ("Measured: all marks. Not yet measured: ten runs (Study 4).",
-        "b, aligned rows: auto-limited axes exaggerate small gaps; error and cost no longer read together."),
+    4: ("Measured: every mark. Formal: grouping into 5 × 20 blocks and largest-remainder rounding. "
+        "The frontier CasePath and prompt rows rest on one run. Not yet measured: no element.",
+        "b, continuous bars: loses the line as unit, erases slivers."),
+    5: ("two measured points per panel (Study 3); the arrows are the registered prediction, not data. This figure has no "
+        "content until Study 4 runs.",
+        "b, dots alone: the hypothesis then lives only in the caption and the panels look like a finished result at one point."),
+    6: ("Measured: stored replay, the changed lines, 0 model calls. Formal: the prompt reads every file again, 56 calls. "
+        "Not yet measured: the prompt’s changed lines (dashed frame).",
+        "b, a before→after transition table: loses which file and which document changed, and the graph."),
+    7: ("Measured: all marks (cost from ledgers; errors and repeats from three stored runs). Not yet measured: ten runs "
+        "(Study 4).",
+        "b, three stored checklists of the median file as strips: identical for both designs, true for the median, but it "
+        "hides the 26 and 40 claims that change."),
 }
 
 
@@ -135,15 +140,23 @@ def md_to_tex(md, table_spec):
 
 def contract_parts(n):
     t = (ROOT / f"figures/f{n}/CONTRACT.md").read_text()
-    # final "The reader should see that" sentence (the contract's own, last occurrence)
+    # final "The reader should see that" sentence (first occurrence; any "Earlier wording" note below it is skipped)
     hits = [m for m in re.finditer(r"(\*\*)?The reader should see that(\*\*)?", t)]
-    start = hits[-1].start()
-    para = t[start:].split("\n\n")[0]
+    para = t[hits[0].start():].split("\n\n")[0]
     sentence = " ".join(l.strip() for l in para.splitlines()).replace("**", "")
-    # final caption: last heading containing "Caption", text up to the next blank line
-    caps = [m for m in re.finditer(r"^#+ .*Caption.*$", t, re.M)]
-    body = t[caps[-1].end():].lstrip("\n").split("\n\n")[0]
-    caption = " ".join(l.strip() for l in body.splitlines())
+    # latest caption: a "Caption" heading or a "- Caption (...):" bullet, whichever comes last
+    cands = []
+    for m in re.finditer(r"^#+ .*Caption.*$", t, re.M):
+        body = t[m.end():].lstrip("\n").split("\n\n")[0]
+        cands.append((m.start(), body))
+    for m in re.finditer(r"^- Caption \([^)]*\): ", t, re.M):
+        rest = t[m.end():]
+        stop = re.search(r"\n(- |\n)", rest)
+        cands.append((m.start(), rest[:stop.start()] if stop else rest))
+    caption = " ".join(l.strip() for l in max(cands)[1].splitlines())
+    for old, new in SENTENCE_FIXES.get(n, []):
+        assert sentence.count(old) == 1, (n, old)
+        sentence = sentence.replace(old, new)
     return sentence, caption
 
 

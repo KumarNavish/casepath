@@ -61,7 +61,7 @@ No claim rests on the hackathon dossiers or the expert study. Studies 1 and 2, t
 \begin{center}\includegraphics[width=5.5in]{../figures/f1/f1.pdf}\end{center}
 \vspace{2pt}\begin{center}\begin{minipage}{5.5in}
 One stored run: two claims, one sentence apart; the second leaves the third party's role open. Of 27 needs, one turns from requested to held. Each dot: one question per open fact a held line awaits. Nothing else changed in 12 of 144 stored pair-runs.\par\vspace{8pt}
-{\footnotesize \textbf{Status:} Measured: page miniatures, the two sentences, the 27 squares per claim and their states, the question circles (attachment formal, from required\_when). Formal: rails linking the same need; ink rail and frame on d15. Not yet measured: no element.\par\vspace{3pt}
+{\footnotesize \textbf{Status:} Measured: the two sentences and their page marks, the 27 marks per claim and their states, the question dots (attachment formal, from required\_when), the amber underline on the words quoted as open. Formal: the frame on d15. Not yet measured: no element.\par\vspace{3pt}
 \textbf{Rejected construction:} b, one page and one fused strip: it shows a computed diff, not the two stored records; it draws one file for two and drops the questions.\par}
 \end{minipage}\end{center}
 \clearpage
@@ -69,7 +69,7 @@ One stored run: two claims, one sentence apart; the second leaves the third part
 {\small The reader should see that the model contributes only quoted words and a verdict per reading, and that the quotation check, the agreement of the three readings, the fact's value deciding its rule, and the checklist line are computed by code, because the checklist line can be followed back across the one rule, along three lines, to the words each reading quoted.\par}\vspace{8pt}
 \begin{center}\includegraphics[width=5.5in]{../figures/f2/f2.pdf}\end{center}
 \vspace{2pt}\begin{center}\begin{minipage}{5.5in}
-One sentence, stated (top) or left open (bottom). Three readings each quote the file's words. Below the line, code checks each quotation, admits a value only when all three agree, and the fact decides its one rule: request now, or hold with one question.\par\vspace{8pt}
+One sentence, stated (top) or left open (bottom). Three readings quote the file. Below the line, code checks each quotation, admits a value only when all three agree, and the fact decides its rule: request now, or hold with a question (marks as Figure 1).\par\vspace{8pt}
 {\footnotesize \textbf{Status:} Measured: sentences and words, quotation underlines, reading marks, ticks (recomputed by substring), the fact’s value, the checklist line. Formal: agreement bracket (team.py rule, measured inputs), diamond node, outgoing edge. Schematic: horizontal positions. Not yet measured: no element.\par\vspace{3pt}
 \textbf{Rejected construction:} a, one lane, the open sentence alone: no partner; amber can’t be read as a change without the stated lane.\par}
 \end{minipage}\end{center}
@@ -78,45 +78,45 @@ One sentence, stated (top) or left open (bottom). Three readings each quote the 
 {\small The reader should see that a reading that may only say true or false must send the case down one branch, and so either asks for the police consent too early (true) or drops it (false), while the value “open” lets code request the list of stolen items, which both branches need after they rejoin, and hold only the police consent, with one question, because the two branches of “traces altered?” meet again before the list is needed.\par}\vspace{8pt}
 \begin{center}\includegraphics[width=5.5in]{../figures/f3/f3.pdf}\end{center}
 \vspace{2pt}\begin{center}\begin{minipage}{5.5in}
-The same file, read three ways. Read as true, the police consent is asked too early; read as false, it is dropped. Kept open, both branches stay possible: code still requests the list of stolen items, needed after they rejoin, and holds only the consent, with one question.\par\vspace{8pt}
+One file, read three ways (diamond filled: true; hollow: false; amber: open). Read as true, the police consent is asked too early; as false, it is dropped. Kept open, code requests the stolen-items list, needed after the branches rejoin, and holds only the consent.\par\vspace{8pt}
 {\footnotesize \textbf{Status:} Formal: follows from the definitions, computed by the product’s own evaluator, on a real instance. Measured: all three stored readings answer open, quoting the sentence. Schematic simplification: a\_instruction contracted. Not yet measured: no element.\par\vspace{3pt}
 \textbf{Rejected construction:} b, the fragment once beside a 2 × 3 matrix: the mechanism (branch walked, rejoin) is not visible per reading; it hides the cause.\par}
 \end{minipage}\end{center}
 \clearpage
 {\large\bfseries Figure 4. The fate of 100 open facts\par}\vspace{6pt}
-{\small The reader should see that of 100 requests whose need hangs on a fact the file leaves open, CasePath and the prompts told they may hold keep about 97 waiting with a question, while the Study 3 prompts ask for half or more too early; and that CasePath pays with holds the file does not need (mostly where the claim denies its defining event), because a hold is the right fate only where the need depends on the open fact, so the partner panel must show what each design does where the file settles the need.\par}\vspace{8pt}
+{\small The reader should see that a plain prompt asks too early for half of the requests an open fact decides, that a prompt told the hold rules holds them as CasePath does but then strays where the file settles the request, and that CasePath's own stray marks sit where nothing is needed, because each design is judged on all three states of the reference.\par}\vspace{8pt}
 \begin{center}\includegraphics[width=5.5in]{../figures/f4/f4.pdf}\end{center}
 \vspace{2pt}\begin{center}\begin{minipage}{5.5in}
-Where the need hangs on an open fact, CasePath's core and prompts allowed to hold keep nearly all requests waiting; earlier prompts ask early. CasePath's price: holds where nothing is needed. 86 open, 481 settled documents, 1 to 3 runs; CasePath's question names the fact.\par\vspace{8pt}
-{\footnotesize \textbf{Status:} Measured: every mark. Formal: grouping into 5 × 20 grids and largest-remainder rounding. Not yet measured: free-text questions of the other designs (no registered scorer).\par\vspace{3pt}
-\textbf{Rejected construction:} b, aligned error bars: three different x-scales make 3 settled errors look like 30 open ones, and the right share disappears from view.\par}
+Each block is 100 checklist lines of one reference kind; colour is what the design did. The plain prompt asks too early; the prompt that may hold strays where the file settles; CasePath strays where nothing is needed. Circle: cost-efficient model; square: frontier.\par\vspace{8pt}
+{\footnotesize \textbf{Status:} Measured: every mark. Formal: grouping into 5 × 20 blocks and largest-remainder rounding. The frontier CasePath and prompt rows rest on one run. Not yet measured: no element.\par\vspace{3pt}
+\textbf{Rejected construction:} b, continuous bars: loses the line as unit, erases slivers.\par}
 \end{minipage}\end{center}
 \clearpage
 {\large\bfseries Figure 5. As cases get real\par}\vspace{6pt}
-{\small The reader should see that stored data measure each design's error at one point on each of the three axes (files of 77 to 367 words, one catalogue of three claim types, one third of files with an open fact), and that the planned ranges are empty, because the registered test (Study 4) has not run, so whether a design that reads one fact at a time and decides in code holds its level where a single prompt does not is still unanswered.\par}\vspace{8pt}
+{\small The reader should see that today each design is measured at one point only (short files, one regime's rules, a third of the files open), and which direction the registered test predicts for each as files get longer, rules more numerous and open facts more frequent, because a design that reads one fact at a time and decides in code should hold its level where a single prompt does not.\par}\vspace{8pt}
 \begin{center}\includegraphics[width=5.5in]{../figures/f5/f5.pdf}\end{center}
 \vspace{2pt}\begin{center}\begin{minipage}{5.5in}
-Study 3 measures each design at one point per axis: 77 to 367 words (message plus attachments; bracket), one catalogue of three claim types, a third of files with an open fact. The registered test's ranges (dashed) are empty: the question is unanswered.\par\vspace{8pt}
-{\footnotesize \textbf{Status:} Measured: ink levels (Study 3 sealed tenancy). Not yet measured: the dashed regions (planned ranges of the registered test).\par\vspace{3pt}
-\textbf{Rejected construction:} a, tercile lines: a steep “length effect” that is the denied-event claims.\par}
+Each design has one measured point today (dot): Study 3's short files (median 172 words), one regime's rules, a third of files with an open fact. Arrows show what the registered test predicts, not data: CasePath level, the prompt rising. Cost-efficient model.\par\vspace{8pt}
+{\footnotesize \textbf{Status:} two measured points per panel (Study 3); the arrows are the registered prediction, not data. This figure has no content until Study 4 runs.\par\vspace{3pt}
+\textbf{Rejected construction:} b, dots alone: the hypothesis then lives only in the caption and the panels look like a finished result at one point.\par}
 \end{minipage}\end{center}
 \clearpage
 {\large\bfseries Figure 6. A rule changes\par}\vspace{6pt}
 {\small The reader should see that after one edited rule line, code recomputes every stored checklist of the regime from the stored readings with no model call and changes only the lines the edit reaches, while a prompt must read every file again, because CasePath stores one reading per fact and the rules are data.\par}\vspace{8pt}
 \begin{center}\includegraphics[width=5.5in]{../figures/f6/f6.pdf}\end{center}
 \vspace{2pt}\begin{center}\begin{minipage}{5.5in}
-One line made the police report required. From stored readings, code recomputed all 56 checklists, no model call; only police-report lines changed. One extra request: a report on file, finding rejected; one missed hold: a file never routed. A prompt reads every file again.\par\vspace{8pt}
-{\footnotesize \textbf{Status:} Measured (left): stored replay, changed and collateral lines, 0 model calls. Formal (right): the prompt reads every file again, 56 calls. Not yet measured: the prompt’s changed lines (hatched frame).\par\vspace{3pt}
+One line made the police report required (ringed). From stored readings, code recomputed every checklist: blocks are theft away (21 files) and theft at home (25); 10 files were never routed. Rust: a report on file whose finding was rejected; amber outline: an unrouted file.\par\vspace{8pt}
+{\footnotesize \textbf{Status:} Measured: stored replay, the changed lines, 0 model calls. Formal: the prompt reads every file again, 56 calls. Not yet measured: the prompt’s changed lines (dashed frame).\par\vspace{3pt}
 \textbf{Rejected construction:} b, a before→after transition table: loses which file and which document changed, and the graph.\par}
 \end{minipage}\end{center}
 \clearpage
 {\large\bfseries Figure 7. The price\par}\vspace{6pt}
-{\small The reader should see that on Study 3's tenancy claims the full product costs about 20 times the same-model prompt and twice the frontier prompt that may hold, which has fewer deviations; that its checklist-only core costs 4 times the prompt for the same error; and how often the same file gives the same checklist again, because a lower error that costs many times more, or changes from run to run, is not useful.\par}\vspace{8pt}
+{\small The reader should see that on the cost-efficient model CasePath costs about four times the prompt that may hold and makes fewer errors, that on the frontier model it costs more and makes more, and that the same file gives the same checklist in all three runs more often with CasePath, because a lower error is only useful at a price and when it repeats.\par}\vspace{8pt}
 \begin{center}\includegraphics[width=5.5in]{../figures/f7/f7.pdf}\end{center}
 \vspace{2pt}\begin{center}\begin{minipage}{5.5in}
-On Study 3's claims CasePath's core costs four times the same-model prompt that may hold, with fewer deviations; the frontier prompt errs less at twice the cost. One reading errs less than three. Run again, 5 to 8\% of lines change; three runs, not ten.\par\vspace{8pt}
-{\footnotesize \textbf{Status:} Measured: all marks. Not yet measured: ten runs (Study 4).\par\vspace{3pt}
-\textbf{Rejected construction:} b, aligned rows: auto-limited axes exaggerate small gaps; error and cost no longer read together.\par}
+Arrows lead from the prompt that may hold to CasePath: on the cost-efficient model 4.4 times the cost buys 0.16 fewer errors per file; on the frontier model 3.4 times buys 0.12 more. Run three times, CasePath repeats 70 of 96 checklists, the prompt 56.\par\vspace{8pt}
+{\footnotesize \textbf{Status:} Measured: all marks (cost from ledgers; errors and repeats from three stored runs). Not yet measured: ten runs (Study 4).\par\vspace{3pt}
+\textbf{Rejected construction:} b, three stored checklists of the median file as strips: identical for both designs, true for the median, but it hides the 26 and 40 claims that change.\par}
 \end{minipage}\end{center}
 \clearpage
 {\fontsize{8.8}{10.6}\selectfont\setlength{\tabcolsep}{3.5pt}
