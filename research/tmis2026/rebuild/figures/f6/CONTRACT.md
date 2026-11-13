@@ -38,7 +38,7 @@ again, **because** CasePath stores one reading per fact and the rules are data.
 ## 4. Two constructions
 - **a (kept, `f6.svg`)**: workflow strip before/after with the one changed node; every file as a column of its
   checklist lines (catalogue order fixed, so the police-report row lines up across files); changed lines coloured by new
-  state; the prompt panel as 56 call dots, a hatched empty box, and the measured re-read drift. Gain: the reader sees
+  state; the prompt side as 56 call dots against CasePath's empty call row, and the same matrix as a hatched frame. Gain: the reader sees
   where change lands (one row, one block) and where it does not (the other workflow, other rows). Distortion: tiny
   marks; workflow strip omits the two stop steps and the conditions of the last step's documents.
 - **b (rejected, `f6_b_rejected.svg`)**: a before→after transition table of line states (counts). Gain: exact counts of
@@ -66,9 +66,7 @@ again, **because** CasePath stores one reading per fact and the rules are data.
 | Hatched sand frame | not yet measured | none |
 
 ## 7. Caption (≤ 45 words)
-One line made the police report required. From stored readings, code recomputed all 56 checklists with no model call;
-only police-report lines changed. One extra request: a report on file whose finding was rejected; one missed hold: a
-file never routed. A prompt reads every file again.
+One line made the police report required. From stored readings, code recomputed all 56 checklists, no model call; only police-report lines changed. One extra request: a report on file, finding rejected; one missed hold: a file never routed. A prompt reads every file again.
 
 Files: `f6.svg`, `f6.pdf`, `f6.png` (5.5 × 4.0 in), `f6.py`, `compute.py`, `rerun_drift.py`, `f6_data.json`,
 `rerun_drift.json`, `simple_theft_away.before.json`, `simple_theft_away.after.json`.

@@ -716,6 +716,19 @@ def build():
         if any("n_facts_read" in u for u in g["_units"]):
             table[name]["facts_read_per_file"] = dist([u.get("n_facts_read") for u in g["_units"]])
 
+    # summary for today's short files: design x model, pooled over regimes (Study 3 and fair-prompt check: case-runs;
+    # benchmark: clean arm files)
+    pools = defaultdict(list)
+    for name, g in groups.items():
+        if name.startswith("lint/") and g.get("arm") != "clean":
+            continue
+        src = "benchmark" if name.startswith("lint/") else "Study 3 data"
+        pools[(g["design"].replace(", benchmark", ""), g["model"], src)].extend(g["_units"])
+    summary = [{"design": d, "model": m, "data": src, "files": len(us), "usd": dist([u["usd"] for u in us]),
+                "calls": statistics.mean(u["calls"] for u in us),
+                "words": [min(u["words"] for u in us if u["words"] is not None), max(u["words"] for u in us if u["words"] is not None)]}
+               for (d, m, src), us in pools.items()]
+
     # 2. stage split (core and full product)
     core_groups = {n: g for n, g in groups.items() if n.startswith("lint/clean/") or n.startswith("study3/casepath")}
     stages = stage_split(core_groups)
@@ -798,7 +811,7 @@ def build():
                   "latency_seconds_per_file": t["latency_seconds_per_file (sum over paid calls, from the ledger)"]}
               for n, t in table.items()}
     res = {"generated_by": "rebuild/plan/cost_model.py", "model_calls": 0, "prices": pr, "ledger_fields": __doc__.split("Ledger fields used:")[1].strip(),
-           "per_design": table, "study3_cost_check_against_stored_results": s3checks, "core_stage_split": stages,
+           "summary_today": summary, "per_design": table, "study3_cost_check_against_stored_results": s3checks, "core_stage_split": stages,
            "regressions": reg, "single_prompts": sp, "rule_share_of_fixed_prompt": rs, "adaptive_readings": adaptive,
            "estimator_params": params, "grid": grid, "timing": timing}
     return res
@@ -1069,6 +1082,11 @@ def markdown(res):
         for f, v in P[m]["fits_by_ledger"].items():
             c = v["usd_per_million"]
             L.append(f"| {m} | `{f}` | {v['rows']:,} | {c['uncached_input']} / {c['cached_input']} / {c['output']} | {v['max_abs_residual_usd']:.2e} |")
+    L += ["", "## Summary: USD per file at today's file sizes (pooled over regimes)", "",
+          "| Design | Model | Data | Files | Words per file | Calls | USD mean | USD median | USD p90 |", "|---|---|---|---|---|---|---|---|---|"]
+    for r in res["summary_today"]:
+        L.append(f"| {r['design']} | {r['model']} | {r['data']} | {r['files']} | {r['words'][0]}-{r['words'][1]} | {r['calls']:.1f} | "
+                 f"{f6(r['usd']['mean'])} | {f6(r['usd']['median'])} | {f6(r['usd']['p90'])} |")
     L += ["", "## 1. USD per file by design × model × data set", "",
           "Files = case-runs on Study 3 and the fair-prompt check (each case run 1 or 3 times), files on the benchmark (one run). "
           "Tokens are per file, summed over paid calls; input includes cached.", "",
@@ -1132,15 +1150,12 @@ def markdown(res):
                  f"{fnum(statistics.mean(x['output_per_call_mean'] for x in v['by_regime'].values()))} | "
                  f"{statistics.mean(x['cached_share_mean'] for x in v['by_regime'].values()):.2f} | "
                  f"{statistics.mean(x['calls_per_file_mean'] for x in v['by_regime'].values()):.1f} | {v['input_fit']['r2']:.3f} |")
-    L += ["", "The fixed text dominates: at today's file sizes it is 85-98 % of a single prompt's input. A file ten times longer "
-          "adds tokens per word × words; a catalogue four times larger multiplies the rule part. Tokens per word come from "
-          "files of 77-367 words, so a 2,500-word file is an extrapolation of a linear term (token counts are linear in "
-          "text, so this one is safe in form; cost is then linear too).", ""]
+    L += ["", SINGLE_NOTE, ""]
     # 4. adaptive
     L += ["## 4. Adaptive re-reading: what the first reading alone would have given", "",
           "Per deciding fact read (the routing fact excluded): is the first reading a quoted value (true/false, or an enum "
           "value answered true, whose quote occurs in the file text after case and whitespace normalization)? Admitted = "
-          "the product's stored fact after three readings (status established, verdict accepted). Readings 2 and 3 are "
+          "the product's stored fact after three readings (status established and not rejected by the source check). Readings 2 and 3 are "
           "the later reading groups of the same run. Without the evaluator's gold, 'wrong' can only mean 'against what "
           "three readings gave'.", "",
           "| Run | Facts read | First reading quoted value | = admitted value | Nothing admitted after three | 2 and 3 agree against it | Needs re-reading (p) | Files with any re-read | USD three → adaptive |",
@@ -1202,11 +1217,101 @@ def markdown(res):
 
 VERDICT = ""      # filled in after the numbers are known (see the end of main)
 ADAPTIVE_NOTE = ""
+SINGLE_NOTE = ""
 LIMITS = ""
 
 
 def texts(res):
-    return "(verdict pending)", "(note pending)", "(limits pending)"
+    """Prose that cites the computed numbers."""
+    reg = res["regressions"]
+    rl, rt = reg[f"lint/clean/ALL/{LUNA}"], reg[f"lint/clean/ALL/{TERRA}"]
+    P = res["estimator_params"]
+    rng = P["core_ranges_benchmark"]
+    global PARAMS, PRICE
+    PARAMS, PRICE = P, P["prices"]
+    nf = rng["facts_read_median"]
+    base = core_cost(LUNA, 2500, 6, nf, None, "three")[0]
+    sens = core_cost(LUNA, 2500, 6, nf, None, "three", output_scales_with_words=True)[0]
+    base_t = core_cost(TERRA, 2500, 6, nf, None, "three")[0]
+    sens_t = core_cost(TERRA, 2500, 6, nf, None, "three", output_scales_with_words=True)[0]
+    verdict = (
+        f"**Verdict on extrapolation.** The benchmark files are short and narrow: {rng['words'][0]}-{rng['words'][1]} words "
+        f"(file plus attachments), {rng['attachments'][0]}-{rng['attachments'][1]} attachments, {rng['facts_read'][0]}-"
+        f"{rng['facts_read'][1]} deciding facts read; Study 3's claims are 77-367 words with 0-2 attachments. Within that "
+        f"range the per-file fits are usable but loose: on the cost-efficient model words alone explain R² {rl['words']['r2']:.2f}, "
+        f"attachments {rl['attachments']['r2']:.2f}, facts read {rl['facts_read']['r2']:.2f}, all three {rl['joint']['r2']:.2f} "
+        f"(residual SD USD {rl['joint']['residual_sd']:.4f} on a mean of USD {res['core_stage_split'][f'lint/clean/ALL/{LUNA}']['usd_per_file']:.4f}); "
+        f"words and attachments are correlated (r {rl['predictor_correlation']['words~attachments']:.2f}), so their separate "
+        f"coefficients are not well identified. The frontier model's fit (R² {rt['joint']['r2']:.2f}) rests on {rt['files']} tenancy files. "
+        "The single-predictor lines have negative intercepts and cannot be read outside the range in either direction. "
+        "Document judgments are the largest stage and grow with attachments (about three finder calls per attachment) and, per "
+        "call, with the file's length, so the shape of cost on long files is set by how many tool turns the document finder "
+        "takes on a long document, which these files never show. The estimator therefore uses a structural form (calls × "
+        "(base + tokens per word × words), calls and output linear in attachments and facts) instead of the per-file lines, "
+        "but every cell above 575 words or 4 attachments is an extrapolation by a factor of up to 4.3 in words and 1.5 in "
+        "attachments. Sensitivity for 2,500 words and 6 attachments: if output also grows with words, the core's cost on the "
+        f"cost-efficient model goes from USD {base:.4f} to {sens:.4f} (frontier {base_t:.4f} to {sens_t:.4f}). Treat the 800- and "
+        "2,500-word cells as order of magnitude and cost a study only after a priced pilot on 10-20 long files.")
+    a_l, a_t = res["adaptive_readings"][f"BENCHMARK/{LUNA}"]["counts"], res["adaptive_readings"][f"BENCHMARK/{TERRA}"]["counts"]
+
+    def risk(c):
+        sq = c.get("first reading a quoted value", 0)
+        return (c.get("  ... nothing admitted after three readings", 0) + c.get("  ... readings 2 and 3 agree with each other against it", 0)
+                + c.get("  ... admitted value differs", 0)) / sq if sq else 0
+    ad = res["adaptive_readings"]
+    sav = [v["saving_share"] for k, v in ad.items() if k.startswith("lint/") and v.get("saving_share") is not None]
+    sav3 = [v["saving_share"] for k, v in ad.items() if k.startswith("study3/") and v.get("saving_share") is not None]
+    anyre = [v["share_of_files_with_any_reread"] for k, v in ad.items() if k.startswith("lint/")]
+    note = (
+        f"**What adaptive re-reading saves and risks.** On the benchmark the first reading alone is a quoted value for "
+        f"{100 * a_l['first reading a quoted value'] / a_l['facts read']:.0f} % of deciding facts on the cost-efficient model and "
+        f"{100 * a_t['first reading a quoted value'] / a_t['facts read']:.0f} % on the frontier model, so p = "
+        f"{100 * P['adaptive_p_needing_rereading'][LUNA]:.0f} % and {100 * P['adaptive_p_needing_rereading'][TERRA]:.0f} % of facts would "
+        f"still be read twice more. Because {100 * min(anyre):.0f}-{100 * max(anyre):.0f} % of files have at least one such fact and every "
+        "re-reading call carries the whole file, the saving is small: "
+        f"{100 * min(sav):.0f}-{100 * max(sav):.0f} % of the core's cost per file on the benchmark (counterfactual on the stored calls: "
+        "re-reading calls kept in full input, their output cut to the share of facts re-read), "
+        f"{100 * min(sav3):.0f}-{100 * max(sav3):.0f} % on Study 3 (largest on theft, where readings of about 90 rule conditions "
+        "are most of the cost). The risk: of the quoted first readings, "
+        f"{100 * risk(a_l):.1f} % (cost-efficient) and {100 * risk(a_t):.1f} % (frontier) end differently after three readings "
+        "(nothing admitted, or readings 2 and 3 agreeing against the first); adaptive reading would admit those first values. "
+        "Whether they are right cannot be said here: that needs the evaluator's gold, which this model does not read.")
+    sp = res["single_prompts"]
+    hl = sp[f"hold_prompt/{LUNA}"]
+    tpw = hl["input_fit"]["coef"]["tokens_per_word"]
+    fx_t, fx_h = hl["input_fit"]["coef"]["fixed_tenancy"], hl["input_fit"]["coef"]["fixed_theft"]
+    single = (
+        f"The fixed text dominates. For the prompt that may hold, the fixed part is {fx_t:,.0f} tokens on tenancy and {fx_h:,.0f} on "
+        f"theft; the file adds {tpw:.2f} tokens per word, so a 250-word file adds {250 * tpw:,.0f} tokens "
+        f"({100 * 250 * tpw / (fx_t + 250 * tpw):.0f} % of a tenancy prompt) and a 2,500-word file {2500 * tpw:,.0f} "
+        f"({100 * 2500 * tpw / (fx_t + 2500 * tpw):.0f} %). One regime's rule text is taken as {P['rule_text_tokens_one_regime']:,.0f} "
+        "tokens; three and four regimes multiply it. Token counts are linear in text, so scaling by words is safe in form even "
+        "though the fitted files are 77-367 words; what is not known is whether output and accuracy hold on a 2,500-word file "
+        "or a 50,000-token prompt. With prefix caching as measured (95-100 % of single-prompt input billed as cached), the rule "
+        "text costs about a tenth of its uncached price; without caching a single prompt costs several times more (input "
+        f"{PRICE[LUNA]['uncached_input'] / PRICE[LUNA]['cached_input']:.1f}x / {PRICE[TERRA]['uncached_input'] / PRICE[TERRA]['cached_input']:.0f}x "
+        "the cached price on the cost-efficient / frontier model).")
+    limits = "\n".join([
+        "- Prices are those the ledgers billed (uncached, cached input and output per million tokens); the cached share of input "
+        "is what these runs got from prefix caching and will differ with batch order and deployment.",
+        "- The product and benchmark ledgers count about 25 more input tokens per call than were billed; their `usd` is used as recorded.",
+        "- The frontier model ran the benchmark core on 38 completed tenancy files only (one failed); its per-stage token ratios "
+        "to the cost-efficient model come from those files and are applied to all regimes. Self-consistency and ReAct never "
+        "ran on the frontier model: their frontier cells are the cost-efficient model's tokens at frontier prices (marked *).",
+        "- Three benchmark theft files (59 runs) have no text under study4/dev/theft/final (56 folders); they are in the cost "
+        "tables but not in the regressions or the estimator fit.",
+        "- Study 3's self-consistency ledger rows are not keyed by run; each case's 15 samples are spread evenly over its three "
+        "case-runs (the mean reproduces the stored table; the per-case-run spread is understated).",
+        "- Study 3's core on theft reads about 90 rule conditions per file and calls no document finder (no attachments); the "
+        "estimator is fitted to the benchmark's workflows (0-10 deciding facts) and does not cover theft-style guard catalogues.",
+        "- Only routing sees the whole catalogue in the product; a larger catalogue is modelled as a proportionally larger routing "
+        "prompt. Single prompts are assumed to carry the whole catalogue. Larger workflows (more facts or documents per "
+        "workflow) enter only through facts read and attachments.",
+        "- Wall time is the run record's elapsed time of a file (calls in sequence, cache hits included, other files running in "
+        "parallel); latency is the sum of the paid calls' `latency_s`. Neither is a throughput figure.",
+        "- No evaluator gold, expected answers or reference files were read; 'wrong' in the adaptive analysis means 'different "
+        "from what three readings gave'."])
+    return verdict, note, single, limits
 
 
 def strip_private(x):
@@ -1220,8 +1325,8 @@ def strip_private(x):
 def main():
     res = build()
     OUT_JSON.write_text(json.dumps(strip_private(res), indent=1, ensure_ascii=False, default=float) + "\n")
-    global VERDICT, ADAPTIVE_NOTE, LIMITS
-    VERDICT, ADAPTIVE_NOTE, LIMITS = texts(res)
+    global VERDICT, ADAPTIVE_NOTE, SINGLE_NOTE, LIMITS
+    VERDICT, ADAPTIVE_NOTE, SINGLE_NOTE, LIMITS = texts(res)
     OUT_MD.write_text(markdown(strip_private(res)) + "\n")
     print("written", OUT_JSON, "and", OUT_MD)
 
