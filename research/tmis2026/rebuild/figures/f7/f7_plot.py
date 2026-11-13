@@ -33,9 +33,9 @@ def same_flags(key):
 
 
 def scatter(fig):
-    ax = fig.add_axes([0.095, 0.22, 0.40, 0.70])
+    ax = fig.add_axes([0.12, 0.22, 0.38, 0.70])
     ax.set_xscale("log")
-    ax.set_xlim(4e-4, 4e-2)
+    ax.set_xlim(6e-5, 4e-2)
     ax.set_xticks([1e-3, 1e-2], ["0.001", "0.01"])
     ax.minorticks_off()
     ax.set_ylim(0, 1.0)
@@ -50,14 +50,14 @@ def scatter(fig):
         if model == "cost-efficient":
             ax.annotate("prompt that may hold", (p["usd_per_file"], p["all_dev_per_file"]), xytext=(-4, 10),
                         textcoords="offset points", fontsize=S.SIZE_LABEL, ha="left", va="center")
-            ax.annotate("CasePath", (c["usd_per_file"], c["all_dev_per_file"]), xytext=(7, 0),
+            ax.annotate("CasePath", (c["usd_per_file"], c["all_dev_per_file"]), xytext=(4, 11),
                         textcoords="offset points", fontsize=S.SIZE_LABEL, ha="left", va="center", fontweight="semibold")
         xm = (p["usd_per_file"] * c["usd_per_file"]) ** 0.5
         ym = (p["all_dev_per_file"] + c["all_dev_per_file"]) / 2
-        ax.text(xm, ym + (-0.19 if model == "cost-efficient" else -0.13), model, ha="center", va="center",
-                fontsize=S.SIZE_LABEL)
+        ax.annotate(model, (p["usd_per_file"], p["all_dev_per_file"]), xytext=(-3, -12), textcoords="offset points",
+                    ha="right", va="center", fontsize=S.SIZE_LABEL)
     ax.set_xlabel("USD per file")
-    ax.set_ylabel("errors per file")
+    ax.set_ylabel("errors per file\n(wrong, missed or needless)")
     return ax
 
 

@@ -97,3 +97,8 @@ not, sand dot = everything else (incl. the 10 unrouted files). Group labels move
 stay at 15 the count line drops "· 0 model calls", which the CasePath header already states. Diamond = fact decides,
 circle = step, square = document (dashed optional) go in the caption if space allows. Construction b stays as drawn by
 `f6_draft2.py`. Inspected at print size and 4x on the matrix's changed row.
+
+## Revision 4 (cold-reader fixes)
+Workflow drawn once; the edit shown at its node as dashed square → solid square, ringed, code fragment beneath.
+CasePath's empty call rows removed (header "CasePath · 0 calls" against the prompt's 56 dots). Matrix label "one column
+per file, one mark per line" added (words inside now 22; the limit yields to decoding, as instructed). Legend 4 entries.

@@ -51,11 +51,11 @@ def diamond(ax, x, y, reading, r=0.075):
     pts = [(x, y + r), (x + r, y), (x, y - r), (x - r, y)]
     if reading == "open":
         ax.add_patch(Polygon(pts, closed=True, fc=S.AMBER, ec="none", zorder=4))
-        ax.text(x, y - 0.004, "?", ha="center", va="center", fontsize=S.SIZE_LABEL, color=S.WHITE,
+        ax.text(x, y - 0.004, "?", ha="center", va="center", fontsize=S.SIZE_LABEL * min(1, r / 0.075 * 1.1), color=S.WHITE,
                 fontweight="bold", zorder=5)
     else:
         ax.add_patch(Polygon(pts, closed=True, fc=S.WHITE, ec=S.INK, lw=1.0, zorder=4))
-        ax.add_patch(Circle((x, y), 0.026, fc=S.INK if reading == "true" else S.WHITE, ec=S.INK, lw=0.8, zorder=5))
+        ax.add_patch(Circle((x, y), r * 0.35, fc=S.INK if reading == "true" else S.WHITE, ec=S.INK, lw=0.8, zorder=5))
 
 
 def step(ax, x, y):
@@ -76,28 +76,31 @@ def column(ax, cx, top, reading, labels):
     mx = T[0] + U + DOC / 2
     S.checklist_mark(ax, mx, T[1], state(reading, "police_consent"), s=DOC)
     S.checklist_mark(ax, L[0] + U + DOC / 2, L[1], state(reading, "stolen_items_list"), s=DOC)
+    ax.text(mx + DOC / 2 + 0.06, T[1], "police\nconsent", va="center", fontsize=S.SIZE_LABEL, linespacing=1.0)
+    ax.text(L[0] + U + DOC + 0.06, L[1], "stolen\nitems", va="center", fontsize=S.SIZE_LABEL, linespacing=1.0)
+    ax.text(cx + 0.3, top + 2.6 * U, {"true": "read as true", "false": "read as false", "open": "kept open"}[reading],
+            ha="center", va="center", fontsize=S.SIZE_LABEL, fontweight="semibold")
     if labels:
-        ax.text(mx + DOC / 2 + 0.06, T[1], "police consent", va="center", fontsize=S.SIZE_LABEL)
-        ax.text(L[0] + U + DOC + 0.06, L[1], "stolen items", va="center", fontsize=S.SIZE_LABEL)
-        ax.text(cx - U, top, "traces altered?", va="center", ha="right", fontsize=S.SIZE_LABEL)
+        ax.text(cx - U, top, "traces\naltered?", va="center", ha="right", fontsize=S.SIZE_LABEL, linespacing=1.0)
 
 
 def main():
-    W, H = 5.5, 2.45
+    W, H = 5.5, 2.6
     fig, ax = S.canvas(W, H)
-    ax.text(W / 2, H - U, QUOTE, ha="center", va="center", fontsize=S.SIZE_LABEL, color=S.BLUE, style="italic")
-    ax.text(W / 2, H - 2 * U, QUOTE_EN, ha="center", va="center", fontsize=S.SIZE_LABEL, color=S.INK)
-    top = H - 5 * U
-    for i, (r, cx) in enumerate((("true", 1.15), ("false", 2.85), ("open", 4.45))):
+    ax.text(W / 2, H - 0.8 * U, QUOTE, ha="center", va="center", fontsize=7, color=S.BLUE, style="italic")
+    ax.text(W / 2, H - 1.7 * U, QUOTE_EN, ha="center", va="center", fontsize=7, color=S.INK)
+    top = H - 6.2 * U
+    for i, (r, cx) in enumerate((("true", 1.05), ("false", 2.65), ("open", 4.25))):
         column(ax, cx, top, r, labels=(i == 0))
-    # legend: four states with the shared marks, one entry for the paths
-    y = 1.5 * U
-    x = S.legend(ax, 0.2, y, [("requested", "requested"), ("held", "held, one question"), ("early", "too early"),
-                              ("dropped", "dropped")], gap=1.5 * U)
-    for k, kind in enumerate(("taken", "open")):
-        st = EDGE[kind]
-        ax.add_line(Line2D([x + k * 0.3, x + k * 0.3 + 0.22], [y, y], color=st["color"], lw=st["lw"], ls=st["ls"]))
-    ax.text(x + 0.57, y, "taken / open", va="center", fontsize=S.SIZE_LABEL)
+    # legend: the fact's three values, then four line states with the shared marks
+    y = 1.3 * U
+    x0 = 0.15
+    for k, r in enumerate(("true", "false", "open")):
+        diamond(ax, x0 + 0.05 + k * 0.15, y, r, r=0.05)
+    t = ax.text(x0 + 0.44, y, "fact true / false / open", va="center", fontsize=S.SIZE_LABEL)
+    x = x0 + 0.42 + S.text_width(ax, t) + 1.2 * U
+    S.legend(ax, x, y, [("requested", "requested"), ("held", "held, one question"), ("early", "too early"),
+                        ("dropped", "dropped")], gap=1.2 * U)
     S.save(fig, HERE, "f3")
 
 

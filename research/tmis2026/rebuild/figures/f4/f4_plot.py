@@ -50,34 +50,28 @@ def shares(d):
     ], n_nn
 
 
-W, H = 5.5, 3.30
-X0, GAP = 1.30, 0.12
-GW = 20 * S.PITCH
+W, H = 5.5, 3.62
+P4, M4 = 0.058, 0.047        # this figure's grid: 20 marks per block must fit three columns and their counts
+X0, GAP = 0.98, 0.34
+GW = 20 * P4
 XS = [X0 + i * (GW + GAP) for i in range(3)]
-SUB = 5 * S.PITCH            # height of one sub-row of marks
-TOP = H - 0.40               # top of the first row
+SUB = 5 * P4                 # height of one block row
+TOP = H - 0.62               # top of the first block row
+RIGHT = ["held", "requested", "left"]
 
 
 def row_top(r, m):
-    return TOP - r * (2 * SUB + S.PITCH + 0.24) - m * (SUB + S.PITCH)
+    return TOP - r * (2 * SUB + P4 + 0.40) - m * (SUB + P4)
 
 
 def frame(ax):
     for x, t in zip(XS, COLS):
         ax.text(x, H - 0.20, t, fontsize=S.SIZE_LABEL, fontweight="semibold", va="center")
     for r, (name, kc, kf) in enumerate(ROWS):
-        y_mid = row_top(r, 0) - SUB - S.PITCH / 2
-        ax.text(X0 - 0.17, y_mid, name, ha="right", va="center", fontsize=S.SIZE_LABEL,
-                fontweight="semibold" if r == 0 else "normal")
-        for m in (0, 1):
-            yc = row_top(r, m) - SUB / 2
-            if r == 0:
-                ax.text(X0 - 0.17, yc, "cost-efficient model" if m == 0 else "frontier model", ha="right", va="center",
-                        fontsize=S.SIZE_NUMBER)
-            if m == 0:
-                ax.add_patch(Circle((X0 - 0.075, yc), 0.022, fc=S.INK, ec="none"))
-            else:
-                ax.add_patch(Rectangle((X0 - 0.097, yc - 0.022), 0.044, 0.044, fc=S.INK, ec="none"))
+        ax.text(0.10, row_top(r, 0) + 0.13, name, ha="left", va="center", fontsize=S.SIZE_LABEL,
+                fontweight="semibold")
+        for m, model in enumerate(("cost-efficient", "frontier")):
+            ax.text(X0 - 0.10, row_top(r, m) - SUB / 2, model, ha="right", va="center", fontsize=S.SIZE_LABEL)
     S.legend(ax, 0.10, 0.14, [("held", "held"), ("requested", "requested"), ("early", "too early or not needed"),
                               ("dropped", "dropped"), ("left", "left alone")])
 
@@ -93,8 +87,9 @@ def draw_a():
                 seq = [k for k in sh for _ in range(counts[k])]
                 for i, st in enumerate(seq):
                     col, row = divmod(i, 5)
-                    S.checklist_mark(ax, XS[c] + col * S.PITCH + S.MARK / 2,
-                                     row_top(r, m) - row * S.PITCH - S.MARK / 2, st)
+                    S.checklist_mark(ax, XS[c] + col * P4 + M4 / 2, row_top(r, m) - row * P4 - M4 / 2, st, s=M4)
+                ax.text(XS[c] + GW + 0.06, row_top(r, m) - SUB / 2, str(counts[RIGHT[c]]), va="center", ha="left",
+                        fontsize=S.SIZE_LABEL)
     return fig
 
 

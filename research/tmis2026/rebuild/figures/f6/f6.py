@@ -57,13 +57,22 @@ def workflow_strip(ax, x0, y, wf, w, mark_edit=False):
             if s in bump:
                 dx, dy = 0.6 * U, yy
             else:
-                dy = yy - 0.6 * U
+                dy = yy - 0.75 * U
+            if mark_edit and d == "police_report":
+                # the edit itself: the document's mark before (dashed, optional) -> after (solid, required), ringed
+                xa, xb = x + dx - 0.11, x + dx + 0.11
+                ax.add_patch(Rectangle((xa - q / 2, dy - q / 2), q, q, fc=S.WHITE, ec=S.INK, lw=S.LW, ls=(0, (1.5, 1.0)), zorder=4))
+                ax.annotate("", xy=(xb - q / 2 - 0.02, dy), xytext=(xa + q / 2 + 0.02, dy),
+                            arrowprops=dict(arrowstyle="-|>,head_length=0.3,head_width=0.15", color=S.INK, lw=S.LW,
+                                            shrinkA=0, shrinkB=0))
+                ax.add_patch(Rectangle((xb - q / 2, dy - q / 2), q, q, fc=S.WHITE, ec=S.INK, lw=1.1, zorder=4))
+                ax.add_patch(FancyBboxPatch((xa - q / 2 - 0.035, dy - q / 2 - 0.035), xb - xa + q + 0.07, q + 0.07,
+                                            boxstyle="round,pad=0,rounding_size=0.06", fc="none", ec=S.INK, lw=1.0, zorder=5))
+                ax.text((xa + xb) / 2, dy - 1.0 * U, '"optional": true → false', va="center", ha="center",
+                        fontsize=S.SIZE_LABEL, family="DejaVu Sans Mono")
+                continue
             ax.add_patch(Rectangle((x + dx - q / 2, dy - q / 2), q, q, fc=S.WHITE, ec=S.INK, lw=S.LW,
                                    ls=(0, (1.5, 1.0)) if docs[d].get("optional") else "-", zorder=4))
-            if mark_edit and d == "police_report":
-                ax.add_patch(Circle((x + dx, dy), 0.055, fc="none", ec=S.INK, lw=1.0, zorder=5))
-                ax.text(x + dx, dy - 1.0 * U, '"optional": true → false', va="center", ha="center",
-                        fontsize=S.SIZE_LABEL, family="DejaVu Sans Mono")
     return pos
 
 
@@ -112,17 +121,16 @@ def matrix(ax, x0, ytop):
 
 
 def main():
-    W, H = 5.5, 3.45
+    W, H = 5.5, 3.05
     fig, ax = S.canvas(W, H)
     M = D["measures"]
     # the rule edit, shared by both designs (top row before, bottom row after)
-    workflow_strip(ax, 0.85, H - 1.6 * U, WB, 3.6)
-    workflow_strip(ax, 0.85, H - 4.2 * U, WA, 3.6, mark_edit=True)
+    workflow_strip(ax, 0.85, H - 1.6 * U, WA, 3.6, mark_edit=True)   # drawn once; the edit shown at its node
     # two designs, same geometry
     files, bc = files_in_order()
     width = 28 * P
     xl, xr = 0.55, 3.15
-    yh = H - 7.6 * U
+    yh = H - 5.0 * U
     yc = yh - 1.5 * U
     ym = yc - 2 * U
     ax.text(xl - S.MARK / 2, yh, "CasePath · 0 calls", va="center", fontweight="semibold", fontsize=S.SIZE_LABEL)
@@ -131,10 +139,10 @@ def main():
     for b in (0, 1):
         n = sum(1 for bb, _ in bc if bb == b)
         y = yc - b * P
-        ax.add_line(Line2D([xl, xl + (n - 1) * P], [y, y], color=S.SAND, lw=S.LW, ls=(0, (1, 2.5))))
         for bb, c in bc:
             if bb == b:
                 ax.add_patch(Circle((xr + c * P, y), 0.022, fc=S.BLUE, ec="none"))
+    ax.text(xl - S.MARK / 2, yc - P / 2, "one column per file, one mark per line", va="center", fontsize=S.SIZE_LABEL)
     matrix(ax, xl, ym)
     top = ym + S.MARK / 2 + 0.01
     bottom = ym - BLOCK - (len(ORDER) - 1) * P - S.MARK / 2 - 0.01

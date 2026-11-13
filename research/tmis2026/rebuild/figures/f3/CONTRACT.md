@@ -83,3 +83,8 @@ quoted sentence and its translation: 15 (labels on the first column only); legen
 question; too early; dropped; taken / open). "Not taken" sand paths are left undefined as background; fact true/false
 and diamond/circle are defined in the caption. Construction b stays as drawn by `f3_draft1.py`. Inspected at print
 size and 4x on the rejoin.
+
+## Revision 3 (cold-reader fixes)
+Column titles restored ("read as true", "read as false", "kept open"); item labels repeated in every column; legend:
+fact true / false / open (three diamonds), requested, held one question, too early, dropped (5 entries; path entry
+dropped, dashed amber self-evident); quotation set at 7 pt.
