@@ -8,7 +8,7 @@
  "status": "draft",
  "builds_on": ["osm-fallback"],
  "sources": [
-  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220): Haftung aus unerlaubter Handlung (Art. 41 ff., 60 OR) und Verjährung (Art. 132, 135 OR)"}
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220): Haftung aus unerlaubter Handlung (Art. 41 ff., 60 OR) und Verjährung (Art. 132, 135 OR); Strassenverkehrsgesetz (SR 741.01): Halterhaftung, Forderungsrecht gegen den Versicherer, Verjährung (Art. 58, 65, 83 SVG)"}
  ],
  "law": {
   "41": {"cite": "Art. 41 Abs. 1 OR", "sr": "220", "article": "41", "passage": "Wer einem andern widerrechtlich Schaden zufügt, sei es mit Absicht, sei es aus Fahrlässigkeit, wird ihm zum Ersatze verpflichtet.", "verified": true},
@@ -22,7 +22,10 @@
   "60.1bis": {"cite": "Art. 60 Abs. 1bis OR", "sr": "220", "article": "60", "passage": "jedenfalls aber mit Ablauf von zwanzig Jahren, vom Tage an gerechnet, an welchem das schädigende Verhalten erfolgte oder aufhörte.", "verified": true},
   "60.2": {"cite": "Art. 60 Abs. 2 OR", "sr": "220", "article": "60", "passage": "Hat die ersatzpflichtige Person durch ihr schädigendes Verhalten eine strafbare Handlung begangen, so verjährt der Anspruch auf Schadenersatz oder Genugtuung ungeachtet der vorstehenden Absätze frühestens mit Eintritt der strafrechtlichen Verfolgungsverjährung.", "verified": true},
   "verj-132": {"cite": "Art. 132 Abs. 1 OR", "sr": "220", "article": "132", "passage": "Bei der Berechnung der Frist ist der Tag, von dem an die Verjährung läuft, nicht mitzurechnen und die Verjährung erst dann als beendigt zu betrachten, wenn der letzte Tag unbenützt verstrichen ist.", "verified": true},
-  "135": {"cite": "Art. 135 OR", "sr": "220", "article": "135", "passage": "Die Verjährung wird unterbrochen: 1. durch Anerkennung der Forderung von seiten des Schuldners, namentlich auch durch Zins- und Abschlagszahlungen, Pfand- und Bürgschaftsbestellung; 2. durch Schuldbetreibung, durch Schlichtungsgesuch, durch Klage oder Einrede", "verified": true}
+  "135": {"cite": "Art. 135 OR", "sr": "220", "article": "135", "passage": "Die Verjährung wird unterbrochen: 1. durch Anerkennung der Forderung von seiten des Schuldners, namentlich auch durch Zins- und Abschlagszahlungen, Pfand- und Bürgschaftsbestellung; 2. durch Schuldbetreibung, durch Schlichtungsgesuch, durch Klage oder Einrede", "verified": true},
+  "svg-58": {"cite": "Art. 58 Abs. 1 SVG", "sr": "741.01", "article": "58", "passage": "Wird durch den Betrieb eines Motorfahrzeuges ein Mensch getötet oder verletzt oder Sachschaden verursacht, so haftet der Halter für den Schaden.", "verified": true},
+  "svg-65": {"cite": "Art. 65 Abs. 1 SVG", "sr": "741.01", "article": "65", "passage": "Der Geschädigte hat im Rahmen der vertraglichen Versicherungsdeckung ein Forderungsrecht unmittelbar gegen den Versicherer.", "verified": true},
+  "svg-83": {"cite": "Art. 83 Abs. 1 SVG", "sr": "741.01", "article": "83", "passage": "Schadenersatz- und Genugtuungsansprüche aus Unfällen mit Motorfahrzeugen, Fahrrädern und fahrzeugähnlichen Geräten verjähren nach den Bestimmungen des Obligationenrechts über die unerlaubten Handlungen.", "verified": true}
  },
  "applies_when": {"fact": "rechtsgebiet", "is": "Schadenersatzrecht / Unfall, Personen- oder Sachschaden"},
  "facts": [
@@ -35,6 +38,7 @@
   {"id": "arbeitsunfaehig", "type": "boolean", "question": "War oder ist die Kundschaft wegen des Unfalls ganz oder teilweise arbeitsunfähig?", "source_refs": ["law#46"], "ask_customer": "offered", "customer_question": "Waren oder sind Sie wegen des Unfalls arbeitsunfähig? Wenn ja, seit wann und zu wie viel Prozent?"},
   {"id": "mitverschulden", "type": "boolean", "question": "Wirft die Gegenseite oder ihre Versicherung der Kundschaft vor, selbst zum Unfall oder zum Schaden beigetragen zu haben?", "source_refs": ["law#44"]},
   {"id": "schadenposten", "type": "text", "question": "Welche Schäden macht die Kundschaft geltend (Reparatur oder Wert der Sache, Heilungskosten, Erwerbsausfall, Genugtuung) und in welcher Höhe?", "source_refs": ["law#42", "law#46", "law#47"], "ask_customer": true, "customer_question": "Welche Schäden möchten Sie geltend machen (z.B. Reparatur, Heilungskosten, Lohnausfall, Genugtuung), und in welcher Höhe ungefähr?"},
+  {"id": "motorfahrzeug", "type": "boolean", "question": "War am Unfall ein Motorfahrzeug der Gegenseite beteiligt?", "not_this": "nur das eigene Fahrzeug der Kundschaft; ein Velo oder ein Fussgänger als Unfallverursacher", "source_refs": ["law#svg-58"]},
   {"id": "gegenpartei", "type": "text", "question": "Wer hat den Schaden verursacht, und wer ist dessen Haftpflichtversicherung?", "source_refs": ["practice#ablauf"]},
   {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Versicherung, Strafbehörde, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
@@ -45,14 +49,16 @@
   {"id": "schadenbelege", "title": "Belege des Schadens (Rechnungen, Quittungen, Kostenvoranschlag oder Reparaturrechnung)", "why": "Wer Schadenersatz verlangt, muss den Schaden beweisen (Art. 42 OR).", "source_refs": ["law#42", "law#42.2"], "stage": "klaeren"},
   {"id": "lohnausfall", "title": "Belege des Erwerbsausfalls (Lohnabrechnungen vor und nach dem Unfall, Bestätigung der Arbeitgeberin)", "why": "Die Nachteile gänzlicher oder teilweiser Arbeitsunfähigkeit sind zu ersetzen (Art. 46 OR); ihr Umfang ist zu belegen (Art. 42 OR).", "required_when": {"fact": "arbeitsunfaehig", "is": true}, "source_refs": ["law#46", "law#42"], "stage": "klaeren"},
   {"id": "versicherer", "title": "Sämtliche Korrespondenz mit Versicherungen (Haftpflichtversicherung der Gegenseite, eigene Unfall-, Kranken- oder Kaskoversicherung)", "why": "Zeigt, was angemeldet, anerkannt oder bezahlt wurde; eine Anerkennung, auch durch eine Abschlagszahlung, unterbricht die Verjährung (Art. 135 OR).", "source_refs": ["law#135"], "stage": "klaeren"},
-  {"id": "strafakten", "title": "Strafbefehl oder Urteil gegen die verursachende Person", "why": "Bei einer strafbaren Handlung verjährt der Anspruch frühestens mit der strafrechtlichen Verfolgungsverjährung (Art. 60 Abs. 2 OR).", "required_when": {"fact": "strafverfahren", "is": true}, "source_refs": ["law#60.2"], "stage": "klaeren"}
+  {"id": "strafakten", "title": "Strafbefehl oder Urteil gegen die verursachende Person", "why": "Bei einer strafbaren Handlung verjährt der Anspruch frühestens mit der strafrechtlichen Verfolgungsverjährung (Art. 60 Abs. 2 OR).", "required_when": {"fact": "strafverfahren", "is": true}, "source_refs": ["law#60.2"], "stage": "klaeren"},
+  {"id": "halter", "title": "Angaben zum Motorfahrzeug der Gegenseite: Kontrollschild, Halterin oder Halter und deren Haftpflichtversicherung", "why": "Für den Schaden aus dem Betrieb eines Motorfahrzeugs haftet der Halter, und die geschädigte Person hat ein Forderungsrecht unmittelbar gegen seinen Versicherer (Art. 58, 65 SVG).", "required_when": {"fact": "motorfahrzeug", "is": true}, "source_refs": ["law#svg-58", "law#svg-65"], "stage": "klaeren"}
  ],
  "hints": [
   {"id": "beweis", "when": true, "text": "Wer Schadenersatz verlangt, muss den Schaden beweisen. Bitte bewahren Sie alle Rechnungen, Quittungen und Belege auf und halten Sie Hergang, Zeugen und Fotos fest.", "legal_basis": "Art. 42 OR", "source_refs": ["law#42"]},
   {"id": "verjaehrung", "when": true, "text": "Ansprüche auf Schadenersatz und Genugtuung verjähren drei Jahre nach Kenntnis vom Schaden und von der ersatzpflichtigen Person; unterbrochen wird die Verjährung etwa durch eine Anerkennung der Gegenseite, auch durch eine Abschlagszahlung, oder durch Betreibung, Schlichtungsgesuch oder Klage.", "legal_basis": "Art. 60, 135 OR", "source_refs": ["law#60", "law#135"]},
   {"id": "genugtuung", "when": {"fact": "koerperverletzung", "is": true}, "text": "Bei einer Körperverletzung sind die Kosten und die Nachteile der Arbeitsunfähigkeit zu ersetzen; zusätzlich kann eine Genugtuung zugesprochen werden.", "legal_basis": "Art. 46, 47 OR", "source_refs": ["law#46", "law#47"]},
   {"id": "mitverschulden", "when": {"fact": "mitverschulden", "is": true}, "text": "Hat die geschädigte Person selbst zur Entstehung oder Verschlimmerung des Schadens beigetragen, kann die Ersatzpflicht ermässigt werden.", "legal_basis": "Art. 44 OR", "source_refs": ["law#44"]},
-  {"id": "strafverfahren", "when": {"fact": "strafverfahren", "is": true}, "text": "Hat die verursachende Person mit dem Unfall eine strafbare Handlung begangen, verjährt der Anspruch frühestens mit der strafrechtlichen Verfolgungsverjährung.", "legal_basis": "Art. 60 Abs. 2 OR", "source_refs": ["law#60.2"]}
+  {"id": "strafverfahren", "when": {"fact": "strafverfahren", "is": true}, "text": "Hat die verursachende Person mit dem Unfall eine strafbare Handlung begangen, verjährt der Anspruch frühestens mit der strafrechtlichen Verfolgungsverjährung.", "legal_basis": "Art. 60 Abs. 2 OR", "source_refs": ["law#60.2"]},
+  {"id": "halter", "when": {"fact": "motorfahrzeug", "is": true}, "text": "Bei einem Unfall mit einem Motorfahrzeug haftet die Halterin oder der Halter, und Sie können Ihre Ansprüche direkt bei deren Haftpflichtversicherung geltend machen; die Verjährung richtet sich auch hier nach dem Obligationenrecht.", "legal_basis": "Art. 58, 65, 83 SVG", "source_refs": ["law#svg-58", "law#svg-65", "law#svg-83"]}
  ],
  "stages": {
   "klaeren": {"source_refs": ["law#42"]},
@@ -70,7 +76,5 @@
  ],
  "notes": [],
  "summary": [],
- "open_questions": [
-  {"text": "Bei einem Unfall mit einem Motorfahrzeug haften nach dem Strassenverkehrsgesetz (SR 741.01) der Halter und, mit einem unmittelbaren Forderungsrecht, seine Haftpflichtversicherung; die Verjährung richtet sich auch dort nach den Bestimmungen des Obligationenrechts über die unerlaubten Handlungen. Diese Artikel sind am amtlichen Text geprüft, hier aber nicht zitiert, weil der Backbone SR 741.01 nicht führt: prüfen.", "source_refs": ["law#41", "law#60"]}
- ]
+ "open_questions": []
 }

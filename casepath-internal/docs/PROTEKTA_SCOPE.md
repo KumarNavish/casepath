@@ -313,7 +313,7 @@ P = needs policy data; F = answerable from the customer's file. The passages are
 |---|---|---|---|---|
 | ATSG, SR 830.1 | Art. 52 Abs. 1 | 2024-01-01, `25-fedlex-ATSG/atsg-sr830.1-20240101.html` | «Gegen Verfügungen kann innerhalb von 30 Tagen bei der verfügenden Stelle Einsprache erhoben werden; davon ausgenommen sind prozess- und verfahrensleitende Verfügungen.» | verified |
 | ATSG, SR 830.1 | Art. 60 Abs. 1 | same | «Die Beschwerde ist innerhalb von 30 Tagen nach der Eröffnung des Einspracheentscheides oder der Verfügung, gegen welche eine Einsprache ausgeschlossen ist, einzureichen.» | verified |
-| ATSG, SR 830.1 | Art. 60 Abs. 2 | same | «Die Artikel 38–41 sind sinngemäss anwendbar.» | verified; the content of Art. 38–41 was **not extracted** |
+| ATSG, SR 830.1 | Art. 60 Abs. 2 | same | «Die Artikel 38–41 sind sinngemäss anwendbar.» | verified; Art. 38–41 were later extracted and are the social-insurance counting rule (docs/AREAS.md) |
 
 **4. Private insurance**
 
@@ -400,5 +400,5 @@ The legal basis of each point is cited. Where a point is my conclusion rather th
 - Conditions for agriculture, medical professionals and municipalities/authorities.
 - The GastroSuisse AVB 01.2024 was fetched but not compared.
 - SVV statistics.
-- ATSG Art. 38–41 content and cantonal deadlines (licence withdrawal, tax).
+- Cantonal deadlines (licence withdrawal, tax). ATSG Art. 38–41, the StPO, ZPO and SchKG counting rules, the OBG, the IVG and the federal holiday (BV Art. 110 Abs. 3) were extracted later for the counting rules (docs/AREAS.md); their files are 36–39 in the sources index.
 - The private AVB 08.2023 was checked only through its table of contents.

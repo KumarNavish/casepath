@@ -401,7 +401,7 @@
   ],
   "hint": "Art. 367, 370 OR",
   "deadlines": {
-   "ruege_ablieferung": "2026-12-08",
+   "ruege_ablieferung": "prüfen",
    "ruege_entdeckung": "2026-12-28",
    "verjaehrung_unbeweglich": "2031-10-09",
    "bauhandwerkerpfand": "2027-02-02"
@@ -538,6 +538,193 @@
   "hint": "Art. 102, 104 OR",
   "deadlines": {
    "verjaehrung_zehn": "2036-09-01"
+  }
+ },
+ "verkehr": {
+  "title": "Strafbefehl und angekündigter Ausweisentzug nach Geschwindigkeitsüberschreitung",
+  "text": "SYNTHETISCHER FALL. Am 3. September 2026 wurde ich auf der Autobahn bei Beispielstadt mit meinem Auto geblitzt, angeblich 32 km/h zu schnell nach Abzug der Toleranz. Am 6. November 2026 habe ich den Strafbefehl der Staatsanwaltschaft Beispielkanton auf der Post abgeholt: Geldstrafe und Busse. Das Strassenverkehrsamt schreibt, es prüfe einen Ausweisentzug, und lädt mich zur Stellungnahme ein. Ich bin Aussendienstmitarbeiter und brauche das Auto für die Arbeit. Lukas Beispiel",
+  "routing": [
+   "Strafrecht, Ausweisentzug / Strassenverkehr",
+   "Am 6. November 2026 habe ich den Strafbefehl der Staatsanwaltschaft Beispielkanton auf der Post abgeholt"
+  ],
+  "facts": [
+   [
+    "vorwurf",
+    "Geschwindigkeitsüberschreitung von 32 km/h nach Abzug der Toleranz auf der Autobahn",
+    "angeblich 32 km/h zu schnell nach Abzug der Toleranz"
+   ],
+   [
+    "tatdatum",
+    "2026-09-03",
+    "Am 3. September 2026 wurde ich auf der Autobahn bei Beispielstadt mit meinem Auto geblitzt"
+   ],
+   [
+    "strafbefehl",
+    "ja",
+    "Am 6. November 2026 habe ich den Strafbefehl der Staatsanwaltschaft Beispielkanton auf der Post abgeholt"
+   ],
+   [
+    "strafbefehl_erhalten",
+    "2026-11-06",
+    "Am 6. November 2026 habe ich den Strafbefehl der Staatsanwaltschaft Beispielkanton auf der Post abgeholt"
+   ],
+   [
+    "entzug_verfahren",
+    "ja",
+    "Das Strassenverkehrsamt schreibt, es prüfe einen Ausweisentzug, und lädt mich zur Stellungnahme ein."
+   ],
+   [
+    "beruflich",
+    "ja",
+    "Ich bin Aussendienstmitarbeiter und brauche das Auto für die Arbeit."
+   ]
+  ],
+  "documents": [
+   "Strafbefehl oder Bussenverfügung mit dem Couvert oder der Abholungsquittung",
+   "Polizeirapport, Anzeige oder Messprotokoll (z.B. Radarbild), soweit vorhanden",
+   "Schreiben des Strassenverkehrsamts (Ankündigung, Einladung zur Stellungnahme oder Verfügung über Entzug oder Verwarnung)",
+   "Bestätigung der Arbeitgeberin, wofür Sie beruflich auf den Führerausweis angewiesen sind"
+  ],
+  "questions": [
+   "einsprache_erhoben"
+  ],
+  "hint": "Art. 354 StPO",
+  "deadlines": {
+   "einsprache_strafbefehl": "2026-11-16"
+  }
+ },
+ "sozialversicherung": {
+  "title": "Einsprache gegen die Einstellung des Taggelds der Unfallversicherung",
+  "text": "SYNTHETISCHER FALL. Nach meinem Sturz auf der Baustelle zahlte die Unfallversicherung Taggeld. Mit Verfügung vom 4. Dezember 2026, die ich am 10. Dezember 2026 auf der Post abgeholt habe, stellt sie das Taggeld ein, weil ich wieder voll arbeitsfähig sei. Mein Hausarzt sieht das anders. Anna Muster",
+  "routing": [
+   "Sozialversicherungsrecht / Verfügung, Einsprache, Beschwerde",
+   "Mit Verfügung vom 4. Dezember 2026, die ich am 10. Dezember 2026 auf der Post abgeholt habe, stellt sie das Taggeld ein"
+  ],
+  "facts": [
+   [
+    "worum",
+    "Einstellung des Taggelds der Unfallversicherung wegen angeblich voller Arbeitsfähigkeit",
+    "stellt sie das Taggeld ein, weil ich wieder voll arbeitsfähig sei"
+   ],
+   [
+    "iv",
+    "nein",
+    "Nach meinem Sturz auf der Baustelle zahlte die Unfallversicherung Taggeld."
+   ],
+   [
+    "gesundheit",
+    "ja",
+    "Nach meinem Sturz auf der Baustelle zahlte die Unfallversicherung Taggeld."
+   ],
+   [
+    "verfuegung_erhalten",
+    "2026-12-10",
+    "Mit Verfügung vom 4. Dezember 2026, die ich am 10. Dezember 2026 auf der Post abgeholt habe"
+   ]
+  ],
+  "documents": [
+   "Der Entscheid der Versicherung (Vorbescheid, Verfügung oder Einspracheentscheid) mit dem Couvert oder dem Zustellnachweis",
+   "Die Akten der Versicherung, insbesondere die Berichte und Gutachten, auf die sich der Entscheid stützt",
+   "Berichte der behandelnden Ärztinnen und Ärzte zu Ihrem Gesundheitszustand und Ihrer Arbeitsfähigkeit",
+   "Bisherige Korrespondenz mit der Versicherung, insbesondere Einwände oder eine bereits erhobene Einsprache"
+  ],
+  "questions": [
+   "einsprache_erhoben"
+  ],
+  "hint": "Art. 38 ATSG",
+  "deadlines": {
+   "einsprache": "2027-01-25"
+  }
+ },
+ "privatversicherung": {
+  "title": "Hausratversicherung lehnt Diebstahl aus dem Keller ab",
+  "text": "SYNTHETISCHER FALL. Am 2. Juli 2026 wurde aus unserem abgeschlossenen Kellerabteil ein Velo im Wert von CHF 3'200 gestohlen. Ich habe den Diebstahl der Polizei und am 4. Juli 2026 meiner Hausratversicherung gemeldet. Mit Schreiben vom 20. Oktober 2026 lehnt die Versicherung ab, weil das Velo nicht angeschlossen gewesen sei. Sara Beispiel",
+  "routing": [
+   "Privatversicherungsrecht / Leistung der Versicherung",
+   "Mit Schreiben vom 20. Oktober 2026 lehnt die Versicherung ab"
+  ],
+  "facts": [
+   [
+    "versicherung",
+    "Hausratversicherung: Diebstahl eines Velos im Wert von CHF 3'200 aus dem Kellerabteil",
+    "ein Velo im Wert von CHF 3'200 gestohlen"
+   ],
+   [
+    "ereignis",
+    "2026-07-02",
+    "Am 2. Juli 2026 wurde aus unserem abgeschlossenen Kellerabteil ein Velo im Wert von CHF 3'200 gestohlen."
+   ],
+   [
+    "kollektiv_taggeld",
+    "nein",
+    "meiner Hausratversicherung gemeldet"
+   ],
+   [
+    "gemeldet",
+    "2026-07-04",
+    "am 4. Juli 2026 meiner Hausratversicherung gemeldet"
+   ],
+   [
+    "ablehnung",
+    "Ablehnung vom 20. Oktober 2026: das Velo sei nicht angeschlossen gewesen",
+    "lehnt die Versicherung ab, weil das Velo nicht angeschlossen gewesen sei"
+   ]
+  ],
+  "documents": [
+   "Police mit den Allgemeinen und Besonderen Versicherungsbedingungen",
+   "Schadenmeldung an die Versicherung mit den eingereichten Belegen",
+   "Ablehnung oder Kürzung der Versicherung mit ihrer Begründung",
+   "Belege des Schadens oder der Arbeitsunfähigkeit (Rechnungen, Quittungen, Polizeianzeige, Arztzeugnisse)",
+   "Sämtliche Korrespondenz mit der Versicherung"
+  ],
+  "questions": [
+   "ursache_datum"
+  ],
+  "hint": "Art. 46 VVG",
+  "deadlines": {
+   "verjaehrung": "2031-07-02"
+  }
+ },
+ "betreibung-schuldner": {
+  "title": "Zahlungsbefehl für eine bereits bezahlte Rechnung",
+  "text": "SYNTHETISCHER FALL. Am 8. Juli 2026 hat mir der Pöstler einen Zahlungsbefehl des Betreibungsamts Beispielstadt über CHF 1'480 übergeben, Gläubigerin ist die Muster Möbel AG für ein Sofa. Ich habe die Rechnung im Mai bezahlt und habe die Quittung. Rechtsvorschlag habe ich noch keinen erhoben. Peter Muster",
+  "routing": [
+   "Schuldbetreibungs- und Konkursrecht / Zahlungsbefehl gegen die Kundschaft",
+   "Am 8. Juli 2026 hat mir der Pöstler einen Zahlungsbefehl des Betreibungsamts Beispielstadt über CHF 1'480 übergeben"
+  ],
+  "facts": [
+   [
+    "forderung",
+    "CHF 1'480 der Muster Möbel AG für ein Sofa",
+    "Gläubigerin ist die Muster Möbel AG für ein Sofa"
+   ],
+   [
+    "bestreitung",
+    "ganz bestritten: Rechnung im Mai bezahlt, Quittung vorhanden",
+    "Ich habe die Rechnung im Mai bezahlt und habe die Quittung."
+   ],
+   [
+    "zahlungsbefehl_zugestellt",
+    "2026-07-08",
+    "Am 8. Juli 2026 hat mir der Pöstler einen Zahlungsbefehl des Betreibungsamts Beispielstadt über CHF 1'480 übergeben"
+   ],
+   [
+    "rechtsvorschlag_erhoben",
+    "nein",
+    "Rechtsvorschlag habe ich noch keinen erhoben."
+   ]
+  ],
+  "documents": [
+   "Zahlungsbefehl (Ausfertigung für die Schuldnerin oder den Schuldner, mit Zustellvermerk)",
+   "Vertrag, Rechnung, Schuldanerkennung oder Entscheid, worauf sich die Forderung stützt",
+   "Belege von Zahlungen, Verrechnung oder Einwänden gegenüber dem Gläubiger (Quittungen, Korrespondenz)"
+  ],
+  "questions": [
+   "ursache_datum"
+  ],
+  "hint": "Art. 74, 75 SchKG",
+  "deadlines": {
+   "rechtsvorschlag": "2026-08-05"
   }
  }
 }

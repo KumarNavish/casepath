@@ -34,9 +34,26 @@ AREAS = Path(__file__).with_name("areas")
 LABELS = {(True, "draft"): "aus Praxis und Gesetz abgeleitet, noch nicht freigegeben",
           (False, "draft"): "aus dem Gesetz abgeleitet, noch nicht freigegeben"}
 MAX_PASSAGE_WORDS = 40
-LAWS = {"OR": "220", "ZGB": "210"}
-CITE = re.compile(r"Art\.\s+(\d[\w.\s,–-]*?)\s*(?:ff\.\s*)?\b(OR|ZGB)\b")
 QUALIFIER = re.compile(r"\b(?:Abs|Ziff|lit|Bst)\.\s*\w+")
+FEDLEX = "https://fedlex.data.admin.ch/filestore/"
+COUNTING_UNITS = ("start", "days", "weeks", "months", "end")
+
+
+@functools.lru_cache(maxsize=None)
+def _shipped_laws():
+    """The law table and counting rules of the shipped backbone (read once, without composing anything)."""
+    bb = load(AREAS / "backbone.json")
+    return bb["laws"], bb.get("counting", {})
+
+
+def shorts(laws=None):
+    """{short name: SR number} of a law table: «OR» → 220, «ATSG» → 830.1. A law without a short name is cited by SR."""
+    return {row["short"]: sr for sr, row in (laws if laws is not None else _shipped_laws()[0]).items() if row.get("short")}
+
+
+@functools.lru_cache(maxsize=None)
+def _cite_pattern(names):
+    return re.compile(r"Art\.\s+(\d[\w.\s,–-]*?)\s*(?:ff\.\s*)?\b(" + "|".join(re.escape(n) for n in names) + r")\b")
 
 
 def _strings(value):
@@ -50,13 +67,53 @@ def _strings(value):
             yield from _strings(v)
 
 
-def cited_articles(text):
-    """{(SR number, article)} for every "Art. … OR|ZGB" in a text: "Art. 257g, 259a OR" → 257g and 259a of SR 220."""
+def cited_articles(text, laws=None):
+    """{(SR number, article)} for every "Art. … <law>" in a text, for every law of the table by its short name:
+    "Art. 257g, 259a OR" → 257g and 259a of SR 220; "Art. 38 Abs. 4 ATSG" → 38 of SR 830.1."""
+    table = shorts(laws)
     out = set()
-    for m in CITE.finditer(text):
+    for m in _cite_pattern(tuple(sorted(table, key=len, reverse=True))).finditer(text):
         for number in re.findall(r"\d+[a-z]*", QUALIFIER.sub(" ", m.group(1))):
-            out.add((LAWS[m.group(2)], number))
+            out.add((table[m.group(2)], number))
     return out
+
+
+def check_laws(laws, where):
+    """A law is any official federal text, identified by its SR number and, where it has one, its short name; its
+    consolidated text is the fedlex filestore HTML the passages are checked against."""
+    for sr, row in laws.items():
+        if not re.fullmatch(r"\d{1,3}(?:\.\d+)*", sr) or not isinstance(row, dict):
+            raise CatalogueError(f"{where}: law {sr!r} must be named by its SR number")
+        if not str(row.get("title") or "").strip() or not str(row.get("url") or "").startswith(FEDLEX) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(row.get("consolidation"))):
+            raise CatalogueError(f"{where}: law SR {sr} needs its title, the consolidation date and the fedlex filestore url of its text")
+        if "short" in row and not re.fullmatch(r"[A-Za-zÄÖÜäöü]{2,12}", str(row["short"])):
+            raise CatalogueError(f"{where}: law SR {sr}: the short name is one word («OR», «ATSG»)")
+    named = [row["short"] for row in laws.values() if row.get("short")]
+    if len(named) != len(set(named)):
+        raise CatalogueError(f"{where}: two laws share a short name")
+
+
+def check_counting(counting, law, where="backbone"):
+    """Each procedure's counting rules: for the start, days, weeks, months and the end on a Saturday, Sunday or holiday
+    either a rule resting on verified passages of the law table, or no rule and the reason (then «prüfen», no date)."""
+    for cid, rule in counting.items():
+        if not re.fullmatch(r"[a-z][a-z-]*", cid) or not str(rule.get("title") or "").strip():
+            raise CatalogueError(f"{where}: counting rule {cid!r} needs an id and a title")
+        for part in COUNTING_UNITS + ("standstill", "ferien"):
+            row = rule.get(part)
+            if row is None and part in ("standstill", "ferien"):
+                continue
+            if not isinstance(row, dict) or not str(row.get("text") or "").strip():
+                raise CatalogueError(f"{where}: counting rule {cid}: {part} needs its rule or its reason in words")
+            keys = row.get("law", [])
+            if (row.get("rule") or part in ("standstill", "ferien")) and not keys:
+                raise CatalogueError(f"{where}: counting rule {cid}: {part} must rest on a verified passage")
+            for key in keys:
+                if (law.get(key) or {}).get("verified") is not True:
+                    raise CatalogueError(f"{where}: counting rule {cid}: {part} names {key!r}, which is not a verified passage")
+            for spec in row.get("periods", []):
+                if not re.fullmatch(r"(easter[+-]\d+|\d{2}-\d{2}):(easter[+-]\d+|\d{2}-\d{2})", spec):
+                    raise CatalogueError(f"{where}: counting rule {cid}: {part} period {spec!r} is not «from:to»")
 
 
 def _check_law(entries, laws, where):
@@ -81,7 +138,11 @@ def validate_backbone(backbone):
                 "deadline_margin_days"):
         if key not in backbone:
             raise CatalogueError(f"backbone is missing {key!r}")
+    check_laws(backbone["laws"], "backbone")
     _check_law(backbone["law"], backbone["laws"], "backbone")
+    check_counting(backbone.get("counting") or {}, backbone["law"])
+    if "or" not in (backbone.get("counting") or {}):
+        raise CatalogueError("backbone: the counting rules need «or», the default of every deadline")
     facts = {f["id"] for f in backbone["facts"]}
     for kind, row in backbone["action_kinds"].items():
         if not re.fullmatch(r"A\d{1,2}", kind) or any(f not in facts for f in row.get("depends_on", [])):
@@ -203,7 +264,9 @@ def validate_module(module, backbone):
         raise CatalogueError(f"{where}: status must be draft or reviewed and short_title 2 to 40 characters")
     if not module.get("fallback") and not module.get("applies_when"):
         raise CatalogueError(f"{where}: a module needs applies_when (or is the fallback)")
-    _check_law(module["law"], backbone["laws"], where)
+    laws = {**backbone["laws"], **module.get("laws", {})}  # a module may add a federal text to the table
+    check_laws(module.get("laws", {}), where)
+    _check_law(module["law"], laws, where)
     law = {**backbone["law"], **module["law"]}
     have = {(row["sr"], row["article"]) for row in law.values()}
     body = {k: v for k, v in module.items() if k not in {"law", "sources", "format"}}
@@ -211,9 +274,9 @@ def validate_module(module, backbone):
         for ref in re.findall(r"\blaw#([\w.-]+)", text):
             if ref not in module["law"]:
                 raise CatalogueError(f"{where}: law#{ref} is cited without a law entry and its passage")
-        for sr, article in cited_articles(text):
+        for sr, article in cited_articles(text, laws):
             if (sr, article) not in have:
-                raise CatalogueError(f"{where}: Art. {article} ({'OR' if sr == '220' else 'ZGB'}) is cited without a law entry "
+                raise CatalogueError(f"{where}: Art. {article} {laws[sr].get('short') or 'SR ' + sr} is cited without a law entry "
                                      f"and its passage: {text[:80]!r}")
     if not module.get("practice") and re.search(r"\d+\s*(?:von|of)\s*\d+|\d+of\d+", json.dumps(body, ensure_ascii=False)):
         raise CatalogueError(f"{where}: practice counts belong only to a module observed in practice")
@@ -247,12 +310,17 @@ def validate_module(module, backbone):
             raise CatalogueError(f"{where}: deadline {d['id']} needs a date fact of this module as its trigger")
         if d.get("period_from") and (facts.get(d["period_from"]) or {}).get("type") != "text":
             raise CatalogueError(f"{where}: deadline {d['id']}: period_from names a text fact of this module (the agreed period)")
-        if d["id"] in facts or not cited_articles(d["basis"]):
-            raise CatalogueError(f"{where}: deadline {d['id']} needs its own id and an article as its basis")
+        counting = d.get("counting", "or")
+        if counting not in (backbone.get("counting") or {}):
+            raise CatalogueError(f"{where}: deadline {d['id']} names an unknown counting rule {counting!r}")
+        if d["id"] in facts or not (cited_articles(d["basis"], laws) or counting == "kantonal"):
+            raise CatalogueError(f"{where}: deadline {d['id']} needs its own id and an article as its basis (a cantonal period: its basis in words)")
         period = d["period"]
-        if not (period == "sofort" or (isinstance(period, dict) and len(period) == 1
-                                       and next(iter(period)) in {"days", "weeks", "months", "years", "days_before"})):
+        if not (period in ("sofort", "kantonal") or (isinstance(period, dict) and len(period) == 1
+                                                     and next(iter(period)) in {"days", "weeks", "months", "years", "days_before"})):
             raise CatalogueError(f"{where}: deadline {d['id']} has an unknown period")
+        if (period == "kantonal") != (counting == "kantonal") and period != "sofort":
+            raise CatalogueError(f"{where}: deadline {d['id']}: a cantonal period is counted by the cantonal rule, and only it")
     return module
 
 
@@ -329,11 +397,13 @@ def compose(backbone, module):
                 "clock": bb["clock"], "forms": forms, "action_kinds": bb["action_kinds"], "cooperation": bb["cooperation"], "deadline_margin_days": bb.get("deadline_margin_days", 7),
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
-                "assess_needs": m.get("assess_needs", []), "deadlines": m["deadlines"],
+                "assess_needs": m.get("assess_needs", []),
+                # each deadline carries the counting rule of its procedure (the backbone's table), so a stored run keeps it
+                "deadlines": [{**d, "counting": d.get("counting", "or"), "counting_rule": bb["counting"][d.get("counting", "or")]} for d in m["deadlines"]],
                 "stage_actions": True,  # a stage with an action is left only once it is done or a way out says it is not needed
                 "incoming": bb.get("incoming", []), "incoming_done": bb.get("incoming_done"),
                 "settled": {"when": m.get("settled_when"), "claims_open_when": m.get("claims_open_when")},
-                "law": {**{k: v for k, v in bb["law"].items()}, **m["law"]}, "laws": bb["laws"]}
+                "law": {**{k: v for k, v in bb["law"].items()}, **m["law"]}, "laws": {**bb["laws"], **m.get("laws", {})}}
     try:
         validate_workflow(workflow)
         check_dead_ends(workflow)
@@ -389,6 +459,8 @@ def period_text(d):
     p = d["period"]
     if p == "sofort":
         return f"sofort {d.get('from', '')}".strip()
+    if p == "kantonal":
+        return f"innert der Frist nach kantonalem Recht {d.get('from', '')}".strip()
     unit, n = next(iter(p.items()))
     if unit == "days_before":
         return f"spätestens {n} Tage vor {d.get('from', '')}".strip()
@@ -433,17 +505,80 @@ def statutory_period(deadlines, value):
     return next((d for d in deadlines or () if isinstance(d.get("period"), dict) and d["period"].get(unit) == n), None)
 
 
+def easter(year):
+    """Easter Sunday of the Gregorian calendar (the anonymous Gregorian computus)."""
+    a, b, c = year % 19, year // 100, year % 100
+    d, e = b // 4, b % 4
+    g = (8 * b + 13) // 25
+    h = (19 * a + b - d - g + 15) % 30
+    i, k = c // 4, c % 4
+    l = (32 + 2 * e + 2 * i - h - k) % 7
+    m = (a + 11 * h + 22 * l) // 451
+    month = (h + l - 7 * m + 114) // 31
+    return date(year, month, (h + l - 7 * m + 114) % 31 + 1)
+
+
+def _point(spec, year):
+    if spec.startswith("easter"):
+        return easter(year) + timedelta(days=int(spec[6:]))
+    month, day = spec.split("-")
+    return date(year, int(month), int(day))
+
+
+def in_periods(day, specs):
+    """Whether a day lies in one of the periods «from:to» (both included; «easter-7», «12-18:01-02» spans the new year)."""
+    for spec in specs or ():
+        a, b = spec.split(":")
+        for year in (day.year - 1, day.year):
+            start, end = _point(a, year), _point(b, year)
+            if end < start:
+                end = _point(b, year + 1)
+            if start <= day <= end:
+                return True
+    return False
+
+
+FEDERAL_HOLIDAYS = ("08-01",)  # Art. 110 Abs. 3 BV: a holiday in every canton
+
+
+def maybe_cantonal_holiday(day):
+    """A day that is a public holiday in many cantons (New Year, 2 January, Good Friday, Easter Monday, Ascension, Whit
+    Monday, 1 May, 15 August, 1 November, 8 December, Christmas, 26 December). The cantonal holidays are not in the
+    verified texts: a deadline ending on such a day is not given a date, it says «prüfen»."""
+    e = easter(day.year)
+    return day.strftime("%m-%d") in {"01-01", "01-02", "05-01", "08-15", "11-01", "12-08", "12-25", "12-26"} or \
+        day in {e - timedelta(days=2), e + timedelta(days=1), e + timedelta(days=39), e + timedelta(days=50)}
+
+
+def counting_rule(d):
+    """The counting rules of the deadline's procedure: carried by a composed deadline, else the shipped table's."""
+    return d.get("counting_rule") or _shipped_laws()[1].get(d.get("counting", "or")) or _shipped_laws()[1]["or"]
+
+
+def _off(day, end_rule, statutory=True):
+    """Whether the last day moves on: a Saturday, Sunday or federal holiday as the procedure's end rule names them."""
+    days = set(end_rule.get("days", ()))
+    if end_rule.get("saturday_if") == "statutory" and statutory:
+        days.add("saturday")
+    return (day.weekday() == 5 and "saturday" in days) or (day.weekday() == 6 and "sunday" in days) or \
+        ("holiday" in days and day.strftime("%m-%d") in FEDERAL_HOLIDAYS)
+
+
 def compute_deadline(d, trigger_value, facts=None):
     """(value, rule) for one statutory deadline: an ISO date, or "prüfen" with the reason. None when its condition fails.
 
-    Implemented only as the verified texts state it: the trigger day is not counted and a period in days ends on its last
-    day, in weeks on the same weekday, in months or years on the day with the same number or the month's last day
-    (Art. 77 OR, also for limitation, Art. 132 OR); a last day on a Sunday or a Saturday moves to the next weekday
-    (Art. 78 OR; Art. 1 of the federal act on Saturdays, SR 173.110.3). Cantonal public holidays are not known here."""
+    Computed only as the verified texts of its procedure state it (counting rules in the backbone, ``counting``: «or»
+    for the Code of Obligations and what refers to it, «atsg», «stpo», «zpo», «schkg» …): when the period starts, how
+    days, weeks and months are counted, what happens when the last day is a Saturday, Sunday or the federal holiday,
+    whether the period stands still during court holidays and whether the debt-enforcement holidays extend it. Where the
+    procedure's text gives no rule (a month under the ZPO, any period of the fine procedure, a cantonal period) the
+    deadline says «prüfen» with the reason, and so does a last day that is a public holiday in many cantons: cantonal
+    holidays are not in the verified texts."""
     condition = d.get("when")
     holds = evaluate_condition(condition, facts or {}) if condition else True
     if holds is False:
         return None
+    rule = counting_rule(d)
     raw = str(trigger_value or "")
     start = parse_date(raw) if re.fullmatch(r"\s*(\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.\d{4})\s*", raw) else None
     notes = []
@@ -453,31 +588,87 @@ def compute_deadline(d, trigger_value, facts=None):
     if start is None:
         return "prüfen", "; ".join([f"Auslöser «{raw}» ohne genaues Datum, prüfen"] + notes)
     shown = start.strftime("%d.%m.%Y")
+    show = lambda day: day.strftime("%d.%m.%Y")
+    pruefen = lambda why: ("prüfen", "; ".join([why] + notes + ([d["check"]] if d.get("check") else [])))
     agreed = (facts or {}).get(d["period_from"]) if d.get("period_from") else None
-    if agreed not in (None, ""):  # a period the parties agreed governs instead of the law's default (e.g. a notice period)
-        period = agreed_period(agreed)
+    statutory = True
+    if agreed not in (None, ""):  # a period the parties agreed or an authority stated governs instead of the default
+        period, label = agreed_period(agreed), d.get("period_from_label", "vereinbarte Frist")
         if period is None:
-            return "prüfen", "; ".join([f"vereinbarte Frist «{agreed}» ab {shown}: Dauer prüfen"] + notes)
-        notes.append(f"vereinbarte Frist «{agreed}»")
+            return "prüfen", "; ".join([f"{label} «{agreed}» ab {shown}: Dauer prüfen"] + notes)
+        notes.append(f"{label} «{agreed}»")
+        statutory = bool(d.get("period_from_statutory"))  # an agreed period is no statutory one (Art. 1 SR 173.110.3)
     if period == "sofort":
         return "prüfen", "; ".join([f"«sofort» ab {shown}: kein festes Datum, prüfen"] + notes)
+    if period == "kantonal" or not rule["start"].get("rule"):
+        return pruefen(f"ab {shown}: {rule['start']['text']}")
     unit, n = next(iter(period.items()))
     if unit == "days_before":
         return "prüfen", "; ".join([f"spätestens {n} Tage vor dem {shown}: Rückwärtsrechnung prüfen"] + notes)
-    if unit in {"days", "weeks"}:
-        end = start + timedelta(days=n * (7 if unit == "weeks" else 1))
-        notes.insert(0, f"{n} Wochen ab {shown}: gleicher Wochentag (Art. 77 OR)" if unit == "weeks" else
-                     f"{n} Tage ab {shown}, Tag des Auslösers nicht mitgezählt (Art. 77 OR)" if n else f"am {shown}")
+    kind = {"days": "days", "weeks": "weeks", "months": "months", "years": "months"}[unit]
+    if not rule[kind].get("rule"):
+        return pruefen(f"{period_text({**d, 'period': {unit: n}, 'direction': 'bis'})} ab {shown}: {rule[kind]['text']}")
+    ferien = rule.get("ferien") or {}
+    if d.get("served") and ferien and (in_periods(start, ferien["periods"]) or start.weekday() == 6 or start.strftime("%m-%d") in FEDERAL_HOLIDAYS
+                                       or maybe_cantonal_holiday(start)):
+        return pruefen(f"zugestellt am {shown}, in den Betreibungsferien, an einem Sonntag oder Feiertag (Art. 56 SchKG): Wirkung der Zustellung und Fristbeginn prüfen")
+    still = (rule.get("standstill") or {}).get("periods") or []
+    if n == 0:
+        end = start
+        notes.insert(0, f"am {shown}")
+    elif kind == "days":
+        if still:  # the days of the standstill are not counted; served during it, the period starts after it (Art. 146 ZPO)
+            end, left = start, n
+            while left:
+                end += timedelta(days=1)
+                if not in_periods(end, still):
+                    left -= 1
+            notes.insert(0, f"{n} Tage ab {shown}, {rule['start']['text']}; {rule['standstill']['text']}")
+        else:
+            end = start + timedelta(days=n)
+            notes.insert(0, f"{n} Tage ab {shown}, {rule['start']['text']}")
+    elif still and any(in_periods(start + timedelta(days=k), still) for k in range(1, (_add_months(start, n * (12 if unit == "years" else 1)) - start).days + 1 if kind == "months" else 7 * n + 1)):
+        return pruefen(f"{period_text({**d, 'period': {unit: n}, 'direction': 'bis'})} ab {shown} über einen Fristenstillstand: Berechnung prüfen ({rule['standstill']['text']})")
+    elif kind == "weeks":
+        end = start + timedelta(days=7 * n)
+        notes.insert(0, f"{n} Wochen ab {shown}: {rule['weeks']['text']}")
     else:
         end = _add_months(start, n * (12 if unit == "years" else 1))
         word = {"years": ("Jahr", "Jahre"), "months": ("Monat", "Monate")}[unit][n != 1]
-        notes.insert(0, f"{n} {word} ab {shown}: Tag mit gleicher Zahl (Art. 77 OR)")
-    if end.weekday() >= 5:
-        if d.get("shift", True):
-            notes.append(f"{'Samstag' if end.weekday() == 5 else 'Sonntag'}: nächster Werktag (Art. 78 OR, SR 173.110.3)")
-            end += timedelta(days=7 - end.weekday())
-        else:
-            notes.append("fällt auf ein Wochenende, prüfen")
+        notes.insert(0, f"{n} {word} ab {shown}: {rule['months']['text']}")
+    end_rule = rule["end"]
+    if not end_rule.get("rule"):
+        return pruefen(f"letzter Tag {show(end)}: {end_rule['text']}")
+    if d.get("shift", True) and d.get("direction", "bis") == "bis":
+        moved = end
+        while _off(moved, end_rule, statutory):
+            moved += timedelta(days=1)
+        if moved != end:
+            notes.append(f"{show(end)} ist {'ein Samstag' if end.weekday() == 5 else 'ein Sonntag' if end.weekday() == 6 else 'der Bundesfeiertag'}: "
+                         f"{end_rule['text']}")
+            if still and in_periods(moved, still):
+                return pruefen(f"letzter Tag {show(end)}, der nächste Werktag {show(moved)} liegt im Fristenstillstand: prüfen")
+            end = moved
+        elif end.weekday() == 5 and not statutory:
+            return pruefen(f"vereinbarte Frist endet am Samstag {show(end)}: Art. 1 SR 173.110.3 gilt für gesetzliche und behördliche Fristen, prüfen")
+        if ferien and in_periods(end, ferien["periods"]):  # Art. 63 SchKG: to the third working day after the holidays
+            last = end
+            while in_periods(last + timedelta(days=1), ferien["periods"]):
+                last += timedelta(days=1)
+            extended, left = last, ferien["extend_working_days"]
+            while left:
+                extended += timedelta(days=1)
+                if maybe_cantonal_holiday(extended):
+                    return pruefen(f"letzter Tag {show(end)} in den Betreibungsferien bis {show(last)}; die drei Werktage danach umfassen "
+                                   f"den {show(extended)}, in vielen Kantonen ein Feiertag (Art. 63 SchKG): prüfen")
+                if extended.weekday() < 5 and extended.strftime("%m-%d") not in FEDERAL_HOLIDAYS:
+                    left -= 1
+            notes.append(f"{show(end)} in den Betreibungsferien bis {show(last)}: {ferien['text']}")
+            end = extended
+        if maybe_cantonal_holiday(end):
+            return pruefen(f"letzter Tag nach der Berechnung {show(end)}, in vielen Kantonen ein Feiertag: kantonales Recht prüfen")
+    elif end.weekday() >= 5 or end.strftime("%m-%d") in FEDERAL_HOLIDAYS:
+        notes.append("fällt auf ein Wochenende, prüfen" if end.weekday() >= 5 else "fällt auf den Bundesfeiertag, prüfen")
     if d.get("direction", "bis") == "bis":
         notes.append("kantonale Feiertage nicht berücksichtigt")
     if d.get("check"):
@@ -532,12 +723,22 @@ def main(argv=None):
     parser.add_argument("paths", nargs="*", help="area module files or directories (default: the shipped areas)")
     parser.add_argument("--law", nargs="*", default=[], metavar="SR=FILE",
                         help="check every passage against an official text, e.g. 220=or.html (fedlex filestore HTML)")
+    parser.add_argument("--sources", metavar="FOLDER",
+                        help="check every passage against the saved official texts in a folder laid out as the law table's «file» entries")
     args = parser.parse_args(argv)
     try:
         bb = backbone()
         files = [p for x in args.paths for p in (sorted(Path(x).glob("*.json")) if Path(x).is_dir() else [Path(x)])
                  if p.name != "backbone.json"] or sorted(p for p in AREAS.glob("*.json") if p.name != "backbone.json")
         texts = {sr: official_articles(f) for sr, f in (x.split("=", 1) for x in args.law)}
+        if args.sources:
+            texts.update({sr: official_articles(Path(args.sources) / row["file"]) for sr, row in bb["laws"].items()
+                          if row.get("file") and (Path(args.sources) / row["file"]).is_file()})
+            found = verify(bb, texts)
+            wrong = [k for k, ok in found.items() if ok != bb["law"][k]["verified"]]
+            print(f"Gesetzestabelle: {len(bb['laws'])} Erlasse ({', '.join(r.get('short') or 'SR ' + sr for sr, r in bb['laws'].items())}); "
+                  f"Backbone am amtlichen Text: {sum(found.values())} von {len(found)} Passagen gefunden"
+                  + (f"; Kennzeichnung «verified» stimmt nicht bei {', '.join(wrong)}" if wrong else ""))
         for path in files:
             module = load(path)
             if module.get("format") != AREA_FORMAT:

@@ -20,6 +20,10 @@ Shipped, by the routing value `rechtsgebiet` that selects each:
 | `erbrecht` | Erbrecht / Ausschlagung, Pflichtteil | law |
 | `nachbarrecht` | Nachbarrecht / Einwirkungen, Pflanzen, Grenzen | law |
 | `inkasso` | Inkasso-Rechtsschutz / offene Forderung der Kundschaft | law |
+| `verkehr` | Strafrecht, Ausweisentzug / Strassenverkehr | law |
+| `sozialversicherung` | Sozialversicherungsrecht / Verfügung, Einsprache, Beschwerde | law |
+| `privatversicherung` | Privatversicherungsrecht / Leistung der Versicherung | law |
+| `betreibung-schuldner` | Schuldbetreibungs- und Konkursrecht / Zahlungsbefehl gegen die Kundschaft | law |
 | `allgemein` | Übriges Recht, or nothing established (fallback) | law |
 
 All are `draft`; those from the law alone are shown as «aus dem Gesetz abgeleitet, noch nicht freigegeben». Every area also carries the cover points, their facts and the prescribed letters of `areas/cover.json` (docs/COVER.md); `cover.json` names, per area, the date that stands for the cause of the case (`cause_from`) and the clauses of the conditions for its capacity, legal area and limits (`areas`).
@@ -31,6 +35,7 @@ Copy the smallest module (`arbeit-zeugnis.json`), change it, check it:
 ```sh
 python -m casepath areas casepath/process/areas/my-area.json      # validates and prints what it contains
 python -m casepath areas --law 220=or.html 210=zgb.html            # every passage against the official text (fedlex filestore HTML)
+python -m casepath areas --sources <folder>                          # every passage of the backbone and the modules, by the law table's «file»
 ```
 
 A file in `casepath/process/areas/` ships with CasePath and is on by default. A file of the same format in the deployment's catalogue directory (`CASEPATH_WORKFLOW_CATALOGUE`) is composed the same way and wins over a shipped module of the same id.
@@ -59,7 +64,27 @@ Set `verified` to true only after `--law` finds the passage in the official text
  "missed": "Nach Ablauf dieser Frist ist ein Anfechtungsbegehren verspätet.", "question": "Wann haben Sie die Kündigung erhalten?", "source_refs": ["law#273"]}
 ```
 
-`period` is `{"days"|"weeks"|"months"|"years": n}`, `{"days_before": n}` or `"sofort"`; optional are `when` (a condition), `direction: "ab"` (an earliest date), `shift: false` (no weekend rule), `check` (a note for the handler), `hint: false` and `period_from` (a text fact of the module holding a period the parties agreed, e.g. a loan's notice period «sechs Wochen», which then governs instead of `period`; one it cannot read as one number and one unit gives «prüfen»). While the trigger date is not in the file, the first request asks the `question` and says a deadline may be running; once it is, the deadline is a computed item with its article. A trigger date that was read but not settled (the source checker rejected it, or two readings differ) never makes its deadline disappear: it is shown as possible (`prüfen`, with the date the reading gives as `candidate`, «Datum prüfen»), the first request says so and asks the date, also where the question is otherwise only offered. A statutory period is never a reading: a deadline fact recorded as «<n> <unit> from …» with the period of one of the area's deadlines is refused at recording and, in a stored run, not listed (it is the area's own computed item, not a rejected fact). Computation follows only what the verified texts say: the trigger day is not counted, months and years end on the day with the same number or the month's last day (Art. 77, 132 OR), a Saturday or Sunday moves to the next weekday (Art. 78 OR, SR 173.110.3). Cantonal holidays are not known; «sofort», backwards periods and imprecise trigger dates give «prüfen», never a date.
+`period` is `{"days"|"weeks"|"months"|"years": n}`, `{"days_before": n}` or `"sofort"`; optional are `when` (a condition), `direction: "ab"` (an earliest date), `shift: false` (no weekend rule), `check` (a note for the handler), `hint: false` and `period_from` (a text fact of the module holding a period the parties agreed, e.g. a loan's notice period «sechs Wochen», which then governs instead of `period`; one it cannot read as one number and one unit gives «prüfen»). While the trigger date is not in the file, the first request asks the `question` and says a deadline may be running; once it is, the deadline is a computed item with its article. A trigger date that was read but not settled (the source checker rejected it, or two readings differ) never makes its deadline disappear: it is shown as possible (`prüfen`, with the date the reading gives as `candidate`, «Datum prüfen»), the first request says so and asks the date, also where the question is otherwise only offered. A statutory period is never a reading: a deadline fact recorded as «<n> <unit> from …» with the period of one of the area's deadlines is refused at recording and, in a stored run, not listed (it is the area's own computed item, not a rejected fact). Computation follows only what the verified texts of the deadline's procedure say (`counting`, below); «sofort», backwards periods and imprecise trigger dates give «prüfen», never a date.
+
+## The law table and the counting rules
+
+A law is any official federal text, identified by its SR number and, where it has one, its short name: the backbone's `laws` lists each with its title, consolidation date, fedlex filestore url and the saved file (`file`, laid out as the sources folder's `index.tsv`); a module may add one under its own `laws`. An «Art. … <short name>» in any text needs a law entry with its verbatim passage, and `python -m casepath areas --sources <folder>` checks every passage against the saved text. Shipped: OR, ZGB, VVG, ZPO, SchKG, StPO, OBG, SVG, ATSG, IVG, BV and SR 173.110.3 (Saturdays).
+
+Each deadline names its procedure, `"counting": "<rule>"` (default `or`), and the composed deadline carries that rule (`counting_rule`), so a stored run keeps it. The backbone's `counting` says, per procedure and resting on verified passages, when a period starts, how days, weeks and months are counted, what a last day on a Saturday, Sunday or holiday does, whether the period stands still and whether the debt-enforcement holidays extend it; a part without a rule states its reason, and a deadline that needs it says «prüfen» with that reason and no date.
+
+| Rule | Start | Days | Weeks / months | Saturday, Sunday, holiday | Standstill |
+|---|---|---|---|---|---|
+| `or` (OR; VVG through Art. 100 VVG) | next day (Art. 77, 132 OR) | counted | same weekday; same number or the month's last day (Art. 77 Abs. 1 Ziff. 2–3 OR) | Sunday, holiday: next working day (Art. 78 OR); Saturday for statutory and official periods (Art. 1 SR 173.110.3), an agreed period ending on a Saturday: «prüfen» | none |
+| `atsg` (social insurance; IVG through Art. 1 IVG) | day after notification (Art. 38 Abs. 1 ATSG) | counted | «prüfen»: not stated | next working day (Art. 38 Abs. 3 ATSG) | 7th day before to 7th day after Easter, 15.7.–15.8., 18.12.–2.1. (Art. 38 Abs. 4 ATSG): those days are not counted |
+| `stpo` (penalty order, fine decision) | next day (Art. 90 Abs. 1 StPO) | counted | «prüfen»: not stated | next working day (Art. 90 Abs. 2 StPO) | none (Art. 89 Abs. 2 StPO) |
+| `zpo` | next day (Art. 142 Abs. 1 ZPO) | counted | «prüfen»: Art. 142 Abs. 2 ZPO counts months from the day the period «began to run», which the text does not settle | next working day (Art. 142 Abs. 3 ZPO) | as ATSG (Art. 145 Abs. 1 ZPO); served during it, the period starts after it (Art. 146 Abs. 1 ZPO) |
+| `zpo-ohne-stillstand` | as `zpo` | counted | «prüfen» | as `zpo` | none: conciliation and summary procedure (Art. 145 Abs. 2 ZPO) |
+| `schkg` (payment order, complaint) | next day (Art. 31 SchKG, Art. 142 Abs. 1 ZPO) | counted | «prüfen» | next working day (Art. 142 Abs. 3 ZPO) | no standstill (Art. 63 SchKG, Art. 145 Abs. 4 ZPO); a period ending in the debt-enforcement holidays (7 days before and after Easter and Christmas, 15.–31.7.) runs to the third working day after them (Art. 56 Abs. 1 Ziff. 2, 63 SchKG); a payment order served in them, on a Sunday or holiday (`"served": true`): «prüfen» |
+| `schkg-klage` (action before a court, e.g. to deny the debt) | as `schkg` | counted | «prüfen» | as `zpo` | the ZPO standstill (Art. 56 Abs. 2 SchKG, Art. 145 Abs. 4 ZPO) |
+| `obg` (fixed fine) | «prüfen»: the Act gives no rule | | | | |
+| `kantonal` (with `"period": "kantonal"`) | «prüfen»: cantonal procedure; `period_from` may name the period the decision states, shown with `period_from_label` | | | | |
+
+Weekends and the federal holiday (1 August, Art. 110 Abs. 3 BV) are applied; cantonal holidays are not in the verified texts. A last day that is a public holiday in many cantons (1 and 2 January, Good Friday, Easter Monday, Ascension, Whit Monday, 1 May, 15 August, 1 November, 8 December, 25 and 26 December) gives «prüfen» with the date the count reaches; on any other day the date carries «kantonale Feiertage nicht berücksichtigt».
 
 ## What a fact is not
 
@@ -109,10 +134,10 @@ Each item is its own entry. It is open until the file shows it answered, the han
 
 ## What the validator refuses
 
-- a law reference (`law#…`) or an «Art. … OR/ZGB» in any text without a law entry, a law entry without `cite`, `sr`, `article`, `passage` or `verified`, a passage over 40 words, an SR number the backbone does not list;
+- a law reference (`law#…`) or an «Art. … <short name>» of any law in the table in any text without a law entry, a law entry without `cite`, `sr`, `article`, `passage` or `verified`, a passage over 40 words, an SR number the law table does not list; a law without its title, consolidation date and fedlex filestore url, two laws with one short name;
 - practice counts («3 von 7», `practice#3of7`) in a module not observed in practice;
 - a fact that repeats a backbone fact, a document on an unknown stage, an assessment without rights, conditions and demand;
-- a deadline without a date fact of the module as its trigger, without an article as its basis, or with an unknown period;
+- a deadline without a date fact of the module as its trigger, without an article as its basis (a cantonal period: its basis in words), with an unknown period or counting rule, or a cantonal period counted by another rule; a counting rule whose part rests on no verified passage and gives no reason;
 - a stage that yields neither an action kind nor a handler's decision, `without_action` on a stage without an action, an incoming kind whose own action does not answer it, more than three facts for one kind;
 - and, after composition, everything any workflow must satisfy (every rule names a listed source, conditions name known facts and values, every step reachable) and no dead end.
 

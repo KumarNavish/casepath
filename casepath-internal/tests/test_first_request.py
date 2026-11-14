@@ -174,7 +174,9 @@ class NearMissTests(unittest.TestCase):
     def test_a_notice_clause_is_not_an_agreed_date_the_agreed_period_runs_from_the_notice(self):
         d = area.workflow("vertrag-darlehen")["deadlines"][0]
         self.assertEqual(area.compute_deadline(d, "2026-08-21", {"termin_vereinbart": False, "kuendigungsfrist": "sechs Wochen"})[0], "2026-10-02")
-        self.assertEqual(area.compute_deadline(d, "2025-02-10", {"termin_vereinbart": False, "kuendigungsfrist": "3 Monate"})[0], "2025-05-12")
+        # an agreed period ending on a Saturday: Art. 78 OR moves only a Sunday or holiday, Art. 1 SR 173.110.3 only statutory periods
+        self.assertEqual(area.compute_deadline(d, "2025-02-10", {"termin_vereinbart": False, "kuendigungsfrist": "3 Monate"})[0], "prüfen")
+        self.assertEqual(area.compute_deadline(d, "2025-02-12", {"termin_vereinbart": False, "kuendigungsfrist": "3 Monate"})[0], "2025-05-12")
         self.assertEqual(area.compute_deadline(d, "2025-06-02", {"termin_vereinbart": False})[0], "2025-07-14")  # Art. 318 OR: six weeks
         self.assertEqual(area.compute_deadline(d, "2025-06-02", {"termin_vereinbart": False, "kuendigungsfrist": "nach Absprache"})[0], "prüfen")
         self.assertIsNone(area.compute_deadline(d, "2025-06-02", {"termin_vereinbart": True}))  # a fixed date: no period runs

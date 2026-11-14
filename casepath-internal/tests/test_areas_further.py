@@ -46,8 +46,9 @@ class FurtherAreaTests(unittest.TestCase):
         triggers = {"abnahme": "2026-02-02", "mangel_entdeckt": "2026-05-04", "vollendung": "2026-01-30"}
         building = deadlines("werkvertrag-bau", triggers, {"unbeweglich": True, "eigentuemer": True})
         self.assertEqual({k: v[0] for k, v in building.items()},
-                         {"ruege_ablieferung": "2026-04-03", "ruege_entdeckung": "2026-07-03", "verjaehrung_unbeweglich": "2031-02-03",
+                         {"ruege_ablieferung": "prüfen", "ruege_entdeckung": "2026-07-03", "verjaehrung_unbeweglich": "2031-02-03",
                           "bauhandwerkerpfand": "2026-05-30"})  # 2 Feb 2031 is a Sunday; the lien date is not moved (shift false)
+        self.assertIn("03.04.2026, in vielen Kantonen ein Feiertag", building["ruege_ablieferung"][1])  # Good Friday: no date
         self.assertIn("fällt auf ein Wochenende, prüfen", building["bauhandwerkerpfand"][1])
         self.assertEqual(next(d for d in area.workflow("werkvertrag-bau")["deadlines"] if d["id"] == "bauhandwerkerpfand")["party"], "gegenpartei")
         movable = deadlines("werkvertrag-bau", triggers, {"unbeweglich": False, "eigentuemer": False})
