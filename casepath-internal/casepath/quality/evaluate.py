@@ -5,6 +5,8 @@
     python -m casepath evaluate rescore <suite> --catalogue <dir> --out <out of an earlier run>
     python -m casepath evaluate report <out>
     python -m casepath evaluate compare <old out> <new out>
+    python -m casepath evaluate score-saved <results.json> <suite> [--catalogue <dir>]   (see quality/handler.py)
+    python -m casepath evaluate self-check <suite> [--catalogue <dir>]
 
 Every case goes through the HTTP API the case worker's browser uses: the case is created, its rendered PDFs are
 uploaded (one combined dossier, or separate files with scans named like scans), a run is started and awaited, and the
@@ -544,7 +546,7 @@ def main(argv=None):
     from ..process.workflows import Catalogue
 
     parser = argparse.ArgumentParser(prog="python -m casepath evaluate")
-    parser.add_argument("command", choices=["run", "rescore", "report", "compare"])
+    parser.add_argument("command", choices=["run", "rescore", "report", "compare", "score-saved", "self-check"])
     parser.add_argument("paths", nargs="+")
     parser.add_argument("--catalogue")
     parser.add_argument("--out")
@@ -556,6 +558,10 @@ def main(argv=None):
     parser.add_argument("--allow-knowledge-changes", action="store_true", help="with --url: make the expert corrections there")
     parser.add_argument("--identity-header", help="with --url: send CASEPATH_EVAL_IDENTITY in this header, as a gateway expects")
     args = parser.parse_args(argv)
+    if args.command in {"score-saved", "self-check"}:  # the handler's truth, model-free (quality/handler.py)
+        from . import handler
+
+        return handler.main(args.command, args.paths, args.catalogue)
     if args.command == "report":
         results = json.loads((Path(args.paths[0]) / "results.json").read_text())
         (Path(args.paths[0]) / "report.md").write_text(report(results))
