@@ -10,9 +10,9 @@ import hashlib
 import json
 import re
 
-from . import cover, incoming, keypoints
+from . import account, cover, incoming, keypoints
 from .area import compute_deadline, open_ended_title, period_text, set_date, statutory_period
-from .clock import historic as historic_file, parse_date, silence
+from .clock import as_of, historic as historic_file, parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
 
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
@@ -367,11 +367,21 @@ def build_items(state, result, files=None, events=None):
         if planned and floor:  # placed by its history: the follow-up counts from the last action taken
             days = [d for c, ds in done.items() for d in ds if d]
             planned = {**planned, **({"since": max(days)} if days else {})}
-        quiet = None if ev.get("outcome") else silence(graph.get("clock"), known_facts, files, stage=here.get("id"))  # nobody answered our last letter
+        ledger, look = state.get("account"), as_of(files or ())
+        if ledger:  # the running account: silence is read from its ledger (the party asked sent nothing since), not from any later date
+            quiet = None if ev.get("outcome") else account.silence(ledger, graph.get("clock"), look, stage=here.get("id"))
+        else:
+            quiet = None if ev.get("outcome") else silence(graph.get("clock"), known_facts, files, stage=here.get("id"))  # nobody answered our last letter
         if quiet:
             planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": quiet.get("title") or kind_title(graph, quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
                        "reason": f'keine Antwort seit {quiet["last"]} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
+        owed = None if ev.get("outcome") else account.payout_due(ledger, look)
+        if owed:  # an agreed payment whose date has passed and that the file does not show made: chase it
+            planned = {"kind": "A11", "form": "A11_nachfragen",  # no form of its own yet: the card says so, never «aus dem Zahlungssystem»
+                       "title": f"Auszahlung {account.AT.get(owed.get('payer'), 'bei der Gegenpartei')} nachfragen",
+                       "next_in_days": 10, "follow_up": "A11", "skip_if": None,
+                       "reason": f"vereinbart ({account._source(owed)}): {account._terms_text(owed)}; keine Zahlung in den Akten"}
         # What came in and is still unanswered outranks the stage's own action and the clock (the customer's own statutory
         # deadline still leads the card and caps the follow-up); the others wait, in priority order.
         open_items = incoming.pending(graph, known_facts, incoming.document_dates(graph, result.get("facts"), files))
@@ -482,6 +492,15 @@ def build_items(state, result, files=None, events=None):
         for line in keypoints.stage_lines(graph, known_facts, rows, dated, here.get("id")):
             add("stage_line", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
                 node=here.get("id"), origin="workflow", chain=False, label=line["text"], facts=line["facts"], shown=True)
+        # The running account: «Stand» in «Der Fall» and one row per document in the Verlauf (a run before it has none)
+        for line in account.stand(ledger, look, graph):
+            add("stand", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
+                node=None, origin="account", chain=False, label=line["label"], open=line["open"], entries=line["entries"],
+                **({"detail": line["detail"]} if line.get("detail") else {}))
+        for row in account.rows(ledger, graph):
+            add("entry", str(row["n"]), value=row["what"], stated_as="established", verdict=None, evidence=_evidence(row["citations"]),
+                node=None, origin="claim_reader", chain=False, label=row["kind_title"],
+                **{k: row[k] for k in ("date", "from", "to", "from_title", "to_title", "phone", "notes", "open")}, step_kind=row["kind"])
     brief = result.get("brief") or {}
     applying = keypoints.evaluate(graph, state.get("facts") or {}) if graph and ev else []
     for i, q in enumerate(brief.get("questions") or []):  # the customer's own questions, answered by a key point where one matches

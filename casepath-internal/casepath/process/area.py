@@ -153,6 +153,8 @@ def validate_backbone(backbone):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
     check_stage_work(backbone)
     keypoints.validate_lines(backbone, steps)
+    from . import account
+    account.validate(backbone)
     check_forms(backbone["forms"])
     return incoming.validate(backbone)
 
@@ -410,6 +412,7 @@ def compose(backbone, module):
                 "assess_needs": m.get("assess_needs", []),
                 "key_points": m.get("key_points", []),  # what a specialist looks for first (keypoints.py)
                 "stage_lines": bb.get("stage_lines", []),  # the short facts a handler needs at a later stage (keypoints.py)
+                "record": bb.get("record"),  # the running account's closed lists: parties and kinds of step (account.py)
                 # each deadline carries the counting rule of its procedure (the backbone's table), so a stored run keeps it
                 "deadlines": [{**d, "counting": d.get("counting", "or"), "counting_rule": bb["counting"][d.get("counting", "or")]} for d in m["deadlines"]],
                 "stage_actions": True,  # a stage with an action is left only once it is done or a way out says it is not needed

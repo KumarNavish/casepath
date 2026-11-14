@@ -268,6 +268,8 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None):
     parts = []
     if received:
         parts.append(f"Eingegangen: {', '.join(received)}.")
+    # the running account (account.py), when the run recorded one: what is agreed, open at whom, the last contact
+    parts += [f"{label(i)}: {i.get('detail') or i.get('value')}." for i in items if i["kind"] == "stand"]
     if decided:
         parts.append(f"Entschieden: {'; '.join(decided)}.")
     if action:
