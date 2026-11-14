@@ -1,7 +1,7 @@
 {
  "format": "casepath.backbone/1",
  "id": "fallbearbeitung",
- "version": "2026-11-14.2",
+ "version": "2026-11-14.3",
  "title": "Fallbearbeitung Rechtsschutz: Stufen, Handlungen, Entscheide, Uhr und Formulare",
  "sources": [
   {"id": "practice", "kind": "process_guidance", "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"}
@@ -77,7 +77,7 @@
   {"after": ["7"], "days": 14, "then": "A12", "deadline_days": null, "source": "practice#2of7 (Abschluss nach Statusanfrage)", "stages": ["klaeren", "beurteilen"], "form": "A12_still"}
  ],
  "forms": {
-  "A1": {"title": "Unterlagen und Angaben anfordern", "to": "Kundschaft", "asks": ["liste", "fragen"], "empty": "nichts anzufordern: alle Unterlagen dieser Stufe liegen vor und keine Frage an die Kundschaft ist offen; weiter mit der rechtlichen Einschätzung (A5)", "parts": ["{registrierung}", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.", "{fragen}", "{hinweise}", "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.", "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."]},
+  "A1": {"title": "Unterlagen und Angaben anfordern", "to": "Kundschaft", "only_with": {"liste": ["Bitte senden Sie uns Kopien oder Scans, keine Originale. "]}, "asks": ["liste", "fragen"], "empty": "nichts anzufordern: alle Unterlagen dieser Stufe liegen vor und keine Frage an die Kundschaft ist offen; weiter mit der rechtlichen Einschätzung (A5)", "parts": ["{registrierung}", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.", "{fragen}", "{hinweise}", "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.", "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."]},
   "A4": {"title": "Rückfrage zu einem Punkt", "to": "Kundschaft", "parts": ["Vielen Dank für Ihre Unterlagen.", "Damit wir weiterfahren können, bitten wir Sie um Auskunft zu folgendem Punkt:\n{fragen_oder_offen}", "Wir danken Ihnen für Ihre Antwort bis {frist}."]},
   "A5": {"title": "Rechtliche Einschätzung", "to": "Kundschaft", "parts": ["Vielen Dank für Ihre Unterlagen.", "@rights", "@conditions", "In Ihrem Fall: {anliegen}", "{nachzureichen}", "Wir empfehlen Ihnen, {empfehlung}"]},
   "A6": {"title": "Dossier pendent halten mit Frist", "to": "Kundschaft", "parts": ["Vielen Dank für {anlass}.", "Wir halten Ihr Dossier vorerst noch pendent und erwarten {erwartet}.", "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."]},

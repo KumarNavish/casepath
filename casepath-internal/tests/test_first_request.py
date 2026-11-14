@@ -230,3 +230,14 @@ class PracticeTagTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class CopiesSentenceTests(unittest.TestCase):
+    def test_the_request_for_copies_goes_only_with_a_document_list(self):
+        forms = area.workflow("mietmangel-handler")["forms"]
+        base = {"referenz": "X", "referenz_kopf": "", "registrierung": "Vielen Dank.", "anrede": "Guten Tag", "fragen": "Weiter bitten wir Sie um die Beantwortung folgender Fragen:\n– Seit wann?", "hinweise": ""}
+        with_list, _ = letters.render("A1", forms, {**base, "liste": "– Mietvertrag"})
+        without, _ = letters.render("A1", forms, {**base, "liste": ""})
+        self.assertIn("Kopien oder Scans", with_list)
+        self.assertNotIn("Kopien oder Scans", without)
+        self.assertIn("Anschliessend informieren wir Sie", without)

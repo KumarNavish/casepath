@@ -176,7 +176,8 @@ def render(kind, forms, ctx):
     """The draft for one action kind: the frame (reference, greeting, closing) around the form's parts. A form never
     renders empty: a part whose placeholders all come out empty (no documents, no questions, no hints) is left out with
     its fixed words, so no empty list is announced; a form that names what it is for (``asks``: its placeholders) and
-    has none of them filled has no draft and says why (``empty``). Offered lines nobody ticked are not in ``ctx``.
+    has none of them filled has no draft and says why (``empty``); ``only_with`` names sentences that go when their
+    placeholder is empty (no "send us copies" without a document list). Offered lines nobody ticked are not in ``ctx``.
     Returns (text, None) or (None, reason) when the kind has no draft."""
     form = (forms or {}).get(kind)
     if not form:
@@ -190,6 +191,10 @@ def render(kind, forms, ctx):
     fill = lambda text: text.format(**ctx)
     kept = [p for p in form["parts"] if not PLACEHOLDER.findall(p) or any(filled(n) for n in PLACEHOLDER.findall(p))]
     body = [fill(p) for p in kept]
+    for name, sentences in (form.get("only_with") or {}).items():  # words that belong to a placeholder: gone when it is empty
+        if not filled(name):
+            for sentence in sentences:
+                body = [part.replace(sentence, "") for part in body]
     if not any(part.strip() for part in body):
         return None, form.get("empty") or NOTHING
     lines = [fill(p) for p in frame["head"]] + [b for part in body if part.strip() for b in (part, "")] + [fill(p) for p in frame["tail"]][1:]
