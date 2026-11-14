@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "inkasso",
- "version": "2026-11-14.2",
- "backbone": "2026-11-14.2",
+ "version": "2026-11-14.4",
+ "backbone": "2026-11-14.4",
  "short_title": "Inkasso einer Forderung",
  "title": "Inkasso einer Geldforderung der Kundschaft: Verzug, Verzugszins, Verjährung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -25,16 +25,14 @@
  },
  "applies_when": {"fact": "rechtsgebiet", "is": "Inkasso-Rechtsschutz / offene Forderung der Kundschaft"},
  "facts": [
-  {"id": "rechtsgebiet", "type": "enum", "values": ["Inkasso-Rechtsschutz / offene Forderung der Kundschaft"], "question": "Will die Kundschaft eine Geldforderung eintreiben, die ihr jemand schuldet und nicht bezahlt?", "source_refs": ["law#102"],
-   "not_this": ["Die Kundschaft hat selbst einen Zahlungsbefehl erhalten und ist Schuldnerin: Betreibung gegen die Kundschaft", "Streit darüber, ob die eigene Leistung mangelhaft war: Vertragsrecht (Kauf, Werkvertrag)", "Rückzahlung eines Darlehens: Vertragsrecht / Darlehen"]},
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Inkasso-Rechtsschutz / offene Forderung der Kundschaft"], "question": "Will die Kundschaft eine Geldforderung eintreiben, die ihr jemand schuldet und nicht bezahlt?", "not_this": "Die Kundschaft hat selbst einen Zahlungsbefehl erhalten und ist Schuldnerin: Betreibung gegen die Kundschaft; Streit darüber, ob die eigene Leistung mangelhaft war: Vertragsrecht (Kauf, Werkvertrag); Rückzahlung eines Darlehens: Vertragsrecht / Darlehen", "source_refs": ["law#102"]},
   {"id": "forderung", "type": "text", "question": "Worauf beruht die Forderung (Vertrag, Rechnung), wie hoch ist sie und wer schuldet sie?", "source_refs": ["law#130", "avb#d1-6"], "ask_customer": true, "customer_question": "Worauf beruht Ihre Forderung (z.B. Vertrag, Rechnung), und wie hoch ist der offene Betrag?"},
-  {"id": "faelligkeit", "type": "date", "question": "Seit wann ist die Forderung fällig (vereinbarter Verfalltag oder Ablauf der Zahlungsfrist der Rechnung; nicht das Rechnungsdatum)?", "source_refs": ["law#130", "law#102.2", "law#75"], "ask_customer": true, "customer_question": "Bis wann hätte der Schuldner bezahlen müssen (Zahlungsfrist oder vereinbarter Termin)?",
-   "not_this": ["Rechnungsdatum, wenn eine Zahlungsfrist lief", "Datum der Mahnung"]},
+  {"id": "faelligkeit", "type": "date", "question": "Seit wann ist die Forderung fällig (vereinbarter Verfalltag oder Ablauf der Zahlungsfrist der Rechnung)?", "not_this": "das Rechnungsdatum, wenn eine Zahlungsfrist lief; das Datum der Mahnung", "source_refs": ["law#130", "law#102.2", "law#75"], "ask_customer": true, "customer_question": "Bis wann hätte der Schuldner bezahlen müssen (Zahlungsfrist oder vereinbarter Termin)?"},
   {"id": "gemahnt", "type": "boolean", "question": "Hat die Kundschaft den Schuldner schriftlich gemahnt?", "source_refs": ["law#102", "avb#d1-6"], "ask_customer": true, "customer_question": "Haben Sie den Schuldner bereits schriftlich gemahnt? Wenn ja, wann?"},
   {"id": "bestritten", "type": "boolean", "question": "Bestreitet der Schuldner die Forderung oder erhebt er Einwände (z.B. Mängel, Verrechnung)?", "source_refs": ["avb#d1-6"], "ask_customer": true, "customer_question": "Hat der Schuldner die Forderung bestritten oder Einwände erhoben?"},
   {"id": "fuenf_jahre", "type": "boolean", "question": "Fällt die Forderung unter die fünfjährige Verjährung (periodische Leistungen wie Miet- oder Kapitalzinse, Handwerksarbeit, Kleinverkauf von Waren, ärztliche Besorgung, Berufsarbeit von Anwälten oder Notaren, Arbeitsverhältnis)?", "source_refs": ["law#128", "law#128.3", "law#127"]},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist der Schuldner?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schuldner, Betreibungsamt, Gericht)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schuldner, Betreibungsamt, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "grundlage", "title": "Vertrag, Bestellung oder Auftragsbestätigung, aus dem die Forderung entsteht", "why": "Zeigt Grund, Höhe und Fälligkeit der Forderung; mit der Fälligkeit beginnt die Verjährung (Art. 130 OR).", "source_refs": ["law#130", "law#75"], "stage": "klaeren"},

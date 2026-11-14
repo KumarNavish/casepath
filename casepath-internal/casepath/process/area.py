@@ -91,19 +91,19 @@ def validate_backbone(backbone):
     return incoming.validate(backbone)
 
 
-def check_forms(forms):
+def check_forms(forms, where="backbone"):
     """A form never renders empty: it has parts or says why there is no draft (``none``), and a form that names what it
     is for (``asks``: placeholders of its parts) says why there is no draft when none of them is filled (``empty``)."""
     for kind, form in forms.items():
         if kind.startswith("_"):
             continue
         if not form.get("none") and not form.get("parts"):
-            raise CatalogueError(f"backbone: form {kind} needs parts or the reason it has no draft (none)")
+            raise CatalogueError(f"{where}: form {kind} needs parts or the reason it has no draft (none)")
         asks = form.get("asks")
         if asks is not None:
             named = {n for p in form.get("parts", []) for n in re.findall(r"\{([a-z_]+)\}", p)}
             if not asks or set(asks) - named or not str(form.get("empty") or "").strip():
-                raise CatalogueError(f"backbone: form {kind} asks for placeholders of its parts and says why there is no draft without them (empty)")
+                raise CatalogueError(f"{where}: form {kind} asks for placeholders of its parts and says why there is no draft without them (empty)")
 
 
 def check_stage_work(backbone):
@@ -309,6 +309,7 @@ def compose(backbone, module):
         if "parts" in form:
             form["parts"] = [m["assessment"][p[1:]]["text"] if p.startswith("@") else p for p in form["parts"]]
     try:
+        check_forms(forms, "forms")  # every form of the area, the cover's and the module's too, never renders empty
         cover.check_forms(forms)  # a part the law or the conditions require stays in its form
     except CatalogueError as error:
         raise CatalogueError(f"area {m['id']}: {error}") from error

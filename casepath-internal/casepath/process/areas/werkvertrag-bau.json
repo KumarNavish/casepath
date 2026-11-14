@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "werkvertrag-bau",
- "version": "2026-11-14.2",
- "backbone": "2026-11-14.2",
+ "version": "2026-11-14.4",
+ "backbone": "2026-11-14.4",
  "short_title": "Werkvertrag und Bau",
  "title": "Werkvertrag mit Handwerkern und Bauunternehmen: Mängel, Rügefristen, Verjährung, Bauhandwerkerpfandrecht (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -33,20 +33,17 @@
  },
  "applies_when": {"fact": "rechtsgebiet", "is": "Vertragsrecht / Werkvertrag (Handwerker, Bau)"},
  "facts": [
-  {"id": "rechtsgebiet", "type": "enum", "values": ["Vertragsrecht / Werkvertrag (Handwerker, Bau)"], "question": "Hat die Kundschaft bei einem Handwerker, Bauunternehmen, Architekten oder einer Werkstatt ein Werk bestellt (Bau, Umbau, Reparatur, Anfertigung), und geht es um dessen Mängel, Verzug oder Preis?", "source_refs": ["law#363"],
-   "not_this": ["Kauf einer fertigen Sache: Vertragsrecht / Kauf mit Mangel", "Mangel der gemieteten Wohnung gegenüber der Vermieterschaft: Mietrecht / Mangel", "Einsprache gegen ein Baugesuch oder eine Baubewilligung: öffentliches Baurecht"]},
-  {"id": "unbeweglich", "type": "boolean", "question": "Geht es um ein unbewegliches Werk, also einen Bau oder Arbeiten an einem Gebäude oder Grundstück (nicht z.B. eine Autoreparatur oder ein Möbelstück)?", "source_refs": ["law#367.1bis", "law#371.2"]},
-  {"id": "abnahme", "type": "date", "question": "An welchem Tag wurde das Werk abgeliefert und abgenommen (Abnahmeprotokoll, Übergabe, Bezug)?", "source_refs": ["law#367", "law#371"], "ask_customer": true, "customer_question": "An welchem Tag wurde das Werk fertiggestellt und Ihnen übergeben (Abnahme)?",
-   "not_this": ["Datum der Schlussrechnung", "Datum, an dem der Unternehmer nur einen Teil fertigstellte"]},
-  {"id": "mangel_entdeckt", "type": "date", "question": "An welchem Tag entdeckte die Kundschaft einen Mangel, der bei der Abnahme nicht erkennbar war?", "source_refs": ["law#370.3", "law#370.4"], "ask_customer": true, "customer_question": "Wann haben Sie den Mangel bemerkt?"},
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Vertragsrecht / Werkvertrag (Handwerker, Bau)"], "question": "Hat die Kundschaft bei einem Handwerker, Bauunternehmen, Architekten oder einer Werkstatt ein Werk bestellt (Bau, Umbau, Reparatur, Anfertigung), und geht es um dessen Mängel, Verzug oder Preis?", "not_this": "Kauf einer fertigen Sache: Vertragsrecht / Kauf mit Mangel; Mangel der gemieteten Wohnung gegenüber der Vermieterschaft: Mietrecht / Mangel; Einsprache gegen ein Baugesuch oder eine Baubewilligung: öffentliches Baurecht", "source_refs": ["law#363"]},
+  {"id": "unbeweglich", "type": "boolean", "question": "Geht es um ein unbewegliches Werk, also einen Bau oder Arbeiten an einem Gebäude oder Grundstück?", "not_this": "ein bewegliches Werk, etwa eine Autoreparatur, ein angefertigtes Möbelstück oder eine Kleiderreparatur", "source_refs": ["law#367.1bis", "law#371.2"]},
+  {"id": "abnahme", "type": "date", "question": "An welchem Tag wurde das Werk abgeliefert und abgenommen (Abnahmeprotokoll, Übergabe, Bezug)?", "not_this": "Datum der Schlussrechnung; Datum, an dem der Unternehmer nur einen Teil fertigstellte", "source_refs": ["law#367", "law#371"], "ask_customer": true, "customer_question": "An welchem Tag wurde das Werk fertiggestellt und Ihnen übergeben (Abnahme)?"},
+  {"id": "mangel_entdeckt", "type": "date", "question": "An welchem Tag entdeckte die Kundschaft einen Mangel, der bei der Abnahme nicht erkennbar war?", "not_this": "der Tag der Abnahme, wenn der Mangel schon bei der Abnahme erkennbar war, oder der Tag, an dem der Mangel dem Unternehmer gemeldet wurde", "source_refs": ["law#370.3", "law#370.4"], "ask_customer": true, "customer_question": "Wann haben Sie den Mangel bemerkt?"},
   {"id": "geruegt", "type": "boolean", "question": "Hat die Kundschaft die Mängel dem Unternehmer angezeigt (gerügt)?", "source_refs": ["law#367", "law#370"], "ask_customer": true, "customer_question": "Haben Sie die Mängel dem Unternehmer gemeldet? Wenn ja, wann und in welcher Form?"},
   {"id": "eigentuemer", "type": "boolean", "question": "Ist die Kundschaft Eigentümerin des Grundstücks, auf dem gearbeitet wurde?", "source_refs": ["law#zgb-837", "law#zgb-839.3"], "ask_customer": "offered", "customer_question": "Gehört Ihnen das Grundstück oder die Wohnung, an der gearbeitet wurde?"},
-  {"id": "subunternehmer", "type": "boolean", "question": "Haben Subunternehmer oder Lieferanten gearbeitet oder geliefert, die nicht direkt von der Kundschaft beauftragt wurden (z.B. unter einem Generalunternehmer)?", "source_refs": ["law#zgb-837.sub"]},
-  {"id": "vollendung", "type": "date", "question": "An welchem Tag hat der Handwerker oder Unternehmer, der ein Pfandrecht beanspruchen könnte, seine Arbeit auf dem Grundstück vollendet?", "source_refs": ["law#zgb-839"], "ask_customer": "offered", "customer_question": "Wann hat der letzte Handwerker seine Arbeiten auf Ihrem Grundstück abgeschlossen?",
-   "not_this": ["Datum der Abnahme des ganzen Werks, wenn ein Handwerker vorher oder nachher fertig wurde"]},
+  {"id": "subunternehmer", "type": "boolean", "question": "Haben Subunternehmer oder Lieferanten gearbeitet oder geliefert, etwa unter einem Generalunternehmer?", "not_this": "Handwerker, die die Kundschaft selbst direkt beauftragt hat", "source_refs": ["law#zgb-837.sub"]},
+  {"id": "vollendung", "type": "date", "question": "An welchem Tag hat der Handwerker oder Unternehmer, der ein Pfandrecht beanspruchen könnte, seine Arbeit auf dem Grundstück vollendet?", "not_this": "Datum der Abnahme des ganzen Werks, wenn ein Handwerker vorher oder nachher fertig wurde", "source_refs": ["law#zgb-839"], "ask_customer": "offered", "customer_question": "Wann hat der letzte Handwerker seine Arbeiten auf Ihrem Grundstück abgeschlossen?"},
   {"id": "ziel", "type": "text", "question": "Was will die Kundschaft erreichen (Verbesserung, Preisabzug, Verweigerung der Annahme, Schadenersatz, Abwehr einer Rechnung oder eines Pfandrechts)?", "source_refs": ["law#368", "law#368.2"], "ask_customer": true, "customer_question": "Was möchten Sie erreichen (z.B. Behebung der Mängel, Preisabzug, Schadenersatz, Abwehr einer Rechnung)?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist der Unternehmer (Handwerker, Generalunternehmer, Architekt, Ingenieur)?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Unternehmer, Grundbuch, Gericht)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Unternehmer, Grundbuch, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "werkvertrag", "title": "Werkvertrag oder Offerte mit Auftragsbestätigung, mit den vereinbarten allgemeinen Bedingungen", "why": "Zeigt das bestellte Werk und die Vergütung (Art. 363 OR) sowie allfällige Abreden über Mängelrechte und Fristen.", "source_refs": ["law#363"], "stage": "klaeren"},

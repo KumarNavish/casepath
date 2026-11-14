@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "schaden-unfall",
- "version": "2026-11-14.2",
- "backbone": "2026-11-14.2",
+ "version": "2026-11-14.4",
+ "backbone": "2026-11-14.4",
  "short_title": "Unfall und Schadenersatz",
  "title": "Schadenersatz und Genugtuung nach einem Unfall: Haftung, Personen- und Sachschaden, Verjährung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -26,20 +26,17 @@
  },
  "applies_when": {"fact": "rechtsgebiet", "is": "Schadenersatzrecht / Unfall, Personen- oder Sachschaden"},
  "facts": [
-  {"id": "rechtsgebiet", "type": "enum", "values": ["Schadenersatzrecht / Unfall, Personen- oder Sachschaden"], "question": "Verlangt die Kundschaft von einer anderen Person (oder deren Haftpflichtversicherung) Schadenersatz oder Genugtuung, weil diese sie bei einem Unfall oder sonst verletzt oder ihr Sachen beschädigt hat?", "source_refs": ["law#41"],
-   "not_this": ["Streit mit der eigenen Versicherung über deren Leistung: Privat- oder Sozialversicherungsrecht", "Mangel einer gekauften Sache oder eines bestellten Werks: Vertragsrecht", "Strafverfahren gegen die Kundschaft selbst, etwa ein Strafbefehl nach dem Unfall: Strafrecht"]},
-  {"id": "unfalldatum", "type": "date", "question": "An welchem Tag ereignete sich der Unfall oder das schädigende Ereignis?", "source_refs": ["law#60.abs", "law#60.1bis"], "ask_customer": true, "customer_question": "An welchem Tag ereignete sich der Unfall?"},
-  {"id": "kenntnis", "type": "date", "question": "An welchem Tag kannte die Kundschaft den Schaden und die Person, die ihn verursacht hat (beides; nicht das Datum der Meldung an eine Versicherung)?", "source_refs": ["law#60"], "ask_customer": true, "customer_question": "Seit wann wissen Sie, wer den Schaden verursacht hat, und seit wann kennen Sie den Schaden?",
-   "not_this": ["Datum der Schadenmeldung an eine Versicherung", "Datum eines Polizeirapports oder Arztberichts, wenn die Kundschaft Schaden und Person schon vorher kannte"]},
-  {"id": "koerperverletzung", "type": "boolean", "question": "Wurde die Kundschaft (oder eine ihr nahestehende Person) verletzt oder getötet, nicht nur eine Sache beschädigt?", "source_refs": ["law#46", "law#47", "law#60.1bis"], "ask_customer": true, "customer_question": "Wurden Sie beim Unfall verletzt?"},
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Schadenersatzrecht / Unfall, Personen- oder Sachschaden"], "question": "Verlangt die Kundschaft von einer anderen Person (oder deren Haftpflichtversicherung) Schadenersatz oder Genugtuung, weil diese sie bei einem Unfall oder sonst verletzt oder ihr Sachen beschädigt hat?", "not_this": "Streit mit der eigenen Versicherung über deren Leistung: Privat- oder Sozialversicherungsrecht; Mangel einer gekauften Sache oder eines bestellten Werks: Vertragsrecht; Strafverfahren gegen die Kundschaft selbst, etwa ein Strafbefehl nach dem Unfall: Strafrecht", "source_refs": ["law#41"]},
+  {"id": "unfalldatum", "type": "date", "question": "An welchem Tag ereignete sich der Unfall oder das schädigende Ereignis?", "not_this": "der Tag, an dem der Schaden bemerkt, gemeldet oder ärztlich festgestellt wurde, wenn das Ereignis selbst früher war", "source_refs": ["law#60.abs", "law#60.1bis"], "ask_customer": true, "customer_question": "An welchem Tag ereignete sich der Unfall?"},
+  {"id": "kenntnis", "type": "date", "question": "An welchem Tag kannte die Kundschaft den Schaden und die Person, die ihn verursacht hat (beides)?", "not_this": "das Datum der Schadenmeldung an eine Versicherung; das Datum eines Polizeirapports oder Arztberichts, wenn die Kundschaft Schaden und Person schon vorher kannte", "source_refs": ["law#60"], "ask_customer": true, "customer_question": "Seit wann wissen Sie, wer den Schaden verursacht hat, und seit wann kennen Sie den Schaden?"},
+  {"id": "koerperverletzung", "type": "boolean", "question": "Wurde die Kundschaft (oder eine ihr nahestehende Person) beim Ereignis verletzt oder getötet?", "not_this": "ein reiner Sachschaden, etwa am Fahrzeug, an Kleidern oder am Velo, ohne Verletzung einer Person", "source_refs": ["law#46", "law#47", "law#60.1bis"], "ask_customer": true, "customer_question": "Wurden Sie beim Unfall verletzt?"},
   {"id": "polizei", "type": "boolean", "question": "Hat die Polizei den Unfall aufgenommen (Polizeirapport)?", "source_refs": ["law#41"], "ask_customer": "offered", "customer_question": "Hat die Polizei den Unfall aufgenommen? Wenn ja, welcher Polizeiposten?"},
-  {"id": "strafverfahren", "type": "boolean", "question": "Läuft oder lief gegen die verursachende Person ein Strafverfahren wegen des Unfalls (Anzeige, Strafbefehl, Urteil)?", "source_refs": ["law#60.2"],
-   "not_this": ["ein Strafverfahren gegen die Kundschaft selbst"]},
+  {"id": "strafverfahren", "type": "boolean", "question": "Läuft oder lief gegen die verursachende Person ein Strafverfahren wegen des Unfalls (Anzeige, Strafbefehl, Urteil)?", "not_this": "ein Strafverfahren gegen die Kundschaft selbst", "source_refs": ["law#60.2"]},
   {"id": "arbeitsunfaehig", "type": "boolean", "question": "War oder ist die Kundschaft wegen des Unfalls ganz oder teilweise arbeitsunfähig?", "source_refs": ["law#46"], "ask_customer": "offered", "customer_question": "Waren oder sind Sie wegen des Unfalls arbeitsunfähig? Wenn ja, seit wann und zu wie viel Prozent?"},
   {"id": "mitverschulden", "type": "boolean", "question": "Wirft die Gegenseite oder ihre Versicherung der Kundschaft vor, selbst zum Unfall oder zum Schaden beigetragen zu haben?", "source_refs": ["law#44"]},
   {"id": "schadenposten", "type": "text", "question": "Welche Schäden macht die Kundschaft geltend (Reparatur oder Wert der Sache, Heilungskosten, Erwerbsausfall, Genugtuung) und in welcher Höhe?", "source_refs": ["law#42", "law#46", "law#47"], "ask_customer": true, "customer_question": "Welche Schäden möchten Sie geltend machen (z.B. Reparatur, Heilungskosten, Lohnausfall, Genugtuung), und in welcher Höhe ungefähr?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer hat den Schaden verursacht, und wer ist dessen Haftpflichtversicherung?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Versicherung, Strafbehörde, Gericht)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Versicherung, Strafbehörde, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "unfallprotokoll", "title": "Unfallprotokoll oder Schilderung des Hergangs mit Skizze, Fotos und Namen von Zeuginnen und Zeugen", "why": "Ersatzpflichtig ist, wer widerrechtlich und schuldhaft Schaden zufügt (Art. 41 OR); das zeigt der Hergang.", "source_refs": ["law#41"], "stage": "klaeren"},

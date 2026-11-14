@@ -2,7 +2,27 @@
 
 Every legal-protection case runs the same chain of handler actions (A1 first request … A12 closing), the same six stages, the same clock and Protekta's letter forms. That part is the **backbone**, `casepath/process/areas/backbone.json`. What differs by legal area is small, and it is one **area module** per file next to it: the routing value, the facts with their customer questions, the documents with their legal reason, first hints, statutory deadlines, the legal frame of the assessment (A5) and of the letter to the other side (A8), and the law it cites. At load, `casepath/process/area.py` composes backbone + module into an ordinary workflow, so routing, evaluation, items and letters do not know the difference.
 
-Shipped: `mietmangel-handler` (from practice and law), `miete-kuendigung`, `miete-mietzinserhoehung`, `miete-kaution`, `arbeit-kuendigung`, `arbeit-lohn`, `arbeit-zeugnis`, `vertrag-darlehen`, `vertrag-kauf`, and `allgemein`, the fallback for everything else. All are `draft`; the new ones are shown as «aus dem Gesetz abgeleitet, noch nicht freigegeben».
+Shipped, by the routing value `rechtsgebiet` that selects each:
+
+| Module | Routing value | Source |
+|---|---|---|
+| `mietmangel-handler` | Mietrecht / Mangel | practice and law |
+| `miete-kuendigung` | Mietrecht / Kündigung | law |
+| `miete-mietzinserhoehung` | Mietrecht / Mietzinserhöhung | law |
+| `miete-kaution` | Mietrecht / Kaution und Rückgabe | law |
+| `arbeit-kuendigung` | Arbeitsrecht / Kündigung | law |
+| `arbeit-lohn` | Arbeitsrecht / Lohn | law |
+| `arbeit-zeugnis` | Arbeitsrecht / Arbeitszeugnis | law |
+| `vertrag-darlehen` | Vertragsrecht / Darlehen | law |
+| `vertrag-kauf` | Vertragsrecht / Kauf mit Mangel | law |
+| `werkvertrag-bau` | Vertragsrecht / Werkvertrag (Handwerker, Bau) | law |
+| `schaden-unfall` | Schadenersatzrecht / Unfall, Personen- oder Sachschaden | law |
+| `erbrecht` | Erbrecht / Ausschlagung, Pflichtteil | law |
+| `nachbarrecht` | Nachbarrecht / Einwirkungen, Pflanzen, Grenzen | law |
+| `inkasso` | Inkasso-Rechtsschutz / offene Forderung der Kundschaft | law |
+| `allgemein` | Übriges Recht, or nothing established (fallback) | law |
+
+All are `draft`; those from the law alone are shown as «aus dem Gesetz abgeleitet, noch nicht freigegeben». Every area also carries the cover points, their facts and the prescribed letters of `areas/cover.json` (docs/COVER.md); `cover.json` names, per area, the date that stands for the cause of the case (`cause_from`) and the clauses of the conditions for its capacity, legal area and limits (`areas`).
 
 ## Add or change an area
 
@@ -43,7 +63,7 @@ Set `verified` to true only after `--law` finds the passage in the official text
 
 ## What a fact is not
 
-A fact may name the nearest thing that does not count as it, in one line: `"not_this": "eine beiläufige Nachfrage (z.B. «wie läuft es mit dem Geld?») …"` (10 to 300 characters). The reader gets it with the fact (open_process), the second reading with the deciding facts, and the source checker in the claim it judges («… (not: …)»), with no extra call. Shipped on every deadline trigger and wherever a near-miss is plausible: a termination's receipt and its date of writing, the end of the notice period and the day notice was given, delivery and the contract date, a notice clause and an agreed repayment date, a chat question and a demand, a statutory period and a deadline the files set, the customer's own deadline and one set by the other side.
+A fact may name the nearest thing that does not count as it, in one line: `"not_this": "eine beiläufige Nachfrage (z.B. «wie läuft es mit dem Geld?») …"` (10 to 300 characters). The reader gets it with the fact (open_process), the second reading with the deciding facts, and the source checker in the claim it judges («… (not: …)»), with no extra call. The cover facts every area carries (`cover.json`: the cause date, a hint of an exclusion, a step without approval, a written demand) name theirs the same way. Shipped on every deadline trigger and wherever a near-miss is plausible: a termination's receipt and its date of writing, the end of the notice period and the day notice was given, delivery and the contract date, a notice clause and an agreed repayment date, a chat question and a demand, a statutory period and a deadline the files set, the customer's own deadline and one set by the other side.
 
 ## A document the other side has not issued
 
@@ -51,7 +71,7 @@ A need that exists only once the other side has acted (the landlord's statement,
 
 ## Forms never render empty
 
-A form has parts or says why it has no draft (`none`). A part whose placeholders all come out empty is left out with its fixed words (no empty document list). A form that names what it is for, `"asks": ["liste", "fragen"]` (A1), and has none of them filled has no draft and gives its reason (`empty`); lines that are only offered and not ticked are not filled. The validator refuses a form without parts or reason, and `asks` without `empty`.
+A form has parts or says why it has no draft (`none`). A part whose placeholders all come out empty is left out with its fixed words (no empty document list). A form that names what it is for, `"asks": ["liste", "fragen"]` (A1), and has none of them filled has no draft and gives its reason (`empty`); lines that are only offered and not ticked are not filled. The validator refuses a form without parts or reason, and `asks` without `empty`, in the backbone and, after composition, in every form of an area (the cover's and a module's own too).
 
 ## Leaving the clarifying stage (backbone rules, every area)
 
@@ -104,4 +124,4 @@ Every shipped area joins by default, also with no catalogue directory, so out of
 
 ## Stored runs
 
-The composed tenancy-defect workflow is the former seed field for field (`tests/fixtures/areas/mietmangel-handler.2026-11-12.5.json`), with the same id and version, plus new fields only. A module's version is the composed version while its `backbone` pin matches; after a backbone change it becomes `<module>+<backbone>`, and stored runs fall back to the latest version as they do today. Backbone 2026-11-14.2 (the stage rule, items as lists, the reminder clock) moved every module to 2026-11-14.2. A run stored under 2026-11-14.1 opens and is evaluated under the new rules without a new run; the screen says «Prozess seit der Vorbereitung aktualisiert». The facts it never read (`eingang_kostenforderung_2` …) are simply not established: its latest item of each kind counts as one item, nothing earlier is invented.
+The composed tenancy-defect workflow is the former seed field for field (`tests/fixtures/areas/mietmangel-handler.2026-11-12.5.json`), with the same id and version, plus new fields only. A module's version is the composed version while its `backbone` pin matches; after a backbone change it becomes `<module>+<backbone>`, and stored runs fall back to the latest version as they do today. Backbone 2026-11-14.2 (the stage rule, items as lists, the reminder clock) moved every module to 2026-11-14.2. Backbone 2026-11-14.4 (the cover points and prescribed letters, and the further areas) moved every module to 2026-11-14.4. A run stored under 2026-11-14.1 opens and is evaluated under the new rules without a new run; the screen says «Prozess seit der Vorbereitung aktualisiert». The facts it never read (`eingang_kostenforderung_2` …) are simply not established: its latest item of each kind counts as one item, nothing earlier is invented.

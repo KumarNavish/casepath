@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "nachbarrecht",
- "version": "2026-11-14.2",
- "backbone": "2026-11-14.2",
+ "version": "2026-11-14.4",
+ "backbone": "2026-11-14.4",
  "short_title": "Nachbarrecht",
  "title": "Streit mit Nachbarn: übermässige Einwirkungen, Pflanzen, Bauarbeiten, Eingriffe an der Grenze (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -27,20 +27,18 @@
  },
  "applies_when": {"fact": "rechtsgebiet", "is": "Nachbarrecht / Einwirkungen, Pflanzen, Grenzen"},
  "facts": [
-  {"id": "rechtsgebiet", "type": "enum", "values": ["Nachbarrecht / Einwirkungen, Pflanzen, Grenzen"], "question": "Streitet die Kundschaft mit einem Nachbarn über Einwirkungen von dessen Grundstück (Lärm, Geruch, Rauch, Schatten, Erschütterung), über Bäume, Hecken, Äste oder Wurzeln, über Bauarbeiten nebenan oder über Eingriffe an der Grenze?", "source_refs": ["law#684"],
-   "not_this": ["Lärm von Mitmietern im selben Haus, gegenüber der Vermieterschaft: Mietrecht / Mangel", "Einsprache gegen ein Baugesuch des Nachbarn: öffentliches Baurecht", "Streit unter Stockwerkeigentümern über gemeinschaftliche Teile: Sachenrecht"]},
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Nachbarrecht / Einwirkungen, Pflanzen, Grenzen"], "question": "Streitet die Kundschaft mit einem Nachbarn über Einwirkungen von dessen Grundstück (Lärm, Geruch, Rauch, Schatten, Erschütterung), über Bäume, Hecken, Äste oder Wurzeln, über Bauarbeiten nebenan oder über Eingriffe an der Grenze?", "not_this": "Lärm von Mitmietern im selben Haus, gegenüber der Vermieterschaft: Mietrecht / Mangel; Einsprache gegen ein Baugesuch des Nachbarn: öffentliches Baurecht; Streit unter Stockwerkeigentümern über gemeinschaftliche Teile: Sachenrecht", "source_refs": ["law#684"]},
   {"id": "art_stoerung", "type": "text", "question": "Worin besteht die Störung (Lärm, Geruch, Rauch, Schattenwurf, überragende Äste, eindringende Wurzeln, Bauarbeiten, Eingriff an der Grenze), wann tritt sie auf und seit wann?", "source_refs": ["law#684.2", "law#687"], "ask_customer": true, "customer_question": "Worin besteht die Störung, wann tritt sie auf und seit wann?"},
-  {"id": "eigentuemer", "type": "boolean", "question": "Ist die Kundschaft Eigentümerin des betroffenen Grundstücks (nicht Mieterin)?", "source_refs": ["law#641", "law#679", "law#928"], "ask_customer": true, "customer_question": "Gehört Ihnen das betroffene Grundstück, oder sind Sie Mieterin oder Mieter?"},
+  {"id": "eigentuemer", "type": "boolean", "question": "Ist die Kundschaft Eigentümerin des betroffenen Grundstücks?", "not_this": "Mieterin oder Mieter des betroffenen Grundstücks oder der Wohnung", "source_refs": ["law#641", "law#679", "law#928"], "ask_customer": true, "customer_question": "Gehört Ihnen das betroffene Grundstück, oder sind Sie Mieterin oder Mieter?"},
   {"id": "aeste_wurzeln", "type": "boolean", "question": "Geht es um überragende Äste oder eindringende Wurzeln von Pflanzen des Nachbarn?", "source_refs": ["law#687", "law#688"]},
   {"id": "beschwerde", "type": "boolean", "question": "Hat sich die Kundschaft beim Nachbarn beschwert und ihm eine Frist zur Beseitigung gesetzt?", "source_refs": ["law#687"], "ask_customer": true, "customer_question": "Haben Sie sich beim Nachbarn bereits beschwert? Wenn ja, wann und wie?"},
   {"id": "schaden", "type": "boolean", "question": "Ist ein Schaden entstanden oder droht einer (z.B. an Gebäude, Garten, Leitungen)?", "source_refs": ["law#679"]},
   {"id": "bauarbeiten", "type": "boolean", "question": "Gehen die Einwirkungen von Bau- oder Grabarbeiten auf dem Nachbargrundstück aus?", "source_refs": ["law#679a", "law#685"]},
-  {"id": "eigenmacht", "type": "boolean", "question": "Hat der Nachbar eigenmächtig in den Besitz der Kundschaft eingegriffen (z.B. auf ihrem Grundstück gebaut, etwas entfernt oder zerstört, den Zugang versperrt)?", "source_refs": ["law#928"],
-   "not_this": ["blosse Einwirkungen von seinem eigenen Grundstück aus, wie Lärm oder Geruch"]},
-  {"id": "eingriff", "type": "date", "question": "An welchem Tag geschah der eigenmächtige Eingriff in den Besitz (nicht der Tag, an dem die Kundschaft davon erfuhr)?", "source_refs": ["law#929.2"], "ask_customer": "offered", "customer_question": "An welchem Tag hat der Nachbar eingegriffen?"},
-  {"id": "eingriff_bekannt", "type": "date", "question": "An welchem Tag erfuhr die Kundschaft vom Eingriff und davon, wer ihn vorgenommen hat?", "source_refs": ["law#929"], "ask_customer": "offered", "customer_question": "Wann haben Sie vom Eingriff erfahren, und wann haben Sie den Nachbarn aufgefordert, ihn rückgängig zu machen?"},
+  {"id": "eigenmacht", "type": "boolean", "question": "Hat der Nachbar eigenmächtig in den Besitz der Kundschaft eingegriffen (z.B. auf ihrem Grundstück gebaut, etwas entfernt oder zerstört, den Zugang versperrt)?", "not_this": "blosse Einwirkungen von seinem eigenen Grundstück aus, wie Lärm oder Geruch", "source_refs": ["law#928"]},
+  {"id": "eingriff", "type": "date", "question": "An welchem Tag geschah der eigenmächtige Eingriff in den Besitz?", "not_this": "der Tag, an dem die Kundschaft vom Eingriff erfuhr, wenn er früher geschah", "source_refs": ["law#929.2"], "ask_customer": "offered", "customer_question": "An welchem Tag hat der Nachbar eingegriffen?"},
+  {"id": "eingriff_bekannt", "type": "date", "question": "An welchem Tag erfuhr die Kundschaft vom Eingriff und davon, wer ihn vorgenommen hat?", "not_this": "der Tag des Eingriffs selbst, wenn die Kundschaft erst später davon und vom Täter erfuhr", "source_refs": ["law#929"], "ask_customer": "offered", "customer_question": "Wann haben Sie vom Eingriff erfahren, und wann haben Sie den Nachbarn aufgefordert, ihn rückgängig zu machen?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist der Nachbar (Eigentümer, Mieter oder Bauherr des Nachbargrundstücks)?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Nachbar, Behörde, Gericht)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Nachbar, Behörde, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "protokoll", "title": "Protokoll der Störungen (Datum, Uhrzeit, Dauer und Art der Einwirkung)", "why": "Verboten sind übermässige Einwirkungen, gemessen an Lage, Beschaffenheit der Grundstücke und Ortsgebrauch (Art. 684 ZGB); Häufigkeit und Dauer sind zu belegen.", "source_refs": ["law#684", "law#684.2"], "stage": "klaeren"},

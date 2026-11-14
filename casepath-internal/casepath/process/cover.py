@@ -73,6 +73,9 @@ def validate(data):
             raise CatalogueError(f"cover: law entry {key!r} names an unknown law or its passage is too long")
     seen = set()
     facts = {f["id"] for f in data["facts"]}
+    for f in data["facts"]:  # the nearest thing that does not count as the fact, as in an area module (area.validate_module)
+        if "not_this" in f and not (isinstance(f["not_this"], str) and 10 <= len(f["not_this"].strip()) <= 300):
+            raise CatalogueError(f"cover: fact {f['id']}: not_this is one line of 10 to 300 characters")
     for point in data["points"]:
         if point["id"] in seen or point.get("source") not in {"akte", "police", "beides"}:
             raise CatalogueError(f"cover: point {point.get('id')!r} needs its own id and a source (akte, police, beides)")

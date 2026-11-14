@@ -76,6 +76,28 @@ class FurtherAreaTests(unittest.TestCase):
         self.assertEqual(sorted(both), ["verjaehrung_fuenf", "verjaehrung_zehn"])
         self.assertTrue(all("noch offenen Voraussetzung, prüfen" in rule for _, rule in both.values()))
 
+    def test_the_area_date_that_stands_for_the_cause_and_the_clauses_of_the_conditions(self):
+        from casepath.process import cover
+        asked = lambda wid: {f["id"]: f for f in area.workflow(wid)["facts"]}["ursache_datum"]["ask_customer"]
+        for wid in ("schaden-unfall", "werkvertrag-bau", "erbrecht", "inkasso"):  # the area asks its own date: the cause date is offered
+            self.assertEqual(asked(wid), "offered", wid)
+        self.assertIs(asked("nachbarrecht"), True)  # no date of the area stands for the start of a neighbour dispute
+        rows = {wid: cover.area_row(area.workflow(wid)["applies_when"]["is"]) for wid in FURTHER}
+        self.assertEqual({wid: r["label"] for wid, r in rows.items()},
+                         {"schaden-unfall": "Schadenersatzrecht", "werkvertrag-bau": "Konsumenten- und Vertragsrecht", "erbrecht": "Erbrecht",
+                          "nachbarrecht": "Nachbarrecht", "inkasso": "Inkasso-Rechtsschutz"})
+        self.assertEqual(rows["werkvertrag-bau"]["rechtsgebiet"]["privat"], ["D1.1", "D3.4"])  # a building project: the builder's cover too
+        for f in cover.data()["facts"]:  # the cover facts name their near-miss as the areas do, in one line
+            if f["id"] in {"ursache_datum", "ausschluss_hinweis", "vorab_schritte", "mahnung_androhung"}:
+                self.assertTrue(10 <= len(f["not_this"]) <= 300, f["id"])
+                self.assertNotRegex(f["question"], r"\bNicht:")
+
+    def test_a_composed_form_never_renders_empty_whatever_adds_it(self):
+        module = area.load(area.AREAS / "arbeit-zeugnis.json")
+        module["forms"] = {"A8_extra": {"title": "Leer", "to": "Gegenpartei"}}  # neither parts nor a reason
+        with self.assertRaisesRegex(area.CatalogueError, "A8_extra needs parts or the reason"):
+            area.compose(area.backbone(), module)
+
 
 if __name__ == "__main__":
     unittest.main()
