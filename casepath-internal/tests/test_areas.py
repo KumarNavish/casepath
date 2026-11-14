@@ -471,3 +471,11 @@ class SyntheticRunTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ClosingLetterTests(unittest.TestCase):
+    def test_only_the_lack_of_cooperation_ending_writes_the_end_of_benefits_letter(self):
+        steps = {s["id"]: s for s in area.workflow("mietmangel-handler")["steps"]}
+        for step in ("abschluss_erledigt", "abschluss_still", "abschluss_beraten", "abschluss_zahlung"):
+            self.assertIn(steps[step]["action"].get("form"), ("A12_erledigt", "A12_still"), step)  # a close without a letter
+        self.assertIsNone(steps["abschluss_mitwirkung"]["action"].get("form"))  # the A12 letter itself
