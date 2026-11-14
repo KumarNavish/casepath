@@ -1,0 +1,57 @@
+{
+ "format": "casepath.area/1",
+ "id": "vertrag-darlehen",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Darlehen",
+ "title": "Darlehen: Rückforderung und Zins (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "supersedes": ["osm-loan"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Darlehen (Art. 312 ff. OR); Zivilgesetzbuch (SR 210), Beweislast (Art. 8 ZGB)"},
+  {"id": "intake", "kind": "process_diagram", "title": "OSM+ Online-Schadenmeldung (Eingang), Darlehen: Angaben und Unterlagen der Kundschaft"}
+ ],
+ "law": {
+  "312": {"cite": "Art. 312 OR", "sr": "220", "article": "312", "passage": "Durch den Darlehensvertrag verpflichtet sich der Darleiher zur Übertragung des Eigentums an einer Summe Geldes oder an andern vertretbaren Sachen, der Borger dagegen zur Rückerstattung von Sachen der nämlichen Art in gleicher Menge und Güte.", "verified": true},
+  "313": {"cite": "Art. 313 Abs. 1 OR", "sr": "220", "article": "313", "passage": "Das Darlehen ist im gewöhnlichen Verkehre nur dann verzinslich, wenn Zinse verabredet sind.", "verified": true},
+  "318": {"cite": "Art. 318 OR", "sr": "220", "article": "318", "passage": "Ein Darlehen, für dessen Rückzahlung weder ein bestimmter Termin noch eine Kündigungsfrist noch der Verfall auf beliebige Aufforderung hin vereinbart wurde, ist innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "verified": true},
+  "zgb-8": {"cite": "Art. 8 ZGB", "sr": "210", "article": "8", "passage": "Wo das Gesetz es nicht anders bestimmt, hat derjenige das Vorhandensein einer behaupteten Tatsache zu beweisen, der aus ihr Rechte ableitet.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Vertragsrecht / Darlehen"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Vertragsrecht / Darlehen"], "question": "Geht es um ein Darlehen?", "source_refs": ["law#312", "intake#title"]},
+  {"id": "darlehenssumme", "type": "text", "question": "Welche Summe wurde geliehen, und wann wurde sie übergeben?", "source_refs": ["law#312"]},
+  {"id": "schriftlich", "type": "boolean", "question": "Gibt es einen schriftlichen Darlehensvertrag oder eine Schuldanerkennung?", "source_refs": ["law#zgb-8"], "ask_customer": "offered", "customer_question": "Gibt es einen schriftlichen Vertrag oder eine Schuldanerkennung?"},
+  {"id": "termin_vereinbart", "type": "boolean", "question": "Wurde ein Rückzahlungstermin oder eine Kündigungsfrist vereinbart?", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Wurde vereinbart, wann oder mit welcher Frist das Darlehen zurückzuzahlen ist?"},
+  {"id": "zins", "type": "text", "question": "Wurde ein Zins verabredet, und welcher?", "source_refs": ["law#313"], "ask_customer": true, "customer_question": "Wurde ein Zins vereinbart, und wenn ja welcher?"},
+  {"id": "rueckforderung_schriftlich", "type": "boolean", "question": "Hat die Kundschaft das Darlehen schriftlich zurückgefordert oder gekündigt?", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Haben Sie das Darlehen schriftlich zurückgefordert oder gekündigt?"},
+  {"id": "aufforderung", "type": "date", "question": "Wann wurde die Rückzahlung erstmals verlangt?", "source_refs": ["law#318"]},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist der Borger (die Gegenpartei)?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Gegenpartei, Betreibung, Gericht)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "darlehensvertrag", "title": "Darlehensvertrag oder Schuldanerkennung", "why": "Belegt die Übertragung der Summe und die Pflicht zur Rückerstattung (Art. 312 OR).", "required_when": {"not": {"fact": "schriftlich", "is": false}}, "source_refs": ["law#312"], "stage": "klaeren"},
+  {"id": "auszahlungsbeleg", "title": "Beleg der Auszahlung (Bankauszug, Quittung)", "why": "Wer die Rückzahlung verlangt, muss die Übergabe des Geldes beweisen (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"},
+  {"id": "kuendigung_rueckforderung", "title": "Kündigung oder schriftliche Aufforderung zur Rückzahlung", "why": "Ist kein Termin vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen (Art. 318 OR).", "source_refs": ["law#318"], "stage": "klaeren", "required_when": {"fact": "rueckforderung_schriftlich", "is": true}},
+  {"id": "korrespondenz", "title": "Korrespondenz und Nachrichten mit der Gegenpartei (Briefe, E-Mails, Chats)", "why": "Zeigt Abreden über Rückzahlung und Zins und ob die Gegenpartei die Schuld anerkannt hat (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "zins", "when": true, "text": "Im gewöhnlichen Verkehr ist ein Darlehen nur verzinslich, wenn Zinse verabredet sind.", "legal_basis": "Art. 313 OR", "source_refs": ["law#313"]},
+  {"id": "sechs_wochen", "when": {"fact": "termin_vereinbart", "is": false}, "text": "Ist für die Rückzahlung weder ein Termin noch eine Kündigungsfrist vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]},
+  {"id": "aufforderung", "when": {"fact": "rueckforderung_schriftlich", "is": false}, "text": "Ist kein Termin vereinbart, beginnt die Frist von sechs Wochen für die Rückzahlung erst mit der ersten Aufforderung; wir empfehlen, die Rückzahlung schriftlich, idealerweise per Einschreiben, zu verlangen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#312", "law#318"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich muss der Borger Sachen der nämlichen Art in gleicher Menge und Güte zurückerstatten (Art. 312 OR); ist kein Termin vereinbart, innerhalb sechs Wochen von der ersten Aufforderung an (Art. 318 OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass die Übergabe des Geldes als Darlehen bewiesen werden kann (Art. 8 ZGB)."},
+  "demand": {"text": "Wir fordern Sie auf, das Darlehen bis {frist} zurückzubezahlen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
+ },
+ "deadlines": [
+  {"id": "rueckzahlung", "title": "Rückzahlung des Darlehens ohne vereinbarten Termin", "trigger": "aufforderung", "period": {"weeks": 6}, "from": "von der ersten Aufforderung an", "when": {"fact": "termin_vereinbart", "is": false}, "basis": "Art. 318 OR", "missed": "Danach ist das Darlehen zurückzubezahlen; die weiteren Schritte gegen die Gegenpartei sind zu prüfen.", "question": "Wann haben Sie die Rückzahlung erstmals verlangt?", "source_refs": ["law#318"], "party": "gegenpartei", "when_text": "nur wenn kein Rückzahlungstermin vereinbart ist"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

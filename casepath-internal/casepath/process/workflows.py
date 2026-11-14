@@ -24,6 +24,7 @@ FORMAT = "casepath.workflow/1"
 ID = re.compile(r"^[a-z0-9][a-z0-9_.-]{0,79}$")
 FACT_TYPES = {"enum", "boolean", "text", "date"}
 STATUSES = {"draft", "reviewed"}
+CATALOGUE_SETTINGS = "casepath.catalogue/1"  # a directory's own settings file, not a workflow
 SOURCE_KINDS = {"process_diagram", "process_guidance", "case_example", "expert_review", "knowledge", "case_edit"}
 
 
@@ -204,29 +205,36 @@ def validate_workflow(data):
     return data
 
 
-SEED_WORKFLOWS = Path(__file__).with_name("workflow_seed")
-
-
 @dataclass(frozen=True)
 class Catalogue:
     workflows: tuple
 
     @classmethod
-    def load(cls, directory):
-        if directory is None:
-            return cls(())
+    def load(cls, directory, *, areas=True):
+        """The workflows in a directory, each a workflow or an area module (composed with the shipped backbone), and the
+        shipped handler areas: they join by default, also with no directory, so out of the box no case is unmapped. A
+        directory opts out with a settings file ({"format": "casepath.catalogue/1", "shipped_areas": false}); a
+        workflow of the directory with an area's id wins over the shipped area; an intake an area supersedes stays
+        readable but is no longer routed."""
+        from . import area
+
         rows = []
-        for path in sorted(Path(directory).glob("*.json")):
+        for path in sorted(Path(directory).glob("*.json")) if directory is not None else []:
             try:
-                rows.append(validate_workflow(json.loads(path.read_text(encoding="utf-8"))))
+                data = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(data, dict) and data.get("format") == CATALOGUE_SETTINGS:
+                    areas = areas and data.get("shipped_areas", True) is not False
+                    continue
+                if isinstance(data, dict) and data.get("format") == area.BACKBONE_FORMAT:
+                    continue
+                if isinstance(data, dict) and data.get("format") == area.AREA_FORMAT:
+                    data = area.compose(area.backbone(), data)
+                rows.append(validate_workflow(data))
             except (CatalogueError, json.JSONDecodeError) as error:
                 raise CatalogueError(f"{path.name}: {error}") from error
-        # Workflows written for this build join a catalogue that has the intake workflow they build on, unless it has its own copy.
         present = {w["id"] for w in rows}
-        for path in sorted(SEED_WORKFLOWS.glob("*.json")):
-            seed = validate_workflow(json.loads(path.read_text(encoding="utf-8")))
-            if seed["id"] not in present and present & set(seed.get("supersedes", ())):
-                rows.append(seed)
+        if areas:
+            rows += [seed for seed in area.shipped() if seed["id"] not in present]
         keys = [(w["id"], w["version"]) for w in rows]
         if len(keys) != len(set(keys)):
             raise CatalogueError("a workflow id and version appear twice")
@@ -280,13 +288,51 @@ def route(catalogue, facts):
         return {"status": "selected", "workflow": ref(selected[0]), "candidates": [], "needs": []}
     if len(selected) > 1:
         return {"status": "ambiguous", "workflow": None, "candidates": [ref(w) for w in selected], "needs": []}
+    fallback = [w for w in catalogue.routable() if w.get("fallback")]
     if unknown:
         needs = sorted(set().union(*(condition_facts(w["applies_when"]) for w in unknown)) - {k for k, v in facts.items() if v is not None})
+        if len(fallback) == 1:  # a case never stays without a process: the general one, the candidates named for a person
+            return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [ref(w) for w in unknown], "needs": needs}
         return {"status": "needs_facts", "workflow": None, "candidates": [ref(w) for w in unknown], "needs": needs}
-    fallback = [w for w in catalogue.routable() if w.get("fallback")]
     if len(fallback) == 1:
         return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [], "needs": []}
     return {"status": "unmapped", "workflow": None, "candidates": [], "needs": []}
+
+
+def done_actions(facts):
+    """The insurer's actions the case's history shows: {code: [dates]} from the dated facts (handlung_a1 …) and the
+    history line ("A1 2024-08-28; A10 …"). A code named without a date counts with no date."""
+    out = {}
+    for key, value in facts.items():
+        if value and (m := re.fullmatch(r"handlung_a(\d{1,2})", key)):
+            out.setdefault(m.group(1), []).append(str(value)[:10])
+    history = str(facts.get("bisherige_handlungen") or "")
+    for code, day in re.findall(r"\bA(\d{1,2})(?:\s+(\d{4}-\d{2}-\d{2}))?", history):
+        out.setdefault(code, [])
+        if day and day not in out[code]:
+            out[code].append(day)
+    return out
+
+
+def stage_floor(workflow, facts):
+    """The latest stage, in the workflow's order, that an action already taken or a decision already made places the
+    case at; None without one. Incomplete documents never pull a case back behind it."""
+    floor = workflow.get("floor") or {}
+    order = [s["id"] for s in workflow["steps"]]
+    found = [floor.get("actions", {}).get(code) for code in done_actions(facts)]
+    found += [d["stage"] for d in floor.get("decisions", []) if evaluate_condition(d["when"], facts) is True]
+    found = [f for f in found if f in order]
+    return max(found, key=order.index) if found else None
+
+
+def _from_floor(workflow, facts, path, floor=None):
+    """The step to walk from: the floor when the plain walk stops before it. An open answer never sets a floor: under
+    deferral the floor comes from the established facts only (``floor``)."""
+    floor = floor or stage_floor(workflow, facts)
+    if floor in (None, "__none__") or not path:
+        return None
+    order = [s["id"] for s in workflow["steps"]]
+    return floor if order.index(path[-1]) < order.index(floor) else None
 
 
 def _join(steps, edges):
@@ -308,7 +354,7 @@ def _document_status(document, findings, checked):
     return ("missing" if checked else "unchecked"), [], []
 
 
-def _walk(workflow, facts, findings=None, *, checked=False):
+def _walk(workflow, facts, findings=None, *, checked=False, start=None):
     """Walk the workflow from its start with the established facts, stopping at the first open branch.
 
     ``findings`` maps document ids to accepted document findings
@@ -320,7 +366,7 @@ def _walk(workflow, facts, findings=None, *, checked=False):
     steps = {s["id"]: s for s in workflow["steps"]}
     fact_defs = {f["id"]: f for f in workflow["facts"]}
     path, waiting, gaps, outcome, unmet = [], [], [], None, []
-    current, via, seen, last_edge = workflow["start"], None, set(), None
+    current, via, seen, last_edge = start or workflow["start"], "Stand gemäss Akten" if start else None, set(), None
     while True:
         step = steps[current]
         if current in seen:
@@ -372,12 +418,14 @@ def _walk(workflow, facts, findings=None, *, checked=False):
                              "source_refs": step["source_refs"]})
             break
         current, via, last_edge = chosen["to"], chosen.get("label"), chosen
-    reached = {row["step"] for row in path}
+    order = [s["id"] for s in workflow["steps"]]
+    behind = [x for x in order[:order.index(start)]] if start else []  # stages the case has passed by its history
+    reached = {row["step"] for row in path} | set(behind)
     attached = {d for s in workflow["steps"] for d in s.get("documents", [])}
     needed = {}
-    for row in path:
-        for document_id in steps[row["step"]].get("documents", []):
-            needed.setdefault(document_id, row["step"])
+    for step_id in [row["step"] for row in path] + behind:
+        for document_id in steps[step_id].get("documents", []):
+            needed.setdefault(document_id, step_id)
     checklist = []
     for document in workflow["documents"]:
         # A document tied to steps is needed once one of them is reached;
@@ -481,6 +529,9 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
     """
     findings = findings or {}
     base = _walk(workflow, facts, findings, checked=checked)
+    floor = _from_floor(workflow, facts, [r["step"] for r in base["path"]])
+    if floor:  # the case's history places it further on than the plain walk reaches
+        base = _walk(workflow, facts, findings, checked=checked, start=floor)
     open_facts = sorted(f for f in _used_facts(workflow) if facts.get(f) is None)
     if not open_facts:
         return base
@@ -496,7 +547,8 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
         base["deferral"] = {"mode": "first_open_branch", "open_facts": open_facts,
                             "reason": "too many answers to compare; the walk stops at the first open branch"}
         return base
-    fast = _Reach(workflow)
+    fixed = stage_floor(workflow, facts) or "__none__"  # the floor of what is established, the same in every completion
+    fast = _Reach(workflow, fixed)
     combos = list(itertools.product(*domains))
     completions = []  # (answer values, ordered path, items needed as a bit set, document needs)
     bit = {}  # ("step", id) or ("document", id) -> its bit
@@ -545,7 +597,7 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
     # answer can pass a step some completion never reaches; the path then stops before it, at the open question.
     path = []
     for row in base["path"]:
-        if not has(common, "step", row["step"]):
+        if not has(common, "step", row["step"]) and path:  # a stage floor is kept even when an open answer could move it
             break
         path.append(row)
     current = base["current"]
@@ -577,7 +629,9 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
         if index not in full:
             values = completions[index][0]
             answer = {f: v for f, v in zip(open_facts, values) if v is not UNSET}
-            full[index] = {d["document"]: d for d in _walk(workflow, {**facts, **answer}, findings, checked=checked)["documents"]}
+            known = {**facts, **answer}
+            start = _from_floor(workflow, known, [r["step"] for r in _walk(workflow, known, findings, checked=checked)["path"]], fixed)
+            full[index] = {d["document"]: d for d in _walk(workflow, known, findings, checked=checked, start=start)["documents"]}
         return full[index]
 
     checklist = []
@@ -635,14 +689,36 @@ def _known_facts(workflow):
 class _Reach:
     """The plain walk's path and the documents it lists, without building rows: the same rules as ``_walk``."""
 
-    def __init__(self, workflow):
+    def __init__(self, workflow, floor=None):
+        self.workflow, self.floor = workflow, floor
+        self.order = [s["id"] for s in workflow["steps"]]
         self.steps = {s["id"]: s for s in workflow["steps"]}
         self.start = workflow["start"]
         self.documents = workflow["documents"]
         self.attached = {d for s in workflow["steps"] for d in s.get("documents", [])}
 
     def reach(self, facts):
-        steps, current, seen, path = self.steps, self.start, set(), []
+        path, behind = self._path(facts, None), []
+        floor = _from_floor(self.workflow, facts, path, self.floor)
+        if floor:
+            path, behind = self._path(facts, floor), self.order[:self.order.index(floor)]
+        steps = self.steps
+        on_path = set()
+        for x in set(path) | set(behind):
+            on_path.update(steps[x].get("documents", ()))
+        needs = {}
+        for document in self.documents:
+            if document["id"] in self.attached and document["id"] not in on_path:
+                continue
+            required = evaluate_condition(document.get("required_when", True), facts)
+            if required is False:
+                continue
+            needs[document["id"]] = ("suggested" if document.get("suggested") else "optional" if document.get("optional")
+                                     else "yes" if required else "depends")
+        return path + [x for x in behind if x not in path], needs
+
+    def _path(self, facts, start):
+        steps, current, seen, path = self.steps, start or self.start, set(), []
         while True:
             step = steps[current]
             if current in seen:
@@ -669,19 +745,7 @@ class _Reach:
             if chosen is None:
                 break
             current = chosen["to"]
-        on_path = set()
-        for x in set(path):
-            on_path.update(steps[x].get("documents", ()))
-        needs = {}
-        for document in self.documents:
-            if document["id"] in self.attached and document["id"] not in on_path:
-                continue
-            required = evaluate_condition(document.get("required_when", True), facts)
-            if required is False:
-                continue
-            needs[document["id"]] = ("suggested" if document.get("suggested") else "optional" if document.get("optional")
-                                     else "yes" if required else "depends")
-        return path, needs
+        return path
 
 
 def presumed(workflow, recorded):

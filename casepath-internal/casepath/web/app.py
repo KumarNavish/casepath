@@ -27,7 +27,7 @@ from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..process import casegraph, knowledge as kb, workflows
-from ..process.clock import follow_up
+from ..process.clock import capped, follow_up, own_deadlines
 from ..agents import core
 from ..process import letters
 from ..process.items import build_items, item_changes, items_sha256
@@ -384,7 +384,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/workflows")
     def list_workflows(who=Depends(user)):
-        return {"workflows": [{**workflows.ref(w), "short_title": w.get("short_title") or w["title"], "sources": w["sources"], "steps": len(w["steps"]),
+        return {"workflows": [{**workflows.ref(w), "short_title": w.get("short_title") or w["title"], "area": w.get("area"), "sources": w["sources"], "steps": len(w["steps"]),
                                "documents": len(w["documents"]), "open_questions": len(w.get("open_questions", []))}
                               for w in catalogue.latest()]}
 
@@ -408,14 +408,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     current = state(row["id"])
                     listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]))
                     action = next((i for i in listed if i["kind"] == "next_action"), None)
-                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]))
+                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]), since=(action or {}).get("since"))
+                    clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"]}
                     # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
-                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
-                    dates = [d for d in [row["follow_up"], deadlines[0] if deadlines else None] if d]
+                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and i.get("direction") != "ab" and i.get("party") != "gegenpartei" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
+                    # The customer's own statutory deadline that set the follow-up before it is what the list shows.
+                    own = own_deadlines(listed, store.list_files(row["id"])) if (clock or {}).get("capped") else []
+                    dates = [own[0]["value"]] if own else [d for d in [row["follow_up"], deadlines[0] if deadlines else None] if d]
                     row["next_date"] = min(dates) if dates else None
-                    row["next_date_kind"] = None if not dates else "frist" if deadlines and row["next_date"] == deadlines[0] else "wiedervorlage"
+                    row["next_date_kind"] = None if not dates else "frist" if own or (deadlines and row["next_date"] == deadlines[0]) else "wiedervorlage"
                 except Exception:  # noqa: BLE001  a case that cannot be evaluated still lists
                     row["follow_up"] = None
         return {"cases": rows}
@@ -448,11 +451,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             option = next((o for o in options if o["kind"] == picked), {"title": picked, "next_in_days": action.get("next_in_days")})
             action.update(action=picked, value=option["title"], label={"de": option["title"], "en": option["title"]},
                           next_in_days=option["next_in_days"], chosen_by_handler=True)
-        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
+        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id), since=(action or {}).get("since"))
+        clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(case_id))  # before a statutory deadline
         events, files = store.list_case_events(case_id), store.list_files(case_id)
         draft = None
         if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
-            kind = "A1" if action.get("action") == "request" else action.get("action")
+            kind = "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")  # a closing in silence has its own (no) letter
             text, none = letters.render(kind, forms, letters.context(current["case"], listed, events, clock, files,
                                                                                     evaluation=current["evaluation"], process=current["process"]))
             draft = {"kind": action.get("action"), "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none,
@@ -463,7 +467,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         done = store.completed_runs(case_id, 2)
         if len(done) == 2 and current.get("workflow") and not (current["case"].get("intake") or {}).get("study"):
             workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
-            before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id)
+            before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id, files=files)
             changes = item_changes(build_items(before_state, done[1].get("result"), files), listed)
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "new_files": new_files, "changes": changes,

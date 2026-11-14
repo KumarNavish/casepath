@@ -1,6 +1,6 @@
 """A local preview of the workspace on synthetic data, for UI work without a model.
 
-It seeds two made-up cases of the synthetic test workflow, runs the agent team
+It seeds two made-up cases of the synthetic test workflow, one prepared synthetic case per shipped legal area, runs the agent team
 with a paced scripted model (so the live view can be watched), lets case A teach
 a Knowledge item and activates it, and serves the app. Nothing here is Mobiliar
 data or a real model run.
@@ -10,6 +10,7 @@ data or a real model run.
 from pathlib import Path
 import io
 import json
+import re
 import sys
 import tempfile
 import threading
@@ -90,6 +91,50 @@ def script(email, letter, knowledge_id=None):
     ]
 
 
+def request(text):
+    """The customer's request as a brief states it: the case text without its synthetic marker and its signature."""
+    sentences = re.split(r"(?<=[.?!])\s+", text)[1:-1]
+    out = ""
+    for sentence in sentences:
+        if len(out) + len(sentence) > 300:
+            break
+        out = f"{out} {sentence}".strip()
+    return out
+
+
+def area_script(case, file_id):
+    """The scripted team for one synthetic area case (tests/fixtures/areas/cases.json): routing, facts with quotes, report."""
+    cite = lambda quote: [{"file": file_id, "quote": quote}]
+    routing = [{"fact": "rechtsgebiet", "value": case["routing"][0], "citations": cite(case["routing"][1])}] if case["routing"] else []
+    return ScriptedModel([
+        [*[("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
+         report("claim_reader", request=request(case["text"]))],
+        [report("document_finder")],
+        *[[report("result_checker", answer="Die erste Anforderung ist vorbereitet.")]] * 3,
+    ], routing=routing)
+
+
+def seed_areas(store, runs):
+    """One prepared synthetic case per shipped area, routed and prepared by the scripted team: the breadth of the product."""
+    from casepath.read.extract import extract
+    cases = json.loads((ROOT / "tests" / "fixtures" / "areas" / "cases.json").read_text())
+    for wid, case in cases.items():
+        if wid.startswith("_"):
+            continue
+        title = f"{case['title']} (synthetisch)"
+        made = store.create_case(title, {"synthetic": True}, "N. Kumar")
+        mail = (f"From: kundin@example.ch\r\nTo: schaden@example-rechtsschutz.ch\r\nSubject: {case['title']}\r\n"
+                f"Content-Type: text/plain; charset=utf-8\r\n\r\n{case['text']}\r\n").encode()
+        row = extract("Schadenmeldung.eml", "message/rfc822", mail)
+        file_id = store.add_file(made["id"], "Schadenmeldung.eml", row["media_type"], row["kind"], mail, row, "N. Kumar")["id"]
+        runs.model_factory = lambda case=case, file_id=file_id: area_script(case, file_id)
+        run = runs.start(made["id"], "N. Kumar")
+        while store.get_run(run["id"])["status"] in ("queued", "running"):
+            time.sleep(0.05)
+        if store.get_run(run["id"])["status"] != "completed":
+            print(f"area case {wid} did not complete: {store.get_run(run['id']).get('error')}", flush=True)
+
+
 def main():
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
     data = tempfile.mkdtemp(prefix="cp-preview-")
@@ -155,6 +200,9 @@ def main():
         return case
     case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
     case_d = handler_case("Schimmel im Bad, zweite Meldung (synthetisch)")
+    factory_b = runs.model_factory
+    seed_areas(store, runs)  # after C and D, so the cases the browser checks use stay at the top of the list
+    runs.model_factory = factory_b
     print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 

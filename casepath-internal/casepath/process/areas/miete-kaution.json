@@ -1,0 +1,59 @@
+{
+ "format": "casepath.area/1",
+ "id": "miete-kaution",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Kaution und Rückgabe",
+ "title": "Mietkaution und Rückgabe der Mietsache (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Mietrecht: Sicherheiten und Rückgabe der Sache (Art. 257e, 267, 267a OR)"}
+ ],
+ "law": {
+  "257e": {"cite": "Art. 257e Abs. 1 OR", "sr": "220", "article": "257e", "passage": "so muss der Vermieter sie bei einer Bank auf einem Sparkonto oder einem Depot, das auf den Namen des Mieters lautet, hinterlegen.", "verified": true},
+  "257e.3": {"cite": "Art. 257e Abs. 3 OR", "sr": "220", "article": "257e", "passage": "Die Bank darf die Sicherheit nur mit Zustimmung beider Parteien oder gestützt auf einen rechtskräftigen Zahlungsbefehl oder auf ein rechtskräftiges Gerichtsurteil herausgeben.", "verified": true},
+  "257e.3-jahr": {"cite": "Art. 257e Abs. 3 OR", "sr": "220", "article": "257e", "passage": "Hat der Vermieter innert einem Jahr nach Beendigung des Mietverhältnisses keinen Anspruch gegenüber dem Mieter rechtlich geltend gemacht, so kann dieser von der Bank die Rückerstattung der Sicherheit verlangen.", "verified": true},
+  "267": {"cite": "Art. 267 Abs. 1 OR", "sr": "220", "article": "267", "passage": "Der Mieter muss die Sache in dem Zustand zurückgeben, der sich aus dem vertragsgemässen Gebrauch ergibt.", "verified": true},
+  "267a": {"cite": "Art. 267a Abs. 1 OR", "sr": "220", "article": "267a", "passage": "Bei der Rückgabe muss der Vermieter den Zustand der Sache prüfen und Mängel, für die der Mieter einzustehen hat, diesem sofort melden.", "verified": true},
+  "267a.2": {"cite": "Art. 267a Abs. 2 OR", "sr": "220", "article": "267a", "passage": "Versäumt dies der Vermieter, so verliert er seine Ansprüche, soweit es sich nicht um Mängel handelt, die bei übungsgemässer Untersuchung nicht erkennbar waren.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Mietrecht / Kaution und Rückgabe"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Mietrecht / Kaution und Rückgabe"], "question": "Geht es um die Mietkaution oder um Forderungen nach der Rückgabe der Mietsache?", "source_refs": ["law#257e"]},
+  {"id": "mietende", "type": "date", "question": "Wann endete das Mietverhältnis?", "source_refs": ["law#257e.3-jahr"]},
+  {"id": "rueckgabe", "type": "date", "question": "Wann wurde die Mietsache zurückgegeben?", "source_refs": ["law#267a"], "ask_customer": "offered", "customer_question": "Wann haben Sie die Wohnung zurückgegeben?"},
+  {"id": "kaution", "type": "text", "question": "Wie hoch ist die Kaution und wo ist sie hinterlegt?", "source_refs": ["law#257e"]},
+  {"id": "abnahmeprotokoll", "type": "boolean", "question": "Wurde bei der Rückgabe ein Protokoll erstellt?", "source_refs": ["law#267a"], "ask_customer": "offered", "customer_question": "Wurde bei der Rückgabe der Wohnung ein Protokoll erstellt?"},
+  {"id": "maengel_gemeldet", "type": "boolean", "question": "Hat die Vermieterschaft bei der Rückgabe Mängel gemeldet (z.B. im Rückgabeprotokoll)?", "source_refs": ["law#267a"], "ask_customer": "offered", "customer_question": "Wurden bei der Wohnungsabnahme Mängel festgehalten, und haben Sie das Protokoll unterschrieben?"},
+  {"id": "forderung_vermieter", "type": "boolean", "question": "Macht die Vermieterschaft Forderungen geltend (Schäden, Nebenkosten)?", "source_refs": ["law#257e.3"], "ask_customer": true, "customer_question": "Verlangt die Vermieterschaft etwas von Ihnen (z.B. für Schäden oder Nebenkosten), und wenn ja wie viel?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Vermieterschaft oder Verwaltung?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Zahlungsbefehl, Gericht, Vermieterschaft)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "mietvertrag", "title": "Mietvertrag", "why": "Zeigt die vereinbarte Sicherheit und den Zustand, in dem die Sache zurückzugeben ist (Art. 257e, 267 OR).", "source_refs": ["law#257e", "law#267"], "stage": "klaeren"},
+  {"id": "kautionsbeleg", "title": "Bestätigung des Mietkautionskontos (oder der Kautionsversicherung)", "why": "Die Sicherheit muss auf einem Sparkonto oder Depot auf den Namen der Mieterschaft hinterlegt sein (Art. 257e OR).", "source_refs": ["law#257e"], "stage": "klaeren"},
+  {"id": "rueckgabeprotokoll", "title": "Rückgabeprotokoll (Wohnungsabnahme)", "why": "Bei der Rückgabe muss die Vermieterschaft Mängel sofort melden, sonst verliert sie ihre Ansprüche für erkennbare Mängel (Art. 267a OR).", "source_refs": ["law#267a", "law#267a.2"], "stage": "klaeren", "required_when": {"any": [{"fact": "abnahmeprotokoll", "is": true}, {"fact": "abnahmeprotokoll", "known": false}]}},
+  {"id": "forderungen", "title": "Abrechnung oder Forderungen der Vermieterschaft", "why": "Die Bank gibt die Kaution nur mit Zustimmung beider Parteien oder gestützt auf einen rechtskräftigen Zahlungsbefehl oder ein Urteil heraus (Art. 257e OR).", "required_when": {"fact": "forderung_vermieter", "is": true}, "source_refs": ["law#257e.3"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Korrespondenz mit der Vermieterschaft seit der Kündigung", "why": "Zeigt, welche Mängel wann gemeldet und welche Forderungen erhoben wurden (Art. 267a OR).", "source_refs": ["law#267a"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "jahr", "when": true, "text": "Hat die Vermieterschaft innert einem Jahr nach Beendigung des Mietverhältnisses keinen Anspruch rechtlich geltend gemacht, kann die Mieterschaft die Kaution direkt von der Bank zurückverlangen.", "legal_basis": "Art. 257e OR", "source_refs": ["law#257e.3-jahr"]},
+  {"id": "zustand", "when": {"fact": "forderung_vermieter", "is": true}, "text": "Die Mieterschaft muss die Sache in dem Zustand zurückgeben, der sich aus dem vertragsgemässen Gebrauch ergibt; Mängel muss die Vermieterschaft bei der Rückgabe sofort melden.", "legal_basis": "Art. 267, 267a OR", "source_refs": ["law#267", "law#267a"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#257e.3", "law#267a.2"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich ist die Kaution auf einem Konto auf den Namen der Mieterschaft hinterlegt; die Bank gibt sie mit Zustimmung beider Parteien heraus, und hat die Vermieterschaft innert einem Jahr nach Ende des Mietverhältnisses keinen Anspruch rechtlich geltend gemacht, kann die Mieterschaft sie von der Bank zurückverlangen (Art. 257e OR)."},
+  "conditions": {"text": "Für Mängel muss die Mieterschaft nur einstehen, soweit sie die Sache nicht im Zustand des vertragsgemässen Gebrauchs zurückgegeben hat (Art. 267 OR) und die Vermieterschaft sie bei der Rückgabe sofort gemeldet hat, ausser sie waren bei übungsgemässer Untersuchung nicht erkennbar (Art. 267a OR)."},
+  "demand": {"text": "Wir fordern Sie auf, bis {frist} der Freigabe der Mietkaution zuzustimmen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
+ },
+ "deadlines": [
+  {"id": "kaution_bank", "title": "Rückforderung der Kaution direkt bei der Bank", "trigger": "mietende", "period": {"years": 1}, "from": "nach Beendigung des Mietverhältnisses", "direction": "ab", "shift": false, "hint": false, "basis": "Art. 257e Abs. 3 OR", "missed": "Ab diesem Tag kann die Mieterschaft die Kaution von der Bank zurückverlangen, wenn die Vermieterschaft bis dahin keinen Anspruch rechtlich geltend gemacht hat.", "question": "Wann endete Ihr Mietverhältnis?", "source_refs": ["law#257e.3-jahr"], "party": "kunde"},
+  {"id": "maengelmeldung", "title": "Mängelmeldung der Vermieterschaft bei der Rückgabe", "trigger": "rueckgabe", "period": "sofort", "from": "bei der Rückgabe", "hint": false, "basis": "Art. 267a Abs. 1 OR", "missed": "Versäumt die Vermieterschaft die sofortige Meldung, verliert sie ihre Ansprüche für erkennbare Mängel.", "question": "Wann haben Sie die Wohnung zurückgegeben?", "source_refs": ["law#267a", "law#267a.2"], "party": "gegenpartei"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

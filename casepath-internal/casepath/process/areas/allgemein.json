@@ -1,0 +1,50 @@
+{
+ "format": "casepath.area/1",
+ "id": "allgemein",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Allgemein",
+ "title": "Allgemeiner Rechtsschutzfall: was jeder Fall braucht (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "fallback": true,
+ "supersedes": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Zivilgesetzbuch (SR 210), Beweislast (Art. 8 ZGB)"},
+  {"id": "intake", "kind": "process_diagram", "title": "OSM+ Online-Schadenmeldung (Eingang), übriges Recht: Angaben und Unterlagen der Kundschaft"}
+ ],
+ "law": {
+  "zgb-8": {"cite": "Art. 8 ZGB", "sr": "210", "article": "8", "passage": "Wo das Gesetz es nicht anders bestimmt, hat derjenige das Vorhandensein einer behaupteten Tatsache zu beweisen, der aus ihr Rechte ableitet.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Übriges Recht"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Übriges Recht"], "question": "Um welches Rechtsgebiet und welches Anliegen geht es (z.B. «Mietrecht / Kündigung»)?", "source_refs": ["intake#title"]},
+  {"id": "sachverhalt", "type": "text", "question": "Was ist geschehen, und wann?", "source_refs": ["law#zgb-8"], "ask_customer": true, "customer_question": "Bitte schildern Sie kurz, was geschehen ist und wann (mit Daten)."},
+  {"id": "ziel", "type": "text", "question": "Was will die Kundschaft erreichen?", "source_refs": ["practice#ablauf"], "ask_customer": true, "customer_question": "Was möchten Sie erreichen?"},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Gegenpartei, Gericht, Behörde)?", "source_refs": ["practice#ablauf"], "ask_customer": true, "customer_question": "Läuft eine Frist, etwa aus einem Schreiben der Gegenpartei, eines Gerichts oder einer Behörde? Wenn ja, bis wann?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Gegenpartei (Name und Adresse)?", "source_refs": ["intake#title"]},
+  {"id": "vertrag", "type": "boolean", "question": "Geht es um einen Vertrag oder um einen Entscheid (z.B. einer Behörde)?", "source_refs": ["law#zgb-8"], "ask_customer": "offered", "customer_question": "Geht es um einen Vertrag oder um einen Entscheid (z.B. einer Behörde)? Wenn ja, senden Sie uns diesen bitte mit."},
+  {"id": "ereignisdatum", "type": "date", "question": "Wann ereignete sich der Vorfall?", "source_refs": ["intake#title"]},
+  {"id": "streitwert", "type": "text", "question": "Um welchen Betrag geht es?", "source_refs": ["intake#title"]}
+ ],
+ "documents": [
+  {"id": "vertrag_entscheid", "title": "Vertrag oder Entscheid, um den es geht", "why": "Grundlage der Ansprüche; wer aus einer Tatsache Rechte ableitet, muss sie beweisen (Art. 8 ZGB).", "required_when": {"not": {"fact": "vertrag", "is": false}}, "source_refs": ["law#zgb-8"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Sämtliche Korrespondenz mit der Gegenpartei", "why": "Zeigt, was verlangt, angeboten und bestritten wurde (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"},
+  {"id": "beweismittel", "title": "Beweismittel (z.B. Fotos, Belege, Namen und Kontaktangaben von Zeugen)", "why": "Wer aus einer Tatsache Rechte ableitet, muss sie beweisen (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"},
+  {"id": "fristschreiben", "title": "Schreiben, die eine Frist setzen (Gericht, Behörde, Gegenpartei), mit Couvert", "why": "Zeigt, ob und bis wann eine Frist läuft; bis zur Deckungsprüfung wahrt die Kundschaft sie selbst.", "source_refs": ["practice#ablauf"], "stage": "klaeren", "required_when": {"any": [{"fact": "frist", "known": false}, {"not": {"fact": "frist", "is": "none"}}]}}
+ ],
+ "hints": [
+  {"id": "beweis", "when": true, "text": "Wer aus einer Tatsache Rechte ableitet, muss sie beweisen; bitte bewahren Sie alle Belege und Schreiben auf.", "legal_basis": "Art. 8 ZGB", "source_refs": ["law#zgb-8"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#zgb-8"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich richten sich Ihre Ansprüche nach dem Vertrag oder Entscheid, um den es geht, und nach dem anwendbaren Recht: [bitte ergänzen: Rechtsgrundlage und Ansprüche]."},
+  "conditions": {"text": "Voraussetzung ist, dass die Tatsachen, aus denen Sie Rechte ableiten, bewiesen werden können (Art. 8 ZGB)."},
+  "demand": {"text": "Wir fordern Sie auf, bis {frist} zur Sache Stellung zu nehmen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
+ },
+ "deadlines": [],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

@@ -1,0 +1,294 @@
+{
+ "_about": "Synthetic cases, one per shipped area: made-up people and companies, written for the scripted run in tests/test_areas.py. Each lists the routing value the reader establishes (null: nothing), the facts it records with their quotes, and what the first request must contain.",
+ "mietmangel-handler": {
+  "title": "Mietmangel: Schimmel im Bad, Musterweg 1",
+  "text": "SYNTHETISCHER FALL. Sehr geehrte Damen und Herren, in unserer Wohnung am Musterweg 1 in Beispielstadt ist seit Oktober Schimmel im Badezimmer. Ich habe die Verwaltung Beispiel AG am 2. November 2026 per E-Mail informiert. Ich möchte, dass der Mangel behoben wird. Freundliche Grüsse, Anna Beispiel",
+  "routing": [
+   "Mietrecht / Mangel",
+   "seit Oktober Schimmel im Badezimmer"
+  ],
+  "facts": [
+   [
+    "mangel_gemeldet",
+    "ja",
+    "Ich habe die Verwaltung Beispiel AG am 2. November 2026 per E-Mail informiert."
+   ],
+   [
+    "will_beseitigung",
+    "ja",
+    "Ich möchte, dass der Mangel behoben wird."
+   ]
+  ],
+  "documents": [
+   "Mietvertrag",
+   "Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)",
+   "Fotos des Mangels"
+  ],
+  "questions": [
+   "mangel_seit",
+   "mangel_besteht"
+  ],
+  "hint": "Art. 257g OR",
+  "deadlines": {}
+ },
+ "miete-kuendigung": {
+  "title": "Kündigung Miete: Wohnung Testgasse 4",
+  "text": "SYNTHETISCHER FALL. Die Vermieterin Beispiel Immobilien AG hat mir mit Formular vom 30. Oktober 2026 die Wohnung an der Testgasse 4 auf den 31. März 2027 gekündigt. Ich habe die Kündigung am 3. November 2026 erhalten. Ich wohne seit zwölf Jahren hier und finde mit zwei Kindern keine Wohnung. Bruno Muster",
+  "routing": [
+   "Mietrecht / Kündigung",
+   "die Wohnung an der Testgasse 4 auf den 31. März 2027 gekündigt"
+  ],
+  "facts": [
+   [
+    "kuendigung_erhalten",
+    "2026-11-03",
+    "Ich habe die Kündigung am 3. November 2026 erhalten."
+   ],
+   [
+    "mietende",
+    "2027-03-31",
+    "die Wohnung an der Testgasse 4 auf den 31. März 2027 gekündigt"
+   ]
+  ],
+  "documents": [
+   "Mietvertrag",
+   "Kündigung der Vermieterschaft (amtliches Formular) mit Couvert oder Zustellnachweis"
+  ],
+  "questions": [
+   "will_anfechten"
+  ],
+  "hint": "Art. 266l, 266o OR",
+  "deadlines": {
+   "anfechtung": "2026-12-03"
+  }
+ },
+ "miete-mietzinserhoehung": {
+  "title": "Mietzinserhöhung um CHF 180.–",
+  "text": "SYNTHETISCHER FALL. Mit amtlichem Formular vom 20. Oktober 2026 erhöht die Verwaltung Muster GmbH unseren Mietzins ab 1. April 2027 um CHF 180.–. Das Formular haben wir am 22. Oktober 2026 erhalten. Die Begründung verstehen wir nicht. Clara Beispiel",
+  "routing": [
+   "Mietrecht / Mietzinserhöhung",
+   "erhöht die Verwaltung Muster GmbH unseren Mietzins ab 1. April 2027"
+  ],
+  "facts": [
+   [
+    "erhoehung_erhalten",
+    "2026-10-22",
+    "Das Formular haben wir am 22. Oktober 2026 erhalten."
+   ]
+  ],
+  "documents": [
+   "Mietvertrag",
+   "Mitteilung der Mietzinserhöhung (amtliches Formular) mit Begründung und Couvert"
+  ],
+  "questions": [
+   "will_anfechten"
+  ],
+  "hint": "Art. 269d OR",
+  "deadlines": {
+   "anfechtung_erhoehung": "2026-11-23"
+  }
+ },
+ "miete-kaution": {
+  "title": "Kaution nicht freigegeben, Probestrasse 9",
+  "text": "SYNTHETISCHER FALL. Unser Mietverhältnis an der Probestrasse 9 endete am 30. September 2026. Die Verwaltung Exempel AG gibt die Kaution von CHF 4'500.– seither nicht frei und antwortet nicht. David Muster",
+  "routing": [
+   "Mietrecht / Kaution und Rückgabe",
+   "gibt die Kaution von CHF 4'500.– seither nicht frei"
+  ],
+  "facts": [
+   [
+    "mietende",
+    "2026-09-30",
+    "Unser Mietverhältnis an der Probestrasse 9 endete am 30. September 2026."
+   ]
+  ],
+  "documents": [
+   "Mietvertrag",
+   "Bestätigung des Mietkautionskontos (oder der Kautionsversicherung)",
+   "Rückgabeprotokoll (Wohnungsabnahme)"
+  ],
+  "questions": [
+   "forderung_vermieter"
+  ],
+  "hint": "Art. 257e OR",
+  "deadlines": {
+   "kaution_bank": "2027-09-30"
+  }
+ },
+ "arbeit-kuendigung": {
+  "title": "Kündigung Arbeit: Beispiel Logistik AG",
+  "text": "SYNTHETISCHER FALL. Die Firma Beispiel Logistik AG hat mir am 28. Oktober 2026 auf den 31. Dezember 2026 gekündigt, zwei Wochen nachdem ich ausstehende Überstunden verlangt hatte. Ich halte die Kündigung für missbräuchlich. Eva Muster",
+  "routing": [
+   "Arbeitsrecht / Kündigung",
+   "hat mir am 28. Oktober 2026 auf den 31. Dezember 2026 gekündigt"
+  ],
+  "facts": [
+   [
+    "kuendigung_erhalten",
+    "2026-10-28",
+    "hat mir am 28. Oktober 2026 auf den 31. Dezember 2026 gekündigt"
+   ],
+   [
+    "arbeitsende",
+    "2026-12-31",
+    "hat mir am 28. Oktober 2026 auf den 31. Dezember 2026 gekündigt"
+   ]
+  ],
+  "documents": [
+   "Arbeitsvertrag (mit Personalreglement oder Gesamtarbeitsvertrag, falls anwendbar)",
+   "Kündigungsschreiben"
+  ],
+  "questions": [
+   "arbeitsunfaehig",
+   "ziel"
+  ],
+  "hint": "Art. 336b OR",
+  "deadlines": {
+   "einsprache_kuendigung": "2026-12-31",
+   "klage_entschaedigung": "2027-06-29"
+  }
+ },
+ "arbeit-lohn": {
+  "title": "Lohn ausstehend seit August",
+  "text": "SYNTHETISCHER FALL. Seit dem Lohn für August 2026, fällig am 31. August 2026, hat mir die Muster Bau GmbH keinen Lohn mehr bezahlt. Es fehlen inzwischen drei Monatslöhne. Felix Beispiel",
+  "routing": [
+   "Arbeitsrecht / Lohn",
+   "hat mir die Muster Bau GmbH keinen Lohn mehr bezahlt"
+  ],
+  "facts": [
+   [
+    "lohn_faellig_seit",
+    "2026-08-31",
+    "Seit dem Lohn für August 2026, fällig am 31. August 2026"
+   ]
+  ],
+  "documents": [
+   "Arbeitsvertrag (mit Personalreglement oder Gesamtarbeitsvertrag, falls anwendbar)",
+   "Lohnabrechnungen und Kontoauszüge mit den Lohnzahlungen"
+  ],
+  "questions": [
+   "betrag"
+  ],
+  "hint": "Art. 128 OR",
+  "deadlines": {
+   "verjaehrung_lohn": "2031-09-01"
+  }
+ },
+ "arbeit-zeugnis": {
+  "title": "Arbeitszeugnis berichtigen",
+  "text": "SYNTHETISCHER FALL. Nach sechs Jahren bei der Exempel Treuhand AG habe ich ein Arbeitszeugnis erhalten, das meine Leistungen kaum erwähnt. Die Arbeitgeberin will es nicht ändern. Greta Muster",
+  "routing": [
+   "Arbeitsrecht / Arbeitszeugnis",
+   "habe ich ein Arbeitszeugnis erhalten, das meine Leistungen kaum erwähnt"
+  ],
+  "facts": [
+   [
+    "zeugnis_erhalten",
+    "ja",
+    "habe ich ein Arbeitszeugnis erhalten, das meine Leistungen kaum erwähnt"
+   ]
+  ],
+  "documents": [
+   "Das erhaltene Arbeitszeugnis (und allfällige Zwischenzeugnisse)",
+   "Arbeitsvertrag oder Stellenbeschreibung"
+  ],
+  "questions": [
+   "beanstandung"
+  ],
+  "hint": "Art. 330a OR",
+  "deadlines": {}
+ },
+ "vertrag-darlehen": {
+  "title": "Darlehen CHF 8'000.– nicht zurückbezahlt",
+  "text": "SYNTHETISCHER FALL. Ich habe meinem Bekannten Max Beispiel am 1. März 2026 CHF 8'000.– geliehen. Ein Rückzahlungstermin wurde nicht vereinbart. Mit Brief vom 2. Oktober 2026 habe ich das Geld zurückverlangt, ohne Antwort. Hanna Muster",
+  "routing": [
+   "Vertragsrecht / Darlehen",
+   "am 1. März 2026 CHF 8'000.– geliehen"
+  ],
+  "facts": [
+   [
+    "termin_vereinbart",
+    "nein",
+    "Ein Rückzahlungstermin wurde nicht vereinbart."
+   ],
+   [
+    "aufforderung",
+    "2026-10-02",
+    "Mit Brief vom 2. Oktober 2026 habe ich das Geld zurückverlangt"
+   ],
+   [
+    "rueckforderung_schriftlich",
+    "ja",
+    "Mit Brief vom 2. Oktober 2026 habe ich das Geld zurückverlangt"
+   ]
+  ],
+  "documents": [
+   "Beleg der Auszahlung (Bankauszug, Quittung)",
+   "Kündigung oder schriftliche Aufforderung zur Rückzahlung"
+  ],
+  "questions": [
+   "zins"
+  ],
+  "hint": "Art. 313 OR",
+  "deadlines": {
+   "rueckzahlung": "2026-11-13"
+  }
+ },
+ "vertrag-kauf": {
+  "title": "Occasionswagen mit Getriebeschaden",
+  "text": "SYNTHETISCHER FALL. Am 15. September 2026 habe ich bei der Garage Beispiel AG einen Occasionswagen gekauft und am 20. September 2026 übernommen. Am 5. November 2026 stellte die Werkstatt einen Getriebeschaden fest. Ivan Muster",
+  "routing": [
+   "Vertragsrecht / Kauf mit Mangel",
+   "Am 5. November 2026 stellte die Werkstatt einen Getriebeschaden fest."
+  ],
+  "facts": [
+   [
+    "ablieferung",
+    "2026-09-20",
+    "am 20. September 2026 übernommen"
+   ],
+   [
+    "mangel_entdeckt",
+    "2026-11-05",
+    "Am 5. November 2026 stellte die Werkstatt einen Getriebeschaden fest."
+   ],
+   [
+    "occasion",
+    "ja",
+    "einen Occasionswagen gekauft"
+   ]
+  ],
+  "documents": [
+   "Kaufvertrag (bei Fahrzeugen mit allen Beilagen)",
+   "Belege des Mangels (Werkstattbericht, Fotos, Kostenvoranschlag)",
+   "Inserat oder Verkaufsbeschreibung des Fahrzeugs",
+   "Fahrzeugausweis und letzter Prüfbericht"
+  ],
+  "questions": [
+   "angezeigt",
+   "ziel"
+  ],
+  "hint": "Art. 201 OR",
+  "deadlines": {
+   "verjaehrung_gewaehrleistung": "2028-09-20",
+   "maengelanzeige": "prüfen"
+  }
+ },
+ "allgemein": {
+  "title": "Nachtlärm aus der Wohnung oben",
+  "text": "SYNTHETISCHER FALL. Seit dem Sommer lärmt die Partei in der Wohnung über uns fast jede Nacht bis zwei Uhr. Gespräche haben nichts gebracht. Was kann ich tun? Jana Beispiel",
+  "routing": null,
+  "facts": [],
+  "documents": [
+   "Sämtliche Korrespondenz mit der Gegenpartei",
+   "Beweismittel (z.B. Fotos, Belege, Namen und Kontaktangaben von Zeugen)"
+  ],
+  "questions": [
+   "sachverhalt",
+   "ziel",
+   "frist"
+  ],
+  "hint": "Art. 8 ZGB",
+  "deadlines": {}
+ }
+}

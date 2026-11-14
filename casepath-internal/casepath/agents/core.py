@@ -186,7 +186,8 @@ def check_job(job):
 
 def case_files(files):
     """The files as the agents see them: id, name, kind and the extraction's text and structure."""
-    return [{"id": f["id"], "name": f["name"], "kind": f["kind"], **f["extraction"]} for f in files]
+    return [{"id": f["id"], "name": f["name"], "kind": f["kind"], **f["extraction"], **({"created_at": f["created_at"]} if f.get("created_at") else {})}
+            for f in files]
 
 
 def catalogue_of(job):
@@ -225,7 +226,8 @@ def route(model, catalogue, case, files, on_event):
                 "selected_by": case.get("workflow_selected_by")}, workflow
     facts = catalogue.routing_facts()
     if not facts:
-        return workflows.route(catalogue, {}), None
+        decision = workflows.route(catalogue, {})
+        return decision, catalogue.get(decision["workflow"]["id"]) if decision["workflow"] else None
     evidence = Evidence(files)
     file_ids = list(evidence.files)
     schema = obj(facts=arr(obj(fact=choice([f["id"] for f in facts]), value={"type": ["string", "null"]},
@@ -255,10 +257,20 @@ def route(model, catalogue, case, files, on_event):
     for row in answer.value.get("other_topic") or []:
         if hit := evidence.locate(row["file"], row["quote"]):
             decision["other_topic"] = {"topic": row["topic"], "citations": [hit]}
+            # When the other topic is another area's own, that area is offered beside the chosen one for a person to pick.
+            decision["candidates"] = decision["candidates"] + [workflows.ref(w) for w in catalogue.routable()
+                                                               if w["id"] != (decision["workflow"] or {}).get("id") and names(w, row["topic"])]
     on_event({"agent": "claim_reader", "kind": "agent.end", "summary": f"Routing: {decision['status']}.", "routing": decision["status"],
               "workflow": decision["workflow"] and decision["workflow"]["id"]})
     workflow = catalogue.get(decision["workflow"]["id"], decision["workflow"]["version"]) if decision["workflow"] else None
     return decision, workflow
+
+
+def names(workflow, topic):
+    """Whether a topic the reader named is this workflow's own matter: its short title or its routing value."""
+    topic = str(topic or "").lower()
+    own = [workflow.get("short_title")] + [v for v in [(workflow.get("applies_when") or {}).get("is")] if isinstance(v, str)]
+    return any(o and (o.lower() in topic or o.split("/")[-1].strip().lower() in topic) for o in own)
 
 
 def lessons(workflow, case_id, result):
@@ -382,7 +394,7 @@ def recheck(job, prior, documents, model, on_event=lambda e: None):
         return _outcome(status="failed", error=f"internal: {type(error).__name__}: {error}")
 
 
-def evaluate(workflow, knowledge, edits, result, case_id):
+def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None):
     """The case's process (workflow, active Knowledge, edits) and where the case stands, from a run's accepted findings."""
     result = result or {}
     edits = list(edits) + [e for e in result.get("agent_edits", []) if e.get("status", "active") == "active"]
@@ -396,7 +408,8 @@ def evaluate(workflow, knowledge, edits, result, case_id):
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
     asked, partial = casegraph.whole_findings(graph, findings)  # a need for all of something stays asked
     checked = bool(result.get("documents"))
-    facts = casegraph.derive_facts(graph, facts, asked, lambda f: workflows.evaluate(graph, f, asked, checked=checked))
+    facts = casegraph.derive_facts(graph, facts, asked, lambda f: workflows.evaluate(graph, f, asked, checked=checked),
+                                   partial=partial, files=files, today=today)  # at view time: what arrived decides, not the run
     evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=checked), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings,
             "overrides": {k: e for k, (_, e) in overrides.items()}}

@@ -1,0 +1,63 @@
+{
+ "format": "casepath.area/1",
+ "id": "miete-kuendigung",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Kündigung Miete",
+ "title": "Kündigung des Mietverhältnisses: Anfechtung und Erstreckung (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Mietrecht: Kündigung, Kündigungsschutz und Erstreckung (Art. 266a ff., 271 ff. OR)"}
+ ],
+ "law": {
+  "266a": {"cite": "Art. 266a Abs. 1 OR", "sr": "220", "article": "266a", "passage": "Die Parteien können das unbefristete Mietverhältnis unter Einhaltung der gesetzlichen Fristen und Termine kündigen, sofern sie keine längere Frist oder keinen anderen Termin vereinbart haben.", "verified": true},
+  "266l": {"cite": "Art. 266l Abs. 2 OR", "sr": "220", "article": "266l", "passage": "Der Vermieter muss mit einem Formular kündigen, das vom Kanton genehmigt ist und das angibt, wie der Mieter vorzugehen hat, wenn er die Kündigung anfechten oder eine Erstreckung des Mietverhältnisses verlangen will.", "verified": true},
+  "266o": {"cite": "Art. 266o OR", "sr": "220", "article": "266o", "passage": "Die Kündigung ist nichtig, wenn sie den Artikeln 266l–266n nicht entspricht.", "verified": true},
+  "271": {"cite": "Art. 271 OR", "sr": "220", "article": "271", "passage": "Die Kündigung ist anfechtbar, wenn sie gegen den Grundsatz von Treu und Glauben verstösst. Die Kündigung muss auf Verlangen begründet werden.", "verified": true},
+  "271a": {"cite": "Art. 271a Abs. 1 lit. a OR", "sr": "220", "article": "271a", "passage": "Die Kündigung durch den Vermieter ist insbesondere anfechtbar, wenn sie ausgesprochen wird: a. weil der Mieter nach Treu und Glauben Ansprüche aus dem Mietverhältnis geltend macht;", "verified": true},
+  "272": {"cite": "Art. 272 Abs. 1 OR", "sr": "220", "article": "272", "passage": "Der Mieter kann die Erstreckung eines befristeten oder unbefristeten Mietverhältnisses verlangen, wenn die Beendigung der Miete für ihn oder seine Familie eine Härte zur Folge hätte, die durch die Interessen des Vermieters nicht zu rechtfertigen wäre.", "verified": true},
+  "273": {"cite": "Art. 273 Abs. 1 OR", "sr": "220", "article": "273", "passage": "Will eine Partei die Kündigung anfechten, so muss sie das Begehren innert 30 Tagen nach Empfang der Kündigung der Schlichtungsbehörde einreichen.", "verified": true},
+  "273.2": {"cite": "Art. 273 Abs. 2 OR", "sr": "220", "article": "273", "passage": "so muss er das Begehren der Schlichtungsbehörde einreichen: a. bei einem unbefristeten Mietverhältnis innert 30 Tagen nach Empfang der Kündigung; b. bei einem befristeten Mietverhältnis spätestens 60 Tage vor Ablauf der Vertragsdauer.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Mietrecht / Kündigung"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Mietrecht / Kündigung"], "question": "Hat die Vermieterschaft das Mietverhältnis gekündigt?", "source_refs": ["law#271"]},
+  {"id": "kuendigung_erhalten", "type": "date", "question": "Wann hat die Kundschaft die Kündigung erhalten?", "source_refs": ["law#273"], "ask_customer": true, "customer_question": "Wann haben Sie die Kündigung erhalten?"},
+  {"id": "mietende", "type": "date", "question": "Auf welchen Termin wurde gekündigt?", "source_refs": ["law#266a"], "ask_customer": "offered", "customer_question": "Auf welchen Tag endet Ihr Mietverhältnis?"},
+  {"id": "befristet", "type": "boolean", "question": "Ist das Mietverhältnis befristet?", "source_refs": ["law#273.2"]},
+  {"id": "will_anfechten", "type": "boolean", "question": "Will die Kundschaft die Kündigung anfechten oder eine Erstreckung verlangen?", "source_refs": ["law#271", "law#272"], "ask_customer": true, "customer_question": "Möchten Sie die Kündigung anfechten?"},
+  {"id": "will_erstreckung", "type": "boolean", "question": "Will die Kundschaft eine Erstreckung des Mietverhältnisses?", "source_refs": ["law#272"], "ask_customer": true, "customer_question": "Möchten Sie eine Erstreckung des Mietverhältnisses verlangen, also mehr Zeit bis zum Auszug?"},
+  {"id": "grund_genannt", "type": "boolean", "question": "Hat die Vermieterschaft die Kündigung begründet?", "source_refs": ["law#271"], "ask_customer": "offered", "customer_question": "Hat die Vermieterschaft die Kündigung begründet, und wenn ja wie?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Vermieterschaft oder Verwaltung?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schlichtungsbehörde, Gericht, Vermieterschaft)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "mietvertrag", "title": "Mietvertrag", "why": "Zeigt Parteien, Mietobjekt, Dauer und die vereinbarten Kündigungsfristen und -termine (Art. 266a OR).", "source_refs": ["law#266a"], "stage": "klaeren"},
+  {"id": "kuendigung", "title": "Kündigung der Vermieterschaft (amtliches Formular) mit Couvert oder Zustellnachweis", "why": "Ohne das vom Kanton genehmigte Formular ist die Kündigung nichtig (Art. 266l, 266o OR); ihr Empfang setzt die Frist der Anfechtung in Gang (Art. 273 OR).", "source_refs": ["law#266l", "law#266o", "law#273"], "stage": "klaeren"},
+  {"id": "begruendung", "title": "Begründung der Kündigung", "why": "Die Kündigung muss auf Verlangen begründet werden; an der Begründung misst sich, ob sie gegen Treu und Glauben verstösst (Art. 271 OR).", "required_when": {"fact": "grund_genannt", "is": true}, "source_refs": ["law#271"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Korrespondenz mit der Vermieterschaft, insbesondere aus der Zeit vor der Kündigung", "why": "Zeigt, ob gekündigt wurde, weil die Mieterschaft Ansprüche aus dem Mietverhältnis geltend machte (Art. 271a OR).", "source_refs": ["law#271a"], "stage": "klaeren"},
+  {"id": "haerte", "title": "Unterlagen zur persönlichen und familiären Lage (z.B. Wohnungssuche, Gesundheit, Kinder)", "why": "Über die Erstreckung entscheidet die Behörde nach einer Abwägung der Härte für die Mieterschaft (Art. 272 OR).", "required_when": {"fact": "will_erstreckung", "is": true}, "source_refs": ["law#272"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "formular", "when": true, "text": "Eine Kündigung der Vermieterschaft, die nicht auf dem vom Kanton genehmigten Formular erfolgt, ist nichtig.", "legal_basis": "Art. 266l, 266o OR", "source_refs": ["law#266l", "law#266o"]},
+  {"id": "schlichtung", "when": true, "text": "Die Anfechtung der Kündigung und ein Erstreckungsbegehren sind bei der Schlichtungsbehörde einzureichen, bei einem unbefristeten Mietverhältnis innert 30 Tagen nach Empfang der Kündigung.", "legal_basis": "Art. 273 OR", "source_refs": ["law#273", "law#273.2"]}
+ ],
+ "stages": {
+  "klaeren": {"source_refs": ["law#271"]},
+  "beurteilen": {"source_refs": ["law#271", "law#272", "law#273"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich kann die Mieterschaft eine Kündigung anfechten, wenn sie gegen den Grundsatz von Treu und Glauben verstösst (Art. 271 OR), und eine Erstreckung des Mietverhältnisses verlangen, wenn dessen Beendigung eine nicht zu rechtfertigende Härte zur Folge hätte (Art. 272 OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass das Begehren rechtzeitig bei der Schlichtungsbehörde eingereicht wird, bei einem unbefristeten Mietverhältnis innert 30 Tagen nach Empfang der Kündigung (Art. 273 OR)."},
+  "demand": {"text": "Wir fordern Sie auf, uns bis {frist} die Gründe der Kündigung schriftlich mitzuteilen, und behalten uns die Anfechtung der Kündigung und die Erstreckung des Mietverhältnisses (Art. 271 ff. OR) ausdrücklich vor."}
+ },
+ "deadlines": [
+  {"id": "anfechtung", "title": "Anfechtung der Kündigung bei der Schlichtungsbehörde", "trigger": "kuendigung_erhalten", "period": {"days": 30}, "from": "nach Empfang der Kündigung", "basis": "Art. 273 Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist ein Anfechtungsbegehren verspätet.", "question": "Wann haben Sie die Kündigung erhalten?", "source_refs": ["law#273"], "party": "kunde"},
+  {"id": "erstreckung", "title": "Erstreckungsbegehren bei einem unbefristeten Mietverhältnis", "trigger": "kuendigung_erhalten", "period": {"days": 30}, "from": "nach Empfang der Kündigung", "when": {"fact": "befristet", "is": false}, "basis": "Art. 273 Abs. 2 OR", "missed": "Nach Ablauf dieser Frist ist das Erstreckungsbegehren verspätet.", "question": "Wann haben Sie die Kündigung erhalten?", "source_refs": ["law#273.2"], "party": "kunde", "when_text": "nur bei unbefristetem Mietverhältnis"},
+  {"id": "erstreckung_befristet", "title": "Erstreckungsbegehren bei einem befristeten Mietverhältnis", "trigger": "mietende", "period": {"days_before": 60}, "from": "Ablauf der Vertragsdauer", "when": {"fact": "befristet", "is": true}, "basis": "Art. 273 Abs. 2 OR", "missed": "Danach ist das Erstreckungsbegehren verspätet.", "question": "Auf welchen Tag endet Ihr Mietverhältnis?", "source_refs": ["law#273.2"], "party": "kunde", "when_text": "nur bei befristetem Mietverhältnis"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

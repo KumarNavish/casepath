@@ -4,9 +4,8 @@ import unittest
 from pathlib import Path
 
 from casepath.agents import core
-from casepath.process import workflows
+from casepath.process import area, workflows
 
-SEED = Path(workflows.__file__).with_name("workflow_seed") / "mietmangel-handler.json"
 
 
 def intake():
@@ -30,13 +29,17 @@ class HandlerWorkflowTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             (Path(tmp) / "osm-mold.json").write_text(json.dumps(intake()))
             catalogue = workflows.Catalogue.load(tmp)
-            self.assertEqual([w["id"] for w in catalogue.routable()], ["mietmangel-handler"])
+            self.assertNotIn("osm-mold", [w["id"] for w in catalogue.routable()])  # the handler's workflow replaces the intake
+            self.assertIn("mietmangel-handler", [w["id"] for w in catalogue.routable()])
             self.assertIsNotNone(catalogue.get("osm-mold"))
-        with tempfile.TemporaryDirectory() as tmp:
-            self.assertEqual(workflows.Catalogue.load(tmp).workflows, ())
+        with tempfile.TemporaryDirectory() as tmp:  # out of the box: every shipped area, nothing unmapped
+            self.assertEqual(len(workflows.Catalogue.load(tmp).routable()), 10)
+            self.assertEqual(len(workflows.Catalogue.load(None).routable()), 10)
+            (Path(tmp) / "catalogue.json").write_text(json.dumps({"format": "casepath.catalogue/1", "shipped_areas": False}))
+            self.assertEqual(workflows.Catalogue.load(tmp).workflows, ())  # a catalogue may opt out
 
     def test_the_stage_follows_what_was_done_what_arrived_and_the_handlers_cover_decision(self):
-        wf = workflows.validate_workflow(json.loads(SEED.read_text()))
+        wf = workflows.validate_workflow(area.workflow("mietmangel-handler"))
         base = [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja"), fact("will_schadenersatz", "nein"),
                 fact("streit_mietzins", "nein")]
         state = core.evaluate(wf, [], [], {"facts": base, "documents": [document("mietvertrag")]}, "c")

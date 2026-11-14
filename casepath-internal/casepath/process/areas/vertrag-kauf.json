@@ -1,0 +1,65 @@
+{
+ "format": "casepath.area/1",
+ "id": "vertrag-kauf",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Kauf mit Mangel",
+ "title": "Kauf mit Mangel, auch Occasionsfahrzeug: Gewährleistung (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Kauf: Gewährleistung wegen Mängel der Kaufsache (Art. 197 ff. OR)"}
+ ],
+ "law": {
+  "197": {"cite": "Art. 197 Abs. 1 OR", "sr": "220", "article": "197", "passage": "Der Verkäufer haftet dem Käufer sowohl für die zugesicherten Eigenschaften als auch dafür, dass die Sache nicht körperliche oder rechtliche Mängel habe, die ihren Wert oder ihre Tauglichkeit zu dem vorausgesetzten Gebrauche aufheben oder erheblich mindern.", "verified": true},
+  "199": {"cite": "Art. 199 OR", "sr": "220", "article": "199", "passage": "Eine Vereinbarung über Aufhebung oder Beschränkung der Gewährspflicht ist ungültig, wenn der Verkäufer dem Käufer die Gewährsmängel arglistig verschwiegen hat.", "verified": true},
+  "200": {"cite": "Art. 200 Abs. 2 OR", "sr": "220", "article": "200", "passage": "Für Mängel, die der Käufer bei Anwendung gewöhnlicher Aufmerksamkeit hätte kennen sollen, haftet der Verkäufer nur dann, wenn er deren Nichtvorhandensein zugesichert hat.", "verified": true},
+  "201": {"cite": "Art. 201 Abs. 1 OR", "sr": "220", "article": "201", "passage": "die Beschaffenheit der empfangenen Sache prüfen und, falls sich Mängel ergeben, für die der Verkäufer Gewähr zu leisten hat, diesem sofort Anzeige machen.", "verified": true},
+  "201.2": {"cite": "Art. 201 Abs. 2 OR", "sr": "220", "article": "201", "passage": "Versäumt dieses der Käufer, so gilt die gekaufte Sache als genehmigt, soweit es sich nicht um Mängel handelt, die bei der übungsgemässen Untersuchung nicht erkennbar waren.", "verified": true},
+  "201.3": {"cite": "Art. 201 Abs. 3 OR", "sr": "220", "article": "201", "passage": "Ergeben sich später solche Mängel, so muss die Anzeige sofort nach der Entdeckung erfolgen, widrigenfalls die Sache auch rücksichtlich dieser Mängel als genehmigt gilt.", "verified": true},
+  "205": {"cite": "Art. 205 Abs. 1 OR", "sr": "220", "article": "205", "passage": "so hat der Käufer die Wahl, mit der Wandelungsklage den Kauf rückgängig zu machen oder mit der Minderungsklage Ersatz des Minderwertes der Sache zu fordern.", "verified": true},
+  "208": {"cite": "Art. 208 Abs. 2 OR", "sr": "220", "article": "208", "passage": "Der Verkäufer hat den gezahlten Verkaufspreis samt Zinsen zurückzuerstatten", "verified": true},
+  "210": {"cite": "Art. 210 Abs. 1 OR", "sr": "220", "article": "210", "passage": "Die Klagen auf Gewährleistung wegen Mängel der Sache verjähren mit Ablauf von zwei Jahren nach deren Ablieferung an den Käufer, selbst wenn dieser die Mängel erst später entdeckt,", "verified": true},
+  "210.4": {"cite": "Art. 210 Abs. 4 OR", "sr": "220", "article": "210", "passage": "Eine Vereinbarung über die Verkürzung der Verjährungsfrist ist ungültig, wenn: a. sie die Verjährungsfrist auf weniger als zwei Jahre, bei gebrauchten Sachen auf weniger als ein Jahr verkürzt;", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Vertragsrecht / Kauf mit Mangel"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Vertragsrecht / Kauf mit Mangel"], "question": "Hat die gekaufte Sache einen Mangel?", "source_refs": ["law#197"]},
+  {"id": "ablieferung", "type": "date", "question": "Wann wurde die Sache übergeben (abgeliefert)?", "source_refs": ["law#210"]},
+  {"id": "mangel_entdeckt", "type": "date", "question": "Wann wurde der Mangel entdeckt?", "source_refs": ["law#201.3"], "ask_customer": "offered", "customer_question": "Wann haben Sie den Mangel bemerkt?"},
+  {"id": "angezeigt", "type": "boolean", "question": "Wurde der Mangel dem Verkäufer angezeigt?", "source_refs": ["law#201"], "ask_customer": true, "customer_question": "Haben Sie den Mangel dem Verkäufer gemeldet? Wenn ja, wann und in welcher Form?"},
+  {"id": "occasion", "type": "boolean", "question": "Geht es um eine gebrauchte Sache, z.B. ein Occasionsfahrzeug?", "source_refs": ["law#210.4"]},
+  {"id": "ausschluss", "type": "boolean", "question": "Enthält der Vertrag einen Ausschluss der Gewährleistung (z.B. «wie besichtigt», «ohne Garantie»)?", "source_refs": ["law#199"]},
+  {"id": "zusicherungen", "type": "text", "question": "Welche Eigenschaften hat der Verkäufer zugesichert (z.B. Kilometerstand, unfallfrei, frisch geprüft)?", "source_refs": ["law#197", "law#200"]},
+  {"id": "ziel", "type": "text", "question": "Was will die Kundschaft erreichen?", "source_refs": ["law#205"], "ask_customer": true, "customer_question": "Was möchten Sie erreichen (Rückgängigmachen des Kaufs, Herabsetzung des Preises, Reparatur oder Schadenersatz)?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist der Verkäufer?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Verkäufer, Gericht)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "kaufvertrag", "title": "Kaufvertrag (bei Fahrzeugen mit allen Beilagen)", "why": "Zeigt Kaufsache, Preis, zugesicherte Eigenschaften und einen allfälligen Ausschluss der Gewährleistung (Art. 197, 199 OR).", "source_refs": ["law#197", "law#199"], "stage": "klaeren"},
+  {"id": "zahlungsbeleg", "title": "Beleg der Zahlung des Kaufpreises", "why": "Bei einer Rückgängigmachung des Kaufs ist der gezahlte Preis samt Zinsen zurückzuerstatten (Art. 208 OR).", "source_refs": ["law#208"], "stage": "klaeren"},
+  {"id": "maengelruege", "title": "Mängelanzeige an den Verkäufer", "why": "Mängel sind dem Verkäufer sofort anzuzeigen, sonst gilt die Sache als genehmigt (Art. 201 OR).", "required_when": {"any": [{"fact": "angezeigt", "is": true}, {"fact": "angezeigt", "known": false}]}, "source_refs": ["law#201", "law#201.2"], "stage": "klaeren"},
+  {"id": "mangelbeleg", "title": "Belege des Mangels (Werkstattbericht, Fotos, Kostenvoranschlag)", "why": "Der Verkäufer haftet für Mängel, die Wert oder Tauglichkeit erheblich mindern; das ist zu belegen (Art. 197 OR).", "source_refs": ["law#197"], "stage": "klaeren"},
+  {"id": "inserat", "title": "Inserat oder Verkaufsbeschreibung des Fahrzeugs", "why": "Zeigt, welche Eigenschaften zugesichert wurden (Art. 197 OR).", "required_when": {"fact": "occasion", "is": true}, "source_refs": ["law#197"], "stage": "klaeren"},
+  {"id": "fahrzeugausweis", "title": "Fahrzeugausweis und letzter Prüfbericht", "why": "Für Mängel, die bei gewöhnlicher Aufmerksamkeit erkennbar waren, haftet der Verkäufer nur, wenn er ihr Fehlen zugesichert hat (Art. 200 OR).", "required_when": {"fact": "occasion", "is": true}, "source_refs": ["law#200"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "sofort", "when": true, "text": "Mängel sind dem Verkäufer sofort nach ihrer Entdeckung anzuzeigen, zu Beweiszwecken idealerweise schriftlich per Einschreiben; sonst gilt die Sache als genehmigt.", "legal_basis": "Art. 201 OR", "source_refs": ["law#201", "law#201.3"]},
+  {"id": "ausschluss", "when": {"fact": "ausschluss", "is": true}, "text": "Ein Ausschluss der Gewährleistung ist ungültig, wenn der Verkäufer die Mängel arglistig verschwiegen hat.", "legal_basis": "Art. 199 OR", "source_refs": ["law#199"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#197", "law#205", "law#210"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich haftet der Verkäufer für zugesicherte Eigenschaften und dafür, dass die Sache keine Mängel hat, die ihren Wert oder ihre Tauglichkeit erheblich mindern (Art. 197 OR); der Käufer kann den Kauf rückgängig machen oder Ersatz des Minderwertes fordern (Art. 205 OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass der Mangel dem Verkäufer sofort angezeigt wurde (Art. 201 OR) und die Ansprüche nicht verjährt sind, in der Regel zwei Jahre nach der Ablieferung (Art. 210 OR)."},
+  "demand": {"text": "Wir fordern Sie auf, uns bis {frist} mitzuteilen, wie Sie den Mangel beheben, den Kaufpreis herabsetzen oder den Kauf rückgängig machen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
+ },
+ "deadlines": [
+  {"id": "maengelanzeige", "title": "Mängelanzeige an den Verkäufer", "trigger": "mangel_entdeckt", "period": "sofort", "from": "nach der Entdeckung", "basis": "Art. 201 Abs. 3 OR", "missed": "Ohne sofortige Anzeige gilt die Sache als genehmigt.", "question": "Wann haben Sie den Mangel bemerkt?", "source_refs": ["law#201.3"], "party": "kunde"},
+  {"id": "verjaehrung_gewaehrleistung", "title": "Verjährung der Gewährleistungsansprüche", "trigger": "ablieferung", "period": {"years": 2}, "from": "nach der Ablieferung", "check": "bei gebrauchten Sachen kann sie vertraglich auf ein Jahr verkürzt sein (Art. 210 Abs. 4 OR), Vertrag prüfen", "basis": "Art. 210 Abs. 1 OR", "missed": "Danach verjähren die Klagen auf Gewährleistung, ausser der Verkäufer hat eine Haftung auf längere Zeit übernommen.", "question": "Wann wurde Ihnen die Sache übergeben?", "source_refs": ["law#210", "law#210.4"], "party": "kunde"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

@@ -1,0 +1,58 @@
+{
+ "format": "casepath.area/1",
+ "id": "arbeit-lohn",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Lohnforderung",
+ "title": "Lohnforderung aus dem Arbeitsverhältnis (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Arbeitsvertrag: Lohn (Art. 322 ff. OR) und Verjährung (Art. 128 OR)"}
+ ],
+ "law": {
+  "322": {"cite": "Art. 322 Abs. 1 OR", "sr": "220", "article": "322", "passage": "Der Arbeitgeber hat dem Arbeitnehmer den Lohn zu entrichten, der verabredet oder üblich oder durch Normalarbeitsvertrag oder Gesamtarbeitsvertrag bestimmt ist.", "verified": true},
+  "323": {"cite": "Art. 323 Abs. 1 OR", "sr": "220", "article": "323", "passage": "so ist dem Arbeitnehmer der Lohn Ende jedes Monats auszurichten.", "verified": true},
+  "321c": {"cite": "Art. 321c Abs. 3 OR", "sr": "220", "article": "321c", "passage": "so hat der Arbeitgeber für die Überstundenarbeit Lohn zu entrichten, der sich nach dem Normallohn samt einem Zuschlag von mindestens einem Viertel bemisst.", "verified": true},
+  "324a": {"cite": "Art. 324a Abs. 1 OR", "sr": "220", "article": "324a", "passage": "ohne sein Verschulden an der Arbeitsleistung verhindert, so hat ihm der Arbeitgeber für eine beschränkte Zeit den darauf entfallenden Lohn zu entrichten,", "verified": true},
+  "128": {"cite": "Art. 128 OR", "sr": "220", "article": "128", "passage": "Mit Ablauf von fünf Jahren verjähren die Forderungen:", "verified": true},
+  "128.3": {"cite": "Art. 128 Ziff. 3 OR", "sr": "220", "article": "128", "passage": "Berufsarbeiten von Anwälten, Rechtsagenten, Prokuratoren und Notaren sowie aus dem Arbeitsverhältnis von Arbeitnehmern.", "verified": true},
+  "341": {"cite": "Art. 341 Abs. 1 OR", "sr": "220", "article": "341", "passage": "Während der Dauer des Arbeitsverhältnisses und eines Monats nach dessen Beendigung kann der Arbeitnehmer auf Forderungen, die sich aus unabdingbaren Vorschriften des Gesetzes oder aus unabdingbaren Bestimmungen eines Gesamtarbeitsvertrages ergeben, nicht verzichten.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Arbeitsrecht / Lohn"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Arbeitsrecht / Lohn"], "question": "Schuldet die Arbeitgeberin Lohn?", "source_refs": ["law#322"]},
+  {"id": "lohn_faellig_seit", "type": "date", "question": "Seit wann ist Lohn ausstehend (Fälligkeit des ältesten offenen Lohns)?", "source_refs": ["law#323", "law#128.3"]},
+  {"id": "betrag", "type": "text", "question": "Welcher Betrag ist offen, und wofür (Monatslohn, Überstunden, Lohn bei Krankheit, Provision)?", "source_refs": ["law#322"], "ask_customer": true, "customer_question": "Welcher Betrag ist offen, und wofür (Monatslohn, Überstunden, Lohn während Krankheit, Provision)?"},
+  {"id": "ueberstunden", "type": "boolean", "question": "Geht es um Überstunden?", "source_refs": ["law#321c"]},
+  {"id": "krankheit", "type": "boolean", "question": "Geht es um Lohn während Krankheit oder Unfall?", "source_refs": ["law#324a"]},
+  {"id": "beendet", "type": "boolean", "question": "Ist das Arbeitsverhältnis beendet?", "source_refs": ["law#341"], "ask_customer": "offered", "customer_question": "Besteht das Arbeitsverhältnis noch, oder auf welchen Tag wurde es beendet?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Arbeitgeberin?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Arbeitgeberin, Gericht, Betreibung)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "arbeitsvertrag", "title": "Arbeitsvertrag (mit Personalreglement oder Gesamtarbeitsvertrag, falls anwendbar)", "why": "Zeigt den verabredeten Lohn (Art. 322 OR).", "source_refs": ["law#322"], "stage": "klaeren"},
+  {"id": "lohnabrechnungen", "title": "Lohnabrechnungen und Kontoauszüge mit den Lohnzahlungen", "why": "Zeigen, welcher Lohn ausgerichtet wurde; ohne andere Abrede ist er Ende jedes Monats geschuldet (Art. 323 OR).", "source_refs": ["law#323"], "stage": "klaeren"},
+  {"id": "zeiterfassung", "title": "Arbeitszeiterfassung oder Aufstellung der Überstunden", "why": "Nicht durch Freizeit ausgeglichene Überstunden sind ohne andere schriftliche Abrede mit einem Zuschlag von mindestens einem Viertel zu entlöhnen (Art. 321c OR).", "required_when": {"fact": "ueberstunden", "is": true}, "source_refs": ["law#321c"], "stage": "klaeren"},
+  {"id": "arztzeugnis", "title": "Arztzeugnisse", "why": "Bei unverschuldeter Verhinderung, etwa durch Krankheit, ist der Lohn für eine beschränkte Zeit geschuldet (Art. 324a OR).", "required_when": {"fact": "krankheit", "is": true}, "source_refs": ["law#324a"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Korrespondenz mit der Arbeitgeberin, insbesondere Mahnungen", "why": "Zeigt, was verlangt und was bestritten wurde.", "source_refs": ["law#322"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "verjaehrung", "when": true, "text": "Forderungen aus dem Arbeitsverhältnis verjähren mit Ablauf von fünf Jahren.", "legal_basis": "Art. 128 OR", "source_refs": ["law#128", "law#128.3"]},
+  {"id": "verzicht", "when": true, "text": "Während des Arbeitsverhältnisses und eines Monats nach dessen Ende kann auf Forderungen aus unabdingbaren Vorschriften nicht verzichtet werden; bitte unterzeichnen Sie keine Saldoerklärung, ohne uns zu fragen.", "legal_basis": "Art. 341 OR", "source_refs": ["law#341"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#322", "law#323"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich hat die Arbeitgeberin den verabredeten oder üblichen Lohn zu entrichten (Art. 322 OR), ohne andere Abrede Ende jedes Monats (Art. 323 OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass die geleistete Arbeit und der vereinbarte Lohn belegt werden können; Forderungen aus dem Arbeitsverhältnis verjähren mit Ablauf von fünf Jahren (Art. 128 OR)."},
+  "demand": {"text": "Wir fordern Sie auf, den ausstehenden Lohn bis {frist} zu bezahlen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
+ },
+ "deadlines": [
+  {"id": "verjaehrung_lohn", "title": "Verjährung des ältesten offenen Lohns", "trigger": "lohn_faellig_seit", "period": {"years": 5}, "from": "ab Fälligkeit", "check": "jüngere Löhne verjähren später; Unterbrechung der Verjährung nicht berücksichtigt", "basis": "Art. 128 Ziff. 3 OR", "missed": "Danach ist die Forderung verjährt.", "question": "Seit wann ist Ihr Lohn ausstehend (ältester offener Monat)?", "source_refs": ["law#128", "law#128.3"], "party": "kunde"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

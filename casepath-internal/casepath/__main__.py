@@ -23,6 +23,7 @@ DELEGATED = {
     "example": ("quality.examples", "main", "add the made-up example case to a case store"),
     "replay": ("quality.replay", "main", "apply a Knowledge version to the stored runs, without a model, and show what changes"),
     "drawio": ("process.drawio", "main", "turn a draw.io process diagram into a draft workflow"),
+    "areas": ("process.area", "main", "validate the handler's area modules and show what each contains"),
     "mining": ("process.mining", "main", "reconstruct each real case's course and the pattern across cases"),
     "job": ("agents.core", "main", "run one agent job from JSON, as a queue worker would"),
     "parity": ("parity", "main", "what this deployment runs, as hashes, for comparison with another deployment"),
@@ -85,9 +86,16 @@ def main(argv=None):
             catalogue = Catalogue.load(args.directory)
         except CatalogueError as error:
             sys.exit(f"catalogue invalid: {error}")
+        from .process.area import describe
+
+        routable = {w["id"] for w in catalogue.routable()}
         for workflow in catalogue.workflows:
             print(f"{workflow['id']} {workflow['version']} {workflow['status']}: {len(workflow['steps'])} steps, "
-                  f"{len(workflow['documents'])} documents, {len(workflow.get('open_questions', []))} open questions")
+                  f"{len(workflow['documents'])} documents, {len(workflow.get('open_questions', []))} open questions"
+                  + ("" if workflow["id"] in routable else " (not routed: superseded)"))
+            if workflow.get("area"):
+                for line in describe(workflow)[1:]:
+                    print(line)
         return
     import uvicorn
 

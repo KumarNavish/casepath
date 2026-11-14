@@ -350,6 +350,8 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-frist+.cp-frist{margin-top:6px}
 .cp-frist.late b,.cp-frist.late{color:var(--crimson)}
 .cp-frist.soon b{color:var(--crimson)}
+.cp-frist.late,.cp-frist.soon{font-weight:600}
+.cp-frist.check b{color:var(--crimson)}
 .cp-case-tools{margin:14px 0 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .cp-small{padding:5px 11px;font-size:13.5px}
 .cp-button[aria-pressed="true"]{border-color:var(--crimson);color:var(--crimson);background:var(--crimson-wash);font-weight:600}
@@ -407,3 +409,9 @@ body.dragging .cp-drop{border-color:var(--crimson);color:var(--crimson)}
 .cp-more .cp-menu .cp-link{font-size:14px;justify-content:flex-start}
 .cp-more .cp-menu .cp-icon{width:18px;height:18px}
 .cp-nowrap{white-space:nowrap}
+
+.cp-lead-frist{margin:4px 0 0;padding:6px 10px;border-left:3px solid var(--line);font-size:14px}
+.cp-lead-frist.soon,.cp-lead-frist.late{border-left-color:var(--crimson);color:var(--crimson);font-weight:600}
+.cp-frist.other b{color:inherit;font-weight:600}
+.cp-passage{flex-basis:100%;margin:4px 0 2px 26px;font-size:13px;color:var(--muted, #555);font-style:italic}
+.cp-line:has(.cp-passage){flex-wrap:wrap}

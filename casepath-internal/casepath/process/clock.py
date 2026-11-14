@@ -33,7 +33,7 @@ def as_of(files, today=None):
     return today or date.today()
 
 
-def silence(rules, facts, files, today=None):
+def silence(rules, facts, files, today=None, stage=None):
     """The follow-up that is due because nobody answered: the insurer's last outgoing action expects an answer, nothing
     dated arrived after it, and the day the case is looked at is past the expected date. None otherwise.
 
@@ -47,7 +47,7 @@ def silence(rules, facts, files, today=None):
                  default=sent)
     if latest > sent:  # something dated came in after our last letter: not silence
         return None
-    rule = next((r for r in rules if code in r["after"]), None)
+    rule = next((r for r in rules if code in r["after"] and (stage is None or r.get("stages") is None or stage in r["stages"])), None)
     day = as_of(files, today)
     if rule and (day - sent).days > rule["days"]:
         return {**rule, "last": f"A{code}", "since": sent.isoformat(), "as_of": day.isoformat(), "silent_days": (day - sent).days}
@@ -66,15 +66,37 @@ def reference_day(files, today=None):
     return max(days) if days else (today or date.today())
 
 
-def follow_up(next_in_days, files, events, today=None):
-    """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date."""
-    ref = reference_day(files, today)
+def follow_up(next_in_days, files, events, today=None, since=None):
+    """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date.
+    ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from."""
+    ref = parse_date(since) if since and parse_date(since) else reference_day(files, today)
     set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date")]
     if set_by_hand:
         return {"due": set_by_hand[-1]["date"], "reference": ref.isoformat(), "set_by": set_by_hand[-1].get("expert")}
     if not next_in_days:
         return None
     return {"due": (ref + timedelta(days=int(next_in_days))).isoformat(), "reference": ref.isoformat(), "set_by": None}
+
+
+def own_deadlines(items, files=(), today=None):
+    """The customer's own statutory deadlines still open, earliest first: dated, to be met ("bis"), not the other side's."""
+    day = reference_day(list(files or ()), today)
+    rows = [i for i in items or () if i.get("kind") == "deadline" and i.get("origin") == "law" and i.get("party", "kunde") == "kunde"
+            and i.get("direction", "bis") == "bis" and parse_date(i.get("value"))]
+    return sorted([i for i in rows if parse_date(i["value"]) >= day], key=lambda i: i["value"])
+
+
+def capped(follow, items, margin, files=(), today=None):
+    """The follow-up never later than the earliest open own deadline less a margin (not before the reference day); a
+    date a person set stands. Says why when it moved it."""
+    open_ = own_deadlines(items, files, today)
+    if not follow or follow.get("set_by") or not open_:
+        return follow
+    limit = max(parse_date(open_[0]["value"]) - timedelta(days=int(margin or 0)), reference_day(list(files or ()), today))
+    if parse_date(follow["due"]) <= limit:
+        return follow
+    return {**follow, "due": limit.isoformat(), "capped": {"deadline": open_[0]["item_id"], "date": open_[0]["value"],
+                                                          "reason": "vor Ablauf der gesetzlichen Frist"}}
 
 
 if __name__ == "__main__":

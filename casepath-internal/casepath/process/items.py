@@ -10,8 +10,9 @@ import hashlib
 import json
 import re
 
-from .clock import silence
-from .workflows import evaluate_condition
+from .area import compute_deadline, period_text
+from .clock import parse_date, silence
+from .workflows import done_actions, evaluate_condition, stage_floor
 
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
 DECISION_ROLE = re.compile(r"^entscheidung", re.I)
@@ -94,6 +95,11 @@ def _in_file(files, kinds):
                if any(k in (s.get("kind") or "").lower() for k in kinds))
 
 
+def _day(value):
+    d = parse_date(value)
+    return d.strftime("%d.%m.%Y") if d else str(value)
+
+
 def build_items(state, result, files=None):
     graph, ev, result = state.get("process"), state.get("evaluation"), result or {}
     items = []
@@ -117,6 +123,8 @@ def build_items(state, result, files=None):
                 ask = None
             elif d.get("offered") and row["required"] in {"yes", "depends"}:
                 ask = "proposed"  # practice is split: a mention of the missing document ticks it as its own line
+            elif row.get("partial") and d.get("when_partly_present") == "offer" and row["required"] in {"yes", "depends"}:
+                ask = "proposed"  # an open-ended need partly in the file: offered (from the law alone, no practice says to ask again)
             elif d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]):
                 ask = "proposed"  # practice: with evidence of this kind in the file, Protekta does not ask for more (4 of 5)
             elif graph.get("action_by_stage") and str(d.get("edit") or "").startswith("pb") and not d.get("knowledge"):  # an agent's guess
@@ -137,7 +145,8 @@ def build_items(state, result, files=None):
                 node=row.get("step"), origin=_origin(d), chain=True, label=row["title"], status=row["status"],
                 legal_basis=d.get("legal_basis") or row.get("legal_basis"),
                 required=row["required"], ask=ask, part_of=part_of.get(row["document"]),
-                reason=(f'{_in_file(files, d["offered_when_in_file"]["kinds"])} Fotos/Protokolle liegen vor'
+                reason=("liegt teilweise vor" if row.get("partial") and d.get("when_partly_present") == "offer" else
+                        f'{_in_file(files, d["offered_when_in_file"]["kinds"])} Fotos/Protokolle liegen vor'
                         if d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]) else
                         note if row["status"] in {"unusable", "missing"} and note else None),
                 **({"partial": row["partial"]} if row.get("partial") else {}))
@@ -167,7 +176,18 @@ def build_items(state, result, files=None):
             add("deadline", d["fact"], value=d["date"], stated_as="computed" if d.get("computed") else "established", verdict="accepted",
                 evidence=[], node=_fact_node(graph, d["fact"]), origin="workflow", chain=True, label=d.get("question"),
                 **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
-        asked = [i for i in items if i["kind"] == "document" and i["ask"] == "now"]
+        for d in graph.get("deadlines", []):  # the area's statutory deadlines, from the trigger date the case establishes
+            trigger = (state.get("facts") or {}).get(d["trigger"])
+            computed = compute_deadline(d, trigger, state.get("facts") or {}) if trigger is not None else None
+            if computed:
+                unsettled = bool(d.get("when")) and evaluate_condition(d["when"], state.get("facts") or {}) is None
+                backwards = isinstance(d["period"], dict) and "days_before" in d["period"]
+                add("deadline", d["id"], value=computed[0], stated_as="computed", verdict="accepted", evidence=[],
+                    node=_fact_node(graph, d["trigger"]), origin="law", chain=True, label=d["title"], stated=str(trigger),
+                    rule=computed[1], legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"),
+                    party=d.get("party", "kunde"), **({"condition": d["when_text"]} if unsettled else {}),
+                    **({"due_text": f"{period_text(d)} am {_day(trigger)}"} if backwards else {}))
+        asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
         lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
         steps = {x["id"]: x for x in graph["steps"]}
         here = steps.get((ev.get("current") or {}).get("step")) or (steps.get(ev["path"][-1]["step"]) if ev.get("path") else None) or {}
@@ -175,9 +195,19 @@ def build_items(state, result, files=None):
         variant = next((v for v in (planned or {}).get("instead", []) if evaluate_condition(v["when"], state.get("facts") or {}) is True), None)
         if variant:  # a situation the stage answers differently (after a call: keep it pending with a deadline)
             planned = {**planned, **{k: v for k, v in variant.items() if k != "when"}, "skip_if": None}
-        quiet = silence(graph.get("clock"), state.get("facts") or {}, files)  # across stages: nobody answered our last letter
+        known_facts = state.get("facts") or {}
+        floor = stage_floor(graph, known_facts)
+        done = done_actions(known_facts)
+        clocked = {r["then"] for r in graph.get("clock") or ()}
+        if planned and not variant and planned["kind"][1:] in done and not planned.get("skip_if") and planned.get("follow_up") not in clocked:
+            # the stage's action is in the case's history already: its follow-up comes next (one the clock governs waits for it)
+            planned = {**planned, "skip_if": True}
+        if planned and floor:  # placed by its history: the follow-up counts from the last action taken
+            days = [d for c, ds in done.items() for d in ds if d]
+            planned = {**planned, **({"since": max(days)} if days else {})}
+        quiet = None if ev.get("outcome") else silence(graph.get("clock"), known_facts, files, stage=here.get("id"))  # nobody answered our last letter
         if quiet:
-            planned = {"kind": quiet["then"], "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
+            planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
                        "reason": f'keine Antwort seit {quiet["last"]} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
@@ -190,7 +220,7 @@ def build_items(state, result, files=None):
             title = ev["outcome"].get("title") or ev["outcome"]["id"]
             action = ("close", title, {"de": f"Fall abschliessen: {title}", "en": f"Close the case: {title}"})
         elif asked:
-            action = ("request", f"{lines} documents", {"de": f"{lines} Unterlage(n) beim Kunden anfordern", "en": f"Request {lines} document(s) from the customer"})
+            action = ("request", f"{lines} documents", {"de": f"{lines} Unterlage{'' if lines == 1 else 'n'} beim Kunden anfordern", "en": f"Request {lines} document{'' if lines == 1 else 's'} from the customer"})
         elif ev.get("next_actions"):
             first = ev["next_actions"][0]
             action = ({"obtain": "request"}.get(first["kind"], first["kind"]), first["text"], first["text"])
@@ -198,7 +228,9 @@ def build_items(state, result, files=None):
             action = None
         if action:
             add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
-                                        **({"reason": planned["reason"]} if planned.get("reason") else {})} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
+                                        **({"reason": planned["reason"]} if planned.get("reason") else {}),
+                                        **({"since": planned["since"]} if planned.get("since") else {}),
+                                        **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
         # The first request asks, besides documents, what only the customer can say, and gives the hints the law calls for.
         known = state.get("facts") or {}

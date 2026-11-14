@@ -7,13 +7,11 @@ A form with no draft says why ("kein Entwurf: …").
 import re
 from datetime import date
 
-import json
-from pathlib import Path
-
+from . import area
 from .clock import as_of, parse_date
 
-# Protekta's forms, from the handler's workflow seed: the letters of any workflow that brings none of its own.
-SEED_FORMS = json.loads((Path(__file__).with_name("workflow_seed") / "mietmangel-handler.json").read_text())["forms"]
+# Protekta's forms, from the handler's tenancy-defect workflow: the letters of any workflow that brings none of its own.
+SEED_FORMS = area.workflow("mietmangel-handler")["forms"]
 
 
 def _day(value):
@@ -100,6 +98,19 @@ def greeting(parties):
     return "Sehr geehrte Damen und Herren"
 
 
+def statutory(item):
+    """A computed statutory deadline as the first request states it; "prüfen" when no date can be given."""
+    title, day = (item.get("label") or {}).get("de"), _day(item.get("value"))
+    what = "Termin der Gegenpartei" if item.get("party") == "gegenpartei" else "Gesetzliche Frist"  # the other side's date is not the customer's
+    if item.get("condition"):
+        what = f"{what} ({item['condition']})"
+    if day:
+        return f"{what} «{title}»: nach unserer Berechnung {'ab' if item.get('direction') == 'ab' else 'bis'} {day}."
+    if item.get("due_text"):
+        return f"{what} «{title}»: {item['due_text']}."
+    return f"{what} «{title}»: Das genaue Datum prüfen wir noch; bitte handeln Sie umgehend."
+
+
 def context(case, items, events, follow_up, files=(), today=None, evaluation=None, process=None):
     label = lambda i: (i.get("label") or {}).get("de") or i.get("value") or i["key"]
     facts = {i["key"]: i for i in items if i["kind"] == "fact"}
@@ -113,6 +124,8 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     lines = line_state(events)
     questions = [i for i in items if i["kind"] == "letter_question" and lines.get(i["item_id"], i.get("ask") != "proposed")]
     hints = [i for i in items if i["kind"] == "hint" and lines.get(i["item_id"], i.get("stated_as") != "put_to_handler")]
+    hints += [{"value": statutory(i), "legal_basis": i.get("legal_basis")} for i in items  # a statutory deadline of the area
+              if i["kind"] == "deadline" and i.get("origin") == "law" and lines.get(i["item_id"], True)]
     listed = request_list(items, events, evaluation, process) if evaluation else [f"– {label(i)}" for i in docs]
     return {
         "referenz": ref.group(0) if ref else case.get("id", "")[-8:].upper(),
@@ -131,6 +144,8 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         # blocks copying the letter until it is filled or removed; never an invented sentence.
         "anliegen": summary or gap("was in diesem Fall vorliegt"),
         "empfehlung": gap("die Empfehlung an die Kundschaft"),
+        # the assessment does not wait for every document: what is still missing is asked for in it
+        "nachzureichen": "\n".join(["Bitte reichen Sie uns noch nach:"] + [f"– {label(i)}" for i in docs]) if docs else "",
         "anlass": "das Telefongespräch" if (facts.get("anruf_offen") or {}).get("value") is True else "Ihre Nachricht",
         "erwartet": ("die noch fehlenden Unterlagen: " + ", ".join(label(i) for i in docs)) if docs else "Ihre Rückmeldung",
         "letzter_kontakt": max(sent).strftime("%d.%m.%Y") if sent else "…",
@@ -179,6 +194,10 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None):
         parts.append(f"Entschieden: {'; '.join(decided)}.")
     if action:
         parts.append(f"Nächster Schritt: {action.get('value')}" + (f", weil {reason}" if reason else "") + ".")
+    if action and action.get("form") == "A12_still":  # a closing in silence, not an end of benefits
+        last = [d for d in (parse_date(next((i.get("value") for i in items if i["kind"] == "fact" and i["key"] == f"handlung_a{n}"), None)) for n in (6, 7)) if d]
+        parts.append("Abschluss ohne Rückmeldung der Kundschaft: die Schliessung war im Schreiben"
+                     + (f" vom {max(last).strftime('%d.%m.%Y')}" if last else "") + " angekündigt; kein weiteres Schreiben.")
     if unticked:
         parts.append(f"Nicht verlangt (von der Fallbearbeitung gestrichen): {', '.join(unticked)}.")
     if sent:
