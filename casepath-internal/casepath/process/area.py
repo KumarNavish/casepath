@@ -25,7 +25,7 @@ from pathlib import Path
 import re
 import sys
 
-from . import cover, incoming, keypoints
+from . import cover, customer_letters, incoming, keypoints
 from .clock import parse_date
 from .workflows import FORMAT, CatalogueError, _check_condition as check_condition, evaluate_condition, validate_workflow
 
@@ -301,6 +301,9 @@ def validate_module(module, backbone):
         if stage not in stages:
             raise CatalogueError(f"{where}: unknown stage {stage!r}")
     keypoints.validate(module, law, where, stages)  # a key point needs a condition, an article with its passage and a statement
+    # a letter the customer sends in his own name: a condition, an article with its passage for every legal statement, and no
+    # instruction the cited law does not support
+    customer_letters.validate(module, law, where, set(facts) | {f["id"] for f in backbone["facts"]})
     for part in ("rights", "conditions", "demand"):
         if not str((module["assessment"].get(part) or {}).get("text") or "").strip():
             raise CatalogueError(f"{where}: the assessment needs {part}")
@@ -409,6 +412,7 @@ def compose(backbone, module):
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []),
                 "key_points": m.get("key_points", []),  # what a specialist looks for first (keypoints.py)
+                "customer_letters": m.get("customer_letters", []),  # templates the customer sends in his own name (customer_letters.py)
                 "stage_lines": bb.get("stage_lines", []),  # the short facts a handler needs at a later stage (keypoints.py)
                 # each deadline carries the counting rule of its procedure (the backbone's table), so a stored run keeps it
                 "deadlines": [{**d, "counting": d.get("counting", "or"), "counting_rule": bb["counting"][d.get("counting", "or")]} for d in m["deadlines"]],

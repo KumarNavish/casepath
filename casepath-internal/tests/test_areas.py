@@ -15,11 +15,16 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"key_points", "stage_lines", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions"}
+NEW_KEYS = {"key_points", "stage_lines", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions", "customer_letters"}
 INCOMING_FACTS = {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot", "eingang_zahlung", "leistungen_einstellen",
                   "eingang_erledigt_bis", "kosten_offen", "eingang_kostenforderung_2", "eingang_kostenforderung_3", "eingang_angebot_2",
                   "eingang_zahlung_2"}  # the overlay of what comes in (incoming.py): up to three items of a kind
 INCOMING_FORMS = {"A11_kosten", "A2_bericht", "A12_mitwirkung_entscheid", "A12_mitwirkung_kanzlei", "vorgehen_neu", "vorgehen"}
+# The mandate package, the settlement sequence and the fee-note letters (mandate.py, settlement.py): the mandate letter A10
+# became the request to the firm, with the guarantee, the summary and the customer's information beside it
+PACKAGE_FACTS = {"kostengutsprache_umfang", "kostengutsprache_betrag", "vergleich_bestaetigt"}
+PACKAGE_FORMS = {"A10", "A10_kostengutsprache", "A10_zusammenfassung", "A11_einigung", "A11_iban", "A11_auszahlung", "A11_eingang",
+                 "A11_rueckfrage", "A11_teilablehnung"}
 # What the stage rule added to the steps (a stage is left once its action is done, unless a way out says it is not
 # needed; the way-to-proceed stage is the handler's decision; a follow-up has its own title): not in the former seed.
 STAGE_RULE_KEYS = {"without_action", "decision", "follow_up_title"}
@@ -59,7 +64,7 @@ class CompositionTests(unittest.TestCase):
     # "bitte reichen Sie noch nach". Everything else is the former seed, field for field.
     CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt",
                      "nichts_anzufordern",
-                     "frist"} | INCOMING_FACTS  # the question about a running deadline also asks for a date others set
+                     "frist"} | INCOMING_FACTS | PACKAGE_FACTS  # the question about a running deadline also asks for a date others set
 
     def test_the_composed_tenancy_defect_workflow_is_the_seed_it_replaces_but_for_the_named_rule_change(self):
         composed = cover.strip(area.workflow("mietmangel-handler"))  # the cover points' facts, sources and forms are tested in test_cover
@@ -68,7 +73,7 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.6"))  # stored runs: same id, newer version governs
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.7"))  # stored runs: same id, newer version governs
         # plus: the nearest thing that does not count, for the reader; the stage a handler's decision belongs to
         unnear = lambda f: {k: v for k, v in f.items() if k not in {"not_this", "stages"}}
         self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
@@ -80,8 +85,8 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(settle(composed), {"all": [settle(FROZEN), {"fact": "kosten_offen", "is": False}]})  # no closing with a cost claim open
         self.assertEqual(next(s for s in composed["steps"] if s["id"] == "abschluss_still")["action"]["form"], "A12_still")  # no end of benefits
         self.assertEqual({k: {f: x for f, x in v.items() if f not in {"needs", "asks", "empty", "only_with"}} for k, v in composed["forms"].items()  # plus: what A1 is for
-                          if k not in {"A5", "A12_still", "A12_erledigt"} | INCOMING_FORMS},
-                         {k: v for k, v in FROZEN["forms"].items() if k != "A5"})
+                          if k not in {"A5", "A12_still", "A12_erledigt"} | INCOMING_FORMS | PACKAGE_FORMS},
+                         {k: v for k, v in FROZEN["forms"].items() if k not in {"A5", "A10"}})
         self.assertEqual((composed["forms"]["A1"]["needs"], composed["forms"]["A8"]["needs"]), ([], ["deckung", "vorgehen"]))
         self.assertEqual(composed["short_title"], "Mietmangel")
         self.assertEqual(composed["action_kinds"]["A1"]["depends_on"], [])  # the cover decision does not block the first request
@@ -119,7 +124,7 @@ class CompositionTests(unittest.TestCase):
             self.assertEqual(kept(a), kept(b))
             uncovered = lambda rows: [i for i in rows if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact", "key_point"}]
             self.assertEqual(items_sha256(uncovered(a)), items_sha256(uncovered(b)))
-            for kind in ("A1", "A4", "A6", "A7", "A8", "A10", "A12"):
+            for kind in ("A1", "A4", "A6", "A7", "A8", "A12"):  # A10 is now the request of the mandate package (test_package)
                 ctx = letters.context(case, a, [], {"due": "2025-03-01"})
                 if kind == "A1" and not (ctx["liste"] or ctx["fragen"]):  # the named change: a first request with nothing to ask is no letter
                     self.assertEqual(letters.render(kind, new["forms"], ctx), (None, new["forms"]["A1"]["empty"]))
@@ -163,7 +168,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-14.6 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-14.7 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 

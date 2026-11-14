@@ -1561,6 +1561,23 @@ function keyPointLines() {
         <br><span class="cp-keypoint-more">${T("Follows", "Folge")}: ${esc(p.follows || "")}</span><br><span class="cp-keypoint-more">${T("To check", "Zu prüfen")}: ${esc(p.check || "")}</span></div>` : ""}</div>`;
   }).join("");
 }
+// What goes out with the letter, each a quiet line under it, opened and copied on its own: the mandate package's cost
+// guarantee (its scope and an optional amount set here), the summary for the firm, the customer's information, the
+// fee-note letters, a template for the customer's own letter.
+function alsoLines(draft, editable) {
+  const rows = (draft.also || []).filter((a) => a.text);
+  if (!rows.length) return "";
+  const copiedAlso = new Set((S.data.caseEvents || []).filter((e) => e.kind === "letter.copied" && e.also).map((e) => e.also));
+  const control = (key) => {
+    const f = item("fact", key) || {}, now = f.value === null || f.value === undefined ? "" : String(f.value);
+    return (f.values || []).length
+      ? `<label class="cp-muted">${esc(plainQuestion((f.label || {}).de).replace(/\s*\(.*$/, ""))} <select class="cp-cover-select" data-also-set="${esc(key)}">${f.values.map((v) => `<option ${v === now || (!now && v === f.values[0]) ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`
+      : `<label class="cp-muted">${T("Amount (optional)", "Betrag (freiwillig)")} CHF <input class="cp-cover-select" size="9" data-also-set="${esc(key)}" value="${esc(now)}" placeholder="${T("none", "keiner")}"></label>`;
+  };
+  return `<div class="cp-also-list">${rows.map((a) => `<details class="cp-also" data-also="${esc(a.kind)}" ${S.openAlso === a.kind ? "open" : ""}><summary class="cp-link cp-quiet-link">${esc(a.title)}${copiedAlso.has(a.kind) ? ` <span class="cp-muted">· ${T("copied", "kopiert")}</span>` : ""}</summary>
+      ${editable && (a.set || []).length ? `<p class="cp-also-set">${a.set.map(control).join(" ")}</p>` : ""}
+      <div class="cp-text cp-also-text" data-also-text="${esc(a.kind)}">${esc(a.text)}</div><button class="cp-button cp-small" data-copy-also="${esc(a.kind)}">${T("Copy", "Kopieren")}</button></details>`).join("")}</div>`;
+}
 function preparedView(ev, st) {
   const act = item("next_action", "0"), draft = S.data.draft || {};
   const c = closed(), copied = (S.data.caseEvents || []).some((e) => e.kind === "letter.copied") || S.copied;
@@ -1614,8 +1631,7 @@ function preparedView(ev, st) {
       : `<p class="cp-weil">${T("Because", "Weil")}: ${weil}</p>`) : ""}
     <div class="cp-letter" data-item="letter:0">${letter ? letterView(letter, editable) : `<p class="cp-muted">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step.", "Für diesen Schritt kein Brief."))}</p>`}
       ${(draft.required || []).length ? `<p class="cp-required">${T("Required", "Pflichtteile")}: ${draft.required.map((r) => `${esc(r.title)} <span class="cp-muted">(${esc(r.basis)})</span>`).join(" · ")}</p>` : ""}
-      ${(draft.also || []).filter((a) => a.text).map((a) => `<details class="cp-also"><summary class="cp-link">${T("With it", "Dazu")}: ${esc(a.title)}</summary>
-        <div class="cp-text cp-also-text" data-also-text="${esc(a.kind)}">${esc(a.text)}</div><button class="cp-button cp-small" data-copy-also="${esc(a.kind)}">${T("Copy", "Kopieren")}</button></details>`).join("")}
+      ${alsoLines(draft, editable)}
       <p class="cp-draftline">${T("Draft · a person decides", "Entwurf · ein Mensch entscheidet")}</p></div>
     <footer class="cp-bar">${bar}</footer>
   </section>`;
@@ -1671,7 +1687,7 @@ function bindOverview() {
     if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
     S.copied = true; S.justCopied = true; renderCase();
     setTimeout(() => { S.justCopied = false; if (S.route.view === "case") renderCase(); }, 1800);
-    caseEvent("letter.copied", null, { edited: text.trim() !== draft.trim(), change_ratio: Math.round(100 * Math.abs(text.length - draft.length) / Math.max(1, draft.length)) / 100 })
+    caseEvent("letter.copied", null, { form: (S.data.draft || {}).form || null, edited: text.trim() !== draft.trim(), change_ratio: Math.round(100 * Math.abs(text.length - draft.length) / Math.max(1, draft.length)) / 100 })
       .then(loadCase).catch(() => {});
   });
   on("[data-item='letter:0'] [data-seg='text'][contenteditable]", "input", (el) => { (S.blockEdits = S.blockEdits || {})[el.dataset.orig] = el.innerText; });
@@ -1735,7 +1751,15 @@ function bindOverview() {
     const lost = (also.required || []).filter((r) => !text.includes(r.marker));
     if (lost.length || /\[bitte ergänzen: /.test(text)) { S.message = T("Please complete the letter first.", `Bitte zuerst ergänzen: ${lost.map((r) => r.title).join(", ") || "Lücke"}`); S.messageOk = false; renderCase(); return; }
     if (navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
-    caseEvent("letter.copied", null, { also: b.dataset.copyAlso, edited: false }).catch(() => {});
+    caseEvent("letter.copied", null, { also: b.dataset.copyAlso, template: Boolean(also.template), edited: false }).then(loadCase).catch(() => {});
+  });
+  on("[data-also]", "toggle", (d) => { if (d.open) S.openAlso = d.dataset.also; else if (S.openAlso === d.dataset.also) S.openAlso = null; });
+  on("[data-also-set]", "change", async (el) => {  // the guarantee's scope and an amount only the handler enters
+    S.openAlso = el.closest("[data-also]").dataset.also;
+    const value = el.value.trim();
+    if (!value) return;
+    S.lastEdit = await edit({ op: "set_fact", args: { fact: el.dataset.alsoSet, value }, reason: "", reason_code: "none", recheck: false }).catch(() => S.lastEdit);
+    await loadCase();
   });
   on("[data-set-fact]", "click", (b) => { S.pick = { fact: b.dataset.setFact, value: b.dataset.value }; renderCase(); });
   on("[data-reason]", "click", async (b) => {

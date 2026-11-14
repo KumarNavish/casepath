@@ -475,7 +475,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         completed = current["run"]
         study = (current["case"].get("intake") or {}).get("study")
         logged = None if study else store.list_case_events(case_id)  # a study copy shows its frozen run as it was
-        listed = build_items(current, (completed or {}).get("result"), store.list_files(case_id), logged)  # everything the case's screens and exports assert
+        # at the mandate and handling stages the files' text is read too: the summary for the firm, the customer's IBAN and
+        # the cost check name the page they come from
+        stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
+        texts = store.list_files(case_id, with_text=True) if stage in {"mandat", "abwicklung"} else None
+        listed = build_items(current, (completed or {}).get("result"), texts or store.list_files(case_id), logged)  # everything the case's screens and exports assert
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
                  or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
@@ -492,14 +496,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         draft = None
         if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
             kind = "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")  # a closing in silence has its own (no) letter
-            ctx = letters.context(current["case"], listed, events, clock, files, evaluation=current["evaluation"], process=current["process"])
+            ctx = letters.context(current["case"], listed, events, clock, texts or files, evaluation=current["evaluation"], process=current["process"])
             text, none = letters.render(kind, forms, ctx)
-            draft = {"kind": action.get("action"), "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none,
+            draft = {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none,
                      "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
                      # parts the law or the conditions require: copying is refused while one is missing (cover.py)
                      "required": cover.required_for(kind, current.get("facts")),
-                     "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": cover.required_for(k, current.get("facts"))}
-                              for k in cover.accompanying(kind) if k in forms]}
+                     # what goes out with it, each opened and copied on its own: the mandate package, the fee-note letters, and a
+                     # template for the customer's own letter (marked as the customer's, never sent by the insurer)
+                     "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": cover.required_for(k, current.get("facts")),
+                               **({"set": forms[k]["set"]} if forms[k].get("set") else {})} for k in letters.accompanying(kind, forms, listed)]
+                             + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "text": i["text"], "required": [], "template": True}
+                                for i in listed if i["kind"] == "customer_letter" and kind in (i.get("offered_with") or ())]}
         # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
         new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
         changes = None
@@ -514,7 +522,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "historic": historic_file(files, current["case"].get("created_at"), events),
                 "new_files": new_files, "changes": changes,
-                "file_note": letters.file_note(current["case"], listed, events, clock, files) if completed else None,
+                "file_note": letters.file_note(current["case"], listed, events, clock, files, package=[(draft["form"], draft["title"])] + [(a["kind"], a["title"]) for a in draft["also"]]
+                                               if draft and draft.get("also") else None) if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
                 "case": shown_case, "files": store.list_files(case_id),
                 "run": completed if (current["case"].get("intake") or {}).get("study") else store.latest_run(case_id),

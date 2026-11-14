@@ -7,7 +7,7 @@ A form with no draft says why ("kein Entwurf: …").
 import re
 from datetime import date
 
-from . import area, cover
+from . import area, cover, customer_letters, mandate, settlement
 from .clock import as_of, parse_date
 
 # Protekta's forms, from the handler's tenancy-defect workflow: the letters of any workflow that brings none of its own.
@@ -169,6 +169,7 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     day = today or as_of(files)
     dates = [x for x in (set_date_line(i, day) for i in items if i["kind"] == "deadline") if x]  # an open date others set
     hints += [{"value": x} for x in dates]
+    hints += [{"value": x} for x in customer_letters.referrals(items, "A1")]  # a template for the customer's own letter goes with it
     listed = request_list(items, events, evaluation, process) if evaluation else [f"– {label(i)}" for i in docs]
     points = [i for i in items if i["kind"] == "key_point" and i.get("value") == "applies"]
     in_case = [f"{i['follows'].rstrip('.')} ({i['legal_basis']})." for i in points[:3]] + dates  # what applies, each with its article
@@ -215,6 +216,11 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "avb_ziffer": gap("Ziffer der AVB"),
         # the clause by the edition of the conditions that applies, the parts only the handler can write (cover.py)
         **cover.letter_context(items),
+        # the assessment refers in one sentence to each template for the customer's own letter (customer_letters.py)
+        "vorlage_hinweis": " ".join(customer_letters.referrals(items, "A5")),
+        # the mandate package and the fee-note letters (mandate.py), the settlement's letters (settlement.py)
+        **mandate.letter_context(case, items, files, day),
+        **settlement.letter_context(items),
     }
 
 
@@ -238,6 +244,10 @@ def render(kind, forms, ctx):
     if form.get("asks") and not any(filled(name) for name in form["asks"]):
         return None, form.get("empty") or NOTHING
     frame = forms.get("_frame") or {"head": [], "tail": []}
+    if form.get("frame") is False:  # a summary or a form that is no letter: no reference, greeting or closing
+        frame = {"head": [], "tail": []}
+    if form.get("anrede"):  # a letter to a firm or the other side greets them, not the customer
+        ctx = {**ctx, "anrede": form["anrede"]}
     fill = lambda text: text.format(**ctx)
     kept = [p for p in form["parts"] if not PLACEHOLDER.findall(p) or any(filled(n) for n in PLACEHOLDER.findall(p))]
     body = [fill(p) for p in kept]
@@ -251,8 +261,17 @@ def render(kind, forms, ctx):
     return "\n".join(lines).strip(), None
 
 
-def file_note(case, items, events, follow_up, files=(), runs_done=None):
-    """One paragraph for the case system: received, decided and why, sent, awaited. Only from what is stored."""
+def accompanying(kind, forms, items=()):
+    """The forms that go out with an action's letter, each copied on its own: the mandate package's cost guarantee, summary
+    and the customer's information; the fee-note query and partial refusal while the cost check is shown (``with_item``)."""
+    have = {i["item_id"] for i in items or ()}
+    return [k for k, f in (forms or {}).items() if isinstance(f, dict) and f.get("accompanies") == kind
+            and (not f.get("with_item") or f["with_item"] in have)]
+
+
+def file_note(case, items, events, follow_up, files=(), runs_done=None, package=None):
+    """One paragraph for the case system: received, decided and why, sent, awaited. Only from what is stored.
+    ``package``: the titles of the letters that go out together (the mandate package), each copied on its own."""
     label = lambda i: (i.get("label") or {}).get("de") or i["key"]
     received = [f.get("name") for f in files or () if f.get("name")]
     decided = []
@@ -278,6 +297,14 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None):
                      + (f" vom {max(last).strftime('%d.%m.%Y')}" if last else "") + " angekündigt; kein weiteres Schreiben.")
     if unticked:
         parts.append(f"Nicht verlangt (von der Fallbearbeitung gestrichen): {', '.join(unticked)}.")
+    if package and len(package) > 1:  # every letter of the package, and which of them were copied
+        copied = {e.get("also") or e.get("form") for e in events or () if e.get("kind") == "letter.copied"}
+        facts = {i["key"]: i.get("value") for i in items if i["kind"] == "fact"}
+        scope, row = mandate.scope(facts)
+        amount = mandate.amount_text(facts.get("kostengutsprache_betrag"))
+        named = [f"{title}" + (f" (Umfang: {row['text']}; " + (f"begrenzt auf CHF {amount})" if amount else "nach den bekannten Modalitäten, ohne Betrag)")
+                               if kind == "A10_kostengutsprache" else "") + (" – kopiert" if kind in copied else "") for kind, title in package]
+        parts.append(f"Paket ({len(package)} Schreiben, je einzeln): {'; '.join(named)}.")
     if sent:
         parts.append(f"Versandt: Schreiben vom {_day(sent[-1].get('at'))}" + (" (angepasst)" if sent[-1].get("edited") else "") + ".")
     if docs or due:

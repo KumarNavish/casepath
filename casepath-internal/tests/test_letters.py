@@ -39,9 +39,13 @@ class LetterTests(unittest.TestCase):
             self.assertNotIn("{", text, kind)
             self.assertNotIn("…", text, kind)
             self.assertNotIn("\n\n\n", text, kind)  # no empty line where a part was
-            self.assertIn("Unsere Referenz: 1234.5678.9012", text)
-            self.assertIn("Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens.", text)
+            if form.get("frame") is not False:  # the summary for the firm is no letter
+                self.assertIn("Unsere Referenz: 1234.5678.9012", text)
+                self.assertIn("Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens.", text)
             for part in form["parts"]:
+                names = re.findall(r"\{([a-z_]+)\}", part)
+                if names and not any(str(ctx.get(n) or "").strip() for n in names):
+                    continue  # a part whose placeholders are all empty is left out (an amount the handler did not enter)
                 fixed = [bit for bit in re.split(r"\{[a-z_]+\}", part) if len(bit.strip()) > 12]
                 for bit in fixed:  # every fixed sentence of the form is in the draft
                     self.assertIn(bit.strip().split("\n")[0], text, f"{kind}: {bit[:40]}")
@@ -87,8 +91,10 @@ class GapTests(unittest.TestCase):
         self.assertTrue(letters.has_gap(a5))
         a8, _ = letters.render("A8", WF["forms"], bare)
         self.assertIn("[bitte ergänzen: was in diesem Fall vorliegt]", a8)  # no stored text: a gap, not a made-up paragraph
-        for kind in ("A1", "A4", "A6", "A7", "A10", "A12"):  # filled from what the case asserts: no gap
+        for kind in ("A1", "A4", "A6", "A7", "A12"):  # filled from what the case asserts: no gap
             self.assertFalse(letters.has_gap(letters.render(kind, WF["forms"], with_summary)[0]), kind)
+        a10 = letters.render("A10", WF["forms"], with_summary)[0]  # the file names no parties: the request says so
+        self.assertEqual(re.findall(r"\[bitte ergänzen: [^\]]*\]", a10), ["[bitte ergänzen: Name der Kundschaft]", "[bitte ergänzen: Gegenpartei]"])
 
 
 class GreetingTests(unittest.TestCase):

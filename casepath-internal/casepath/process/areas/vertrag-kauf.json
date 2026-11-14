@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "vertrag-kauf",
- "version": "2026-11-14.6",
- "backbone": "2026-11-14.6",
+ "version": "2026-11-14.7",
+ "backbone": "2026-11-14.7",
  "short_title": "Kauf mit Mangel",
  "title": "Kauf mit Mangel, auch Occasionsfahrzeug: Gewährleistung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -55,6 +55,9 @@
   {"id": "ausschluss", "statement": "Gewährleistung ausgeschlossen: ungültig nur bei Arglist", "question": "Gewährleistung ausgeschlossen? Dann Arglist prüfen", "when": {"fact": "ausschluss", "is": true}, "law": ["law#199"], "follows": "Ein Ausschluss der Gewährleistung, etwa «wie besichtigt», ist ungültig, wenn der Verkäufer den Mangel arglistig verschwiegen hat.", "check": "ob der Verkäufer den Mangel kannte (Werkstattberichte, frühere Reparaturen)", "answers": ["garantie", "ausschluss", "besichtigt"], "advice": false},
   {"id": "zusicherung", "statement": "Zugesicherte Eigenschaften: der Verkäufer haftet", "question": "Zusicherungen bekannt? Dann mit dem Zustand vergleichen", "when": {"fact": "zusicherungen", "known": true}, "law": ["law#197"], "follows": "Der Verkäufer haftet für die Eigenschaften, die er zugesichert hat, und dafür, dass die Sache keine Mängel hat, die ihren Wert oder ihre Tauglichkeit erheblich mindern.", "check": "Inserat, Kaufvertrag und Gespräche: was genau zugesichert wurde", "answers": ["zugesichert", "versprochen", "inserat"], "advice": false},
   {"id": "wahl", "statement": "Rückgängig machen oder Minderung wählen", "question": "Mangel angezeigt? Dann Wandelung oder Minderung", "when": {"fact": "angezeigt", "is": true}, "law": ["law#205"], "follows": "Sie können wählen, ob Sie den Kauf rückgängig machen oder den Minderwert der Sache ersetzt erhalten wollen.", "check": "Schwere des Mangels, Interesse der Kundschaft an der Sache, Reparaturkosten", "answers": ["zurück", "geld", "rückgängig", "minder", "preis"], "advice": "Sie können wählen, ob Sie den Kauf rückgängig machen oder den Minderwert der Sache ersetzt erhalten wollen"}
+ ],
+ "customer_letters": [
+  {"id": "maengelanzeige", "title": "Mängelanzeige an die Verkäuferschaft", "to": "die Verkäuferschaft", "to_dative": "der Verkäuferschaft", "when": {"any": [{"fact": "angezeigt", "is": false}, {"fact": "angezeigt", "known": false}]}, "subject": "Mängelanzeige", "fill": {"sache": "gekaufte Sache und Kaufdatum", "mangel": "Beschreibung des Mangels", "mangel_entdeckt": "Tag, an dem Sie den Mangel entdeckt haben"}, "parts": [{"text": "Ich habe bei Ihnen {sache} gekauft. Am {mangel_entdeckt} habe ich folgenden Mangel festgestellt: {mangel}.", "plain": true}, {"text": "Ich zeige Ihnen diesen Mangel hiermit an.", "law": ["law#201.3"]}, {"text": "Ich behalte mir meine Rechte vor, insbesondere den Kauf rückgängig zu machen oder Ersatz des Minderwertes zu fordern, und bitte Sie um Ihre Stellungnahme bis {frist}.", "law": ["law#205"]}], "sets": {"days": 14, "text": "vierzehn Tage für eine Stellungnahme", "basis": "prudence"}, "must_arrive": {"deadline": "maengelanzeige", "text": "Die Anzeige muss sofort nach der Entdeckung des Mangels erfolgen", "law": ["law#201.3"], "requires": ["sofort nach der Entdeckung"]}, "send": {"text": "Wir empfehlen, das Schreiben eingeschrieben zu senden und eine Kopie aufzubewahren, damit Sie den Tag der Anzeige belegen können", "basis": "prudence"}, "advice": [{"text": "Versäumen Sie die Anzeige, gilt die Sache auch rücksichtlich dieser Mängel als genehmigt", "law": ["law#201.3"], "requires": ["als genehmigt"]}]}
  ],
  "assessment": {
   "rights": {"text": "Grundsätzlich haftet der Verkäufer für zugesicherte Eigenschaften und dafür, dass die Sache keine Mängel hat, die ihren Wert oder ihre Tauglichkeit erheblich mindern (Art. 197 OR); der Käufer kann den Kauf rückgängig machen oder Ersatz des Minderwertes fordern (Art. 205 OR)."},

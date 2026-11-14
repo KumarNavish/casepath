@@ -10,9 +10,9 @@ import hashlib
 import json
 import re
 
-from . import cover, incoming, keypoints
+from . import cover, customer_letters, incoming, keypoints, mandate, settlement
 from .area import compute_deadline, open_ended_title, period_text, set_date, statutory_period
-from .clock import historic as historic_file, parse_date, silence
+from .clock import as_of, historic as historic_file, parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
 
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
@@ -341,6 +341,13 @@ def build_items(state, result, files=None, events=None):
             days = [d for c, ds in done.items() for d in ds if d]
             planned = {**planned, **({"since": max(days)} if days else {})}
         quiet = None if ev.get("outcome") else silence(graph.get("clock"), known_facts, files, stage=here.get("id"))  # nobody answered our last letter
+        # The insurer conducts the case and a settlement is reached: agreement, bank details once, payout, receipt, closing
+        # (settlement.py); the running account of the case plugs in as ``state["account"]`` once another module keeps it.
+        insured = customer_name(result)
+        settling = settlement.state(known_facts, rows, files, events, insured, state.get("account")) \
+            if settlement.applies(here.get("id"), known_facts) and not ev.get("outcome") else None
+        if settling and not quiet:
+            planned = settlement.planned(settling, known_facts)
         if quiet:
             planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": quiet.get("title") or kind_title(graph, quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
@@ -355,6 +362,8 @@ def build_items(state, result, files=None, events=None):
                        "follow_up": None, "skip_if": None, "reason": incoming.reason(open_items[0]) + (
                            f"; eine zweite Lesung der Akte ergab «{disputed['second_value']}», bitte prüfen"
                            if disputed.get("status") == "conflicting" and disputed.get("second_value") else "")}
+            if settling and open_items[0]["kind"]["id"] == "zahlung":  # the payment came in: the receipt step's letter
+                planned = {**planned, "form": "A11_eingang", "settlement": "eingang"}
         planned = cover.adjust(planned, known_facts, here.get("id"))  # prescribed letters: refusal for lack of prospects, demand before an ending
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
@@ -450,9 +459,26 @@ def build_items(state, result, files=None, events=None):
                 **({"advice": keypoints.advice_line(p)} if p.get("advice") else {}))
         # At the mandate and handling stages: the short facts the file establishes there, each with its source
         dated = incoming.document_dates(graph, result.get("facts"), files)
+        # A cost claim of the mandated firm is the open item: what the file shows about the guarantee, each line with its
+        # source or «nicht in der Akte», the last a question for the handler (mandate.py); the stage's own lines it repeats go
+        firm_claim = open_items[0] if open_items and mandate.is_firm_claim(open_items[0]) else None
+        checked = mandate.cost_check(known_facts, rows, files, firm_claim, dated, graph) if firm_claim else []
+        for line in checked + (settlement.lines(settling) if settling else []):
+            extra = {k: v for k, v in line.items() if k not in {"id", "text", "citations", "facts"}}
+            add("stage_line", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
+                node=here.get("id"), origin="workflow", chain=False, label=line["text"], facts=line.get("facts") or [], shown=True, **extra)
         for line in keypoints.stage_lines(graph, known_facts, rows, dated, here.get("id")):
+            if checked and line["id"] in {"kostengutsprache", "bericht", "kosten"}:
+                continue
             add("stage_line", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
                 node=here.get("id"), origin="workflow", chain=False, label=line["text"], facts=line["facts"], shown=True)
+        # Letters the customer sends in his own name, whose condition holds (customer_letters.py): offered with the
+        # assessment, and with the first request when the customer's own deadline is close
+        deadlines = [i for i in items if i["kind"] == "deadline"]
+        for t in customer_letters.evaluate(graph, known_facts, deadlines, insured, known_facts.get("gegenpartei"), as_of(files)):
+            add("customer_letter", t["id"], value="applies", stated_as="established", verdict=None, evidence=[], node=here.get("id"),
+                origin="law", chain=False, label=t["heading"], legal_basis=", ".join(t["cites"]), title=t["title"], text=t["text"],
+                to=t["to"], to_dative=t["to_dative"], template_kind=t["kind"], short=t["short"], due=t["due"], offered_with=t["offered_with"])
     brief = result.get("brief") or {}
     applying = keypoints.evaluate(graph, state.get("facts") or {}) if graph and ev else []
     for i, q in enumerate(brief.get("questions") or []):  # the customer's own questions, answered by a key point where one matches
@@ -502,6 +528,13 @@ def build_items(state, result, files=None, events=None):
 
 
 SHOWN_KINDS = {"next_action", "key_point", "stage_line", "deadline", "contact", "check"}
+
+
+def customer_name(result):
+    """The insured person's name as the brief states it, or None."""
+    from .letters import customer
+    p = customer([{"label": x.get("role"), "value": x.get("name")} for x in ((result or {}).get("brief") or {}).get("parties") or ()])
+    return (p or {}).get("value") or None
 
 
 # The hash covers what an expert judges: item_id, kind, key, value, stated_as, and by kind

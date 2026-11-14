@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "miete-kaution",
- "version": "2026-11-14.6",
- "backbone": "2026-11-14.6",
+ "version": "2026-11-14.7",
+ "backbone": "2026-11-14.7",
  "short_title": "Kaution und Rückgabe",
  "title": "Mietkaution und Rückgabe der Mietsache (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -50,6 +50,9 @@
   {"id": "zustimmung", "statement": "Bank zahlt nur mit Zustimmung oder Urteil aus", "question": "Fordert die Vermieterschaft? Dann Zustimmung zurückhalten", "when": {"fact": "forderung_vermieter", "is": true}, "law": ["law#257e.3"], "follows": "Die Bank gibt die Kaution nur mit Zustimmung beider Parteien oder gestützt auf einen rechtskräftigen Zahlungsbefehl oder ein Urteil heraus; stimmen Sie einer Auszahlung nur für anerkannte Beträge zu.", "check": "welche Beträge anerkannt sind und welche bestritten", "answers": ["kaution", "auszahl", "unterschreib", "zustimm"], "advice": "Bitte stimmen Sie einer Auszahlung der Kaution nur für Beträge zu, die Sie anerkennen; ohne Ihre Zustimmung zahlt die Bank nur gestützt auf einen rechtskräftigen Zahlungsbefehl oder ein Urteil aus", "stages": ["klaeren", "beurteilen", "vorgehen", "gegenpartei"]},
   {"id": "ruege", "statement": "Mängel nicht sofort gemeldet: Ansprüche verwirkt", "question": "Mängel bei der Rückgabe gemeldet? Sonst Ansprüche verwirkt", "when": {"fact": "maengel_gemeldet", "is": false}, "law": ["law#267a.2", "law#267a"], "follows": "Meldet die Vermieterschaft erkennbare Mängel bei der Rückgabe nicht sofort, verliert sie ihre Ansprüche dafür.", "check": "Rückgabeprotokoll, Datum der Mängelmeldung, ob es um versteckte Mängel geht", "answers": ["mangel", "schaden", "protokoll", "rückgabe"], "advice": false},
   {"id": "abnuetzung", "statement": "Nur übermässige Abnützung zu ersetzen", "question": "Fordert die Vermieterschaft? Dann Abnützung prüfen", "when": {"fact": "forderung_vermieter", "is": true}, "law": ["law#267"], "follows": "Sie müssen die Wohnung in dem Zustand zurückgeben, der sich aus dem vertragsgemässen Gebrauch ergibt; die normale Abnützung müssen Sie nicht bezahlen.", "check": "Alter und Lebensdauer der Einrichtungen, Zustand beim Einzug (Antrittsprotokoll)", "answers": ["abnütz", "streich", "bezahlen", "forderung"], "advice": false}
+ ],
+ "customer_letters": [
+  {"id": "freigabe", "title": "Verlangen der Freigabe der Mietkaution", "to": "die Vermieterschaft", "to_dative": "der Vermieterschaft", "when": {"all": [{"fact": "mietende", "known": true}, {"fact": "forderung_vermieter", "is": false}]}, "subject": "Freigabe der Mietkaution", "fill": {"objekt": "Adresse der Mietwohnung", "kaution": "Betrag der Kaution und Bank", "mietende": "Tag, an dem das Mietverhältnis endete"}, "parts": [{"text": "Das Mietverhältnis über die Wohnung {objekt} endete am {mietende}. Die Kaution ({kaution}) ist bei der Bank hinterlegt.", "plain": true}, {"text": "Da die Bank die Kaution nur mit Zustimmung beider Parteien herausgeben darf, bitte ich Sie, der Bank Ihre Zustimmung zur Freigabe zu geben und mir dies bis {frist} zu bestätigen.", "law": ["law#257e.3"]}], "sets": {"days": 30, "text": "30 Tage für die Zustimmung", "basis": "prudence"}, "send": {"text": "Wir empfehlen, das Schreiben eingeschrieben zu senden und eine Kopie aufzubewahren, damit Sie den Tag Ihres Verlangens belegen können", "basis": "prudence"}, "advice": [{"text": "Hat die Vermieterschaft innert einem Jahr nach Beendigung des Mietverhältnisses keinen Anspruch rechtlich geltend gemacht, können Sie die Rückerstattung direkt bei der Bank verlangen", "law": ["law#257e.3-jahr"], "requires": ["innert einem Jahr", "von der Bank"]}]}
  ],
  "assessment": {
   "rights": {"text": "Grundsätzlich ist die Kaution auf einem Konto auf den Namen der Mieterschaft hinterlegt; die Bank gibt sie mit Zustimmung beider Parteien heraus, und hat die Vermieterschaft innert einem Jahr nach Ende des Mietverhältnisses keinen Anspruch rechtlich geltend gemacht, kann die Mieterschaft sie von der Bank zurückverlangen (Art. 257e OR)."},
