@@ -123,6 +123,8 @@ def build_items(state, result, files=None):
                 ask = None
             elif d.get("offered") and row["required"] in {"yes", "depends"}:
                 ask = "proposed"  # practice is split: a mention of the missing document ticks it as its own line
+            elif row.get("partial") and d.get("when_partly_present") == "offer" and row["required"] in {"yes", "depends"}:
+                ask = "proposed"  # an open-ended need partly in the file: offered (from the law alone, no practice says to ask again)
             elif d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]):
                 ask = "proposed"  # practice: with evidence of this kind in the file, Protekta does not ask for more (4 of 5)
             elif graph.get("action_by_stage") and str(d.get("edit") or "").startswith("pb") and not d.get("knowledge"):  # an agent's guess
@@ -143,7 +145,8 @@ def build_items(state, result, files=None):
                 node=row.get("step"), origin=_origin(d), chain=True, label=row["title"], status=row["status"],
                 legal_basis=d.get("legal_basis") or row.get("legal_basis"),
                 required=row["required"], ask=ask, part_of=part_of.get(row["document"]),
-                reason=(f'{_in_file(files, d["offered_when_in_file"]["kinds"])} Fotos/Protokolle liegen vor'
+                reason=("liegt teilweise vor" if row.get("partial") and d.get("when_partly_present") == "offer" else
+                        f'{_in_file(files, d["offered_when_in_file"]["kinds"])} Fotos/Protokolle liegen vor'
                         if d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]) else
                         note if row["status"] in {"unusable", "missing"} and note else None),
                 **({"partial": row["partial"]} if row.get("partial") else {}))

@@ -24,6 +24,7 @@
   {"id": "mietende", "type": "date", "question": "Wann endete das Mietverhältnis?", "source_refs": ["law#257e.3-jahr"]},
   {"id": "rueckgabe", "type": "date", "question": "Wann wurde die Mietsache zurückgegeben?", "source_refs": ["law#267a"], "ask_customer": "offered", "customer_question": "Wann haben Sie die Wohnung zurückgegeben?"},
   {"id": "kaution", "type": "text", "question": "Wie hoch ist die Kaution und wo ist sie hinterlegt?", "source_refs": ["law#257e"]},
+  {"id": "abnahmeprotokoll", "type": "boolean", "question": "Wurde bei der Rückgabe ein Protokoll erstellt?", "source_refs": ["law#267a"], "ask_customer": "offered", "customer_question": "Wurde bei der Rückgabe der Wohnung ein Protokoll erstellt?"},
   {"id": "maengel_gemeldet", "type": "boolean", "question": "Hat die Vermieterschaft bei der Rückgabe Mängel gemeldet (z.B. im Rückgabeprotokoll)?", "source_refs": ["law#267a"], "ask_customer": "offered", "customer_question": "Wurden bei der Wohnungsabnahme Mängel festgehalten, und haben Sie das Protokoll unterschrieben?"},
   {"id": "forderung_vermieter", "type": "boolean", "question": "Macht die Vermieterschaft Forderungen geltend (Schäden, Nebenkosten)?", "source_refs": ["law#257e.3"], "ask_customer": true, "customer_question": "Verlangt die Vermieterschaft etwas von Ihnen (z.B. für Schäden oder Nebenkosten), und wenn ja wie viel?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist die Vermieterschaft oder Verwaltung?", "source_refs": ["practice#ablauf"]},
@@ -32,7 +33,7 @@
  "documents": [
   {"id": "mietvertrag", "title": "Mietvertrag", "why": "Zeigt die vereinbarte Sicherheit und den Zustand, in dem die Sache zurückzugeben ist (Art. 257e, 267 OR).", "source_refs": ["law#257e", "law#267"], "stage": "klaeren"},
   {"id": "kautionsbeleg", "title": "Bestätigung des Mietkautionskontos (oder der Kautionsversicherung)", "why": "Die Sicherheit muss auf einem Sparkonto oder Depot auf den Namen der Mieterschaft hinterlegt sein (Art. 257e OR).", "source_refs": ["law#257e"], "stage": "klaeren"},
-  {"id": "rueckgabeprotokoll", "title": "Rückgabeprotokoll (Wohnungsabnahme)", "why": "Bei der Rückgabe muss die Vermieterschaft Mängel sofort melden, sonst verliert sie ihre Ansprüche für erkennbare Mängel (Art. 267a OR).", "source_refs": ["law#267a", "law#267a.2"], "stage": "klaeren"},
+  {"id": "rueckgabeprotokoll", "title": "Rückgabeprotokoll (Wohnungsabnahme)", "why": "Bei der Rückgabe muss die Vermieterschaft Mängel sofort melden, sonst verliert sie ihre Ansprüche für erkennbare Mängel (Art. 267a OR).", "source_refs": ["law#267a", "law#267a.2"], "stage": "klaeren", "required_when": {"any": [{"fact": "abnahmeprotokoll", "is": true}, {"fact": "abnahmeprotokoll", "known": false}]}},
   {"id": "forderungen", "title": "Abrechnung oder Forderungen der Vermieterschaft", "why": "Die Bank gibt die Kaution nur mit Zustimmung beider Parteien oder gestützt auf einen rechtskräftigen Zahlungsbefehl oder ein Urteil heraus (Art. 257e OR).", "required_when": {"fact": "forderung_vermieter", "is": true}, "source_refs": ["law#257e.3"], "stage": "klaeren"},
   {"id": "korrespondenz", "title": "Korrespondenz mit der Vermieterschaft seit der Kündigung", "why": "Zeigt, welche Mängel wann gemeldet und welche Forderungen erhoben wurden (Art. 267a OR).", "source_refs": ["law#267a"], "stage": "klaeren"}
  ],

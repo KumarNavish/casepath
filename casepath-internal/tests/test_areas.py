@@ -15,7 +15,7 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "deadlines", "law", "laws"}
+NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws"}
 
 
 def intakes(*ids):
@@ -42,20 +42,21 @@ class CompositionTests(unittest.TestCase):
     # What the split changed on purpose: the clarifying stage's way out (silence, not incompleteness, ends benefits; a
     # replied case with its points answered goes to the assessment), three derived facts, and the assessment's
     # "bitte reichen Sie noch nach". Everything else is the former seed, field for field.
-    CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar"}
+    CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt"}
 
     def test_the_composed_tenancy_defect_workflow_is_the_seed_it_replaces_but_for_the_named_rule_change(self):
         composed = area.workflow("mietmangel-handler")
-        same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms", "clock"}}
+        same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms", "clock", "outcomes"}}
+        self.assertEqual([o for o in composed["outcomes"] if o["id"] != "erledigt"], FROZEN["outcomes"])  # plus: a settled matter closes
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"]], FROZEN["clock"])  # rules now name their stages
         self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.1"))  # stored runs: same id, newer version governs
         self.assertEqual([f for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
         unformed = lambda step: {**step, **({"action": {k: v for k, v in step["action"].items() if k != "form"}} if "action" in step else {})}
-        self.assertEqual([unformed(s) for s in composed["steps"] if s["id"] != "klaeren"], [s for s in FROZEN["steps"] if s["id"] != "klaeren"])
+        self.assertEqual([unformed(s) for s in composed["steps"] if s["id"] not in {"klaeren", "abschluss_erledigt"}], [s for s in FROZEN["steps"] if s["id"] != "klaeren"])
         self.assertEqual(next(s for s in composed["steps"] if s["id"] == "abschluss_still")["action"]["form"], "A12_still")  # no end of benefits
-        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k not in {"A5", "A12_still"}},
+        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k not in {"A5", "A12_still", "A12_erledigt"}},
                          {k: v for k, v in FROZEN["forms"].items() if k != "A5"})
         self.assertEqual((composed["forms"]["A1"]["needs"], composed["forms"]["A8"]["needs"]), ([], ["deckung", "vorgehen"]))
         self.assertEqual(composed["short_title"], "Mietmangel")
@@ -251,6 +252,50 @@ class OwnDeadlineTests(unittest.TestCase):
         nxt = {i["item_id"]: i for i in silent}["next_action:0"]
         self.assertEqual((nxt["action"], nxt.get("form")), ("A12", None))
         self.assertIn("Die Leistungen aus diesem Fall enden damit.", letters.render("A12", wf["forms"], letters.context({"id": "c", "title": "x"}, silent, [], None))[0])
+
+
+class BenchmarkFindingsTests(unittest.TestCase):
+    """General rules the model-free self-check of the synthetic benchmark asked for."""
+
+    def listed(self, wid, facts, documents=()):
+        result = {"facts": [fact(f, v) for f, v in facts], "documents": [document(d) for d in documents],
+                  "brief": {"request": "x", "parties": [], "timeline": []}}
+        state = core.evaluate(area.workflow(wid), [], [], result, "c")
+        return state, {i["item_id"]: i for i in build_items(state, result)}
+
+    def test_a_settled_matter_closes_unless_something_is_still_wanted_or_open(self):
+        base = [("rechtsgebiet", "Mietrecht / Mangel"), ("reaktion_vermieter", "Mangel behoben / Einigung"),
+                ("will_schadenersatz", False), ("streit_mietzins", False)]
+        state, listed = self.listed("mietmangel-handler", base)
+        self.assertEqual(state["evaluation"]["outcome"]["id"], "erledigt")
+        self.assertEqual((listed["next_action:0"]["action"], listed["next_action:0"]["form"]), ("A12", "A12_erledigt"))
+        self.assertIsNone(letters.render("A12_erledigt", area.workflow("mietmangel-handler")["forms"], {})[0])  # no letter
+        for open_ in ([("will_schadenersatz", True)], [("weiteres_gewuenscht", True)]):
+            facts = [f for f in base if f[0] not in {k for k, _ in open_}] + open_
+            self.assertEqual(self.listed("mietmangel-handler", facts)[1]["next_action:0"]["action"], "A1")
+        self.assertEqual(self.listed("allgemein", [("rechtsgebiet", "Übriges Recht"), ("erledigt_gemeldet", True)])[0]["evaluation"]["outcome"]["id"], "erledigt")
+
+    def test_an_open_ended_need_partly_in_the_file_is_offered_in_a_law_only_area(self):
+        _, listed = self.listed("allgemein", [("rechtsgebiet", "Übriges Recht")], ["korrespondenz"])
+        row = listed["document:korrespondenz"]
+        self.assertEqual((row["ask"], row["reason"]), ("proposed", "liegt teilweise vor"))
+
+    def test_documents_follow_what_the_customer_says(self):
+        loan = [("rechtsgebiet", "Vertragsrecht / Darlehen")]
+        _, listed = self.listed("vertrag-darlehen", loan)
+        self.assertNotEqual(listed["document:kuendigung_rueckforderung"]["ask"], "now")  # asked as a question first
+        self.assertIn("letter_question:rueckforderung_schriftlich", listed)
+        _, no = self.listed("vertrag-darlehen", loan + [("rueckforderung_schriftlich", False)])
+        self.assertNotIn("document:kuendigung_rueckforderung", no)
+        self.assertEqual(no["hint:aufforderung"]["legal_basis"], "Art. 318 OR")  # a demand starts the period
+        _, yes = self.listed("vertrag-darlehen", loan + [("rueckforderung_schriftlich", True)])
+        self.assertEqual(yes["document:kuendigung_rueckforderung"]["ask"], "now")
+        general = [("rechtsgebiet", "Übriges Recht")]
+        self.assertEqual(self.listed("allgemein", general)[1]["document:fristschreiben"]["ask"], "now")  # left open: asked
+        self.assertEqual(self.listed("allgemein", general + [("frist", "2026-12-01")])[1]["document:fristschreiben"]["ask"], "now")
+        self.assertNotIn("document:fristschreiben", self.listed("allgemein", general + [("frist", "none")])[1])
+        self.assertNotIn("document:rueckgabeprotokoll", self.listed("miete-kaution", [("rechtsgebiet", "Mietrecht / Kaution und Rückgabe"),
+                                                                                       ("abnahmeprotokoll", False)])[1])
 
 
 class DeadlineTests(unittest.TestCase):

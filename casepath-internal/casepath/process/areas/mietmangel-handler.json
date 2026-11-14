@@ -41,7 +41,7 @@
   {"id": "fachperson_beigezogen", "type": "boolean", "question": "Wurde eine Fachperson oder Messfirma beigezogen (Gutachten, Messung)?", "source_refs": ["practice#1of7", "law#259d"]},
   {"id": "mangel_gemeldet", "type": "boolean", "question": "Wurde der Mangel der Vermieterschaft gemeldet, in welcher Form auch immer (mit Datum)?", "source_refs": ["law#257g"]}
  ],
- "fact_order": ["rechtsgebiet", "will_beseitigung", "will_reduktion", "will_schadenersatz", "will_auszug", "deckung", "bisherige_handlungen", "handlung_a1", "handlung_a2", "handlung_a4", "handlung_a5", "handlung_a6", "handlung_a7", "a1_versandt", "anforderungen", "maengelruege_schriftlich", "mangel_seit", "mangel_besteht", "gegenpartei", "mietbeginn", "reaktion_vermieter", "streit_mietzins", "frist", "unterlagen_vollstaendig", "mitwirkung_fehlt", "kunde_still", "weiteres_vorgehen", "vorgehen", "einigung", "zahlung_erhalten", "fachperson_beigezogen", "anruf_offen", "mangel_gemeldet", "ein_punkt_offen", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar"],
+ "fact_order": ["rechtsgebiet", "will_beseitigung", "will_reduktion", "will_schadenersatz", "will_auszug", "deckung", "bisherige_handlungen", "handlung_a1", "handlung_a2", "handlung_a4", "handlung_a5", "handlung_a6", "handlung_a7", "a1_versandt", "anforderungen", "maengelruege_schriftlich", "mangel_seit", "mangel_besteht", "gegenpartei", "mietbeginn", "reaktion_vermieter", "streit_mietzins", "frist", "unterlagen_vollstaendig", "mitwirkung_fehlt", "kunde_still", "weiteres_vorgehen", "vorgehen", "einigung", "zahlung_erhalten", "fachperson_beigezogen", "anruf_offen", "mangel_gemeldet", "ein_punkt_offen", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt"],
  "documents": [
   {"id": "mietvertrag", "title": "Mietvertrag", "why": "Belegt Parteien, Mietobjekt und Mietzins (Art. 253 ff. OR).", "source_refs": ["law#253", "practice#6of7"], "stage": "klaeren"},
   {"id": "maengelruege", "title": "Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)", "why": "Die Mängelrechte entstehen ab der Meldung (Art. 257g, 259a OR).", "required_when": {"any": [{"fact": "maengelruege_schriftlich", "is": true}, {"fact": "maengelruege_schriftlich", "known": false}]}, "source_refs": ["law#257g", "practice#3of5-when-unknown", "practice#3of7"], "stage": "klaeren"},
@@ -67,5 +67,9 @@
  "deadlines": [],
  "notes": [],
  "summary": [],
- "open_questions": []
+ "open_questions": [],
+ "settled_when": {"fact": "reaktion_vermieter", "is": "Mangel behoben / Einigung"},
+ "claims_open_when": {
+  "any": [{"fact": "will_schadenersatz", "is": true}, {"fact": "streit_mietzins", "is": true}]
+ }
 }

@@ -25,7 +25,7 @@ import re
 import sys
 
 from .clock import parse_date
-from .workflows import FORMAT, CatalogueError, evaluate_condition, validate_workflow
+from .workflows import FORMAT, CatalogueError, _check_condition as check_condition, evaluate_condition, validate_workflow
 
 AREA_FORMAT, BACKBONE_FORMAT = "casepath.area/1", "casepath.backbone/1"
 AREAS = Path(__file__).with_name("areas")
@@ -207,18 +207,31 @@ def compose(backbone, module):
                          "label": LABELS.get((practice, m["status"]), "freigegeben"), "backbone": bb["version"]},
                 **{k: m[k] for k in ("supersedes", "builds_on", "fallback", "applies_when") if k in m},
                 "sources": bb["sources"] + m["sources"], "facts": facts, "start": bb["start"], "steps": steps,
-                "documents": [{k: v for k, v in d.items() if k != "stage"} for d in m["documents"]],
+                # an open-ended need partly in the file: practice says whether it is asked again; from the law alone it is offered
+                "documents": [{**{k: v for k, v in d.items() if k != "stage"},
+                               **({"when_partly_present": "offer"} if not practice and "when_partly_present" not in d and open_ended_title(d["title"]) else {})}
+                              for d in m["documents"]],
                 "outcomes": bb["outcomes"], "hints": hints,
                 **{k: m.get(k, []) for k in ("notes", "summary", "open_questions")},
                 "clock": bb["clock"], "forms": forms, "action_kinds": bb["action_kinds"], "cooperation": bb["cooperation"], "deadline_margin_days": bb.get("deadline_margin_days", 7),
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []), "deadlines": m["deadlines"],
+                "settled": {"when": m.get("settled_when"), "claims_open_when": m.get("claims_open_when")},
                 "law": {**{k: v for k, v in bb["law"].items()}, **m["law"]}, "laws": bb["laws"]}
     try:
-        return validate_workflow(workflow)
+        validate_workflow(workflow)
+        known = {f["id"]: f for f in workflow["facts"]}
+        for key, condition in workflow["settled"].items():
+            check_condition(condition, known, f"{key.replace('when', 'settled_when') if key == 'when' else key}")
+        return workflow
     except CatalogueError as error:
         raise CatalogueError(f"area {m['id']}: {error}") from error
+
+
+def open_ended_title(title):
+    """A need for all of something ("Sämtliche Korrespondenz …"), by its first word, as casegraph.open_ended reads it."""
+    return (re.findall(r"[A-Za-zÄÖÜäöüß]+", title) or [""])[0].lower() in {"sämtliche", "sämtlichen", "alle", "bisherige", "bisherigen"}
 
 
 def load(path):

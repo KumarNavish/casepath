@@ -24,6 +24,7 @@
   {"id": "schriftlich", "type": "boolean", "question": "Gibt es einen schriftlichen Darlehensvertrag oder eine Schuldanerkennung?", "source_refs": ["law#zgb-8"], "ask_customer": "offered", "customer_question": "Gibt es einen schriftlichen Vertrag oder eine Schuldanerkennung?"},
   {"id": "termin_vereinbart", "type": "boolean", "question": "Wurde ein Rückzahlungstermin oder eine Kündigungsfrist vereinbart?", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Wurde vereinbart, wann oder mit welcher Frist das Darlehen zurückzuzahlen ist?"},
   {"id": "zins", "type": "text", "question": "Wurde ein Zins verabredet, und welcher?", "source_refs": ["law#313"], "ask_customer": true, "customer_question": "Wurde ein Zins vereinbart, und wenn ja welcher?"},
+  {"id": "rueckforderung_schriftlich", "type": "boolean", "question": "Hat die Kundschaft das Darlehen schriftlich zurückgefordert oder gekündigt?", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Haben Sie das Darlehen schriftlich zurückgefordert oder gekündigt?"},
   {"id": "aufforderung", "type": "date", "question": "Wann wurde die Rückzahlung erstmals verlangt?", "source_refs": ["law#318"]},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist der Borger (die Gegenpartei)?", "source_refs": ["practice#ablauf"]},
   {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Gegenpartei, Betreibung, Gericht)?", "source_refs": ["practice#ablauf"]}
@@ -31,12 +32,13 @@
  "documents": [
   {"id": "darlehensvertrag", "title": "Darlehensvertrag oder Schuldanerkennung", "why": "Belegt die Übertragung der Summe und die Pflicht zur Rückerstattung (Art. 312 OR).", "required_when": {"not": {"fact": "schriftlich", "is": false}}, "source_refs": ["law#312"], "stage": "klaeren"},
   {"id": "auszahlungsbeleg", "title": "Beleg der Auszahlung (Bankauszug, Quittung)", "why": "Wer die Rückzahlung verlangt, muss die Übergabe des Geldes beweisen (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"},
-  {"id": "kuendigung_rueckforderung", "title": "Kündigung oder schriftliche Aufforderung zur Rückzahlung", "why": "Ist kein Termin vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen (Art. 318 OR).", "source_refs": ["law#318"], "stage": "klaeren"},
+  {"id": "kuendigung_rueckforderung", "title": "Kündigung oder schriftliche Aufforderung zur Rückzahlung", "why": "Ist kein Termin vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen (Art. 318 OR).", "source_refs": ["law#318"], "stage": "klaeren", "required_when": {"fact": "rueckforderung_schriftlich", "is": true}},
   {"id": "korrespondenz", "title": "Korrespondenz und Nachrichten mit der Gegenpartei (Briefe, E-Mails, Chats)", "why": "Zeigt Abreden über Rückzahlung und Zins und ob die Gegenpartei die Schuld anerkannt hat (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"}
  ],
  "hints": [
   {"id": "zins", "when": true, "text": "Im gewöhnlichen Verkehr ist ein Darlehen nur verzinslich, wenn Zinse verabredet sind.", "legal_basis": "Art. 313 OR", "source_refs": ["law#313"]},
-  {"id": "sechs_wochen", "when": {"fact": "termin_vereinbart", "is": false}, "text": "Ist für die Rückzahlung weder ein Termin noch eine Kündigungsfrist vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]}
+  {"id": "sechs_wochen", "when": {"fact": "termin_vereinbart", "is": false}, "text": "Ist für die Rückzahlung weder ein Termin noch eine Kündigungsfrist vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]},
+  {"id": "aufforderung", "when": {"fact": "rueckforderung_schriftlich", "is": false}, "text": "Ist kein Termin vereinbart, beginnt die Frist von sechs Wochen für die Rückzahlung erst mit der ersten Aufforderung; wir empfehlen, die Rückzahlung schriftlich, idealerweise per Einschreiben, zu verlangen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]}
  ],
  "stages": {
   "beurteilen": {"source_refs": ["law#312", "law#318"]}

@@ -30,7 +30,7 @@
   {"id": "vertrag_entscheid", "title": "Vertrag oder Entscheid, um den es geht", "why": "Grundlage der Ansprüche; wer aus einer Tatsache Rechte ableitet, muss sie beweisen (Art. 8 ZGB).", "required_when": {"not": {"fact": "vertrag", "is": false}}, "source_refs": ["law#zgb-8"], "stage": "klaeren"},
   {"id": "korrespondenz", "title": "Sämtliche Korrespondenz mit der Gegenpartei", "why": "Zeigt, was verlangt, angeboten und bestritten wurde (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"},
   {"id": "beweismittel", "title": "Beweismittel (z.B. Fotos, Belege, Namen und Kontaktangaben von Zeugen)", "why": "Wer aus einer Tatsache Rechte ableitet, muss sie beweisen (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"},
-  {"id": "fristschreiben", "title": "Schreiben, die eine Frist setzen (Gericht, Behörde, Gegenpartei), mit Couvert", "why": "Zeigt, ob und bis wann eine Frist läuft; bis zur Deckungsprüfung wahrt die Kundschaft sie selbst.", "source_refs": ["practice#ablauf"], "stage": "klaeren"}
+  {"id": "fristschreiben", "title": "Schreiben, die eine Frist setzen (Gericht, Behörde, Gegenpartei), mit Couvert", "why": "Zeigt, ob und bis wann eine Frist läuft; bis zur Deckungsprüfung wahrt die Kundschaft sie selbst.", "source_refs": ["practice#ablauf"], "stage": "klaeren", "required_when": {"any": [{"fact": "frist", "known": false}, {"not": {"fact": "frist", "is": "none"}}]}}
  ],
  "hints": [
   {"id": "beweis", "when": true, "text": "Wer aus einer Tatsache Rechte ableitet, muss sie beweisen; bitte bewahren Sie alle Belege und Schreiben auf.", "legal_basis": "Art. 8 ZGB", "source_refs": ["law#zgb-8"]}

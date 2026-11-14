@@ -388,6 +388,12 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
             last = bearing[-1] if bearing else None
             out[fact] = (len(bearing) >= rules["min_requests"] and look > last[0] + timedelta(days=rules["requests"][last[1]])
                          and received_after(files, last[0], rules["insurer"]) is False)
+    for fact, kind in kinds.items():
+        if kind == "settled":  # settled by the file or the area's own facts, nothing further wished, no claim or payment open
+            settled = graph.get("settled") or {}
+            done = out.get("erledigt_gemeldet") is True or (settled.get("when") is not None and evaluate_condition(settled["when"], out) is True)
+            claims = settled.get("claims_open_when")
+            out[fact] = done and out.get("weiteres_gewuenscht") is not True and (claims is None or evaluate_condition(claims, out) is not True)
     evaluation = evaluate(out)
     needed = [d for d in evaluation["documents"] if d["required"] == "yes"]
     complete = bool(needed) and all(d["status"] == "present" or d["document"] in (partial or {}) for d in needed)
