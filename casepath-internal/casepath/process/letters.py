@@ -73,7 +73,7 @@ def request_list(items, events, evaluation, process):
     for d in ask:
         if part_of(d["document"]):
             continue
-        line = f"– {d['title']}"
+        line = f"– {((by_key.get(d['document']) or {}).get('label') or {}).get('de') or d['title']}"  # «Weitere …» when partly there
         if parts(d):
             line += ", insbesondere " + ", ".join(x["title"] for x in parts(d))
         if d.get("required") == "depends" and d.get("questions"):
@@ -82,19 +82,33 @@ def request_list(items, events, evaluation, process):
     return out
 
 
-INSURED = ("versichert", "vn", "kund", "mieter", "tenant", "customer", "insured")
+INSURED = ("versichert", "vn", "kund", "mieter", "arbeitnehmer", "geschädigt", "tenant", "customer", "insured")
+
+
+NAME = re.compile(r"[A-ZÄÖÜ][\w'-]+(?:\s+(?:von|van|de|di|da|del|der|du|le|la)?\s*[A-ZÄÖÜ][\w'-]+)+")
+COMPANY = re.compile(r"\b(AG|GmbH|SA|Sàrl|AG\.|Genossenschaft|Verwaltung|Immobilien|Versicherung|Kanzlei|Stiftung|Verein)\b", re.I)
+
+
+def customer(parties):
+    """The insured person among the brief's parties (by role), or None."""
+    for p in parties or ():
+        role = str(p.get("label") or p.get("role") or "").lower()
+        if any(word in role for word in INSURED) and "vermiet" not in role and "versicherer" not in role:
+            return p
+    return None
 
 
 def greeting(parties):
-    """The greeting Protekta's letters use ("Sehr geehrte Frau …" / "Sehr geehrter Herr …"), only when the file states the
-    insured person's salutation and name; otherwise the generic one. A salutation is never guessed from a first name."""
-    for p in parties or ():
-        role, name = str(p.get("label") or "").lower(), str(p.get("value") or "").strip()
-        if not any(word in role for word in INSURED) or "vermiet" in role:
-            continue
-        m = re.fullmatch(r"(Frau|Herr)\s+(?:[A-ZÄÖÜ][\w.-]*\s+)*([A-ZÄÖÜ][\w-]+)", name)
-        if m:
-            return f"Sehr geehrte Frau {m.group(2)}" if m.group(1) == "Frau" else f"Sehr geehrter Herr {m.group(2)}"
+    """The greeting Protekta's letters use: «Sehr geehrte Frau …» / «Sehr geehrter Herr …» when the file states the insured
+    person's salutation and name; «Guten Tag <Vorname Nachname>» when it states the full name without a salutation;
+    otherwise the generic one. A salutation is never guessed from a first name."""
+    p = customer(parties)
+    name = str((p or {}).get("value") or (p or {}).get("name") or "").strip()
+    m = re.fullmatch(r"(Frau|Herr)\s+(?:[A-ZÄÖÜ][\w.-]*\s+)*([A-ZÄÖÜ][\w-]+)", name)
+    if m:
+        return f"Sehr geehrte Frau {m.group(2)}" if m.group(1) == "Frau" else f"Sehr geehrter Herr {m.group(2)}"
+    if NAME.fullmatch(name) and not COMPANY.search(name) and "geschw" not in name.lower():
+        return f"Guten Tag {name}"
     return "Sehr geehrte Damen und Herren"
 
 
@@ -116,6 +130,19 @@ def statutory(item):
     return f"{what} «{title}»: Das genaue Datum prüfen wir noch; bitte handeln Sie umgehend."
 
 
+def set_date_line(item, today=None):
+    """A date a court, an authority or the other side set for the customer, as the first letter mentions it; None when
+    it has passed or is not such a date."""
+    day = parse_date(item.get("value"))
+    if not item.get("set_by_others") or not day or day < (today or date.today()):
+        return None
+    by = item.get("by")
+    source = item.get("source")
+    return (f"Wir haben vermerkt: {item.get('what')} am {day.strftime('%d.%m.%Y')}"
+            + (f", angesetzt von {by}" if by else "") + (f" ({source})" if source else "")
+            + ". Dieser Termin gilt unabhängig von unserer Prüfung; bitte nehmen Sie ihn wahr oder melden Sie sich umgehend, falls dies nicht möglich ist.")
+
+
 def context(case, items, events, follow_up, files=(), today=None, evaluation=None, process=None):
     label = lambda i: (i.get("label") or {}).get("de") or i.get("value") or i["key"]
     facts = {i["key"]: i for i in items if i["kind"] == "fact"}
@@ -131,7 +158,14 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     hints = [i for i in items if i["kind"] == "hint" and lines.get(i["item_id"], i.get("stated_as") != "put_to_handler")]
     hints += [{"value": statutory(i), "legal_basis": i.get("legal_basis")} for i in items  # a statutory deadline of the area
               if i["kind"] == "deadline" and i.get("origin") == "law" and lines.get(i["item_id"], True)]
+    day = today or as_of(files)
+    dates = [x for x in (set_date_line(i, day) for i in items if i["kind"] == "deadline") if x]  # an open date others set
+    hints += [{"value": x} for x in dates]
     listed = request_list(items, events, evaluation, process) if evaluation else [f"– {label(i)}" for i in docs]
+    points = [i for i in items if i["kind"] == "key_point" and i.get("value") == "applies"]
+    in_case = [f"{i['follows'].rstrip('.')} ({i['legal_basis']})." for i in points[:3]] + dates  # what applies, each with its article
+    stated = {i["key"] for i in points[:3]}
+    questions_asked = [i for i in items if i["kind"] == "customer_question" and i.get("value")]
     came = (next((i for i in items if i["kind"] == "next_action"), None) or {}).get("incoming") or {}  # what came in, as read
     came_quote = next((e["quote"] for e in (facts.get(came.get("fact")) or {}).get("evidence") or () if e.get("quote")), None)
     return {
@@ -150,6 +184,12 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         # What only the reading or the handler can say: the stored text when there is one, otherwise a marked gap that
         # blocks copying the letter until it is filled or removed; never an invented sentence.
         "anliegen": summary or gap("was in diesem Fall vorliegt"),
+        # the assessment's «in your case» starts from the key points that apply, then what only the handler can say
+        "im_fall": "\n".join(in_case + [gap("was in diesem Fall sonst vorliegt")]) if in_case else summary or gap("was in diesem Fall vorliegt"),
+        # each of the customer's questions, answered by the key point that matches (by reference when stated above), else a gap
+        "zu_fragen": "\n".join(["Zu Ihren Fragen:"] + [f"– «{i['value']}» " + (
+            f"Siehe oben ({next(p['legal_basis'] for p in points if p['key'] == i['answered_by'])})." if i.get("answered_by") in stated
+            else i.get("answer") or gap("Antwort auf diese Frage")) for i in questions_asked]) if questions_asked else "",
         "empfehlung": gap("die Empfehlung an die Kundschaft"),
         # the assessment does not wait for every document: what is still missing is asked for in it
         "nachzureichen": "\n".join(["Bitte reichen Sie uns noch nach:"] + [f"– {label(i)}" for i in docs]) if docs else "",
@@ -159,7 +199,7 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "verlangt": "\n".join(f"– {label(i)}" for i in missing) or "– (Unterlagen gemäss unserem Schreiben)",
         "vorhanden": ", ".join(label(i) for i in present) or "gemäss Akten",
         "gegenpartei": next((p["value"] for p in parties if p.get("value") and "mieter" not in str(p.get("label") or "").lower()), "…"),
-        "heute": (today or as_of(files)).strftime("%d.%m.%Y"),
+        "heute": day.strftime("%d.%m.%Y"),
         # an end of benefits on the mandated firm's report: its date and its own words on what was withheld, as read; the
         # clause of the general conditions is the handler's to fill in, never invented
         "eingang_datum": _day(came.get("date")) or gap("Datum der Meldung der Kanzlei"),

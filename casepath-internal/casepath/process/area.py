@@ -25,7 +25,7 @@ from pathlib import Path
 import re
 import sys
 
-from . import cover, incoming
+from . import cover, incoming, keypoints
 from .clock import parse_date
 from .workflows import FORMAT, CatalogueError, _check_condition as check_condition, evaluate_condition, validate_workflow
 
@@ -144,6 +144,10 @@ def validate_backbone(backbone):
     if "or" not in (backbone.get("counting") or {}):
         raise CatalogueError("backbone: the counting rules need «or», the default of every deadline")
     facts = {f["id"] for f in backbone["facts"]}
+    steps = {s["id"] for s in backbone["steps"]}
+    for f in backbone["facts"]:  # a handler's decision names the stages it belongs to: only there is it asked
+        if "stages" in f and (not isinstance(f["stages"], list) or not f["stages"] or set(f["stages"]) - steps):
+            raise CatalogueError(f"backbone: fact {f['id']!r}: stages must name stages of the backbone")
     for kind, row in backbone["action_kinds"].items():
         if not re.fullmatch(r"A\d{1,2}", kind) or any(f not in facts for f in row.get("depends_on", [])):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
@@ -295,6 +299,7 @@ def validate_module(module, backbone):
     for stage in module.get("stages", {}):
         if stage not in stages:
             raise CatalogueError(f"{where}: unknown stage {stage!r}")
+    keypoints.validate(module, law, where)  # a key point needs a condition, an article with its passage and a statement
     for part in ("rights", "conditions", "demand"):
         if not str((module["assessment"].get(part) or {}).get("text") or "").strip():
             raise CatalogueError(f"{where}: the assessment needs {part}")
@@ -351,6 +356,10 @@ def compose(backbone, module):
                       "documents": [d["id"] for d in m["documents"] if d.get("stage", "klaeren") == step["id"]],
                       **({"suggestions": extra["suggestions"]} if extra.get("suggestions") else {})})
     facts = m["facts"]
+    set_dates = bb.get("set_dates") or {}
+    for f in facts:  # the question about a running deadline also carries a date others set: what is due, who set it, where
+        if f.get("deadline") and set_dates.get("question"):
+            f["question"] = f"{f['question'].rstrip()} {set_dates['question']}"
     for d in m["deadlines"]:  # an open trigger date is a question in the first request
         trigger = next(f for f in facts if f["id"] == d["trigger"])
         trigger.setdefault("ask_customer", True)
@@ -398,6 +407,7 @@ def compose(backbone, module):
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []),
+                "key_points": m.get("key_points", []),  # what a specialist looks for first (keypoints.py)
                 # each deadline carries the counting rule of its procedure (the backbone's table), so a stored run keeps it
                 "deadlines": [{**d, "counting": d.get("counting", "or"), "counting_rule": bb["counting"][d.get("counting", "or")]} for d in m["deadlines"]],
                 "stage_actions": True,  # a stage with an action is left only once it is done or a way out says it is not needed
@@ -410,6 +420,8 @@ def compose(backbone, module):
         known = {f["id"]: f for f in workflow["facts"]}
         for key, condition in workflow["settled"].items():
             check_condition(condition, known, f"{key.replace('when', 'settled_when') if key == 'when' else key}")
+        for point in workflow["key_points"]:
+            check_condition(point["when"], known, f"key point {point['id']}")
         return workflow
     except CatalogueError as error:
         raise CatalogueError(f"area {m['id']}: {error}") from error
@@ -489,6 +501,20 @@ def agreed_period(text):
     found = [(int(n) if n.isdigit() else NUMBERS.get(n), unit) for n, unit in found]
     found = [(n, u) for n, u in found if n]
     return {UNITS[found[0][1]]: found[0][0]} if len(found) == 1 else None
+
+
+SET_DATE = re.compile(r"\s*(\d{4}-\d{2}-\d{2})\s*(?:·\s*(.*))?", re.S)
+
+
+def set_date(value):
+    """A date a court, an authority or the other side set for the customer, as a deadline fact records it:
+    «2025-04-23 · Schlichtungsverhandlung · Schlichtungsbehörde Bern · Vorladung» → {date, what, by, source}; a bare date
+    gives only the date. None for anything else (a stated period, «none»)."""
+    m = SET_DATE.fullmatch(str(value or ""))
+    if not m:
+        return None
+    parts = [p.strip() for p in (m.group(2) or "").split("·")] + ["", "", ""]
+    return {"date": m.group(1), "what": parts[0] or None, "by": parts[1] or None, "source": parts[2] or None}
 
 
 STATED_PERIOD = re.compile(r"(\d{1,3}) (days|weeks|months|years) (from|before) (\d{4}-\d{2}-\d{2})")
@@ -696,6 +722,8 @@ def describe(workflow):
     lines.append(f"  {len(workflow['documents'])} Unterlagen: " + "; ".join(d["title"] for d in workflow["documents"]))
     lines.append(f"  {len(workflow['hints'])} Hinweise, {len(workflow.get('deadlines', []))} Fristen: "
                  + "; ".join(f"{d['title']} ({d['basis']})" for d in workflow.get("deadlines", [])))
+    points = workflow.get("key_points") or []
+    lines.append(f"  {len(points)} Kernpunkte: " + "; ".join(f"{p['statement']} ({(workflow['law'].get(str(p['law'][0]).split('#')[-1]) or {}).get('cite')})" for p in points))
     lines.append(f"  Zitate: {ok} am amtlichen Text geprüft, {unchecked} nicht geprüft"
                  + (": " + ", ".join(r["cite"] for r in workflow["law"].values() if not r.get("verified")) if unchecked else ""))
     return lines

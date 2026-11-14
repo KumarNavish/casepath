@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "schaden-unfall",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Unfall und Schadenersatz",
  "title": "Schadenersatz und Genugtuung nach einem Unfall: Haftung, Personen- und Sachschaden, Verjährung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -64,6 +64,13 @@
   "klaeren": {"source_refs": ["law#42"]},
   "beurteilen": {"source_refs": ["law#41", "law#44", "law#46", "law#47", "law#60"]}
  },
+ "key_points": [
+  {"id": "halter", "statement": "Motorfahrzeug: Halterhaftung, direkt gegen den Versicherer", "question": "Motorfahrzeug beteiligt? Dann Halterhaftung", "when": {"fact": "motorfahrzeug", "is": true}, "law": ["law#svg-58", "law#svg-65"], "follows": "Beim Betrieb eines Motorfahrzeugs haftet die Halterin oder der Halter für den Schaden, und Sie können Ihre Forderung direkt bei deren Haftpflichtversicherung geltend machen.", "check": "Halter und Haftpflichtversicherung, Entlastungsgründe der Gegenseite", "answers": ["versicherung", "zahlt", "wer", "haft"]},
+  {"id": "mitverschulden", "statement": "Mitverschulden: Kürzung möglich", "question": "Mitverschulden vorgeworfen? Dann Kürzung prüfen", "when": {"fact": "mitverschulden", "is": true}, "law": ["law#44"], "follows": "Hat Ihr eigenes Verhalten zum Schaden beigetragen, kann der Ersatz herabgesetzt werden.", "check": "was die Gegenseite genau vorwirft, Polizeirapport, Zeugen", "answers": ["schuld", "mitschuld", "kürz"]},
+  {"id": "erwerbsausfall", "statement": "Arbeitsunfähig: Erwerbsausfall und Heilungskosten ersetzbar", "question": "Arbeitsunfähig? Dann Erwerbsausfall berechnen", "when": {"fact": "arbeitsunfaehig", "is": true}, "law": ["law#46"], "follows": "Eine Körperverletzung gibt Anspruch auf Ersatz der Kosten und auf Entschädigung für die Nachteile der Arbeitsunfähigkeit.", "check": "Arztzeugnisse, Lohn vor dem Unfall, Leistungen der Unfall- und Krankenversicherung", "answers": ["lohn", "verdienst", "arbeit", "kosten"]},
+  {"id": "genugtuung", "statement": "Körperverletzung: Genugtuung möglich", "question": "Verletzt? Dann Genugtuung prüfen", "when": {"fact": "koerperverletzung", "is": true}, "law": ["law#47"], "follows": "Bei einer Körperverletzung kann eine Genugtuung zugesprochen werden, wenn die besonderen Umstände es rechtfertigen.", "check": "Schwere und Dauer der Verletzung, bleibende Folgen", "answers": ["genugtuung", "schmerzensgeld", "schmerz"]},
+  {"id": "strafbar", "statement": "Strafverfahren: längere Verjährung möglich", "question": "Strafverfahren gegen die Gegenseite? Dann Verjährung prüfen", "when": {"fact": "strafverfahren", "is": true}, "law": ["law#60.2"], "follows": "Hat die ersatzpflichtige Person mit dem Unfall eine strafbare Handlung begangen, verjährt der Anspruch frühestens mit der Strafverfolgung.", "check": "Stand des Strafverfahrens, Akteneinsicht, Beteiligung als Privatklägerschaft", "answers": ["straf", "anzeige", "verjähr"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich ist zum Ersatz verpflichtet, wer einem andern widerrechtlich, mit Absicht oder aus Fahrlässigkeit, Schaden zufügt (Art. 41 OR); bei einer Körperverletzung umfasst der Ersatz die Kosten und die Nachteile der Arbeitsunfähigkeit (Art. 46 OR), und es kann eine Genugtuung zugesprochen werden (Art. 47 OR)."},
   "conditions": {"text": "Voraussetzung ist, dass der Schaden bewiesen ist (Art. 42 OR) und der Anspruch nicht verjährt ist, in der Regel drei Jahre nach Kenntnis vom Schaden und von der ersatzpflichtigen Person (Art. 60 OR); hat die geschädigte Person selbst zum Schaden beigetragen, kann der Ersatz ermässigt werden (Art. 44 OR)."},

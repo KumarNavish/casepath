@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "privatversicherung",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Privatversicherung",
  "title": "Privatversicherung: Streit mit einer Versicherung über ihre Leistung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -55,6 +55,12 @@
   "klaeren": {"source_refs": ["law#vvg-41.1", "law#vvg-46.1"]},
   "beurteilen": {"source_refs": ["law#vvg-41.1", "law#vvg-45.1", "law#zgb-8"]}
  },
+ "key_points": [
+  {"id": "taggeld", "statement": "Kollektives Krankentaggeld: Verjährung nach zwei Jahren", "question": "Kollektives Taggeld? Dann Verjährung nach zwei Jahren", "when": {"fact": "kollektiv_taggeld", "is": true}, "law": ["law#vvg-46.3"], "follows": "Forderungen aus einer kollektiven Krankentaggeldversicherung verjähren zwei Jahre nach dem Ereignis, das die Leistungspflicht begründet.", "check": "Beginn der Arbeitsunfähigkeit, Unterbrechung der Verjährung", "answers": ["taggeld", "krank", "verjähr"]},
+  {"id": "beweis", "statement": "Ablehnung: Ereignis belegen, Ausschluss muss die Versicherung beweisen", "question": "Ablehnung bekannt? Dann Begründung an Police prüfen", "when": {"fact": "ablehnung", "known": true}, "law": ["law#zgb-8"], "follows": "Sie müssen den Eintritt des versicherten Ereignisses belegen; was die Versicherung zur Ablehnung berechtigen soll, etwa einen Ausschluss, muss sie beweisen.", "check": "Begründung der Ablehnung gegenüber Police und Bedingungen, Belege des Ereignisses", "answers": ["ablehn", "zahlt nicht", "warum", "recht"]},
+  {"id": "mitwirkung", "statement": "Verlangte Auskünfte innert Frist geben", "question": "Hat die Versicherung Unterlagen verlangt? Dann Frist beachten", "when": {"fact": "aufforderung", "is": true}, "law": ["law#vvg-39.2.2", "law#vvg-39.1"], "follows": "Hat die Versicherung schriftlich und unter Androhung der Säumnisfolgen Auskünfte oder Unterlagen verlangt, sind sie innert der gesetzten Frist einzureichen.", "check": "Datum und Frist der Aufforderung, was schon geliefert ist", "answers": ["unterlagen", "auskunft", "frist"]},
+  {"id": "faelligkeit", "statement": "Leistung vier Wochen nach vollständigen Angaben fällig", "question": "Angaben vollständig? Dann Fälligkeit berechnen", "when": {"fact": "angaben_vollstaendig", "known": true}, "law": ["law#vvg-41.1"], "follows": "Die Leistung der Versicherung wird vier Wochen nach dem Zeitpunkt fällig, in dem sie die Angaben erhalten hat, aus denen sie sich von der Richtigkeit des Anspruchs überzeugen kann.", "check": "wann die Versicherung alle Angaben hatte, Verzugszins danach", "answers": ["wann", "zahlung", "fällig"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich schuldet die Versicherung die im Vertrag versprochene Leistung; die Forderung wird vier Wochen fällig, nachdem die Versicherung die Angaben erhalten hat, aus denen sie sich von der Richtigkeit des Anspruchs überzeugen kann (Art. 41 VVG), und verjährt fünf Jahre nach dem Ereignis (Art. 46 VVG)."},
   "conditions": {"text": "Voraussetzung ist, dass das Ereignis nach Police und Bedingungen versichert ist und die Kundschaft es beweisen kann (Art. 8 ZGB); ein Rechtsnachteil wegen einer verletzten Obliegenheit tritt nicht ein, wenn die Verletzung unverschuldet war (Art. 45 VVG). Vor einer Klage findet in der Regel ein Schlichtungsversuch statt (Art. 197 ZPO)."},

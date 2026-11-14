@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "werkvertrag-bau",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Werkvertrag und Bau",
  "title": "Werkvertrag mit Handwerkern und Bauunternehmen: Mängel, Rügefristen, Verjährung, Bauhandwerkerpfandrecht (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -64,6 +64,11 @@
   "klaeren": {"source_refs": ["law#367", "law#370"]},
   "beurteilen": {"source_refs": ["law#368", "law#368.2", "law#370", "law#371", "law#371.2"]}
  },
+ "key_points": [
+  {"id": "ruege", "statement": "Mängel innert 60 Tagen rügen", "question": "Mängel gerügt? Sonst innert 60 Tagen", "when": {"fact": "geruegt", "is": false}, "law": ["law#370.4", "law#367.1bis"], "follows": "Mängel eines Baus, die bei der Abnahme nicht erkennbar waren, sind innert 60 Tagen nach ihrer Entdeckung anzuzeigen; sonst gilt das Werk als genehmigt.", "check": "Tag der Entdeckung und der Rüge, beweglich oder unbeweglich, vereinbarte SIA-Norm", "answers": ["rüg", "melden", "mangel"]},
+  {"id": "verbesserung", "statement": "Recht auf Verbesserung nicht wegbedingbar", "question": "Bau betroffen? Dann Nachbesserung verlangen", "when": {"fact": "unbeweglich", "is": true}, "law": ["law#368.2bis", "law#368.2"], "follows": "Bei Mängeln eines Baus kann der Anspruch auf unentgeltliche Verbesserung nicht zum Voraus ausgeschlossen werden, wenn es um eigenen oder familiären Gebrauch geht; Sie können Verbesserung oder einen Abzug am Preis verlangen.", "check": "eigener oder familiärer Gebrauch, vereinbarte Bedingungen, Frist zur Verbesserung", "answers": ["reparier", "nachbesser", "verbesser", "preis"]},
+  {"id": "pfandrecht", "statement": "Subunternehmer: Bauhandwerkerpfandrecht droht", "question": "Subunternehmer beteiligt? Dann Pfandrecht prüfen", "when": {"all": [{"fact": "subunternehmer", "is": true}, {"fact": "eigentuemer", "is": true}]}, "law": ["law#zgb-837.sub", "law#zgb-839"], "follows": "Auch Subunternehmer, die Sie nicht selbst beauftragt haben, können ein Pfandrecht an Ihrem Grundstück eintragen lassen, wenn sie nicht bezahlt werden; zahlen Sie den Unternehmer nur gegen Nachweis, dass die Subunternehmer bezahlt sind.", "check": "Rechnungen der Subunternehmer, Vollendung ihrer Arbeiten, Zahlungen an den Generalunternehmer", "answers": ["pfand", "subunternehm", "doppelt", "zahlen"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kann der Besteller bei Mängeln des Werkes einen dem Minderwert entsprechenden Abzug am Lohn machen, die unentgeltliche Verbesserung und bei Verschulden Schadenersatz verlangen und bei erheblichen Mängeln die Annahme verweigern (Art. 368 OR)."},
   "conditions": {"text": "Voraussetzung ist, dass die Mängel rechtzeitig angezeigt wurden, bei einem unbeweglichen Werk innert 60 Tagen (Art. 367, 370 OR), und die Ansprüche nicht verjährt sind, zwei Jahre nach der Abnahme, bei einem unbeweglichen Werk fünf Jahre (Art. 371 OR)."},

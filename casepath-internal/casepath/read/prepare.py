@@ -29,7 +29,7 @@ def _safe(name):
     return stem + Path(name).suffix.lower()
 
 
-def prepare_case(title, files, out_dir, *, intake=None, image_side=1400):
+def prepare_case(title, files, out_dir, *, intake=None, image_side=1400, source_name=None):
     """``files``: [(name, bytes)]. Writes the prepared case to ``out_dir`` and returns its manifest."""
     from .extract import extract
     from .reading import Renderer
@@ -67,7 +67,8 @@ def prepare_case(title, files, out_dir, *, intake=None, image_side=1400):
             (out / rel).write_bytes(small.getvalue())
             row["photo_image"] = rel
         rows.append(row)
-    manifest = {"format": FORMAT, "title": title, "intake": intake or {}, "files": rows}
+    # each file keeps the name it was given ("name"); only the stored copy has a name safe for any file system ("file")
+    manifest = {"format": FORMAT, "title": title, "intake": intake or {}, "files": rows, **({"source_name": source_name} if source_name else {})}
     (out / "case.json").write_text(json.dumps(manifest, ensure_ascii=False))
     return manifest
 
@@ -100,7 +101,8 @@ def main(argv=None):
         paths += sorted(p for p in given.rglob("*") if p.suffix.lower() in SUFFIXES) if given.is_dir() else [given]
     for path in paths:
         target = Path(args.out) / Path(_safe(path.name)).stem
-        manifest = prepare_case(path.stem, [(path.name, path.read_bytes())], target, intake={"source": "prepared"}, image_side=args.image_side)
+        manifest = prepare_case(path.stem, [(path.name, path.read_bytes())], target, intake={"source": "prepared"}, image_side=args.image_side,
+                                source_name=path.name)
         row = manifest["files"][0]
         print(json.dumps({"case": target.name, "pages": row["extraction"].get("pages"), "page_images": len(row["page_images"])}))
 

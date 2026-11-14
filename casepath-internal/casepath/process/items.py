@@ -10,8 +10,8 @@ import hashlib
 import json
 import re
 
-from . import cover, incoming
-from .area import compute_deadline, period_text, statutory_period
+from . import cover, incoming, keypoints
+from .area import compute_deadline, open_ended_title, period_text, set_date, statutory_period
 from .clock import parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
 
@@ -135,6 +135,19 @@ def unsettled_trigger(result, fact_id):
     return {"value": row["value"], "why": why, "verdict": row.get("verdict"), "citations": row.get("citations")}
 
 
+def further(title):
+    """An open-ended need partly in the file and still asked for: «Weitere Korrespondenz mit … (über die vorliegenden
+    Schreiben hinaus)», not «Sämtliche Korrespondenz …» as if nothing were there."""
+    rest = re.sub(r"^\s*(sämtliche|sämtlichen|alle|bisherige|bisherigen)\s+", "", str(title), flags=re.I)
+    return f"Weitere {rest[:1].upper()}{rest[1:]} (über die vorliegenden Schreiben hinaus)"
+
+
+def requested_title(d, row, ask):
+    """The title a document need is asked under: an open-ended need partly in the file asks for the rest."""
+    title = row.get("title") or d.get("title") or ""
+    return further(title) if row.get("partial") and ask in {"now", "later", "proposed"} and open_ended_title(title) else title
+
+
 def ask_of(graph, d, row, files):
     """Whether one document need of the evaluation is asked now, offered ("proposed"), asked later or not at all (None):
     the one rule the item list, the first request and the stage's way out ("nichts anzufordern") share."""
@@ -190,7 +203,7 @@ def build_items(state, result, files=None):
                 ask, note = "proposed", "Die Prüfung widerspricht dem Befund «fehlt/unbrauchbar»"
             add("document", row["document"], value=row["status"], stated_as="put_to_handler" if row["required"] == "depends" else "established",
                 verdict=(found.get(row["document"]) or {}).get("verdict"), evidence=_evidence(row.get("citations")),
-                node=row.get("step"), origin=_origin(d), chain=True, label=row["title"], status=row["status"],
+                node=row.get("step"), origin=_origin(d), chain=True, label=requested_title(d, row, ask), status=row["status"],
                 legal_basis=d.get("legal_basis") or row.get("legal_basis"),
                 required=row["required"], ask=ask, part_of=part_of.get(row["document"]),
                 **({"practice": practice_tag(d)} if practice_tag(d) else {}),
@@ -223,13 +236,18 @@ def build_items(state, result, files=None):
                 origin=f"edit#{fact['by_edit']}" if fact.get("by_edit") else "workflow" if not str(fact["fact"]).startswith(("k-", "q-")) else "process_builder",
                 chain=fact["fact"] in gating, values=definitions[fact["fact"]].get("values") or (["ja", "nein"] if definitions[fact["fact"]].get("type") == "boolean" else None),
                 type=definitions[fact["fact"]].get("type"),
+                **({"stages": definitions[fact["fact"]]["stages"]} if definitions[fact["fact"]].get("stages") else {}),
                 label=definitions[fact["fact"]].get("question"), chat_only=fact["fact"] in customer, path=fact["fact"] in waiting,
                 **({"part": fact["part"]} if fact.get("part") else {}))
         for d in result.get("deadlines", []):
             if statutory_period(statutory, d.get("stated")):
                 continue  # the law's period, listed below as the area's own deadline
+            # a date a court, an authority or the other side set for the customer: what is due, who set it, where it stands
+            given = d.get("set") or {k: v for k, v in (set_date((rows.get(d["fact"]) or {}).get("value")) or {}).items() if k != "date" and v}
             add("deadline", d["fact"], value=d["date"], stated_as="computed" if d.get("computed") else "established", verdict="accepted",
-                evidence=[], node=_fact_node(graph, d["fact"]), origin="workflow", chain=True, label=d.get("question"),
+                evidence=_evidence((rows.get(d["fact"]) or {}).get("citations")), node=_fact_node(graph, d["fact"]), origin="workflow", chain=True,
+                label=given.get("what") or d.get("question"),
+                **({"set_by_others": True, **{k: given[k] for k in ("what", "by", "source") if given.get(k)}} if given.get("what") else {}),
                 **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
         unsettled_triggers = set()
         for d in graph.get("deadlines", []):  # the area's statutory deadlines, from the trigger date the case establishes
@@ -317,8 +335,15 @@ def build_items(state, result, files=None):
             action = ({"obtain": "request"}.get(first["kind"], first["kind"]), first["text"], first["text"])
         else:
             action = None
+        closing = None
+        if action and action[0] in {"A12", "close"}:  # a closing names its reason once: «keine Rückmeldung», «Sache erledigt»
+            stage_title = str(here.get("title") or "")
+            outcome_title = str((ev.get("outcome") or {}).get("title") or "")
+            closing = next((t.split(": ", 1)[1] for t in (stage_title, outcome_title) if t.startswith("Abschluss: ")), None) or \
+                {"A12_still": "keine Rückmeldung", "A12_erledigt": "Sache erledigt"}.get((planned or {}).get("form") or "") or \
+                ("fehlende Mitwirkung" if "mitwirkung" in str((planned or {}).get("form") or "") or here.get("id") == "abschluss_mitwirkung" else outcome_title or None)
         if action:
-            add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
+            add("next_action", "0", **({"closing": closing} if closing else {}), **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
                                         **({"reason": planned["reason"]} if planned.get("reason") else {}),
                                         **({"since": planned["since"]} if planned.get("since") else {}),
                                         **({"choices": planned["choices"]} if planned.get("choices") else {}),
@@ -359,7 +384,21 @@ def build_items(state, result, files=None):
                         origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
         # the cover points, the checks a prescribed letter rests on, and the first contact (cover.py)
         items += cover.items(graph, known_facts, result, files, planned if action and planned and action[0] == planned.get("kind") else None, here.get("id"))
+        # The legal key points of the area: those that apply, and those whose condition the file leaves open (as questions)
+        points = keypoints.evaluate(graph, known_facts)
+        on_card = {p["id"] for p in keypoints.shown(points)}
+        for p in points:
+            cited = [c for f in p["facts"] for c in ((rows.get(f) or {}).get("citations") or [])][:3]
+            add("key_point", p["id"], value=p["state"], stated_as="established" if p["state"] == "applies" else "put_to_handler", verdict=None,
+                evidence=_evidence(cited), node=here.get("id"), origin="law", chain=True, label=p["text"], legal_basis=p["cite"],
+                law=p["law"], follows=p["follows"], check=p["check"], facts=p["facts"], shown=p["id"] in on_card)
     brief = result.get("brief") or {}
+    applying = keypoints.evaluate(graph, state.get("facts") or {}) if graph and ev else []
+    for i, q in enumerate(brief.get("questions") or []):  # the customer's own questions, answered by a key point where one matches
+        point = keypoints.answer_for(q.get("question"), applying)
+        add("customer_question", str(i), value=q.get("question"), stated_as="established", verdict=None, evidence=_evidence(q.get("citations")),
+            node=None, origin="claim_reader", chain=False, label=q.get("question"),
+            **({"answered_by": point["id"], "answer": keypoints.sentence(point)} if point else {}))
     needs = {re.split(r"\W+", str((i.get("label") or {}).get("de") or "").lower())[0] for i in items if i["kind"] == "document"}
     for i, doc in enumerate(brief.get("not_enclosed") or []):  # mentioned in the file but not in it: offered as such
         head = re.split(r"\W+", doc["title"].lower())[0]

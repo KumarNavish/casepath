@@ -1,0 +1,149 @@
+{
+ "_about": "Synthetic cases for the key points, the customer's own questions and a date set by others: made-up people and companies, run through the scripted team in tests/test_key_points.py and shown by the preview.",
+ "kuendigung-sperrfrist": {
+  "workflow": "arbeit-kuendigung",
+  "title": "Kündigung während Krankheit",
+  "text": "SYNTHETISCHER FALL. Guten Tag. Die Muster Transport AG hat mir mit Brief vom 3. November 2026, den ich am 4. November 2026 erhalten habe, auf den 31. Januar 2027 gekündigt. Seit dem 20. Oktober 2026 bin ich wegen einer Krankheit zu 100 Prozent arbeitsunfähig, das Arztzeugnis liegt bei. Einen Grund für die Kündigung hat mir die Firma nicht genannt. Ich möchte meine Stelle behalten. Erhalte ich ab Dezember noch Lohn? Ist die Kündigung überhaupt gültig? Im Anhang finden Sie den Arbeitsvertrag, das Kündigungsschreiben, das Arztzeugnis und meine E-Mails an die Personalabteilung. Freundliche Grüsse Sandra Beispiel",
+  "routing": [
+   "Arbeitsrecht / Kündigung",
+   "Die Muster Transport AG hat mir mit Brief vom 3. November 2026, den ich am 4. November 2026 erhalten habe, auf den 31. Januar 2027 gekündigt."
+  ],
+  "facts": [
+   [
+    "kuendigung_erhalten",
+    "2026-11-04",
+    "den ich am 4. November 2026 erhalten habe"
+   ],
+   [
+    "arbeitsende",
+    "2027-01-31",
+    "auf den 31. Januar 2027 gekündigt"
+   ],
+   [
+    "arbeitsunfaehig",
+    "ja",
+    "Seit dem 20. Oktober 2026 bin ich wegen einer Krankheit zu 100 Prozent arbeitsunfähig"
+   ],
+   [
+    "grund_genannt",
+    "nein",
+    "Einen Grund für die Kündigung hat mir die Firma nicht genannt."
+   ],
+   [
+    "fristlos",
+    "nein",
+    "auf den 31. Januar 2027 gekündigt"
+   ],
+   [
+    "ziel",
+    "Die Stelle behalten",
+    "Ich möchte meine Stelle behalten."
+   ],
+   [
+    "gegenpartei",
+    "Muster Transport AG",
+    "Die Muster Transport AG hat mir mit Brief vom 3. November 2026"
+   ]
+  ],
+  "documents": [
+   [
+    "arbeitsvertrag",
+    "Im Anhang finden Sie den Arbeitsvertrag"
+   ],
+   [
+    "kuendigung",
+    "das Kündigungsschreiben"
+   ],
+   [
+    "arztzeugnis",
+    "das Arztzeugnis liegt bei"
+   ],
+   [
+    "korrespondenz",
+    "meine E-Mails an die Personalabteilung"
+   ]
+  ],
+  "questions": [
+   [
+    "Erhalte ich ab Dezember noch Lohn?",
+    "Erhalte ich ab Dezember noch Lohn?"
+   ],
+   [
+    "Ist die Kündigung überhaupt gültig?",
+    "Ist die Kündigung überhaupt gültig?"
+   ]
+  ],
+  "parties": [
+   [
+    "Arbeitnehmerin (VN)",
+    "Sandra Beispiel"
+   ],
+   [
+    "Arbeitgeberin",
+    "Muster Transport AG"
+   ]
+  ],
+  "key_points": {
+   "sperrfrist": "applies",
+   "begruendung": "applies"
+  },
+  "request": "Sandra Beispiel ist seit dem 20. Oktober 2026 krank und hat am 4. November 2026 die Kündigung erhalten; sie möchte die Stelle behalten."
+ },
+ "miete-schlichtung": {
+  "workflow": "miete-kuendigung",
+  "title": "Vorladung zur Schlichtungsverhandlung",
+  "text": "SYNTHETISCHER FALL. Guten Tag. Die Verwaltung Beispiel Immobilien AG hat mir die Wohnung an der Probegasse 7 auf den 31. März 2027 gekündigt; die Kündigung kam am 2. Oktober 2026 mit dem amtlichen Formular. Ich habe die Kündigung am 20. Oktober 2026 bei der Schlichtungsbehörde angefochten. Heute kam die Vorladung: Die Schlichtungsbehörde Beispielstadt lädt zur Schlichtungsverhandlung am 10. Dezember 2026 um 14 Uhr. Muss ich da selbst hingehen? Freundliche Grüsse Peter Muster",
+  "routing": [
+   "Mietrecht / Kündigung",
+   "Die Verwaltung Beispiel Immobilien AG hat mir die Wohnung an der Probegasse 7 auf den 31. März 2027 gekündigt"
+  ],
+  "facts": [
+   [
+    "kuendigung_erhalten",
+    "2026-10-02",
+    "die Kündigung kam am 2. Oktober 2026 mit dem amtlichen Formular"
+   ],
+   [
+    "mietende",
+    "2027-03-31",
+    "auf den 31. März 2027 gekündigt"
+   ],
+   [
+    "formular",
+    "ja",
+    "die Kündigung kam am 2. Oktober 2026 mit dem amtlichen Formular"
+   ],
+   [
+    "will_anfechten",
+    "ja",
+    "Ich habe die Kündigung am 20. Oktober 2026 bei der Schlichtungsbehörde angefochten."
+   ],
+   [
+    "frist",
+    "2026-12-10 · Schlichtungsverhandlung · Schlichtungsbehörde Beispielstadt · Vorladung",
+    "lädt zur Schlichtungsverhandlung am 10. Dezember 2026 um 14 Uhr"
+   ]
+  ],
+  "documents": [],
+  "questions": [
+   [
+    "Muss ich an die Schlichtungsverhandlung selbst hingehen?",
+    "Muss ich da selbst hingehen?"
+   ]
+  ],
+  "parties": [
+   [
+    "Mieter (VN)",
+    "Peter Muster"
+   ],
+   [
+    "Verwaltung",
+    "Beispiel Immobilien AG"
+   ]
+  ],
+  "key_points": {
+   "anfechtung": "applies"
+  },
+  "request": "Peter Muster hat die Kündigung seiner Wohnung angefochten und ist zur Schlichtungsverhandlung am 10. Dezember 2026 vorgeladen."
+ }
+}

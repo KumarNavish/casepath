@@ -389,7 +389,9 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-cases th:nth-child(1){width:42%}
 .cp-late{color:var(--crimson);font-weight:600}
 .cp-stand{font-size:13px;padding:2px 9px;border-radius:999px;border:1px solid var(--border);color:var(--ink-2);white-space:nowrap}
-.cp-stand.arrived,.cp-stand.ready{border-color:var(--crimson);color:var(--crimson)}
+.cp-stand.arrived,.cp-stand.frist,.cp-stand.due{border-color:var(--crimson);color:var(--crimson)}
+.cp-stand.contact,.cp-stand.prepared{border-color:var(--ink-2);color:var(--ink)}
+.cp-stand.waiting,.cp-stand.paused,.cp-stand.new{color:var(--ink-2)}
 .cp-stand.working{border-style:dashed}
 .cp-stand.closed{border-color:transparent;color:var(--ghost)}
 tr.cp-done td,tr.cp-done td a{color:var(--ghost);font-weight:400}
@@ -436,3 +438,11 @@ body.dragging .cp-drop{border-color:var(--crimson);color:var(--crimson)}
 .cp-cover-line{display:block}.cp-cover-note{display:block;font-size:12.5px}
 .cp-cover-flags{font-size:13px}
 .cp-cover-select{font-size:12.5px}
+
+/* The legal key points under the deadline line: one line each, the article a quiet tag */
+.cp-keypoint{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;margin:4px 0 0;padding:4px 10px;border-left:3px solid var(--ink-2);font-size:14px;font-weight:600}
+.cp-keypoint.open{border-left-color:var(--line);font-weight:400;color:var(--ink-2)}
+.cp-keypoint .cp-passage{margin:4px 0 2px 0;font-weight:400}
+.cp-keypoint-more{font-style:normal;color:var(--ink-2)}
+.cp-lead-frist.past{color:var(--ink-2)}
+.cp-asks>div+div{margin-top:4px}

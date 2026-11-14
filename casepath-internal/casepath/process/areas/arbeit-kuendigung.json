@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "arbeit-kuendigung",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Kündigung Arbeit",
  "title": "Kündigung des Arbeitsverhältnisses: missbräuchlich, zur Unzeit, fristlos (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -51,6 +51,12 @@
  "stages": {
   "beurteilen": {"source_refs": ["law#336", "law#336a", "law#336c.2", "law#337c"]}
  },
+ "key_points": [
+  {"id": "sperrfrist", "statement": "Kündigung möglicherweise nichtig: Sperrfrist", "question": "Arbeitsunfähigkeit bei Kündigung? Dann Sperrfrist prüfen", "when": {"fact": "arbeitsunfaehig", "is": true}, "law": ["law#336c.2", "law#336c"], "follows": "Eine Kündigung, die während einer Sperrfrist wegen Krankheit oder Unfall ausgesprochen wird, ist nichtig; wurde sie vorher ausgesprochen, steht die Kündigungsfrist während der Sperrfrist still und läuft erst danach weiter.", "check": "Beginn der Arbeitsunfähigkeit gegenüber dem Tag der Kündigung (Arztzeugnis), Dienstjahr für die Dauer der Sperrfrist, neues Ende der Kündigungsfrist", "answers": ["lohn", "gehalt", "salär", "nichtig", "gültig", "krank", "sperrfrist", "weiterarbeit", "stelle"]},
+  {"id": "fristlos", "statement": "Fristlose Entlassung: Lohnersatz bis Ende der Kündigungsfrist", "question": "Fristlos entlassen? Dann wichtigen Grund prüfen", "when": {"fact": "fristlos", "is": true}, "law": ["law#337c", "law#337"], "follows": "Wer ohne wichtigen Grund fristlos entlassen wird, hat Anspruch auf Ersatz dessen, was bis zum Ende der ordentlichen Kündigungsfrist verdient worden wäre.", "check": "welchen Grund die Arbeitgeberin nennt, ob vorher verwarnt wurde, Lohn bis zum ordentlichen Ende", "answers": ["lohn", "gehalt", "fristlos", "sofort"]},
+  {"id": "begruendung", "statement": "Begründung der Kündigung schriftlich verlangen", "question": "Kündigung schriftlich begründet? Sonst Begründung verlangen", "when": {"fact": "grund_genannt", "is": false}, "law": ["law#335"], "follows": "Sie können verlangen, dass die Arbeitgeberin die Kündigung schriftlich begründet; an der Begründung misst sich, ob sie missbräuchlich ist.", "check": "ob die Begründung verlangt wurde und ob der genannte Grund vorgeschoben sein kann", "answers": ["grund", "warum", "begründ", "missbräuch"]},
+  {"id": "einsprache", "statement": "Entschädigung nur nach schriftlicher Einsprache", "question": "Ende der Kündigungsfrist? Dann Einsprache rechtzeitig", "when": {"fact": "arbeitsende", "known": true}, "law": ["law#336b"], "follows": "Eine Entschädigung wegen missbräuchlicher Kündigung setzt voraus, dass Sie bis zum Ende der Kündigungsfrist bei der Arbeitgeberin schriftlich Einsprache erheben.", "check": "ob die Einsprache schon erhoben ist; Anlass der Kündigung (Ansprüche geltend gemacht?)", "answers": ["entschädig", "missbräuch", "einsprache"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich hat Anspruch auf eine Entschädigung von höchstens sechs Monatslöhnen, wem missbräuchlich gekündigt wurde (Art. 336a OR); eine Kündigung während einer Sperrfrist ist nichtig (Art. 336c OR), und bei einer fristlosen Entlassung ohne wichtigen Grund ist der Lohn bis zum Ende der ordentlichen Kündigungsfrist zu ersetzen (Art. 337c OR)."},
   "conditions": {"text": "Voraussetzung einer Entschädigung ist eine schriftliche Einsprache bis zum Ende der Kündigungsfrist und eine Klage innert 180 Tagen nach Beendigung des Arbeitsverhältnisses (Art. 336b OR)."},

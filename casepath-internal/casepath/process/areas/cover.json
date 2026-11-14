@@ -136,7 +136,7 @@
   {"id": "police_grenzen", "type": "boolean", "handler_only": true, "question": "Versicherungssumme, Selbstbehalt und Streitwertgrenze gemäss Police geprüft", "source_refs": ["avb#A1.1"]},
   {"id": "deckung_grund", "type": "enum", "values": ["vertrag", "person", "eigenschaft", "rechtsgebiet", "zeitraum", "wartefrist", "gebiet", "ausschluss", "pflichten", "grenzen", "anderer Grund"],
    "handler_only": true, "question": "Welcher Punkt der Deckungsprüfung ist nicht erfüllt? (Entscheid der Fallbearbeitung)", "source_refs": ["avb#ausgabe"]},
-  {"id": "aussichten", "type": "enum", "values": ["genügend", "nicht genügend", "noch nicht beurteilt"], "handler_only": true,
+  {"id": "aussichten", "stages": ["beurteilen"], "type": "enum", "values": ["genügend", "nicht genügend", "noch nicht beurteilt"], "handler_only": true,
    "question": "Hat das Vorgehen genügend Aussicht auf Erfolg? (Entscheid der Fallbearbeitung)", "source_refs": ["aufsicht#avo-169.2"]}
  ],
  "cause_from": {"mietmangel-handler": "mangel_seit", "miete-kuendigung": "kuendigung_erhalten", "miete-mietzinserhoehung": "erhoehung_erhalten",

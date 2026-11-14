@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "miete-kaution",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Kaution und Rückgabe",
  "title": "Mietkaution und Rückgabe der Mietsache (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -45,6 +45,12 @@
  "stages": {
   "beurteilen": {"source_refs": ["law#257e.3", "law#267a.2"]}
  },
+ "key_points": [
+  {"id": "freigabe", "statement": "Ohne Forderung: Kaution nach einem Jahr frei", "question": "Forderungen der Vermieterschaft? Sonst Kaution nach einem Jahr frei", "when": {"fact": "forderung_vermieter", "is": false}, "law": ["law#257e.3-jahr"], "follows": "Hat die Vermieterschaft innert einem Jahr nach Ende des Mietverhältnisses keinen Anspruch rechtlich geltend gemacht, können Sie die Rückgabe der Kaution direkt von der Bank verlangen.", "check": "Ende des Mietverhältnisses, Betreibung oder Klage der Vermieterschaft innert Jahresfrist", "answers": ["kaution", "depot", "zurück", "bank"]},
+  {"id": "zustimmung", "statement": "Bank zahlt nur mit Zustimmung oder Urteil aus", "question": "Fordert die Vermieterschaft? Dann Zustimmung zurückhalten", "when": {"fact": "forderung_vermieter", "is": true}, "law": ["law#257e.3"], "follows": "Die Bank gibt die Kaution nur mit Zustimmung beider Parteien oder gestützt auf einen rechtskräftigen Zahlungsbefehl oder ein Urteil heraus; stimmen Sie einer Auszahlung nur für anerkannte Beträge zu.", "check": "welche Beträge anerkannt sind und welche bestritten", "answers": ["kaution", "auszahl", "unterschreib", "zustimm"]},
+  {"id": "ruege", "statement": "Mängel nicht sofort gemeldet: Ansprüche verwirkt", "question": "Mängel bei der Rückgabe gemeldet? Sonst Ansprüche verwirkt", "when": {"fact": "maengel_gemeldet", "is": false}, "law": ["law#267a.2", "law#267a"], "follows": "Meldet die Vermieterschaft erkennbare Mängel bei der Rückgabe nicht sofort, verliert sie ihre Ansprüche dafür.", "check": "Rückgabeprotokoll, Datum der Mängelmeldung, ob es um versteckte Mängel geht", "answers": ["mangel", "schaden", "protokoll", "rückgabe"]},
+  {"id": "abnuetzung", "statement": "Nur übermässige Abnützung zu ersetzen", "question": "Fordert die Vermieterschaft? Dann Abnützung prüfen", "when": {"fact": "forderung_vermieter", "is": true}, "law": ["law#267"], "follows": "Sie müssen die Wohnung in dem Zustand zurückgeben, der sich aus dem vertragsgemässen Gebrauch ergibt; die normale Abnützung müssen Sie nicht bezahlen.", "check": "Alter und Lebensdauer der Einrichtungen, Zustand beim Einzug (Antrittsprotokoll)", "answers": ["abnütz", "streich", "bezahlen", "forderung"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich ist die Kaution auf einem Konto auf den Namen der Mieterschaft hinterlegt; die Bank gibt sie mit Zustimmung beider Parteien heraus, und hat die Vermieterschaft innert einem Jahr nach Ende des Mietverhältnisses keinen Anspruch rechtlich geltend gemacht, kann die Mieterschaft sie von der Bank zurückverlangen (Art. 257e OR)."},
   "conditions": {"text": "Für Mängel muss die Mieterschaft nur einstehen, soweit sie die Sache nicht im Zustand des vertragsgemässen Gebrauchs zurückgegeben hat (Art. 267 OR) und die Vermieterschaft sie bei der Rückgabe sofort gemeldet hat, ausser sie waren bei übungsgemässer Untersuchung nicht erkennbar (Art. 267a OR)."},

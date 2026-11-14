@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "nachbarrecht",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Nachbarrecht",
  "title": "Streit mit Nachbarn: übermässige Einwirkungen, Pflanzen, Bauarbeiten, Eingriffe an der Grenze (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -59,6 +59,12 @@
   "klaeren": {"source_refs": ["law#684"]},
   "beurteilen": {"source_refs": ["law#679", "law#684", "law#684.2", "law#687", "law#928"]}
  },
+ "key_points": [
+  {"id": "aeste", "statement": "Äste und Wurzeln: Kappen nach Beschwerde und Frist", "question": "Äste oder Wurzeln? Dann Kapprecht prüfen", "when": {"fact": "aeste_wurzeln", "is": true}, "law": ["law#687"], "follows": "Überragende Äste und eindringende Wurzeln, die Ihr Eigentum schädigen, dürfen Sie kappen und behalten, wenn der Nachbar sie auf Ihre Beschwerde hin nicht innert angemessener Frist beseitigt.", "check": "Schaden am Eigentum, Beschwerde mit Frist, kantonale Pflanzabstände", "answers": ["ast", "äste", "wurzel", "hecke", "baum", "schneiden"]},
+  {"id": "uebermass", "statement": "Nur übermässige Einwirkungen sind verboten", "question": "Art der Störung bekannt? Dann Übermass prüfen", "when": {"fact": "art_stoerung", "known": true}, "law": ["law#684", "law#684.2"], "follows": "Verboten sind übermässige Einwirkungen; massgebend sind Lage und Beschaffenheit der Grundstücke und der Ortsgebrauch, deshalb ist jede Störung genau festzuhalten.", "check": "Protokoll der Störungen, Zonenordnung und Ortsgebrauch, Messungen", "answers": ["lärm", "geruch", "rauch", "schatten", "stör"]},
+  {"id": "bauarbeiten", "statement": "Bauarbeiten: Entschädigung auch bei rechtmässigem Bauen", "question": "Bauarbeiten beim Nachbarn? Dann Entschädigung prüfen", "when": {"fact": "bauarbeiten", "is": true}, "law": ["law#679a", "law#685"], "follows": "Fügt der Nachbar beim rechtmässigen Bauen vorübergehend übermässige und unvermeidliche Nachteile zu, die einen Schaden verursachen, kann Schadenersatz verlangt werden.", "check": "Dauer und Art der Bauarbeiten, Schaden (Risse, Umsatzeinbusse), Beweissicherung", "answers": ["bau", "baustelle", "riss", "entschädig"]},
+  {"id": "eigenmacht", "statement": "Eigenmächtiger Eingriff: sofort handeln", "question": "Eingriff in den Besitz? Dann sofort Beseitigung verlangen", "when": {"fact": "eigenmacht", "is": true}, "law": ["law#929", "law#928"], "follows": "Gegen einen eigenmächtigen Eingriff in Ihren Besitz können Sie nur vorgehen, wenn Sie sofort, nachdem Sie Eingriff und Täter kennen, die Beseitigung verlangen.", "check": "Tag des Eingriffs und der Kenntnis, was verlangt wurde", "answers": ["eingriff", "gebaut", "grundstück", "zaun"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich hat sich jeder Grundeigentümer aller übermässigen Einwirkung auf das Eigentum der Nachbarn zu enthalten (Art. 684 ZGB); wer dadurch geschädigt oder mit Schaden bedroht wird, kann auf Beseitigung, auf Schutz gegen drohenden Schaden und auf Schadenersatz klagen (Art. 679 ZGB)."},
   "conditions": {"text": "Voraussetzung ist, dass die Einwirkung nach Lage und Beschaffenheit der Grundstücke oder nach Ortsgebrauch nicht gerechtfertigt, also übermässig ist (Art. 684 ZGB); überragende Äste und eindringende Wurzeln dürfen erst gekappt werden, wenn sie das Eigentum schädigen und auf Beschwerde hin nicht binnen angemessener Frist beseitigt werden (Art. 687 ZGB)."},

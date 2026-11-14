@@ -15,7 +15,7 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions"}
+NEW_KEYS = {"key_points", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions"}
 INCOMING_FACTS = {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot", "eingang_zahlung", "leistungen_einstellen",
                   "eingang_erledigt_bis", "kosten_offen", "eingang_kostenforderung_2", "eingang_kostenforderung_3", "eingang_angebot_2",
                   "eingang_zahlung_2"}  # the overlay of what comes in (incoming.py): up to three items of a kind
@@ -58,7 +58,8 @@ class CompositionTests(unittest.TestCase):
     # replied case with its points answered goes to the assessment), three derived facts, and the assessment's
     # "bitte reichen Sie noch nach". Everything else is the former seed, field for field.
     CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt",
-                     "nichts_anzufordern"} | INCOMING_FACTS
+                     "nichts_anzufordern",
+                     "frist"} | INCOMING_FACTS  # the question about a running deadline also asks for a date others set
 
     def test_the_composed_tenancy_defect_workflow_is_the_seed_it_replaces_but_for_the_named_rule_change(self):
         composed = cover.strip(area.workflow("mietmangel-handler"))  # the cover points' facts, sources and forms are tested in test_cover
@@ -67,8 +68,9 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.4"))  # stored runs: same id, newer version governs
-        unnear = lambda f: {k: v for k, v in f.items() if k != "not_this"}  # plus: the nearest thing that does not count, for the reader
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.5"))  # stored runs: same id, newer version governs
+        # plus: the nearest thing that does not count, for the reader; the stage a handler's decision belongs to
+        unnear = lambda f: {k: v for k, v in f.items() if k not in {"not_this", "stages"}}
         self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
         unformed = lambda step: {**step, **({"action": {k: v for k, v in step["action"].items() if k != "form"}} if "action" in step else {})}
@@ -100,12 +102,12 @@ class CompositionTests(unittest.TestCase):
         # what an expert judges (the hashed fields) and what the screen says; a fact the new transitions branch on now
         # names its stage (node, chain), which explains an item and is not hashed
         kept = lambda rows: [{k: i.get(k) for k in HASHED + ("label", "legal_basis", "reason")} for i in rows
-                             if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact"}]
+                             if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact", "key_point"}]
         for facts, documents in cases:
             result = {"facts": facts, "documents": documents, "brief": {"request": "Schimmel.", "parties": [], "timeline": []}}
             a, b = (build_items(core.evaluate(w, [], [], result, "c", files=looked), result, looked) for w in (old, new))
             self.assertEqual(kept(a), kept(b))
-            uncovered = lambda rows: [i for i in rows if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact"}]
+            uncovered = lambda rows: [i for i in rows if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact", "key_point"}]
             self.assertEqual(items_sha256(uncovered(a)), items_sha256(uncovered(b)))
             for kind in ("A1", "A4", "A6", "A7", "A8", "A10", "A12"):
                 ctx = letters.context(case, a, [], {"due": "2025-03-01"})
@@ -151,7 +153,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-14.4 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-14.5 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 
@@ -183,7 +185,7 @@ class CooperationTests(unittest.TestCase):
         self.assertEqual(nxt["action"], "A5")
         self.assertFalse(state["facts"]["mitwirkung_fehlt"])
         text, _ = letters.render("A5", self.wf["forms"], letters.context({"id": "c", "title": "x", "intake": {}}, items, [], {"due": "2024-05-10"}))
-        self.assertIn("Bitte reichen Sie uns noch nach:\n– Mietvertrag\n– Fotos des Mangels\n– Sämtliche Korrespondenz mit der Verwaltung", text)
+        self.assertIn("Bitte reichen Sie uns noch nach:\n– Mietvertrag\n– Fotos des Mangels\n– Weitere Korrespondenz mit der Verwaltung (über die vorliegenden Schreiben hinaus)", text)
         frozen = copy.deepcopy(FROZEN)  # the former rule ended benefits here: two requests and documents still missing
         frozen["documents"].append(self.wf["documents"][-1])
         next(s for s in frozen["steps"] if s["id"] == "klaeren")["documents"].append("korrespondenz")

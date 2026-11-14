@@ -1,13 +1,13 @@
 {
  "format": "casepath.backbone/1",
  "id": "fallbearbeitung",
- "version": "2026-11-14.4",
+ "version": "2026-11-14.5",
  "title": "Fallbearbeitung Rechtsschutz: Stufen, Handlungen, Entscheide, Uhr und Formulare",
  "sources": [
   {"id": "practice", "kind": "process_guidance", "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"}
  ],
  "facts": [
-  {"id": "deckung", "type": "enum", "values": ["offen", "bestätigt", "abgelehnt"], "handler_only": true, "question": "Ist die Versicherungsdeckung gegeben? (Entscheid der Fallbearbeitung)", "source_refs": ["practice#7of7"]},
+  {"id": "deckung", "stages": ["eingang", "klaeren", "beurteilen"], "type": "enum", "values": ["offen", "bestätigt", "abgelehnt"], "handler_only": true, "question": "Ist die Versicherungsdeckung gegeben? (Entscheid der Fallbearbeitung)", "source_refs": ["practice#7of7"]},
   {"id": "bisherige_handlungen", "type": "text", "question": "Welche Schreiben und Notizen hat Protekta in diesem Fall schon verfasst (Art und Datum, z.B. «A1 2024-08-28; A2 2024-09-03»)?", "source_refs": ["practice#7of7"]},
   {"id": "handlung_a1", "type": "date", "question": "Datum, an dem Protekta zuletzt eine Anforderung von Unterlagen und Angaben (A1) verfasst hat", "source_refs": ["practice#7of7"]},
   {"id": "handlung_a2", "type": "date", "question": "Datum, an dem Protekta zuletzt eine Telefonnotiz (A2) verfasst hat", "source_refs": ["practice#7of7"]},
@@ -21,10 +21,10 @@
   {"id": "mitwirkung_fehlt", "type": "boolean", "question": "Blieben mindestens zwei Anforderungen mit Frist (A1, A6, A7) ohne jede Antwort, und ist die letzte Frist abgelaufen?", "source_refs": ["practice#1of7"], "derived": "silent_after_requests"},
   {"id": "kunde_still", "type": "boolean", "question": "Ist eine Statusanfrage mit Abschlussankündigung (A7) verschickt worden und die Frist abgelaufen?", "source_refs": ["practice#2of7"], "derived": "closing_announced"},
   {"id": "nichts_anzufordern", "type": "boolean", "derived": "nothing_to_ask", "question": "Liegt alles vor, was die Stufe «klären» braucht, und ist keine Frage an die Kundschaft offen (eine erste Anforderung hätte nichts zu verlangen)?", "source_refs": ["practice#7of7"]},
-  {"id": "weiteres_vorgehen", "type": "boolean", "question": "Will die Kundschaft gegen die Gegenpartei vorgehen (nicht nur Beratung)?", "source_refs": ["practice#3of7"]},
-  {"id": "vorgehen", "type": "enum", "values": ["Selbst führen", "Mandat an Anwaltskanzlei"], "question": "Führt Protekta selbst oder wird mandatiert? (Entscheid der Fallbearbeitung; CasePath schlägt vor)", "source_refs": ["practice#2of7"], "handler_only": true},
-  {"id": "einigung", "type": "boolean", "question": "Ist eine Einigung erzielt oder das Mandat abgeschlossen?", "source_refs": ["practice#2of7"]},
-  {"id": "zahlung_erhalten", "type": "boolean", "question": "Ist die vereinbarte Zahlung eingegangen?", "source_refs": ["practice#1of7"]},
+  {"id": "weiteres_vorgehen", "stages": ["beurteilen"], "type": "boolean", "question": "Will die Kundschaft gegen die Gegenpartei vorgehen (nicht nur Beratung)?", "source_refs": ["practice#3of7"]},
+  {"id": "vorgehen", "stages": ["vorgehen"], "type": "enum", "values": ["Selbst führen", "Mandat an Anwaltskanzlei"], "question": "Führt Protekta selbst oder wird mandatiert? (Entscheid der Fallbearbeitung; CasePath schlägt vor)", "source_refs": ["practice#2of7"], "handler_only": true},
+  {"id": "einigung", "stages": ["gegenpartei", "mandat"], "type": "boolean", "question": "Ist eine Einigung erzielt oder das Mandat abgeschlossen?", "source_refs": ["practice#2of7"]},
+  {"id": "zahlung_erhalten", "stages": ["abwicklung"], "type": "boolean", "question": "Ist die vereinbarte Zahlung eingegangen?", "source_refs": ["practice#1of7"]},
   {"id": "anruf_offen", "type": "boolean", "derived": "last_action_A2", "question": "War die letzte Handlung ein Telefonat, nach dem die Sache offen ist?", "source_refs": ["practice#2of7"]},
   {"id": "ein_punkt_offen", "type": "boolean", "derived": "one_stage_fact_open", "question": "Ist in dieser Stufe genau ein Punkt noch offen, den nur die Kundschaft beantworten kann?", "source_refs": ["practice#2of7"]},
   {"id": "kunde_geantwortet", "type": "boolean", "derived": "replied_since_request", "question": "Ist seit der letzten Anforderung (A1, A4, A6, A7) etwas von der Kundschaft eingegangen?", "source_refs": ["practice#2of7"]},
@@ -42,7 +42,7 @@
   {"id": "eingang_kostenforderung_3", "type": "text", "question": "Die drittletzte Kostenforderung der beauftragten Kanzlei oder eines Gerichts (vor den beiden späteren): wer verlangt was mit Datum (JJJJ-MM-TT) und, falls genannt, Betrag, aus diesem einen Schreiben; zeigt die Akte, dass sie beglichen ist, «beglichen JJJJ-MM-TT» anfügen. Keine weitere: nicht erfassen.", "source_refs": ["practice#1of7"]},
   {"id": "eingang_angebot_2", "type": "text", "question": "Das Angebot oder die Antwort der Gegenpartei davor (das zweitletzte, nicht dasselbe wie das zuletzt eingegangene): Absender, was angeboten oder geantwortet wird und Datum (JJJJ-MM-TT), aus diesem einen Schreiben; zeigt die Akte, dass Protekta darauf geantwortet hat, «beantwortet JJJJ-MM-TT» anfügen. Keines: nicht erfassen.", "source_refs": ["practice#1of7"]},
   {"id": "eingang_zahlung_2", "type": "text", "question": "Die Zahlung davor (die zweitletzte, nicht dieselbe wie die zuletzt eingegangene): wer zahlte welchen Betrag mit Datum (JJJJ-MM-TT), aus diesem einen Beleg oder Schreiben; zeigt die Akte, dass Protekta den Eingang bestätigt hat, «erledigt JJJJ-MM-TT» anfügen. Keine: nicht erfassen.", "source_refs": ["practice#1of7"]},
-  {"id": "leistungen_einstellen", "type": "boolean", "handler_only": true, "question": "Leistungen einstellen? (Entscheid der Fallbearbeitung nach der Meldung der Kanzlei)", "source_refs": ["practice#1of7"]},
+  {"id": "leistungen_einstellen", "stages": ["mandat", "klaeren"], "type": "boolean", "handler_only": true, "question": "Leistungen einstellen? (Entscheid der Fallbearbeitung nach der Meldung der Kanzlei)", "source_refs": ["practice#1of7"]},
   {"id": "eingang_erledigt_bis", "type": "date", "handler_only": true, "question": "Eingänge bis zu diesem Datum erledigt (Entscheid der Fallbearbeitung)", "source_refs": ["practice#1of7"]},
   {"id": "kosten_offen", "type": "boolean", "derived": "cost_claim_open", "question": "Ist eine eingegangene Kostenforderung noch nicht beglichen?", "source_refs": ["practice#1of7"]}
  ],
@@ -79,7 +79,7 @@
  "forms": {
   "A1": {"title": "Unterlagen und Angaben anfordern", "to": "Kundschaft", "only_with": {"liste": ["Bitte senden Sie uns Kopien oder Scans, keine Originale. "]}, "asks": ["liste", "fragen"], "empty": "nichts anzufordern: alle Unterlagen dieser Stufe liegen vor und keine Frage an die Kundschaft ist offen; weiter mit der rechtlichen Einschätzung (A5)", "parts": ["{registrierung}", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.", "{fragen}", "{hinweise}", "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.", "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."]},
   "A4": {"title": "Rückfrage zu einem Punkt", "to": "Kundschaft", "parts": ["Vielen Dank für Ihre Unterlagen.", "Damit wir weiterfahren können, bitten wir Sie um Auskunft zu folgendem Punkt:\n{fragen_oder_offen}", "Wir danken Ihnen für Ihre Antwort bis {frist}."]},
-  "A5": {"title": "Rechtliche Einschätzung", "to": "Kundschaft", "parts": ["Vielen Dank für Ihre Unterlagen.", "@rights", "@conditions", "In Ihrem Fall: {anliegen}", "{nachzureichen}", "Wir empfehlen Ihnen, {empfehlung}"]},
+  "A5": {"title": "Rechtliche Einschätzung", "to": "Kundschaft", "parts": ["Vielen Dank für Ihre Unterlagen.", "@rights", "@conditions", "In Ihrem Fall: {im_fall}", "{zu_fragen}", "{nachzureichen}", "Wir empfehlen Ihnen, {empfehlung}"]},
   "A6": {"title": "Dossier pendent halten mit Frist", "to": "Kundschaft", "parts": ["Vielen Dank für {anlass}.", "Wir halten Ihr Dossier vorerst noch pendent und erwarten {erwartet}.", "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."]},
   "A7": {"title": "Statusanfrage mit Abschlussankündigung", "to": "Kundschaft", "parts": ["Nachdem seit unserem letzten Kontakt vom {letzter_kontakt} einige Zeit vergangen ist und wir seither nichts mehr von Ihnen gehört haben, erlauben wir uns, uns bei Ihnen zu erkundigen, ob Sie hinsichtlich Ihres Anliegens noch rechtliche Unterstützung benötigen.", "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."]},
   "A8": {"title": "Schreiben an die Gegenpartei (Entwurf an die Kundschaft)", "to": "Gegenpartei, als Entwurf zuerst an die Kundschaft", "parts": ["Wir zeigen Ihnen an, dass wir die Interessen unserer Versicherten in dieser Angelegenheit vertreten.", "Unpräjudiziell und ohne Anerkennung einer Rechtspflicht halten wir Folgendes fest: {anliegen}", "@demand"]},
@@ -204,5 +204,6 @@
   {"when": {"fact": "vorgehen", "is": "Selbst führen"}, "stage": "gegenpartei"},
   {"when": {"fact": "vorgehen", "is": "Mandat an Anwaltskanzlei"}, "stage": "mandat"}
  ],
+ "set_dates": {"question": "Oder hat ein Gericht, eine Behörde oder die Gegenpartei der Kundschaft einen Termin gesetzt (Verhandlung, Frist zur Stellungnahme, verlangte Zahlung), auch einen abgelaufenen? Datum als JJJJ-MM-TT, danach « · » was fällig ist « · » wer es gesetzt hat « · » in welchem Schreiben, z.B. «2025-04-23 · Schlichtungsverhandlung · Schlichtungsbehörde Bern · Vorladung»."},
  "deadline_margin_days": 7
 }

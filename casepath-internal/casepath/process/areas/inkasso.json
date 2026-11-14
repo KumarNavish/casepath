@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "inkasso",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Inkasso einer Forderung",
  "title": "Inkasso einer Geldforderung der Kundschaft: Verzug, Verzugszins, Verjährung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -21,7 +21,8 @@
   "128.3": {"cite": "Art. 128 Ziff. 3 OR", "sr": "220", "article": "128", "passage": "3. aus Handwerksarbeit, Kleinverkauf von Waren, ärztlicher Besorgung, Berufsarbeiten von Anwälten, Rechtsagenten, Prokuratoren und Notaren sowie aus dem Arbeitsverhältnis von Arbeitnehmern.", "verified": true},
   "130": {"cite": "Art. 130 Abs. 1 OR", "sr": "220", "article": "130", "passage": "Die Verjährung beginnt mit der Fälligkeit der Forderung.", "verified": true},
   "135": {"cite": "Art. 135 OR", "sr": "220", "article": "135", "passage": "Die Verjährung wird unterbrochen: 1. durch Anerkennung der Forderung von seiten des Schuldners, namentlich auch durch Zins- und Abschlagszahlungen, Pfand- und Bürgschaftsbestellung; 2. durch Schuldbetreibung, durch Schlichtungsgesuch, durch Klage oder Einrede", "verified": true},
-  "137": {"cite": "Art. 137 Abs. 1 OR", "sr": "220", "article": "137", "passage": "Mit der Unterbrechung beginnt die Verjährung von neuem.", "verified": true}
+  "137": {"cite": "Art. 137 Abs. 1 OR", "sr": "220", "article": "137", "passage": "Mit der Unterbrechung beginnt die Verjährung von neuem.", "verified": true},
+  "zgb-8": {"cite": "Art. 8 ZGB", "sr": "210", "article": "8", "passage": "Wo das Gesetz es nicht anders bestimmt, hat derjenige das Vorhandensein einer behaupteten Tatsache zu beweisen, der aus ihr Rechte ableitet.", "verified": true}
  },
  "applies_when": {"fact": "rechtsgebiet", "is": "Inkasso-Rechtsschutz / offene Forderung der Kundschaft"},
  "facts": [
@@ -49,6 +50,12 @@
   "klaeren": {"source_refs": ["law#102", "avb#d1-6"]},
   "beurteilen": {"source_refs": ["law#102", "law#104", "law#127", "law#128", "law#130"]}
  },
+ "key_points": [
+  {"id": "mahnung", "statement": "Noch nicht gemahnt: Verzug erst mit Mahnung", "question": "Schriftlich gemahnt? Sonst zuerst mahnen", "when": {"fact": "gemahnt", "is": false}, "law": ["law#102", "law#102.2"], "follows": "Der Schuldner gerät mit der Mahnung in Verzug, wenn kein bestimmter Verfalltag vereinbart ist; erst ab dann schuldet er Verzugszins.", "check": "ob ein Verfalltag vereinbart war (dann Verzug ohne Mahnung) und ob die Mahnung nachweisbar zugestellt ist", "answers": ["mahn", "zahl", "verzug"]},
+  {"id": "verzugszins", "statement": "Verzugszins von fünf Prozent ab Verzug", "question": "Gemahnt? Dann Verzugszins berechnen", "when": {"fact": "gemahnt", "is": true}, "law": ["law#104"], "follows": "Ab Verzug schuldet der Schuldner zusätzlich Verzugszins von fünf Prozent im Jahr.", "check": "Datum des Verzugs (Mahnung oder Verfalltag), vertraglich höherer Zins", "answers": ["zins", "verzug", "mehr"]},
+  {"id": "bestritten", "statement": "Bestritten: die Forderung ist zu beweisen", "question": "Bestreitet der Schuldner? Dann Belege prüfen", "when": {"fact": "bestritten", "is": true}, "law": ["law#zgb-8"], "follows": "Bestreitet der Schuldner die Forderung, müssen Sie Bestand und Höhe belegen, etwa mit Vertrag, Rechnung und Lieferbelegen.", "check": "Einwände des Schuldners (Mängel, Verrechnung) und die Belege dagegen", "answers": ["bestreit", "beweis", "einwand"]},
+  {"id": "verjaehrung", "statement": "Kurze Verjährung: rechtzeitig unterbrechen", "question": "Periodische Leistung oder Handwerk? Dann fünf Jahre Verjährung", "when": {"fact": "fuenf_jahre", "is": true}, "law": ["law#128", "law#135"], "follows": "Diese Forderung verjährt nach fünf Jahren; die Verjährung wird namentlich durch Anerkennung des Schuldners, etwa eine Teilzahlung, unterbrochen.", "check": "Fälligkeit, letzte Anerkennung oder Teilzahlung, Betreibung oder Klage", "answers": ["verjähr", "zu spät", "frist"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kommt der Schuldner einer fälligen Forderung durch Mahnung in Verzug, bei einem vereinbarten Verfalltag schon mit dessen Ablauf (Art. 102 OR), und schuldet ab dann Verzugszins von fünf vom Hundert für das Jahr (Art. 104 OR)."},
   "conditions": {"text": "Voraussetzung ist, dass die Forderung fällig und nicht verjährt ist; die Verjährung beginnt mit der Fälligkeit und beträgt zehn Jahre, für die in Art. 128 OR genannten Forderungen fünf Jahre (Art. 127, 130 OR)."},

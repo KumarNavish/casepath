@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "miete-mietzinserhoehung",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Mietzinserhöhung",
  "title": "Mietzinserhöhung: Formular, Begründung und Anfechtung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -40,6 +40,11 @@
  "stages": {
   "beurteilen": {"source_refs": ["law#269", "law#269a", "law#270b"]}
  },
+ "key_points": [
+  {"id": "formular", "statement": "Erhöhung möglicherweise nichtig: Formular oder Begründung fehlt", "question": "Formular und Begründung? Sonst Erhöhung nichtig", "when": {"fact": "formular", "is": false}, "law": ["law#269d.2", "law#269d"], "follows": "Eine Mietzinserhöhung, die nicht auf dem vom Kanton genehmigten Formular mitgeteilt oder nicht begründet wird, ist nichtig.", "check": "Formular, Begründung, Frist von zehn Tagen vor Beginn der Kündigungsfrist", "answers": ["gültig", "nichtig", "formular"]},
+  {"id": "anfechtung", "statement": "Anfechtung innert 30 Tagen", "question": "Will die Kundschaft anfechten? Dann 30 Tage ab Mitteilung", "when": {"fact": "will_anfechten", "is": true}, "law": ["law#270b"], "follows": "Sie können die Erhöhung innert 30 Tagen, nachdem sie Ihnen mitgeteilt wurde, bei der Schlichtungsbehörde als missbräuchlich anfechten.", "check": "Datum der Mitteilung, Begründung der Vermieterschaft", "answers": ["anfecht", "wehren", "zahlen"]},
+  {"id": "missbrauch", "statement": "Begründung am Ertrag und am Ortsüblichen messen", "question": "Begründung bekannt? Dann Missbrauch prüfen", "when": {"fact": "begruendung", "known": true}, "law": ["law#269a", "law#269"], "follows": "Ob die Erhöhung missbräuchlich ist, misst sich an ihrer Begründung, etwa an Kostensteigerungen, Mehrleistungen oder den orts- und quartierüblichen Mietzinsen.", "check": "Referenzzinssatz, Teuerung, Vorbehalte bei früheren Anpassungen, Vergleichsobjekte", "answers": ["missbräuch", "zu hoch", "berechtigt"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kann die Mieterschaft eine Mietzinserhöhung bei der Schlichtungsbehörde als missbräuchlich anfechten (Art. 270b OR); missbräuchlich sind Mietzinse, mit denen ein übersetzter Ertrag aus der Mietsache erzielt wird (Art. 269 OR)."},
   "conditions": {"text": "Voraussetzung ist, dass die Anfechtung innert 30 Tagen nach der Mitteilung erfolgt (Art. 270b OR); eine Erhöhung ohne das amtliche Formular oder ohne Begründung ist ohnehin nichtig (Art. 269d OR)."},

@@ -138,7 +138,8 @@ def uploads(case, rendered):
     manifest = json.loads((Path(rendered) / "case.json").read_text())
     files = []
     for index, row in enumerate(manifest["files"], 1):
-        name = f"Scan_{index:02d}.pdf" if row["scanned"] else row["file"][3:]
+        # the name as a person would upload it: the document's own title, umlauts kept (the stored copy's name is made safe)
+        name = f"Scan_{index:02d}.pdf" if row["scanned"] else (row.get("name") or row["file"][3:]).replace("/", "-")
         files.append((name, (Path(rendered) / "documents" / row["file"]).read_bytes()))
     return files
 

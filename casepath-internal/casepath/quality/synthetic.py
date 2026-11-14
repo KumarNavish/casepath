@@ -405,7 +405,7 @@ def render_case(case, directory):
         (directory / "documents" / name).write_bytes(data)
         for page in PdfReader(io.BytesIO(data)).pages:
             dossier.add_page(page)
-        files.append({"file": name, "kind": document["kind"], "layout": document["layout"], "date": document["date"],
+        files.append({"file": name, "name": f"{document['title']}.pdf", "kind": document["kind"], "layout": document["layout"], "date": document["date"],
                       "meets_needs": document["meets_needs"], "scanned": scanned})
     with open(directory / "dossier.pdf", "wb") as handle:
         dossier.write(handle)

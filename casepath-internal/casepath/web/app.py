@@ -31,7 +31,7 @@ from ..process.clock import capped, follow_up, own_deadlines
 from ..agents import core
 from ..process import cover, letters
 from ..process.items import kind_title, build_items, item_changes, items_sha256
-from . import identity
+from . import identity, listing
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
 from .. import parity
@@ -86,7 +86,7 @@ class OwnAnswer(BaseModel):
 
 
 SERVER_KINDS = {"run.discarded", "study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
-                "item.confirmed", "correction.undone", "point.settled"}  # written by the server only
+                "item.confirmed", "correction.undone", "point.settled", "case.renamed"}  # written by the server only
 
 
 class EventRequest(BaseModel):
@@ -307,7 +307,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             except ValueError:
                 manifest = {}
             rows = manifest.get("files") or []
-            summaries[path] = {"title": manifest.get("title"), "files": len(rows) or None,
+            # the name as uploaded: the folder's own name is made safe for storage (an umlaut becomes «-») and never shown
+            uploaded = manifest.get("source_name")
+            summaries[path] = {"title": manifest.get("title"), "files": len(rows) or None, **({"name": uploaded} if uploaded else {}),
                                "pages": sum(int((r.get("extraction") or {}).get("pages") or 0) for r in rows) or None}
         return summaries[path]
 
@@ -402,7 +404,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             events = store.list_case_events(row["id"])
             row["closed"] = any(e["kind"] == "case.closed" for e in events)
             completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
-            row["new_files"] = sum(1 for f in store.list_files(row["id"]) if completed and f.get("created_at", "") > completed.get("created_at", ""))
+            case_files = store.list_files(row["id"])
+            row["new_files"] = sum(1 for f in case_files if completed and f.get("created_at", "") > completed.get("created_at", ""))
+            historic = listing.as_of(case_files)  # a test cut of a historic file: looked at as of its own day, listed apart
+            row["as_of"] = historic.isoformat() if historic else None
+            listed, action = [], None
             if row.get("run_status") == "completed":
                 try:
                     current = state(row["id"])
@@ -411,7 +417,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]), since=(action or {}).get("since"))
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
                     row["follow_up"] = clock and clock["due"]
-                    row["next_action"] = action and {"action": action.get("action"), "label": action["label"]}
+                    row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
+                    row["display_title"] = listing.display_title(row, listed, (current.get("process") or {}).get("short_title"),
+                                                                 renamed=any(e["kind"] == "case.renamed" for e in events))
                     contact = next((i for i in listed if i["kind"] == "contact"), None)  # the first contact the insurer promises (cover.py)
                     row["first_contact"] = contact and {"due": contact["value"], "late": contact.get("late"), "rule": contact.get("rule")}
                     # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
@@ -423,6 +431,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     row["next_date_kind"] = None if not dates else "frist" if own or (deadlines and row["next_date"] == deadlines[0]) else "wiedervorlage"
                 except Exception:  # noqa: BLE001  a case that cannot be evaluated still lists
                     row["follow_up"] = None
+            row.setdefault("display_title", row["title"])
+            row["stand"] = listing.stand(closed=row["closed"], run_status=row.get("run_status"), new_files=row["new_files"], items=listed,
+                                         follow_up=row.get("follow_up"), events=events, completed_at=(completed or {}).get("created_at"),
+                                         files=case_files)
         return {"cases": rows}
 
     @app.post("/api/cases", status_code=201)
@@ -437,7 +449,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         title = body.title.strip()
         if not title:
             raise HTTPException(422, "A title of up to 300 characters is required.")
-        return found(store.rename_case, case_id, title)
+        renamed = found(store.rename_case, case_id, title)
+        record(case_id, who, "case.renamed", text=title[:300])  # a person's title stands over the one the case gives itself
+        return renamed
 
     @app.get("/api/cases/{case_id}")
     def get_case(case_id: str, who=Depends(user)):
@@ -476,11 +490,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
             before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id, files=files)
             changes = item_changes(build_items(before_state, done[1].get("result"), files), listed)
+        shown_case = {**current["case"], "display_title": listing.display_title(
+            current["case"], listed if completed else [], (current.get("process") or {}).get("short_title"),
+            renamed=any(e["kind"] == "case.renamed" for e in events))}
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "new_files": new_files, "changes": changes,
                 "file_note": letters.file_note(current["case"], listed, events, clock, files) if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
-                "case": current["case"], "files": store.list_files(case_id),
+                "case": shown_case, "files": store.list_files(case_id),
                 "run": completed if (current["case"].get("intake") or {}).get("study") else store.latest_run(case_id),
                 "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
                 "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
@@ -604,7 +621,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(422, "Unknown reason.")
         if body.item_id and body.item_id.split(":")[0] not in {"step", "fact", "deadline", "document", "next_action", "reply", "open_point", "summary",
                                                             "party", "timeline", "answer", "point", "letter", "letter_question", "hint", "followup",
-                                                            "cover", "check", "contact"}:
+                                                            "cover", "check", "contact", "key_point", "customer_question"}:
             raise HTTPException(422, "Unknown item kind.")
         if len(json.dumps(body.fields, ensure_ascii=False)) > 8000:
             raise HTTPException(422, "Too much in one event.")

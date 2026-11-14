@@ -81,6 +81,10 @@ class ImportTests(unittest.TestCase):
             listed = {f["name"]: f for f in client.get("/api/imports").json()["files"]}
             self.assertTrue(listed["Dossier 3"]["prepared"])
             self.assertEqual((listed["Dossier 3"]["title"], listed["Dossier 3"]["files"]), ("Dossier 3", 1))  # each dossier is recognisable
+            # a folder whose name was made safe for storage lists under the name as uploaded (point 8)
+            files[f"{VOLUME}/incoming/Brief_geschw-rzt/case.json"] = json.dumps({"format": "casepath.prepared-case/1", "title": "Brief_geschwärzt",
+                "intake": {}, "source_name": "Brief_geschwärzt.txt", "files": []}).encode()
+            self.assertIn("Brief_geschwärzt.txt", {f["name"] for f in client.get("/api/imports").json()["files"]})
             prepared = client.post("/api/imports", json={"path": listed["Dossier 3"]["path"]}).json()["case"]
             self.assertEqual(prepared["title"], "Dossier 3")
             self.assertEqual(client.get(f"/api/files/{client.get('/api/cases/' + prepared['id']).json()['files'][0]['id']}/text").json()["text"],

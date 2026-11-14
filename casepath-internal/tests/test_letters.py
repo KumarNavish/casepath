@@ -96,6 +96,9 @@ class GreetingTests(unittest.TestCase):
         party = lambda role, name: {"kind": "party", "label": role, "value": name}
         self.assertEqual(letters.greeting([party("Mieterin (VN)", "Frau Lea Brunner")]), "Sehr geehrte Frau Brunner")
         self.assertEqual(letters.greeting([party("Versicherter", "Herr Beat Beispiel")]), "Sehr geehrter Herr Beispiel")
-        self.assertEqual(letters.greeting([party("Mieterin", "Lea Brunner")]), "Sehr geehrte Damen und Herren")  # no salutation stated
+        self.assertEqual(letters.greeting([party("Mieterin", "Lea Brunner")]), "Guten Tag Lea Brunner")  # the name, no salutation stated
+        self.assertEqual(letters.greeting([party("Mieterin", "Brunner")]), "Sehr geehrte Damen und Herren")  # no full name
+        self.assertEqual(letters.greeting([party("Versicherte", "Beispiel Logistik AG")]), "Sehr geehrte Damen und Herren")  # a company
+        self.assertEqual(letters.greeting([party("Mieterin", "[geschwärzt]")]), "Sehr geehrte Damen und Herren")
         self.assertEqual(letters.greeting([party("Vermieterin", "Frau Anna Muster")]), "Sehr geehrte Damen und Herren")  # not the insured
         self.assertEqual(letters.greeting([]), "Sehr geehrte Damen und Herren")

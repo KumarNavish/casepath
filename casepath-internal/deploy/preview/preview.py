@@ -135,6 +135,61 @@ def seed_areas(store, runs):
             print(f"area case {wid} did not complete: {store.get_run(run['id']).get('error')}", flush=True)
 
 
+def key_script(case, file_id):
+    """The scripted team for one case of tests/fixtures/areas/key_cases.json: routing, facts and documents with their
+    quotes, and a brief with the parties and the customer's own questions."""
+    cite = lambda quote: [{"file": file_id, "quote": quote}]
+    return ScriptedModel([
+        [*[("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
+         report("claim_reader", request=case["request"], parties=[{"role": r, "name": n} for r, n in case["parties"]],
+                questions=[{"question": q, "citations": cite(quote)} for q, quote in case["questions"]])],
+        [*[("record_document", {"document": d, "status": "present", "files": [file_id], "citations": cite(q), "note": ""}) for d, q in case["documents"]],
+         report("document_finder")],
+        *[[report("result_checker", answer="Vorbereitet.")]] * 3,
+    ], routing=[{"fact": "rechtsgebiet", "value": case["routing"][0], "citations": cite(case["routing"][1])}])
+
+
+def seed_key_cases(store, runs):
+    """The cases of key_cases.json (a dismissal during sick leave, a summons to a conciliation hearing), prepared by the
+    scripted team from one e-mail each."""
+    from casepath.read.extract import extract
+    cases = json.loads((ROOT / "tests" / "fixtures" / "areas" / "key_cases.json").read_text())
+    made = {}
+    for key, case in cases.items():
+        if key.startswith("_"):
+            continue
+        row = store.create_case(f"{case['title']} (synthetisch)", {"synthetic": True}, "N. Kumar")
+        mail = (f"From: kunde@example.ch\r\nTo: schaden@example-rechtsschutz.ch\r\nSubject: {case['title']}\r\n"
+                f"Content-Type: text/plain; charset=utf-8\r\n\r\n{case['text']}\r\n").encode()
+        extraction = extract("Schadenmeldung.eml", "message/rfc822", mail)
+        file_id = store.add_file(row["id"], "Schadenmeldung.eml", extraction["media_type"], extraction["kind"], mail, extraction, "N. Kumar")["id"]
+        runs.model_factory = lambda case=case, file_id=file_id: key_script(case, file_id)
+        run = runs.start(row["id"], "N. Kumar")
+        while store.get_run(run["id"])["status"] in ("queued", "running"):
+            time.sleep(0.05)
+        if store.get_run(run["id"])["status"] != "completed":
+            print(f"key case {key} did not complete: {store.get_run(run['id']).get('error')}", flush=True)
+        made[key] = row
+    return made
+
+
+def seed_historic(store):
+    """A test cut of a historic file, looked at as of a past day: the case list shows it apart, never as overdue."""
+    from casepath.read.extract import extract
+    case = store.create_case("Historische Akte: Darlehen, Stand am 07.02.2025 (synthetisch)", {"synthetic": True}, "N. Kumar")
+    text = "SYNTHETISCHE AKTE. Ich habe Max Beispiel am 1. März 2024 CHF 5'000 geliehen; er zahlt nicht zurück. Anna Muster".encode()
+    row = extract("Akte.txt", "text/plain", text)
+    row["cut_of"] = {"case": None, "file": None, "as_of": "2025-02-07"}
+    file_id = store.add_file(case["id"], "Akte.txt", row["media_type"], row["kind"], text, row, "N. Kumar")["id"]
+    run = store.create_run(case["id"], "N. Kumar")
+    fact = lambda f, v, quote: {"fact": f, "status": "established", "verdict": "accepted", "value": v, "citations": [{"file": file_id, "quote": quote}]}
+    store.update_run(run["id"], status="completed", workflow_id="vertrag-darlehen", finished_at="2026-11-12T10:00:00+00:00",
+                     result={"facts": [fact("rechtsgebiet", "Vertragsrecht / Darlehen", "CHF 5'000 geliehen")], "documents": [],
+                             "brief": {"request": "Anna Muster will ein Darlehen von CHF 5'000 zurück.",
+                                       "parties": [{"role": "Darleiherin (VN)", "name": "Anna Muster"}, {"role": "Borger", "name": "Max Beispiel"}], "timeline": []}})
+    return case
+
+
 COST_NOTE = ("SYNTHETISCHE AKTE. Protekta Rechtsschutz an Frau Lea Beispiel, 10. September 2026: Um die Versicherungsdeckung prüfen zu können, "
              "brauchen wir noch den Mietvertrag.\n\nProtekta Rechtsschutz an Kanzlei Muster, 1. Oktober 2026: Wir erteilen Ihnen Kostengutsprache "
              "für die Abklärung der Sach- und Rechtslage sowie aussergerichtliche Bemühungen.\n\nKanzlei Muster an Protekta Rechtsschutz, "
@@ -240,8 +295,11 @@ def main():
     factory_b = runs.model_factory
     seed_areas(store, runs)  # after C and D, so the cases the browser checks use stay at the top of the list
     case_k = seed_cost_note(store, runs)
+    keyed = seed_key_cases(store, runs)
+    historic = seed_historic(store)
     runs.model_factory = factory_b
-    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}", flush=True)
+    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}"
+          f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 

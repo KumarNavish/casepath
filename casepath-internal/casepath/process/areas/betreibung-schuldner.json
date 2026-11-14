@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "betreibung-schuldner",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Betreibung gegen die Kundschaft",
  "title": "Betreibung gegen die Kundschaft: Zahlungsbefehl, Rechtsvorschlag, Rechtsöffnung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -62,6 +62,12 @@
   "klaeren": {"source_refs": ["law#74.1", "law#82.1"]},
   "beurteilen": {"source_refs": ["law#79", "law#82.2", "law#83.2"]}
  },
+ "key_points": [
+  {"id": "rechtsvorschlag", "statement": "Rechtsvorschlag innert 10 Tagen erheben", "question": "Rechtsvorschlag erhoben? Sonst innert 10 Tagen", "when": {"fact": "rechtsvorschlag_erhoben", "is": false}, "law": ["law#74.1", "law#75.1"], "follows": "Mit einem Rechtsvorschlag beim Betreibungsamt innert zehn Tagen nach der Zustellung des Zahlungsbefehls halten Sie die Betreibung an; er muss nicht begründet werden.", "check": "Zustelldatum auf dem Zahlungsbefehl; Rechtsvorschlag ganz oder teilweise, bei teilweiser Bestreitung den Betrag genau angeben", "answers": ["rechtsvorschlag", "zahlen", "betreib", "bestreit"]},
+  {"id": "glaeubiger", "statement": "Nach Rechtsvorschlag muss der Gläubiger klagen", "question": "Rechtsvorschlag erhoben? Dann Schritt des Gläubigers abwarten", "when": {"fact": "rechtsvorschlag_erhoben", "is": true}, "law": ["law#79"], "follows": "Nach Ihrem Rechtsvorschlag muss der Gläubiger seinen Anspruch vor Gericht oder im Rechtsöffnungsverfahren durchsetzen; bis dahin ruht die Betreibung.", "check": "ob der Gläubiger eine Schuldanerkennung oder ein Urteil hat (Rechtsöffnung)", "answers": ["weiter", "was passiert", "gläubiger"]},
+  {"id": "schuldanerkennung", "statement": "Schuldanerkennung: provisorische Rechtsöffnung droht", "question": "Unterschriebene Schuldanerkennung? Dann Einwendungen bereitstellen", "when": {"fact": "schuldanerkennung", "is": true}, "law": ["law#82.1", "law#82.2"], "follows": "Stützt sich der Gläubiger auf eine unterschriebene Schuldanerkennung, kann er die provisorische Rechtsöffnung verlangen; Ihre Einwendungen müssen Sie dann sofort glaubhaft machen.", "check": "Belege für Zahlung, Verrechnung oder Mängel, die die Schuldanerkennung entkräften", "answers": ["rechtsöffnung", "unterschrieb", "anerkenn"]},
+  {"id": "aberkennung", "statement": "Aberkennungsklage innert 20 Tagen", "question": "Provisorische Rechtsöffnung erteilt? Dann Aberkennungsklage prüfen", "when": {"fact": "provisorisch", "is": true}, "law": ["law#83.2", "law#83.3"], "follows": "Nach einer provisorischen Rechtsöffnung können Sie innert 20 Tagen beim Gericht des Betreibungsortes auf Aberkennung der Forderung klagen; sonst wird die Rechtsöffnung definitiv.", "check": "Datum der Eröffnung des Rechtsöffnungsentscheids, Aussichten der Klage, Kosten", "answers": ["aberkenn", "klage", "gericht"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kann die betriebene Person die Forderung ohne Begründung mit Rechtsvorschlag bestreiten (Art. 74, 75 SchKG); der Gläubiger muss sie dann im Zivilprozess oder Verwaltungsverfahren oder mit einem Gesuch um Rechtsöffnung durchsetzen (Art. 79, 80, 82 SchKG)."},
   "conditions": {"text": "Voraussetzung ist ein rechtzeitiger Rechtsvorschlag; stützt sich der Gläubiger auf eine unterschriebene Schuldanerkennung, erhält er die provisorische Rechtsöffnung, wenn die Einwendungen nicht sofort glaubhaft gemacht werden, und die betriebene Person muss dann innert 20 Tagen auf Aberkennung der Forderung klagen (Art. 82, 83 SchKG)."},

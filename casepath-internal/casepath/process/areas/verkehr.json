@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "verkehr",
- "version": "2026-11-14.4",
- "backbone": "2026-11-14.4",
+ "version": "2026-11-14.5",
+ "backbone": "2026-11-14.5",
  "short_title": "Verkehr: Strafe und Ausweis",
  "title": "Strassenverkehr: Strafbefehl, Busse und Ausweisentzug (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -67,6 +67,12 @@
   "klaeren": {"source_refs": ["law#stpo-354.1", "law#svg-16.2"]},
   "beurteilen": {"source_refs": ["law#stpo-352", "law#stpo-354.1", "law#svg-16.3"]}
  },
+ "key_points": [
+  {"id": "strafbefehl", "statement": "Ohne Einsprache wird der Strafbefehl Urteil", "question": "Einsprache erhoben? Sonst wird der Strafbefehl rechtskräftig", "when": {"all": [{"fact": "strafbefehl", "is": true}, {"fact": "einsprache_erhoben", "is": false}]}, "law": ["law#stpo-354.3", "law#stpo-354.1"], "follows": "Ohne Einsprache innert zehn Tagen wird der Strafbefehl zum rechtskräftigen Urteil; das Strassenverkehrsamt stützt sich für den Ausweisentzug in der Regel auf seine Feststellungen.", "check": "Zustelldatum, ob der Sachverhalt bestritten wird, Folgen für den Ausweis", "answers": ["einsprache", "strafbefehl", "busse", "wehren"]},
+  {"id": "entzug", "statement": "Ausweisentzug: Umstände und Beruf geltend machen", "question": "Ausweisentzug angekündigt? Dann Umstände vorbringen", "when": {"fact": "entzug_verfahren", "is": true}, "law": ["law#svg-16.3"], "follows": "Bei der Dauer des Entzugs sind die Umstände des Einzelfalls zu berücksichtigen, namentlich die Gefährdung, das Verschulden, der Leumund als Fahrzeugführer und die berufliche Notwendigkeit.", "check": "berufliche Angewiesenheit belegen, Vorgeschichte, Stellungnahme an das Strassenverkehrsamt", "answers": ["ausweis", "entzug", "fahren", "beruf", "auto"]},
+  {"id": "verwarnung", "statement": "Keine Vorgeschichte: Verwarnung statt Entzug möglich", "question": "Früherer Entzug oder Verwarnung? Sonst Verwarnung möglich", "when": {"fact": "vorentzug", "is": false}, "law": ["law#svg-16a.3"], "follows": "Bei einer leichten Widerhandlung wird nur verwarnt, wenn in den vorangegangenen zwei Jahren kein Ausweis entzogen und keine andere Administrativmassnahme verfügt wurde.", "check": "Schwere der Widerhandlung (leicht, mittelschwer, schwer), Auszug aus dem Register", "answers": ["verwarn", "entzug", "ausweis"]},
+  {"id": "ordnungsbusse", "statement": "Ordnungsbusse: bezahlen oder ordentliches Verfahren", "question": "Ordnungsbusse erhalten? Dann Bedenkfrist von 30 Tagen", "when": {"fact": "ordnungsbusse", "is": true}, "law": ["law#obg-6.4", "law#obg-11"], "follows": "Wird die Ordnungsbusse nicht innert der Frist bezahlt, wird ein ordentliches Strafverfahren durchgeführt; mit der Bezahlung wird sie rechtskräftig.", "check": "ob der Vorwurf bestritten wird, Kosten eines ordentlichen Verfahrens", "answers": ["busse", "bezahl", "ordnungsbusse"]}
+ ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kann gegen einen Strafbefehl oder die Bussenverfügung einer Übertretungsstrafbehörde innert 10 Tagen Einsprache erhoben werden; hält die Behörde am Strafbefehl fest, entscheidet das Gericht (Art. 354, 356, 357 StPO). Über einen Ausweisentzug oder eine Verwarnung entscheidet das Strassenverkehrsamt in einem eigenen Verfahren (Art. 16 SVG)."},
   "conditions": {"text": "Eine Einsprache hat Aussicht, wenn der vorgeworfene Sachverhalt nicht ausreichend geklärt oder die Strafe nicht angemessen ist (Art. 352 StPO); beim Ausweisentzug zählen Gefährdung, Verschulden, Leumund und berufliche Notwendigkeit, die gesetzliche Mindestdauer darf aber nicht unterschritten werden (Art. 16 Abs. 3, 16b, 16c SVG)."},

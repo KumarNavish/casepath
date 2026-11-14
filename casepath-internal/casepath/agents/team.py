@@ -55,6 +55,9 @@ the files do not speak to: unknown is the default and costs nothing. Quote only 
 sentence, at most about 25 words). Keep the timeline to the dated events that matter for the request (at most twelve) and the summary to three sentences. In the brief, list in not_enclosed
 each document the files mention as existing, attached or sent (a report, a letter, an attachment) that is not among the
 case files, with the sentence that mentions it and where ("E-Mail vom 12.06.2023"); not a document the case merely needs.
+In questions, list each question the customer asks explicitly (at most five, in the customer's words, shortened to one line,
+e.g. "Erhalte ich ab Dezember noch Lohn?"), each with the sentence that asks it; not the request itself and not a question
+of the insurer.
 Read the customer's claim report and the insurer's claim form first and settle from them every fact that gates a
 document or a step; then the other files. Work in few turns: call record_fact for up to eight facts in the same turn,
 rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a dispute
@@ -336,6 +339,12 @@ class CaseWork:
 PERIOD = re.compile(r"(\d{1,3}) (days|weeks|months|years) (from|before) (\d{4}-\d{2}-\d{2})")
 
 
+def set_by_others(value):
+    """What a date others set says besides the date: {"set": {what, by, source}}, or nothing for a bare date."""
+    given = {k: v for k, v in (area.set_date(value) or {}).items() if k != "date" and v}
+    return {"set": given} if given else {}
+
+
 def computed_date(value):
     """The date a stated period gives ("14 days from 2024-08-14" → "2024-08-28"; "5 years before 2024-09-05" →
     "2019-09-05"), by calendar arithmetic only: no rule on which day counts, weekends or holidays. Shown as computed,
@@ -374,8 +383,10 @@ def _fact_value(definition, value):
             return value, None
         if definition.get("deadline") and value.lower() == "none":
             return "none", None
+        if definition.get("deadline") and area.set_date(value):  # a date others set: «date · what · who · in which letter»
+            return " · ".join(p.strip() for p in value.split("·") if p.strip()), None
         return None, ('value must be YYYY-MM-DD, YYYY-MM, YYYY or "<n> days|weeks|months|years from|before YYYY-MM-DD"'
-                      + (', or "none"' if definition.get("deadline") else ""))
+                      + (', or "none", or a date set by others as "YYYY-MM-DD · what is due · who set it · in which letter"' if definition.get("deadline") else ""))
     return value, None
 
 
@@ -588,7 +599,8 @@ def _report_schema(work, agent):
         return obj(summary=text(800, minLength=1), request=text(500),
                    parties=arr(obj(role=text(80), name=text(120)), maxItems=10),
                    timeline=arr(obj(date=text(40), event=text(300), citations=_citations(files, 2)), maxItems=20),
-                   not_enclosed=arr(obj(title=text(160, minLength=1), mentioned=text(120), citations=_citations(files, 1)), maxItems=8))
+                   not_enclosed=arr(obj(title=text(160, minLength=1), mentioned=text(120), citations=_citations(files, 1)), maxItems=8),
+                   questions=arr(obj(question=text(200, minLength=1), citations=_citations(files, 1)), maxItems=5))
     if agent == "process_builder":
         return obj(summary=text(800, minLength=1),
                    questions=arr(obj(fact=choice(facts) if facts else text(80), plain=text(300, minLength=1)), maxItems=40))
@@ -973,8 +985,13 @@ def _located_brief(work, report):
         located, _ = work.located(entry["citations"])
         if located:
             missing.append({"title": entry["title"], "mentioned": entry.get("mentioned"), "citations": located})
+    asked = []  # the customer's own explicit questions, each with the sentence that asks it
+    for entry in report.get("questions", []):
+        located, _ = work.located(entry["citations"])
+        if located and entry["question"].strip():
+            asked.append({"question": entry["question"].strip(), "citations": located})
     return {"request": report.get("request"), "parties": report.get("parties", []), "timeline": timeline,
-            "summary": report.get("summary"), "not_enclosed": missing}
+            "summary": report.get("summary"), "not_enclosed": missing, "questions": asked}
 
 
 PERSONAL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+|\+?\d[\d ()/.-]{7,}\d|\bCH\d{2}[\d ]{10,}|\b\d{5,}\b")
@@ -1033,7 +1050,8 @@ def finalize(work):
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
                               "text": row["text"]} for row in result.get("case_summary", [])],
             "deadlines": [{"fact": f["fact"], "question": work.fact_defs[f["fact"]]["question"],
-                           **({"date": f["value"]} if not computed_date(f["value"]) else
+                           **({"date": area.set_date(f["value"])["date"], **set_by_others(f["value"])} if area.set_date(f["value"]) else
+                              {"date": f["value"]} if not computed_date(f["value"]) else
                               {"date": computed_date(f["value"]), "computed": True, "stated": f["value"],
                                "rule": "calendar days from the stated date; which day counts, weekends and holidays not applied"})}
                           for f in work.facts.values() if f["verdict"] == "accepted" and work.fact_defs.get(f["fact"], {}).get("deadline")

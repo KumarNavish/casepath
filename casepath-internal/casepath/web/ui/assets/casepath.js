@@ -119,21 +119,18 @@ function renderTop() {
 }
 
 // ---------- cases ----------
-// Where a case stands, in the handler's words, and the order in which it needs them (rank).
-const STAND = { arrived: [T("new files", "neu eingegangen"), 0], ready: [T("ready", "bereit"), 1], paused: [T("stopped", "angehalten"), 2],
-                new: [T("new", "neu"), 3], working: [T("in progress", "in Arbeit"), 4], closed: [T("done", "erledigt"), 5] };
-function standOf(c) {
-  if (c.closed) return "closed";
-  if (["queued", "running"].includes(c.run_status)) return "working";
-  if (["paused", "failed", "interrupted"].includes(c.run_status)) return "paused";
-  if (c.run_status === "completed") return c.new_files ? "arrived" : "ready";
-  return "new";
-}
+// Where a case stands, in the handler's words and in the order it needs the handler (rank), as the server says it
+// (listing.py): a deadline or a set date running, first contact due, prepared, waiting until a date, paused, new files, done.
+const STAND_EN = { frist: "deadline", contact: "first contact", prepared: "prepared", waiting: "waiting", due: "follow-up due", paused: "stopped",
+                   working: "in progress", new: "not prepared", arrived: "new files", closed: "done" };
+const standOf = (c) => (c.stand || {}).kind || "new";
+const standText = (c) => (LANG === "de" ? (c.stand || {}).text : STAND_EN[standOf(c)]) || "—";
 // The first contact the insurer promises (three working days from the report) is the case's next date while it is open.
 const firstContact = (c) => Boolean(c.first_contact && c.first_contact.due && !c.closed && (!(c.next_date || c.follow_up) || c.first_contact.due <= (c.next_date || c.follow_up)));
 const nextDue = (c) => (firstContact(c) ? c.first_contact.due : c.next_date || c.follow_up || "");
 function orderedCases(cases) {
-  return [...cases].sort((a, b) => STAND[standOf(a)][1] - STAND[standOf(b)][1] || (nextDue(a) || "9999").localeCompare(nextDue(b) || "9999"));
+  const rank = (c) => (c.stand || {}).rank ?? 5;
+  return [...cases].sort((a, b) => rank(a) - rank(b) || ((a.stand || {}).date || nextDue(a) || "9999").localeCompare((b.stand || {}).date || nextDue(b) || "9999"));
 }
 async function renderCases() {
   const [cases, workflows, health] = await Promise.all([api("/api/cases"), api("/api/workflows"), api("/api/health")]);
@@ -141,22 +138,28 @@ async function renderCases() {
   S.workflows = workflows.workflows;
   const today = isoToday();
   const row = (c) => {
-    const s = standOf(c), due = nextDue(c), late = due && due <= today && s !== "closed";
-    const next = s === "closed" ? "" : c.next_action ? esc(T(c.next_action.label.en, c.next_action.label.de)) : s === "working" ? T("being prepared", "wird vorbereitet") : s === "new" ? T("prepare the case", "Fall vorbereiten") : "";
-    return `<tr class="${s === "closed" ? "cp-done" : ""}"><td><a href="#/case/${esc(c.id)}/overview">${esc(c.title)}</a></td><td>${next || '<span class="cp-muted">—</span>'}</td>
-      <td class="${late ? "cp-late" : ""}" ${firstContact(c) ? `title="${esc(c.first_contact.rule || "")}"` : ""}>${due && s !== "closed" ? `${dateText(due)}${firstContact(c) ? ` <span class="cp-muted">${T("first contact", "Erstkontakt")}</span>` : c.next_date_kind === "frist" ? ` <span class="cp-muted">${T("deadline", "Frist")}</span>` : ""}` : '<span class="cp-muted">—</span>'}</td>
-      <td><span class="cp-stand ${s}">${STAND[s][0]}</span></td></tr>`;
+    // a historic cut is looked at as of its own day: its dates are never overdue among live cases
+    // the follow-up date; a deadline or the first contact is what the Stand already says, not repeated here
+    const s = standOf(c), due = ["frist", "contact"].includes(s) ? c.follow_up || "" : nextDue(c), late = due && due <= (c.as_of || today) && s !== "closed" && !c.as_of;
+    const next = ["closed", "waiting"].includes(s) ? "" : c.next_action ? esc(LANG === "de" && c.next_action.text ? c.next_action.text : T(c.next_action.label.en, c.next_action.label.de))
+      : s === "working" ? T("being prepared", "wird vorbereitet") : s === "new" ? T("prepare the case", "Fall vorbereiten") : "";
+    return `<tr class="${s === "closed" ? "cp-done" : ""}"><td><a href="#/case/${esc(c.id)}/overview">${esc(c.display_title || c.title)}</a></td><td>${next || '<span class="cp-muted">—</span>'}</td>
+      <td class="${late ? "cp-late" : ""}">${due && s !== "closed" ? `${dateText(due)}${["frist", "contact"].includes(s) ? "" : firstContact(c) ? ` <span class="cp-muted">${T("first contact", "Erstkontakt")}</span>` : c.next_date_kind === "frist" ? ` <span class="cp-muted">${T("deadline", "Frist")}</span>` : ""}` : '<span class="cp-muted">—</span>'}</td>
+      <td><span class="cp-stand ${s}">${esc(standText(c))}</span></td></tr>`;
   };
   const table = (rows) => `<table class="cp-table cp-cases"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Next step", "Nächster Schritt")}</th>
     <th>${T("Follow-up", "Wiedervorlage")}</th><th>${T("Status", "Stand")}</th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table>`;
   const ordered = orderedCases(cases.cases);
-  const real = ordered.filter((c) => !(c.intake || {}).synthetic), examples = ordered.filter((c) => (c.intake || {}).synthetic);
+  const historic = ordered.filter((c) => c.as_of && c.as_of < today);  // test cuts of historic files: listed apart, never overdue
+  const live = ordered.filter((c) => !historic.includes(c));
+  const real = live.filter((c) => !(c.intake || {}).synthetic), examples = live.filter((c) => (c.intake || {}).synthetic);
   $("#app").innerHTML = `<main class="cp-main cp-list"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
       ${S.canUpload === false ? "" : `<label class="cp-button primary">${icon("plus")}${T("New case", "Neuer Fall")}<input type="file" id="new-files" multiple hidden></label>`}</div>
     ${real.length ? table(real) : ""}
     ${S.canUpload === false ? "" : `<div class="cp-drop" id="drop">${S.creating ? T("Creating the case…", "Der Fall wird angelegt …") : T("Drop files here and CasePath prepares the case", "Dateien hierher ziehen, CasePath bereitet den Fall vor")}</div>`}
     ${S.message ? `<p class="cp-error">${esc(S.message)}</p>` : ""}
     ${examples.length ? `<h2 class="cp-section cp-muted">${T("Examples", "Beispiele")}</h2>${table(examples)}` : ""}
+    ${historic.length ? `<h2 class="cp-section cp-muted">${T("Historic files (test cuts)", "Historische Akten (Teststand)")}</h2>${table(historic)}` : ""}
     ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
       ${imports.files.length ? `<table class="cp-table"><tbody>${imports.files.map((f) =>
         `<tr><td><b>${esc(f.title || f.name)}</b>${f.title && f.title !== f.name ? `<br><small class="cp-muted">${esc(f.name)}</small>` : ""}</td>
@@ -279,7 +282,7 @@ function renderRail() {
         : dateText(f.created_at)}${f.extraction && f.extraction.pages > 1 ? ` · ${(f.extraction.kept_pages || []).length || f.extraction.pages} ${T("pages", "Seiten")}` : ""}</small>
       ${(f.extraction && (f.extraction.instruction_like || []).length) ? `<span class="cp-warn">${T("Contains text addressed to an AI", "Enthält Text an die KI")}</span>` : ""}</span></button>${segmentRows(f)}`).join("");
   return `<aside class="cp-rail" aria-label="${T("Files", "Dateien")}">
-    <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(d.case.title)}</div>${standAm(d)}</div>
+    <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(d.case.display_title || d.case.title)}</div>${standAm(d)}</div>
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
@@ -325,11 +328,13 @@ function bindRail() {
   if (title) {
     const save = async () => {
       const value = title.textContent.replace(/\s+/g, " ").trim().slice(0, 300);
-      if (!value || value === S.data.case.title) { title.textContent = S.data.case.title; return; }
-      S.data.case = await api(`/api/cases/${S.route.id}/title`, { method: "PUT", body: JSON.stringify({ title: value }) }).catch(() => S.data.case);
-      title.textContent = S.data.case.title;
+      const shown = S.data.case.display_title || S.data.case.title;
+      if (!value || value === shown) { title.textContent = shown; return; }
+      const renamed = await api(`/api/cases/${S.route.id}/title`, { method: "PUT", body: JSON.stringify({ title: value }) }).catch(() => null);
+      if (renamed) S.data.case = { ...renamed, display_title: renamed.title };
+      title.textContent = S.data.case.display_title || S.data.case.title;
     };
-    title.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); title.blur(); } if (e.key === "Escape") { title.textContent = S.data.case.title; title.blur(); } });
+    title.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); title.blur(); } if (e.key === "Escape") { title.textContent = S.data.case.display_title || S.data.case.title; title.blur(); } });
     title.addEventListener("blur", save);
   }
   const more = $(".cp-more");
@@ -1213,7 +1218,10 @@ function decisions(ev) {
   const keys = [...new Set([...needs, ...((ev && ev.waiting_for) || []).map((w) => w.fact), ...set, ...prospects])]
     .filter((k) => !coverFacts().has(k) || k === "aussichten")
     .filter((k) => (item("fact", k) || {}).values && !chatOnly().has(k) && !item("letter_question", k) && (needs.includes(k) || /Entscheid/.test(((item("fact", k) || {}).label || {}).de || "") || set.includes(k) || ((ev && ev.waiting_for) || []).some((w) => w.fact === k)));
-  return { blocking: keys.filter((k) => needs.includes(k) && answered(k) === null), other: keys.filter((k) => !(needs.includes(k) && answered(k) === null)) };
+  // Only the decisions of the current stage (their stage is in the process data): at intake that is the cover alone.
+  const here = ev && ev.current && ev.current.step;
+  const atStage = (k) => needs.includes(k) || (here && ((item("fact", k) || {}).stages || []).includes(here));
+  return { blocking: keys.filter((k) => needs.includes(k) && answered(k) === null), other: keys.filter((k) => !(needs.includes(k) && answered(k) === null) && atStage(k)) };
 }
 // "Vorher zu klären": only what the prepared action waits for: its decisions (from the workflow's forms), files that
 // disagree on a point it needs, and the process when it is in doubt.
@@ -1323,6 +1331,7 @@ function sideView(ev) {
   const factCite = (id) => { const f = recorded("fact")[id]; return f && f.status === "established" ? (f.citations || [])[0] : null; };
   const summary = (S.data.items || []).find((i) => i.kind === "summary" && i.value);
   const anliegen = (summary && summary.value) || brief.request || r.answer || "";
+  const asks = (S.data.items || []).filter((i) => i.kind === "customer_question" && i.value);  // the customer's own questions, quoted
   const parties = (S.data.items || []).filter((i) => i.kind === "party").map((p) => `${redacted(p.value) ? `<i>${T("name redacted", "Name geschwärzt")}</i>` : esc(p.value)} <span class="cp-muted">· ${esc(T(p.label.en, p.label.de))}</span>`).join("<br>")
     || (brief.parties || []).map((p) => `${esc(p.name)} <span class="cp-muted">· ${esc(p.role)}</span>`).join("<br>");
   const stand = !ev ? T("no process yet", "noch kein Prozess") : ev.outcome ? `${T("End", "Abschluss")}: ${esc(ev.outcome.title)}`
@@ -1334,7 +1343,11 @@ function sideView(ev) {
   const fristRow = (d) => {
     const title = esc(plainQuestion((d.label || {}).de || d.key)), basis = d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "";
     const cond = d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : "";
-    if (d.party === "gegenpartei") return `<div class="cp-frist other" title="${esc(d.rule || "")}">${cond}<b>${dated(d) ? dateText(d.value) : T("check", "prüfen")}</b> <span class="cp-muted">· ${T("date of the other side", "Termin der Gegenpartei")}</span><br>${title}${basis}</div>`;
+    if (d.party === "gegenpartei") return `<div class="cp-frist other" title="${esc(d.rule || "")}">${cond}<b>${dated(d) ? dateText(d.value) : T("check", "prüfen")}</b> <span class="cp-muted">· ${T("date of the other side", "Termin der Gegenpartei")}${dated(d) && daysTo(d.value) < 0 ? ` · ${T("passed", "abgelaufen")}` : ""}</span><br>${title}${basis}</div>`;
+    if (d.set_by_others && dated(d)) {  // a date a court, an authority or the other side set for the customer
+      const n = daysTo(d.value), src = (d.evidence || []).find((e) => e.file);
+      return `<div class="cp-frist ${n < 0 ? "" : n <= 14 ? "soon" : ""}" data-item="${esc(d.item_id)}"><b>${dateText(d.value)}</b> <span class="cp-muted">· ${n < 0 ? T("passed", "abgelaufen") : T("date set", "Termin")}${d.by ? ` · ${esc(d.by)}` : ""}</span><br>${title}${d.source ? ` <span class="cp-muted">· ${T("according to", "laut")} ${esc(d.source)}</span>` : ""}${cite(src)}</div>`;
+    }
     if (!dated(d)) return `<div class="cp-frist ${d.due_text ? "" : "check"}" title="${esc(d.rule || "")}">${cond}<b>${d.due_text ? esc(d.due_text) : T("check", "prüfen")}</b><br>${title}${basis}</div>`;
     const n = daysTo(d.value), ab = d.direction === "ab";
     return `<div class="cp-frist ${ab ? "" : n < 0 ? "late" : n <= 14 ? "soon" : ""}" title="${esc(d.rule || "")}">${cond}<b>${ab ? T("from ", "ab ") : ""}${dateText(d.value)}</b> ${ab ? "" : n < 0 ? T(`· overdue ${-n} d`, `· seit ${-n} T. abgelaufen`) : n <= 14 ? T(`· in ${n} d`, `· in ${n} T.`) : ""}<br>${title}${basis}${d.stated && !d.legal_basis ? ` <span class="cp-muted">· ${esc(d.stated)}</span>` : ""}</div>`; };
@@ -1354,6 +1367,7 @@ function sideView(ev) {
     <section class="cp-card cp-case"><h3>${T("The case", "Der Fall")}</h3>
       <dl class="cp-casefacts">
         <dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${esc(anliegen) || "—"}${cite(factCite("rechtsgebiet"))}</dd>
+        ${asks.length ? `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${asks.map((q) => `<div data-item="${esc(q.item_id)}">«${esc(q.value)}»${cite((q.evidence || [])[0])}${q.answered_by ? ` <span class="cp-muted">→ ${esc(((item("key_point", q.answered_by) || {}).label || {}).de || "")}</span>` : ""}</div>`).join("")}</dd>` : ""}
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
         <dt>${T("Status", "Stand")}</dt><dd data-item="step:${esc((ev && ev.current && ev.current.step) || "")}">${stand}</dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
@@ -1516,6 +1530,20 @@ function letterText() {
   return [...document.querySelectorAll("[data-item='letter:0'] [data-seg]")].map((el) => el.dataset.seg === "text" ? el.innerText.replace(/\n$/, "")
     : [...el.querySelectorAll(":scope > li[data-text]")].map((li) => li.dataset.text).join("\n")).join("\n");
 }
+// The legal key points of the case, directly under the deadline: at most two, one line each, the article a tag that opens
+// its passage (with what follows and what to check), the facts' sources one click away. A point whose condition the file
+// leaves open is a question, never asserted.
+function keyPointLines() {
+  const rows = (S.data.items || []).filter((i) => i.kind === "key_point" && i.shown);
+  return rows.map((p) => {
+    const open = S.keyPoint === p.key, law = (p.law || [])[0] || {}, src = (p.evidence || []).find((e) => e.file);
+    return `<div class="cp-keypoint ${p.value === "open" ? "open" : ""}" data-item="${esc(p.item_id)}"><span class="cp-keypoint-text">${p.value === "open" ? "? " : ""}${esc((p.label || {}).de || "")}</span>
+      <button class="cp-tag cp-law" type="button" data-key-point="${esc(p.key)}" aria-expanded="${open}" title="${esc(law.cite ? `${law.cite}: «${law.passage}»` : "")}">${esc(p.legal_basis || "")}</button>${src
+        ? ` <button class="cp-source-chip" data-cite-file="${esc(src.file)}" data-page="${src.page || ""}" title="${esc(src.quote || "")}">${src.page ? `${T("p.", "S.")} ${src.page}` : T("source", "Quelle")}</button>` : ""}
+      ${open ? `<div class="cp-passage">${(p.law || []).map((l) => `${esc(l.cite)}: «${esc(l.passage)}»${l.verified ? "" : ` <span class="cp-muted">(${T("not checked against the official text", "nicht am amtlichen Text geprüft")})</span>`}`).join("<br>")}
+        <br><span class="cp-keypoint-more">${T("Follows", "Folge")}: ${esc(p.follows || "")}</span><br><span class="cp-keypoint-more">${T("To check", "Zu prüfen")}: ${esc(p.check || "")}</span></div>` : ""}</div>`;
+  }).join("");
+}
 function preparedView(ev, st) {
   const act = item("next_action", "0"), draft = S.data.draft || {};
   const c = closed(), copied = (S.data.caseEvents || []).some((e) => e.kind === "letter.copied") || S.copied;
@@ -1536,13 +1564,19 @@ function preparedView(ev, st) {
   const options = (S.data.action_options || []).filter((o) => !act || o.kind !== act.action);
   const title = act ? T(act.label.en, act.label.de) : T("No prepared step", "Kein vorbereiteter Schritt");
   const f = S.data.follow_up, due = f && f.due;
-  // The customer's own statutory deadline leads the card: the earliest still open, else the last one passed.
-  const own = (S.data.items || []).filter((i) => i.kind === "deadline" && i.origin === "law" && (i.party || "kunde") === "kunde" && i.direction !== "ab"
+  // The customer's own statutory deadline, or a date a court, an authority or the other side set for the customer, leads
+  // the card: the earliest still open, else the last one passed (a set date then says what it was and «abgelaufen»).
+  const own = (S.data.items || []).filter((i) => i.kind === "deadline" && (i.origin === "law" || i.set_by_others) && (i.party || "kunde") === "kunde" && i.direction !== "ab"
     && /^\d{4}-\d{2}-\d{2}/.test(String(i.value || ""))).sort((a, b) => String(a.value).localeCompare(String(b.value)));
   const lead = own.find((i) => daysTo(i.value) >= 0) || own[own.length - 1];
   const leadDays = lead ? daysTo(lead.value) : null;
-  const leadLine = lead && !c ? `<p class="cp-lead-frist ${leadDays < 0 ? "late" : leadDays <= 14 ? "soon" : ""}">${T("Deadline", "Frist")} <b>${dateText(lead.value)}</b> · ${esc((lead.label || {}).de || lead.key)}${lead.condition ? ` (${esc(lead.condition)})` : ""} · ${esc(lead.legal_basis || "")} · ${
-    leadDays < 0 ? T(`passed ${-leadDays} days ago`, `seit ${-leadDays} Tagen abgelaufen`) : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}</p>` : "";
+  const leadSrc = lead && (lead.evidence || []).find((e) => e.file);
+  const leadLine = lead && !c ? (lead.set_by_others
+    ? `<p class="cp-lead-frist ${leadDays < 0 ? "past" : leadDays <= 14 ? "soon" : ""}" data-item="${esc(lead.item_id)}">${T("Date", "Termin")} <b>${dateText(lead.value)}</b> · ${esc(lead.what || "")}${lead.source ? ` · ${T("according to", "laut")} ${esc(lead.source)}` : lead.by ? ` · ${esc(lead.by)}` : ""} · ${
+        leadDays < 0 ? T("passed", "abgelaufen") : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}${leadSrc ? ` <button class="cp-source-chip" data-cite-file="${esc(leadSrc.file)}" data-page="${leadSrc.page || ""}" title="${esc(leadSrc.quote || "")}">${leadSrc.page ? `${T("p.", "S.")} ${leadSrc.page}` : T("source", "Quelle")}</button>` : ""}</p>`
+    : `<p class="cp-lead-frist ${leadDays < 0 ? "late" : leadDays <= 14 ? "soon" : ""}">${T("Deadline", "Frist")} <b>${dateText(lead.value)}</b> · ${esc((lead.label || {}).de || lead.key)}${lead.condition ? ` (${esc(lead.condition)})` : ""} · ${esc(lead.legal_basis || "")} · ${
+    leadDays < 0 ? T(`passed ${-leadDays} days ago`, `seit ${-leadDays} Tagen abgelaufen`) : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}</p>`) : "";
+  const points = c ? "" : keyPointLines();
   // One action bar on the letter card, always in view: copy · follow-up · done. After copying, Erledigt is the primary.
   const copyPrimary = st === "prepared" && letter && !copied, closePrimary = st === "prepared" && (copied || !letter);
   const bar = c ? `<span class="cp-closed">${icon("check")}<b>${c.form === "erledigt" ? T("Done", "Erledigt") : T("Done, with a reservation", "Erledigt, mit Vorbehalt")}</b>
@@ -1558,8 +1592,9 @@ function preparedView(ev, st) {
     <header class="cp-prep-head"><h2>${esc(title)}</h2>${!c && editable && options.length ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because:`, `Stattdessen: ${esc(S.pickAction.title)}, weil:`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
       : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
-    ${leadLine}${contactLine(c)}
-    ${weil && !c ? `<p class="cp-weil">${T("Because", "Weil")}: ${weil}</p>` : ""}
+    ${leadLine}${points}${contactLine(c)}
+    ${weil && !c ? (points && !S.weilOpen ? `<p class="cp-weil"><button class="cp-link" id="weil-open" aria-expanded="false">${T("Why this step", "Warum dieser Schritt")}</button></p>`
+      : `<p class="cp-weil">${T("Because", "Weil")}: ${weil}</p>`) : ""}
     <div class="cp-letter" data-item="letter:0">${letter ? letterView(letter, editable) : `<p class="cp-muted">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step.", "Für diesen Schritt kein Brief."))}</p>`}
       ${(draft.required || []).length ? `<p class="cp-required">${T("Required", "Pflichtteile")}: ${draft.required.map((r) => `${esc(r.title)} <span class="cp-muted">(${esc(r.basis)})</span>`).join(" · ")}</p>` : ""}
       ${(draft.also || []).filter((a) => a.text).map((a) => `<details class="cp-also"><summary class="cp-link">${T("With it", "Dazu")}: ${esc(a.title)}</summary>
@@ -1655,6 +1690,12 @@ function bindOverview() {
   });
   on("[data-cover-toggle]", "click", () => { S.coverOpen = !S.coverOpen; renderCase(); });
   on("[data-cover-passage]", "click", (b) => { S.coverPassage = S.coverPassage === b.dataset.coverPassage ? null : b.dataset.coverPassage; renderCase(); });
+  on("[data-key-point]", "click", (b) => {
+    S.keyPoint = S.keyPoint === b.dataset.keyPoint ? null : b.dataset.keyPoint;
+    if (S.keyPoint) caseEvent("source.opened", `key_point:${S.keyPoint}`, {}).catch(() => {});
+    renderCase();
+  });
+  on("#weil-open", "click", () => { S.weilOpen = true; renderCase(); });
   on("[data-cover-decline]", "click", () => { S.coverDecline = !S.coverDecline; renderCase(); });
   on("[data-cover-reason]", "click", async (b) => {  // refusing cover: which point fails, one tap; both are the handler's facts, logged as such
     S.coverDecline = false;
