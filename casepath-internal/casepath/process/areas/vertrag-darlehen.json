@@ -47,7 +47,7 @@
   "demand": {"text": "Wir fordern Sie auf, das Darlehen bis {frist} zurückzubezahlen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "rueckzahlung", "title": "Rückzahlung des Darlehens ohne vereinbarten Termin", "trigger": "aufforderung", "period": {"weeks": 6}, "from": "von der ersten Aufforderung an", "when": {"fact": "termin_vereinbart", "is": false}, "basis": "Art. 318 OR", "missed": "Danach ist das Darlehen zurückzubezahlen; die weiteren Schritte gegen die Gegenpartei sind zu prüfen.", "question": "Wann haben Sie die Rückzahlung erstmals verlangt?", "source_refs": ["law#318"]}
+  {"id": "rueckzahlung", "title": "Rückzahlung des Darlehens ohne vereinbarten Termin", "trigger": "aufforderung", "period": {"weeks": 6}, "from": "von der ersten Aufforderung an", "when": {"fact": "termin_vereinbart", "is": false}, "basis": "Art. 318 OR", "missed": "Danach ist das Darlehen zurückzubezahlen; die weiteren Schritte gegen die Gegenpartei sind zu prüfen.", "question": "Wann haben Sie die Rückzahlung erstmals verlangt?", "source_refs": ["law#318"], "party": "gegenpartei", "when_text": "nur wenn kein Rückzahlungstermin vereinbart ist"}
  ],
  "notes": [],
  "summary": [],

@@ -56,8 +56,8 @@
   "demand": {"text": "Wir fordern Sie auf, uns bis {frist} mitzuteilen, wie Sie den Mangel beheben, den Kaufpreis herabsetzen oder den Kauf rückgängig machen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "maengelanzeige", "title": "Mängelanzeige an den Verkäufer", "trigger": "mangel_entdeckt", "period": "sofort", "from": "nach der Entdeckung", "basis": "Art. 201 Abs. 3 OR", "missed": "Ohne sofortige Anzeige gilt die Sache als genehmigt.", "question": "Wann haben Sie den Mangel bemerkt?", "source_refs": ["law#201.3"]},
-  {"id": "verjaehrung_gewaehrleistung", "title": "Verjährung der Gewährleistungsansprüche", "trigger": "ablieferung", "period": {"years": 2}, "from": "nach der Ablieferung", "check": "bei gebrauchten Sachen kann sie vertraglich auf ein Jahr verkürzt sein (Art. 210 Abs. 4 OR), Vertrag prüfen", "basis": "Art. 210 Abs. 1 OR", "missed": "Danach verjähren die Klagen auf Gewährleistung, ausser der Verkäufer hat eine Haftung auf längere Zeit übernommen.", "question": "Wann wurde Ihnen die Sache übergeben?", "source_refs": ["law#210", "law#210.4"]}
+  {"id": "maengelanzeige", "title": "Mängelanzeige an den Verkäufer", "trigger": "mangel_entdeckt", "period": "sofort", "from": "nach der Entdeckung", "basis": "Art. 201 Abs. 3 OR", "missed": "Ohne sofortige Anzeige gilt die Sache als genehmigt.", "question": "Wann haben Sie den Mangel bemerkt?", "source_refs": ["law#201.3"], "party": "kunde"},
+  {"id": "verjaehrung_gewaehrleistung", "title": "Verjährung der Gewährleistungsansprüche", "trigger": "ablieferung", "period": {"years": 2}, "from": "nach der Ablieferung", "check": "bei gebrauchten Sachen kann sie vertraglich auf ein Jahr verkürzt sein (Art. 210 Abs. 4 OR), Vertrag prüfen", "basis": "Art. 210 Abs. 1 OR", "missed": "Danach verjähren die Klagen auf Gewährleistung, ausser der Verkäufer hat eine Haftung auf längere Zeit übernommen.", "question": "Wann wurde Ihnen die Sache übergeben?", "source_refs": ["law#210", "law#210.4"], "party": "kunde"}
  ],
  "notes": [],
  "summary": [],

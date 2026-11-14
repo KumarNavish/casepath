@@ -409,3 +409,9 @@ body.dragging .cp-drop{border-color:var(--crimson);color:var(--crimson)}
 .cp-more .cp-menu .cp-link{font-size:14px;justify-content:flex-start}
 .cp-more .cp-menu .cp-icon{width:18px;height:18px}
 .cp-nowrap{white-space:nowrap}
+
+.cp-lead-frist{margin:4px 0 0;padding:6px 10px;border-left:3px solid var(--line);font-size:14px}
+.cp-lead-frist.soon,.cp-lead-frist.late{border-left-color:var(--crimson);color:var(--crimson);font-weight:600}
+.cp-frist.other b{color:inherit;font-weight:600}
+.cp-passage{flex-basis:100%;margin:4px 0 2px 26px;font-size:13px;color:var(--muted, #555);font-style:italic}
+.cp-line:has(.cp-passage){flex-wrap:wrap}

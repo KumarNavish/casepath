@@ -167,7 +167,6 @@ def main():
     for item in store.list_knowledge(statuses={"candidate"}):
         store.save_knowledge(kb.set_status(item, "active", by="N. Kumar", reason="Seen in two defect cases"))
     item = store.list_knowledge(statuses={"active"})[0]
-    seed_areas(store, runs)
     case_b, (email_b, letter_b, _) = seed("Schimmel im Badezimmer, Kramgasse 5 (zweiter Fall)")
     pause = float(sys.argv[2]) if len(sys.argv) > 2 else 1.5
     calls = {"n": 0}
@@ -201,6 +200,9 @@ def main():
         return case
     case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
     case_d = handler_case("Schimmel im Bad, zweite Meldung (synthetisch)")
+    factory_b = runs.model_factory
+    seed_areas(store, runs)  # after C and D, so the cases the browser checks use stay at the top of the list
+    runs.model_factory = factory_b
     print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 

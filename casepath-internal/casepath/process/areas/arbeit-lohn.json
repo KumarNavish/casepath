@@ -50,7 +50,7 @@
   "demand": {"text": "Wir fordern Sie auf, den ausstehenden Lohn bis {frist} zu bezahlen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "verjaehrung_lohn", "title": "Verjährung des ältesten offenen Lohns", "trigger": "lohn_faellig_seit", "period": {"years": 5}, "from": "ab Fälligkeit", "check": "jüngere Löhne verjähren später; Unterbrechung der Verjährung nicht berücksichtigt", "basis": "Art. 128 Ziff. 3 OR", "missed": "Danach ist die Forderung verjährt.", "question": "Seit wann ist Ihr Lohn ausstehend (ältester offener Monat)?", "source_refs": ["law#128", "law#128.3"]}
+  {"id": "verjaehrung_lohn", "title": "Verjährung des ältesten offenen Lohns", "trigger": "lohn_faellig_seit", "period": {"years": 5}, "from": "ab Fälligkeit", "check": "jüngere Löhne verjähren später; Unterbrechung der Verjährung nicht berücksichtigt", "basis": "Art. 128 Ziff. 3 OR", "missed": "Danach ist die Forderung verjährt.", "question": "Seit wann ist Ihr Lohn ausstehend (ältester offener Monat)?", "source_refs": ["law#128", "law#128.3"], "party": "kunde"}
  ],
  "notes": [],
  "summary": [],

@@ -75,7 +75,8 @@ def _check_law(entries, laws, where):
 def validate_backbone(backbone):
     if not isinstance(backbone, dict) or backbone.get("format") != BACKBONE_FORMAT:
         raise CatalogueError(f"backbone format must be {BACKBONE_FORMAT}")
-    for key in ("id", "version", "sources", "facts", "start", "steps", "outcomes", "clock", "forms", "action_kinds", "cooperation", "laws", "law"):
+    for key in ("id", "version", "sources", "facts", "start", "steps", "outcomes", "clock", "forms", "action_kinds", "cooperation", "laws", "law",
+                "deadline_margin_days"):
         if key not in backbone:
             raise CatalogueError(f"backbone is missing {key!r}")
     _check_law(backbone["law"], backbone["laws"], "backbone")
@@ -129,6 +130,10 @@ def validate_module(module, backbone):
         if not str((module["assessment"].get(part) or {}).get("text") or "").strip():
             raise CatalogueError(f"{where}: the assessment needs {part}")
     for d in module["deadlines"]:
+        if d.get("party") not in {"kunde", "gegenpartei"}:
+            raise CatalogueError(f"{where}: deadline {d.get('id')} must say who must act (party kunde or gegenpartei)")
+        if d.get("when") and not d.get("when_text"):
+            raise CatalogueError(f"{where}: deadline {d.get('id')} needs its condition in words (when_text)")
         for field in ("id", "title", "trigger", "period", "basis", "missed", "question", "source_refs"):
             if not d.get(field):
                 raise CatalogueError(f"{where}: deadline {d.get('id')} needs {field}")
@@ -205,7 +210,7 @@ def compose(backbone, module):
                 "documents": [{k: v for k, v in d.items() if k != "stage"} for d in m["documents"]],
                 "outcomes": bb["outcomes"], "hints": hints,
                 **{k: m.get(k, []) for k in ("notes", "summary", "open_questions")},
-                "clock": bb["clock"], "forms": forms, "action_kinds": bb["action_kinds"], "cooperation": bb["cooperation"],
+                "clock": bb["clock"], "forms": forms, "action_kinds": bb["action_kinds"], "cooperation": bb["cooperation"], "deadline_margin_days": bb.get("deadline_margin_days", 7),
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []), "deadlines": m["deadlines"],

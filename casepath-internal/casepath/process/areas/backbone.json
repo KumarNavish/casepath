@@ -39,7 +39,7 @@
   {"id": "gegenpartei", "title": "Gegenüber der Gegenpartei vorgehen", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A8", "title": "Schreiben an die Gegenpartei (Entwurf zuerst an die Kundschaft)", "next_in_days": 14, "follow_up": "A9"}, "next": [{"to": "abwicklung", "label": "Einigung", "when": {"fact": "einigung", "is": true}}]},
   {"id": "mandat", "title": "Mandat an Anwaltskanzlei", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A10", "title": "Mandatsanfrage, Kostengutsprache und Information der Kundschaft", "next_in_days": 30, "follow_up": "A2"}, "next": [{"to": "abwicklung", "label": "Mandat abgeschlossen", "when": {"fact": "einigung", "is": true}}]},
   {"id": "abwicklung", "title": "Abwicklung der Einigung", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A11", "title": "Zahlung abwickeln (IBAN, Auszahlung nachverfolgen)", "next_in_days": 21, "follow_up": "A11"}, "next": [{"to": "abschluss_zahlung", "label": "Zahlung erhalten", "when": {"fact": "zahlung_erhalten", "is": true}}]},
-  {"id": "abschluss_still", "title": "Abschluss: keine Rückmeldung", "role": "Fallbearbeitung", "source_refs": ["practice#2of7"], "documents": [], "outcome": "stillschweigen", "action": {"kind": "A12", "title": "Dossier schliessen"}, "next": []},
+  {"id": "abschluss_still", "title": "Abschluss: keine Rückmeldung", "role": "Fallbearbeitung", "source_refs": ["practice#2of7"], "documents": [], "outcome": "stillschweigen", "action": {"kind": "A12", "title": "Dossier schliessen", "form": "A12_still"}, "next": []},
   {"id": "abschluss_beraten", "title": "Abschluss: Beratung erfolgt", "role": "Fallbearbeitung", "source_refs": ["practice#2of7"], "documents": [], "outcome": "beraten", "action": {"kind": "A12", "title": "Dossier schliessen"}, "next": []},
   {"id": "abschluss_zahlung", "title": "Abschluss: Zahlung erhalten", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "outcome": "zahlung", "action": {"kind": "A12", "title": "Dossier abschliessen"}, "next": []},
   {"id": "abschluss_mitwirkung", "title": "Abschluss: fehlende Mitwirkung", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "outcome": "mitwirkung", "action": {"kind": "A12", "title": "Leistungseinstellung mitteilen"}, "next": []}
@@ -55,7 +55,7 @@
   {"after": ["2"], "days": 28, "then": "A6", "deadline_days": 25, "follow_up": "A7", "source": "practice#2of7 (nach Telefonat)", "stages": ["klaeren"]},
   {"after": ["6"], "days": 28, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7", "stages": ["klaeren"]},
   {"after": ["5"], "days": 90, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7 (3-4 Monate nach Einschätzung)", "stages": ["beurteilen"]},
-  {"after": ["7"], "days": 14, "then": "A12", "deadline_days": null, "source": "practice#2of7 (Abschluss nach Statusanfrage)", "stages": ["klaeren", "beurteilen"]}
+  {"after": ["7"], "days": 14, "then": "A12", "deadline_days": null, "source": "practice#2of7 (Abschluss nach Statusanfrage)", "stages": ["klaeren", "beurteilen"], "form": "A12_still"}
  ],
  "forms": {
   "A1": {"title": "Unterlagen und Angaben anfordern", "to": "Kundschaft", "parts": ["{registrierung}", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.", "{fragen}", "{hinweise}", "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.", "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."]},
@@ -70,7 +70,8 @@
   "A3": {"title": "Upload-Link", "none": "der Link entsteht im Upload-System von Protekta"},
   "A9": {"title": "Antwort in der Verhandlung", "none": "die Stellungnahme zu einem Angebot entscheidet die Fallbearbeitung"},
   "A11": {"title": "Zahlung bestätigen", "none": "Betrag und Datum kommen aus dem Zahlungssystem"},
-  "_frame": {"head": ["{referenz_kopf}{anrede}", ""], "tail": ["", "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.", "", "Freundliche Grüsse"]}
+  "_frame": {"head": ["{referenz_kopf}{anrede}", ""], "tail": ["", "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.", "", "Freundliche Grüsse"]},
+  "A12_still": {"title": "Dossier schliessen", "none": "die Schliessung wurde im letzten Schreiben angekündigt"}
  },
  "practice_elsewhere": {"ref": "practice#ablauf", "title": "Ablauf der Fallbearbeitung (Handlungen A1–A12, Wiedervorlagen), aus der Praxis im Mietrecht übernommen; in diesem Rechtsgebiet nicht beobachtet"},
  "action_kinds": {
@@ -106,5 +107,6 @@
   {"when": {"fact": "deckung", "is": "abgelehnt"}, "stage": "abschluss_mitwirkung"},
   {"when": {"fact": "vorgehen", "is": "Selbst führen"}, "stage": "gegenpartei"},
   {"when": {"fact": "vorgehen", "is": "Mandat an Anwaltskanzlei"}, "stage": "mandat"}
- ]
+ ],
+ "deadline_margin_days": 7
 }

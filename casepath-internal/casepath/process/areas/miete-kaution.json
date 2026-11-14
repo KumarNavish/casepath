@@ -49,8 +49,8 @@
   "demand": {"text": "Wir fordern Sie auf, bis {frist} der Freigabe der Mietkaution zuzustimmen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "kaution_bank", "title": "Rückforderung der Kaution direkt bei der Bank", "trigger": "mietende", "period": {"years": 1}, "from": "nach Beendigung des Mietverhältnisses", "direction": "ab", "shift": false, "hint": false, "basis": "Art. 257e Abs. 3 OR", "missed": "Ab diesem Tag kann die Mieterschaft die Kaution von der Bank zurückverlangen, wenn die Vermieterschaft bis dahin keinen Anspruch rechtlich geltend gemacht hat.", "question": "Wann endete Ihr Mietverhältnis?", "source_refs": ["law#257e.3-jahr"]},
-  {"id": "maengelmeldung", "title": "Mängelmeldung der Vermieterschaft bei der Rückgabe", "trigger": "rueckgabe", "period": "sofort", "from": "bei der Rückgabe", "hint": false, "basis": "Art. 267a Abs. 1 OR", "missed": "Versäumt die Vermieterschaft die sofortige Meldung, verliert sie ihre Ansprüche für erkennbare Mängel.", "question": "Wann haben Sie die Wohnung zurückgegeben?", "source_refs": ["law#267a", "law#267a.2"]}
+  {"id": "kaution_bank", "title": "Rückforderung der Kaution direkt bei der Bank", "trigger": "mietende", "period": {"years": 1}, "from": "nach Beendigung des Mietverhältnisses", "direction": "ab", "shift": false, "hint": false, "basis": "Art. 257e Abs. 3 OR", "missed": "Ab diesem Tag kann die Mieterschaft die Kaution von der Bank zurückverlangen, wenn die Vermieterschaft bis dahin keinen Anspruch rechtlich geltend gemacht hat.", "question": "Wann endete Ihr Mietverhältnis?", "source_refs": ["law#257e.3-jahr"], "party": "kunde"},
+  {"id": "maengelmeldung", "title": "Mängelmeldung der Vermieterschaft bei der Rückgabe", "trigger": "rueckgabe", "period": "sofort", "from": "bei der Rückgabe", "hint": false, "basis": "Art. 267a Abs. 1 OR", "missed": "Versäumt die Vermieterschaft die sofortige Meldung, verliert sie ihre Ansprüche für erkennbare Mängel.", "question": "Wann haben Sie die Wohnung zurückgegeben?", "source_refs": ["law#267a", "law#267a.2"], "party": "gegenpartei"}
  ],
  "notes": [],
  "summary": [],

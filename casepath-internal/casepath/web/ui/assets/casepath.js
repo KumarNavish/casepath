@@ -1258,9 +1258,11 @@ function sideView(ev) {
   const deadlines = (S.data.items || []).filter((i) => i.kind === "deadline").sort((a, b) => (dated(b) - dated(a)) || String(a.value).localeCompare(String(b.value)));
   const fristRow = (d) => {
     const title = esc(plainQuestion((d.label || {}).de || d.key)), basis = d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "";
-    if (!dated(d)) return `<div class="cp-frist check" title="${esc(d.rule || "")}"><b>${T("check", "prüfen")}</b><br>${title}${basis}</div>`;
+    const cond = d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : "";
+    if (d.party === "gegenpartei") return `<div class="cp-frist other" title="${esc(d.rule || "")}">${cond}<b>${dated(d) ? dateText(d.value) : T("check", "prüfen")}</b> <span class="cp-muted">· ${T("date of the other side", "Termin der Gegenpartei")}</span><br>${title}${basis}</div>`;
+    if (!dated(d)) return `<div class="cp-frist ${d.due_text ? "" : "check"}" title="${esc(d.rule || "")}">${cond}<b>${d.due_text ? esc(d.due_text) : T("check", "prüfen")}</b><br>${title}${basis}</div>`;
     const n = daysTo(d.value), ab = d.direction === "ab";
-    return `<div class="cp-frist ${ab ? "" : n < 0 ? "late" : n <= 14 ? "soon" : ""}" title="${esc(d.rule || "")}"><b>${ab ? T("from ", "ab ") : ""}${dateText(d.value)}</b> ${ab ? "" : n < 0 ? T(`· overdue ${-n} d`, `· seit ${-n} T. abgelaufen`) : n <= 14 ? T(`· in ${n} d`, `· in ${n} T.`) : ""}<br>${title}${basis}${d.stated && !d.legal_basis ? ` <span class="cp-muted">· ${esc(d.stated)}</span>` : ""}</div>`; };
+    return `<div class="cp-frist ${ab ? "" : n < 0 ? "late" : n <= 14 ? "soon" : ""}" title="${esc(d.rule || "")}">${cond}<b>${ab ? T("from ", "ab ") : ""}${dateText(d.value)}</b> ${ab ? "" : n < 0 ? T(`· overdue ${-n} d`, `· seit ${-n} T. abgelaufen`) : n <= 14 ? T(`· in ${n} d`, `· in ${n} T.`) : ""}<br>${title}${basis}${d.stated && !d.legal_basis ? ` <span class="cp-muted">· ${esc(d.stated)}</span>` : ""}</div>`; };
   const shown = new Set(deadlines.map((d) => d.key));
   const possible = ((S.data.process || {}).deadlines || []).filter((d) => !shown.has(d.id) && d.hint !== false && (item("fact", d.trigger) || {}).value == null)
     .map((d) => `<div class="cp-frist soon">${T("Possible deadline", "Frist möglich")}: ${esc(d.title)} – ${T("date missing", "Datum fehlt")} <span class="cp-muted">· ${esc(d.basis)}</span></div>`).join("");
@@ -1368,12 +1370,32 @@ function letterLines() {
   const on = (i) => (proposal(i) ? lines[i.item_id] === true : lines[i.item_id] !== false);
   return { all: docs.concat(qs), on };
 }
-function lineTag(i) {
-  // One quiet tag per line, itself the link: to the sentence that shows it, else to the rule of its step.
+// The article a line comes from (its first law reference) and its verbatim passage; null when it comes from no law.
+function lawOf(i) {
+  const proc = S.data.process || {}, law = proc.law || {};
+  const def = i.kind === "document" ? (proc.documents || []).find((d) => d.id === i.key)
+    : i.kind === "letter_question" ? (proc.facts || []).find((f) => f.id === i.key) : i.kind === "hint" ? (proc.hints || []).find((h) => h.id === i.key) : null;
+  const ref = ((def || {}).source_refs || []).map((r) => r.match(/^law#(.+)$/)).find((m) => m && law[m[1]]);
+  return ref ? law[ref[1]] : null;
+}
+function practiceCount(i) {
   const pd = ((S.data.process || {}).documents || []).find((d) => d.id === i.key) || {};
-  const text = i.legal_basis ? i.legal_basis : pd.knowledge ? practiceNote(pd.knowledge)
+  const m = (pd.source_refs || []).map((r) => r.match(/^practice#(\d+)of(\d+)$/)).find(Boolean);
+  return m ? T(`asked in ${m[1]} of ${m[2]} cases`, `in ${m[1]} von ${m[2]} Fällen verlangt`) : null;
+}
+function lineTag(i) {
+  // One quiet tag per line, itself the link: to the sentence that shows it, else to the article it comes from (its
+  // passage), else to the rule of its step.
+  const pd = ((S.data.process || {}).documents || []).find((d) => d.id === i.key) || {};
+  const law = lawOf(i);
+  if (law && !(i.evidence || []).some((e) => e.file) && !(i.ask === "proposed" && i.reason)) {
+    const cite = i.legal_basis || law.cite;
+    return `<button class="cp-tag cp-law" type="button" data-passage="${esc(i.item_id)}" title="${esc(`${law.cite}: «${law.passage}»`)}" aria-expanded="${S.passage === i.item_id}">${esc(cite)}</button>`
+      + (S.passage === i.item_id ? `<div class="cp-passage">${esc(law.cite)}: «${esc(law.passage)}»</div>` : "");
+  }
+  const text = i.legal_basis ? i.legal_basis : pd.knowledge ? practiceNote(pd.knowledge) : practiceCount(i) && i.ask === "now" ? practiceCount(i)
     : i.ask === "proposed" && i.reason && /liegen vor/.test(i.reason) ? i.reason : i.ask === "proposed" ? T("for this case", "für diesen Fall")
-    : i.ask === "later" ? T("later, if needed", "später, falls nötig") : i.kind === "letter_question" ? T("only the customer knows", "nur die Kundschaft weiss es") : T("rule", "Regel");
+    : i.ask === "later" ? T("later, if needed", "später, falls nötig") : i.kind === "letter_question" ? T("only the customer knows", "nur die Kundschaft weiss es") : T("case handling", "Fallbearbeitung");
   const c = (i.evidence || []).find((e) => e.file);
   return c ? `<button class="cp-tag" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote || "")}">${esc(text)}</button>`
     : `<a class="cp-tag" href="#/case/${esc(S.route.id)}/process_builder" data-step-link="${esc(i.node || "")}">${esc(text)}</a>`;
@@ -1428,13 +1450,20 @@ function preparedView(ev, st) {
   const options = (S.data.action_options || []).filter((o) => !act || o.kind !== act.action);
   const title = act ? T(act.label.en, act.label.de) : T("No prepared step", "Kein vorbereiteter Schritt");
   const f = S.data.follow_up, due = f && f.due;
+  // The customer's own statutory deadline leads the card: the earliest still open, else the last one passed.
+  const own = (S.data.items || []).filter((i) => i.kind === "deadline" && i.origin === "law" && (i.party || "kunde") === "kunde" && i.direction !== "ab"
+    && /^\d{4}-\d{2}-\d{2}/.test(String(i.value || ""))).sort((a, b) => String(a.value).localeCompare(String(b.value)));
+  const lead = own.find((i) => daysTo(i.value) >= 0) || own[own.length - 1];
+  const leadDays = lead ? daysTo(lead.value) : null;
+  const leadLine = lead && !c ? `<p class="cp-lead-frist ${leadDays < 0 ? "late" : leadDays <= 14 ? "soon" : ""}">${T("Deadline", "Frist")} <b>${dateText(lead.value)}</b> · ${esc((lead.label || {}).de || lead.key)}${lead.condition ? ` (${esc(lead.condition)})` : ""} · ${esc(lead.legal_basis || "")} · ${
+    leadDays < 0 ? T(`passed ${-leadDays} days ago`, `seit ${-leadDays} Tagen abgelaufen`) : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}</p>` : "";
   // One action bar on the letter card, always in view: copy · follow-up · done. After copying, Erledigt is the primary.
   const copyPrimary = st === "prepared" && letter && !copied, closePrimary = st === "prepared" && (copied || !letter);
   const bar = c ? `<span class="cp-closed">${icon("check")}<b>${c.form === "erledigt" ? T("Done", "Erledigt") : T("Done, with a reservation", "Erledigt, mit Vorbehalt")}</b>
         <span class="cp-muted">· ${dateText(c.at)} · ${esc(c.expert)}</span></span><span class="grow"></span><button class="cp-button primary" id="next-case">${T("Next case", "Nächster Fall")} ${icon("right")}</button>`
     : `${letter ? `<button class="cp-button ${copyPrimary ? "primary" : ""}" id="copy-draft">${S.justCopied ? `${icon("tick")}${T("Copied", "Kopiert")}` : T("Copy letter", "Brief kopieren")}</button>` : ""}
       ${due ? `<span class="cp-date ${daysTo(due) < 0 ? "late" : ""}">${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(due)}</button>
-        <input type="date" id="followup-date" value="${esc(due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1"></span>` : ""}
+        <input type="date" id="followup-date" value="${esc(due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1">${f.capped ? ` <span class="cp-muted" title="${T("before the statutory deadline runs out", esc(f.capped.reason))}">· ${T("before the deadline", "vor Fristablauf")}</span>` : ""}</span>` : ""}
       <span class="grow"></span>
       ${["paused", "running"].includes(st) ? "" : `<span class="cp-split ${closePrimary ? "on" : ""}"><button class="cp-button ${closePrimary ? "primary" : ""}" data-close="erledigt">${T("Done", "Erledigt")}</button><details class="cp-split-more">
         <summary class="cp-button" aria-label="${T("more options", "weitere Möglichkeit")}">▾</summary><div class="cp-menu up"><input id="reservation" maxlength="2000" placeholder="${T("Reservation (optional)", "Vorbehalt (freiwillig)")}">
@@ -1443,6 +1472,7 @@ function preparedView(ev, st) {
     <header class="cp-prep-head"><h2>${esc(title)}</h2>${!c && editable && options.length ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because:`, `Stattdessen: ${esc(S.pickAction.title)}, weil:`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
       : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
+    ${leadLine}
     ${weil && !c ? `<p class="cp-weil">${T("Because", "Weil")}: ${weil}</p>` : ""}
     <div class="cp-letter" data-item="letter:0">${letter ? letterView(letter, editable) : `<p class="cp-muted">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step.", "Für diesen Schritt kein Brief."))}</p>`}
       <p class="cp-draftline">${T("Draft · a person decides", "Entwurf · ein Mensch entscheidet")}</p></div>
@@ -1597,6 +1627,7 @@ function bindOverview() {
     await loadCase();
   });
   on("[data-step-link]", "click", (a) => { if (a.dataset.stepLink) S.step = a.dataset.stepLink; });
+  on("[data-passage]", "click", (b) => { S.passage = S.passage === b.dataset.passage ? null : b.dataset.passage; renderCase(); });
   const asking = $(".cp-why-row") || (S.addDoc && $(".cp-add"));  // the one-tap reason stands where the hand already is
   if (asking) asking.scrollIntoView({ block: "nearest" });
 }

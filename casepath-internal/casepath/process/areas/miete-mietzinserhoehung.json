@@ -46,7 +46,7 @@
   "demand": {"text": "Wir fordern Sie auf, die Mietzinserhöhung bis {frist} zurückzunehmen oder schriftlich zu begründen, und behalten uns die Anfechtung (Art. 270b OR) ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "anfechtung_erhoehung", "title": "Anfechtung der Mietzinserhöhung bei der Schlichtungsbehörde", "trigger": "erhoehung_erhalten", "period": {"days": 30}, "from": "nach der Mitteilung", "basis": "Art. 270b Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist die Anfechtung verspätet.", "question": "Wann haben Sie die Mitteilung der Mietzinserhöhung erhalten?", "source_refs": ["law#270b"]}
+  {"id": "anfechtung_erhoehung", "title": "Anfechtung der Mietzinserhöhung bei der Schlichtungsbehörde", "trigger": "erhoehung_erhalten", "period": {"days": 30}, "from": "nach der Mitteilung", "basis": "Art. 270b Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist die Anfechtung verspätet.", "question": "Wann haben Sie die Mitteilung der Mietzinserhöhung erhalten?", "source_refs": ["law#270b"], "party": "kunde"}
  ],
  "notes": [],
  "summary": [],

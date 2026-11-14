@@ -10,8 +10,8 @@ import hashlib
 import json
 import re
 
-from .area import compute_deadline
-from .clock import silence
+from .area import compute_deadline, period_text
+from .clock import parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
 
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
@@ -95,6 +95,11 @@ def _in_file(files, kinds):
                if any(k in (s.get("kind") or "").lower() for k in kinds))
 
 
+def _day(value):
+    d = parse_date(value)
+    return d.strftime("%d.%m.%Y") if d else str(value)
+
+
 def build_items(state, result, files=None):
     graph, ev, result = state.get("process"), state.get("evaluation"), result or {}
     items = []
@@ -172,9 +177,13 @@ def build_items(state, result, files=None):
             trigger = (state.get("facts") or {}).get(d["trigger"])
             computed = compute_deadline(d, trigger, state.get("facts") or {}) if trigger is not None else None
             if computed:
+                unsettled = bool(d.get("when")) and evaluate_condition(d["when"], state.get("facts") or {}) is None
+                backwards = isinstance(d["period"], dict) and "days_before" in d["period"]
                 add("deadline", d["id"], value=computed[0], stated_as="computed", verdict="accepted", evidence=[],
                     node=_fact_node(graph, d["trigger"]), origin="law", chain=True, label=d["title"], stated=str(trigger),
-                    rule=computed[1], legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"))
+                    rule=computed[1], legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"),
+                    party=d.get("party", "kunde"), **({"condition": d["when_text"]} if unsettled else {}),
+                    **({"due_text": f"{period_text(d)} am {_day(trigger)}"} if backwards else {}))
         asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
         lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
         steps = {x["id"]: x for x in graph["steps"]}
@@ -195,7 +204,7 @@ def build_items(state, result, files=None):
             planned = {**planned, **({"since": max(days)} if days else {})}
         quiet = None if ev.get("outcome") else silence(graph.get("clock"), known_facts, files, stage=here.get("id"))  # nobody answered our last letter
         if quiet:
-            planned = {"kind": quiet["then"], "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
+            planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
                        "reason": f'keine Antwort seit {quiet["last"]} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
@@ -217,7 +226,8 @@ def build_items(state, result, files=None):
         if action:
             add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
                                         **({"reason": planned["reason"]} if planned.get("reason") else {}),
-                                        **({"since": planned["since"]} if planned.get("since") else {})} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
+                                        **({"since": planned["since"]} if planned.get("since") else {}),
+                                        **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
         # The first request asks, besides documents, what only the customer can say, and gives the hints the law calls for.
         known = state.get("facts") or {}

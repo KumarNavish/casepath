@@ -78,6 +78,27 @@ def follow_up(next_in_days, files, events, today=None, since=None):
     return {"due": (ref + timedelta(days=int(next_in_days))).isoformat(), "reference": ref.isoformat(), "set_by": None}
 
 
+def own_deadlines(items, files=(), today=None):
+    """The customer's own statutory deadlines still open, earliest first: dated, to be met ("bis"), not the other side's."""
+    day = reference_day(list(files or ()), today)
+    rows = [i for i in items or () if i.get("kind") == "deadline" and i.get("origin") == "law" and i.get("party", "kunde") == "kunde"
+            and i.get("direction", "bis") == "bis" and parse_date(i.get("value"))]
+    return sorted([i for i in rows if parse_date(i["value"]) >= day], key=lambda i: i["value"])
+
+
+def capped(follow, items, margin, files=(), today=None):
+    """The follow-up never later than the earliest open own deadline less a margin (not before the reference day); a
+    date a person set stands. Says why when it moved it."""
+    open_ = own_deadlines(items, files, today)
+    if not follow or follow.get("set_by") or not open_:
+        return follow
+    limit = max(parse_date(open_[0]["value"]) - timedelta(days=int(margin or 0)), reference_day(list(files or ()), today))
+    if parse_date(follow["due"]) <= limit:
+        return follow
+    return {**follow, "due": limit.isoformat(), "capped": {"deadline": open_[0]["item_id"], "date": open_[0]["value"],
+                                                          "reason": "vor Ablauf der gesetzlichen Frist"}}
+
+
 if __name__ == "__main__":
     assert parse_date("Mi. 28.08.2024 14:51") == date(2024, 8, 28)
     assert parse_date("9. August 2024") == date(2024, 8, 9)

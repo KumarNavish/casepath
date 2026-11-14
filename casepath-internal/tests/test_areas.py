@@ -15,7 +15,7 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadlines", "law", "laws"}
+NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "deadlines", "law", "laws"}
 
 
 def intakes(*ids):
@@ -48,12 +48,14 @@ class CompositionTests(unittest.TestCase):
         composed = area.workflow("mietmangel-handler")
         same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms", "clock"}}
         self.assertEqual(same(composed), same(FROZEN))
-        self.assertEqual([{k: v for k, v in r.items() if k != "stages"} for r in composed["clock"]], FROZEN["clock"])  # rules now name their stages
+        self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"]], FROZEN["clock"])  # rules now name their stages
         self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.1"))  # stored runs: same id, newer version governs
         self.assertEqual([f for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
-        self.assertEqual([s for s in composed["steps"] if s["id"] != "klaeren"], [s for s in FROZEN["steps"] if s["id"] != "klaeren"])
-        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k != "A5"},
+        unformed = lambda step: {**step, **({"action": {k: v for k, v in step["action"].items() if k != "form"}} if "action" in step else {})}
+        self.assertEqual([unformed(s) for s in composed["steps"] if s["id"] != "klaeren"], [s for s in FROZEN["steps"] if s["id"] != "klaeren"])
+        self.assertEqual(next(s for s in composed["steps"] if s["id"] == "abschluss_still")["action"]["form"], "A12_still")  # no end of benefits
+        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k not in {"A5", "A12_still"}},
                          {k: v for k, v in FROZEN["forms"].items() if k != "A5"})
         self.assertEqual((composed["forms"]["A1"]["needs"], composed["forms"]["A8"]["needs"]), ([], ["deckung", "vorgehen"]))
         self.assertEqual(composed["short_title"], "Mietmangel")
@@ -202,6 +204,53 @@ class StageFloorTests(unittest.TestCase):
         fresh = core.evaluate(wf, [], [], {"facts": facts[:1], "documents": []}, "c")
         self.assertEqual(fresh["evaluation"]["current"]["step"], "klaeren")
         self.assertIsNone(workflows.stage_floor(wf, {"rechtsgebiet": "Mietrecht / Mangel"}))
+
+
+class OwnDeadlineTests(unittest.TestCase):
+    """The customer's own statutory deadline leads: it caps the follow-up; the other side's dates never do."""
+
+    def items(self, wid, facts, as_of):
+        files = [{"name": "Akte.pdf", "extraction": {"cut_of": {"as_of": as_of}, "segments": []}}]
+        result = {"facts": [fact(f, v) for f, v in facts], "documents": [], "brief": {"request": "x", "parties": [], "timeline": []}}
+        return build_items(core.evaluate(area.workflow(wid), [], [], result, "c", files=files), result, files), files
+
+    def test_the_follow_up_comes_before_the_customers_deadline_and_says_why(self):
+        from casepath.process.clock import capped, follow_up, own_deadlines
+        items, files = self.items("miete-kuendigung", [("rechtsgebiet", "Mietrecht / Kündigung"), ("kuendigung_erhalten", "2026-11-03")], "2026-11-14")
+        own = own_deadlines(items, files)
+        self.assertEqual((own[0]["key"], own[0]["value"], own[0]["party"]), ("anfechtung", "2026-12-03", "kunde"))
+        due = capped(follow_up(21, files, []), items, 7, files)
+        self.assertEqual((due["due"], due["capped"]["reason"]), ("2026-11-26", "vor Ablauf der gesetzlichen Frist"))  # 03.12. less 7 days
+        late = capped(follow_up(21, files, []), items, 30, files)  # the margin reaches into the past: the follow-up is today
+        self.assertEqual(late["due"], "2026-11-14")
+        by_hand = capped(follow_up(21, files, [{"kind": "followup.set", "date": "2026-12-20", "expert": "x"}]), items, 7, files)
+        self.assertEqual(by_hand["due"], "2026-12-20")  # a date a person set stands
+        conditional = {i["key"]: i for i in items if i["kind"] == "deadline"}["erstreckung"]
+        self.assertEqual(conditional["condition"], "nur bei unbefristetem Mietverhältnis")
+
+    def test_the_other_sides_date_is_a_date_of_the_case_not_the_handlers_deadline(self):
+        from casepath.process.clock import capped, follow_up, own_deadlines
+        items, files = self.items("vertrag-darlehen", [("rechtsgebiet", "Vertragsrecht / Darlehen"), ("termin_vereinbart", False),
+                                                        ("aufforderung", "2026-11-10")], "2026-11-14")
+        row = {i["key"]: i for i in items if i["kind"] == "deadline"}["rueckzahlung"]
+        self.assertEqual((row["value"], row["party"]), ("2026-12-22", "gegenpartei"))
+        self.assertEqual(own_deadlines(items, files), [])
+        self.assertEqual(capped(follow_up(21, files, []), items, 7, files)["due"], "2026-12-05")  # not capped by the borrower's date
+
+    def test_a_closing_in_silence_has_no_letter_and_the_file_note_records_it(self):
+        wf = area.workflow("mietmangel-handler")
+        facts = [("rechtsgebiet", "Mietrecht / Mangel"), ("deckung", "bestätigt"), ("handlung_a1", "2024-01-10"), ("handlung_a6", "2024-02-20"),
+                 ("handlung_a7", "2024-03-30")]
+        items, files = self.items("mietmangel-handler", facts, "2024-04-20")
+        nxt = {i["item_id"]: i for i in items}["next_action:0"]
+        self.assertEqual((nxt["action"], nxt["form"]), ("A12", "A12_still"))
+        self.assertEqual(letters.render(nxt["form"], wf["forms"], {}), (None, "die Schliessung wurde im letzten Schreiben angekündigt"))
+        note = letters.file_note({"id": "c", "title": "x"}, items, [], None)
+        self.assertIn("Abschluss ohne Rückmeldung der Kundschaft: die Schliessung war im Schreiben vom 30.03.2024 angekündigt", note)
+        silent = self.items("mietmangel-handler", facts[:4], "2024-04-01")[0]  # A1, A6, silence: the lack-of-cooperation ending
+        nxt = {i["item_id"]: i for i in silent}["next_action:0"]
+        self.assertEqual((nxt["action"], nxt.get("form")), ("A12", None))
+        self.assertIn("Die Leistungen aus diesem Fall enden damit.", letters.render("A12", wf["forms"], letters.context({"id": "c", "title": "x"}, silent, [], None))[0])
 
 
 class DeadlineTests(unittest.TestCase):

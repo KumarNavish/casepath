@@ -101,9 +101,14 @@ def greeting(parties):
 def statutory(item):
     """A computed statutory deadline as the first request states it; "prüfen" when no date can be given."""
     title, day = (item.get("label") or {}).get("de"), _day(item.get("value"))
+    what = "Termin der Gegenpartei" if item.get("party") == "gegenpartei" else "Gesetzliche Frist"  # the other side's date is not the customer's
+    if item.get("condition"):
+        what = f"{what} ({item['condition']})"
     if day:
-        return f"Gesetzliche Frist «{title}»: nach unserer Berechnung {'ab' if item.get('direction') == 'ab' else 'bis'} {day}."
-    return f"Gesetzliche Frist «{title}»: Das genaue Datum prüfen wir noch; bitte handeln Sie umgehend."
+        return f"{what} «{title}»: nach unserer Berechnung {'ab' if item.get('direction') == 'ab' else 'bis'} {day}."
+    if item.get("due_text"):
+        return f"{what} «{title}»: {item['due_text']}."
+    return f"{what} «{title}»: Das genaue Datum prüfen wir noch; bitte handeln Sie umgehend."
 
 
 def context(case, items, events, follow_up, files=(), today=None, evaluation=None, process=None):
@@ -189,6 +194,10 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None):
         parts.append(f"Entschieden: {'; '.join(decided)}.")
     if action:
         parts.append(f"Nächster Schritt: {action.get('value')}" + (f", weil {reason}" if reason else "") + ".")
+    if action and action.get("form") == "A12_still":  # a closing in silence, not an end of benefits
+        last = [d for d in (parse_date(next((i.get("value") for i in items if i["kind"] == "fact" and i["key"] == f"handlung_a{n}"), None)) for n in (6, 7)) if d]
+        parts.append("Abschluss ohne Rückmeldung der Kundschaft: die Schliessung war im Schreiben"
+                     + (f" vom {max(last).strftime('%d.%m.%Y')}" if last else "") + " angekündigt; kein weiteres Schreiben.")
     if unticked:
         parts.append(f"Nicht verlangt (von der Fallbearbeitung gestrichen): {', '.join(unticked)}.")
     if sent:
