@@ -42,7 +42,7 @@ import json
 from pathlib import Path
 import sys
 
-from ..process import casegraph, knowledge as kb, workflows
+from ..process import casegraph, incoming, knowledge as kb, workflows
 from .team import CaseTeam, CaseWork, TeamError, run_agent, run_source_checker
 from .azure_model import ModelError
 from ..read.evidence import Evidence
@@ -403,13 +403,19 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     rows = result.get("facts", [])
     facts = {f["fact"]: f["value"] for f in rows if f["status"] == "presumed"}
     facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "established" and f.get("verdict") == "accepted"})
+    # An incoming item the two readings disagree on stays an open item on the first reading's value, its reason saying
+    # so: a disagreement never hides what came in (it is never answered by it either).
+    read_in = {f for kind in graph.get("incoming") or () for f in incoming.slots(kind)}
+    facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "conflicting" and f["fact"] in read_in and f.get("value")
+                  and f["fact"] not in facts})
     overrides = casegraph.fact_overrides(graph, edits)  # a case worker's value governs
     facts.update({k: v for k, (v, _) in overrides.items()})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
     asked, partial = casegraph.whole_findings(graph, findings)  # a need for all of something stays asked
     checked = bool(result.get("documents"))
     facts = casegraph.derive_facts(graph, facts, asked, lambda f: workflows.evaluate(graph, f, asked, checked=checked),
-                                   partial=partial, files=files, today=today)  # at view time: what arrived decides, not the run
+                                   partial=partial, files=files, today=today,
+                                   incoming_dates=incoming.document_dates(graph, rows, files))  # at view time: what arrived decides, not the run
     evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=checked), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings,
             "overrides": {k: e for k, (_, e) in overrides.items()}}

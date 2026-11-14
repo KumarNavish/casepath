@@ -30,7 +30,7 @@ from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import capped, follow_up, own_deadlines
 from ..agents import core
 from ..process import letters
-from ..process.items import build_items, item_changes, items_sha256
+from ..process.items import kind_title, build_items, item_changes, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
@@ -448,7 +448,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         options = letters.action_options(current.get("process") or {}, current.get("evaluation"), forms) if current.get("process") else []
         picked = letters.chosen_action(store.list_case_events(case_id))
         if action and picked and picked != action.get("action"):  # "andere Handlung": the handler's pick governs the draft and the date
-            option = next((o for o in options if o["kind"] == picked), {"title": picked, "next_in_days": action.get("next_in_days")})
+            option = next((o for o in options if o["kind"] == picked),
+                          {"title": kind_title(current.get("process"), picked), "next_in_days": action.get("next_in_days")})
             action.update(action=picked, value=option["title"], label={"de": option["title"], "en": option["title"]},
                           next_in_days=option["next_in_days"], chosen_by_handler=True)
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id), since=(action or {}).get("since"))

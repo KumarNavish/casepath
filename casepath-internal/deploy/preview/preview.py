@@ -135,6 +135,43 @@ def seed_areas(store, runs):
             print(f"area case {wid} did not complete: {store.get_run(run['id']).get('error')}", flush=True)
 
 
+COST_NOTE = ("SYNTHETISCHE AKTE. Protekta Rechtsschutz an Frau Lea Beispiel, 10. September 2026: Um die Versicherungsdeckung prüfen zu können, "
+             "brauchen wir noch den Mietvertrag.\n\nProtekta Rechtsschutz an Kanzlei Muster, 1. Oktober 2026: Wir erteilen Ihnen Kostengutsprache "
+             "für die Abklärung der Sach- und Rechtslage sowie aussergerichtliche Bemühungen.\n\nKanzlei Muster an Protekta Rechtsschutz, "
+             "5. November 2026: Für unsere Bemühungen bis 31. Oktober 2026 stellen wir Ihnen CHF 3'200 in Rechnung (Zwischenhonorar).")
+
+
+def seed_cost_note(store, runs):
+    """A mandated case whose firm sent a cost note that is not paid: run through the scripted team from the file, so the
+    card shows the cost claim (A11) as the prepared action with its reason and source."""
+    from casepath.read.extract import extract
+    case = store.create_case("Mietmangel, Kostennote der Kanzlei (synthetisch) 4321.8765.2109", {"synthetic": True}, "N. Kumar")
+    row = extract("Akte Kanzlei.txt", "text/plain", COST_NOTE.encode())
+    row["segments"] = [  # the reading's document list, as a read dossier has it
+        {"first_page": 1, "last_page": 1, "kind": "Brief", "date": "10.09.2026", "sender": "Protekta Rechtsschutz AG", "recipient": "Lea Beispiel", "title": "Anforderung", "summary": ""},
+        {"first_page": 1, "last_page": 1, "kind": "Brief", "date": "01.10.2026", "sender": "Protekta Rechtsschutz AG", "recipient": "Kanzlei Muster", "title": "Mandat", "summary": ""},
+        {"first_page": 1, "last_page": 1, "kind": "Honorarnote", "date": "05.11.2026", "sender": "Kanzlei Muster", "recipient": "Protekta", "title": "Zwischenhonorar", "summary": ""}]
+    file_id = store.add_file(case["id"], "Akte Kanzlei.txt", row["media_type"], row["kind"], COST_NOTE.encode(), row, "N. Kumar")["id"]
+    cite = lambda quote: [{"file": file_id, "quote": quote}]
+    record = lambda f, v, q: ("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)})
+    runs.model_factory = lambda: ScriptedModel([
+        [record("handlung_a1", "2026-09-10", "Protekta Rechtsschutz an Frau Lea Beispiel, 10. September 2026"),
+         record("bisherige_handlungen", "A1 2026-09-10; A10 2026-10-01", "Wir erteilen Ihnen Kostengutsprache für die Abklärung der Sach- und Rechtslage"),
+         record("eingang_kostenforderung", "Kanzlei Muster: Zwischenhonorar vom 2026-11-05 über CHF 3'200 (Bemühungen bis 31.10.2026)",
+                "Für unsere Bemühungen bis 31. Oktober 2026 stellen wir Ihnen CHF 3'200 in Rechnung (Zwischenhonorar)."),
+         report("claim_reader", request="Frau Beispiel lässt einen Mietmangel durch die Kanzlei Muster vertreten; deren Zwischenhonorar ist eingegangen.",
+                parties=[{"role": "Mieterin (VN)", "name": "Frau Lea Beispiel"}, {"role": "beauftragte Kanzlei", "name": "Kanzlei Muster"}])],
+        [report("document_finder")],
+        *[[report("result_checker", answer="Die Kostennote der Kanzlei ist zu prüfen und zu begleichen.")]] * 3,
+    ], routing=[{"fact": "rechtsgebiet", "value": "Mietrecht / Mangel", "citations": cite("brauchen wir noch den Mietvertrag.")}])
+    run = runs.start(case["id"], "N. Kumar")
+    while store.get_run(run["id"])["status"] in ("queued", "running"):
+        time.sleep(0.05)
+    if store.get_run(run["id"])["status"] != "completed":
+        print(f"cost note case did not complete: {store.get_run(run['id']).get('error')}", flush=True)
+    return case
+
+
 def main():
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
     data = tempfile.mkdtemp(prefix="cp-preview-")
@@ -202,8 +239,9 @@ def main():
     case_d = handler_case("Schimmel im Bad, zweite Meldung (synthetisch)")
     factory_b = runs.model_factory
     seed_areas(store, runs)  # after C and D, so the cases the browser checks use stay at the top of the list
+    case_k = seed_cost_note(store, runs)
     runs.model_factory = factory_b
-    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}", flush=True)
+    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 

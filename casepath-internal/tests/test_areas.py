@@ -15,7 +15,22 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws"}
+NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions"}
+INCOMING_FACTS = {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot", "eingang_zahlung", "leistungen_einstellen",
+                  "eingang_erledigt_bis", "kosten_offen", "eingang_kostenforderung_2", "eingang_kostenforderung_3", "eingang_angebot_2",
+                  "eingang_zahlung_2"}  # the overlay of what comes in (incoming.py): up to three items of a kind
+INCOMING_FORMS = {"A11_kosten", "A2_bericht", "A12_mitwirkung_entscheid", "A12_mitwirkung_kanzlei", "vorgehen_neu", "vorgehen"}
+# What the stage rule added to the steps (a stage is left once its action is done, unless a way out says it is not
+# needed; the way-to-proceed stage is the handler's decision; a follow-up has its own title): not in the former seed.
+STAGE_RULE_KEYS = {"without_action", "decision", "follow_up_title"}
+
+
+def unruled(step):
+    out = {k: v for k, v in step.items() if k not in STAGE_RULE_KEYS}
+    if "action" in out:
+        out["action"] = {k: v for k, v in out["action"].items() if k not in STAGE_RULE_KEYS}
+    out["next"] = [{k: v for k, v in e.items() if k not in STAGE_RULE_KEYS} for e in out.get("next", [])]
+    return out
 
 
 def intakes(*ids):
@@ -42,21 +57,25 @@ class CompositionTests(unittest.TestCase):
     # What the split changed on purpose: the clarifying stage's way out (silence, not incompleteness, ends benefits; a
     # replied case with its points answered goes to the assessment), three derived facts, and the assessment's
     # "bitte reichen Sie noch nach". Everything else is the former seed, field for field.
-    CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt"}
+    CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt"} | INCOMING_FACTS
 
     def test_the_composed_tenancy_defect_workflow_is_the_seed_it_replaces_but_for_the_named_rule_change(self):
         composed = area.workflow("mietmangel-handler")
         same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms", "clock", "outcomes"}}
         self.assertEqual([o for o in composed["outcomes"] if o["id"] != "erledigt"], FROZEN["outcomes"])  # plus: a settled matter closes
         self.assertEqual(same(composed), same(FROZEN))
-        self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"]], FROZEN["clock"])  # rules now name their stages
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.1"))  # stored runs: same id, newer version governs
+        self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
+                         FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.2"))  # stored runs: same id, newer version governs
         self.assertEqual([f for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
         unformed = lambda step: {**step, **({"action": {k: v for k, v in step["action"].items() if k != "form"}} if "action" in step else {})}
-        self.assertEqual([unformed(s) for s in composed["steps"] if s["id"] not in {"klaeren", "abschluss_erledigt"}], [s for s in FROZEN["steps"] if s["id"] != "klaeren"])
+        self.assertEqual([unformed(unruled(s)) for s in composed["steps"] if s["id"] not in {"klaeren", "abschluss_erledigt", "abwicklung"}],
+                         [s for s in FROZEN["steps"] if s["id"] not in {"klaeren", "abwicklung"}])
+        settle = lambda w: next(s for s in w["steps"] if s["id"] == "abwicklung")["next"][0]["when"]
+        self.assertEqual(settle(composed), {"all": [settle(FROZEN), {"fact": "kosten_offen", "is": False}]})  # no closing with a cost claim open
         self.assertEqual(next(s for s in composed["steps"] if s["id"] == "abschluss_still")["action"]["form"], "A12_still")  # no end of benefits
-        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k not in {"A5", "A12_still", "A12_erledigt"}},
+        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k not in {"A5", "A12_still", "A12_erledigt"} | INCOMING_FORMS},
                          {k: v for k, v in FROZEN["forms"].items() if k != "A5"})
         self.assertEqual((composed["forms"]["A1"]["needs"], composed["forms"]["A8"]["needs"]), ([], ["deckung", "vorgehen"]))
         self.assertEqual(composed["short_title"], "Mietmangel")
@@ -124,7 +143,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-14.1 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-14.2 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 

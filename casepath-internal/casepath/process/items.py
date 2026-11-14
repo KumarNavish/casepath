@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 
+from . import incoming
 from .area import compute_deadline, period_text
 from .clock import parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
@@ -87,6 +88,16 @@ def _evidence(citations):
 
 GENERIC_TITLES = {"bericht", "schreiben", "brief", "e", "email", "protokoll", "unterlagen", "dokument", "foto", "fotos", "rechnung", "beleg"}
 FOLLOW_UP_TITLES = {"A6": "Dossier pendent halten mit Frist", "A7": "Statusanfrage mit Abschlussankündigung", "A12": "Dossier abschliessen"}
+
+
+def kind_title(graph, kind):
+    """An action kind's German title, from the process's own action kinds (the backbone), its forms, or the titles of the
+    clock's follow-ups; a code ("A2") never reaches a handler as a title. None only for no kind."""
+    if not kind:
+        return None
+    graph = graph or {}
+    row = (graph.get("action_kinds") or {}).get(kind) or (graph.get("forms") or {}).get(kind) or {}
+    return row.get("title") or FOLLOW_UP_TITLES.get(kind) or ("Weitere Handlung" if re.fullmatch(r"A\d{1,2}", str(kind)) else str(kind))
 
 
 def _in_file(files, kinds):
@@ -192,6 +203,10 @@ def build_items(state, result, files=None):
         steps = {x["id"]: x for x in graph["steps"]}
         here = steps.get((ev.get("current") or {}).get("step")) or (steps.get(ev["path"][-1]["step"]) if ev.get("path") else None) or {}
         planned = here.get("action")  # the handler's workflow names the action each stage ends in
+        if not planned and here.get("decision"):  # a stage that is the handler's decision: the decision is what is asked
+            choice = here["decision"]
+            planned = {"kind": choice["fact"], "title": choice["title"], "form": choice["form"], "next_in_days": None, "follow_up": None,
+                       "skip_if": None, "choices": next((f.get("values") for f in graph["facts"] if f["id"] == choice["fact"]), None)}
         variant = next((v for v in (planned or {}).get("instead", []) if evaluate_condition(v["when"], state.get("facts") or {}) is True), None)
         if variant:  # a situation the stage answers differently (after a call: keep it pending with a deadline)
             planned = {**planned, **{k: v for k, v in variant.items() if k != "when"}, "skip_if": None}
@@ -199,22 +214,38 @@ def build_items(state, result, files=None):
         floor = stage_floor(graph, known_facts)
         done = done_actions(known_facts)
         clocked = {r["then"] for r in graph.get("clock") or ()}
-        if planned and not variant and planned["kind"][1:] in done and not planned.get("skip_if") and planned.get("follow_up") not in clocked:
-            # the stage's action is in the case's history already: its follow-up comes next (one the clock governs waits for it)
+        by_stage = graph.get("stage_actions")  # a stage whose action is done shows its follow-up, also one the clock governs
+        if planned and not variant and planned["kind"][1:] in done and not planned.get("skip_if") and (by_stage or planned.get("follow_up") not in clocked):
+            # the stage's action is in the case's history already: its follow-up comes next, dated; a follow-up the clock
+            # governs is shown with the date it comes due and turns into the clock's action only when nobody answered
             planned = {**planned, "skip_if": True}
+            rule = next((r for r in graph.get("clock") or () if by_stage and r["then"] == planned.get("follow_up")
+                         and here.get("id") in (r.get("stages") or [here.get("id")])), None)
+            if rule:  # the date the clock would come due: the same day the follow-up is shown for
+                planned["next_in_days"] = rule["days"]
         if planned and floor:  # placed by its history: the follow-up counts from the last action taken
             days = [d for c, ds in done.items() for d in ds if d]
             planned = {**planned, **({"since": max(days)} if days else {})}
         quiet = None if ev.get("outcome") else silence(graph.get("clock"), known_facts, files, stage=here.get("id"))  # nobody answered our last letter
         if quiet:
-            planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
+            planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": quiet.get("title") or kind_title(graph, quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
                        "reason": f'keine Antwort seit {quiet["last"]} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
+        # What came in and is still unanswered outranks the stage's own action and the clock (the customer's own statutory
+        # deadline still leads the card and caps the follow-up); the others wait, in priority order.
+        open_items = incoming.pending(graph, known_facts, incoming.document_dates(graph, result.get("facts"), files))
+        if open_items:
+            act = open_items[0]["action"]
+            disputed = next((f for f in result.get("facts", []) if f.get("fact") == open_items[0]["fact"]), {})
+            planned = {"kind": act["kind"], "title": act["title"], "form": act["form"], "next_in_days": act.get("next_in_days"),
+                       "follow_up": None, "skip_if": None, "reason": incoming.reason(open_items[0]) + (
+                           f"; eine zweite Lesung der Akte ergab «{disputed['second_value']}», bitte prüfen"
+                           if disputed.get("status") == "conflicting" and disputed.get("second_value") else "")}
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
             action = (planned["kind"], title, {"de": title, "en": title})
         elif planned:  # this stage's action was already taken: its follow-up comes next
-            title = FOLLOW_UP_TITLES.get(planned.get("follow_up"), planned.get("follow_up"))
+            title = planned.get("follow_up_title") or kind_title(graph, planned.get("follow_up"))
             action = (planned.get("follow_up"), title, {"de": title, "en": title})
         elif ev.get("outcome"):
             title = ev["outcome"].get("title") or ev["outcome"]["id"]
@@ -230,7 +261,14 @@ def build_items(state, result, files=None):
             add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
                                         **({"reason": planned["reason"]} if planned.get("reason") else {}),
                                         **({"since": planned["since"]} if planned.get("since") else {}),
-                                        **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
+                                        **({"choices": planned["choices"]} if planned.get("choices") else {}),
+                                        **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}),
+                **({"incoming": {"kind": open_items[0]["kind"]["id"], "fact": open_items[0]["fact"], "date": open_items[0]["date"],
+                                 "value": open_items[0]["value"], **({"dated_by": "document"} if open_items[0]["dated_by"] == "document" else {})},
+                    "then": [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"]}
+                             for r in open_items[1:]]} if open_items else {}),
+                value=action[1], stated_as="established", verdict=None,
+                evidence=_evidence((rows.get(open_items[0]["fact"]) or {}).get("citations")) if open_items else [], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
         # The first request asks, besides documents, what only the customer can say, and gives the hints the law calls for.
         known = state.get("facts") or {}

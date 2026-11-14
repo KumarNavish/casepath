@@ -12,6 +12,7 @@ import re
 from copy import deepcopy
 from datetime import timedelta
 
+from . import incoming
 from .clock import as_of, parse_date
 
 from .workflows import CatalogueError, condition_facts, evaluate, evaluate_condition, validate_workflow
@@ -343,7 +344,7 @@ def received_after(files, day, insurer=()):
     return False
 
 
-def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, today=None):
+def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, today=None, incoming_dates=None):
     """Facts a workflow marks "derived": computed from other facts and the findings, never read or set by hand.
 
     action_A1 / requests_count: from the handler's earlier actions as read from the file ("A1 2024-08-28; A4 …").
@@ -354,6 +355,8 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
     now is present; an open-ended need partly present does not hold it up. no_stage_fact_open / one_stage_fact_open:
     the stage's points only the customer can answer. assess_needs_present: the documents an area names as needed for
     any assessment. missing_after_two_requests (older workflows): asked at least twice and still incomplete.
+    cost_claim_open: a cost claim came in (incoming items) and is still open (``incoming_dates``: the document dates of items read
+    without their own, incoming.document_dates); it keeps the case from closing, as does settled.
     ``evaluate(facts)`` is the plain evaluation; it is called once without the derived facts.
     """
     kinds = {f["id"]: f["derived"] for f in graph["facts"] if f.get("derived")}
@@ -388,12 +391,15 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
             last = bearing[-1] if bearing else None
             out[fact] = (len(bearing) >= rules["min_requests"] and look > last[0] + timedelta(days=rules["requests"][last[1]])
                          and received_after(files, last[0], rules["insurer"]) is False)
+        elif kind == "cost_claim_open":  # a cost claim that came in and no payment or confirmation after it
+            out[fact] = incoming.cost_open(graph, facts, incoming_dates)
     for fact, kind in kinds.items():
         if kind == "settled":  # settled by the file or the area's own facts, nothing further wished, no claim or payment open
             settled = graph.get("settled") or {}
             done = out.get("erledigt_gemeldet") is True or (settled.get("when") is not None and evaluate_condition(settled["when"], out) is True)
             claims = settled.get("claims_open_when")
-            out[fact] = done and out.get("weiteres_gewuenscht") is not True and (claims is None or evaluate_condition(claims, out) is not True)
+            out[fact] = (done and out.get("weiteres_gewuenscht") is not True and (claims is None or evaluate_condition(claims, out) is not True)
+                         and out.get("kosten_offen") is not True)
     evaluation = evaluate(out)
     needed = [d for d in evaluation["documents"] if d["required"] == "yes"]
     complete = bool(needed) and all(d["status"] == "present" or d["document"] in (partial or {}) for d in needed)

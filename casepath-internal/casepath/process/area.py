@@ -1,10 +1,11 @@
 """A handler's process for any legal area: one backbone and one small area module, composed at load time.
 
 The backbone (areas/backbone.json) is what every legal-protection case shares: the stages, the action kinds A0–A12 and
-which handler decisions each depends on, the handler's decisions (cover, way to proceed), the derived facts, the clock
-and Protekta's letter forms. An area module (areas/<id>.json) holds only what differs: the routing value, the facts with
-their customer questions, the documents with their legal reason and stage, first hints, statutory deadlines, the legal
-frame of the assessment letter (A5) and of the letter to the other side (A8), and the law it cites. Composition yields an
+which handler decisions each depends on, the handler's decisions (cover, way to proceed), the derived facts, the clock,
+Protekta's letter forms, and what comes in from third parties with the action it calls for (incoming.py). An area module
+(areas/<id>.json) holds only what differs: the routing value, the facts with their customer questions, the documents
+with their legal reason and stage, first hints, statutory deadlines, the legal frame of the assessment letter (A5) and
+of the letter to the other side (A8), and the law it cites. Composition yields an
 ordinary workflow (casepath.workflow/1), so routing, evaluation, items and letters are unchanged.
 
 Every article a module cites carries a short verbatim passage of the official text (at most 40 words) and says whether it
@@ -24,6 +25,7 @@ from pathlib import Path
 import re
 import sys
 
+from . import incoming
 from .clock import parse_date
 from .workflows import FORMAT, CatalogueError, _check_condition as check_condition, evaluate_condition, validate_workflow
 
@@ -84,7 +86,92 @@ def validate_backbone(backbone):
     for kind, row in backbone["action_kinds"].items():
         if not re.fullmatch(r"A\d{1,2}", kind) or any(f not in facts for f in row.get("depends_on", [])):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
-    return backbone
+    check_stage_work(backbone)
+    return incoming.validate(backbone)
+
+
+def check_stage_work(backbone):
+    """Every stage yields something a handler can do: one of the action kinds (its follow-up and its variants too), or a
+    handler's decision on an enum fact only the handler sets, with a form saying what is asked. A stage that can yield
+    neither would show an unnamed step; it is refused."""
+    kinds, forms = backbone["action_kinds"], backbone["forms"]
+    facts = {f["id"]: f for f in backbone["facts"]}
+    for step in backbone["steps"]:
+        where = f"backbone: stage {step.get('id')!r}"
+        action, decision = step.get("action"), step.get("decision")
+        if action:
+            named = [action.get("kind"), action.get("follow_up")] + [v.get("kind") for v in action.get("instead", [])]
+            if any(k is not None and k not in kinds for k in named) or action.get("kind") is None or not action.get("title"):
+                raise CatalogueError(f"{where}: its action, follow-up and variants must be action kinds of the backbone, with a title")
+        elif decision:
+            fact = facts.get(decision.get("fact")) or {}
+            if not (fact.get("handler_only") and fact.get("type") == "enum" and decision.get("title") and decision.get("form") in forms):
+                raise CatalogueError(f"{where}: a decision names an enum fact only the handler sets, its question and a form")
+        else:
+            raise CatalogueError(f"{where}: yields neither an action kind nor a handler's decision")
+        for edge in step.get("next", []):
+            if edge.get("without_action") and not action:
+                raise CatalogueError(f"{where}: without_action on a stage that has no action")
+    for rule in backbone["clock"]:
+        if rule["then"] not in kinds or (rule.get("follow_up") and rule["follow_up"] not in kinds):
+            raise CatalogueError(f"backbone: clock rule after {rule.get('after')} names an unknown action kind")
+
+
+def _domain(fact):
+    if fact["type"] == "boolean":
+        return [True, False, None]
+    if fact["type"] == "enum":
+        return list(fact["values"]) + [None]
+    return ["x", None]
+
+
+def satisfiable(condition, facts):
+    """Whether some values of the facts a condition names make it true (yes/no, an enum's values, known or not)."""
+    from itertools import product
+    from .workflows import condition_facts
+    names = sorted(condition_facts(condition))
+    named = {}
+
+    def values(c):
+        if isinstance(c, dict):
+            for k in ("all", "any"):
+                for child in c.get(k, ()):
+                    values(child)
+            if "not" in c:
+                values(c["not"])
+            if c.get("fact") and ("is" in c or "in" in c):
+                named.setdefault(c["fact"], []).extend(c["in"] if "in" in c else [c["is"]])
+    values(condition)
+    domains = [_domain(facts[n]) + [v for v in named.get(n, []) if v not in _domain(facts[n])] for n in names]
+    return any(evaluate_condition(condition, dict(zip(names, combo))) is True for combo in product(*domains))
+
+
+def check_dead_ends(workflow):
+    """No stage from which nothing leads on: every stage that is not an ending has a way out that some answer makes
+    true, and an ending is reachable from every stage. With stages that require their action, a stage whose every way
+    out needs its action yields that action (it always can: check_stage_work), and an incoming item is answered by the
+    action prepared for it (incoming.validate). CatalogueError names the first dead end."""
+    steps = {s["id"]: s for s in workflow["steps"]}
+    facts = {f["id"]: f for f in workflow["facts"]}
+    ends = {sid for sid, s in steps.items() if s.get("outcome")}
+    for sid, step in steps.items():
+        if sid in ends:
+            continue
+        ways = [e for e in step.get("next", []) if satisfiable(e.get("when", True), facts)]
+        if not ways:
+            raise CatalogueError(f"stage {sid!r} is a dead end: no way out can hold")
+    leads = set(ends)
+    changed = True
+    while changed:
+        changed = False
+        for sid, step in steps.items():
+            if sid not in leads and any(e["to"] in leads for e in step.get("next", [])):
+                leads.add(sid)
+                changed = True
+    stuck = sorted(set(steps) - leads)
+    if stuck:
+        raise CatalogueError(f"no ending can be reached from: {', '.join(stuck)}")
+    return workflow
 
 
 def validate_module(module, backbone):
@@ -217,10 +304,13 @@ def compose(backbone, module):
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []), "deadlines": m["deadlines"],
+                "stage_actions": True,  # a stage with an action is left only once it is done or a way out says it is not needed
+                "incoming": bb.get("incoming", []), "incoming_done": bb.get("incoming_done"),
                 "settled": {"when": m.get("settled_when"), "claims_open_when": m.get("claims_open_when")},
                 "law": {**{k: v for k, v in bb["law"].items()}, **m["law"]}, "laws": bb["laws"]}
     try:
         validate_workflow(workflow)
+        check_dead_ends(workflow)
         known = {f["id"]: f for f in workflow["facts"]}
         for key, condition in workflow["settled"].items():
             check_condition(condition, known, f"{key.replace('when', 'settled_when') if key == 'when' else key}")
