@@ -96,7 +96,8 @@ class TitleTests(unittest.TestCase):
         _, _, nxt = view(MANDATE, HISTORY)
         self.assertEqual((nxt["action"], nxt["value"]), ("A2", "Stand bei der Kanzlei erfragen (Telefonnotiz)"))
         for kind in wf["incoming"]:  # each incoming kind, as the prepared action and as the case list's «Nächster Schritt»
-            _, listed, nxt = view(MANDATE + [(kind["fact"], f"Absender: Schreiben vom 2024-05-02 ({kind['id']})", "Schreiben")], HISTORY)
+            warned = [("mahnung_androhung", "Protekta: Aufforderung vom 2024-04-20 mit Androhung", "Androhung")] if kind["id"] == "mitwirkung" else []  # cover.py
+            _, listed, nxt = view(MANDATE + warned + [(kind["fact"], f"Absender: Schreiben vom 2024-05-02 ({kind['id']})", "Schreiben")], HISTORY)
             self.assertEqual(nxt["incoming"]["kind"], kind["id"])
             self.assertNotRegex(nxt["label"]["de"], ANSWERED_CODE)
             self.assertEqual(nxt["label"]["de"], kind["action"]["title"])

@@ -10,7 +10,7 @@ import hashlib
 import json
 import re
 
-from . import incoming
+from . import cover, incoming
 from .area import compute_deadline, period_text
 from .clock import parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
@@ -241,6 +241,7 @@ def build_items(state, result, files=None):
                        "follow_up": None, "skip_if": None, "reason": incoming.reason(open_items[0]) + (
                            f"; eine zweite Lesung der Akte ergab «{disputed['second_value']}», bitte prüfen"
                            if disputed.get("status") == "conflicting" and disputed.get("second_value") else "")}
+        planned = cover.adjust(planned, known_facts, here.get("id"))  # prescribed letters: refusal for lack of prospects, demand before an ending
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
             action = (planned["kind"], title, {"de": title, "en": title})
@@ -295,6 +296,8 @@ def build_items(state, result, files=None):
                 if hint["when"] is not True and evaluate_condition(hint["when"], known) is None:
                     add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
                         origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
+        # the cover points, the checks a prescribed letter rests on, and the first contact (cover.py)
+        items += cover.items(graph, known_facts, result, files, planned if action and planned and action[0] == planned.get("kind") else None, here.get("id"))
     brief = result.get("brief") or {}
     needs = {re.split(r"\W+", str((i.get("label") or {}).get("de") or "").lower())[0] for i in items if i["kind"] == "document"}
     for i, doc in enumerate(brief.get("not_enclosed") or []):  # mentioned in the file but not in it: offered as such

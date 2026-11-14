@@ -29,7 +29,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import capped, follow_up, own_deadlines
 from ..agents import core
-from ..process import letters
+from ..process import cover, letters
 from ..process.items import kind_title, build_items, item_changes, items_sha256
 from . import identity
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
@@ -412,6 +412,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"]}
+                    contact = next((i for i in listed if i["kind"] == "contact"), None)  # the first contact the insurer promises (cover.py)
+                    row["first_contact"] = contact and {"due": contact["value"], "late": contact.get("late"), "rule": contact.get("rule")}
                     # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
                     deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and i.get("direction") != "ab" and i.get("party") != "gegenpartei" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
                     # The customer's own statutory deadline that set the follow-up before it is what the list shows.
@@ -458,10 +460,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         draft = None
         if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
             kind = "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")  # a closing in silence has its own (no) letter
-            text, none = letters.render(kind, forms, letters.context(current["case"], listed, events, clock, files,
-                                                                                    evaluation=current["evaluation"], process=current["process"]))
+            ctx = letters.context(current["case"], listed, events, clock, files, evaluation=current["evaluation"], process=current["process"])
+            text, none = letters.render(kind, forms, ctx)
             draft = {"kind": action.get("action"), "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none,
-                     "needs": (forms.get(kind) or {}).get("needs") or []}  # the handler decisions this action waits for
+                     "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
+                     # parts the law or the conditions require: copying is refused while one is missing (cover.py)
+                     "required": cover.required_for(kind, current.get("facts")),
+                     "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": cover.required_for(k, current.get("facts"))}
+                              for k in cover.accompanying(kind) if k in forms]}
         # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
         new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
         changes = None
@@ -597,7 +603,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
             raise HTTPException(422, "Unknown reason.")
         if body.item_id and body.item_id.split(":")[0] not in {"step", "fact", "deadline", "document", "next_action", "reply", "open_point", "summary",
-                                                            "party", "timeline", "answer", "point", "letter", "letter_question", "hint", "followup"}:
+                                                            "party", "timeline", "answer", "point", "letter", "letter_question", "hint", "followup",
+                                                            "cover", "check", "contact"}:
             raise HTTPException(422, "Unknown item kind.")
         if len(json.dumps(body.fields, ensure_ascii=False)) > 8000:
             raise HTTPException(422, "Too much in one event.")

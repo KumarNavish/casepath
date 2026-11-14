@@ -415,3 +415,24 @@ body.dragging .cp-drop{border-color:var(--crimson);color:var(--crimson)}
 .cp-frist.other b{color:inherit;font-weight:600}
 .cp-passage{flex-basis:100%;margin:4px 0 2px 26px;font-size:13px;color:var(--muted, #555);font-style:italic}
 .cp-line:has(.cp-passage){flex-wrap:wrap}
+.cp-cover-toggle{font-size:14px;text-align:left;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px;padding:0}
+.cp-cover>.cp-point-actions{margin-top:6px}
+.cp-cover-decided{font-size:13px;color:var(--green-ink)}.cp-cover-decided.flag,.cp-flag{color:var(--crimson)}
+.cp-cover-open{margin-top:8px}
+.cp-cover-head{display:flex;gap:6px 10px;flex-wrap:wrap;margin:0 0 8px;font-size:12.5px;color:var(--ink-2)}.cp-cover-head label{white-space:nowrap}
+.cp-cover-select{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:4px;padding:1px 4px;background:var(--bg)}
+.cp-cover-points{margin:0 0 8px;padding:0;list-style:none;display:grid;gap:7px}
+.cp-cover-point{display:grid;grid-template-columns:16px minmax(0,1fr);gap:6px;font-size:13.5px;line-height:1.35}
+.cp-cover-mark{font-weight:700;color:var(--ghost);text-align:center}
+.cp-cover-point.ok .cp-cover-mark{color:var(--green)}.cp-cover-point.ok.quiet .cp-cover-mark{color:var(--memory)}
+.cp-cover-point.flag .cp-cover-mark,.cp-cover-point.flag .cp-cover-title{color:var(--crimson)}
+.cp-cover-tick{display:inline-flex;gap:3px;margin-left:6px;vertical-align:baseline}.cp-cover-tick .cp-chip{cursor:pointer;background:none;font:inherit;font-size:11.5px;padding:0 7px;line-height:1.5}
+.cp-cover-tick .cp-chip[aria-pressed="true"]{border-color:var(--ink);color:var(--ink)}
+.cp-cover-note{font-size:12.5px}
+.cp-cover .cp-passage,.cp-casefacts .cp-passage{margin:3px 0 2px}
+.cp-cover-why{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 0}
+.cp-required{margin:12px 0 0;font-size:12.5px;color:var(--ink-2)}
+.cp-also{margin-top:12px;font-size:14px}.cp-also-text{white-space:pre-wrap;margin:8px 0;color:var(--ink-doc)}
+.cp-cover-line{display:block}.cp-cover-note{display:block;font-size:12.5px}
+.cp-cover-flags{font-size:13px}
+.cp-cover-select{font-size:12.5px}

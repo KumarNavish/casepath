@@ -40,6 +40,8 @@ A8: "zeigen Ihnen an, dass wir die Interessen … vertreten" → "unpräjudiziel
 A10: "Kostengutsprache nach den bekannten Modalitäten wie folgt: Abklärung der Sach- und Rechtslage sowie aussergerichtliche Bemühungen" → prior contact for any extension → copies of the main documents.
 A12 (end of benefits): what was asked, when, still missing → benefits end.
 
+The cover decision is prepared as ten points with their clauses, and letters whose content the law prescribes are guarded: see docs/COVER.md.
+
 The handler's own process, written from this and the law, is the backbone `casepath/process/areas/backbone.json` with the area module `casepath/process/areas/mietmangel-handler.json` (composed at load, see docs/AREAS.md): Eingang → Deckung und Sachverhalt klären → Beurteilen und beraten → Vorgehen (selbst | Mandat) → Abwicklung → Abschluss (Stillschweigen | Beratung | Zahlung | fehlende Mitwirkung). Each stage names the action it ends in. Cover and the way to proceed are the handler's decisions. The OSM+ flow stays the intake.
 
 ## What follows for the product

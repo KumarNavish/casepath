@@ -25,7 +25,7 @@ from pathlib import Path
 import re
 import sys
 
-from . import incoming
+from . import cover, incoming
 from .clock import parse_date
 from .workflows import FORMAT, CatalogueError, _check_condition as check_condition, evaluate_condition, validate_workflow
 
@@ -266,7 +266,7 @@ def compose(backbone, module):
         trigger = next(f for f in facts if f["id"] == d["trigger"])
         trigger.setdefault("ask_customer", True)
         trigger.setdefault("customer_question", d["question"])
-    facts = bb["facts"] + facts
+    facts = bb["facts"] + facts + cover.facts_for(m)  # the cover points' facts, in every area (cover.py)
     if m.get("fact_order"):
         order = {fid: i for i, fid in enumerate(m["fact_order"])}
         facts.sort(key=lambda f: order.get(f["id"], len(order)))
@@ -281,19 +281,23 @@ def compose(backbone, module):
                               + f". {group[0]['missed']}",
                       "legal_basis": ", ".join(dict.fromkeys(d["basis"] for d in group)),
                       "source_refs": list(dict.fromkeys(r for d in group for r in d["source_refs"]))})
-    forms = bb["forms"]
+    forms = {**bb["forms"], **cover.forms(), **copy.deepcopy(m.get("forms") or {})}  # a module may add or adapt a form
     for kind, form in forms.items():  # each form names the handler decisions its action waits for (the screen's draft.needs)
         if kind in bb["action_kinds"]:
             form["needs"] = list(bb["action_kinds"][kind]["depends_on"])
         if "parts" in form:
             form["parts"] = [m["assessment"][p[1:]]["text"] if p.startswith("@") else p for p in form["parts"]]
+    try:
+        cover.check_forms(forms)  # a part the law or the conditions require stays in its form
+    except CatalogueError as error:
+        raise CatalogueError(f"area {m['id']}: {error}") from error
     version = m["version"] if m["backbone"] == bb["version"] else f"{m['version']}+{bb['version']}"
     workflow = {"format": FORMAT, "id": m["id"], "version": version, "title": m["title"], "short_title": m["short_title"],
                 "status": m["status"],
                 "area": {"id": m["id"], "short_title": m["short_title"], "status": m["status"], "practice": practice,
                          "label": LABELS.get((practice, m["status"]), "freigegeben"), "backbone": bb["version"]},
                 **{k: m[k] for k in ("supersedes", "builds_on", "fallback", "applies_when") if k in m},
-                "sources": bb["sources"] + m["sources"], "facts": facts, "start": bb["start"], "steps": steps,
+                "sources": bb["sources"] + m["sources"] + cover.sources(), "facts": facts, "start": bb["start"], "steps": steps,
                 # an open-ended need partly in the file: practice says whether it is asked again; from the law alone it is offered
                 "documents": [{**{k: v for k, v in d.items() if k != "stage"},
                                **({"when_partly_present": "offer"} if not practice and "when_partly_present" not in d and open_ended_title(d["title"]) else {})}
@@ -335,7 +339,10 @@ def _shipped():
     for path in sorted(AREAS.glob("*.json")):
         if path.name != "backbone.json":
             try:
-                rows.append(compose(backbone, load(path)))
+                module = load(path)
+                if module.get("format") == cover.COVER_FORMAT:  # the cover points (cover.py), not an area
+                    continue
+                rows.append(compose(backbone, module))
             except (CatalogueError, json.JSONDecodeError) as error:
                 raise CatalogueError(f"{path.name}: {error}") from error
     return backbone, tuple(rows)

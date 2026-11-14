@@ -7,7 +7,7 @@ A form with no draft says why ("kein Entwurf: …").
 import re
 from datetime import date
 
-from . import area
+from . import area, cover
 from .clock import as_of, parse_date
 
 # Protekta's forms, from the handler's tenancy-defect workflow: the letters of any workflow that brings none of its own.
@@ -160,6 +160,8 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "eingang_datum": _day(came.get("date")) or gap("Datum der Meldung der Kanzlei"),
         "vorenthalten": f"«{came_quote}»" if came_quote else gap("was die Kanzlei als verweigert oder verschwiegen meldet"),
         "avb_ziffer": gap("Ziffer der AVB"),
+        # the clause by the edition of the conditions that applies, the parts only the handler can write (cover.py)
+        **cover.letter_context(items),
     }
 
 

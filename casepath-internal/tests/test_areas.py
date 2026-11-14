@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from casepath.agents import core
-from casepath.process import area, letters, workflows
+from casepath.process import area, cover, letters, workflows
 from casepath.process.items import HASHED, build_items, items_sha256
 from casepath.process.workflows import Catalogue, CatalogueError
 from tests.scripted import ScriptedModel, report
@@ -60,7 +60,7 @@ class CompositionTests(unittest.TestCase):
     CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt"} | INCOMING_FACTS
 
     def test_the_composed_tenancy_defect_workflow_is_the_seed_it_replaces_but_for_the_named_rule_change(self):
-        composed = area.workflow("mietmangel-handler")
+        composed = cover.strip(area.workflow("mietmangel-handler"))  # the cover points' facts, sources and forms are tested in test_cover
         same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms", "clock", "outcomes"}}
         self.assertEqual([o for o in composed["outcomes"] if o["id"] != "erledigt"], FROZEN["outcomes"])  # plus: a settled matter closes
         self.assertEqual(same(composed), same(FROZEN))
@@ -84,6 +84,7 @@ class CompositionTests(unittest.TestCase):
 
     def test_items_and_letters_are_unchanged_on_the_handler_workflow_cases_apart_from_the_new_facts(self):
         old, new = workflows.validate_workflow(copy.deepcopy(FROZEN)), area.workflow("mietmangel-handler")
+        covered = {f["id"] for f in cover.data()["facts"]}  # what the cover adds is tested in test_cover
         base = [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja"), fact("will_schadenersatz", "nein"),
                 fact("streit_mietzins", "nein")]
         cases = [(base, [document("mietvertrag")]), ([fact("rechtsgebiet", "Mietrecht / Mangel"), fact("mangel_gemeldet", True)], []),
@@ -95,13 +96,14 @@ class CompositionTests(unittest.TestCase):
         case = {"id": "case_example", "title": "Schimmel (synthetisch) 1234.5678.9012", "intake": {}}
         # what an expert judges (the hashed fields) and what the screen says; a fact the new transitions branch on now
         # names its stage (node, chain), which explains an item and is not hashed
-        kept = lambda rows: [{k: i.get(k) for k in HASHED + ("label", "legal_basis", "reason")} for i in rows if i["key"] not in self.CHANGED_FACTS]
+        kept = lambda rows: [{k: i.get(k) for k in HASHED + ("label", "legal_basis", "reason")} for i in rows
+                             if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact"}]
         for facts, documents in cases:
             result = {"facts": facts, "documents": documents, "brief": {"request": "Schimmel.", "parties": [], "timeline": []}}
             a, b = (build_items(core.evaluate(w, [], [], result, "c", files=looked), result, looked) for w in (old, new))
             self.assertEqual(kept(a), kept(b))
-            self.assertEqual(items_sha256([i for i in a if i["key"] not in self.CHANGED_FACTS]),
-                             items_sha256([i for i in b if i["key"] not in self.CHANGED_FACTS]))
+            uncovered = lambda rows: [i for i in rows if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact"}]
+            self.assertEqual(items_sha256(uncovered(a)), items_sha256(uncovered(b)))
             for kind in ("A1", "A4", "A6", "A7", "A8", "A10", "A12"):
                 ctx = letters.context(case, a, [], {"due": "2025-03-01"})
                 self.assertEqual(letters.render(kind, old["forms"], ctx), letters.render(kind, new["forms"], ctx), kind)
@@ -179,14 +181,14 @@ class CooperationTests(unittest.TestCase):
         frozen = copy.deepcopy(FROZEN)  # the former rule ended benefits here: two requests and documents still missing
         frozen["documents"].append(self.wf["documents"][-1])
         next(s for s in frozen["steps"] if s["id"] == "klaeren")["documents"].append("korrespondenz")
-        self.assertEqual(self.next_action(workflows.validate_workflow(frozen), facts, documents, segments, "2024-04-10")[2]["action"], "A12")
+        self.assertEqual(self.next_action(workflows.validate_workflow(frozen), facts, documents, segments, "2024-04-10")[0]["evaluation"]["outcome"]["id"], "mitwirkung")
 
     def test_two_requests_with_a_deadline_met_with_silence_end_benefits_and_anything_received_prevents_it(self):
         facts = self.answered + [fact("handlung_a1", "2024-01-10"), fact("handlung_a6", "2024-02-20")]
         before = [{"date": "05.01.2024", "sender": "Anna Beispiel"}, {"date": "20.02.2024", "sender": "Protekta Rechtsschutz AG"}]
         state, _, nxt = self.next_action(self.wf, facts, [], before, "2024-04-01")  # the A6 deadline (25 days) has passed
         self.assertTrue(state["facts"]["mitwirkung_fehlt"])
-        self.assertEqual((nxt["action"], state["evaluation"]["outcome"]["id"]), ("A12", "mitwirkung"))
+        self.assertEqual((nxt["action"], nxt["form"], state["evaluation"]["outcome"]["id"]), ("A6", "A6_androhung", "mitwirkung"))  # the written demand first (cover.py)
         replied = before + [{"date": "01.03.2024", "sender": "Anna Beispiel"}]
         state, _, nxt = self.next_action(self.wf, facts, [], replied, "2024-04-01")
         self.assertFalse(state["facts"]["mitwirkung_fehlt"])
@@ -269,7 +271,7 @@ class OwnDeadlineTests(unittest.TestCase):
         self.assertIn("Abschluss ohne Rückmeldung der Kundschaft: die Schliessung war im Schreiben vom 30.03.2024 angekündigt", note)
         silent = self.items("mietmangel-handler", facts[:4], "2024-04-01")[0]  # A1, A6, silence: the lack-of-cooperation ending
         nxt = {i["item_id"]: i for i in silent}["next_action:0"]
-        self.assertEqual((nxt["action"], nxt.get("form")), ("A12", None))
+        self.assertEqual((nxt["action"], nxt.get("form")), ("A6", "A6_androhung"))  # no written demand in the file: it comes first (cover.py)
         self.assertIn("Die Leistungen aus diesem Fall enden damit.", letters.render("A12", wf["forms"], letters.context({"id": "c", "title": "x"}, silent, [], None))[0])
 
 
