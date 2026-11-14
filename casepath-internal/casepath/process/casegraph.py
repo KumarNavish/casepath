@@ -344,7 +344,7 @@ def received_after(files, day, insurer=()):
     return False
 
 
-def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, today=None):
+def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, today=None, incoming_dates=None):
     """Facts a workflow marks "derived": computed from other facts and the findings, never read or set by hand.
 
     action_A1 / requests_count: from the handler's earlier actions as read from the file ("A1 2024-08-28; A4 …").
@@ -355,8 +355,8 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
     now is present; an open-ended need partly present does not hold it up. no_stage_fact_open / one_stage_fact_open:
     the stage's points only the customer can answer. assess_needs_present: the documents an area names as needed for
     any assessment. missing_after_two_requests (older workflows): asked at least twice and still incomplete.
-    cost_claim_open: a cost claim came in (incoming items) with no payment or confirmation after it; it keeps the case
-    from closing, as does settled.
+    cost_claim_open: a cost claim came in (incoming items) and is still open (``incoming_dates``: the document dates of items read
+    without their own, incoming.document_dates); it keeps the case from closing, as does settled.
     ``evaluate(facts)`` is the plain evaluation; it is called once without the derived facts.
     """
     kinds = {f["id"]: f["derived"] for f in graph["facts"] if f.get("derived")}
@@ -392,7 +392,7 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
             out[fact] = (len(bearing) >= rules["min_requests"] and look > last[0] + timedelta(days=rules["requests"][last[1]])
                          and received_after(files, last[0], rules["insurer"]) is False)
         elif kind == "cost_claim_open":  # a cost claim that came in and no payment or confirmation after it
-            out[fact] = incoming.cost_open(graph, facts)
+            out[fact] = incoming.cost_open(graph, facts, incoming_dates)
     for fact, kind in kinds.items():
         if kind == "settled":  # settled by the file or the area's own facts, nothing further wished, no claim or payment open
             settled = graph.get("settled") or {}

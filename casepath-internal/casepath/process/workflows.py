@@ -314,6 +314,22 @@ def done_actions(facts):
     return out
 
 
+def dated_codes(facts):
+    """The action codes the case's history shows with a date ("1", "5", …)."""
+    return {code for code, days in done_actions(facts).items() if any(re.fullmatch(r"\d{4}-\d{2}-\d{2}", d) for d in days)}
+
+
+def held(workflow, step, edge, done):
+    """Whether a stage holds the case although this way out holds: in a workflow whose stages require their action
+    (``stage_actions``), a stage with an action is left only once that action is in the case's dated history (``done``,
+    from ``dated_codes``) or the way out says the action is not needed (``without_action``). A stage floor placing the
+    case beyond the stage is applied before the walk and is not affected."""
+    if not workflow.get("stage_actions") or edge.get("without_action"):
+        return False
+    action = step.get("action") or {}
+    return bool(action) and not step.get("outcome") and str(action.get("kind", ""))[1:] not in done
+
+
 def stage_floor(workflow, facts):
     """The latest stage, in the workflow's order, that an action already taken or a decision already made places the
     case at; None without one. Incomplete documents never pull a case back behind it."""
@@ -335,13 +351,15 @@ def _from_floor(workflow, facts, path, floor=None):
     return floor if order.index(path[-1]) < order.index(floor) else None
 
 
-def _join(steps, edges):
+def _join(steps, edges, workflow=None, done=()):
     """The step every branch reaches next, when each branch is one plain step."""
     joins = set()
     for edge in edges:
         branch = steps[edge["to"]]
         onward = branch.get("next", [])
         if len(onward) != 1 or onward[0].get("when", True) is not True or branch.get("documents") or branch.get("outcome"):
+            return None
+        if workflow is not None and held(workflow, branch, onward[0], done):
             return None
         joins.add(onward[0]["to"])
     return joins.pop() if len(joins) == 1 else None
@@ -365,6 +383,7 @@ def _walk(workflow, facts, findings=None, *, checked=False, start=None):
     findings = findings or {}
     steps = {s["id"]: s for s in workflow["steps"]}
     fact_defs = {f["id"]: f for f in workflow["facts"]}
+    done = dated_codes(facts)
     path, waiting, gaps, outcome, unmet = [], [], [], None, []
     current, via, seen, last_edge = start or workflow["start"], "Stand gemäss Akten" if start else None, set(), None
     while True:
@@ -392,17 +411,20 @@ def _walk(workflow, facts, findings=None, *, checked=False, start=None):
         if not edges:
             row["state"] = "terminal"
             break
-        chosen, blocked = None, set()
+        chosen, blocked, waits = None, set(), None
         for edge in edges:
             verdict = evaluate_condition(edge.get("when", True), facts)
+            if verdict is True and held(workflow, step, edge, done):
+                waits = waits or step["action"]["kind"]  # this way out needs the stage's action first
+                continue
             if verdict is True:
                 chosen = edge
                 break
             if verdict is None:
                 blocked |= condition_facts(edge["when"]) - {k for k, v in facts.items() if v is not None}
                 break
-        if chosen is None and blocked:
-            join = _join(steps, edges)
+        if chosen is None and blocked and not waits:
+            join = _join(steps, edges, workflow, done)
             if join is not None:
                 # Every branch rejoins one step later without asking for anything,
                 # so an open answer here does not hold the case up.
@@ -411,9 +433,11 @@ def _walk(workflow, facts, findings=None, *, checked=False, start=None):
                 continue
         if chosen is None:
             row["state"] = "current"
+            if waits:
+                row["held_for"] = waits
             waiting = [{"fact": f, "question": fact_defs[f]["question"], "source_refs": fact_defs[f]["source_refs"]}
                        for f in sorted(blocked)]
-            if not blocked:
+            if not blocked and not waits:
                 gaps.append({"kind": "no_transition", "text": f"No transition from “{step['title']}” matches the established facts.",
                              "source_refs": step["source_refs"]})
             break
@@ -719,6 +743,7 @@ class _Reach:
 
     def _path(self, facts, start):
         steps, current, seen, path = self.steps, start or self.start, set(), []
+        done = dated_codes(facts)
         while True:
             step = steps[current]
             if current in seen:
@@ -728,17 +753,20 @@ class _Reach:
             path.append(current)
             if step.get("outcome") or not step.get("next"):
                 break
-            chosen, blocked = None, False
+            chosen, blocked, waits = None, False, False
             for edge in step["next"]:
                 verdict = evaluate_condition(edge.get("when", True), facts)
+                if verdict is True and held(self.workflow, step, edge, done):
+                    waits = True
+                    continue
                 if verdict is True:
                     chosen = edge
                     break
                 if verdict is None:
                     blocked = bool(condition_facts(edge["when"]) - {k for k, v in facts.items() if v is not None})
                     break
-            if chosen is None and blocked:
-                join = _join(steps, step["next"])
+            if chosen is None and blocked and not waits:
+                join = _join(steps, step["next"], self.workflow, done)
                 if join is not None:
                     current = join
                     continue

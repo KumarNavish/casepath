@@ -52,7 +52,7 @@ class IncomingTests(unittest.TestCase):
         state, items, nxt = prepared(MANDATE + [CLAIM])[:3]
         self.assertEqual(state["evaluation"]["current"]["step"], "mandat")  # the stage does not move
         self.assertEqual((nxt["action"], nxt["value"], nxt["form"]), ("A11", "Kostenforderung prüfen und begleichen", "A11_kosten"))
-        self.assertTrue(nxt["reason"].startswith("Kostenforderung vom 02.05.2024 eingegangen, noch offen (Kanzlei Muster: Zwischenhonorarnote"))
+        self.assertTrue(nxt["reason"].startswith("Kostenforderung vom 02.05.2024 eingegangen, noch offen – Kanzlei Muster: Zwischenhonorarnote über"))
         self.assertIn("CHF 3'200, im Rahmen der Kostengutsprache", nxt["reason"])  # as read, never computed
         self.assertEqual(nxt["evidence"][0]["quote"], CLAIM[2])  # its source one click away
         self.assertEqual(nxt["incoming"], {"kind": "kostenforderung", "fact": "eingang_kostenforderung", "date": "2024-05-02", "value": CLAIM[1]})
@@ -150,11 +150,12 @@ class IncomingTests(unittest.TestCase):
         new = {i["key"]: i["value"] for i in items if i["kind"] == "fact" and i["key"] in INCOMING_FACTS}
         self.assertEqual(new, {**{k: None for k in INCOMING_FACTS}, "kosten_offen": False})
 
-    def test_the_reader_gains_one_question_per_kind_and_the_validator_refuses_a_kind_it_cannot_carry(self):
+    def test_the_reader_gains_one_question_per_item_and_the_validator_refuses_a_kind_it_cannot_carry(self):
         wf = area.workflow("mietmangel-handler")
         read = lambda w: {f["id"] for f in w["facts"] if not f.get("handler_only") and not f.get("derived")}
         self.assertEqual(read(wf) & INCOMING_FACTS, {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot",
-                                                   "eingang_zahlung"})
+                                                   "eingang_zahlung", "eingang_kostenforderung_2", "eingang_kostenforderung_3",
+                                                   "eingang_angebot_2", "eingang_zahlung_2"})  # at most three items per kind
         for w in area.shipped():  # backbone facts: every area reads them; observed counts stay with the observed area
             self.assertEqual(len(w["incoming"]), 5)
             if w["id"] != "mietmangel-handler":

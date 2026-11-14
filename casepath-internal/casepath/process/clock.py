@@ -39,7 +39,8 @@ def silence(rules, facts, files, today=None, stage=None):
 
     rules: [{"after": ["1", "4"], "days": 21, "then": "A6", "deadline_days": 25, "source": "practice#…"}, …]
     """
-    dated = [(m.group(1), d) for k, v in (facts or {}).items() if (m := re.fullmatch(r"handlung_a(\d{1,2})", k)) and (d := parse_date(v))]
+    from .workflows import done_actions  # the history: the dated action facts and the history line ("A8 2024-04-20")
+    dated = [(code, d) for code, days in done_actions(facts or {}).items() for x in days if (d := parse_date(x))]
     if not rules or not dated:
         return None
     code, sent = max(dated, key=lambda x: x[1])

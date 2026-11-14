@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 import threading
 from datetime import date, timedelta
 
-from ..process import casegraph, workflows
+from ..process import casegraph, incoming, workflows
 from ..read.evidence import Evidence
 from .schema import arr, choice, fit_to_schema, obj, text, validate_result
 
@@ -67,8 +67,9 @@ history list uses these codes with their dates: A1 request for documents,
 A2 phone note, A3 upload link, A4 question back, A5 legal assessment, A6 pending with a deadline, A7 status inquiry
 announcing closure, A8 letter to the other side, A9 negotiation, A10 mandate to a law firm, A11 payment handling,
 A12 closing or end of benefits. For what came in from a mandated law firm, a court, the other side or as a payment (the
-eingang_ facts), record the latest of each kind from that one document: who sent what, with its date as YYYY-MM-DD;
-most files have none, and then you record nothing. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
+eingang_ facts), record each item from its own document: who sent what, with its date as YYYY-MM-DD, and, when the file
+shows it answered, the mark the question names («beglichen YYYY-MM-DD»); the plain fact holds the latest of its kind,
+_2 the one before it, _3 the one before that, each a different item; most files have none, and then you record nothing. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
 "part" (for example "open points: refusal of 26.08.2024"); a reply or act that leaves the matter unresolved supports the
 "open points" part, and the "no reaction" part alone needs a sentence saying nobody answered.
 For a date: YYYY-MM-DD, or YYYY-MM or YYYY when the file states no day. When the file states only a period from or before
@@ -187,7 +188,8 @@ class CaseWork:
         self.evidence = Evidence(files)
         # What arrived and when, as the case view sees it (dates, senders, cut, upload time): the stage the agents act on
         # is the stage the opened case shows.
-        self.dated = [{"extraction": {k: f[k] for k in ("segments", "cut_of") if k in f}, "created_at": f.get("created_at")} for f in files]
+        self.dated = [{"id": f.get("id"), "extraction": {k: f[k] for k in ("segments", "cut_of") if k in f}, "created_at": f.get("created_at")}
+                      for f in files]
         self.file_ids = list(self.evidence.files)
         self.total_chars = sum(len(t) for f in self.evidence.files.values() for _, t in f["pages_text"])
         if not self.file_ids:
@@ -318,7 +320,7 @@ class CaseWork:
         answered = {k: v for k, (v, _) in casegraph.fact_overrides(self.graph, self.employee_edits).items()}  # the case worker's answers
         facts = casegraph.derive_facts(self.graph, {**self.accepted_facts(), **answered}, asked,
                                        lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked), partial=partial,
-                                       files=self.dated)
+                                       files=self.dated, incoming_dates=incoming.document_dates(self.graph, list(self.facts.values()), self.dated))
         return casegraph.mark_partial(workflows.evaluate(self.graph, facts, asked, checked=missing_checked), partial)
 
     def unverified(self):
@@ -747,7 +749,21 @@ def gating_facts(work):
             used |= workflows.condition_facts(variant["when"])
     if any(f.get("derived") and f["id"] in used for f in work.graph["facts"]):  # derived facts rest on the action history
         used |= {f["id"] for f in work.graph["facts"] if f["id"] == "bisherige_handlungen" or f["id"].startswith("handlung_")}
+    # What came in decides what the handler does next: the latest item of each kind is read again (a second reading that
+    # finds one the first missed adds it), and an earlier item only when the first reading recorded one. The common
+    # answer, nothing came in, adds no item and no call: these facts ride on the one second reading already made.
+    for kind in work.graph.get("incoming") or ():
+        used.add(kind["fact"])
+        used |= {f for f in kind.get("earlier", []) if (work.facts.get(f) or {}).get("status") == "established"}
     return [f for f in work.graph["facts"] if f["id"] in used]
+
+
+def incoming_item(definition, first, second):
+    """Two readings of one incoming item name the same item when they give it the same date (the item's identity; the
+    wording of who sent what differs between readings); without a date on both, by their words."""
+    from ..process.incoming import read_item
+    a, b = read_item(str(first))[0], read_item(str(second))[0]
+    return a == b if a and b else None
 
 
 def _words(value):
@@ -761,6 +777,8 @@ def same_reading(definition, first, second):
         return True
     if definition.get("type", "text") != "text" or first is None or second is None:
         return False
+    if definition.get("id", "").startswith("eingang_") and (same := incoming_item(definition, first, second)) is not None:
+        return same
     shorter, longer = sorted([_words(first), _words(second)], key=len)
     return bool(shorter) and len(shorter & longer) / len(shorter) >= 0.75
 

@@ -232,7 +232,8 @@ def action_options(graph, evaluation, forms):
                           [(v.get("kind"), v.get("next_in_days")) for v in action.get("instead", [])]:
             if kind and kind not in out and kind != "A0":  # the receipt is sent by Protekta's online form, not chosen
                 form = (forms or {}).get(kind) or {}
-                out[kind] = {"kind": kind, "title": form.get("title") or kind, "next_in_days": days, "has_draft": bool(form) and not form.get("none")}
+                title = form.get("title") or ((graph.get("action_kinds") or {}).get(kind) or {}).get("title") or kind
+                out[kind] = {"kind": kind, "title": title, "next_in_days": days, "has_draft": bool(form) and not form.get("none")}
     for rule in graph.get("clock", []):  # a follow-up's days come from the clock when no stage names them
         if rule["then"] in out and out[rule["then"]]["next_in_days"] is None:
             out[rule["then"]]["next_in_days"] = rule.get("deadline_days")

@@ -98,7 +98,9 @@ class HandlerWorkflowTests(unittest.TestCase):
         self.assertEqual((nxt["action"], nxt["next_in_days"]), ("A7", 7))
         self.assertIn("keine Antwort seit A5", nxt["reason"])
         early = [{"extraction": {"cut_of": {"as_of": "2024-11-01"}, "segments": [{"date": "18.10.2024"}]}}]
-        self.assertNotEqual({i["item_id"]: i for i in build_items(state, {"facts": quiet}, early)}["next_action:0"]["action"], "A7")
+        waiting = {i["item_id"]: i for i in build_items(state, {"facts": quiet}, early)}["next_action:0"]
+        # before the clock runs out the assessment is not proposed again: its follow-up waits, dated for the day the clock comes due
+        self.assertEqual((waiting["action"], waiting["next_in_days"], waiting["since"], waiting.get("reason")), ("A7", 90, "2024-10-18", None))
         arrived = [document(d) for d in ("mietvertrag", "maengelruege", "fotos")]
         one_open = [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja"), fact("will_schadenersatz", "nein"),
                     fact("handlung_a1", "2024-03-12")]  # streit_mietzins is the stage's one open point

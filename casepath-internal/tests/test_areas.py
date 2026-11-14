@@ -15,10 +15,22 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done"}
+NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions"}
 INCOMING_FACTS = {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot", "eingang_zahlung", "leistungen_einstellen",
-                  "eingang_erledigt_bis", "kosten_offen"}  # the overlay of what comes in (incoming.py)
-INCOMING_FORMS = {"A11_kosten", "A2_bericht", "A12_mitwirkung_entscheid", "A12_mitwirkung_kanzlei", "vorgehen_neu"}
+                  "eingang_erledigt_bis", "kosten_offen", "eingang_kostenforderung_2", "eingang_kostenforderung_3", "eingang_angebot_2",
+                  "eingang_zahlung_2"}  # the overlay of what comes in (incoming.py): up to three items of a kind
+INCOMING_FORMS = {"A11_kosten", "A2_bericht", "A12_mitwirkung_entscheid", "A12_mitwirkung_kanzlei", "vorgehen_neu", "vorgehen"}
+# What the stage rule added to the steps (a stage is left once its action is done, unless a way out says it is not
+# needed; the way-to-proceed stage is the handler's decision; a follow-up has its own title): not in the former seed.
+STAGE_RULE_KEYS = {"without_action", "decision", "follow_up_title"}
+
+
+def unruled(step):
+    out = {k: v for k, v in step.items() if k not in STAGE_RULE_KEYS}
+    if "action" in out:
+        out["action"] = {k: v for k, v in out["action"].items() if k not in STAGE_RULE_KEYS}
+    out["next"] = [{k: v for k, v in e.items() if k not in STAGE_RULE_KEYS} for e in out.get("next", [])]
+    return out
 
 
 def intakes(*ids):
@@ -52,12 +64,13 @@ class CompositionTests(unittest.TestCase):
         same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms", "clock", "outcomes"}}
         self.assertEqual([o for o in composed["outcomes"] if o["id"] != "erledigt"], FROZEN["outcomes"])  # plus: a settled matter closes
         self.assertEqual(same(composed), same(FROZEN))
-        self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"]], FROZEN["clock"])  # rules now name their stages
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.1"))  # stored runs: same id, newer version governs
+        self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
+                         FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.2"))  # stored runs: same id, newer version governs
         self.assertEqual([f for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
         unformed = lambda step: {**step, **({"action": {k: v for k, v in step["action"].items() if k != "form"}} if "action" in step else {})}
-        self.assertEqual([unformed(s) for s in composed["steps"] if s["id"] not in {"klaeren", "abschluss_erledigt", "abwicklung"}],
+        self.assertEqual([unformed(unruled(s)) for s in composed["steps"] if s["id"] not in {"klaeren", "abschluss_erledigt", "abwicklung"}],
                          [s for s in FROZEN["steps"] if s["id"] not in {"klaeren", "abwicklung"}])
         settle = lambda w: next(s for s in w["steps"] if s["id"] == "abwicklung")["next"][0]["when"]
         self.assertEqual(settle(composed), {"all": [settle(FROZEN), {"fact": "kosten_offen", "is": False}]})  # no closing with a cost claim open
@@ -130,7 +143,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-14.1 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-14.2 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 
