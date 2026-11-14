@@ -4,11 +4,10 @@ import unittest
 from pathlib import Path
 
 from casepath.agents import core
-from casepath.process import letters, workflows
+from casepath.process import area, letters, workflows
 from casepath.process.items import build_items
 
-SEED = Path(workflows.__file__).with_name("workflow_seed") / "mietmangel-handler.json"
-WF = workflows.validate_workflow(json.loads(SEED.read_text()))
+WF = workflows.validate_workflow(area.workflow("mietmangel-handler"))
 CASE = {"id": "case_example", "title": "Schimmel im Bad (synthetisch) 1234.5678.9012", "intake": {}}
 
 

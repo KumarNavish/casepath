@@ -1,0 +1,66 @@
+{
+ "format": "casepath.area/1",
+ "id": "arbeit-kuendigung",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Kündigung Arbeit",
+ "title": "Kündigung des Arbeitsverhältnisses: missbräuchlich, zur Unzeit, fristlos (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Arbeitsvertrag: Beendigung des Arbeitsverhältnisses (Art. 335 ff. OR)"}
+ ],
+ "law": {
+  "335": {"cite": "Art. 335 Abs. 2 OR", "sr": "220", "article": "335", "passage": "Der Kündigende muss die Kündigung schriftlich begründen, wenn die andere Partei dies verlangt.", "verified": true},
+  "335c": {"cite": "Art. 335c Abs. 1 OR", "sr": "220", "article": "335c", "passage": "im ersten Dienstjahr mit einer Kündigungsfrist von einem Monat, im zweiten bis und mit dem neunten Dienstjahr mit einer Frist von zwei Monaten und nachher mit einer Frist von drei Monaten", "verified": true},
+  "336": {"cite": "Art. 336 Abs. 1 OR", "sr": "220", "article": "336", "passage": "Die Kündigung eines Arbeitsverhältnisses ist missbräuchlich, wenn eine Partei sie ausspricht: a. wegen einer Eigenschaft, die der anderen Partei kraft ihrer Persönlichkeit zusteht,", "verified": true},
+  "336a": {"cite": "Art. 336a Abs. 2 OR", "sr": "220", "article": "336a", "passage": "Die Entschädigung wird vom Richter unter Würdigung aller Umstände festgesetzt, darf aber den Betrag nicht übersteigen, der dem Lohn des Arbeitnehmers für sechs Monate entspricht.", "verified": true},
+  "336b": {"cite": "Art. 336b Abs. 1 OR", "sr": "220", "article": "336b", "passage": "Wer gestützt auf Artikel 336 und 336a eine Entschädigung geltend machen will, muss gegen die Kündigung längstens bis zum Ende der Kündigungsfrist beim Kündigenden schriftlich Einsprache erheben.", "verified": true},
+  "336b.2": {"cite": "Art. 336b Abs. 2 OR", "sr": "220", "article": "336b", "passage": "Wird nicht innert 180 Tagen nach Beendigung des Arbeitsverhältnisses eine Klage anhängig gemacht, ist der Anspruch verwirkt.", "verified": true},
+  "336c": {"cite": "Art. 336c Abs. 1 lit. b OR", "sr": "220", "article": "336c", "passage": "während der Arbeitnehmer ohne eigenes Verschulden durch Krankheit oder durch Unfall ganz oder teilweise an der Arbeitsleistung verhindert ist,", "verified": true},
+  "336c.2": {"cite": "Art. 336c Abs. 2 OR", "sr": "220", "article": "336c", "passage": "Die Kündigung, die während einer der in Absatz 1 festgesetzten Sperrfristen erklärt wird, ist nichtig; ist dagegen die Kündigung vor Beginn einer solchen Frist erfolgt, aber die Kündigungsfrist bis dahin noch nicht abgelaufen, so wird deren Ablauf unterbrochen", "verified": true},
+  "337": {"cite": "Art. 337 Abs. 1 OR", "sr": "220", "article": "337", "passage": "Aus wichtigen Gründen kann der Arbeitgeber wie der Arbeitnehmer jederzeit das Arbeitsverhältnis fristlos auflösen;", "verified": true},
+  "337c": {"cite": "Art. 337c Abs. 1 OR", "sr": "220", "article": "337c", "passage": "Entlässt der Arbeitgeber den Arbeitnehmer fristlos ohne wichtigen Grund, so hat dieser Anspruch auf Ersatz dessen, was er verdient hätte, wenn das Arbeitsverhältnis unter Einhaltung der Kündigungsfrist oder durch Ablauf der bestimmten Vertragszeit beendigt worden wäre.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Arbeitsrecht / Kündigung"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Arbeitsrecht / Kündigung"], "question": "Hat die Arbeitgeberin das Arbeitsverhältnis gekündigt?", "source_refs": ["law#336"]},
+  {"id": "kuendigung_erhalten", "type": "date", "question": "Wann hat die Kundschaft die Kündigung erhalten?", "source_refs": ["law#335c"], "ask_customer": true, "customer_question": "Wann haben Sie die Kündigung erhalten?"},
+  {"id": "arbeitsende", "type": "date", "question": "Auf welchen Tag endet das Arbeitsverhältnis (Ende der Kündigungsfrist)?", "source_refs": ["law#336b"]},
+  {"id": "arbeitsbeginn", "type": "date", "question": "Seit wann besteht das Arbeitsverhältnis?", "source_refs": ["law#335c"]},
+  {"id": "fristlos", "type": "boolean", "question": "Wurde fristlos gekündigt?", "source_refs": ["law#337", "law#337c"]},
+  {"id": "arbeitsunfaehig", "type": "boolean", "question": "War oder ist die Kundschaft seit der Kündigung oder bei deren Erhalt krank oder verunfallt (arbeitsunfähig)?", "source_refs": ["law#336c", "law#336c.2"], "ask_customer": true, "customer_question": "Waren oder sind Sie seit der Kündigung oder bei deren Erhalt krank oder verunfallt? Wenn ja, seit wann und bis wann?"},
+  {"id": "grund_genannt", "type": "boolean", "question": "Hat die Arbeitgeberin die Kündigung schriftlich begründet?", "source_refs": ["law#335"], "ask_customer": "offered", "customer_question": "Hat Ihnen die Arbeitgeberin einen Grund für die Kündigung genannt?"},
+  {"id": "ziel", "type": "text", "question": "Was will die Kundschaft erreichen?", "source_refs": ["law#336a", "law#337c"], "ask_customer": true, "customer_question": "Was möchten Sie erreichen (z.B. eine Entschädigung wegen missbräuchlicher Kündigung, Lohn bis zum Ende der Kündigungsfrist, ein Arbeitszeugnis)?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Arbeitgeberin?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Arbeitgeberin, Gericht)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "arbeitsvertrag", "title": "Arbeitsvertrag (mit Personalreglement oder Gesamtarbeitsvertrag, falls anwendbar)", "why": "Zeigt die vereinbarten Kündigungsfristen; ohne Abrede gelten die gesetzlichen nach Dienstjahren (Art. 335c OR).", "source_refs": ["law#335c"], "stage": "klaeren"},
+  {"id": "kuendigung", "title": "Kündigungsschreiben", "why": "Zeigt Datum und Termin der Kündigung; ihre Begründung kann schriftlich verlangt werden (Art. 335 OR).", "source_refs": ["law#335"], "stage": "klaeren"},
+  {"id": "begruendung", "title": "Schriftliche Begründung der Kündigung", "why": "An der Begründung misst sich, ob die Kündigung missbräuchlich ist (Art. 336 OR).", "required_when": {"fact": "grund_genannt", "is": true}, "source_refs": ["law#336"], "stage": "klaeren"},
+  {"id": "arztzeugnis", "title": "Arztzeugnisse über die Arbeitsunfähigkeit", "why": "Eine Kündigung während einer Sperrfrist ist nichtig, eine vorher ausgesprochene wird unterbrochen (Art. 336c OR).", "required_when": {"fact": "arbeitsunfaehig", "is": true}, "source_refs": ["law#336c", "law#336c.2"], "stage": "klaeren"},
+  {"id": "lohnabrechnungen", "title": "Lohnabrechnungen der letzten Monate", "why": "Eine Entschädigung bei missbräuchlicher oder ungerechtfertigter fristloser Kündigung bemisst sich am Lohn (Art. 336a, 337c OR).", "offered": true, "source_refs": ["law#336a", "law#337c"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Korrespondenz mit der Arbeitgeberin (auch E-Mails und Gesprächsnotizen)", "why": "Zeigt den Anlass der Kündigung und eine allfällige Einsprache (Art. 336b OR).", "source_refs": ["law#336b"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "einsprache", "when": true, "text": "Wer eine Entschädigung wegen missbräuchlicher Kündigung verlangen will, muss längstens bis zum Ende der Kündigungsfrist bei der Arbeitgeberin schriftlich Einsprache erheben.", "legal_basis": "Art. 336b OR", "source_refs": ["law#336b"]},
+  {"id": "sperrfrist", "when": {"fact": "arbeitsunfaehig", "is": true}, "text": "Eine Kündigung während einer Sperrfrist, etwa bei Krankheit oder Unfall, ist nichtig; eine vorher ausgesprochene Kündigung wird unterbrochen und erst nach der Sperrfrist fortgesetzt.", "legal_basis": "Art. 336c OR", "source_refs": ["law#336c", "law#336c.2"]},
+  {"id": "fristlos", "when": {"fact": "fristlos", "is": true}, "text": "Bei einer fristlosen Entlassung ohne wichtigen Grund besteht Anspruch auf Ersatz dessen, was bei Einhaltung der Kündigungsfrist verdient worden wäre.", "legal_basis": "Art. 337c OR", "source_refs": ["law#337c"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#336", "law#336a", "law#336c.2", "law#337c"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich hat Anspruch auf eine Entschädigung von höchstens sechs Monatslöhnen, wem missbräuchlich gekündigt wurde (Art. 336a OR); eine Kündigung während einer Sperrfrist ist nichtig (Art. 336c OR), und bei einer fristlosen Entlassung ohne wichtigen Grund ist der Lohn bis zum Ende der ordentlichen Kündigungsfrist zu ersetzen (Art. 337c OR)."},
+  "conditions": {"text": "Voraussetzung einer Entschädigung ist eine schriftliche Einsprache bis zum Ende der Kündigungsfrist und eine Klage innert 180 Tagen nach Beendigung des Arbeitsverhältnisses (Art. 336b OR)."},
+  "demand": {"text": "Wir erheben hiermit Einsprache gegen die Kündigung und fordern Sie auf, bis {frist} zur Fortsetzung des Arbeitsverhältnisses Stellung zu nehmen; alle weiteren Rechte, insbesondere eine Entschädigung (Art. 336a OR), bleiben ausdrücklich vorbehalten."}
+ },
+ "deadlines": [
+  {"id": "einsprache_kuendigung", "title": "Schriftliche Einsprache gegen eine missbräuchliche Kündigung", "trigger": "arbeitsende", "period": {"days": 0}, "from": "bis zum Ende der Kündigungsfrist", "shift": false, "check": "prüfen, ob eine Sperrfrist das Ende verschiebt (Art. 336c OR)", "basis": "Art. 336b Abs. 1 OR", "missed": "Ohne rechtzeitige Einsprache kann keine Entschädigung wegen missbräuchlicher Kündigung verlangt werden.", "question": "Auf welchen Tag wurde Ihnen gekündigt (Ende der Kündigungsfrist)?", "source_refs": ["law#336b"]},
+  {"id": "klage_entschaedigung", "title": "Klage auf Entschädigung wegen missbräuchlicher Kündigung", "trigger": "arbeitsende", "period": {"days": 180}, "from": "nach Beendigung des Arbeitsverhältnisses", "check": "prüfen, ob eine Sperrfrist das Ende verschiebt (Art. 336c OR)", "basis": "Art. 336b Abs. 2 OR", "missed": "Wird nicht innert 180 Tagen Klage anhängig gemacht, ist der Anspruch verwirkt.", "question": "Auf welchen Tag wurde Ihnen gekündigt (Ende der Kündigungsfrist)?", "source_refs": ["law#336b.2"]}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

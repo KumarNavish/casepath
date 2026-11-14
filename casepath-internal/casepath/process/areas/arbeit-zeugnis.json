@@ -1,0 +1,49 @@
+{
+ "format": "casepath.area/1",
+ "id": "arbeit-zeugnis",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Arbeitszeugnis",
+ "title": "Arbeitszeugnis: Ausstellung und Berichtigung (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Arbeitsvertrag: Zeugnis (Art. 330a OR); Zivilgesetzbuch (SR 210), Beweislast (Art. 8 ZGB)"}
+ ],
+ "law": {
+  "330a": {"cite": "Art. 330a Abs. 1 OR", "sr": "220", "article": "330a", "passage": "Der Arbeitnehmer kann jederzeit vom Arbeitgeber ein Zeugnis verlangen, das sich über die Art und Dauer des Arbeitsverhältnisses sowie über seine Leistungen und sein Verhalten ausspricht.", "verified": true},
+  "330a.2": {"cite": "Art. 330a Abs. 2 OR", "sr": "220", "article": "330a", "passage": "Auf besonderes Verlangen des Arbeitnehmers hat sich das Zeugnis auf Angaben über die Art und Dauer des Arbeitsverhältnisses zu beschränken.", "verified": true},
+  "zgb-8": {"cite": "Art. 8 ZGB", "sr": "210", "article": "8", "passage": "Wo das Gesetz es nicht anders bestimmt, hat derjenige das Vorhandensein einer behaupteten Tatsache zu beweisen, der aus ihr Rechte ableitet.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Arbeitsrecht / Arbeitszeugnis"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Arbeitsrecht / Arbeitszeugnis"], "question": "Geht es um ein Arbeitszeugnis?", "source_refs": ["law#330a"]},
+  {"id": "zeugnis_erhalten", "type": "boolean", "question": "Hat die Kundschaft ein Zeugnis erhalten?", "source_refs": ["law#330a"], "ask_customer": true, "customer_question": "Haben Sie bereits ein Zeugnis erhalten?"},
+  {"id": "art", "type": "enum", "values": ["Vollzeugnis", "Arbeitsbestätigung"], "question": "Verlangt die Kundschaft ein Vollzeugnis oder eine Arbeitsbestätigung (nur Art und Dauer)?", "source_refs": ["law#330a", "law#330a.2"]},
+  {"id": "beanstandung", "type": "text", "question": "Was beanstandet die Kundschaft am Zeugnis (Formulierungen zu Leistung oder Verhalten, Funktion, Dauer)?", "source_refs": ["law#330a"], "ask_customer": true, "customer_question": "Welche Stellen des Zeugnisses möchten Sie ändern lassen, und wie sollten sie lauten?"},
+  {"id": "arbeitsende", "type": "date", "question": "Wann endete das Arbeitsverhältnis?", "source_refs": ["law#330a"]},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Arbeitgeberin?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Arbeitgeberin, Gericht)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "zeugnis", "title": "Das erhaltene Arbeitszeugnis (und allfällige Zwischenzeugnisse)", "why": "Das Zeugnis muss sich über Art und Dauer des Arbeitsverhältnisses sowie über Leistungen und Verhalten aussprechen (Art. 330a OR).", "required_when": {"fact": "zeugnis_erhalten", "is": true}, "source_refs": ["law#330a"], "stage": "klaeren"},
+  {"id": "arbeitsvertrag", "title": "Arbeitsvertrag oder Stellenbeschreibung", "why": "Zeigt Funktion und Dauer des Arbeitsverhältnisses, über die das Zeugnis Auskunft gibt (Art. 330a OR).", "source_refs": ["law#330a"], "stage": "klaeren"},
+  {"id": "belege_leistung", "title": "Belege zu Leistung und Verhalten (z.B. Mitarbeitergespräche, Zielvereinbarungen, Zwischenzeugnis)", "why": "Wer eine andere Beurteilung verlangt, muss die Tatsachen beweisen, aus denen er sie ableitet (Art. 8 ZGB).", "source_refs": ["law#zgb-8"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Aufforderung zur Ausstellung oder Berichtigung und Antwort der Arbeitgeberin", "why": "Zeigt, was verlangt und was abgelehnt wurde (Art. 330a OR).", "source_refs": ["law#330a"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "jederzeit", "when": true, "text": "Ein Zeugnis über Art und Dauer des Arbeitsverhältnisses sowie über Leistungen und Verhalten kann jederzeit verlangt werden, auf besonderes Verlangen eine blosse Arbeitsbestätigung über Art und Dauer.", "legal_basis": "Art. 330a OR", "source_refs": ["law#330a", "law#330a.2"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#330a", "law#zgb-8"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich kann jederzeit ein Zeugnis verlangt werden, das sich über Art und Dauer des Arbeitsverhältnisses sowie über Leistungen und Verhalten ausspricht (Art. 330a OR)."},
+  "conditions": {"text": "Wer eine Berichtigung verlangt, muss die Tatsachen belegen können, aus denen sich die andere Beurteilung ergibt (Art. 8 ZGB)."},
+  "demand": {"text": "Wir fordern Sie auf, bis {frist} ein Arbeitszeugnis auszustellen beziehungsweise zu berichtigen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
+ },
+ "deadlines": [],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

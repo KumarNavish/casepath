@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 
+from .area import compute_deadline
 from .clock import silence
 from .workflows import evaluate_condition
 
@@ -167,7 +168,14 @@ def build_items(state, result, files=None):
             add("deadline", d["fact"], value=d["date"], stated_as="computed" if d.get("computed") else "established", verdict="accepted",
                 evidence=[], node=_fact_node(graph, d["fact"]), origin="workflow", chain=True, label=d.get("question"),
                 **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
-        asked = [i for i in items if i["kind"] == "document" and i["ask"] == "now"]
+        for d in graph.get("deadlines", []):  # the area's statutory deadlines, from the trigger date the case establishes
+            trigger = (state.get("facts") or {}).get(d["trigger"])
+            computed = compute_deadline(d, trigger, state.get("facts") or {}) if trigger is not None else None
+            if computed:
+                add("deadline", d["id"], value=computed[0], stated_as="computed", verdict="accepted", evidence=[],
+                    node=_fact_node(graph, d["trigger"]), origin="law", chain=True, label=d["title"], stated=str(trigger),
+                    rule=computed[1], legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"))
+        asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
         lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
         steps = {x["id"]: x for x in graph["steps"]}
         here = steps.get((ev.get("current") or {}).get("step")) or (steps.get(ev["path"][-1]["step"]) if ev.get("path") else None) or {}
@@ -175,7 +183,7 @@ def build_items(state, result, files=None):
         variant = next((v for v in (planned or {}).get("instead", []) if evaluate_condition(v["when"], state.get("facts") or {}) is True), None)
         if variant:  # a situation the stage answers differently (after a call: keep it pending with a deadline)
             planned = {**planned, **{k: v for k, v in variant.items() if k != "when"}, "skip_if": None}
-        quiet = silence(graph.get("clock"), state.get("facts") or {}, files)  # across stages: nobody answered our last letter
+        quiet = None if ev.get("outcome") else silence(graph.get("clock"), state.get("facts") or {}, files)  # across stages: nobody answered our last letter
         if quiet:
             planned = {"kind": quiet["then"], "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,

@@ -312,7 +312,7 @@ class CaseWork:
         asked, partial = casegraph.whole_findings(self.graph, self.findings())  # a need for all of something stays asked
         answered = {k: v for k, (v, _) in casegraph.fact_overrides(self.graph, self.employee_edits).items()}  # the case worker's answers
         facts = casegraph.derive_facts(self.graph, {**self.accepted_facts(), **answered}, asked,
-                                       lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked))
+                                       lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked), partial=partial)
         return casegraph.mark_partial(workflows.evaluate(self.graph, facts, asked, checked=missing_checked), partial)
 
     def unverified(self):

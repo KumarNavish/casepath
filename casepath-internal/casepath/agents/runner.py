@@ -44,7 +44,7 @@ def case_state(store, catalogue, case_id, knowledge=None):
         knowledge = store.list_knowledge(workflow["id"], {"active"})  # only what a person has activated shapes a case
     else:
         knowledge = [k for k in knowledge if workflow["id"] in (k["family"] if isinstance(k["family"], list) else [k["family"]])]
-    state = core.evaluate(workflow, knowledge, store.list_edits(case_id), result, case_id)
+    state = core.evaluate(workflow, knowledge, store.list_edits(case_id), result, case_id, files=store.list_files(case_id))
     ran = (run or {}).get("workflow_version")
     versions = {"run_version": ran, "governing_version": workflow["version"]} if ran and ran != workflow["version"] else {}
     return {"case": case, "workflow": workflows.ref(workflow), **state, "run": run, "knowledge": knowledge, **versions}

@@ -1,0 +1,54 @@
+{
+ "format": "casepath.area/1",
+ "id": "miete-mietzinserhoehung",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Mietzinserhöhung",
+ "title": "Mietzinserhöhung: Formular, Begründung und Anfechtung (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220), Mietrecht: Schutz vor missbräuchlichen Mietzinsen (Art. 269 ff. OR)"}
+ ],
+ "law": {
+  "269": {"cite": "Art. 269 OR", "sr": "220", "article": "269", "passage": "Mietzinse sind missbräuchlich, wenn damit ein übersetzter Ertrag aus der Mietsache erzielt wird oder wenn sie auf einem offensichtlich übersetzten Kaufpreis beruhen.", "verified": true},
+  "269a": {"cite": "Art. 269a OR", "sr": "220", "article": "269a", "passage": "Mietzinse sind in der Regel nicht missbräuchlich, wenn sie insbesondere: a. im Rahmen der orts- oder quartierüblichen Mietzinse liegen; b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;", "verified": true},
+  "269d": {"cite": "Art. 269d Abs. 1 OR", "sr": "220", "article": "269d", "passage": "Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.", "verified": true},
+  "269d.2": {"cite": "Art. 269d Abs. 2 OR", "sr": "220", "article": "269d", "passage": "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet; c. mit der Mitteilung die Kündigung androht oder ausspricht.", "verified": true},
+  "270b": {"cite": "Art. 270b Abs. 1 OR", "sr": "220", "article": "270b", "passage": "Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nachdem sie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als missbräuchlich im Sinne der Artikel 269 und 269a anfechten.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Mietrecht / Mietzinserhöhung"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Mietrecht / Mietzinserhöhung"], "question": "Hat die Vermieterschaft eine Erhöhung des Mietzinses mitgeteilt?", "source_refs": ["law#269d"]},
+  {"id": "erhoehung_erhalten", "type": "date", "question": "Wann wurde der Kundschaft die Mietzinserhöhung mitgeteilt?", "source_refs": ["law#270b"]},
+  {"id": "erhoehung_ab", "type": "date", "question": "Ab wann soll der neue Mietzins gelten?", "source_refs": ["law#269d"]},
+  {"id": "formular", "type": "boolean", "question": "Wurde die Erhöhung auf dem vom Kanton genehmigten Formular mitgeteilt und begründet?", "source_refs": ["law#269d", "law#269d.2"]},
+  {"id": "begruendung", "type": "text", "question": "Wie begründet die Vermieterschaft die Erhöhung (z.B. Kostensteigerungen, Mehrleistungen, orts- oder quartierübliche Mietzinse)?", "source_refs": ["law#269a"]},
+  {"id": "will_anfechten", "type": "boolean", "question": "Will die Kundschaft die Erhöhung anfechten?", "source_refs": ["law#270b"], "ask_customer": true, "customer_question": "Möchten Sie die Mietzinserhöhung anfechten?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Vermieterschaft oder Verwaltung?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schlichtungsbehörde, Gericht, Vermieterschaft)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "mietvertrag", "title": "Mietvertrag", "why": "Zeigt den bisherigen Mietzins und die Kündigungstermine, auf die eine Erhöhung mitgeteilt werden kann (Art. 269d OR).", "source_refs": ["law#269d"], "stage": "klaeren"},
+  {"id": "erhoehung", "title": "Mitteilung der Mietzinserhöhung (amtliches Formular) mit Begründung und Couvert", "why": "Ohne das vorgeschriebene Formular oder ohne Begründung ist die Erhöhung nichtig (Art. 269d OR); ihre Mitteilung setzt die Frist der Anfechtung in Gang (Art. 270b OR).", "source_refs": ["law#269d.2", "law#270b"], "stage": "klaeren"},
+  {"id": "fruehere_mietzinse", "title": "Frühere Mietzinsanpassungen und Nebenkostenabrechnungen", "why": "Ob der neue Mietzins missbräuchlich ist, beurteilt sich nach seiner Begründung und dem bisherigen Mietzins (Art. 269, 269a OR).", "required_when": {"fact": "will_anfechten", "is": true}, "source_refs": ["law#269", "law#269a"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Korrespondenz mit der Vermieterschaft zur Erhöhung", "why": "Zeigt, wie die Erhöhung begründet und ob mit ihr eine Kündigung angedroht wurde (Art. 269d OR).", "source_refs": ["law#269d.2"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "nichtig", "when": true, "text": "Eine Mietzinserhöhung ist nichtig, wenn sie nicht mit dem vom Kanton genehmigten Formular mitgeteilt oder nicht begründet wird oder wenn mit ihr die Kündigung angedroht oder ausgesprochen wird.", "legal_basis": "Art. 269d OR", "source_refs": ["law#269d.2"]}
+ ],
+ "stages": {
+  "beurteilen": {"source_refs": ["law#269", "law#269a", "law#270b"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich kann die Mieterschaft eine Mietzinserhöhung bei der Schlichtungsbehörde als missbräuchlich anfechten (Art. 270b OR); missbräuchlich sind Mietzinse, mit denen ein übersetzter Ertrag aus der Mietsache erzielt wird (Art. 269 OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass die Anfechtung innert 30 Tagen nach der Mitteilung erfolgt (Art. 270b OR); eine Erhöhung ohne das amtliche Formular oder ohne Begründung ist ohnehin nichtig (Art. 269d OR)."},
+  "demand": {"text": "Wir fordern Sie auf, die Mietzinserhöhung bis {frist} zurückzunehmen oder schriftlich zu begründen, und behalten uns die Anfechtung (Art. 270b OR) ausdrücklich vor."}
+ },
+ "deadlines": [
+  {"id": "anfechtung_erhoehung", "title": "Anfechtung der Mietzinserhöhung bei der Schlichtungsbehörde", "trigger": "erhoehung_erhalten", "period": {"days": 30}, "from": "nach der Mitteilung", "basis": "Art. 270b Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist die Anfechtung verspätet.", "question": "Wann haben Sie die Mitteilung der Mietzinserhöhung erhalten?", "source_refs": ["law#270b"]}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}

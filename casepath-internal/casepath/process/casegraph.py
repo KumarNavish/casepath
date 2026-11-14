@@ -10,6 +10,9 @@ Every addition names its origin, and the result is validated like any workflow.
 """
 import re
 from copy import deepcopy
+from datetime import timedelta
+
+from .clock import as_of, parse_date
 
 from .workflows import CatalogueError, condition_facts, evaluate, evaluate_condition, validate_workflow
 
@@ -301,8 +304,9 @@ ALL_OF = {"sämtliche", "sämtlichen", "alle", "bisherige", "bisherigen"}
 
 
 def open_ended(graph):
-    """Needs for all of something ("Sämtliche Korrespondenz …"): a file can never show them complete."""
-    return {d["id"] for d in graph["documents"] if (re.findall(r"[A-Za-zÄÖÜäöüß]+", d["title"]) or [""])[0].lower() in ALL_OF}
+    """Needs for all of something ("Sämtliche Korrespondenz …", or marked open_ended): a file can never show them complete."""
+    return {d["id"] for d in graph["documents"]
+            if d.get("open_ended") or (re.findall(r"[A-Za-zÄÖÜäöüß]+", d["title"]) or [""])[0].lower() in ALL_OF}
 
 
 def whole_findings(graph, findings):
@@ -319,16 +323,43 @@ def mark_partial(evaluation, partial):
     return evaluation
 
 
-def derive_facts(graph, facts, findings, evaluate):
+COOPERATION = {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": ["protekta", "rechtsschutz"]}
+
+
+def received_after(files, day, insurer=()):
+    """Whether anything came in after a day: a document of the file dated later whose sender is not the insurer, or, in a
+    live (not cut) case, a file without documents added later. None when nothing is known about the files."""
+    if files is None:
+        return None
+    for f in files:
+        extraction = f.get("extraction") or {}
+        segments = extraction.get("segments") or []
+        for s in segments:
+            d = parse_date(s.get("date"))
+            if d and d > day and not any(w in str(s.get("sender") or "").lower() for w in insurer):
+                return True
+        if not segments and "cut_of" not in extraction and (d := parse_date(str(f.get("created_at") or "")[:10])) and d > day:
+            return True
+    return False
+
+
+def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, today=None):
     """Facts a workflow marks "derived": computed from other facts and the findings, never read or set by hand.
 
     action_A1 / requests_count: from the handler's earlier actions as read from the file ("A1 2024-08-28; A4 …").
-    documents_complete: every document the evaluation needs now is present. missing_after_two_requests: asked at least
-    twice and still incomplete. ``evaluate(facts)`` is the plain evaluation; it is called once without the derived facts.
+    replied_since_request: something came in from the customer after the last request (A1, A4, A6, A7).
+    silent_after_requests: lack of cooperation is silence, not incompleteness: at least two requests that set a deadline
+    (A1, A6, A7; a question back, A4, never counts), the last deadline passed on the day the case is looked at, and
+    nothing received since; unknown files never make it true. documents_complete: every document the evaluation needs
+    now is present; an open-ended need partly present does not hold it up. no_stage_fact_open / one_stage_fact_open:
+    the stage's points only the customer can answer. assess_needs_present: the documents an area names as needed for
+    any assessment. missing_after_two_requests (older workflows): asked at least twice and still incomplete.
+    ``evaluate(facts)`` is the plain evaluation; it is called once without the derived facts.
     """
     kinds = {f["id"]: f["derived"] for f in graph["facts"] if f.get("derived")}
     if not kinds:
         return facts
+    rules = {**COOPERATION, **(graph.get("cooperation") or {})}
     history = str(facts.get("bisherige_handlungen") or "")
     # Each earlier action of the insurer: its own dated fact (handlung_a1 …, one quote each) or the accepted history line.
     dated = [(m.group(1), str(v)[:10]) for k, v in facts.items() if v and (m := re.fullmatch(r"handlung_a(\d{1,2})", k))]
@@ -336,6 +367,10 @@ def derive_facts(graph, facts, findings, evaluate):
     done = sorted({c for c, _ in dated} | set(re.findall(r"\bA(\d{1,2})\b", history)))
     requests = max(sum(1 for n in re.findall(r"\bA(\d{1,2})\b", history) if n in {"1", "4"}),
                    sum(1 for k in ("handlung_a1", "handlung_a4") if facts.get(k)))
+    when = sorted({(d, c) for c, day in dated if (d := parse_date(day))})
+    asked = [(d, c) for d, c in when if c in {"1", "4", "6", "7"}]
+    bearing = [(d, c) for d, c in when if c in rules["requests"]]
+    look = as_of(files or (), today)
     out = {k: v for k, v in facts.items() if k not in kinds}
     for fact, kind in kinds.items():
         if kind == "action_A1":
@@ -347,9 +382,16 @@ def derive_facts(graph, facts, findings, evaluate):
             out[fact] = last == "2"
         elif kind == "requests_count":
             out[fact] = "0" if requests == 0 else "1" if requests == 1 else "2+"
+        elif kind == "replied_since_request":
+            out[fact] = bool(asked) and received_after(files, asked[-1][0], rules["insurer"]) is True
+        elif kind == "silent_after_requests":
+            last = bearing[-1] if bearing else None
+            out[fact] = (len(bearing) >= rules["min_requests"] and look > last[0] + timedelta(days=rules["requests"][last[1]])
+                         and received_after(files, last[0], rules["insurer"]) is False)
     evaluation = evaluate(out)
     needed = [d for d in evaluation["documents"] if d["required"] == "yes"]
-    complete = bool(needed) and all(d["status"] == "present" for d in needed)
+    complete = bool(needed) and all(d["status"] == "present" or d["document"] in (partial or {}) for d in needed)
+    present = set(findings) | set(partial or {})
     for fact, kind in kinds.items():
         if kind == "documents_complete":
             out[fact] = complete
@@ -357,6 +399,10 @@ def derive_facts(graph, facts, findings, evaluate):
             out[fact] = requests >= 2 and not complete
         elif kind == "one_stage_fact_open":
             out[fact] = len(open_stage_facts(graph, out, evaluation)) == 1
+        elif kind == "no_stage_fact_open":
+            out[fact] = not open_stage_facts(graph, out, evaluation)
+        elif kind == "assess_needs_present":
+            out[fact] = all(d in present and (findings.get(d) or {}).get("status", "present") == "present" for d in graph.get("assess_needs", []))
     return out
 
 

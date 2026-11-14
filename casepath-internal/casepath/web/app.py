@@ -380,7 +380,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/workflows")
     def list_workflows(who=Depends(user)):
-        return {"workflows": [{**workflows.ref(w), "sources": w["sources"], "steps": len(w["steps"]),
+        return {"workflows": [{**workflows.ref(w), "short_title": w.get("short_title"), "area": w.get("area"), "sources": w["sources"], "steps": len(w["steps"]),
                                "documents": len(w["documents"]), "open_questions": len(w.get("open_questions", []))}
                               for w in catalogue.latest()]}
 
@@ -447,7 +447,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         done = store.completed_runs(case_id, 2)
         if len(done) == 2 and current.get("workflow") and not (current["case"].get("intake") or {}).get("study"):
             workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
-            before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id)
+            before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id, files=files)
             changes = item_changes(build_items(before_state, done[1].get("result"), files), listed)
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "new_files": new_files, "changes": changes,

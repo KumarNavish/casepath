@@ -204,28 +204,33 @@ def validate_workflow(data):
     return data
 
 
-SEED_WORKFLOWS = Path(__file__).with_name("workflow_seed")
-
-
 @dataclass(frozen=True)
 class Catalogue:
     workflows: tuple
 
     @classmethod
     def load(cls, directory):
+        """The workflows in a directory, each a workflow or an area module (composed with the shipped backbone), and the
+        shipped handler areas that build on what the directory holds: an area joins when the directory has an intake
+        workflow it supersedes or builds on, unless the directory has its own workflow of that id."""
+        from . import area
+
         if directory is None:
             return cls(())
         rows = []
         for path in sorted(Path(directory).glob("*.json")):
             try:
-                rows.append(validate_workflow(json.loads(path.read_text(encoding="utf-8"))))
+                data = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(data, dict) and data.get("format") == area.BACKBONE_FORMAT:
+                    continue
+                if isinstance(data, dict) and data.get("format") == area.AREA_FORMAT:
+                    data = area.compose(area.backbone(), data)
+                rows.append(validate_workflow(data))
             except (CatalogueError, json.JSONDecodeError) as error:
                 raise CatalogueError(f"{path.name}: {error}") from error
-        # Workflows written for this build join a catalogue that has the intake workflow they build on, unless it has its own copy.
         present = {w["id"] for w in rows}
-        for path in sorted(SEED_WORKFLOWS.glob("*.json")):
-            seed = validate_workflow(json.loads(path.read_text(encoding="utf-8")))
-            if seed["id"] not in present and present & set(seed.get("supersedes", ())):
+        for seed in area.shipped():
+            if seed["id"] not in present and present & set(seed.get("supersedes", []) + seed.get("builds_on", [])):
                 rows.append(seed)
         keys = [(w["id"], w["version"]) for w in rows]
         if len(keys) != len(set(keys)):
@@ -280,10 +285,12 @@ def route(catalogue, facts):
         return {"status": "selected", "workflow": ref(selected[0]), "candidates": [], "needs": []}
     if len(selected) > 1:
         return {"status": "ambiguous", "workflow": None, "candidates": [ref(w) for w in selected], "needs": []}
+    fallback = [w for w in catalogue.routable() if w.get("fallback")]
     if unknown:
         needs = sorted(set().union(*(condition_facts(w["applies_when"]) for w in unknown)) - {k for k, v in facts.items() if v is not None})
+        if len(fallback) == 1:  # a case never stays without a process: the general one, the candidates named for a person
+            return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [ref(w) for w in unknown], "needs": needs}
         return {"status": "needs_facts", "workflow": None, "candidates": [ref(w) for w in unknown], "needs": needs}
-    fallback = [w for w in catalogue.routable() if w.get("fallback")]
     if len(fallback) == 1:
         return {"status": "fallback", "workflow": ref(fallback[0]), "candidates": [], "needs": []}
     return {"status": "unmapped", "workflow": None, "candidates": [], "needs": []}

@@ -1,0 +1,105 @@
+{
+ "format": "casepath.backbone/1",
+ "id": "fallbearbeitung",
+ "version": "2026-11-14.1",
+ "title": "Fallbearbeitung Rechtsschutz: Stufen, Handlungen, Entscheide, Uhr und Formulare",
+ "sources": [
+  {"id": "practice", "kind": "process_guidance", "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"}
+ ],
+ "facts": [
+  {"id": "deckung", "type": "enum", "values": ["offen", "bestätigt", "abgelehnt"], "handler_only": true, "question": "Ist die Versicherungsdeckung gegeben? (Entscheid der Fallbearbeitung)", "source_refs": ["practice#7of7"]},
+  {"id": "bisherige_handlungen", "type": "text", "question": "Welche Schreiben und Notizen hat Protekta in diesem Fall schon verfasst (Art und Datum, z.B. «A1 2024-08-28; A2 2024-09-03»)?", "source_refs": ["practice#7of7"]},
+  {"id": "handlung_a1", "type": "date", "question": "Datum, an dem Protekta zuletzt eine Anforderung von Unterlagen und Angaben (A1) verfasst hat", "source_refs": ["practice#7of7"]},
+  {"id": "handlung_a2", "type": "date", "question": "Datum, an dem Protekta zuletzt eine Telefonnotiz (A2) verfasst hat", "source_refs": ["practice#7of7"]},
+  {"id": "handlung_a4", "type": "date", "question": "Datum, an dem Protekta zuletzt eine Rückfrage (A4) verfasst hat", "source_refs": ["practice#7of7"]},
+  {"id": "handlung_a5", "type": "date", "question": "Datum, an dem Protekta zuletzt eine rechtliche Einschätzung (A5) verfasst hat", "source_refs": ["practice#7of7"]},
+  {"id": "handlung_a6", "type": "date", "question": "Datum, an dem Protekta zuletzt ein Pendenthalten mit Frist (A6) verfasst hat", "source_refs": ["practice#7of7"]},
+  {"id": "handlung_a7", "type": "date", "question": "Datum, an dem Protekta zuletzt eine Statusanfrage mit Abschlussankündigung (A7) verfasst hat", "source_refs": ["practice#7of7"]},
+  {"id": "a1_versandt", "type": "boolean", "derived": "action_A1", "question": "Hat Protekta die Unterlagen schon angefordert?", "source_refs": ["practice#7of7"]},
+  {"id": "anforderungen", "type": "enum", "values": ["0", "1", "2+"], "derived": "requests_count", "question": "Wie oft wurden Unterlagen schon angefordert?", "source_refs": ["practice#1of7"]},
+  {"id": "unterlagen_vollstaendig", "type": "boolean", "derived": "documents_complete", "question": "Liegen die verlangten Unterlagen vor?", "source_refs": ["practice#7of7"]},
+  {"id": "mitwirkung_fehlt", "type": "boolean", "question": "Blieben mindestens zwei Anforderungen mit Frist (A1, A6, A7) ohne jede Antwort, und ist die letzte Frist abgelaufen?", "source_refs": ["practice#1of7"], "derived": "silent_after_requests"},
+  {"id": "kunde_still", "type": "boolean", "question": "Ist eine Statusanfrage mit Abschlussankündigung (A7) verschickt worden und die Frist abgelaufen?", "source_refs": ["practice#2of7"], "derived": "closing_announced"},
+  {"id": "weiteres_vorgehen", "type": "boolean", "question": "Will die Kundschaft gegen die Gegenpartei vorgehen (nicht nur Beratung)?", "source_refs": ["practice#3of7"]},
+  {"id": "vorgehen", "type": "enum", "values": ["Selbst führen", "Mandat an Anwaltskanzlei"], "question": "Führt Protekta selbst oder wird mandatiert? (Entscheid der Fallbearbeitung; CasePath schlägt vor)", "source_refs": ["practice#2of7"], "handler_only": true},
+  {"id": "einigung", "type": "boolean", "question": "Ist eine Einigung erzielt oder das Mandat abgeschlossen?", "source_refs": ["practice#2of7"]},
+  {"id": "zahlung_erhalten", "type": "boolean", "question": "Ist die vereinbarte Zahlung eingegangen?", "source_refs": ["practice#1of7"]},
+  {"id": "anruf_offen", "type": "boolean", "derived": "last_action_A2", "question": "War die letzte Handlung ein Telefonat, nach dem die Sache offen ist?", "source_refs": ["practice#2of7"]},
+  {"id": "ein_punkt_offen", "type": "boolean", "derived": "one_stage_fact_open", "question": "Ist in dieser Stufe genau ein Punkt noch offen, den nur die Kundschaft beantworten kann?", "source_refs": ["practice#2of7"]},
+  {"id": "kunde_geantwortet", "type": "boolean", "derived": "replied_since_request", "question": "Ist seit der letzten Anforderung (A1, A4, A6, A7) etwas von der Kundschaft eingegangen?", "source_refs": ["practice#2of7"]},
+  {"id": "keine_punkte_offen", "type": "boolean", "derived": "no_stage_fact_open", "question": "Sind in dieser Stufe alle Punkte beantwortet, die nur die Kundschaft beantworten kann?", "source_refs": ["practice#3of7"]},
+  {"id": "beurteilbar", "type": "boolean", "derived": "assess_needs_present", "question": "Liegen die Unterlagen vor, ohne die keine Einschätzung möglich ist (falls das Rechtsgebiet solche nennt)?", "source_refs": ["practice#3of7"]}
+ ],
+ "start": "eingang",
+ "steps": [
+  {"id": "eingang", "title": "Eingang der Schadenmeldung", "role": "Fallbearbeitung", "source_refs": ["practice#7of7"], "documents": [], "action": {"kind": "A0", "title": "Eingangsbestätigung (automatisch)"}, "next": [{"to": "klaeren", "label": null, "when": true}]},
+  {"id": "klaeren", "title": "Deckung und Sachverhalt klären", "role": "Fallbearbeitung", "source_refs": ["practice#7of7"], "documents": [], "action": {"kind": "A1", "title": "Unterlagen und Angaben anfordern", "next_in_days": 21, "follow_up": "A6", "skip_if": {"fact": "a1_versandt", "is": true}, "instead": [{"when": {"fact": "anruf_offen", "is": true}, "kind": "A6", "title": "Dossier pendent halten mit Frist", "next_in_days": 25, "follow_up": "A7", "source_refs": ["practice#2of7"]}, {"when": {"all": [{"fact": "a1_versandt", "is": true}, {"fact": "ein_punkt_offen", "is": true}, {"any": [{"fact": "unterlagen_vollstaendig", "is": true}, {"fact": "kunde_geantwortet", "is": true}]}]}, "kind": "A4", "title": "Rückfrage zu einem Punkt", "next_in_days": 14, "follow_up": "A6", "source_refs": ["practice#2of7"], "note": "aus dem Prozess, in 2 von 7 Dossiers beobachtet"}]}, "next": [{"to": "abschluss_mitwirkung", "label": "Deckung abgelehnt", "when": {"fact": "deckung", "is": "abgelehnt"}}, {"to": "beurteilen", "label": "Unterlagen vollständig", "when": {"all": [{"fact": "unterlagen_vollstaendig", "is": true}, {"fact": "deckung", "is": "bestätigt"}]}}, {"to": "beurteilen", "label": "Kundschaft hat geantwortet", "when": {"all": [{"fact": "deckung", "is": "bestätigt"}, {"fact": "a1_versandt", "is": true}, {"fact": "kunde_geantwortet", "is": true}, {"fact": "keine_punkte_offen", "is": true}, {"fact": "beurteilbar", "is": true}]}}, {"to": "abschluss_still", "label": "keine Rückmeldung", "when": {"fact": "kunde_still", "is": true}}, {"to": "abschluss_mitwirkung", "label": "Mitwirkung fehlt", "when": {"fact": "mitwirkung_fehlt", "is": true}}]},
+  {"id": "beurteilen", "title": "Beurteilen und beraten", "role": "Fallbearbeitung", "source_refs": ["practice#3of7"], "documents": [], "action": {"kind": "A5", "title": "Rechtliche Einschätzung an die Kundschaft", "next_in_days": 28, "follow_up": "A7"}, "next": [{"to": "vorgehen", "label": "Vorgehen gewünscht", "when": {"fact": "weiteres_vorgehen", "is": true}}, {"to": "abschluss_beraten", "label": "Beratung genügt", "when": {"fact": "weiteres_vorgehen", "is": false}}, {"to": "abschluss_still", "label": "keine Rückmeldung", "when": {"fact": "kunde_still", "is": true}}]},
+  {"id": "vorgehen", "title": "Vorgehen festlegen", "role": "Entscheidung", "source_refs": ["practice#2of7"], "documents": [], "next": [{"to": "gegenpartei", "label": "selbst führen", "when": {"fact": "vorgehen", "is": "Selbst führen"}}, {"to": "mandat", "label": "mandatieren", "when": {"fact": "vorgehen", "is": "Mandat an Anwaltskanzlei"}}]},
+  {"id": "gegenpartei", "title": "Gegenüber der Gegenpartei vorgehen", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A8", "title": "Schreiben an die Gegenpartei (Entwurf zuerst an die Kundschaft)", "next_in_days": 14, "follow_up": "A9"}, "next": [{"to": "abwicklung", "label": "Einigung", "when": {"fact": "einigung", "is": true}}]},
+  {"id": "mandat", "title": "Mandat an Anwaltskanzlei", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A10", "title": "Mandatsanfrage, Kostengutsprache und Information der Kundschaft", "next_in_days": 30, "follow_up": "A2"}, "next": [{"to": "abwicklung", "label": "Mandat abgeschlossen", "when": {"fact": "einigung", "is": true}}]},
+  {"id": "abwicklung", "title": "Abwicklung der Einigung", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A11", "title": "Zahlung abwickeln (IBAN, Auszahlung nachverfolgen)", "next_in_days": 21, "follow_up": "A11"}, "next": [{"to": "abschluss_zahlung", "label": "Zahlung erhalten", "when": {"fact": "zahlung_erhalten", "is": true}}]},
+  {"id": "abschluss_still", "title": "Abschluss: keine Rückmeldung", "role": "Fallbearbeitung", "source_refs": ["practice#2of7"], "documents": [], "outcome": "stillschweigen", "action": {"kind": "A12", "title": "Dossier schliessen"}, "next": []},
+  {"id": "abschluss_beraten", "title": "Abschluss: Beratung erfolgt", "role": "Fallbearbeitung", "source_refs": ["practice#2of7"], "documents": [], "outcome": "beraten", "action": {"kind": "A12", "title": "Dossier schliessen"}, "next": []},
+  {"id": "abschluss_zahlung", "title": "Abschluss: Zahlung erhalten", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "outcome": "zahlung", "action": {"kind": "A12", "title": "Dossier abschliessen"}, "next": []},
+  {"id": "abschluss_mitwirkung", "title": "Abschluss: fehlende Mitwirkung", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "outcome": "mitwirkung", "action": {"kind": "A12", "title": "Leistungseinstellung mitteilen"}, "next": []}
+ ],
+ "outcomes": [
+  {"id": "stillschweigen", "title": "Abgeschlossen: keine Rückmeldung der Kundschaft", "source_refs": ["practice#2of7"]},
+  {"id": "beraten", "title": "Abgeschlossen: Beratung erfolgt", "source_refs": ["practice#2of7"]},
+  {"id": "zahlung", "title": "Abgeschlossen: Zahlung erhalten", "source_refs": ["practice#1of7"]},
+  {"id": "mitwirkung", "title": "Abgeschlossen: Leistungseinstellung wegen fehlender Mitwirkung", "source_refs": ["practice#1of7"]}
+ ],
+ "clock": [
+  {"after": ["1", "4"], "days": 28, "then": "A6", "deadline_days": 25, "follow_up": "A7", "source": "practice#2of7 (3-4 Wochen nach Anforderung)"},
+  {"after": ["2"], "days": 28, "then": "A6", "deadline_days": 25, "follow_up": "A7", "source": "practice#2of7 (nach Telefonat)"},
+  {"after": ["6"], "days": 28, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7"},
+  {"after": ["5"], "days": 90, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7 (3-4 Monate nach Einschätzung)"},
+  {"after": ["7"], "days": 14, "then": "A12", "deadline_days": null, "source": "practice#2of7 (Abschluss nach Statusanfrage)"}
+ ],
+ "forms": {
+  "A1": {"title": "Unterlagen und Angaben anfordern", "to": "Kundschaft", "parts": ["{registrierung}", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.", "{fragen}", "{hinweise}", "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.", "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."]},
+  "A4": {"title": "Rückfrage zu einem Punkt", "to": "Kundschaft", "parts": ["Vielen Dank für Ihre Unterlagen.", "Damit wir weiterfahren können, bitten wir Sie um Auskunft zu folgendem Punkt:\n{fragen_oder_offen}", "Wir danken Ihnen für Ihre Antwort bis {frist}."]},
+  "A5": {"title": "Rechtliche Einschätzung", "to": "Kundschaft", "parts": ["Vielen Dank für Ihre Unterlagen.", "@rights", "@conditions", "In Ihrem Fall: {anliegen}", "{nachzureichen}", "Wir empfehlen Ihnen, {empfehlung}"]},
+  "A6": {"title": "Dossier pendent halten mit Frist", "to": "Kundschaft", "parts": ["Vielen Dank für {anlass}.", "Wir halten Ihr Dossier vorerst noch pendent und erwarten {erwartet}.", "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."]},
+  "A7": {"title": "Statusanfrage mit Abschlussankündigung", "to": "Kundschaft", "parts": ["Nachdem seit unserem letzten Kontakt vom {letzter_kontakt} einige Zeit vergangen ist und wir seither nichts mehr von Ihnen gehört haben, erlauben wir uns, uns bei Ihnen zu erkundigen, ob Sie hinsichtlich Ihres Anliegens noch rechtliche Unterstützung benötigen.", "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."]},
+  "A8": {"title": "Schreiben an die Gegenpartei (Entwurf an die Kundschaft)", "to": "Gegenpartei, als Entwurf zuerst an die Kundschaft", "parts": ["Wir zeigen Ihnen an, dass wir die Interessen unserer Versicherten in dieser Angelegenheit vertreten.", "Unpräjudiziell und ohne Anerkennung einer Rechtspflicht halten wir Folgendes fest: {anliegen}", "@demand"]},
+  "A10": {"title": "Mandat und Kostengutsprache", "to": "Anwaltskanzlei, Kopie an die Kundschaft", "parts": ["Vielen Dank für die Übernahme des Mandats in dieser Angelegenheit.", "Wir erteilen Ihnen Kostengutsprache nach den bekannten Modalitäten wie folgt: Abklärung der Sach- und Rechtslage sowie aussergerichtliche Bemühungen.", "Für eine allfällige Erweiterung der Kostengutsprache bitten wir Sie um vorgängige Kontaktaufnahme.", "In der Beilage erhalten Sie Kopien der wichtigsten Unterlagen: {vorhanden}"]},
+  "A12": {"title": "Dossier abschliessen", "to": "Kundschaft", "parts": ["Mit Schreiben vom {letzter_kontakt} haben wir Sie um folgende Unterlagen gebeten:\n{verlangt}", "Da wir diese bis heute nicht erhalten haben, können wir Ihren Fall nicht weiter bearbeiten und schliessen Ihr Dossier. Die Leistungen aus diesem Fall enden damit."]},
+  "A2": {"title": "Telefonnotiz", "none": "die Notiz schreibt die Fallbearbeitung mit «Telefonnotiz erfassen»; sie wird als Akte gespeichert und als Beleg gelesen"},
+  "A3": {"title": "Upload-Link", "none": "der Link entsteht im Upload-System von Protekta"},
+  "A9": {"title": "Antwort in der Verhandlung", "none": "die Stellungnahme zu einem Angebot entscheidet die Fallbearbeitung"},
+  "A11": {"title": "Zahlung bestätigen", "none": "Betrag und Datum kommen aus dem Zahlungssystem"},
+  "_frame": {"head": ["{referenz_kopf}{anrede}", ""], "tail": ["", "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.", "", "Freundliche Grüsse"]}
+ },
+ "practice_elsewhere": {"ref": "practice#ablauf", "title": "Ablauf der Fallbearbeitung (Handlungen A1–A12, Wiedervorlagen), aus der Praxis im Mietrecht übernommen; in diesem Rechtsgebiet nicht beobachtet"},
+ "action_kinds": {
+  "A0": {"title": "Eingangsbestätigung", "depends_on": []},
+  "A1": {"title": "Unterlagen und Angaben anfordern", "depends_on": []},
+  "A2": {"title": "Telefonnotiz", "depends_on": []},
+  "A3": {"title": "Upload-Link", "depends_on": []},
+  "A4": {"title": "Rückfrage zu einem Punkt", "depends_on": []},
+  "A5": {"title": "Rechtliche Einschätzung", "depends_on": ["deckung"]},
+  "A6": {"title": "Dossier pendent halten mit Frist", "depends_on": []},
+  "A7": {"title": "Statusanfrage mit Abschlussankündigung", "depends_on": []},
+  "A8": {"title": "Schreiben an die Gegenpartei", "depends_on": ["deckung", "vorgehen"]},
+  "A9": {"title": "Antwort in der Verhandlung", "depends_on": ["deckung", "vorgehen"]},
+  "A10": {"title": "Mandat und Kostengutsprache", "depends_on": ["deckung", "vorgehen"]},
+  "A11": {"title": "Zahlung abwickeln", "depends_on": ["deckung"]},
+  "A12": {"title": "Dossier abschliessen", "depends_on": []}
+ },
+ "laws": {
+  "220": {"title": "Obligationenrecht (OR)", "consolidation": "2026-10-01", "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/27/317_321_377/20261001/de/html/fedlex-data-admin-ch-eli-cc-27-317_321_377-20261001-de-html-4.html"},
+  "210": {"title": "Zivilgesetzbuch (ZGB)", "consolidation": "2026-07-01", "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/24/233_245_233/20260701/de/html/fedlex-data-admin-ch-eli-cc-24-233_245_233-20260701-de-html-2.html"},
+  "173.110.3": {"title": "Bundesgesetz über den Fristenlauf an Samstagen", "consolidation": "1963-10-03", "url": "https://fedlex.data.admin.ch/filestore/fedlex.data.admin.ch/eli/cc/1963/819_815_843/19631003/de/html/fedlex-data-admin-ch-eli-cc-1963-819_815_843-19631003-de-html-6.html"}
+ },
+ "law": {
+  "77": {"cite": "Art. 77 Abs. 1 Ziff. 1 OR", "sr": "220", "article": "77", "verified": true, "passage": "wenn die Frist nach Tagen bestimmt ist, auf den letzten Tag der Frist, wobei der Tag, an dem der Vertrag geschlossen wurde, nicht mitgerechnet"},
+  "77.3": {"cite": "Art. 77 Abs. 1 Ziff. 3 OR", "sr": "220", "article": "77", "verified": true, "passage": "auf denjenigen Tag des letzten Monates, der durch seine Zahl dem Tage des Vertragsabschlusses entspricht, und, wenn dieser Tag in dem letzten Monate fehlt, auf den letzten Tag dieses Monates."},
+  "77-andere": {"cite": "Art. 77 Abs. 3 OR", "sr": "220", "article": "77", "verified": true, "passage": "In gleicher Weise wird die Frist auch dann berechnet, wenn sie nicht von dem Tage des Vertragsabschlusses, sondern von einem andern Zeitpunkte an zu laufen hat."},
+  "78": {"cite": "Art. 78 Abs. 1 OR", "sr": "220", "article": "78", "verified": true, "passage": "Fällt der Zeitpunkt der Erfüllung oder der letzte Tag einer Frist auf einen Sonntag oder auf einen andern am Erfüllungsorte staatlich anerkannten Feiertag, so gilt als Erfüllungstag oder als letzter Tag der Frist der nächstfolgende Werktag."},
+  "132": {"cite": "Art. 132 OR", "sr": "220", "article": "132", "verified": true, "passage": "Im Übrigen gelten die Vorschriften für die Fristberechnungen bei der Erfüllung auch für die Verjährung."},
+  "samstag": {"cite": "Art. 1 Bundesgesetz über den Fristenlauf an Samstagen (SR 173.110.3)", "sr": "173.110.3", "article": "1", "verified": true, "passage": "Hinsichtlich der gesetzlichen Fristen des eidgenössischen Rechts und der kraft eidgenössischen Rechts von Behörden angesetzten Fristen wird der Samstag einem anerkannten Feiertag gleichgestellt."}
+ },
+ "cooperation": {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": ["protekta", "rechtsschutz"], "source": "Mitwirkung fehlt erst, wenn mindestens zwei Anforderungen mit Frist ohne Antwort blieben; eine Rückfrage (A4) zählt nicht"}
+}

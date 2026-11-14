@@ -1,0 +1,71 @@
+{
+ "format": "casepath.area/1",
+ "id": "mietmangel-handler",
+ "version": "2026-11-14.1",
+ "backbone": "2026-11-14.1",
+ "short_title": "Mietmangel",
+ "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
+ "status": "draft",
+ "practice": true,
+ "supersedes": ["osm-mold"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Schweizerisches Obligationenrecht, Mietrecht (Art. 253 ff. OR)"},
+  {"id": "intake", "kind": "process_diagram", "title": "OSM+ Online-Schadenmeldung (Eingang): Angaben und Unterlagen der Kundschaft"}
+ ],
+ "law": {
+  "253": {"cite": "Art. 253 OR", "sr": "220", "article": "253", "passage": "Durch den Mietvertrag verpflichtet sich der Vermieter, dem Mieter eine Sache zum Gebrauch zu überlassen, und der Mieter, dem Vermieter dafür einen Mietzins zu leisten.", "verified": true},
+  "257g": {"cite": "Art. 257g Abs. 1 OR", "sr": "220", "article": "257g", "passage": "Der Mieter muss Mängel, die er nicht selber zu beseitigen hat, dem Vermieter melden.", "verified": true},
+  "259a": {"cite": "Art. 259a Abs. 1 OR", "sr": "220", "article": "259a", "passage": "so kann er verlangen, dass der Vermieter: a. den Mangel beseitigt; b. den Mietzins verhältnismässig herabsetzt; c. Schadenersatz leistet;", "verified": true},
+  "259b": {"cite": "Art. 259b OR", "sr": "220", "article": "259b", "passage": "Kennt der Vermieter einen Mangel und beseitigt er ihn nicht innert angemessener Frist, so kann der Mieter:", "verified": true},
+  "259d": {"cite": "Art. 259d OR", "sr": "220", "article": "259d", "passage": "so kann der Mieter vom Vermieter verlangen, dass er den Mietzins vom Zeitpunkt, in dem er vom Mangel erfahren hat, bis zur Behebung des Mangels entsprechend herabsetzt.", "verified": true},
+  "259e": {"cite": "Art. 259e OR", "sr": "220", "article": "259e", "passage": "Hat der Mieter durch den Mangel Schaden erlitten, so muss ihm der Vermieter dafür Ersatz leisten, wenn er nicht beweist, dass ihn kein Verschulden trifft.", "verified": true},
+  "259g": {"cite": "Art. 259g Abs. 1 OR", "sr": "220", "article": "259g", "passage": "Verlangt der Mieter einer unbeweglichen Sache vom Vermieter die Beseitigung eines Mangels, so muss er ihm dazu schriftlich eine angemessene Frist setzen", "verified": true},
+  "259h": {"cite": "Art. 259h Abs. 1 OR", "sr": "220", "article": "259h", "passage": "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat.", "verified": true},
+  "264": {"cite": "Art. 264 Abs. 1 OR", "sr": "220", "article": "264", "passage": "Gibt der Mieter die Sache zurück, ohne Kündigungsfrist oder -termin einzuhalten, so ist er von seinen Verpflichtungen gegenüber dem Vermieter nur befreit, wenn er einen für den Vermieter zumutbaren neuen Mieter vorschlägt;", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Mietrecht / Mangel"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Mietrecht / Mangel"], "question": "Geht es um einen Mangel an der Mietsache?", "source_refs": ["intake#title"]},
+  {"id": "will_beseitigung", "type": "boolean", "question": "Will die Kundschaft die Beseitigung des Mangels?", "source_refs": ["law#259b", "practice#5of7"]},
+  {"id": "will_reduktion", "type": "boolean", "question": "Will die Kundschaft eine Herabsetzung des Mietzinses?", "source_refs": ["law#259d", "practice#4of7"]},
+  {"id": "will_schadenersatz", "type": "boolean", "question": "Will die Kundschaft Schadenersatz (z.B. für beschädigte Gegenstände)?", "source_refs": ["law#259e", "practice#3of7", "practice#asked0of5"], "ask_customer": "offered", "customer_question": "Was möchten Sie erreichen (Behebung des Mangels, Mietzinsreduktion, Ersatz von Schäden oder Kosten)?"},
+  {"id": "will_auszug", "type": "boolean", "question": "Will die Kundschaft vorzeitig ausziehen oder kündigen?", "source_refs": ["law#264", "practice#1of7"]},
+  {"id": "maengelruege_schriftlich", "type": "boolean", "question": "Wurde der Mangel der Vermieterschaft schriftlich gemeldet?", "source_refs": ["law#257g", "practice#7of7", "practice#asked0of5"], "ask_customer": "offered", "customer_question": "Haben Sie der Vermieterschaft den Mangel gemeldet, und wenn ja wann und in welcher Form (Brief, E-Mail, mündlich)?"},
+  {"id": "mangel_seit", "type": "date", "question": "Seit wann besteht der Mangel?", "ask_customer": true, "source_refs": ["practice#4of7"]},
+  {"id": "mangel_besteht", "type": "boolean", "question": "Besteht der Mangel aktuell noch?", "ask_customer": true, "source_refs": ["practice#2of7"]},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist die Gegenpartei (Vermieterschaft / Verwaltung)?", "source_refs": ["intake#n17"]},
+  {"id": "mietbeginn", "type": "date", "question": "Seit wann besteht das Mietverhältnis?", "source_refs": ["intake#n17", "law#253"]},
+  {"id": "reaktion_vermieter", "type": "enum", "values": ["Mangel behoben / Einigung", "Abgelehnt / offene Punkte", "Keine Reaktion"], "question": "Wie hat die Vermieterschaft reagiert?", "source_refs": ["practice#5of7"]},
+  {"id": "streit_mietzins", "type": "boolean", "question": "Ist auch der Mietzins strittig (Ausstände, Herabsetzung)?", "source_refs": ["law#259d", "practice#2of7", "practice#asked0of5"], "ask_customer": "offered", "customer_question": "Besteht bereits eine Auseinandersetzung über den Mietzins (Reduktion, Rückforderung oder Hinterlegung)?"},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Gericht, Vermieterschaft, Kündigung)?", "source_refs": ["practice#3of7"]},
+  {"id": "fachperson_beigezogen", "type": "boolean", "question": "Wurde eine Fachperson oder Messfirma beigezogen (Gutachten, Messung)?", "source_refs": ["practice#1of7", "law#259d"]},
+  {"id": "mangel_gemeldet", "type": "boolean", "question": "Wurde der Mangel der Vermieterschaft gemeldet, in welcher Form auch immer (mit Datum)?", "source_refs": ["law#257g"]}
+ ],
+ "fact_order": ["rechtsgebiet", "will_beseitigung", "will_reduktion", "will_schadenersatz", "will_auszug", "deckung", "bisherige_handlungen", "handlung_a1", "handlung_a2", "handlung_a4", "handlung_a5", "handlung_a6", "handlung_a7", "a1_versandt", "anforderungen", "maengelruege_schriftlich", "mangel_seit", "mangel_besteht", "gegenpartei", "mietbeginn", "reaktion_vermieter", "streit_mietzins", "frist", "unterlagen_vollstaendig", "mitwirkung_fehlt", "kunde_still", "weiteres_vorgehen", "vorgehen", "einigung", "zahlung_erhalten", "fachperson_beigezogen", "anruf_offen", "mangel_gemeldet", "ein_punkt_offen", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar"],
+ "documents": [
+  {"id": "mietvertrag", "title": "Mietvertrag", "why": "Belegt Parteien, Mietobjekt und Mietzins (Art. 253 ff. OR).", "source_refs": ["law#253", "practice#6of7"], "stage": "klaeren"},
+  {"id": "maengelruege", "title": "Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)", "why": "Die Mängelrechte entstehen ab der Meldung (Art. 257g, 259a OR).", "required_when": {"any": [{"fact": "maengelruege_schriftlich", "is": true}, {"fact": "maengelruege_schriftlich", "known": false}]}, "source_refs": ["law#257g", "practice#3of5-when-unknown", "practice#3of7"], "stage": "klaeren"},
+  {"id": "fotos", "title": "Fotos des Mangels", "why": "Der Mangel muss für die ganze Dauer bewiesen werden (Art. 259d OR).", "source_refs": ["law#259d", "practice#4of7"], "offered_when_in_file": {"kinds": ["foto", "fotoprotokoll", "fotodokumentation", "messprotokoll"], "label": "weitere Beweismittel", "practice": "in 4 von 5 Fällen mit Fotos in den Akten nicht verlangt"}, "stage": "klaeren"},
+  {"id": "quittungen", "title": "Kaufbelege und Liste der beschädigten Gegenstände", "why": "Schadenersatz setzt einen bezifferten Schaden voraus (Art. 259e OR).", "required_when": {"fact": "will_schadenersatz", "is": true}, "source_refs": ["law#259e", "practice#2of7"], "stage": "klaeren"},
+  {"id": "mietzinszahlungen", "title": "Zusammenstellung der Mietzinszahlungen", "why": "Klärt Ausstände und Grundlage einer Herabsetzung.", "required_when": {"fact": "streit_mietzins", "is": true}, "source_refs": ["law#259d", "practice#1of7"], "stage": "klaeren"},
+  {"id": "fachbericht", "title": "Bericht der beigezogenen Fachperson (Messprotokoll)", "why": "Belegt den Mangel und seine Ursache über die Dauer (Art. 259d OR).", "required_when": {"fact": "fachperson_beigezogen", "is": true}, "source_refs": ["law#259d", "practice#1of2", "practice#1of7"], "offered": true, "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "ruege_einschreiben", "when": {"any": [{"fact": "maengelruege_schriftlich", "is": false}, {"all": [{"fact": "mangel_gemeldet", "is": true}, {"fact": "maengelruege_schriftlich", "known": false}]}]}, "text": "Liegt ein Mangel vor, ist die Vermieterschaft nachweislich in Kenntnis zu setzen; die Mängelrüge erfolgt zu Beweiszwecken idealerweise per Einschreiben.", "legal_basis": "Art. 257g OR", "source_refs": ["law#257g", "practice#3of7"]},
+  {"id": "dokumentieren", "when": {"fact": "will_reduktion", "is": true}, "text": "Eine Mietzinsherabsetzung setzt voraus, dass der Mangel von der Meldung bis zur Behebung belegt werden kann; bitte dokumentieren Sie ihn fortlaufend (z.B. mit Fotos).", "legal_basis": "Art. 259d OR", "source_refs": ["law#259d", "practice#3of7"]}
+ ],
+ "stages": {
+  "klaeren": {"source_refs": ["law#253"]},
+  "beurteilen": {"source_refs": ["law#259a", "law#259d"], "suggestions": [{"title": "Mietzinsherabsetzung ab Mängelrüge geltend machen", "legal_basis": "Art. 259d OR", "observed": "3 von 7"}, {"title": "Schadenersatz beziffern und geltend machen", "legal_basis": "Art. 259e OR", "observed": "2 von 7"}]},
+  "gegenpartei": {"source_refs": ["law#257g", "law#259b"], "suggestions": [{"title": "Der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung setzen, mit Androhung der Hinterlegung", "legal_basis": "Art. 259g OR", "observed": "0 von 7"}, {"title": "Mietzins hinterlegen; innert 30 Tagen nach Fälligkeit des ersten hinterlegten Mietzinses an die Schlichtungsbehörde gelangen", "legal_basis": "Art. 259h OR", "observed": "0 von 7", "deadline": {"days": 30, "from": "Fälligkeit des ersten hinterlegten Mietzinses", "kind": "gesetzliche Frist"}}]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich hat die Mieterschaft bei einem Mangel an der Mietsache Anspruch auf Beseitigung des Mangels, auf eine verhältnismässige Herabsetzung des Mietzinses und unter Umständen auf Schadenersatz (Art. 259a OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass der Mangel der Vermieterschaft nachweislich gemeldet wurde (Art. 257g OR) und während der ganzen Dauer belegt werden kann."},
+  "demand": {"text": "Wir fordern Sie auf, den Mangel bis {frist} zu beheben, und behalten uns alle weiteren Rechte, insbesondere die Herabsetzung des Mietzinses (Art. 259d OR), ausdrücklich vor."}
+ },
+ "deadlines": [],
+ "notes": [],
+ "summary": [],
+ "open_questions": []
+}
