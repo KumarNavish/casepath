@@ -31,14 +31,15 @@ def edits(**values):
     return [{"id": f"e{i}", "op": "set_fact", "args": {"fact": k, "value": v}, "status": "active"} for i, (k, v) in enumerate(values.items())]
 
 
-def view(facts, history=None, set_by_hand=None, wid="mietmangel-handler", as_of="2026-11-14", segments=None, documents=()):
+def view(facts, history=None, set_by_hand=None, wid="mietmangel-handler", as_of="2026-11-14", segments=None, documents=(), created="2026-11-14T08:00:00",
+         events=()):
     rows = [fact(*f) for f in facts] + ([fact("bisherige_handlungen", history)] if history else [])
-    files = [{"id": "f1", "name": "Akte.pdf", "extraction": {"cut_of": {"as_of": as_of},
+    files = [{"id": "f1", "name": "Akte.pdf", "extraction": {**({"cut_of": {"as_of": as_of}} if as_of else {}),
                                                             "segments": segments if segments is not None else [{"date": "12.11.2026", "kind": "Schadenmeldung", "sender": "Lea Beispiel"}]}}]
     result = {"facts": rows, "documents": [{"document": d, "status": "present", "verdict": "accepted", "files": ["f1"], "citations": []} for d in documents],
               "brief": {"request": "Schimmel im Bad.", "parties": [{"role": "Mieterin (VN)", "name": "Lea Beispiel"}], "timeline": []}}
-    state = core.evaluate(area.workflow(wid), [], edits(**(set_by_hand or {})), result, "c", files=files)
-    items = build_items(state, result, files)
+    state = {**core.evaluate(area.workflow(wid), [], edits(**(set_by_hand or {})), result, "c", files=files), "case": {"id": "c", "created_at": created}}
+    items = build_items(state, result, files, list(events))
     return state, {i["item_id"]: i for i in items}, items
 
 
@@ -260,17 +261,42 @@ class MandateAndOfferTests(unittest.TestCase):
 
 
 class FirstContactTests(unittest.TestCase):
-    def test_three_working_days_from_the_report_skip_the_weekend_until_a_first_contact_is_in_the_history(self):
+    """The three working days count from the day the case came in to the insurer as CasePath can know it: the day the
+    case was created, or the insurer's own receipt of the report in the file; never the date of the customer's letter."""
+    LETTER = {"date": "02.11.2026", "kind": "Schadenmeldung", "sender": "Lea Beispiel"}  # the customer's own letter, twelve days old
+
+    def test_three_working_days_from_the_day_the_case_was_created_not_from_the_customers_letter(self):
         self.assertEqual(cover.add_working_days(date(2026, 11, 13), 3), date(2026, 11, 18))  # Friday → Wednesday
-        friday = [{"date": "13.11.2026", "kind": "Schadenmeldung", "sender": "Lea Beispiel"}]
-        _, listed, _ = view(TENANT, segments=friday, as_of="2026-11-14")
+        _, listed, _ = view(TENANT, segments=[self.LETTER], as_of=None, created="2026-11-13T09:12:00")
         row = listed["contact:erstkontakt"]
-        self.assertEqual((row["value"], row["stated"], row["late"]), ("2026-11-18", "2026-11-13", False))
+        self.assertEqual((row["value"], row["stated"]), ("2026-11-18", "2026-11-13"))
+        self.assertIn("Eröffnung des Falls vom 13.11.2026", row["rule"])
         self.assertIn("Feiertage nicht berücksichtigt", row["rule"])
         self.assertIn("innerhalb von drei Arbeitstagen", row["legal_basis"])
-        self.assertTrue(view(TENANT, segments=friday, as_of="2026-11-19")[1]["contact:erstkontakt"]["late"])
-        self.assertNotIn("contact:erstkontakt", view(TENANT, history="A1 2026-11-16", segments=friday)[1])
-        self.assertNotIn("contact:erstkontakt", view(TENANT + [("handlung_a2", "2026-11-14", None)], segments=friday)[1])
+        self.assertTrue(view(TENANT, segments=[self.LETTER], as_of="2026-11-19", created="2026-11-13T09:12:00")[1]["contact:erstkontakt"]["late"])
+
+    def test_the_insurers_own_receipt_in_the_file_sets_the_day_earlier_or_later(self):
+        for day, due in (("06.11.2026", "2026-11-11"), ("16.11.2026", "2026-11-19")):
+            receipt = {"date": day, "kind": "Eingangsbestätigung", "title": "Eingang Ihrer Schadenmeldung", "sender": "Protekta Rechtsschutz AG"}
+            row = view(TENANT, segments=[self.LETTER, receipt], as_of=None, created="2026-11-13T09:12:00")[1]["contact:erstkontakt"]
+            self.assertEqual(row["value"], due)
+            self.assertIn("Eingangsbestätigung der Versicherung", row["rule"])
+        not_ours = {"date": "06.11.2026", "kind": "Brief", "title": "Registrierung beim Verein", "sender": "Lea Beispiel"}
+        self.assertEqual(view(TENANT, segments=[self.LETTER, not_ours], as_of=None, created="2026-11-13T09:12:00")[1]["contact:erstkontakt"]["stated"], "2026-11-13")
+
+    def test_gone_once_the_insurer_made_contact_and_never_on_a_historic_file(self):
+        here = dict(segments=[self.LETTER], as_of=None, created="2026-11-13T09:12:00")
+        self.assertNotIn("contact:erstkontakt", view(TENANT, history="A1 2026-11-16", **here)[1])
+        self.assertNotIn("contact:erstkontakt", view(TENANT + [("handlung_a2", "2026-11-14", None)], **here)[1])
+        self.assertNotIn("contact:erstkontakt", view(TENANT, events=[{"kind": "letter.copied", "at": "2026-11-13T10:00:00"}], **here)[1])
+        # a test cut looked at as of a day before it was made, and a whole old file uploaded for testing
+        self.assertNotIn("contact:erstkontakt", view(TENANT, segments=[self.LETTER], as_of="2025-02-07", created="2026-11-13T09:12:00")[1])
+        old = [{"date": "14.03.2024", "kind": "Schadenmeldung", "sender": "Lea Beispiel"}, {"date": "02.10.2025", "kind": "Brief", "sender": "Verwaltung"}]
+        self.assertNotIn("contact:erstkontakt", view(TENANT, segments=old, as_of=None, created="2026-11-13T09:12:00")[1])
+        recent = old[:1] + [{"date": "20.11.2025", "kind": "Brief", "sender": "Verwaltung"}]  # within twelve months: a live case
+        self.assertIn("contact:erstkontakt", view(TENANT, segments=recent, as_of=None, created="2026-11-13T09:12:00")[1])
+        moved = [{"kind": "case.historic", "historic": False, "at": "2026-11-13T10:00:00"}]  # a person moved it out of the historic files
+        self.assertIn("contact:erstkontakt", view(TENANT, segments=old, as_of=None, created="2026-11-13T09:12:00", events=moved)[1])
 
 
 if __name__ == "__main__":

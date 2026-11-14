@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "sozialversicherung",
- "version": "2026-11-14.5",
- "backbone": "2026-11-14.5",
+ "version": "2026-11-14.6",
+ "backbone": "2026-11-14.6",
  "short_title": "Sozialversicherung",
  "title": "Sozialversicherung: Entscheid einer Versicherung, Einsprache und Beschwerde (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -57,10 +57,10 @@
   "beurteilen": {"source_refs": ["law#atsg-61c", "law#atsg-49.3"]}
  },
  "key_points": [
-  {"id": "einsprache", "statement": "Einsprache innert 30 Tagen", "question": "Einsprache schon erhoben? Sonst innert 30 Tagen", "when": {"all": [{"fact": "einsprache_erhoben", "is": false}, {"fact": "iv", "is": false}]}, "law": ["law#atsg-52.1"], "follows": "Gegen die Verfügung können Sie innert 30 Tagen bei der Versicherung, die sie erlassen hat, Einsprache erheben.", "check": "Zustelldatum, Fristenstillstand, was angefochten wird", "answers": ["einsprache", "wehren", "anfecht"]},
-  {"id": "vorbescheid", "statement": "IV: Einwände zum Vorbescheid innert 30 Tagen", "question": "IV-Stelle beteiligt? Dann Einwände zum Vorbescheid", "when": {"fact": "iv", "is": true}, "law": ["law#ivg-57a.3"], "follows": "Gegen den Vorbescheid der IV-Stelle können Sie innert 30 Tagen Einwände vorbringen; gegen die Verfügung danach führt der Weg direkt ans Gericht.", "check": "ob schon eine Verfügung vorliegt, Zustelldatum, Einwände", "answers": ["iv", "rente", "vorbescheid", "einwand"]},
-  {"id": "akten", "statement": "Akten der Versicherung einsehen", "question": "Verfügung erhalten? Dann Akten verlangen", "when": {"fact": "verfuegung_erhalten", "known": true}, "law": ["law#atsg-47"], "follows": "Sie haben Anspruch auf Einsicht in die Akten, die Sie betreffen; mit ihnen lässt sich prüfen, worauf sich der Entscheid stützt.", "check": "Gutachten und Arztberichte, auf die sich der Entscheid stützt", "answers": ["akten", "gutachten", "warum", "grund"]},
-  {"id": "nicht_erstreckbar", "statement": "Gesetzliche Frist nicht erstreckbar", "question": "Frist läuft? Dann rechtzeitig handeln", "when": {"fact": "verfuegung_erhalten", "known": true}, "law": ["law#atsg-40.1"], "follows": "Eine gesetzliche Frist kann nicht verlängert werden; die Eingabe muss spätestens am letzten Tag der Frist eingereicht sein.", "check": "letzter Tag der Frist, Fristenstillstand", "answers": ["frist", "verläng", "zeit"]}
+  {"id": "einsprache", "statement": "Einsprache innert 30 Tagen", "question": "Einsprache schon erhoben? Sonst innert 30 Tagen", "when": {"all": [{"fact": "einsprache_erhoben", "is": false}, {"fact": "iv", "is": false}]}, "law": ["law#atsg-52.1"], "follows": "Gegen die Verfügung können Sie innert 30 Tagen bei der Versicherung, die sie erlassen hat, Einsprache erheben.", "check": "Zustelldatum, Fristenstillstand, was angefochten wird", "answers": ["einsprache", "wehren", "anfecht"], "advice": "Sie können gegen die Verfügung innert 30 Tagen bei der Versicherung, die sie erlassen hat, Einsprache erheben"},
+  {"id": "vorbescheid", "statement": "IV: Einwände zum Vorbescheid innert 30 Tagen", "question": "IV-Stelle beteiligt? Dann Einwände zum Vorbescheid", "when": {"fact": "iv", "is": true}, "law": ["law#ivg-57a.3"], "follows": "Gegen den Vorbescheid der IV-Stelle können Sie innert 30 Tagen Einwände vorbringen; gegen die Verfügung danach führt der Weg direkt ans Gericht.", "check": "ob schon eine Verfügung vorliegt, Zustelldatum, Einwände", "answers": ["iv", "rente", "vorbescheid", "einwand"], "advice": "Sie können gegen den Vorbescheid der IV-Stelle innert 30 Tagen Einwände vorbringen"},
+  {"id": "akten", "statement": "Akten der Versicherung einsehen", "question": "Verfügung erhalten? Dann Akten verlangen", "when": {"fact": "verfuegung_erhalten", "known": true}, "law": ["law#atsg-47"], "follows": "Sie haben Anspruch auf Einsicht in die Akten, die Sie betreffen; mit ihnen lässt sich prüfen, worauf sich der Entscheid stützt.", "check": "Gutachten und Arztberichte, auf die sich der Entscheid stützt", "answers": ["akten", "gutachten", "warum", "grund"], "advice": "Sie können bei der Versicherung Einsicht in die Akten verlangen, die Sie betreffen"},
+  {"id": "nicht_erstreckbar", "statement": "Gesetzliche Frist nicht erstreckbar", "question": "Frist läuft? Dann rechtzeitig handeln", "when": {"fact": "verfuegung_erhalten", "known": true}, "law": ["law#atsg-40.1"], "follows": "Eine gesetzliche Frist kann nicht verlängert werden; die Eingabe muss spätestens am letzten Tag der Frist eingereicht sein.", "check": "letzter Tag der Frist, Fristenstillstand", "answers": ["frist", "verläng", "zeit"], "advice": false}
  ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kann gegen eine Verfügung der Versicherung innert 30 Tagen Einsprache und gegen den Einspracheentscheid innert 30 Tagen Beschwerde beim kantonalen Versicherungsgericht erhoben werden (Art. 52, 56, 60 ATSG); Verfügungen der IV-Stelle sind direkt beim Versicherungsgericht anfechtbar, nachdem zum Vorbescheid innert 30 Tagen Einwände vorgebracht werden konnten (Art. 57a, 69 IVG)."},

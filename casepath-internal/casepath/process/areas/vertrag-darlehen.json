@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "vertrag-darlehen",
- "version": "2026-11-14.5",
- "backbone": "2026-11-14.5",
+ "version": "2026-11-14.6",
+ "backbone": "2026-11-14.6",
  "short_title": "Darlehen",
  "title": "Darlehen: Rückforderung und Zins (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -45,9 +45,9 @@
   "beurteilen": {"source_refs": ["law#312", "law#318"]}
  },
  "key_points": [
-  {"id": "ohne_termin", "statement": "Ohne Termin: Rückzahlung sechs Wochen nach Aufforderung", "question": "Rückzahlungstermin vereinbart? Sonst sechs Wochen ab Aufforderung", "when": {"fact": "termin_vereinbart", "is": false}, "law": ["law#318"], "follows": "Ist für die Rückzahlung weder ein Termin noch eine Kündigungsfrist vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "check": "Datum der ersten Aufforderung, ob eine Kündigungsfrist vereinbart wurde", "answers": ["zurück", "wann", "rückzahl", "geld"]},
-  {"id": "beweis", "statement": "Ohne schriftlichen Vertrag: Darlehen beweisen", "question": "Schriftlicher Vertrag? Sonst Beweis sichern", "when": {"fact": "schriftlich", "is": false}, "law": ["law#zgb-8", "law#312"], "follows": "Ohne schriftlichen Vertrag müssen Sie die Übergabe des Geldes und die Pflicht zur Rückzahlung anders belegen, etwa mit Bankbelegen, Nachrichten oder Zeugen.", "check": "Bankbelege, Nachrichten, in denen der Borger das Darlehen erwähnt, Zeugen", "answers": ["beweis", "vertrag", "schenk"]},
-  {"id": "schriftlich_fordern", "statement": "Rückforderung schriftlich nachholen", "question": "Schriftlich zurückgefordert? Sonst nachholen", "when": {"fact": "rueckforderung_schriftlich", "is": false}, "law": ["law#318"], "follows": "Damit die Frist für die Rückzahlung belegbar läuft, fordern Sie das Darlehen schriftlich und nachweisbar zurück.", "check": "Zustellung der Aufforderung belegen (eingeschrieben)", "answers": ["aufforder", "schreib", "zurück"]}
+  {"id": "ohne_termin", "statement": "Ohne Termin: Rückzahlung sechs Wochen nach Aufforderung", "question": "Rückzahlungstermin vereinbart? Sonst sechs Wochen ab Aufforderung", "when": {"fact": "termin_vereinbart", "is": false}, "law": ["law#318"], "follows": "Ist für die Rückzahlung weder ein Termin noch eine Kündigungsfrist vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "check": "Datum der ersten Aufforderung, ob eine Kündigungsfrist vereinbart wurde", "answers": ["zurück", "wann", "rückzahl", "geld"], "advice": false, "stages": ["klaeren", "beurteilen", "vorgehen", "gegenpartei"]},
+  {"id": "beweis", "statement": "Ohne schriftlichen Vertrag: Darlehen beweisen", "question": "Schriftlicher Vertrag? Sonst Beweis sichern", "when": {"fact": "schriftlich", "is": false}, "law": ["law#zgb-8", "law#312"], "follows": "Ohne schriftlichen Vertrag müssen Sie die Übergabe des Geldes und die Pflicht zur Rückzahlung anders belegen, etwa mit Bankbelegen, Nachrichten oder Zeugen.", "check": "Bankbelege, Nachrichten, in denen der Borger das Darlehen erwähnt, Zeugen", "answers": ["beweis", "vertrag", "schenk"], "advice": false},
+  {"id": "schriftlich_fordern", "statement": "Rückforderung schriftlich nachholen", "question": "Schriftlich zurückgefordert? Sonst nachholen", "when": {"fact": "rueckforderung_schriftlich", "is": false}, "law": ["law#318"], "follows": "Damit die Frist für die Rückzahlung belegbar läuft, fordern Sie das Darlehen schriftlich und nachweisbar zurück.", "check": "Zustellung der Aufforderung belegen (eingeschrieben)", "answers": ["aufforder", "schreib", "zurück"], "advice": "Sie können das Darlehen schriftlich zurückfordern; ohne vereinbarten Termin ist es innert sechs Wochen ab der ersten Aufforderung zurückzuzahlen"}
  ],
  "assessment": {
   "rights": {"text": "Grundsätzlich muss der Borger Sachen der nämlichen Art in gleicher Menge und Güte zurückerstatten (Art. 312 OR); ist kein Termin vereinbart, innerhalb sechs Wochen von der ersten Aufforderung an (Art. 318 OR)."},

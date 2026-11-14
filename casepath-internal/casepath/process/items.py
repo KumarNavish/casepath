@@ -12,12 +12,41 @@ import re
 
 from . import cover, incoming, keypoints
 from .area import compute_deadline, open_ended_title, period_text, set_date, statutory_period
-from .clock import parse_date, silence
+from .clock import historic as historic_file, parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
 
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
 DECISION_ROLE = re.compile(r"^entscheidung", re.I)
 PERIOD = re.compile(r"\d{1,3} (days|weeks|months|years) (from|before) \d{4}-\d{2}-\d{2}")
+UNNAMED = "Frist laut Akte, Anlass nicht gelesen"  # a date the reading gives without what it was for
+# Text written for the reader (a format to fill in, a template slot) that must never reach the list or the card.
+FORMAT_WORD = r"(?:DD|MM|YYYY|YY|JJJJ|JJ|TT|hh|mm)"
+FORMAT = re.compile(rf"\b{FORMAT_WORD}(?:[.\-/:]{FORMAT_WORD})+\b")
+SLOT = re.compile(r"\{[^{}]*\}|<[^<>]*>|«\s*·\s*»")
+
+
+def placeholder(text):
+    """Whether a text still holds a placeholder: a date format (DD.MM.YYYY, JJJJ-MM-TT), {…} or <…>."""
+    return bool(FORMAT.search(str(text or "")) or SLOT.search(str(text or "")))
+
+
+def plain(text):
+    """A text as the list and the card show it: a part that holds a placeholder (in brackets, or the clause after a colon
+    or semicolon) left out, never cut inside a word; None when nothing is left."""
+    text = str(text or "")
+    if not placeholder(text):
+        return text
+    # a bracket with a placeholder goes, with the preposition that only led to it («bis (DD.MM.YYYY)»)
+    text = re.sub(r"(?:\s+(?:bis|am|vom|ab|per|seit|zum|zur|an|auf))?\s*\([^()]*\)", lambda m: "" if placeholder(m.group(0)) else m.group(0), text)
+    parts = re.split(r"(?<=[:;,])\s+", text)
+    kept = []
+    for part in parts:
+        if placeholder(part):
+            break
+        kept.append(part)
+    text = SLOT.sub("", " ".join(kept)).strip(" ,;:")
+    text = re.sub(r"\s{2,}", " ", text)
+    return text or None
 
 
 def _node_ids(refs):
@@ -176,8 +205,15 @@ def open_customer_questions(graph, facts):
     return [f for f in graph["facts"] if f.get("ask_customer") is True and facts.get(f["id"]) is None]
 
 
-def build_items(state, result, files=None):
+def build_items(state, result, files=None, events=None):
+    """``events``: the case's log, for what a person did outside the facts (a letter copied, a case moved into or out of
+    the historic files)."""
     graph, ev, result = state.get("process"), state.get("evaluation"), result or {}
+    case = state.get("case") or {}
+    study = (case.get("intake") or {}).get("study")
+    created = study.get("opened") if isinstance(study, dict) else case.get("created_at")  # a study copy counts as its source, as frozen
+    old = historic_file(files or [], created, events or ())
+    contacted = any(e.get("kind") == "letter.copied" for e in events or ())  # a letter of the insurer went out
     items = []
     def add(kind, key, label=None, **fields):
         text = label if isinstance(label, dict) else {"de": label, "en": label}  # the process speaks German; both keys always present
@@ -244,9 +280,10 @@ def build_items(state, result, files=None):
                 continue  # the law's period, listed below as the area's own deadline
             # a date a court, an authority or the other side set for the customer: what is due, who set it, where it stands
             given = d.get("set") or {k: v for k, v in (set_date((rows.get(d["fact"]) or {}).get("value")) or {}).items() if k != "date" and v}
+            # without what it was for, the date is named as such: the reader's question is never its title
             add("deadline", d["fact"], value=d["date"], stated_as="computed" if d.get("computed") else "established", verdict="accepted",
                 evidence=_evidence((rows.get(d["fact"]) or {}).get("citations")), node=_fact_node(graph, d["fact"]), origin="workflow", chain=True,
-                label=given.get("what") or d.get("question"),
+                label=given.get("what") or UNNAMED, **({} if given.get("what") else {"unnamed": True}),
                 **({"set_by_others": True, **{k: given[k] for k in ("what", "by", "source") if given.get(k)}} if given.get("what") else {}),
                 **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
         unsettled_triggers = set()
@@ -371,27 +408,51 @@ def build_items(state, result, files=None):
                     add("letter_question", f["id"], value=asked, stated_as="put_to_handler", verdict=None, evidence=[],
                         node=here.get("id"), origin="workflow", chain=True, label=asked,
                         ask="proposed" if f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers else "now")
+            # A key point that is advice the customer can act on now goes into the first request with its article: ticked when
+            # its condition holds, offered while it depends on an open fact. Where it applies, it stands for the area's hint
+            # that says the same (every article of the hint is one of the point's); where it is open and such a hint is in
+            # the letter already, the hint says it.
+            advice = [p for p in keypoints.evaluate(graph, known) if p.get("advice")]
+            replaced = {h["id"] for p in advice if p["state"] == "applies" for h in graph.get("hints", []) if keypoints.covers(p, h)}
+            given = set()
             for hint in graph.get("hints", []):
-                if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True:
+                if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True or hint["id"] in replaced:
                     continue
                 if hint.get("trigger") in unsettled_triggers:
                     continue  # the possible deadline itself is in the letter, with its date to check
+                given.add(hint["id"])
                 add("hint", hint["id"], value=hint["text"], stated_as="established", verdict=None, evidence=[], node=here.get("id"),
                     origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
             for hint in graph.get("hints", []):  # a hint whose condition is still open is offered too: Protekta gives it early
-                if hint["when"] is not True and evaluate_condition(hint["when"], known) is None:
+                if hint["when"] is not True and evaluate_condition(hint["when"], known) is None and hint["id"] not in replaced:
+                    given.add(hint["id"])
                     add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
                         origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
+            for p in advice:
+                if p["state"] == "open" and any(keypoints.covers(p, h) for h in graph.get("hints", []) if h["id"] in given):
+                    continue
+                line = keypoints.advice_line(p)
+                add("hint", f"kp-{p['id']}", value=line, stated_as="established" if p["state"] == "applies" else "put_to_handler", verdict=None,
+                    evidence=[], node=here.get("id"), origin="law", chain=True, label=line, key_point=p["id"], with_basis=True)
         # the cover points, the checks a prescribed letter rests on, and the first contact (cover.py)
-        items += cover.items(graph, known_facts, result, files, planned if action and planned and action[0] == planned.get("kind") else None, here.get("id"))
-        # The legal key points of the area: those that apply, and those whose condition the file leaves open (as questions)
-        points = keypoints.evaluate(graph, known_facts)
+        # a historic file never shows a first contact, nor does a case whose letter went out (cover.first_contact)
+        items += cover.items(graph, known_facts, result, files, planned if action and planned and action[0] == planned.get("kind") else None, here.get("id"),
+                             created=created, historic=bool(old) or contacted)
+        # The legal key points of the area: those that apply, and those whose condition the file leaves open (as questions);
+        # the card shows those that help at the case's stage
+        points = keypoints.evaluate(graph, known_facts, here.get("id"))
         on_card = {p["id"] for p in keypoints.shown(points)}
         for p in points:
             cited = [c for f in p["facts"] for c in ((rows.get(f) or {}).get("citations") or [])][:3]
             add("key_point", p["id"], value=p["state"], stated_as="established" if p["state"] == "applies" else "put_to_handler", verdict=None,
                 evidence=_evidence(cited), node=here.get("id"), origin="law", chain=True, label=p["text"], legal_basis=p["cite"],
-                law=p["law"], follows=p["follows"], check=p["check"], facts=p["facts"], shown=p["id"] in on_card)
+                law=p["law"], follows=p["follows"], check=p["check"], facts=p["facts"], shown=p["id"] in on_card, stages=p["stages"],
+                **({"advice": keypoints.advice_line(p)} if p.get("advice") else {}))
+        # At the mandate and handling stages: the short facts the file establishes there, each with its source
+        dated = incoming.document_dates(graph, result.get("facts"), files)
+        for line in keypoints.stage_lines(graph, known_facts, rows, dated, here.get("id")):
+            add("stage_line", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
+                node=here.get("id"), origin="workflow", chain=False, label=line["text"], facts=line["facts"], shown=True)
     brief = result.get("brief") or {}
     applying = keypoints.evaluate(graph, state.get("facts") or {}) if graph and ev else []
     for i, q in enumerate(brief.get("questions") or []):  # the customer's own questions, answered by a key point where one matches
@@ -429,7 +490,18 @@ def build_items(state, result, files=None):
         add("reply", str(i), value=clause.get("text") if isinstance(clause, dict) else clause, stated_as="established", verdict=None,
             evidence=_evidence((clause or {}).get("citations") if isinstance(clause, dict) else None), node=None, origin="result_checker",
             chain=False, label=None)
+    for i in items:  # what the list and the card show never holds a placeholder (a date format, {…}, <…>)
+        if i["kind"] in SHOWN_KINDS:
+            for lang in ("de", "en"):
+                if placeholder((i.get("label") or {}).get(lang)):
+                    i["label"][lang] = plain(i["label"][lang]) or "Angabe klären"
+            for field in ("value", "reason"):
+                if isinstance(i.get(field), str) and placeholder(i[field]):
+                    i[field] = plain(i[field]) or "Angabe klären"
     return items
+
+
+SHOWN_KINDS = {"next_action", "key_point", "stage_line", "deadline", "contact", "check"}
 
 
 # The hash covers what an expert judges: item_id, kind, key, value, stated_as, and by kind

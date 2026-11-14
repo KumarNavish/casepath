@@ -152,6 +152,7 @@ def validate_backbone(backbone):
         if not re.fullmatch(r"A\d{1,2}", kind) or any(f not in facts for f in row.get("depends_on", [])):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
     check_stage_work(backbone)
+    keypoints.validate_lines(backbone, steps)
     check_forms(backbone["forms"])
     return incoming.validate(backbone)
 
@@ -299,7 +300,7 @@ def validate_module(module, backbone):
     for stage in module.get("stages", {}):
         if stage not in stages:
             raise CatalogueError(f"{where}: unknown stage {stage!r}")
-    keypoints.validate(module, law, where)  # a key point needs a condition, an article with its passage and a statement
+    keypoints.validate(module, law, where, stages)  # a key point needs a condition, an article with its passage and a statement
     for part in ("rights", "conditions", "demand"):
         if not str((module["assessment"].get(part) or {}).get("text") or "").strip():
             raise CatalogueError(f"{where}: the assessment needs {part}")
@@ -408,6 +409,7 @@ def compose(backbone, module):
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []),
                 "key_points": m.get("key_points", []),  # what a specialist looks for first (keypoints.py)
+                "stage_lines": bb.get("stage_lines", []),  # the short facts a handler needs at a later stage (keypoints.py)
                 # each deadline carries the counting rule of its procedure (the backbone's table), so a stored run keeps it
                 "deadlines": [{**d, "counting": d.get("counting", "or"), "counting_rule": bb["counting"][d.get("counting", "or")]} for d in m["deadlines"]],
                 "stage_actions": True,  # a stage with an action is left only once it is done or a way out says it is not needed

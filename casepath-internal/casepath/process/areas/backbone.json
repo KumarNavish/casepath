@@ -1,7 +1,7 @@
 {
  "format": "casepath.backbone/1",
  "id": "fallbearbeitung",
- "version": "2026-11-14.5",
+ "version": "2026-11-14.6",
  "title": "Fallbearbeitung Rechtsschutz: Stufen, Handlungen, Entscheide, Uhr und Formulare",
  "sources": [
   {"id": "practice", "kind": "process_guidance", "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"}
@@ -198,6 +198,12 @@
    "note": "in 1 von 7 Dossiers beobachtet", "source_refs": ["practice#1of7"]}
  ],
  "incoming_done": "eingang_erledigt_bis",
+ "stage_lines": [
+  {"id": "kostengutsprache", "label": "Kostengutsprache erteilt", "stages": ["mandat", "abwicklung"], "from": {"action": "10", "show": "date"}},
+  {"id": "bericht", "label": "Letzter Bericht der Kanzlei", "stages": ["mandat", "abwicklung"], "from": {"incoming": "bericht", "show": "latest"}},
+  {"id": "kosten", "label": "Offene Kostenforderungen", "stages": ["mandat", "abwicklung"], "from": {"incoming": "kostenforderung", "show": "open_count"}},
+  {"id": "angebot", "label": "Angebot wartet auf Antwort", "stages": ["mandat", "abwicklung"], "from": {"incoming": "angebot", "show": "open_latest"}}
+ ],
  "floor_decisions": [
   {"when": {"fact": "deckung", "is": "abgelehnt"}, "stage": "abschluss_mitwirkung"},
   {"when": {"fact": "leistungen_einstellen", "is": true}, "stage": "abschluss_mitwirkung"},

@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "arbeit-zeugnis",
- "version": "2026-11-14.5",
- "backbone": "2026-11-14.5",
+ "version": "2026-11-14.6",
+ "backbone": "2026-11-14.6",
  "short_title": "Arbeitszeugnis",
  "title": "Arbeitszeugnis: Ausstellung und Berichtigung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -38,9 +38,9 @@
   "beurteilen": {"source_refs": ["law#330a", "law#zgb-8"]}
  },
  "key_points": [
-  {"id": "berichtigung", "statement": "Berichtigung verlangen: Leistung und Verhalten", "question": "Zeugnis erhalten? Dann Berichtigung prüfen", "when": {"fact": "zeugnis_erhalten", "is": true}, "law": ["law#330a"], "follows": "Sie haben Anspruch auf ein Zeugnis, das sich über Art und Dauer des Arbeitsverhältnisses sowie über Ihre Leistungen und Ihr Verhalten ausspricht; unzutreffende Angaben können Sie berichtigen lassen.", "check": "welche Formulierungen beanstandet werden und ob sie Leistung oder Verhalten unzutreffend wiedergeben", "answers": ["zeugnis", "formulier", "bericht", "änder"]},
-  {"id": "beweis", "statement": "Bessere Bewertung: Belege der Kundschaft nötig", "question": "Beanstandung bekannt? Dann Belege sammeln", "when": {"fact": "beanstandung", "known": true}, "law": ["law#zgb-8"], "follows": "Wer eine bessere Beurteilung verlangt, muss die Tatsachen belegen, auf die sie sich stützt, etwa mit Zwischenzeugnissen, Qualifikationen oder Rückmeldungen.", "check": "Zwischenzeugnis, Mitarbeitergespräche, Zielvereinbarungen, Lob von Vorgesetzten", "answers": ["beweis", "beleg", "besser"]},
-  {"id": "bestaetigung", "statement": "Auf Wunsch nur Arbeitsbestätigung", "question": "Vollzeugnis oder Arbeitsbestätigung? Dann Art festlegen", "when": {"fact": "art", "is": "Arbeitsbestätigung"}, "law": ["law#330a.2"], "follows": "Auf Ihren besonderen Wunsch hat sich das Zeugnis auf Art und Dauer des Arbeitsverhältnisses zu beschränken.", "check": "ob die Kundschaft wirklich auf die Beurteilung von Leistung und Verhalten verzichten will", "answers": ["bestätigung", "nur dauer"]}
+  {"id": "berichtigung", "statement": "Berichtigung verlangen: Leistung und Verhalten", "question": "Zeugnis erhalten? Dann Berichtigung prüfen", "when": {"fact": "zeugnis_erhalten", "is": true}, "law": ["law#330a", "law#330a.2"], "follows": "Sie haben Anspruch auf ein Zeugnis, das sich über Art und Dauer des Arbeitsverhältnisses sowie über Ihre Leistungen und Ihr Verhalten ausspricht; unzutreffende Angaben können Sie berichtigen lassen.", "check": "welche Formulierungen beanstandet werden und ob sie Leistung oder Verhalten unzutreffend wiedergeben", "answers": ["zeugnis", "formulier", "bericht", "änder"], "advice": "Sie können ein Zeugnis verlangen, das sich über Art und Dauer des Arbeitsverhältnisses sowie über Ihre Leistungen und Ihr Verhalten ausspricht, und unzutreffende Angaben berichtigen lassen"},
+  {"id": "beweis", "statement": "Bessere Bewertung: Belege der Kundschaft nötig", "question": "Beanstandung bekannt? Dann Belege sammeln", "when": {"fact": "beanstandung", "known": true}, "law": ["law#zgb-8"], "follows": "Wer eine bessere Beurteilung verlangt, muss die Tatsachen belegen, auf die sie sich stützt, etwa mit Zwischenzeugnissen, Qualifikationen oder Rückmeldungen.", "check": "Zwischenzeugnis, Mitarbeitergespräche, Zielvereinbarungen, Lob von Vorgesetzten", "answers": ["beweis", "beleg", "besser"], "advice": "Bitte sammeln Sie die Belege für eine bessere Beurteilung, etwa Zwischenzeugnisse, Qualifikationen oder Rückmeldungen"},
+  {"id": "bestaetigung", "statement": "Auf Wunsch nur Arbeitsbestätigung", "question": "Vollzeugnis oder Arbeitsbestätigung? Dann Art festlegen", "when": {"fact": "art", "is": "Arbeitsbestätigung"}, "law": ["law#330a.2"], "follows": "Auf Ihren besonderen Wunsch hat sich das Zeugnis auf Art und Dauer des Arbeitsverhältnisses zu beschränken.", "check": "ob die Kundschaft wirklich auf die Beurteilung von Leistung und Verhalten verzichten will", "answers": ["bestätigung", "nur dauer"], "advice": "Sie können verlangen, dass sich das Zeugnis auf Art und Dauer des Arbeitsverhältnisses beschränkt (Arbeitsbestätigung)"}
  ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kann jederzeit ein Zeugnis verlangt werden, das sich über Art und Dauer des Arbeitsverhältnisses sowie über Leistungen und Verhalten ausspricht (Art. 330a OR)."},

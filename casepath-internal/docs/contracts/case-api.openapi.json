@@ -277,6 +277,19 @@
     "title": "HTTPValidationError",
     "type": "object"
    },
+   "HistoricChoice": {
+    "properties": {
+     "historic": {
+      "title": "Historic",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "historic"
+    ],
+    "title": "HistoricChoice",
+    "type": "object"
+   },
    "ImportRequest": {
     "properties": {
      "path": {
@@ -980,6 +993,54 @@
      }
     },
     "summary": "Freeze"
+   }
+  },
+  "/api/cases/{case_id}/historic": {
+   "put": {
+    "description": "«Mehr»: move a case into the historic files or out of them; logged, the latest word governs.",
+    "operationId": "mark_historic_api_cases__case_id__historic_put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/HistoricChoice"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Mark Historic"
    }
   },
   "/api/cases/{case_id}/own-answer": {

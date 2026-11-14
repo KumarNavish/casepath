@@ -27,7 +27,7 @@ from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..process import casegraph, knowledge as kb, workflows
-from ..process.clock import capped, follow_up, own_deadlines
+from ..process.clock import capped, follow_up, historic as historic_file, own_deadlines
 from ..agents import core
 from ..process import cover, letters
 from ..process.items import kind_title, build_items, item_changes, items_sha256
@@ -72,7 +72,7 @@ class CaseTitle(BaseModel):
 EVENT_KINDS = {"filenote.copied", "session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
                "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
                "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
-               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set", "letter.line"}
+               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set", "letter.line", "case.historic"}
 REASONS = {"1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3": "Hier nicht relevant", "4": "Gilt generell so",
            "5": "Weiss ich von ausserhalb der Akten", "6": "Formulierung", "none": "ohne Angabe"}
 
@@ -86,7 +86,7 @@ class OwnAnswer(BaseModel):
 
 
 SERVER_KINDS = {"run.discarded", "study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
-                "item.confirmed", "correction.undone", "point.settled", "case.renamed"}  # written by the server only
+                "item.confirmed", "correction.undone", "point.settled", "case.renamed", "case.historic"}  # written by the server only
 
 
 class EventRequest(BaseModel):
@@ -109,6 +109,10 @@ class CutRequest(BaseModel):
     pages: str = Field(min_length=1, max_length=200)  # original page numbers to keep, e.g. "5-10"
     as_of: str | None = Field(None, pattern=r"^\d{4}-\d{2}-\d{2}$")  # the day the case is looked at ("Stand am")
     file: str | None = Field(None, max_length=80)
+
+
+class HistoricChoice(BaseModel):
+    historic: bool  # a person moves the case into the historic files (true) or out of them (false)
 
 
 class WorkflowChoice(BaseModel):
@@ -406,19 +410,21 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
             case_files = store.list_files(row["id"])
             row["new_files"] = sum(1 for f in case_files if completed and f.get("created_at", "") > completed.get("created_at", ""))
-            historic = listing.as_of(case_files)  # a test cut of a historic file: looked at as of its own day, listed apart
-            row["as_of"] = historic.isoformat() if historic else None
+            cut_day = listing.as_of(case_files)  # a test cut of a historic file: looked at as of its own day, listed apart
+            row["as_of"] = cut_day.isoformat() if cut_day else None
+            # a historic file (a cut, or a whole old file uploaded for testing, or as a person placed it): listed apart, never overdue
+            row["historic"] = historic_file(case_files, row.get("created_at"), events)
             listed, action = [], None
             if row.get("run_status") == "completed":
                 try:
                     current = state(row["id"])
-                    listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]))
+                    listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events)
                     action = next((i for i in listed if i["kind"] == "next_action"), None)
                     clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]), since=(action or {}).get("since"))
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
-                    row["display_title"] = listing.display_title(row, listed, (current.get("process") or {}).get("short_title"),
+                    row["display_title"] = listing.display_title(row, listed, area_title(current.get("process")),
                                                                  renamed=any(e["kind"] == "case.renamed" for e in events))
                     contact = next((i for i in listed if i["kind"] == "contact"), None)  # the first contact the insurer promises (cover.py)
                     row["first_contact"] = contact and {"due": contact["value"], "late": contact.get("late"), "rule": contact.get("rule")}
@@ -434,8 +440,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             row.setdefault("display_title", row["title"])
             row["stand"] = listing.stand(closed=row["closed"], run_status=row.get("run_status"), new_files=row["new_files"], items=listed,
                                          follow_up=row.get("follow_up"), events=events, completed_at=(completed or {}).get("created_at"),
-                                         files=case_files)
+                                         files=case_files, historic=row["historic"])
         return {"cases": rows}
+
+    def area_title(process):
+        """The area's short name a prepared case's title starts with («Darlehen»)."""
+        return (process or {}).get("short_title") or (process or {}).get("title")
+
+    @app.put("/api/cases/{case_id}/historic")
+    def mark_historic(case_id: str, body: HistoricChoice, who=Depends(user)):
+        """«Mehr»: move a case into the historic files or out of them; logged, the latest word governs."""
+        found(store.get_case, case_id)
+        return record(case_id, who, "case.historic", historic=body.historic)
 
     @app.post("/api/cases", status_code=201)
     def create_case(body: NewCase, who=Depends(user)):
@@ -457,7 +473,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def get_case(case_id: str, who=Depends(user)):
         current = state(case_id)
         completed = current["run"]
-        listed = build_items(current, (completed or {}).get("result"), store.list_files(case_id))  # everything the case's screens and exports assert
+        study = (current["case"].get("intake") or {}).get("study")
+        logged = None if study else store.list_case_events(case_id)  # a study copy shows its frozen run as it was
+        listed = build_items(current, (completed or {}).get("result"), store.list_files(case_id), logged)  # everything the case's screens and exports assert
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
                  or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
@@ -489,11 +507,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if len(done) == 2 and current.get("workflow") and not (current["case"].get("intake") or {}).get("study"):
             workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
             before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id, files=files)
-            changes = item_changes(build_items(before_state, done[1].get("result"), files), listed)
+            changes = item_changes(build_items(before_state, done[1].get("result"), files, logged), listed)
         shown_case = {**current["case"], "display_title": listing.display_title(
-            current["case"], listed if completed else [], (current.get("process") or {}).get("short_title"),
+            current["case"], listed if completed else [], area_title(current.get("process")),
             renamed=any(e["kind"] == "case.renamed" for e in events))}
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
+                "historic": historic_file(files, current["case"].get("created_at"), events),
                 "new_files": new_files, "changes": changes,
                 "file_note": letters.file_note(current["case"], listed, events, clock, files) if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
@@ -540,7 +559,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(409, reason)
         source = state(case_id)["case"]
         copy = store.create_case(f"{source['title']} · Studie {body.expert}"[:300],
-                                 {**(source.get("intake") or {}), "study": {"source_case": case_id, "expert": body.expert, **expected}}, who)
+                                 {**(source.get("intake") or {}), "study": {"source_case": case_id, "expert": body.expert, **expected,
+                                                                                 "opened": source.get("created_at")}}, who)  # its first contact counts as the source's
         for f in store.list_files(case_id, with_text=True):
             data, row = store.file_bytes(f["id"])
             store.add_file(copy["id"], row["name"], row["media_type"], row["kind"], data, f["extraction"], who)

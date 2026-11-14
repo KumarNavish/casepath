@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "arbeit-lohn",
- "version": "2026-11-14.5",
- "backbone": "2026-11-14.5",
+ "version": "2026-11-14.6",
+ "backbone": "2026-11-14.6",
  "short_title": "Lohnforderung",
  "title": "Lohnforderung aus dem Arbeitsverhältnis (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -45,9 +45,9 @@
   "beurteilen": {"source_refs": ["law#322", "law#323"]}
  },
  "key_points": [
-  {"id": "krankheit", "statement": "Lohn bei Krankheit nur für beschränkte Zeit", "question": "Lohn während Krankheit? Dann Dauer der Lohnfortzahlung prüfen", "when": {"fact": "krankheit", "is": true}, "law": ["law#324a"], "follows": "Bei Krankheit oder Unfall ohne eigenes Verschulden schuldet die Arbeitgeberin den Lohn für eine beschränkte Zeit, die von der Dauer des Arbeitsverhältnisses abhängt, oder die Leistungen einer gleichwertigen Taggeldversicherung.", "check": "Dienstjahr und Skala, Krankentaggeldversicherung laut Vertrag oder Gesamtarbeitsvertrag, Arztzeugnisse", "answers": ["lohn", "gehalt", "krank", "unfall", "taggeld"]},
-  {"id": "ueberstunden", "statement": "Überstunden: Lohn mit Zuschlag von einem Viertel", "question": "Überstunden? Dann Abrede und Zuschlag prüfen", "when": {"fact": "ueberstunden", "is": true}, "law": ["law#321c"], "follows": "Überstunden sind mit dem Normallohn und einem Zuschlag von mindestens einem Viertel zu entschädigen, soweit sie nicht mit Freizeit ausgeglichen wurden oder schriftlich etwas anderes vereinbart ist.", "check": "schriftliche Abrede über Überstunden (Vertrag, Gesamtarbeitsvertrag), Aufzeichnungen der Arbeitszeit, Anordnung oder Duldung", "answers": ["überstund", "zuschlag", "mehrarbeit"]},
-  {"id": "verzicht", "statement": "Kein Verzicht bis einen Monat nach dem Ende", "question": "Arbeitsverhältnis beendet? Dann Verzicht und Saldoquittung prüfen", "when": {"fact": "beendet", "is": true}, "law": ["law#341"], "follows": "Während des Arbeitsverhältnisses und eines Monats danach können Sie auf Forderungen aus zwingenden Vorschriften nicht verzichten; unterschreiben Sie keine Saldoquittung, bevor wir sie geprüft haben.", "check": "ob eine Saldoquittung oder Aufhebungsvereinbarung unterschrieben wurde und wann", "answers": ["verzicht", "saldo", "unterschreib", "quittung"]}
+  {"id": "krankheit", "statement": "Lohn bei Krankheit nur für beschränkte Zeit", "question": "Lohn während Krankheit? Dann Dauer der Lohnfortzahlung prüfen", "when": {"fact": "krankheit", "is": true}, "law": ["law#324a"], "follows": "Bei Krankheit oder Unfall ohne eigenes Verschulden schuldet die Arbeitgeberin den Lohn für eine beschränkte Zeit, die von der Dauer des Arbeitsverhältnisses abhängt, oder die Leistungen einer gleichwertigen Taggeldversicherung.", "check": "Dienstjahr und Skala, Krankentaggeldversicherung laut Vertrag oder Gesamtarbeitsvertrag, Arztzeugnisse", "answers": ["lohn", "gehalt", "krank", "unfall", "taggeld"], "advice": false},
+  {"id": "ueberstunden", "statement": "Überstunden: Lohn mit Zuschlag von einem Viertel", "question": "Überstunden? Dann Abrede und Zuschlag prüfen", "when": {"fact": "ueberstunden", "is": true}, "law": ["law#321c"], "follows": "Überstunden sind mit dem Normallohn und einem Zuschlag von mindestens einem Viertel zu entschädigen, soweit sie nicht mit Freizeit ausgeglichen wurden oder schriftlich etwas anderes vereinbart ist.", "check": "schriftliche Abrede über Überstunden (Vertrag, Gesamtarbeitsvertrag), Aufzeichnungen der Arbeitszeit, Anordnung oder Duldung", "answers": ["überstund", "zuschlag", "mehrarbeit"], "advice": false},
+  {"id": "verzicht", "statement": "Kein Verzicht bis einen Monat nach dem Ende", "question": "Arbeitsverhältnis beendet? Dann Verzicht und Saldoquittung prüfen", "when": {"fact": "beendet", "is": true}, "law": ["law#341"], "follows": "Während des Arbeitsverhältnisses und eines Monats danach können Sie auf Forderungen aus zwingenden Vorschriften nicht verzichten; unterschreiben Sie keine Saldoquittung, bevor wir sie geprüft haben.", "check": "ob eine Saldoquittung oder Aufhebungsvereinbarung unterschrieben wurde und wann", "answers": ["verzicht", "saldo", "unterschreib", "quittung"], "advice": "Bitte unterschreiben Sie keine Saldoquittung, bevor wir sie geprüft haben; auf Forderungen aus zwingenden Vorschriften können Sie während des Arbeitsverhältnisses und eines Monats danach nicht verzichten"}
  ],
  "assessment": {
   "rights": {"text": "Grundsätzlich hat die Arbeitgeberin den verabredeten oder üblichen Lohn zu entrichten (Art. 322 OR), ohne andere Abrede Ende jedes Monats (Art. 323 OR)."},

@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "inkasso",
- "version": "2026-11-14.5",
- "backbone": "2026-11-14.5",
+ "version": "2026-11-14.6",
+ "backbone": "2026-11-14.6",
  "short_title": "Inkasso einer Forderung",
  "title": "Inkasso einer Geldforderung der Kundschaft: Verzug, Verzugszins, Verjährung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -51,10 +51,10 @@
   "beurteilen": {"source_refs": ["law#102", "law#104", "law#127", "law#128", "law#130"]}
  },
  "key_points": [
-  {"id": "mahnung", "statement": "Noch nicht gemahnt: Verzug erst mit Mahnung", "question": "Schriftlich gemahnt? Sonst zuerst mahnen", "when": {"fact": "gemahnt", "is": false}, "law": ["law#102", "law#102.2"], "follows": "Der Schuldner gerät mit der Mahnung in Verzug, wenn kein bestimmter Verfalltag vereinbart ist; erst ab dann schuldet er Verzugszins.", "check": "ob ein Verfalltag vereinbart war (dann Verzug ohne Mahnung) und ob die Mahnung nachweisbar zugestellt ist", "answers": ["mahn", "zahl", "verzug"]},
-  {"id": "verzugszins", "statement": "Verzugszins von fünf Prozent ab Verzug", "question": "Gemahnt? Dann Verzugszins berechnen", "when": {"fact": "gemahnt", "is": true}, "law": ["law#104"], "follows": "Ab Verzug schuldet der Schuldner zusätzlich Verzugszins von fünf Prozent im Jahr.", "check": "Datum des Verzugs (Mahnung oder Verfalltag), vertraglich höherer Zins", "answers": ["zins", "verzug", "mehr"]},
-  {"id": "bestritten", "statement": "Bestritten: die Forderung ist zu beweisen", "question": "Bestreitet der Schuldner? Dann Belege prüfen", "when": {"fact": "bestritten", "is": true}, "law": ["law#zgb-8"], "follows": "Bestreitet der Schuldner die Forderung, müssen Sie Bestand und Höhe belegen, etwa mit Vertrag, Rechnung und Lieferbelegen.", "check": "Einwände des Schuldners (Mängel, Verrechnung) und die Belege dagegen", "answers": ["bestreit", "beweis", "einwand"]},
-  {"id": "verjaehrung", "statement": "Kurze Verjährung: rechtzeitig unterbrechen", "question": "Periodische Leistung oder Handwerk? Dann fünf Jahre Verjährung", "when": {"fact": "fuenf_jahre", "is": true}, "law": ["law#128", "law#135"], "follows": "Diese Forderung verjährt nach fünf Jahren; die Verjährung wird namentlich durch Anerkennung des Schuldners, etwa eine Teilzahlung, unterbrochen.", "check": "Fälligkeit, letzte Anerkennung oder Teilzahlung, Betreibung oder Klage", "answers": ["verjähr", "zu spät", "frist"]}
+  {"id": "mahnung", "statement": "Noch nicht gemahnt: Verzug erst mit Mahnung", "question": "Schriftlich gemahnt? Sonst zuerst mahnen", "when": {"fact": "gemahnt", "is": false}, "law": ["law#102", "law#102.2", "law#104"], "follows": "Der Schuldner gerät mit der Mahnung in Verzug, wenn kein bestimmter Verfalltag vereinbart ist; erst ab dann schuldet er Verzugszins.", "check": "ob ein Verfalltag vereinbart war (dann Verzug ohne Mahnung) und ob die Mahnung nachweisbar zugestellt ist", "answers": ["mahn", "zahl", "verzug"], "advice": "Sie können den Schuldner schriftlich mahnen; ohne vereinbarten Verfalltag gerät er erst mit der Mahnung in Verzug und schuldet ab dann Verzugszins von fünf Prozent"},
+  {"id": "verzugszins", "statement": "Verzugszins von fünf Prozent ab Verzug", "question": "Gemahnt? Dann Verzugszins berechnen", "when": {"fact": "gemahnt", "is": true}, "law": ["law#104"], "follows": "Ab Verzug schuldet der Schuldner zusätzlich Verzugszins von fünf Prozent im Jahr.", "check": "Datum des Verzugs (Mahnung oder Verfalltag), vertraglich höherer Zins", "answers": ["zins", "verzug", "mehr"], "advice": false},
+  {"id": "bestritten", "statement": "Bestritten: die Forderung ist zu beweisen", "question": "Bestreitet der Schuldner? Dann Belege prüfen", "when": {"fact": "bestritten", "is": true}, "law": ["law#zgb-8"], "follows": "Bestreitet der Schuldner die Forderung, müssen Sie Bestand und Höhe belegen, etwa mit Vertrag, Rechnung und Lieferbelegen.", "check": "Einwände des Schuldners (Mängel, Verrechnung) und die Belege dagegen", "answers": ["bestreit", "beweis", "einwand"], "advice": "Bitte sichern Sie die Belege für Bestand und Höhe der Forderung, etwa Vertrag, Rechnung und Lieferbelege"},
+  {"id": "verjaehrung", "statement": "Kurze Verjährung: rechtzeitig unterbrechen", "question": "Periodische Leistung oder Handwerk? Dann fünf Jahre Verjährung", "when": {"fact": "fuenf_jahre", "is": true}, "law": ["law#128", "law#135"], "follows": "Diese Forderung verjährt nach fünf Jahren; die Verjährung wird namentlich durch Anerkennung des Schuldners, etwa eine Teilzahlung, unterbrochen.", "check": "Fälligkeit, letzte Anerkennung oder Teilzahlung, Betreibung oder Klage", "answers": ["verjähr", "zu spät", "frist"], "advice": false}
  ],
  "assessment": {
   "rights": {"text": "Grundsätzlich kommt der Schuldner einer fälligen Forderung durch Mahnung in Verzug, bei einem vereinbarten Verfalltag schon mit dessen Ablauf (Art. 102 OR), und schuldet ab dann Verzugszins von fünf vom Hundert für das Jahr (Art. 104 OR)."},

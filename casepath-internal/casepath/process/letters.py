@@ -143,6 +143,14 @@ def set_date_line(item, today=None):
             + ". Dieser Termin gilt unabhängig von unserer Prüfung; bitte nehmen Sie ihn wahr oder melden Sie sich umgehend, falls dies nicht möglich ist.")
 
 
+def with_basis(text, basis):
+    """A hint with its article, before the sentence's full stop: «… zurückzuzahlen (Art. 318 OR).»"""
+    text = str(text or "").strip()
+    if not basis:
+        return text
+    return f"{text[:-1]} ({basis})." if text.endswith(".") else f"{text} ({basis})"
+
+
 def context(case, items, events, follow_up, files=(), today=None, evaluation=None, process=None):
     label = lambda i: (i.get("label") or {}).get("de") or i.get("value") or i["key"]
     facts = {i["key"]: i for i in items if i["kind"] == "fact"}
@@ -179,7 +187,7 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "fragen": "\n".join(["Weiter bitten wir Sie um die Beantwortung folgender Fragen:"] + [f"– {i['value']}" for i in questions]) if questions else "",
         "fragen_oder_offen": "\n".join(f"– {i['value']}" for i in asked(items, events, "letter_question")) or "\n".join(f"– {label(i)}" for i in missing) or "– (offener Punkt)",
         "hinweise": "\n".join(["Betreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:"]
-                              + [f"{i['value']}" + (f" ({i['legal_basis']})" if i.get("legal_basis") else "") for i in hints]) if hints else "",
+                              + [with_basis(i["value"], i.get("legal_basis")) for i in hints]) if hints else "",
         "frist": _day((follow_up or {}).get("due")) or "…",
         # What only the reading or the handler can say: the stored text when there is one, otherwise a marked gap that
         # blocks copying the letter until it is filled or removed; never an invented sentence.

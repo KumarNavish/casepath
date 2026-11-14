@@ -260,30 +260,39 @@ def add_working_days(start, n):
     return day
 
 
-def report_date(files):
-    """The date of the claim report in the file: a document that is a report (Schadenmeldung, Meldung), else the earliest
-    dated document, else the day the first file was added. (date, how) or (None, None)."""
+# The insurer's own record that the report came in: its receipt or its registration of the claim.
+RECEIPT = re.compile(r"eingangsbest|empfangsbest|registrier|erfasst|dossiereröffnung|eröffnung des dossiers|eingang (?:der|ihrer) (?:schaden)?meldung", re.I)
+INSURER = re.compile(r"protekta|rechtsschutz", re.I)
+
+
+def report_date(files, created=None):
+    """The day the case came in to the insurer as the product can know it: the insurer's own receipt or registration of
+    the report when the file holds one (its date, earlier or later), else the day the case was created in CasePath, else
+    the day its first file was added. A letter of the customer is not the day it came in. (date, how) or (None, None)."""
     segments = [s for f in files or () for s in ((f.get("extraction") or {}).get("segments") or [])]
-    reports = [d for s in segments if re.search(r"meldung", f"{s.get('kind') or ''} {s.get('title') or ''}", re.I) and (d := parse_date(s.get("date")))]
-    if reports:
-        return min(reports), "Datum der Schadenmeldung in der Akte"
-    dated = [d for s in segments if (d := parse_date(s.get("date")))]
-    if dated:
-        return min(dated), "frühestes Dokument der Akte"
+    receipts = [d for s in segments if RECEIPT.search(f"{s.get('kind') or ''} {s.get('title') or ''}")
+                and (INSURER.search(str(s.get("sender") or "")) or re.search(r"eingangsbest|registrier", f"{s.get('kind') or ''}", re.I))
+                and (d := parse_date(s.get("date")))]
+    if receipts:
+        return min(receipts), "Eingangsbestätigung der Versicherung"
+    opened = parse_date(str(created or "")[:10])
+    if opened:
+        return opened, "Eröffnung des Falls"
     added = [d for f in files or () if (d := parse_date(str(f.get("created_at") or "")[:10]))]
     if added:
         return min(added), "Eingang der ersten Datei"
     return None, None
 
 
-def first_contact(facts, files, today=None):
-    """By when the insurer contacts the customer (three working days from the report, weekends skipped, public holidays not
-    counted); None once a first request or another contact of the insurer is in the case's history, or no report date."""
+def first_contact(facts, files, today=None, created=None, historic=False):
+    """By when the insurer contacts the customer (three working days from the day the case came in, weekends skipped,
+    public holidays not counted); None for a historic file, once a first request or another contact of the insurer is in
+    the case's history, or without a day it came in."""
     rule = _data()["first_contact"]
     done = done_actions(facts or {})
-    if any(c in done for c in rule["contacts"]):
+    if historic or any(c in done for c in rule["contacts"]):
         return None
-    start, how = report_date(files)
+    start, how = report_date(files, created)
     if start is None:
         return None
     due = add_working_days(start, rule["working_days"])
@@ -444,7 +453,7 @@ def _item(kind, key, label, **fields):
             "verdict": None, "node": None, "chain": False, "origin": "cover", **fields}
 
 
-def items(graph, facts, result, files, action=None, stage=None, today=None):
+def items(graph, facts, result, files, action=None, stage=None, today=None, created=None, historic=False):
     """The cover points (kind "cover", key = the point's id), the checks a prescribed letter rests on (kind "check") and the
     first contact (kind "contact"). Hashed like every item: kind, key, value (the state) and stated_as."""
     rows = (result or {}).get("facts") or []
@@ -459,7 +468,7 @@ def items(graph, facts, result, files, action=None, stage=None, today=None):
                          clauses=p["clauses"], legal_basis=cite_list(p["clauses"]), tick=p["tick"], tick_value=p["tick_value"],
                          date_fact=p["date_fact"], date_value=facts.get(p["date_fact"]) if p["date_fact"] else None, facts=p["facts"]))
     out += checks(graph, facts, rows, action, stage)
-    contact = first_contact(facts, files, today)
+    contact = first_contact(facts, files, today, created, historic)
     if contact:
         out.append(_item("contact", "erstkontakt", "Erstkontakt mit der Kundschaft", value=contact["due"], stated_as="computed", evidence=[],
                          rule=contact["rule"], stated=contact["from"], late=contact["late"], legal_basis=contact["basis"]))

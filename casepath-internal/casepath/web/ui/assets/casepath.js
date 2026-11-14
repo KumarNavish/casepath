@@ -140,7 +140,7 @@ async function renderCases() {
   const row = (c) => {
     // a historic cut is looked at as of its own day: its dates are never overdue among live cases
     // the follow-up date; a deadline or the first contact is what the Stand already says, not repeated here
-    const s = standOf(c), due = ["frist", "contact"].includes(s) ? c.follow_up || "" : nextDue(c), late = due && due <= (c.as_of || today) && s !== "closed" && !c.as_of;
+    const s = standOf(c), due = ["frist", "contact"].includes(s) ? c.follow_up || "" : nextDue(c), late = due && due <= (c.as_of || today) && s !== "closed" && !c.as_of && !c.historic;
     const next = ["closed", "waiting"].includes(s) ? "" : c.next_action ? esc(LANG === "de" && c.next_action.text ? c.next_action.text : T(c.next_action.label.en, c.next_action.label.de))
       : s === "working" ? T("being prepared", "wird vorbereitet") : s === "new" ? T("prepare the case", "Fall vorbereiten") : "";
     return `<tr class="${s === "closed" ? "cp-done" : ""}"><td><a href="#/case/${esc(c.id)}/overview">${esc(c.display_title || c.title)}</a></td><td>${next || '<span class="cp-muted">—</span>'}</td>
@@ -150,7 +150,8 @@ async function renderCases() {
   const table = (rows) => `<table class="cp-table cp-cases"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Next step", "Nächster Schritt")}</th>
     <th>${T("Follow-up", "Wiedervorlage")}</th><th>${T("Status", "Stand")}</th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table>`;
   const ordered = orderedCases(cases.cases);
-  const historic = ordered.filter((c) => c.as_of && c.as_of < today);  // test cuts of historic files: listed apart, never overdue
+  // historic files (test cuts, whole old files uploaded for testing, or as a person placed them): listed apart, never overdue
+  const historic = ordered.filter((c) => c.historic);
   const live = ordered.filter((c) => !historic.includes(c));
   const real = live.filter((c) => !(c.intake || {}).synthetic), examples = live.filter((c) => (c.intake || {}).synthetic);
   $("#app").innerHTML = `<main class="cp-main cp-list"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
@@ -159,7 +160,7 @@ async function renderCases() {
     ${S.canUpload === false ? "" : `<div class="cp-drop" id="drop">${S.creating ? T("Creating the case…", "Der Fall wird angelegt …") : T("Drop files here and CasePath prepares the case", "Dateien hierher ziehen, CasePath bereitet den Fall vor")}</div>`}
     ${S.message ? `<p class="cp-error">${esc(S.message)}</p>` : ""}
     ${examples.length ? `<h2 class="cp-section cp-muted">${T("Examples", "Beispiele")}</h2>${table(examples)}` : ""}
-    ${historic.length ? `<h2 class="cp-section cp-muted">${T("Historic files (test cuts)", "Historische Akten (Teststand)")}</h2>${table(historic)}` : ""}
+    ${historic.length ? `<h2 class="cp-section cp-muted">${T("Historic files", "Historische Akten")}</h2>${table(historic)}` : ""}
     ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
       ${imports.files.length ? `<table class="cp-table"><tbody>${imports.files.map((f) =>
         `<tr><td><b>${esc(f.title || f.name)}</b>${f.title && f.title !== f.name ? `<br><small class="cp-muted">${esc(f.name)}</small>` : ""}</td>
@@ -201,12 +202,14 @@ document.addEventListener("drop", (e) => {
   if (S.route.view === "cases") createFromFiles(e.dataTransfer.files);
   else if (S.route.view === "case" && S.data && !unaidedPending()) uploadFiles(e.dataTransfer.files);
 });
-// A historic file cut at a decision point is looked at as of a past day: the case says so wherever it is shown.
+// A historic file (a cut looked at as of a past day, or an old file uploaded for testing) says so wherever it is shown,
+// with the date of its newest document; its dates are never shown as overdue.
+const quiet = () => Boolean(S.data && S.data.historic);
 function standAm(d) {
-  const cut = (d.files || []).map((f) => (f.extraction || {}).cut_of).find(Boolean);
-  if (!cut) return "";
-  const day = cut.as_of || (d.follow_up || {}).reference;
-  return ` <span class="cp-chip wait" title="${T("A historic file, looked at as of this day", "Eine historische Akte, betrachtet am Stand dieses Tages")}">${T("Historic", "Historisch")}${day ? ` · ${T("as of", "Stand am")} ${dateText(day)}` : ""}</span>`;
+  const h = d.historic;
+  if (!h) return "";
+  const day = h.as_of || h.newest;
+  return ` <span class="cp-chip wait" title="${T("A historic file: its dates are not counted as overdue", "Eine historische Akte: ihre Daten gelten nicht als überfällig")}">${T("Historic file", "Historische Akte")}${day ? ` · ${h.as_of ? T("as of", "Stand am") : T("newest document", "neuestes Dokument")} ${dateText(day)}` : ""}</span>`;
 }
 
 // ---------- case data helpers ----------
@@ -297,6 +300,7 @@ function moreMenu() {
     ${running() || !(d.files || []).length ? "" : `<button class="cp-link" id="run">${icon("nodes")}${run ? T("Prepare again", "erneut vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>`}
     ${S.file ? `<a class="cp-link" href="/api/files/${esc(S.file)}/original" target="_blank" rel="noopener">${icon("external")}${T("Open original", "Original öffnen")}</a>` : ""}
     ${done ? `<a class="cp-link" href="/api/cases/${esc(d.case.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report (.docx)", "Fallbericht (.docx)")}</a>` : ""}
+    <button class="cp-link" id="historic-toggle" data-historic="${d.historic ? "false" : "true"}">${d.historic ? T("Treat as a live case", "Als laufenden Fall führen") : T("Treat as a historic file", "Als historische Akte führen")}</button>
     <small class="cp-muted">${done ? `${T("Prepared", "Vorbereitet am")} ${dateText(done.finished_at)} · ` : ""}${esc(d.case.id.slice(-8).toUpperCase())}</small></div></details>`;
 }
 
@@ -339,6 +343,12 @@ function bindRail() {
   }
   const more = $(".cp-more");
   if (more) more.addEventListener("toggle", () => { S.moreOpen = more.open; });
+  const historicToggle = $("#historic-toggle");  // one action, logged: the latest word governs
+  if (historicToggle) historicToggle.addEventListener("click", async () => {
+    historicToggle.disabled = true;
+    await api(`/api/cases/${S.route.id}/historic`, { method: "PUT", body: JSON.stringify({ historic: historicToggle.dataset.historic === "true" }) })
+      .then(() => loadCase()).catch((error) => { S.message = error.message; renderCase(); });
+  });
   const openPick = $("#other-process-open");
   if (openPick) openPick.addEventListener("click", () => { S.pickProcess = !S.pickProcess; renderCase(); });
   for (const b of document.querySelectorAll("[data-other-process]")) b.addEventListener("click", () => otherProcess(b.dataset.otherProcess));
@@ -1344,13 +1354,15 @@ function sideView(ev) {
     const title = esc(plainQuestion((d.label || {}).de || d.key)), basis = d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "";
     const cond = d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : "";
     if (d.party === "gegenpartei") return `<div class="cp-frist other" title="${esc(d.rule || "")}">${cond}<b>${dated(d) ? dateText(d.value) : T("check", "prüfen")}</b> <span class="cp-muted">· ${T("date of the other side", "Termin der Gegenpartei")}${dated(d) && daysTo(d.value) < 0 ? ` · ${T("passed", "abgelaufen")}` : ""}</span><br>${title}${basis}</div>`;
-    if (d.set_by_others && dated(d)) {  // a date a court, an authority or the other side set for the customer
+    if ((d.set_by_others || d.unnamed) && dated(d)) {  // a date a court, an authority or the other side set, or one the file gives without what it was for
       const n = daysTo(d.value), src = (d.evidence || []).find((e) => e.file);
-      return `<div class="cp-frist ${n < 0 ? "" : n <= 14 ? "soon" : ""}" data-item="${esc(d.item_id)}"><b>${dateText(d.value)}</b> <span class="cp-muted">· ${n < 0 ? T("passed", "abgelaufen") : T("date set", "Termin")}${d.by ? ` · ${esc(d.by)}` : ""}</span><br>${title}${d.source ? ` <span class="cp-muted">· ${T("according to", "laut")} ${esc(d.source)}</span>` : ""}${cite(src)}</div>`;
+      const by = d.source ? `${T("according to", "laut")} ${esc(d.source)}` : d.by ? esc(d.by) : "";
+      const when = n < 0 ? T("passed", "abgelaufen") : d.unnamed ? T("deadline", "Frist") : T("date set", "Termin");
+      return `<div class="cp-frist ${n < 0 || quiet() ? "" : n <= 14 ? "soon" : ""}" data-item="${esc(d.item_id)}"><b>${dateText(d.value)}</b> · ${title}${by ? ` · ${by}` : ""} <span class="cp-muted">· ${when}</span>${cite(src)}</div>`;
     }
     if (!dated(d)) return `<div class="cp-frist ${d.due_text ? "" : "check"}" title="${esc(d.rule || "")}">${cond}<b>${d.due_text ? esc(d.due_text) : T("check", "prüfen")}</b><br>${title}${basis}</div>`;
     const n = daysTo(d.value), ab = d.direction === "ab";
-    return `<div class="cp-frist ${ab ? "" : n < 0 ? "late" : n <= 14 ? "soon" : ""}" title="${esc(d.rule || "")}">${cond}<b>${ab ? T("from ", "ab ") : ""}${dateText(d.value)}</b> ${ab ? "" : n < 0 ? T(`· overdue ${-n} d`, `· seit ${-n} T. abgelaufen`) : n <= 14 ? T(`· in ${n} d`, `· in ${n} T.`) : ""}<br>${title}${basis}${d.stated && !d.legal_basis ? ` <span class="cp-muted">· ${esc(d.stated)}</span>` : ""}</div>`; };
+    return `<div class="cp-frist ${ab || quiet() ? "" : n < 0 ? "late" : n <= 14 ? "soon" : ""}" title="${esc(d.rule || "")}">${cond}<b>${ab ? T("from ", "ab ") : ""}${dateText(d.value)}</b> ${ab ? "" : n < 0 ? T(`· overdue ${-n} d`, `· seit ${-n} T. abgelaufen`) : n <= 14 ? T(`· in ${n} d`, `· in ${n} T.`) : ""}<br>${title}${basis}${d.stated && !d.legal_basis ? ` <span class="cp-muted">· ${esc(d.stated)}</span>` : ""}</div>`; };
   const shown = new Set(deadlines.map((d) => d.key));
   const possible = ((S.data.process || {}).deadlines || []).filter((d) => !shown.has(d.id) && d.hint !== false && (item("fact", d.trigger) || {}).value == null)
     .map((d) => `<div class="cp-frist soon">${T("Possible deadline", "Frist möglich")}: ${esc(d.title)} – ${T("date missing", "Datum fehlt")} <span class="cp-muted">· ${esc(d.basis)}</span></div>`).join("");
@@ -1534,8 +1546,13 @@ function letterText() {
 // its passage (with what follows and what to check), the facts' sources one click away. A point whose condition the file
 // leaves open is a question, never asserted.
 function keyPointLines() {
+  const lines = (S.data.items || []).filter((i) => i.kind === "stage_line" && i.shown).map((l) => {
+    const src = (l.evidence || []).find((e) => e.file);
+    return `<div class="cp-keypoint" data-item="${esc(l.item_id)}"><span class="cp-keypoint-text">${esc((l.label || {}).de || l.value || "")}</span>${src
+      ? ` <button class="cp-source-chip" data-cite-file="${esc(src.file)}" data-page="${src.page || ""}" title="${esc(src.quote || "")}">${src.page ? `${T("p.", "S.")} ${src.page}` : T("source", "Quelle")}</button>` : ""}</div>`;
+  }).join("");
   const rows = (S.data.items || []).filter((i) => i.kind === "key_point" && i.shown);
-  return rows.map((p) => {
+  return lines + rows.map((p) => {
     const open = S.keyPoint === p.key, law = (p.law || [])[0] || {}, src = (p.evidence || []).find((e) => e.file);
     return `<div class="cp-keypoint ${p.value === "open" ? "open" : ""}" data-item="${esc(p.item_id)}"><span class="cp-keypoint-text">${p.value === "open" ? "? " : ""}${esc((p.label || {}).de || "")}</span>
       <button class="cp-tag cp-law" type="button" data-key-point="${esc(p.key)}" aria-expanded="${open}" title="${esc(law.cite ? `${law.cite}: «${law.passage}»` : "")}">${esc(p.legal_basis || "")}</button>${src
@@ -1574,7 +1591,7 @@ function preparedView(ev, st) {
   const leadLine = lead && !c ? (lead.set_by_others
     ? `<p class="cp-lead-frist ${leadDays < 0 ? "past" : leadDays <= 14 ? "soon" : ""}" data-item="${esc(lead.item_id)}">${T("Date", "Termin")} <b>${dateText(lead.value)}</b> · ${esc(lead.what || "")}${lead.source ? ` · ${T("according to", "laut")} ${esc(lead.source)}` : lead.by ? ` · ${esc(lead.by)}` : ""} · ${
         leadDays < 0 ? T("passed", "abgelaufen") : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}${leadSrc ? ` <button class="cp-source-chip" data-cite-file="${esc(leadSrc.file)}" data-page="${leadSrc.page || ""}" title="${esc(leadSrc.quote || "")}">${leadSrc.page ? `${T("p.", "S.")} ${leadSrc.page}` : T("source", "Quelle")}</button>` : ""}</p>`
-    : `<p class="cp-lead-frist ${leadDays < 0 ? "late" : leadDays <= 14 ? "soon" : ""}">${T("Deadline", "Frist")} <b>${dateText(lead.value)}</b> · ${esc((lead.label || {}).de || lead.key)}${lead.condition ? ` (${esc(lead.condition)})` : ""} · ${esc(lead.legal_basis || "")} · ${
+    : `<p class="cp-lead-frist ${quiet() ? "" : leadDays < 0 ? "late" : leadDays <= 14 ? "soon" : ""}">${T("Deadline", "Frist")} <b>${dateText(lead.value)}</b> · ${esc((lead.label || {}).de || lead.key)}${lead.condition ? ` (${esc(lead.condition)})` : ""} · ${esc(lead.legal_basis || "")} · ${
     leadDays < 0 ? T(`passed ${-leadDays} days ago`, `seit ${-leadDays} Tagen abgelaufen`) : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}</p>`) : "";
   const points = c ? "" : keyPointLines();
   // One action bar on the letter card, always in view: copy · follow-up · done. After copying, Erledigt is the primary.
@@ -1582,7 +1599,7 @@ function preparedView(ev, st) {
   const bar = c ? `<span class="cp-closed">${icon("check")}<b>${c.form === "erledigt" ? T("Done", "Erledigt") : T("Done, with a reservation", "Erledigt, mit Vorbehalt")}</b>
         <span class="cp-muted">· ${dateText(c.at)} · ${esc(c.expert)}</span></span><span class="grow"></span><button class="cp-button primary" id="next-case">${T("Next case", "Nächster Fall")} ${icon("right")}</button>`
     : `${letter ? `<button class="cp-button ${copyPrimary ? "primary" : ""}" id="copy-draft">${S.justCopied ? `${icon("tick")}${T("Copied", "Kopiert")}` : T("Copy letter", "Brief kopieren")}</button>` : ""}
-      ${due ? `<span class="cp-date ${daysTo(due) < 0 ? "late" : ""}">${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(due)}</button>
+      ${due ? `<span class="cp-date ${daysTo(due) < 0 && !quiet() ? "late" : ""}">${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(due)}</button>
         <input type="date" id="followup-date" value="${esc(due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1">${f.capped ? ` <span class="cp-muted" title="${T("before the statutory deadline runs out", esc(f.capped.reason))}">· ${T("before the deadline", "vor Fristablauf")}</span>` : ""}</span>` : ""}
       <span class="grow"></span>
       ${["paused", "running"].includes(st) ? "" : `<span class="cp-split ${closePrimary ? "on" : ""}"><button class="cp-button ${closePrimary ? "primary" : ""}" data-close="erledigt">${T("Done", "Erledigt")}</button><details class="cp-split-more">

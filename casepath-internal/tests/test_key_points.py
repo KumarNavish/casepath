@@ -102,7 +102,7 @@ class DismissalTests(unittest.TestCase):
         self.assertEqual([q["question"] for q in asked], ["Erhalte ich ab Dezember noch Lohn?", "Ist die Kündigung überhaupt gültig?"])
         self.assertTrue(all(q["citations"][0]["quote"] for q in asked))
         rows = [i for i in self.items if i["kind"] == "customer_question"]
-        self.assertEqual([r.get("answered_by") for r in rows], ["sperrfrist", "sperrfrist"])
+        self.assertEqual([r.get("answered_by") for r in rows], ["lohn", "sperrfrist"])  # the salary question by the point on continued pay
 
     def test_the_assessment_starts_from_the_points_that_apply_and_answers_the_questions(self):
         wf = self.state["process"]
@@ -112,7 +112,9 @@ class DismissalTests(unittest.TestCase):
         self.assertTrue(in_case.startswith("Eine Kündigung, die während einer Sperrfrist"))
         self.assertIn("(Art. 336c Abs. 2 OR).", in_case.split("\n")[0])
         self.assertIn("[bitte ergänzen: was in diesem Fall sonst vorliegt]", in_case)
-        self.assertIn("Zu Ihren Fragen:\n– «Erhalte ich ab Dezember noch Lohn?» Siehe oben (Art. 336c Abs. 2 OR).", text)
+        self.assertIn("Zu Ihren Fragen:\n– «Erhalte ich ab Dezember noch Lohn?» Während der Sperrfrist", text)
+        self.assertIn("im ersten Dienstjahr für drei Wochen", text)
+        self.assertIn("– «Ist die Kündigung überhaupt gültig?» Siehe oben (Art. 336c Abs. 2 OR).", text)
         self.assertTrue(text.startswith("Guten Tag Sandra Beispiel"))  # the name known, no salutation stated
 
     def test_a_question_no_point_answers_is_a_marked_gap(self):
@@ -130,7 +132,7 @@ class DismissalTests(unittest.TestCase):
         self.assertEqual(listing.display_title({"title": "Scan_01"}, [], "Kündigung Arbeit"), "Scan_01")  # before preparation
         one = [i for i in self.items if not (i["kind"] == "party" and i["key"] == "1")]
         self.assertEqual(listing.display_title({"title": "Scan_01"}, one, "Kündigung Arbeit"),
-                         "Kündigung Arbeit · Sandra Beispiel ist seit dem 20. …")  # the other side unknown: the request's first words
+                         "Kündigung Arbeit · Sandra Beispiel")  # the other side unknown: the area and the customer
 
 
 class HearingTests(unittest.TestCase):

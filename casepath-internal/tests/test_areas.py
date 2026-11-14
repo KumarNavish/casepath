@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from casepath.agents import core
-from casepath.process import area, cover, letters, workflows
+from casepath.process import keypoints, area, cover, letters, workflows
 from casepath.process.items import HASHED, build_items, items_sha256
 from casepath.process.workflows import Catalogue, CatalogueError
 from tests.scripted import ScriptedModel, report
@@ -15,7 +15,7 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"key_points", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions"}
+NEW_KEYS = {"key_points", "stage_lines", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions"}
 INCOMING_FACTS = {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot", "eingang_zahlung", "leistungen_einstellen",
                   "eingang_erledigt_bis", "kosten_offen", "eingang_kostenforderung_2", "eingang_kostenforderung_3", "eingang_angebot_2",
                   "eingang_zahlung_2"}  # the overlay of what comes in (incoming.py): up to three items of a kind
@@ -68,7 +68,7 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.5"))  # stored runs: same id, newer version governs
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.6"))  # stored runs: same id, newer version governs
         # plus: the nearest thing that does not count, for the reader; the stage a handler's decision belongs to
         unnear = lambda f: {k: v for k, v in f.items() if k not in {"not_this", "stages"}}
         self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
@@ -106,6 +106,16 @@ class CompositionTests(unittest.TestCase):
         for facts, documents in cases:
             result = {"facts": facts, "documents": documents, "brief": {"request": "Schimmel.", "parties": [], "timeline": []}}
             a, b = (build_items(core.evaluate(w, [], [], result, "c", files=looked), result, looked) for w in (old, new))
+            # the key points' advice in the first request (tested in test_key_points): where it applies it stands for the
+            # area's hint that says the same; nothing else changes
+            advice = [i for i in b if i["kind"] == "hint" and i["key"].startswith("kp-")]
+            replaced = {i["key"] for i in a if i["kind"] == "hint"} - {i["key"] for i in b if i["kind"] == "hint"}
+            for key in replaced:
+                hint = next(h for h in new["hints"] if h["id"] == key)
+                self.assertTrue(any(i["stated_as"] == "established" and keypoints.covers(
+                    {"refs": next(p for p in new["key_points"] if p["id"] == i["key_point"])["law"]}, hint) for i in advice), key)
+            a = [i for i in a if not (i["kind"] == "hint" and i["key"] in replaced)]
+            b = [i for i in b if i not in advice]
             self.assertEqual(kept(a), kept(b))
             uncovered = lambda rows: [i for i in rows if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact", "key_point"}]
             self.assertEqual(items_sha256(uncovered(a)), items_sha256(uncovered(b)))
@@ -153,7 +163,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-14.5 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-14.6 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 
@@ -223,7 +233,8 @@ class StageFloorTests(unittest.TestCase):
         self.assertEqual(state["evaluation"]["current"]["step"], "mandat")  # not "klaeren", though no document is in the file
         nxt = {i["item_id"]: i for i in build_items(state, result, files)}["next_action:0"]
         self.assertEqual((nxt["action"], nxt["next_in_days"], nxt["since"]), ("A2", 30, "2024-04-02"))  # A10 is done: its follow-up, not A6
-        self.assertEqual(follow_up(nxt["next_in_days"], files, [], since=nxt["since"])["due"], "2024-05-02")
+        # a cut counts from its «Stand am», never from the older action: 30 days from 20.05.2024, not from 02.04.2024
+        self.assertEqual(follow_up(nxt["next_in_days"], files, [], since=nxt["since"])["due"], "2024-06-19")
         self.assertIn("mietvertrag", {d["document"] for d in state["evaluation"]["documents"]})  # still listed, never pulling it back
 
     def test_an_assessment_in_the_history_places_the_case_at_least_in_assessing_and_a_fresh_case_is_unchanged(self):
@@ -316,7 +327,10 @@ class BenchmarkFindingsTests(unittest.TestCase):
         self.assertIn("letter_question:rueckforderung_schriftlich", listed)
         _, no = self.listed("vertrag-darlehen", loan + [("rueckforderung_schriftlich", False)])
         self.assertNotIn("document:kuendigung_rueckforderung", no)
-        self.assertEqual(no["hint:aufforderung"]["legal_basis"], "Art. 318 OR")  # a demand starts the period
+        self.assertNotIn("hint:aufforderung", no)  # the key point's advice stands for it: a demand starts the period
+        self.assertEqual((no["hint:kp-schriftlich_fordern"]["value"], no["hint:kp-schriftlich_fordern"]["stated_as"]),
+                         ("Sie können das Darlehen schriftlich zurückfordern; ohne vereinbarten Termin ist es innert sechs Wochen ab der "
+                          "ersten Aufforderung zurückzuzahlen (Art. 318 OR).", "established"))
         _, yes = self.listed("vertrag-darlehen", loan + [("rueckforderung_schriftlich", True)])
         self.assertEqual(yes["document:kuendigung_rueckforderung"]["ask"], "now")
         general = [("rechtsgebiet", "Übriges Recht")]

@@ -67,10 +67,53 @@ def reference_day(files, today=None):
     return max(days) if days else (today or date.today())
 
 
+def cut_day(files):
+    """The «Stand am» of a historic file cut at a decision point, or None for a live case."""
+    return next((d for f in files or () if (d := parse_date(((f.get("extraction") or {}).get("cut_of") or {}).get("as_of")))), None)
+
+
+def newest_document(files):
+    """The date of the newest dated document in the file (its read segments), or None."""
+    return max((d for f in files or () for s in ((f.get("extraction") or {}).get("segments") or []) if (d := parse_date(s.get("date")))),
+               default=None)
+
+
+HISTORIC_MONTHS = 12  # a file whose newest document is older than this on the day the case was created is a historic file
+
+
+def months_before(day, months):
+    year, month = day.year + (day.month - 1 - months) // 12, (day.month - 1 - months) % 12 + 1
+    last = (date(year + month // 12, month % 12 + 1, 1) - timedelta(days=1)).day
+    return date(year, month, min(day.day, last))
+
+
+def historic(files, created=None, events=(), today=None):
+    """Whether the case is a historic file, looked at for testing rather than worked as a live case: {"newest", "how",
+    "as_of"} or None. A cut with a «Stand am» before the day the case was created is one (how "cut"); so is a file whose
+    newest dated document is more than twelve months older than that day (how "old"). A person's word (event
+    ``case.historic``, the latest) moves a case into the group or out of it (how "person")."""
+    created_day = parse_date(str(created or "")[:10]) or today or date.today()
+    newest, cut = newest_document(files), cut_day(files)
+    marks = [e for e in events or () if e.get("kind") == "case.historic" and isinstance(e.get("historic"), bool)]
+    row = lambda how: {"newest": (newest or cut).isoformat() if (newest or cut) else None, "how": how,
+                       "as_of": cut.isoformat() if cut else None}
+    if marks:
+        return row("person") if marks[-1]["historic"] else None
+    if cut and cut < created_day:
+        return row("cut")
+    if newest and newest < months_before(created_day, HISTORIC_MONTHS):
+        return row("old")
+    return None
+
+
 def follow_up(next_in_days, files, events, today=None, since=None):
     """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date.
-    ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from."""
+    ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from.
+    A cut counts from its «Stand am», never from an older document or action."""
     ref = parse_date(since) if since and parse_date(since) else reference_day(files, today)
+    cut = cut_day(files)
+    if cut and ref < cut:
+        ref = cut
     set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date")]
     if set_by_hand:
         return {"due": set_by_hand[-1]["date"], "reference": ref.isoformat(), "set_by": set_by_hand[-1].get("expert")}
@@ -109,6 +152,10 @@ if __name__ == "__main__":
     assert reference_day(cut) == date(2024, 8, 28)
     assert follow_up(21, cut, [])["due"] == "2024-09-18"
     assert follow_up(7, [{"extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2024"}]}}], [])["due"] == "2025-02-14"
+    assert follow_up(7, old_cut := [{"extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2023"}]}}], [], since="2023-10-18")["due"] == "2025-02-14"
+    assert historic(old_cut, "2026-11-14T08:00:00")["how"] == "cut"
+    assert historic([{"extraction": {"segments": [{"date": "01.10.2025"}]}}], "2026-11-14T08:00:00")["newest"] == "2025-10-01"
+    assert historic([{"extraction": {"segments": [{"date": "20.11.2025"}]}}], "2026-11-14T08:00:00") is None
     assert follow_up(21, cut, [{"kind": "followup.set", "date": "2024-09-30", "expert": "x"}])["due"] == "2024-09-30"
     rules = [{"after": ["5"], "days": 90, "then": "A7", "deadline_days": 7}]
     looked = [{"extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2024"}]}}]
