@@ -24,6 +24,7 @@ DELEGATED = {
     "replay": ("quality.replay", "main", "apply a Knowledge version to the stored runs, without a model, and show what changes"),
     "drawio": ("process.drawio", "main", "turn a draw.io process diagram into a draft workflow"),
     "areas": ("process.area", "main", "validate the handler's area modules and show what each contains"),
+    "cover": ("process.cover", "main", "check the cover points and the passages of the conditions and the law they cite"),
     "mining": ("process.mining", "main", "reconstruct each real case's course and the pattern across cases"),
     "job": ("agents.core", "main", "run one agent job from JSON, as a queue worker would"),
     "parity": ("parity", "main", "what this deployment runs, as hashes, for comparison with another deployment"),

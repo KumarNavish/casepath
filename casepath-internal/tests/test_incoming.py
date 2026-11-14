@@ -20,6 +20,8 @@ CLAIM = ("eingang_kostenforderung", "Kanzlei Muster: Zwischenhonorarnote vom 202
 REPORT = ("eingang_mitwirkung", "Kanzlei Muster: Mandat niedergelegt am 2024-05-15, Unterlagen verweigert und Vorstrafe verschwiegen",
           "Trotz mehrfacher Aufforderung hat uns die Klientin die Lohnabrechnungen nicht eingereicht und uns eine Vorstrafe verschwiegen.")
 CASE = {"id": "c", "title": "Mandat (synthetisch) 1234.5678.9012", "intake": {}}
+WARNED = ("mahnung_androhung", "Protekta: Aufforderung vom 2024-05-20, Unterlagen bis 2024-06-03, sonst Leistungseinstellung",
+          "Erhalten wir die Unterlagen bis 3. Juni 2024 nicht, stellen wir unsere Leistungen ein.")  # the written demand (cover.py)
 
 
 def fact(fid, value, quote=None):
@@ -86,7 +88,8 @@ class IncomingTests(unittest.TestCase):
         self.assertNotIn("incoming", nxt)
 
     def test_d_the_firm_reports_non_cooperation_and_the_handler_decides_whether_benefits_end(self):
-        state, items, nxt, _ = prepared(MANDATE + [REPORT])
+        self.assertEqual(prepared(MANDATE + [REPORT])[2]["form"], "A6_androhung")  # without a written demand in the file: the demand first (cover.py)
+        state, items, nxt, _ = prepared(MANDATE + [REPORT, WARNED])
         self.assertEqual((nxt["action"], nxt["value"], nxt["form"]), ("A12", "Leistungen einstellen?", "A12_mitwirkung_entscheid"))
         self.assertEqual(draft(nxt, items), (None, "erst nach Ihrem Entscheid «Leistungen einstellen?»"))  # nothing drafted yet
         self.assertEqual(area.workflow("mietmangel-handler")["forms"]["A12_mitwirkung_entscheid"]["needs"], ["leistungen_einstellen"])
@@ -102,8 +105,13 @@ class IncomingTests(unittest.TestCase):
         self.assertIsNone(none)
         self.assertIn("Die von Ihnen beauftragte Kanzlei hat uns mit Schreiben vom 15.05.2024 mitgeteilt, dass Sie bei der Bearbeitung Ihres "
                       f"Falles nicht mitgewirkt haben: «{REPORT[2]}»", text)  # what the report says was withheld, in its words
-        self.assertIn("Damit haben Sie Ihre Pflicht zur Mitwirkung gemäss den Allgemeinen Versicherungsbedingungen ([bitte ergänzen: Ziffer der AVB]) verletzt.", text)
-        self.assertTrue(letters.has_gap(text))  # copying is blocked until the clause is filled in
+        # the clause by the edition of the conditions (private 01.2026 unless the handler says otherwise, cover.py)
+        self.assertIn("Damit haben Sie Ihre Pflicht zur Mitwirkung gemäss den Allgemeinen Versicherungsbedingungen (Art. M Ziff. 1 und 4) verletzt.", text)
+        other = [{"id": "e9", "op": "set_fact", "args": {"fact": "avb_ausgabe", "value": "andere Ausgabe"}, "status": "active"}]
+        state, items, nxt, _ = prepared(MANDATE + [REPORT], edits=decided("ja") + other)
+        text = draft(nxt, items)[0]
+        self.assertIn("Damit haben Sie Ihre Pflicht zur Mitwirkung gemäss den Allgemeinen Versicherungsbedingungen ([bitte ergänzen: Ziffer der Allgemeinen Bedingungen]) verletzt.", text)
+        self.assertTrue(letters.has_gap(text))  # another edition: copying is blocked until the clause is filled in
         self.assertNotRegex(text, r"Ziff(er)?\.? \d|Art\. \d")  # no invented clause
 
         state, items, nxt, _ = prepared(MANDATE + [REPORT], edits=decided("nein"))
@@ -140,7 +148,7 @@ class IncomingTests(unittest.TestCase):
         nxt = prepared(MANDATE + [report, CLAIM])[2]
         self.assertEqual((nxt["action"], [t["kind"] for t in nxt["then"]]), ("A11", ["bericht"]))
         self.assertEqual(nxt["then"][0]["action"], "Aktennotiz zum Bericht der Kanzlei")
-        nxt = prepared(MANDATE + [report, CLAIM, REPORT])[2]
+        nxt = prepared(MANDATE + [report, CLAIM, REPORT, WARNED])[2]
         self.assertEqual((nxt["form"], [t["kind"] for t in nxt["then"]]), ("A12_mitwirkung_entscheid", ["kostenforderung", "bericht"]))
         nxt = prepared(MANDATE + [report])[2]
         self.assertEqual((nxt["action"], nxt["form"]), ("A2", "A2_bericht"))  # a report alone: a file note, no stage change
