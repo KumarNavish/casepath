@@ -1,0 +1,79 @@
+{
+ "format": "casepath.area/1",
+ "id": "schaden-unfall",
+ "version": "2026-11-14.2",
+ "backbone": "2026-11-14.2",
+ "short_title": "Unfall und Schadenersatz",
+ "title": "Schadenersatz und Genugtuung nach einem Unfall: Haftung, Personen- und Sachschaden, Verjährung (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220): Haftung aus unerlaubter Handlung (Art. 41 ff., 60 OR) und Verjährung (Art. 132, 135 OR)"}
+ ],
+ "law": {
+  "41": {"cite": "Art. 41 Abs. 1 OR", "sr": "220", "article": "41", "passage": "Wer einem andern widerrechtlich Schaden zufügt, sei es mit Absicht, sei es aus Fahrlässigkeit, wird ihm zum Ersatze verpflichtet.", "verified": true},
+  "42": {"cite": "Art. 42 Abs. 1 OR", "sr": "220", "article": "42", "passage": "Wer Schadenersatz beansprucht, hat den Schaden zu beweisen.", "verified": true},
+  "42.2": {"cite": "Art. 42 Abs. 2 OR", "sr": "220", "article": "42", "passage": "Der nicht ziffernmässig nachweisbare Schaden ist nach Ermessen des Richters mit Rücksicht auf den gewöhnlichen Lauf der Dinge und auf die vom Geschädigten getroffenen Massnahmen abzuschätzen.", "verified": true},
+  "44": {"cite": "Art. 44 Abs. 1 OR", "sr": "220", "article": "44", "passage": "oder haben Umstände, für die er einstehen muss, auf die Entstehung oder Verschlimmerung des Schadens eingewirkt oder die Stellung des Ersatzpflichtigen sonst erschwert, so kann der Richter die Ersatzpflicht ermässigen oder gänzlich von ihr entbinden.", "verified": true},
+  "46": {"cite": "Art. 46 Abs. 1 OR", "sr": "220", "article": "46", "passage": "Körperverletzung gibt dem Verletzten Anspruch auf Ersatz der Kosten, sowie auf Entschädigung für die Nachteile gänzlicher oder teilweiser Arbeitsunfähigkeit, unter Berücksichtigung der Erschwerung des wirtschaftlichen Fortkommens.", "verified": true},
+  "47": {"cite": "Art. 47 OR", "sr": "220", "article": "47", "passage": "Bei Tötung eines Menschen oder Körperverletzung kann der Richter unter Würdigung der besonderen Umstände dem Verletzten oder den Angehörigen des Getöteten eine angemessene Geldsumme als Genugtuung zusprechen.", "verified": true},
+  "60": {"cite": "Art. 60 Abs. 1 OR", "sr": "220", "article": "60", "passage": "Der Anspruch auf Schadenersatz oder Genugtuung verjährt mit Ablauf von drei Jahren von dem Tage an gerechnet, an welchem der Geschädigte Kenntnis vom Schaden und von der Person des Ersatzpflichtigen erlangt hat,", "verified": true},
+  "60.abs": {"cite": "Art. 60 Abs. 1 OR", "sr": "220", "article": "60", "passage": "jedenfalls aber mit Ablauf von zehn Jahren, vom Tage an gerechnet, an welchem das schädigende Verhalten erfolgte oder aufhörte.", "verified": true},
+  "60.1bis": {"cite": "Art. 60 Abs. 1bis OR", "sr": "220", "article": "60", "passage": "jedenfalls aber mit Ablauf von zwanzig Jahren, vom Tage an gerechnet, an welchem das schädigende Verhalten erfolgte oder aufhörte.", "verified": true},
+  "60.2": {"cite": "Art. 60 Abs. 2 OR", "sr": "220", "article": "60", "passage": "Hat die ersatzpflichtige Person durch ihr schädigendes Verhalten eine strafbare Handlung begangen, so verjährt der Anspruch auf Schadenersatz oder Genugtuung ungeachtet der vorstehenden Absätze frühestens mit Eintritt der strafrechtlichen Verfolgungsverjährung.", "verified": true},
+  "verj-132": {"cite": "Art. 132 Abs. 1 OR", "sr": "220", "article": "132", "passage": "Bei der Berechnung der Frist ist der Tag, von dem an die Verjährung läuft, nicht mitzurechnen und die Verjährung erst dann als beendigt zu betrachten, wenn der letzte Tag unbenützt verstrichen ist.", "verified": true},
+  "135": {"cite": "Art. 135 OR", "sr": "220", "article": "135", "passage": "Die Verjährung wird unterbrochen: 1. durch Anerkennung der Forderung von seiten des Schuldners, namentlich auch durch Zins- und Abschlagszahlungen, Pfand- und Bürgschaftsbestellung; 2. durch Schuldbetreibung, durch Schlichtungsgesuch, durch Klage oder Einrede", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Schadenersatzrecht / Unfall, Personen- oder Sachschaden"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Schadenersatzrecht / Unfall, Personen- oder Sachschaden"], "question": "Verlangt die Kundschaft von einer anderen Person (oder deren Haftpflichtversicherung) Schadenersatz oder Genugtuung, weil diese sie bei einem Unfall oder sonst verletzt oder ihr Sachen beschädigt hat?", "source_refs": ["law#41"],
+   "not_this": ["Streit mit der eigenen Versicherung über deren Leistung: Privat- oder Sozialversicherungsrecht", "Mangel einer gekauften Sache oder eines bestellten Werks: Vertragsrecht", "Strafverfahren gegen die Kundschaft selbst, etwa ein Strafbefehl nach dem Unfall: Strafrecht"]},
+  {"id": "unfalldatum", "type": "date", "question": "An welchem Tag ereignete sich der Unfall oder das schädigende Ereignis?", "source_refs": ["law#60.abs", "law#60.1bis"], "ask_customer": true, "customer_question": "An welchem Tag ereignete sich der Unfall?"},
+  {"id": "kenntnis", "type": "date", "question": "An welchem Tag kannte die Kundschaft den Schaden und die Person, die ihn verursacht hat (beides; nicht das Datum der Meldung an eine Versicherung)?", "source_refs": ["law#60"], "ask_customer": true, "customer_question": "Seit wann wissen Sie, wer den Schaden verursacht hat, und seit wann kennen Sie den Schaden?",
+   "not_this": ["Datum der Schadenmeldung an eine Versicherung", "Datum eines Polizeirapports oder Arztberichts, wenn die Kundschaft Schaden und Person schon vorher kannte"]},
+  {"id": "koerperverletzung", "type": "boolean", "question": "Wurde die Kundschaft (oder eine ihr nahestehende Person) verletzt oder getötet, nicht nur eine Sache beschädigt?", "source_refs": ["law#46", "law#47", "law#60.1bis"], "ask_customer": true, "customer_question": "Wurden Sie beim Unfall verletzt?"},
+  {"id": "polizei", "type": "boolean", "question": "Hat die Polizei den Unfall aufgenommen (Polizeirapport)?", "source_refs": ["law#41"], "ask_customer": "offered", "customer_question": "Hat die Polizei den Unfall aufgenommen? Wenn ja, welcher Polizeiposten?"},
+  {"id": "strafverfahren", "type": "boolean", "question": "Läuft oder lief gegen die verursachende Person ein Strafverfahren wegen des Unfalls (Anzeige, Strafbefehl, Urteil)?", "source_refs": ["law#60.2"],
+   "not_this": ["ein Strafverfahren gegen die Kundschaft selbst"]},
+  {"id": "arbeitsunfaehig", "type": "boolean", "question": "War oder ist die Kundschaft wegen des Unfalls ganz oder teilweise arbeitsunfähig?", "source_refs": ["law#46"], "ask_customer": "offered", "customer_question": "Waren oder sind Sie wegen des Unfalls arbeitsunfähig? Wenn ja, seit wann und zu wie viel Prozent?"},
+  {"id": "mitverschulden", "type": "boolean", "question": "Wirft die Gegenseite oder ihre Versicherung der Kundschaft vor, selbst zum Unfall oder zum Schaden beigetragen zu haben?", "source_refs": ["law#44"]},
+  {"id": "schadenposten", "type": "text", "question": "Welche Schäden macht die Kundschaft geltend (Reparatur oder Wert der Sache, Heilungskosten, Erwerbsausfall, Genugtuung) und in welcher Höhe?", "source_refs": ["law#42", "law#46", "law#47"], "ask_customer": true, "customer_question": "Welche Schäden möchten Sie geltend machen (z.B. Reparatur, Heilungskosten, Lohnausfall, Genugtuung), und in welcher Höhe ungefähr?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer hat den Schaden verursacht, und wer ist dessen Haftpflichtversicherung?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Versicherung, Strafbehörde, Gericht)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "unfallprotokoll", "title": "Unfallprotokoll oder Schilderung des Hergangs mit Skizze, Fotos und Namen von Zeuginnen und Zeugen", "why": "Ersatzpflichtig ist, wer widerrechtlich und schuldhaft Schaden zufügt (Art. 41 OR); das zeigt der Hergang.", "source_refs": ["law#41"], "stage": "klaeren"},
+  {"id": "polizeirapport", "title": "Polizeirapport", "why": "Hält Hergang, Beteiligte und Spuren amtlich fest; daraus ergibt sich, wer den Schaden widerrechtlich und schuldhaft verursacht hat (Art. 41 OR).", "required_when": {"fact": "polizei", "is": true}, "source_refs": ["law#41"], "stage": "klaeren"},
+  {"id": "arztberichte", "title": "Arztberichte und Arbeitsunfähigkeitszeugnisse", "why": "Bei Körperverletzung sind die Kosten und die Nachteile der Arbeitsunfähigkeit zu ersetzen und kann eine Genugtuung zugesprochen werden (Art. 46, 47 OR); beides ist ärztlich zu belegen.", "required_when": {"fact": "koerperverletzung", "is": true}, "source_refs": ["law#46", "law#47"], "stage": "klaeren"},
+  {"id": "schadenbelege", "title": "Belege des Schadens (Rechnungen, Quittungen, Kostenvoranschlag oder Reparaturrechnung)", "why": "Wer Schadenersatz verlangt, muss den Schaden beweisen (Art. 42 OR).", "source_refs": ["law#42", "law#42.2"], "stage": "klaeren"},
+  {"id": "lohnausfall", "title": "Belege des Erwerbsausfalls (Lohnabrechnungen vor und nach dem Unfall, Bestätigung der Arbeitgeberin)", "why": "Die Nachteile gänzlicher oder teilweiser Arbeitsunfähigkeit sind zu ersetzen (Art. 46 OR); ihr Umfang ist zu belegen (Art. 42 OR).", "required_when": {"fact": "arbeitsunfaehig", "is": true}, "source_refs": ["law#46", "law#42"], "stage": "klaeren"},
+  {"id": "versicherer", "title": "Sämtliche Korrespondenz mit Versicherungen (Haftpflichtversicherung der Gegenseite, eigene Unfall-, Kranken- oder Kaskoversicherung)", "why": "Zeigt, was angemeldet, anerkannt oder bezahlt wurde; eine Anerkennung, auch durch eine Abschlagszahlung, unterbricht die Verjährung (Art. 135 OR).", "source_refs": ["law#135"], "stage": "klaeren"},
+  {"id": "strafakten", "title": "Strafbefehl oder Urteil gegen die verursachende Person", "why": "Bei einer strafbaren Handlung verjährt der Anspruch frühestens mit der strafrechtlichen Verfolgungsverjährung (Art. 60 Abs. 2 OR).", "required_when": {"fact": "strafverfahren", "is": true}, "source_refs": ["law#60.2"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "beweis", "when": true, "text": "Wer Schadenersatz verlangt, muss den Schaden beweisen. Bitte bewahren Sie alle Rechnungen, Quittungen und Belege auf und halten Sie Hergang, Zeugen und Fotos fest.", "legal_basis": "Art. 42 OR", "source_refs": ["law#42"]},
+  {"id": "verjaehrung", "when": true, "text": "Ansprüche auf Schadenersatz und Genugtuung verjähren drei Jahre nach Kenntnis vom Schaden und von der ersatzpflichtigen Person; unterbrochen wird die Verjährung etwa durch eine Anerkennung der Gegenseite, auch durch eine Abschlagszahlung, oder durch Betreibung, Schlichtungsgesuch oder Klage.", "legal_basis": "Art. 60, 135 OR", "source_refs": ["law#60", "law#135"]},
+  {"id": "genugtuung", "when": {"fact": "koerperverletzung", "is": true}, "text": "Bei einer Körperverletzung sind die Kosten und die Nachteile der Arbeitsunfähigkeit zu ersetzen; zusätzlich kann eine Genugtuung zugesprochen werden.", "legal_basis": "Art. 46, 47 OR", "source_refs": ["law#46", "law#47"]},
+  {"id": "mitverschulden", "when": {"fact": "mitverschulden", "is": true}, "text": "Hat die geschädigte Person selbst zur Entstehung oder Verschlimmerung des Schadens beigetragen, kann die Ersatzpflicht ermässigt werden.", "legal_basis": "Art. 44 OR", "source_refs": ["law#44"]},
+  {"id": "strafverfahren", "when": {"fact": "strafverfahren", "is": true}, "text": "Hat die verursachende Person mit dem Unfall eine strafbare Handlung begangen, verjährt der Anspruch frühestens mit der strafrechtlichen Verfolgungsverjährung.", "legal_basis": "Art. 60 Abs. 2 OR", "source_refs": ["law#60.2"]}
+ ],
+ "stages": {
+  "klaeren": {"source_refs": ["law#42"]},
+  "beurteilen": {"source_refs": ["law#41", "law#44", "law#46", "law#47", "law#60"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich ist zum Ersatz verpflichtet, wer einem andern widerrechtlich, mit Absicht oder aus Fahrlässigkeit, Schaden zufügt (Art. 41 OR); bei einer Körperverletzung umfasst der Ersatz die Kosten und die Nachteile der Arbeitsunfähigkeit (Art. 46 OR), und es kann eine Genugtuung zugesprochen werden (Art. 47 OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass der Schaden bewiesen ist (Art. 42 OR) und der Anspruch nicht verjährt ist, in der Regel drei Jahre nach Kenntnis vom Schaden und von der ersatzpflichtigen Person (Art. 60 OR); hat die geschädigte Person selbst zum Schaden beigetragen, kann der Ersatz ermässigt werden (Art. 44 OR)."},
+  "demand": {"text": "Wir fordern Sie auf, uns bis {frist} mitzuteilen, ob Sie Ihre Haftung anerkennen, und uns Ihre Haftpflichtversicherung zu nennen; alle Ansprüche unserer Kundschaft auf Schadenersatz und Genugtuung (Art. 41 ff. OR) bleiben ausdrücklich vorbehalten."}
+ },
+ "deadlines": [
+  {"id": "verjaehrung_relativ", "title": "Verjährung des Anspruchs auf Schadenersatz oder Genugtuung", "trigger": "kenntnis", "period": {"years": 3}, "from": "nach Kenntnis vom Schaden und von der ersatzpflichtigen Person", "check": "Zeitpunkt der Kenntnis prüfen; bei einer strafbaren Handlung frühestens mit der strafrechtlichen Verfolgungsverjährung (Art. 60 Abs. 2 OR); eine Unterbrechung prüfen (Art. 135 OR)", "basis": "Art. 60 Abs. 1 OR", "missed": "Danach ist der Anspruch auf Schadenersatz oder Genugtuung verjährt.", "question": "Seit wann wissen Sie, wer den Schaden verursacht hat, und seit wann kennen Sie den Schaden?", "source_refs": ["law#60", "law#verj-132", "law#60.2", "law#135"], "party": "kunde"},
+  {"id": "verjaehrung_absolut", "title": "Höchstfrist der Verjährung bei Sachschaden", "trigger": "unfalldatum", "period": {"years": 10}, "from": "nach dem schädigenden Verhalten", "when": {"fact": "koerperverletzung", "is": false}, "when_text": "nur wenn niemand verletzt oder getötet wurde", "check": "dauerte das schädigende Verhalten an, läuft die Frist ab seinem Ende, prüfen", "basis": "Art. 60 Abs. 1 OR", "missed": "Danach ist der Anspruch jedenfalls verjährt, auch wenn Schaden oder ersatzpflichtige Person erst später bekannt wurden.", "question": "An welchem Tag ereignete sich der Unfall?", "source_refs": ["law#60.abs", "law#verj-132"], "party": "kunde"},
+  {"id": "verjaehrung_absolut_koerper", "title": "Höchstfrist der Verjährung bei Körperverletzung", "trigger": "unfalldatum", "period": {"years": 20}, "from": "nach dem schädigenden Verhalten", "when": {"fact": "koerperverletzung", "is": true}, "when_text": "nur bei Körperverletzung oder Tötung", "check": "dauerte das schädigende Verhalten an, läuft die Frist ab seinem Ende, prüfen", "basis": "Art. 60 Abs. 1bis OR", "missed": "Danach ist der Anspruch jedenfalls verjährt, auch wenn Schaden oder ersatzpflichtige Person erst später bekannt wurden.", "question": "An welchem Tag ereignete sich der Unfall?", "source_refs": ["law#60.1bis", "law#verj-132"], "party": "kunde"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": [
+  {"text": "Bei einem Unfall mit einem Motorfahrzeug haften nach dem Strassenverkehrsgesetz (SR 741.01) der Halter und, mit einem unmittelbaren Forderungsrecht, seine Haftpflichtversicherung; die Verjährung richtet sich auch dort nach den Bestimmungen des Obligationenrechts über die unerlaubten Handlungen. Diese Artikel sind am amtlichen Text geprüft, hier aber nicht zitiert, weil der Backbone SR 741.01 nicht führt: prüfen.", "source_refs": ["law#41", "law#60"]}
+ ]
+}

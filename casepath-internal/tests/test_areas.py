@@ -116,7 +116,7 @@ class CompositionTests(unittest.TestCase):
 
     def test_every_shipped_area_is_valid_draft_cited_and_labelled(self):
         rows = area.shipped()
-        self.assertEqual(len(rows), 10)
+        self.assertEqual(len(rows), 15)
         for w in rows:
             self.assertEqual(w["status"], "draft")
             practice = w["id"] == "mietmangel-handler"
@@ -378,7 +378,7 @@ class RoutingTests(unittest.TestCase):
             self.assertEqual(decision["workflow"]["id"], w["id"])
         nothing = workflows.route(full, {})
         self.assertEqual((nothing["status"], nothing["workflow"]["id"], nothing["needs"]), ("fallback", "allgemein", ["rechtsgebiet"]))
-        self.assertEqual(len(nothing["candidates"]), 9)  # never "kein Prozess": the general one, the others named for a person
+        self.assertEqual(len(nothing["candidates"]), 14)  # never "kein Prozess": the general one, the others named for a person
         self.assertEqual(workflows.route(full, {"rechtsgebiet": "Übriges Recht"})["workflow"]["id"], "allgemein")
         self.assertEqual(full.routing_facts()[0]["question"], "Um welches Rechtsgebiet und welches Anliegen geht es (z.B. «Mietrecht / Kündigung»)?")
 

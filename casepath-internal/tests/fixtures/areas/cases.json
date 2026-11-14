@@ -291,5 +291,253 @@
   ],
   "hint": "Art. 8 ZGB",
   "deadlines": {}
+ },
+ "schaden-unfall": {
+  "title": "Unfall: Velo gegen Auto an der Kreuzung Musterstrasse",
+  "text": "SYNTHETISCHER FALL. Am 14. Oktober 2026 fuhr mir an der Kreuzung Musterstrasse/Testweg in Beispielstadt eine Autolenkerin beim Linksabbiegen in mein Velo. Sie gab mir noch am Unfallort ihren Namen, Petra Beispiel, und den Namen ihrer Haftpflichtversicherung. Die Polizei nahm den Unfall auf. Ich brach mir das Handgelenk und bin seither voll arbeitsunfähig. Ihre Versicherung schreibt, ich sei zu schnell gefahren. Karl Muster",
+  "routing": [
+   "Schadenersatzrecht / Unfall, Personen- oder Sachschaden",
+   "eine Autolenkerin beim Linksabbiegen in mein Velo"
+  ],
+  "facts": [
+   [
+    "unfalldatum",
+    "2026-10-14",
+    "Am 14. Oktober 2026 fuhr mir an der Kreuzung Musterstrasse/Testweg in Beispielstadt eine Autolenkerin beim Linksabbiegen in mein Velo."
+   ],
+   [
+    "kenntnis",
+    "2026-10-14",
+    "Sie gab mir noch am Unfallort ihren Namen, Petra Beispiel, und den Namen ihrer Haftpflichtversicherung."
+   ],
+   [
+    "koerperverletzung",
+    "ja",
+    "Ich brach mir das Handgelenk"
+   ],
+   [
+    "polizei",
+    "ja",
+    "Die Polizei nahm den Unfall auf."
+   ],
+   [
+    "arbeitsunfaehig",
+    "ja",
+    "bin seither voll arbeitsunfähig"
+   ],
+   [
+    "mitverschulden",
+    "ja",
+    "Ihre Versicherung schreibt, ich sei zu schnell gefahren."
+   ]
+  ],
+  "documents": [
+   "Unfallprotokoll oder Schilderung des Hergangs mit Skizze, Fotos und Namen von Zeuginnen und Zeugen",
+   "Polizeirapport",
+   "Arztberichte und Arbeitsunfähigkeitszeugnisse",
+   "Belege des Schadens (Rechnungen, Quittungen, Kostenvoranschlag oder Reparaturrechnung)",
+   "Belege des Erwerbsausfalls (Lohnabrechnungen vor und nach dem Unfall, Bestätigung der Arbeitgeberin)",
+   "Sämtliche Korrespondenz mit Versicherungen (Haftpflichtversicherung der Gegenseite, eigene Unfall-, Kranken- oder Kaskoversicherung)"
+  ],
+  "questions": [
+   "schadenposten"
+  ],
+  "hint": "Art. 42 OR",
+  "deadlines": {
+   "verjaehrung_relativ": "2029-10-15",
+   "verjaehrung_absolut_koerper": "2046-10-15"
+  }
+ },
+ "werkvertrag-bau": {
+  "title": "Badumbau: undichte Dusche, Forderung der Subunternehmerin",
+  "text": "SYNTHETISCHER FALL. Die Beispiel Bau GmbH hat in unserem eigenen Einfamilienhaus an der Testgasse 9 in Beispielstadt das Badezimmer umgebaut. Die letzten Arbeiten waren am 2. Oktober 2026 fertig, am 9. Oktober 2026 haben wir das Bad mit einem Abnahmeprotokoll abgenommen. Am 28. Oktober 2026 haben wir bemerkt, dass die Dusche undicht ist und Wasser in die Wand läuft. Die Plattenlegerin, eine Subunternehmerin der Beispiel Bau GmbH, verlangt nun direkt von uns Geld. Lea Muster",
+  "routing": [
+   "Vertragsrecht / Werkvertrag (Handwerker, Bau)",
+   "Die Beispiel Bau GmbH hat in unserem eigenen Einfamilienhaus an der Testgasse 9 in Beispielstadt das Badezimmer umgebaut."
+  ],
+  "facts": [
+   [
+    "unbeweglich",
+    "ja",
+    "in unserem eigenen Einfamilienhaus an der Testgasse 9 in Beispielstadt das Badezimmer umgebaut"
+   ],
+   [
+    "eigentuemer",
+    "ja",
+    "in unserem eigenen Einfamilienhaus"
+   ],
+   [
+    "vollendung",
+    "2026-10-02",
+    "Die letzten Arbeiten waren am 2. Oktober 2026 fertig"
+   ],
+   [
+    "abnahme",
+    "2026-10-09",
+    "am 9. Oktober 2026 haben wir das Bad mit einem Abnahmeprotokoll abgenommen"
+   ],
+   [
+    "mangel_entdeckt",
+    "2026-10-28",
+    "Am 28. Oktober 2026 haben wir bemerkt, dass die Dusche undicht ist und Wasser in die Wand läuft."
+   ],
+   [
+    "subunternehmer",
+    "ja",
+    "Die Plattenlegerin, eine Subunternehmerin der Beispiel Bau GmbH, verlangt nun direkt von uns Geld."
+   ]
+  ],
+  "documents": [
+   "Werkvertrag oder Offerte mit Auftragsbestätigung, mit den vereinbarten allgemeinen Bedingungen",
+   "Abnahmeprotokoll oder Nachweis der Übergabe des Werks",
+   "Belege der Mängel (Fotos, Bericht einer Fachperson oder Gutachten, Kostenvoranschlag für die Behebung)",
+   "Rechnungen des Unternehmers und Belege der bisherigen Zahlungen",
+   "Liste der Subunternehmer und Lieferanten mit ihren Rechnungen oder Forderungen",
+   "Korrespondenz mit dem Unternehmer (auch E-Mails, Baustellenprotokolle, Gesprächsnotizen)"
+  ],
+  "questions": [
+   "geruegt",
+   "ziel"
+  ],
+  "hint": "Art. 367, 370 OR",
+  "deadlines": {
+   "ruege_ablieferung": "2026-12-08",
+   "ruege_entdeckung": "2026-12-28",
+   "verjaehrung_unbeweglich": "2031-10-09",
+   "bauhandwerkerpfand": "2027-02-02"
+  }
+ },
+ "erbrecht": {
+  "title": "Erbschaft des Vaters mit Betreibungen",
+  "text": "SYNTHETISCHER FALL. Mein Vater, Hans Beispiel, ist am 20. Oktober 2026 in Beispielstadt gestorben; das Pflegeheim hat mich noch am gleichen Tag informiert. Er hinterliess kein Testament. Gegen ihn sind mehrere Betreibungen hängig, und ich fürchte, dass die Schulden grösser sind als sein Vermögen. Nina Muster",
+  "routing": [
+   "Erbrecht / Ausschlagung, Pflichtteil",
+   "Mein Vater, Hans Beispiel, ist am 20. Oktober 2026 in Beispielstadt gestorben"
+  ],
+  "facts": [
+   [
+    "todestag",
+    "2026-10-20",
+    "Mein Vater, Hans Beispiel, ist am 20. Oktober 2026 in Beispielstadt gestorben"
+   ],
+   [
+    "tod_bekannt",
+    "2026-10-20",
+    "das Pflegeheim hat mich noch am gleichen Tag informiert"
+   ],
+   [
+    "verfuegung",
+    "nein",
+    "Er hinterliess kein Testament."
+   ],
+   [
+    "eingesetzt",
+    "nein",
+    "Er hinterliess kein Testament."
+   ],
+   [
+    "ueberschuldet",
+    "ja",
+    "Gegen ihn sind mehrere Betreibungen hängig, und ich fürchte, dass die Schulden grösser sind als sein Vermögen."
+   ]
+  ],
+  "documents": [
+   "Todesschein oder amtliche Mitteilung des Todesfalls",
+   "Unterlagen zu Vermögen und Schulden der verstorbenen Person (Kontoauszüge, letzte Steuererklärung, Betreibungsregisterauszug, offene Rechnungen)",
+   "Korrespondenz mit Behörde, Notariat, Willensvollstrecker und Miterben"
+  ],
+  "questions": [
+   "will_ausschlagen"
+  ],
+  "hint": "Art. 567, 570 ZGB",
+  "deadlines": {
+   "ausschlagung_gesetzlich": "2027-01-20"
+  }
+ },
+ "nachbarrecht": {
+  "title": "Nachbarhecke: Äste und Wurzeln über der Grenze",
+  "text": "SYNTHETISCHER FALL. Unser Nachbar, Herr Otto Beispiel, Testweg 5 in Beispielstadt, hat an der Grenze eine Thujahecke, deren Äste weit über unseren Gartensitzplatz ragen; die Wurzeln heben unsere Gartenplatten an. Wir haben ihn am 1. September 2026 schriftlich gebeten, die Hecke bis Ende September zurückzuschneiden; er hat nicht reagiert. Das Haus gehört uns. Mia Muster",
+  "routing": [
+   "Nachbarrecht / Einwirkungen, Pflanzen, Grenzen",
+   "hat an der Grenze eine Thujahecke, deren Äste weit über unseren Gartensitzplatz ragen"
+  ],
+  "facts": [
+   [
+    "aeste_wurzeln",
+    "ja",
+    "deren Äste weit über unseren Gartensitzplatz ragen; die Wurzeln heben unsere Gartenplatten an"
+   ],
+   [
+    "schaden",
+    "ja",
+    "die Wurzeln heben unsere Gartenplatten an"
+   ],
+   [
+    "beschwerde",
+    "ja",
+    "Wir haben ihn am 1. September 2026 schriftlich gebeten, die Hecke bis Ende September zurückzuschneiden"
+   ],
+   [
+    "eigentuemer",
+    "ja",
+    "Das Haus gehört uns."
+   ]
+  ],
+  "documents": [
+   "Protokoll der Störungen (Datum, Uhrzeit, Dauer und Art der Einwirkung)",
+   "Fotos, Videos oder Messungen der Einwirkung (z.B. Äste, Wurzeln, Schäden, Lärm)",
+   "Beschwerde an den Nachbarn mit Fristansetzung und seine Antwort",
+   "Grundbuchauszug und Situationsplan mit dem Grenzverlauf",
+   "Belege des Schadens (Rechnungen, Kostenvoranschlag, Bericht einer Fachperson)",
+   "Korrespondenz mit dem Nachbarn, der Verwaltung oder Behörden"
+  ],
+  "questions": [
+   "art_stoerung"
+  ],
+  "hint": "Art. 684 ZGB",
+  "deadlines": {}
+ },
+ "inkasso": {
+  "title": "Restkaufpreis für ein privat verkauftes Auto",
+  "text": "SYNTHETISCHER FALL. Ich habe am 1. August 2026 mein Auto privat an Herrn Max Beispiel verkauft, für CHF 6'000. Er hat CHF 4'000 bezahlt; den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen. Ich habe ihn am 15. September 2026 schriftlich gemahnt, er hat nicht reagiert. Sara Muster",
+  "routing": [
+   "Inkasso-Rechtsschutz / offene Forderung der Kundschaft",
+   "den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen"
+  ],
+  "facts": [
+   [
+    "forderung",
+    "Restkaufpreis von CHF 2'000 aus dem privaten Verkauf eines Autos an Max Beispiel",
+    "Er hat CHF 4'000 bezahlt; den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen."
+   ],
+   [
+    "faelligkeit",
+    "2026-08-31",
+    "den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen"
+   ],
+   [
+    "gemahnt",
+    "ja",
+    "Ich habe ihn am 15. September 2026 schriftlich gemahnt"
+   ],
+   [
+    "fuenf_jahre",
+    "nein",
+    "Ich habe am 1. August 2026 mein Auto privat an Herrn Max Beispiel verkauft"
+   ]
+  ],
+  "documents": [
+   "Vertrag, Bestellung oder Auftragsbestätigung, aus dem die Forderung entsteht",
+   "Rechnung mit Zahlungsfrist",
+   "Schriftliche Mahnung an den Schuldner",
+   "Korrespondenz mit dem Schuldner, insbesondere Einwände, Zahlungsversprechen und Belege von Teilzahlungen"
+  ],
+  "questions": [
+   "bestritten"
+  ],
+  "hint": "Art. 102, 104 OR",
+  "deadlines": {
+   "verjaehrung_zehn": "2036-09-01"
+  }
  }
 }
