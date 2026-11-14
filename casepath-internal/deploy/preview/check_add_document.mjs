@@ -8,7 +8,7 @@ let actions = 0;
 const field = await box("#add-doc"); if (!field) { console.log("no add-doc field"); process.exit(0); }
 await p.mouse.click(field.x, field.y); await p.keyboard.type("Wohnungsabnahmeprotokoll"); await p.keyboard.press("Enter"); actions++; await sleep(1500);
 const chip = await box("[data-add-doc-reason]"); await p.mouse.click(chip.x, chip.y); actions++; await sleep(2500);
-const ticked = await p.evaluate(() => [...document.querySelectorAll(".cp-checklist li")].some((li) => li.textContent.includes("Wohnungsabnahmeprotokoll") && (li.querySelector("input[type=checkbox]") || {}).checked));
-const inLetter = await p.evaluate(() => (document.querySelector("pre[data-item='letter:0']") || {}).innerText?.includes("Wohnungsabnahmeprotokoll") || false);
+const ticked = await p.evaluate(() => [...document.querySelectorAll(".cp-checklist li.cp-line")].some((li) => li.textContent.includes("Wohnungsabnahmeprotokoll") && (li.querySelector("input[type=checkbox]") || {}).checked));
+const inLetter = await p.evaluate(() => [...document.querySelectorAll("[data-item='letter:0'] li[data-text]")].some((li) => li.dataset.text.includes("Wohnungsabnahmeprotokoll")));
 console.log("actions " + actions + " · ticked in the checklist " + ticked + " · in the letter " + inLetter);
 await p.close();

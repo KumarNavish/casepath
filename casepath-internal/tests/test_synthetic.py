@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 import tempfile
+import time
 import unittest
 
 from pypdf import PdfReader
@@ -145,3 +146,12 @@ class SyntheticTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class RepeatableRenderTests(unittest.TestCase):
+    def test_the_same_case_renders_to_the_same_bytes_so_a_package_tree_hash_repeats(self):
+        for kind, render in (("digital", synthetic.render_digital), ("scanned", synthetic.render_scanned)):
+            with self.subTest(kind):
+                first = render(CASE["documents"][1], CASE)
+                time.sleep(1.1)  # a date stamp would differ by now
+                self.assertEqual(first, render(CASE["documents"][1], CASE))

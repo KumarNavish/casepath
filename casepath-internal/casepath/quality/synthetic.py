@@ -23,6 +23,7 @@
 Run inside Mobiliar with ``python -m casepath synthetic --help``. Only generated cases that pass the
 guard, and judge scorecards, may leave.
 """
+import time
 import argparse
 import base64
 from concurrent.futures import ThreadPoolExecutor
@@ -233,7 +234,7 @@ def render_digital(document, case):
     from reportlab.pdfgen import canvas
 
     buffer = io.BytesIO()
-    pdf = canvas.Canvas(buffer, pagesize=A4, pageCompression=1)
+    pdf = canvas.Canvas(buffer, pagesize=A4, pageCompression=1, invariant=1)  # fixed dates and id: the same case gives the same bytes
     pdf.setTitle(document["title"])
     width, height = A4
     rng = random.Random(_seed(case, document))
@@ -354,14 +355,18 @@ def render_scanned(document, case, dpi=110):
             hole_y = page_h // 2 + rng.randint(-40, 40)
             marks.ellipse([18, hole_y, 18 + dpi // 4, hole_y + dpi // 4], fill=rng.randint(30, 70))
         page = page.rotate(rng.uniform(-1.1, 1.1), expand=False, fillcolor=rng.randint(200, 235))
-        noise = Image.effect_noise(page.size, rng.uniform(8, 18)).convert("L")
+        # Noise from the case's own seeded generator (Image.effect_noise is unseeded): uniform bytes scaled to the spread.
+        sigma = rng.uniform(8, 18)
+        noise = Image.frombytes("L", page.size, rng.randbytes(page.size[0] * page.size[1])).point(
+            lambda v, s=sigma: max(0, min(255, int(128 + (v - 128) * s / 74))))
         page = Image.blend(page, noise, rng.uniform(0.05, 0.09)).filter(ImageFilter.GaussianBlur(rng.uniform(0.3, 0.7)))
         page = page.point(lambda v, g=rng.uniform(0.85, 1.0): int(255 * (v / 255) ** g))
         out = io.BytesIO()
         page.save(out, format="JPEG", quality=rng.randint(55, 75))
         finished.append(Image.open(io.BytesIO(out.getvalue())).convert("L"))
     buffer = io.BytesIO()
-    finished[0].save(buffer, format="PDF", save_all=True, append_images=finished[1:], resolution=dpi)
+    fixed = time.strptime("2025-01-01", "%Y-%m-%d")  # fixed dates: the same case gives the same bytes, so a package's tree hash repeats
+    finished[0].save(buffer, format="PDF", save_all=True, append_images=finished[1:], resolution=dpi, creationDate=fixed, modDate=fixed)
     return buffer.getvalue()
 
 

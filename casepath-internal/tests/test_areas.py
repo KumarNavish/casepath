@@ -52,7 +52,9 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual([f for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
         self.assertEqual([s for s in composed["steps"] if s["id"] != "klaeren"], [s for s in FROZEN["steps"] if s["id"] != "klaeren"])
-        self.assertEqual({k: v for k, v in composed["forms"].items() if k != "A5"}, {k: v for k, v in FROZEN["forms"].items() if k != "A5"})
+        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k != "A5"},
+                         {k: v for k, v in FROZEN["forms"].items() if k != "A5"})
+        self.assertEqual((composed["forms"]["A1"]["needs"], composed["forms"]["A8"]["needs"]), ([], ["deckung", "vorgehen"]))
         self.assertEqual(composed["short_title"], "Mietmangel")
         self.assertEqual(composed["action_kinds"]["A1"]["depends_on"], [])  # the cover decision does not block the first request
         self.assertIn("deckung", composed["action_kinds"]["A5"]["depends_on"])

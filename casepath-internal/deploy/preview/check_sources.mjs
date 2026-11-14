@@ -4,7 +4,7 @@ const t = await taskSpace(0); const p = await t.newPage(); const sleep=ms=>new P
 const url = "http://127.0.0.1:8790/?lang=de#/case/CASE_ID/overview";
 await p.goto(url); await sleep(3500);
 const targets = await p.evaluate(() => {
-  const L = [...document.querySelectorAll(".cp-checklist li")].map((li, n) => ({ what: "line " + n, sel: li.querySelector("[data-cite-file]") ? "cite" : li.querySelector("[data-step-link]") ? "rule" : null, n }));
+  const L = [...document.querySelectorAll(".cp-checklist li.cp-line")].map((li, n) => ({ what: "line " + n, sel: li.querySelector("[data-cite-file]") ? "cite" : li.querySelector("[data-step-link]") ? "rule" : null, n }));
   const weil = [...document.querySelectorAll(".cp-prepared p")].find((x) => x.textContent.startsWith("Weil"));
   const W = weil ? [...weil.querySelectorAll("button, a")].map((a, n) => ({ what: "weil " + a.textContent.trim().slice(0, 30), n })) : [];
   return { lines: L, weil: W };
@@ -12,7 +12,7 @@ const targets = await p.evaluate(() => {
 const results = [];
 for (const l of targets.lines) {
   await p.goto(url); await sleep(2500);
-  const b = await p.evaluate((n) => { const li = document.querySelectorAll(".cp-checklist li")[n]; const el = li.querySelector("[data-cite-file], [data-step-link]"); if (!el) return null; el.scrollIntoView({block: "center"}); const r = el.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; }, l.n);
+  const b = await p.evaluate((n) => { const li = document.querySelectorAll(".cp-checklist li.cp-line")[n]; const el = li.querySelector("[data-cite-file], [data-step-link]"); if (!el) return null; el.scrollIntoView({block: "center"}); const r = el.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; }, l.n);
   if (!b) { results.push(l.what + ": FAIL no link"); continue; }
   await p.mouse.click(b.x, b.y); await sleep(2000);
   const ok = await p.evaluate(() => location.hash.includes("process_builder") || !!document.querySelector("#overview-source .cp-doc-body, .cp-card .cp-doc-body"));

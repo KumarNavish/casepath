@@ -97,6 +97,11 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
   - the packaged folder starts as Databricks starts it: 401 without sign-in, 403 outside the pilot group, the pilot user sees the synthetic cases;
   - a volume round trip restores a store with its files;
   - the model translation works against a simulated endpoint.
+  - `make package` is repeatable: the synthetic PDFs carry fixed dates and a fixed document id, and their scan noise is
+    seeded, so a second build gives the same tree hash (`tests/test_synthetic.py`).
+  - On the DSW, 2 tests fail for reasons of that environment, not of the code: the font tests (its virtual
+    environment's pip cannot install the fonts) and `FaxTests` (it has Pillow 9.2). The same 2 fail there on older
+    builds. They are not skipped; they pass where the packages are current.
 - **Not yet checked:** the real workspace, its model and its volume.
 
 ## Before an operated deployment

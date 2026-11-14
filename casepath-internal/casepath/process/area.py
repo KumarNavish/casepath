@@ -190,7 +190,9 @@ def compose(backbone, module):
                       "legal_basis": ", ".join(dict.fromkeys(d["basis"] for d in group)),
                       "source_refs": list(dict.fromkeys(r for d in group for r in d["source_refs"]))})
     forms = bb["forms"]
-    for form in forms.values():
+    for kind, form in forms.items():  # each form names the handler decisions its action waits for (the screen's draft.needs)
+        if kind in bb["action_kinds"]:
+            form["needs"] = list(bb["action_kinds"][kind]["depends_on"])
         if "parts" in form:
             form["parts"] = [m["assessment"][p[1:]]["text"] if p.startswith("@") else p for p in form["parts"]]
     version = m["version"] if m["backbone"] == bb["version"] else f"{m['version']}+{bb['version']}"
