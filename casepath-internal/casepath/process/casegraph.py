@@ -351,7 +351,7 @@ def received_after(files, day, insurer=()):
     return False
 
 
-def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, today=None, incoming_dates=None):
+def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, today=None, incoming_dates=None, account=None):
     """Facts a workflow marks "derived": computed from other facts and the findings, never read or set by hand.
 
     action_A1 / requests_count: from the handler's earlier actions as read from the file ("A1 2024-08-28; A4 …").
@@ -367,6 +367,8 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
     cost_claim_open: a cost claim came in (incoming items) and is still open (``incoming_dates``: the document dates of items read
     without their own, incoming.document_dates); it keeps the case from closing, as does settled.
     ``evaluate(facts)`` is the plain evaluation; it is called once without the derived facts.
+    ``account``: the case's running account (account.build) when the run recorded one: then the number of requests,
+    an answer since the last request and lack of cooperation are read from its requests ledger, not counted.
     """
     kinds = {f["id"]: f["derived"] for f in graph["facts"] if f.get("derived")}
     if not kinds:
@@ -384,7 +386,11 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
     bearing = [(d, c) for d, c in when if c in rules["requests"]]
     look = as_of(files or (), today)
     out = {k: v for k, v in facts.items() if k not in kinds}
+    from . import account as ledger
     for fact, kind in kinds.items():
+        if account and kind in {"requests_count", "replied_since_request", "silent_after_requests"}:
+            out[fact] = ledger.derived(account, kind, rules, look)
+            continue
         if kind == "action_A1":
             out[fact] = "1" in done
         elif kind == "closing_announced":  # the clock: after a status inquiry announcing closure (A7), the case closes

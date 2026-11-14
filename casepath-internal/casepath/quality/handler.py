@@ -7,18 +7,20 @@ check the truth against the product's own rules without a model.
 ``truth_handler`` (see the suite's AUTHORING.md) names the case's area, the next action kind, the area's documents
 asked now, present, offered, not needed or depending on an open fact, the area facts the files settle, and the statutory
 deadlines with the date the area's rule gives (``prüfen`` where it gives none, ``trigger_missing`` where the files do
-not state the trigger, ``not_applicable`` where the rule's condition fails).
+not state the trigger, ``not_applicable`` where the rule's condition fails), and the key points of the area whose
+condition the case's facts meet (``key_points``, ids; optional in older cases).
 
 ``score-saved`` reads a JSON list written by a browser script on the deployed product, one row per case: {case,
 workflow, action, now, offered, letter_lines, letter_gaps, follow_up, deadlines: [{id, date}], seconds, tokens:
-{non_cached, output}}, optionally letter_none (the product's reason for no draft) and letter_missing (the parts of the
-form the draft lacks). It prints one line per case, a table, totals and the failed checks grouped by area: ids and
-counts only, no case content. A first request that is incomplete says why: 0 lines, gaps, a missing part, no draft.
+{non_cached, output}}, optionally letter_none (the product's reason for no draft), letter_missing (the parts of the
+form the draft lacks) and key_points (the points the card shows: ids, or {id, state} where only state «applies»
+counts). It prints one line per case, a table, totals and the failed checks grouped by area: ids and counts only, no
+case content. A first request that is incomplete says why: 0 lines, gaps, a missing part, no draft.
 
 ``self-check`` evaluates each case with the product's rules as if the reading were perfect (the truth's facts, its
 present documents and the part of an open-ended need it calls offered) together with the practice rules a fresh
 deployment seeds (Knowledge; their needs are named "k-<item id>"), and prints where the documents asked now, the next
-action or the statutory deadlines differ from the truth.
+action, the statutory deadlines or the key points that apply differ from the truth.
 """
 import json
 from pathlib import Path
@@ -74,6 +76,10 @@ def check_truth(case, workflows):
     for d in truth.get("deadline", []):
         if d.get("id") not in statutory or not (d.get("date") in MARKERS or DATE.match(str(d.get("date")))):
             raise BenchmarkError(f"{where}: deadline {d.get('id')!r} or its date is not valid")
+    points = truth.get("key_points")
+    if points is not None and (not isinstance(points, list) or set(points) - {p["id"] for p in workflow.get("key_points") or ()}
+                               or len(points) != len(set(points))):
+        raise BenchmarkError(f"{where}: key_points must name key points of {workflow['id']}, each once")
     return truth
 
 
@@ -89,6 +95,33 @@ def deadline_verdict(expected, given):
     return "right" if date == expected["date"] else "wrong"
 
 
+def shown_points(row):
+    """The key points the saved card shows as applying: ids, or {id, state} rows of which only «applies» counts."""
+    out = []
+    for p in row.get("key_points") or ():
+        if isinstance(p, dict):
+            if p.get("state", "applies") == "applies" and p.get("id"):
+                out.append(p["id"])
+        elif p:
+            out.append(str(p))
+    return out
+
+
+def points_verdict(truth, row):
+    """The key points expected on the card against those it shows: {hit, want, missed, extra}, or None when the truth names
+    none (an older case) or the row does not report them. The card shows at most two (keypoints.SHOWN), applying ones
+    first, so as many expected points as fit must be shown and no point the facts do not meet may be shown as applying."""
+    from ..process.keypoints import SHOWN
+
+    expected = truth.get("key_points")
+    if expected is None or "key_points" not in row:
+        return None
+    shown = shown_points(row)
+    hit = [p for p in shown if p in expected]
+    return {"hit": hit, "want": min(len(expected), SHOWN), "missed": [p for p in expected if p not in shown],
+            "extra": [p for p in shown if p not in expected]}
+
+
 def score_row(truth, row):
     """The checks of one case: {check: verdict} plus the counts the table shows."""
     asked, expected = set(row.get("now") or []), set(truth.get("ask_now", []))
@@ -101,6 +134,7 @@ def score_row(truth, row):
         why = letter_faults(row)
         letter = not why
     tokens = row.get("tokens") or {}
+    points = points_verdict(truth, row)
     return {
         "area": row.get("workflow") == truth["area"],
         "action": row.get("action") == truth["action"],
@@ -109,6 +143,7 @@ def score_row(truth, row):
         "letter": letter, "letter_why": why,
         "deadline": None if not verdicts else "wrong" if "wrong" in verdicts else "missing" if "missing" in verdicts else "right",
         "deadline_failed": [d["id"] for d, v in zip(truth.get("deadline", []), verdicts) if v != "right"],
+        "points": points, "points_ok": None if points is None else len(points["hit"]) >= points["want"] and not points["extra"],
         "seconds": row.get("seconds"), "non_cached": tokens.get("non_cached"), "output": tokens.get("output"),
     }
 
@@ -134,6 +169,11 @@ def failures(case_id, s):
     out += [f"{case_id} not asked {d}" for d in s["missed"]] + [f"{case_id} extra {d}" for d in s["extra"]]
     out += [f"{case_id} present asked {d}" for d in s["present_asked"]]
     out += [f"{case_id} deadline {d}" for d in s["deadline_failed"]]
+    if s.get("points_ok") is False:
+        points = s["points"]
+        if len(points["hit"]) < points["want"]:
+            out.append(f"{case_id} key point not shown {'/'.join(points['missed'])}")
+        out += [f"{case_id} key point shown {p}" for p in points["extra"]]
     return out
 
 
@@ -158,18 +198,20 @@ def _mark(value):
 
 def render(scored):
     lines, table = [], []
-    head = ("case", "area", "action", "docs", "extra", "pres.asked", "letter", "deadline", "sec", "tokens")
+    head = ("case", "area", "action", "docs", "extra", "pres.asked", "letter", "deadline", "points", "sec", "tokens")
+    points = lambda s: "-" if s["points"] is None else f"{len(s['points']['hit'])}/{s['points']['want']}" + ("" if s["points_ok"] else "!")
     for cid, area_id, s in scored:
         if s is None:
             lines.append(f"{cid} no saved result")
-            table.append((cid, "-", "-", "-", "-", "-", "-", "-", "-", "-"))
+            table.append((cid, "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"))
             continue
         docs = f"{len(s['hit'])}/{s['expected']}"
         lines.append(f"{cid} area {_mark(s['area'])} action {_mark(s['action'])} documents {docs} extra {len(s['extra'])} "
                      f"present asked {len(s['present_asked'])} letter {_mark(s['letter'])}"
-                     + (f" ({', '.join(s['letter_why'])})" if s["letter"] is False else "") + f" deadline {_mark(s['deadline'])}")
+                     + (f" ({', '.join(s['letter_why'])})" if s["letter"] is False else "") + f" deadline {_mark(s['deadline'])}"
+                     + ("" if s["points"] is None else f" key points {points(s)}"))
         table.append((cid, _mark(s["area"]), _mark(s["action"]), docs, str(len(s["extra"])), str(len(s["present_asked"])),
-                      _mark(s["letter"]), _mark(s["deadline"]), _mark(s["seconds"]), f"{_mark(s['non_cached'])}/{_mark(s['output'])}"))
+                      _mark(s["letter"]), _mark(s["deadline"]), points(s), _mark(s["seconds"]), f"{_mark(s['non_cached'])}/{_mark(s['output'])}"))
     done = [s for _, _, s in scored if s is not None]
     count = lambda key, value=True: sum(1 for s in done if s[key] == value)
     hits, expected = sum(len(s["hit"]) for s in done), sum(s["expected"] for s in done)
@@ -177,6 +219,7 @@ def render(scored):
              str(sum(len(s["extra"]) for s in done)), str(sum(len(s["present_asked"]) for s in done)),
              f"{count('letter')}/{sum(1 for s in done if s['letter'] is not None)}",
              f"{count('deadline', 'right')}/{sum(1 for s in done if s['deadline'] is not None)}",
+             f"{count('points_ok')}/{sum(1 for s in done if s['points_ok'] is not None)}",
              str(round(sum(s["seconds"] or 0 for s in done), 1)),
              f"{sum(s['non_cached'] or 0 for s in done)}/{sum(s['output'] or 0 for s in done)}")
     widths = [max(len(r[i]) for r in [head, *table, total]) for i in range(len(head))]
@@ -226,11 +269,13 @@ def rules(case, workflow):
     pick = lambda ask: sorted(i["key"] for i in items if i["kind"] == "document" and i.get("ask") == ask)
     action = next((i.get("action") for i in items if i["kind"] == "next_action"), None)
     return {"now": pick("now"), "offered": pick("proposed"), "later": pick("later"), "action": action,
-            "deadlines": sorted((i["key"], i["value"]) for i in items if i["kind"] == "deadline" and i.get("origin") == "law")}
+            "deadlines": sorted((i["key"], i["value"]) for i in items if i["kind"] == "deadline" and i.get("origin") == "law"),
+            "key_points": sorted(i["key"] for i in items if i["kind"] == "key_point" and i.get("value") == "applies")}
 
 
 def self_check(cases, workflows):
-    """[(case id, area, rules, differences)]: the rules' documents asked now against ask_now, deadlines against the truth."""
+    """[(case id, area, rules, differences)]: the rules' documents asked now against ask_now, deadlines and the key points
+    that apply (where the truth names them) against the truth."""
     rows = []
     for case in cases:
         truth = check_truth(case, workflows)
@@ -245,6 +290,9 @@ def self_check(cases, workflows):
             diff["deadlines"] = wrong
         if got["action"] != truth["action"]:
             diff["action"] = {"rules": got["action"], "truth": truth["action"]}
+        if truth.get("key_points") is not None and set(got["key_points"]) != set(truth["key_points"]):
+            diff["key_points"] = {"rules_only": sorted(set(got["key_points"]) - set(truth["key_points"])),
+                                  "truth_only": sorted(set(truth["key_points"]) - set(got["key_points"]))}
         rows.append((short_id(case), truth["area"], got, diff))
     return rows
 
@@ -256,7 +304,8 @@ def main(command, paths, catalogue=None):
         rows = self_check(cases, workflows)
         for cid, area_id, got, diff in rows:
             print(json.dumps({"case": cid, "area": area_id, "action": got["action"], "now": got["now"], "offered": got["offered"],
-                              "later": got["later"], "deadlines": got["deadlines"], **({"differs": diff} if diff else {})}, ensure_ascii=False))
+                              "later": got["later"], "deadlines": got["deadlines"], "key_points": got["key_points"],
+                              **({"differs": diff} if diff else {})}, ensure_ascii=False))
         print(json.dumps({"cases": len(rows), "differ": sum(1 for r in rows if r[3])}))
         return
     if len(paths) < 2:

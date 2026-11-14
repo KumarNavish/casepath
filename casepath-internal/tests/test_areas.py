@@ -15,7 +15,7 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"key_points", "stage_lines", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions", "customer_letters"}
+NEW_KEYS = {"key_points", "stage_lines", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions", "customer_letters", "record"}
 INCOMING_FACTS = {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot", "eingang_zahlung", "leistungen_einstellen",
                   "eingang_erledigt_bis", "kosten_offen", "eingang_kostenforderung_2", "eingang_kostenforderung_3", "eingang_angebot_2",
                   "eingang_zahlung_2"}  # the overlay of what comes in (incoming.py): up to three items of a kind
@@ -24,7 +24,7 @@ INCOMING_FORMS = {"A11_kosten", "A2_bericht", "A12_mitwirkung_entscheid", "A12_m
 # became the request to the firm, with the guarantee, the summary and the customer's information beside it
 PACKAGE_FACTS = {"kostengutsprache_umfang", "kostengutsprache_betrag", "vergleich_bestaetigt"}
 PACKAGE_FORMS = {"A10", "A10_kostengutsprache", "A10_zusammenfassung", "A11_einigung", "A11_iban", "A11_auszahlung", "A11_eingang",
-                 "A11_rueckfrage", "A11_teilablehnung"}
+                 "A11_rueckfrage", "A11_teilablehnung", "A11_nachfragen"}
 # What the stage rule added to the steps (a stage is left once its action is done, unless a way out says it is not
 # needed; the way-to-proceed stage is the handler's decision; a follow-up has its own title): not in the former seed.
 STAGE_RULE_KEYS = {"without_action", "decision", "follow_up_title"}
@@ -73,7 +73,7 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.7"))  # stored runs: same id, newer version governs
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-15.2"))  # stored runs: same id, newer version governs
         # plus: the nearest thing that does not count, for the reader; the stage a handler's decision belongs to
         unnear = lambda f: {k: v for k, v in f.items() if k not in {"not_this", "stages"}}
         self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
@@ -168,7 +168,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-14.7 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-15.2 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 

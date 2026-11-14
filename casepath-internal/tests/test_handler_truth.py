@@ -63,7 +63,7 @@ class ScoreSavedTests(unittest.TestCase):
         empty = handler.score_row(NOISE, {**RESULTS[1], "letter_lines": 0, "letter_gaps": 0, "letter_missing": ["Fragen"]})
         self.assertEqual((empty["letter"], empty["letter_why"]), (False, ["0 lines", "missing Fragen"]))  # why, not only that
         total = next(line for line in text.splitlines() if line.startswith("total"))
-        self.assertEqual(total.split(), ["total", "2/2", "2/2", "2/3", "1", "1", "1/2", "0/1", "71.5", "2000/500"])
+        self.assertEqual(total.split(), ["total", "2/2", "2/2", "2/3", "1", "1", "1/2", "0/1", "0/0", "71.5", "2000/500"])
         self.assertNotIn("Darlehen zurück", text)  # ids and counts only
 
     def test_a_case_without_a_row_and_dates_where_the_trigger_is_missing(self):
@@ -87,6 +87,25 @@ class ScoreSavedTests(unittest.TestCase):
         bad = {**LOAN, "ask_now": ["mietvertrag"]}
         with self.assertRaises(BenchmarkError):
             handler.check_truth({"id": "X09-x", "truth_handler": bad}, handler.areas())
+        with self.assertRaises(BenchmarkError):  # a key point the area does not have
+            handler.check_truth({"id": "X09-x", "truth_handler": {**LOAN, "key_points": ["sperrfrist"]}}, handler.areas())
+
+    def test_the_key_points_on_the_card_are_scored_where_the_truth_names_them(self):
+        truth = {**LOAN, "key_points": ["ohne_termin"]}
+        shown = handler.score_row(truth, {**RESULTS[0], "key_points": ["ohne_termin"]})
+        self.assertEqual((shown["points"]["hit"], shown["points"]["want"], shown["points_ok"]), (["ohne_termin"], 1, True))
+        # only a point shown as applying counts; one the facts do not meet, shown as applying, is a failure of its own
+        asked = handler.score_row(truth, {**RESULTS[0], "key_points": [{"id": "ohne_termin", "state": "open"}, {"id": "beweis", "state": "applies"}]})
+        self.assertEqual((asked["points"]["hit"], asked["points"]["extra"], asked["points_ok"]), ([], ["beweis"], False))
+        self.assertIsNone(handler.score_row(LOAN, {**RESULTS[0], "key_points": ["ohne_termin"]})["points"])  # an older truth names none
+        self.assertIsNone(handler.score_row(truth, RESULTS[0])["points"])  # a row that does not report them
+        with tempfile.TemporaryDirectory() as tmp:
+            write_suite(tmp, truth)
+            rows = [{**RESULTS[0], "key_points": [{"id": "beweis", "state": "applies"}]}, RESULTS[1]]
+            text = handler.render(handler.score_saved(rows, load_suite(tmp)))
+        self.assertIn("X01 area ok action ok documents 1/2 extra 1 present asked 1 letter ok deadline wrong key points 0/1!", text)
+        self.assertIn("X01 key point not shown ohne_termin, X01 key point shown beweis", text)
+        self.assertEqual(next(line for line in text.splitlines() if line.startswith("total")).split()[8], "0/1")
 
 
 class SelfCheckTests(unittest.TestCase):
@@ -102,6 +121,11 @@ class SelfCheckTests(unittest.TestCase):
             write_suite(tmp, {**LOAN, "ask_now": ["korrespondenz"], "deadline": [{"id": "rueckzahlung", "date": "trigger_missing"}]})
             diff = handler.self_check(load_suite(tmp), workflows)[0][3]
         self.assertEqual(diff, {"now": {"rules_only": ["auszahlungsbeleg"], "truth_only": []}, "deadlines": ["rueckzahlung"]})
+        self.assertEqual(rows["X01"][0]["key_points"], ["ohne_termin"])  # the points whose condition the facts meet
+        with tempfile.TemporaryDirectory() as tmp:
+            write_suite(tmp, {**LOAN, "key_points": ["beweis"]})
+            diff = handler.self_check(load_suite(tmp), workflows)[0][3]
+        self.assertEqual(diff, {"key_points": {"rules_only": ["ohne_termin"], "truth_only": ["beweis"]}})
 
 
 if __name__ == "__main__":

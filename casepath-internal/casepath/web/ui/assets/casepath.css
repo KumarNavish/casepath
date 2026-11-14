@@ -446,3 +446,23 @@ body.dragging .cp-drop{border-color:var(--crimson);color:var(--crimson)}
 .cp-keypoint-more{font-style:normal;color:var(--ink-2)}
 .cp-lead-frist.past{color:var(--ink-2)}
 .cp-asks>div+div{margin-top:4px}
+
+/* the running account: «Stand» in «Der Fall» and the Verlauf table */
+.cp-acct{margin-top:8px;display:grid;gap:6px;white-space:normal}
+.cp-acct-line{font-size:13.5px;line-height:1.35;color:var(--ink)}
+.cp-acct-label{color:var(--ink-2)}
+.cp-acct-line.open .cp-acct-label{color:var(--crimson)}
+.cp-acct .cp-quiet-link{font-size:12.5px;justify-self:start}
+.cp-account{padding:18px 22px;max-width:1100px;margin-bottom:22px}
+.cp-account-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
+.cp-account-head h2{margin:0}
+.cp-account-filter{margin-left:auto;font-size:13.5px;color:var(--ink-2);display:flex;gap:6px;align-items:center;cursor:pointer}
+.cp-account-table{font-size:13.5px}
+.cp-account-table td{padding:9px 8px}
+.cp-account-table tr.open td:first-child{box-shadow:inset 3px 0 0 var(--crimson)}
+.cp-entry-note{color:var(--ink-2)}
+.cp-entry-note.open{color:var(--crimson)}
+.cp-entry-note.next{font-style:italic}
+.cp-entry-tag{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:0 6px;color:var(--ink-2)}
+.cp-nowrap{white-space:nowrap}
+.cp-older{color:var(--crimson)}

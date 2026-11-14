@@ -44,12 +44,30 @@ def _citations(rows, fact):
     return ((rows or {}).get(fact) or {}).get("citations") or []
 
 
+PAYERS = {"kunde": "die Kundschaft", "versicherer": "Protekta", "kanzlei": "die Kanzlei", "behoerde": "Gericht/Behörde"}
+
+
+def from_account(ledger, facts=None):
+    """The agreement as it stands in the case's running account (account.py), in the shape ``agreement`` takes: amount,
+    who pays (the other side by its name where the file states it), by when, whether paid, and its quotes; None without
+    an agreed term."""
+    a = (ledger or {}).get("agreement")
+    if not a:
+        return None
+    payer = a.get("payer")
+    name = ((facts or {}).get("gegenpartei") or "die Gegenpartei") if payer == "gegenpartei" else PAYERS.get(payer)
+    payment = (ledger or {}).get("payment")
+    return {"amount": a.get("amount") or a.get("what"), "payer": name, "due": a.get("by"), "date": a.get("date"),
+            "citations": a.get("citations") or [], "paid": payment is not None,
+            "paid_on": (payment or {}).get("date") or (payment or {}).get("entry_date")}
+
+
 def agreement(facts, rows=None, account=None):
     """The agreed terms as the file states them: {amount, payer, due, fact, citations}, each value None when not stated.
     ``account``: the running account of the case, where one is kept (another module); it wins over the incoming items."""
     if account and any(account.get(k) for k in ("amount", "payer", "due")):
         return {"amount": account.get("amount"), "payer": account.get("payer"), "due": account.get("due"), "fact": "account",
-                "citations": account.get("citations") or []}
+                "citations": account.get("citations") or [], "paid": bool(account.get("paid")), "date": account.get("date")}
     for fact in ("eingang_angebot", "eingang_angebot_2", "eingang_zahlung"):
         value = str((facts or {}).get(fact) or "")
         if not value or value.strip().lower() in {"keine", "nein", "-"}:
@@ -123,7 +141,7 @@ def state(facts, rows, files, events, customer_name=None, account=None):
     facts = facts or {}
     terms = agreement(facts, rows, account)
     iban = customer_iban(files, customer_name)
-    paid = bool(facts.get("eingang_zahlung")) or facts.get("zahlung_erhalten") is True
+    paid = bool(facts.get("eingang_zahlung")) or facts.get("zahlung_erhalten") is True or bool(terms.get("paid"))
     done = []
     if facts.get("vergleich_bestaetigt") is True:
         done.append("einigung")
@@ -158,8 +176,11 @@ def lines(st):
     if t["fact"]:
         parts = [t["amount"] or "Betrag nicht in der Akte", f"zahlt: {t['payer']}" if t["payer"] else "Zahler nicht in der Akte",
                  f"bis {_day(t['due'])}" if t["due"] else "Termin nicht in der Akte"]
-        out.append({"id": "vg-einigung", "text": "Einigung laut Akte: " + " · ".join(parts), "citations": t["citations"][:1],
-                    "facts": [t["fact"]], "amount": t["amount"], "payer": t["payer"], "due": t["due"]})
+        if t.get("paid"):
+            parts.append("bezahlt")
+        out.append({"id": "vg-einigung", "text": ("Einigung laut Verlauf: " if t["fact"] == "account" else "Einigung laut Akte: ") + " · ".join(parts),
+                    "citations": t["citations"][:1], "facts": [] if t["fact"] == "account" else [t["fact"]],
+                    "amount": t["amount"], "payer": t["payer"], "due": t["due"], "date": t.get("date")})
     else:
         out.append({"id": "vg-einigung", "text": "Einigung: Betrag, Zahler und Termin nicht in der Akte", "citations": [], "facts": [],
                     "amount": None, "payer": None, "due": None})
@@ -182,7 +203,15 @@ def letter_context(items):
     payment = next((x.get("value") for x in items if x["kind"] == "fact" and x["key"] == "eingang_zahlung" and x.get("value")), None)
     paid_amount = AMOUNT.search(str(payment or ""))
     paid_day = re.search(r"\d{4}-\d{2}-\d{2}", str(payment or ""))
+    owed = next((x.get("owed") for x in items if x["kind"] == "next_action" and x.get("owed")), None) or {}
+    owed_amount = owed.get("amount") or amount or owed.get("what")
+    owed_by = owed.get("by") or (due if due and parse_date(due) else None)
     return {
+        # the chase of an agreed payment not made (the account's next action): to the party that owes it
+        "nachfrage_bezug": f"vom {_day(owed.get('date') or t.get('date'))}" if (owed.get("date") or t.get("date")) else gap("Datum der Vereinbarung"),
+        "nachfrage_terms": (f"Zahlung von {owed_amount or gap('Betrag')}" + (f" bis {_day(owed_by)}" if owed_by else "")),
+        "nachfrage_betrag": owed_amount or gap("Betrag"),
+        "nachfrage_konto": (f"Kontoinhaberin / Kontoinhaber: {i.get('holder')}\nIBAN: {i['iban']}" if i.get("iban") and i.get("holder") else ""),
         "vergleich_satz": (f"{t.get('payer') or gap('wer zahlt')} bezahlt {amount or gap('den vereinbarten Betrag')}"
                            + (f" bis {_day(due)}." if due and parse_date(due) else f" {due}." if due else f" bis {gap('Zahlungstermin')}.")),
         "vergleich_termin_satz": (f"bis {_day(due)}" if due and parse_date(due) else due or f"bis {gap('Zahlungstermin')}"),

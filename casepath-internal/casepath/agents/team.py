@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 import threading
 from datetime import date, timedelta
 
-from ..process import area, casegraph, incoming, workflows
+from ..process import account, area, casegraph, incoming, workflows
 from ..read.evidence import Evidence
 from .schema import arr, choice, fit_to_schema, obj, text, validate_result
 
@@ -43,6 +43,34 @@ def common_instructions(voice=None):
     return COMMON.format(**{**DEFAULT_VOICE, **{k: v for k, v in (voice or {}).items() if v}})
 
 
+# The insurer's earlier actions, read one fact at a time (processes without the running account) …
+HISTORY = """For the insurer's own earlier actions in the file, record the date fact of each kind (handlung_a1, handlung_a2 …:
+the date of the latest such letter or note), each with one quote that shows that letter or note and its date line; the
+history list uses these codes with their dates: A1 request for documents,
+A2 phone note, A3 upload link, A4 question back, A5 legal assessment, A6 pending with a deadline, A7 status inquiry
+announcing closure, A8 letter to the other side, A9 negotiation, A10 mandate to a law firm, A11 payment handling,
+A12 closing or end of benefits. """
+
+# … or the running account: one entry per document, from which code derives the actions, the requests and the agreement.
+RECORD = """For the record, call record_steps with one entry per document of the files, phone notes included (list_files
+shows each file's documents with their first page; a file without a document list is one document): n, its number in
+date order; the file and the document's first page; its date; from and to (kunde = the customer, VN; versicherer = us;
+kanzlei = the mandated firm, RA/AK; gegenpartei = the other side or its lawyer, GP; behoerde = a court or authority);
+kind; phone (true for a phone note); what, one line; quote, words of that document that show it (date line or subject).
+Then only what the document states, each element with its own quote from that document: asks (what, of whom, by when;
+repeats: the n of an earlier entry asking the same; warns: it says what follows if not done); answers (what it delivers
+or answers; answers: the n of the entry it answers); terms (what is offered or agreed, the amount as written, who pays,
+by when; agreed: accepted, or «verbleiben so, dass …»); paid (amount, who paid, date); next (the next step it states,
+by whom, by when, as «schliessen Dossier, wenn bis … nichts»). In a phone note the outcome and the next step matter
+most. Up to ten entries per call and two calls per turn, texts short. The record holds our own earlier actions: do not
+record handlung_ facts or the history list. """
+
+
+def reader_instructions(record):
+    """The claim reader's instructions: with the running account (a process whose backbone has ``record``), or without."""
+    return AGENTS["claim_reader"]["instructions"].replace("{history}", RECORD if record else HISTORY)
+
+
 AGENTS = {
     "claim_reader": {
         "title": "Claim reader",
@@ -64,12 +92,7 @@ rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a
 about the rent; a measuring, drying or building expert called in is an expert involved. When a sentence you quote states the value, record it as established with that
 sentence, also when the file states it only roughly (a month or a year, "seit 5 Jahren", a form's "Nein"). A negative value (no reply, no, not present, no deadline) needs a sentence that
 says so, such as the customer writing that nobody answered or the form's own "Nein"; the mere absence of a positive is
-unknown. For the insurer's own earlier actions in the file, record the date fact of each kind (handlung_a1, handlung_a2 …:
-the date of the latest such letter or note), each with one quote that shows that letter or note and its date line; the
-history list uses these codes with their dates: A1 request for documents,
-A2 phone note, A3 upload link, A4 question back, A5 legal assessment, A6 pending with a deadline, A7 status inquiry
-announcing closure, A8 letter to the other side, A9 negotiation, A10 mandate to a law firm, A11 payment handling,
-A12 closing or end of benefits. For what came in from a mandated law firm, a court, the other side or as a payment (the
+unknown. {history}For what came in from a mandated law firm, a court, the other side or as a payment (the
 eingang_ facts), record each item from its own document: who sent what, with its date as YYYY-MM-DD, and, when the file
 shows it answered, the mark the question names («beglichen YYYY-MM-DD»); the plain fact holds the latest of its kind,
 _2 the one before it, _3 the one before that, each a different item; most files have none, and then you record nothing. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
@@ -80,7 +103,7 @@ a dated statement ("innert 14 Tagen" from a letter of 2024-08-14, "seit 5 Jahren
 "<n> days|weeks|months|years from|before YYYY-MM-DD", never a date you computed yourself, and never a period from the law
 (the process computes statutory deadlines itself). For a deadline, also "none" when a passage says there is no
 deadline-triggering letter. A fact's not_this names the nearest thing that does not count as it: never record that.""",
-        "tools": ["list_files", "read_file", "search", "open_process", "record_fact"],
+        "tools": ["list_files", "read_file", "search", "open_process", "record_fact", "record_steps"],
     },
     "process_builder": {
         "title": "Process builder",
@@ -197,7 +220,8 @@ class CaseWork:
         self.dated = [{"id": f.get("id"), "extraction": {k: f[k] for k in ("segments", "cut_of") if k in f}, "created_at": f.get("created_at")}
                       for f in files]
         self.file_ids = list(self.evidence.files)
-        self.total_chars = sum(len(t) for f in self.evidence.files.values() for _, t in f["pages_text"])
+        self.total_chars = sum(len(t) for f in self.evidence.files.values() for _, t in f["pages_read"])  # what a model reads
+        self.record = {"entries": [], "dropped": 0}  # the running account's entries, each located (account.py)
         if not self.file_ids:
             raise TeamError("no_files", "The case has no files to read.")
         self.facts, self.documents, self.events, self.usage = {}, {}, [], []
@@ -317,6 +341,26 @@ class CaseWork:
         accepted = {k: v["value"] for k, v in self.facts.items() if v["status"] == "established" and v["verdict"] == "accepted"}
         return {**{k: p["value"] for k, p in self.presumptions().items()}, **accepted}
 
+    def dated_documents(self):
+        """The documents of the files as the hygiene step counts them (segments, or whole files)."""
+        from ..read.hygiene import documents
+        return documents(self.evidence.files)
+
+    def account(self):
+        """The running account from the entries recorded so far; None without any."""
+        return account.build(self.record["entries"], self.graph)
+
+    def document_of(self, file_id, page):
+        """The pages of the document a page belongs to: (first, last) of its segment, or (None, None) for the whole file."""
+        source = self.evidence.files.get(file_id) or {}
+        for segment in source.get("segments") or ():
+            first, last = segment.get("first_page"), segment.get("last_page") or segment.get("first_page")
+            if page is not None and first is not None and first <= page <= last:
+                return first, last
+        if page is not None and source.get("segments"):
+            return page, page
+        return None, None
+
     def findings(self):
         return {k: v for k, v in self.documents.items() if v["status"] in {"present", "unusable"} and v["verdict"] == "accepted"}
 
@@ -324,9 +368,11 @@ class CaseWork:
         missing_checked = checked or bool(self.documents)
         asked, partial = casegraph.whole_findings(self.graph, self.findings())  # a need for all of something stays asked
         answered = {k: v for k, (v, _) in casegraph.fact_overrides(self.graph, self.employee_edits).items()}  # the case worker's answers
-        facts = casegraph.derive_facts(self.graph, {**self.accepted_facts(), **answered}, asked,
+        ledger = self.account()
+        facts = casegraph.derive_facts(self.graph, {**account.merge(self.accepted_facts(), ledger, self.graph), **answered}, asked,
                                        lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked), partial=partial,
-                                       files=self.dated, incoming_dates=incoming.document_dates(self.graph, list(self.facts.values()), self.dated))
+                                       files=self.dated, incoming_dates=incoming.document_dates(self.graph, list(self.facts.values()), self.dated),
+                                       account=ledger)
         return casegraph.mark_partial(workflows.evaluate(self.graph, facts, asked, checked=missing_checked), partial)
 
     def unverified(self):
@@ -440,6 +486,22 @@ def _tool_specs(work, names):
                                         # what a present file shows, item by item, where a need lists what it must show
                                         **({"shows": arr(obj(item=text(200), citations=_citations(files, 2)), maxItems=12)}
                                            if any(d.get("must_show") for d in work.graph["documents"]) else {})))
+    record = work.graph.get("record")
+    if record:
+        parties, kinds, quote = list(account.PARTIES), list(record["kinds"]), text(300, minLength=8)
+        day = {"type": ["string", "null"], "maxLength": 10}
+        number = {"type": ["integer", "null"], "minimum": 1, "maximum": 999}
+        entry = obj(n={"type": "integer", "minimum": 1, "maximum": 999}, file=choice(files), page={"type": ["integer", "null"]}, date=day,
+                    **{"from": choice(parties)}, to=choice(parties), kind=choice(kinds), phone={"type": "boolean"}, what=text(160), quote=quote,
+                    asks=arr(obj(what=text(120), of=choice(parties), by=day, repeats=number, warns={"type": "boolean"}, quote=quote), maxItems=4),
+                    answers=arr(obj(what=text(120), answers=number, quote=quote), maxItems=4),
+                    terms=arr(obj(what=text(120), amount={"type": ["string", "null"], "maxLength": 40}, payer=choice(parties), by=day,
+                                  agreed={"type": "boolean"}, quote=quote), maxItems=2),
+                    paid=arr(obj(amount={"type": ["string", "null"], "maxLength": 40}, payer=choice(parties), date=day, quote=quote), maxItems=2),
+                    next=arr(obj(what=text(120), who=choice(parties), by=day, quote=quote), maxItems=1))
+        specs["record_steps"] = (f"Record the running account: one entry per document of the files (phone notes included), at most "
+                                 f"{account.MAX_ENTRIES_PER_CALL} per call; each element with a quote from that document.",
+                                 obj(entries=arr(entry, minItems=1, maxItems=account.MAX_ENTRIES_PER_CALL)))
     condition = arr(obj(fact=choice(facts), value=text(200)), maxItems=4) if facts else arr(obj(fact=text(80), value=text(200)), maxItems=0)
     specs["propose_change"] = ("Adapt this case's process: add a document need (attached to `step`), a question, or a step "
                                "(inserted before `step`), with its basis: quotes from the files or an applied Knowledge item, "
@@ -477,6 +539,27 @@ def _record_fact(work, agent, args):
     work.emit("source_checker", "fact.located", fact=args["fact"], status=args["status"], quotes=len(located), missed=missed,
               cite=located[0] if located else None)
     return {"accepted": True, "status": args["status"], "located_quotes": len(located), "missed_quotes": missed}
+
+
+def _record_steps(work, agent, args):
+    """The reader's entries for the running account: each located in its own document, or dropped and counted."""
+    kinds = account.kinds_of(work.graph)
+    kept = dropped = whole = 0
+    for raw in args["entries"]:
+        first, last = work.document_of(raw["file"], raw.get("page"))
+        entry, lost = account.check(raw, lambda quote: work.evidence.locate(raw["file"], quote, first, last), kinds)
+        dropped += lost
+        if entry is None:
+            whole += 1
+            continue
+        entry["page"] = first if first is not None else entry["page"]
+        same = lambda e: e["n"] == entry["n"] or (e["file"] == entry["file"] and first is not None and e["page"] == first)
+        work.record["entries"] = [e for e in work.record["entries"] if not same(e)] + [entry]  # read again: the later reading counts
+        kept += 1
+    work.record["dropped"] += dropped
+    work.emit(agent, "record.recorded", entries=kept, dropped=dropped, dropped_entries=whole)
+    return {"accepted": kept, "dropped_entries": whole, "dropped_quotes": dropped,
+            **({"note": "an element is kept only with a quote found word for word in that same document"} if dropped else {})}
 
 
 def _record_document(work, agent, args):
@@ -586,6 +669,8 @@ def _dispatch(work, agent, name, args):
         return _record_fact(work, agent, args)
     if name == "record_document":
         return _record_document(work, agent, args)
+    if name == "record_steps":
+        return _record_steps(work, agent, args)
     if name == "propose_change":
         return _propose_change(work, agent, args)
     return {"error": "unknown tool"}
@@ -661,7 +746,8 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
         last = number == max_turns - 1
         choice_ = {"type": "function", "name": "report"} if last else "required"
         try:
-            turn = model.respond(instructions=common_instructions(work.voice) + "\n\n" + spec["instructions"], input=conversation, tools=tools, effort=effort,
+            own = reader_instructions(work.graph.get("record")) if agent == "claim_reader" else spec["instructions"]
+            turn = model.respond(instructions=common_instructions(work.voice) + "\n\n" + own, input=conversation, tools=tools, effort=effort,
                                  tool_choice=choice_)
         except Exception as error:  # a turn too long for the output limit: ask again for a shorter one, once per turn
             if getattr(error, "reason", None) != "max_output_tokens" or (conversation[-1].get("content") or "").startswith(SHORTER):
@@ -772,7 +858,7 @@ def gating_facts(work):
         used |= workflows.condition_facts(action.get("skip_if") or True)
         for variant in action.get("instead", []):
             used |= workflows.condition_facts(variant["when"])
-    if any(f.get("derived") and f["id"] in used for f in work.graph["facts"]):  # derived facts rest on the action history
+    if any(f.get("derived") and f["id"] in used for f in work.graph["facts"]) and not work.record["entries"]:  # derived facts rest on the action history (the record holds it when there is one)
         used |= {f["id"] for f in work.graph["facts"] if f["id"] == "bisherige_handlungen" or f["id"].startswith("handlung_")}
     # What came in decides what the handler does next: the latest item of each kind is read again (a second reading that
     # finds one the first missed adds it), and an earlier item only when the first reading recorded one. The common
@@ -880,7 +966,9 @@ class CaseTeam:
         if agent == "result_checker" and work.unverified():
             run_source_checker(self.model_for("source_checker"), work, self.effort)
         given = ("open_process", "evaluate", "get_findings") if agent == "result_checker" and getattr(self, "handler_flow", False) else ()
-        report = run_agent(self.model_for(agent), work, agent, instruction, effort=self.effort, given=given)
+        # a dossier's record takes a turn per twenty documents more (ten entries per call, two calls per turn)
+        more = len(work.dated_documents()) // 20 if agent == "claim_reader" and work.graph.get("record") else 0
+        report = run_agent(self.model_for(agent), work, agent, instruction, effort=self.effort, given=given, max_turns=12 + more)
         if agent == "claim_reader" and work.brief is None:
             work.brief = _located_brief(work, report)
         if agent == "process_builder":
@@ -898,6 +986,7 @@ class CaseTeam:
             work.facts = {f["fact"]: f for f in resume.get("facts") or [] if f["fact"] not in work.set_by_hand()}
             work.documents = {d["document"]: d for d in resume.get("documents") or []}
             work.usage = list(resume.get("usage") or [])
+            work.record = {"entries": list((resume.get("record") or {}).get("entries") or []), "dropped": (resume.get("record") or {}).get("dropped", 0)}
         for row in routed:
             if row["fact"] in work.fact_defs and row.get("citations") and row.get("value") is not None:
                 work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": row["value"],
@@ -910,6 +999,7 @@ class CaseTeam:
             work.emit("lead", "run.paused")
             # What is established stays: the reading, the recorded facts and documents with their verdicts, the cost so far.
             return {"paused": True, "brief": work.brief, "facts": list(work.facts.values()), "documents": list(work.documents.values()),
+                    "record": work.record,
                     "usage": work.usage, "events": work.events, "done": state["done"]}
 
     def _step(self, work, state, key, do):
@@ -1045,6 +1135,9 @@ def finalize(work):
                  "presumption": {"applies": p["applies"], "source_ref": p["source_ref"], "text": p["text"]}}
                 for k, p in work.presumptions().items()],
             "documents": list(work.documents.values()), "evaluation": evaluation,
+            # the running account's entries, each element located in its document; what was dropped, counted
+            **({"record": {**work.record, "entries": sorted(work.record["entries"], key=lambda e: (e.get("date") or "9999", e["n"])),
+                           "documents": len(work.dated_documents()), "hygiene": work.evidence.hygiene}} if work.graph.get("record") else {}),
             "summary": result["summary"], "answer": result["answer"], "open_points": result["open_points"],
             "fitted": getattr(work, "fitted", []),
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),

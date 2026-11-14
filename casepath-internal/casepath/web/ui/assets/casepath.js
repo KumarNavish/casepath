@@ -304,11 +304,31 @@ function moreMenu() {
     <small class="cp-muted">${done ? `${T("Prepared", "Vorbereitet am")} ${dateText(done.finished_at)} · ` : ""}${esc(d.case.id.slice(-8).toUpperCase())}</small></div></details>`;
 }
 
+// A document's date as the reading gives it (2024-08-14, 14.08.2024, 14. August 2024); null without one.
+const DE_MONTHS = ["januar", "februar", "märz", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "dezember"];
+function segmentDate(text) {
+  const t = String(text || "").toLowerCase();
+  let m = t.match(/(\d{4})-(\d{2})-(\d{2})/);
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+  m = t.match(/(\d{1,2})\.(\d{1,2})\.(\d{4})/);
+  if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+  m = t.match(/(\d{1,2})\.?\s+([a-zä]+)\s+(\d{4})/);
+  if (m && DE_MONTHS.includes(m[2])) return new Date(+m[3], DE_MONTHS.indexOf(m[2]), +m[1]);
+  return null;
+}
+// More than three years before the newest document of the files: flagged in the list, never left out.
+function olderDocument(segment) {
+  const all = (S.data.files || []).flatMap((f) => ((f.extraction || {}).segments || []).map((s) => segmentDate(s.date))).filter(Boolean);
+  const own = segmentDate(segment.date);
+  if (!own || !all.length) return false;
+  const newest = new Date(Math.max(...all));
+  return own < new Date(newest.getFullYear() - 3, newest.getMonth(), newest.getDate());
+}
 function segmentRows(file) {
   const segments = (file.extraction && file.extraction.segments) || [];
   if (!segments.length) return "";
   return `<ol class="cp-segs" aria-label="${T("Documents in", "Dokumente in")} ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${esc(file.id)}" data-page="${s.first_page}" title="${esc(s.summary || "")}">
-    <span>${esc(s.title || s.kind)}</span><small>${esc([s.kind !== s.title ? s.kind : "", s.date, `${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}`].filter(Boolean).join(" · "))}</small></button></li>`).join("")}</ol>`;
+    <span>${esc(s.title || s.kind)}</span><small>${esc([s.kind !== s.title ? s.kind : "", s.date, `${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}`].filter(Boolean).join(" · "))}${olderDocument(s) ? ` · <span class="cp-older">${T("older document", "älteres Dokument")}</span>` : ""}</small></button></li>`).join("")}</ol>`;
 }
 
 // "anderer Prozess" during a run: Anhalten, choose, Weiter in one gesture.
@@ -1024,7 +1044,7 @@ function dossierContents() {
   const count = files.reduce((n, f) => n + f.extraction.segments.length, 0);
   return `<section class="cp-card cp-contents"><h2 class="cp-section" style="margin-top:0">${T(`Contents of the files · ${count} documents`, `Inhalt der Dossiers · ${count} Dokumente`)}</h2>
     ${files.map((f) => `${files.length > 1 ? `<h3>${esc(f.name)}</h3>` : ""}<ol>${f.extraction.segments.map((s) => `<li><button class="cp-link" data-cite-file="${esc(f.id)}" data-page="${s.first_page}">
-      <span>${esc([s.date, s.kind].filter(Boolean).join(" · "))} <small>${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}</small></span>
+      <span>${esc([s.date, s.kind].filter(Boolean).join(" · "))} <small>${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}</small>${olderDocument(s) ? ` <small class="cp-older">${T("older document", "älteres Dokument")}</small>` : ""}</span>
       <b>${esc(s.title)}</b>${s.summary ? `<small>${esc(s.summary)}</small>` : ""}</button></li>`).join("")}</ol>`).join("")}</section>`;
 }
 
@@ -1334,6 +1354,19 @@ function overviewView() {
   return `${top}<div class="cp-overview">${preparedView(ev, st)}${sideView(ev)}</div>`;
 }
 
+// The running account in «Der Fall»: one line each, only what there is to say (agreed, open at whom, last contact), each
+// with its sources; absent for a first report and for a run made before the account.
+function sourceChips(evidence) {
+  const seen = new Set();
+  return (evidence || []).filter((e) => e.file && !seen.has(`${e.file}:${e.page}`) && seen.add(`${e.file}:${e.page}`)).slice(0, 2)
+    .map((e) => ` <button class="cp-source-chip" data-cite-file="${esc(e.file)}" data-page="${e.page || ""}" title="${esc(e.quote || "")}">${e.page ? `${T("p.", "S.")} ${e.page}` : T("source", "Quelle")}</button>`).join("");
+}
+function standLines() {
+  const lines = (S.data.items || []).filter((i) => i.kind === "stand");
+  if (!lines.length) return "";
+  return `<div class="cp-acct">${lines.map((l) => `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}</div>`).join("")}
+    <a class="cp-link cp-quiet-link" href="#/case/${esc(S.route.id)}/history">${T("Course of the case", "Verlauf")}</a></div>`;
+}
 // The case beside the letter: what blocks the action (only when something does), then the case itself.
 function sideView(ev) {
   const r = result() || {}, brief = r.brief || {};
@@ -1381,7 +1414,7 @@ function sideView(ev) {
         <dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${esc(anliegen) || "—"}${cite(factCite("rechtsgebiet"))}</dd>
         ${asks.length ? `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${asks.map((q) => `<div data-item="${esc(q.item_id)}">«${esc(q.value)}»${cite((q.evidence || [])[0])}${q.answered_by ? ` <span class="cp-muted">→ ${esc(((item("key_point", q.answered_by) || {}).label || {}).de || "")}</span>` : ""}</div>`).join("")}</dd>` : ""}
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${parties || "—"}${cite(factCite("gegenpartei"))}</dd>
-        <dt>${T("Status", "Stand")}</dt><dd data-item="step:${esc((ev && ev.current && ev.current.step) || "")}">${stand}</dd>
+        <dt>${T("Status", "Stand")}</dt><dd data-item="step:${esc((ev && ev.current && ev.current.step) || "")}">${stand}${standLines()}</dd>
         <dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen}</dd>
         ${coverBlock(pts.some((p) => p.cover))}
         ${checkRows()}
@@ -1592,9 +1625,13 @@ function preparedView(ev, st) {
     src ? `<button class="cp-source-chip" data-cite-file="${esc(src.file)}" data-page="${src.page || ""}" title="${esc(src.quote || "")}">${src.page ? `${T("p.", "S.")} ${src.page}` : T("source", "Quelle")}</button>` : "",
     `<button class="cp-link" data-decide="eingang_erledigt_bis" data-value="${esc(came.date || new Date().toISOString().slice(0, 10))}">${T("done", "erledigt")}</button>`,
     (act.then || []).length ? `· ${T("then", "danach")}: ${(act.then || []).map((t) => esc(`${t.title}${t.date ? ` vom ${dateText(t.date)}` : ""}`)).join(" · ")}` : ""].filter(Boolean).join(" ") : "";
+  // The reason names what led to this action: the claim and the missing documents only while the case is at intake or
+  // being clarified, never under a later action (a payout chase, a mandate).
+  const stageNow = (ev && ev.current && ev.current.step) || "";
+  const early = !act || ["request", "A0", "A1", "A4"].includes(act.action) || ["eingang", "klaeren"].includes(stageNow) || !act.reason;
   const weil = came ? cameLine : [act && act.reason ? esc(act.reason) : "",
-    claimFile ? `<button class="cp-link" data-cite-file="${esc(claimFile.id)}" data-page="">${T("claim received", "Schadenmeldung eingegangen")}</button>` : "",
-    missing ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`${missing} document(s) missing`, `${missing} Unterlage${missing > 1 ? "n" : ""} fehl${missing > 1 ? "en" : "t"}`)}</a>` : ""].filter(Boolean).join(" · ");
+    claimFile && early ? `<button class="cp-link" data-cite-file="${esc(claimFile.id)}" data-page="">${T("claim received", "Schadenmeldung eingegangen")}</button>` : "",
+    missing && early ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`${missing} document(s) missing`, `${missing} Unterlage${missing > 1 ? "n" : ""} fehl${missing > 1 ? "en" : "t"}`)}</a>` : ""].filter(Boolean).join(" · ");
   const options = (S.data.action_options || []).filter((o) => !act || o.kind !== act.action);
   const title = act ? T(act.label.en, act.label.de) : T("No prepared step", "Kein vorbereiteter Schritt");
   const f = S.data.follow_up, due = f && f.due;
@@ -1636,13 +1673,30 @@ function preparedView(ev, st) {
     <footer class="cp-bar">${bar}</footer>
   </section>`;
 }
+// The account of the case in time order: one row per document of the file (phone notes included), what it asked, answered
+// or agreed; open requests and an agreed payment not made are marked. One filter: only what is open.
+function accountTable() {
+  const all = (S.data.items || []).filter((i) => i.kind === "entry");
+  if (!all.length) return "";
+  const rows = S.onlyOpen ? all.filter((r) => r.open) : all;
+  const open = all.filter((r) => r.open).length;
+  const note = (n) => `<div class="cp-entry-note ${n.open ? "open" : ""} ${n.kind}">${esc(n.text)}</div>`;
+  return `<section class="cp-card cp-account"><header class="cp-account-head"><h2 class="cp-section">${T("Course of the case", "Verlauf der Akte")}</h2>
+      <span class="cp-muted">${all.length} ${T("documents", "Dokumente")}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>
+      <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${T("only open", "nur Offenes")}</label></header>
+    <table class="cp-table cp-account-table"><thead><tr><th>${T("No.", "Nr.")}</th><th>${T("Date", "Datum")}</th><th>${T("From → to", "Von → an")}</th><th>${T("What", "Was")}</th><th>${T("Asked, answered, agreed", "Verlangt, beantwortet, vereinbart")}</th></tr></thead>
+    <tbody>${rows.map((r) => `<tr class="${r.open ? "open" : ""}" data-item="${esc(r.item_id)}"><td>${esc(r.key)}</td><td class="cp-nowrap">${dateText(r.date)}</td>
+      <td class="cp-nowrap">${esc(r.from_title)} → ${esc(r.to_title)}</td>
+      <td>${r.phone ? `<span class="cp-entry-tag">${T("Phone", "Telefon")}</span> ` : ""}<span class="cp-muted">${esc((r.label || {}).de || "")}</span><br>${esc(r.value || "")}${sourceChips((r.evidence || []).slice(0, 1))}</td>
+      <td>${(r.notes || []).map(note).join("")}</td></tr>`).join("") || `<tr><td colspan="5" class="cp-muted">${T("Nothing open.", "Nichts offen.")}</td></tr>`}</tbody></table></section>`;
+}
 function historyView() {
   const words = { "item.corrected": T("corrected", "korrigiert"), "item.dismissed": T("not needed", "nicht nötig"), "item.added": T("added", "ergänzt"),
     "correction.undone": T("undone", "rückgängig"), "note.added": T("note", "Anmerkung"), "letter.copied": T("letter copied", "Brief kopiert"),
     "case.closed": T("closed", "erledigt"), "followup.set": T("follow-up set", "Wiedervorlage gesetzt"), "letter.line": T("letter changed", "Brief geändert"),
     "source.opened": T("source opened", "Quelle geöffnet"), "reveal": T("own answer saved", "eigene Einschätzung gespeichert"), "point.settled": T("settled", "erledigt") };
   const rows = (S.data.caseEvents || []).filter((e) => words[e.kind]).reverse();
-  return `<section class="cp-card" style="padding:18px 22px;max-width:900px"><h2 class="cp-section" style="margin-top:0">${T("History", "Verlauf")}</h2>
+  return `${accountTable()}<section class="cp-card" style="padding:18px 22px;max-width:900px"><h2 class="cp-section" style="margin-top:0">${(S.data.items || []).some((i) => i.kind === "entry") ? T("Work in CasePath", "Bearbeitung in CasePath") : T("History", "Verlauf")}</h2>
     ${S.data.governing_version ? `<p class="cp-muted">${T(`Process updated since the case was prepared (${S.data.run_version} → ${S.data.governing_version}).`, `Prozess seit der Vorbereitung aktualisiert (${S.data.run_version} → ${S.data.governing_version}).`)}</p>` : ""}
     ${rows.length ? `<ul>${rows.map((e) => `<li>${dateText(e.at)} · ${esc(e.expert || "")} · <b>${esc(words[e.kind])}</b>${e.item_id ? ` <span class="cp-muted">${esc(e.item_id)}</span>` : ""}${e.text ? ` — ${esc(clip(e.text, 120))}` : ""}</li>`).join("")}</ul>`
       : `<p class="cp-empty">${T("Nothing done on this case yet.", "Noch nichts an diesem Fall erledigt.")}</p>`}</section>`;
@@ -1886,7 +1940,7 @@ async function renderCase() {
   else if (tab === "source_checker") main = `${checkerView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "document_finder") main = `${documentsView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "result_checker") main = resultView();
-  else if (tab === "history") main = historyView();
+  else if (tab === "history") main = `${historyView()}${S.overviewSource ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
   else if (tab === "overview") main = `${overviewView()}${S.overviewSource || !hasPrepared() ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
   else main = processView();
   // What the handler is typing survives a re-render (a run's progress or a reload redraws the page).
@@ -1907,7 +1961,7 @@ async function renderCase() {
     const holder = b.closest("[data-item]");
     caseEvent("source.opened", holder && /^[a-z_]+:/.test(holder.dataset.item) ? holder.dataset.item : null, { file_id: b.dataset.citeFile, page: Number(b.dataset.page) || null }).catch(() => {});
   });
-  for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", async () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; S.overviewSource = tab === "overview"; await renderCase(); const box = $("#overview-source"); if (box) box.scrollIntoView({ block: "start", behavior: "smooth" }); });
+  for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", async () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; S.overviewSource = tab === "overview" || tab === "history"; await renderCase(); const box = $("#overview-source"); if (box) box.scrollIntoView({ block: "start", behavior: "smooth" }); });
   for (const b of document.querySelectorAll("[data-rate]")) b.addEventListener("click", () => sendRating(b).catch((error) => { S.message = error.message; renderCase(); }));
   const follow = $("#follow");
   if (follow) follow.addEventListener("click", () => {
@@ -1925,6 +1979,8 @@ async function renderCase() {
   if (open) open.addEventListener("click", () => { S.editing = true; renderCase(); });
   const undo = $("#undo");
   if (undo) undo.addEventListener("click", async () => { await api(`/api/edits/${S.lastEdit.edit.id}/undo`, { method: "POST" }); S.lastEdit = null; await loadCase(); });
+  const onlyOpen = $("#only-open");
+  if (onlyOpen) onlyOpen.addEventListener("change", () => { S.onlyOpen = onlyOpen.checked; renderCase(); });
   bindEdit();
   bindOverview();
   fitCard();

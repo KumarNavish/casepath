@@ -294,7 +294,7 @@ class StoredRunTests(unittest.TestCase):
         rows = Catalogue(tuple(area.shipped()))
         self.assertIsNone(rows.get("mietmangel-handler", "2026-11-14.1"))
         governing = rows.get("mietmangel-handler", "2026-11-14.1") or rows.get("mietmangel-handler")  # as runner.case_state falls back
-        self.assertEqual((governing["version"], governing["area"]["backbone"]), ("2026-11-14.7", "2026-11-14.7"))
+        self.assertEqual((governing["version"], governing["area"]["backbone"]), ("2026-11-15.2", "2026-11-15.2"))
         stored = {"facts": [fact(*f) for f in MANDATE] + [fact("bisherige_handlungen", HISTORY),
                                                          fact("eingang_kostenforderung", "Kanzlei Muster: Honorarnote vom 2024-05-02", "Honorarnote")],
                   "documents": [], "brief": {"request": "x", "parties": [], "timeline": []}}

@@ -42,7 +42,7 @@ import json
 from pathlib import Path
 import sys
 
-from ..process import casegraph, incoming, knowledge as kb, workflows
+from ..process import account, casegraph, incoming, knowledge as kb, workflows
 from .team import CaseTeam, CaseWork, TeamError, run_agent, run_source_checker
 from .azure_model import ModelError
 from ..read.evidence import Evidence
@@ -408,6 +408,10 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     read_in = {f for kind in graph.get("incoming") or () for f in incoming.slots(kind)}
     facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "conflicting" and f["fact"] in read_in and f.get("value")
                   and f["fact"] not in facts})
+    # The running account, when the run recorded one: the insurer's actions taken and the agreement come from its entries.
+    # A run made before the account has none, and nothing changes.
+    ledger = account.from_result(result, graph)
+    facts = account.merge(facts, ledger, graph)
     overrides = casegraph.fact_overrides(graph, edits)  # a case worker's value governs
     facts.update({k: v for k, (v, _) in overrides.items()})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
@@ -415,10 +419,10 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     checked = bool(result.get("documents"))
     facts = casegraph.derive_facts(graph, facts, asked, lambda f: workflows.evaluate(graph, f, asked, checked=checked),
                                    partial=partial, files=files, today=today,
-                                   incoming_dates=incoming.document_dates(graph, rows, files))  # at view time: what arrived decides, not the run
+                                   incoming_dates=incoming.document_dates(graph, rows, files), account=ledger)  # at view time: what arrived decides, not the run
     evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=checked), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings,
-            "overrides": {k: e for k, (_, e) in overrides.items()}}
+            "overrides": {k: e for k, (_, e) in overrides.items()}, "account": ledger}
 
 
 def main(argv=None):

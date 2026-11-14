@@ -227,6 +227,36 @@ def seed_cost_note(store, runs):
     return case
 
 
+def seed_account(store, runs):
+    """A case Protekta conducts itself, eight documents with three phone notes (tests/fixtures/account/cases.json), read by
+    the scripted team into the running account: «Stand» in «Der Fall», the Verlauf as a table, the payout chased."""
+    case_data = json.loads((ROOT / "tests" / "fixtures" / "account" / "cases.json").read_text())["selbst"]
+    case = store.create_case(case_data["title"], {"synthetic": True}, "N. Kumar")
+    extraction = {"text": case_data["text"], "pages": case_data["pages"], "readable": True, "note": "", "media_type": "text/plain", "kind": "text",
+                  "segments": case_data["segments"], "cut_of": {"case": None, "file": None, "as_of": case_data["as_of"]}}
+    file_id = store.add_file(case["id"], case_data["name"].replace(".pdf", ".txt"), "text/plain", "text", case_data["text"].encode(), extraction, "N. Kumar")["id"]
+    store.select_workflow(case["id"], case_data["workflow"], None, "N. Kumar")
+    for fact_id, value in case_data["decisions"]:
+        store.add_edit(case["id"], "set_fact", {"fact": fact_id, "value": value}, "N. Kumar", "Entscheid der Fallbearbeitung")
+    entries = [{**e, "file": file_id} for e in case_data["entries"]]
+    cite = lambda quote: [{"file": file_id, "quote": quote}]
+    runs.model_factory = lambda: ScriptedModel([
+        [("list_files", {})],
+        [("record_steps", {"entries": entries[:5]}), ("record_steps", {"entries": entries[5:]})]
+        + [("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case_data["facts"]],
+        [report("claim_reader", request="Sandra Keller verlangt wegen der ausfallenden Heizung eine Entschädigung von der Verwaltung.",
+                parties=[{"role": "Mieterin (VN)", "name": "Frau Sandra Keller"}, {"role": "Verwaltung (GP)", "name": "Muster Immobilien AG"}])],
+        [report("document_finder")],
+        *[[report("result_checker", answer="Die vereinbarte Zahlung ist fällig und nicht bestätigt.")]] * 3,
+    ])
+    run = runs.start(case["id"], "N. Kumar")
+    while store.get_run(run["id"])["status"] in ("queued", "running"):
+        time.sleep(0.05)
+    if store.get_run(run["id"])["status"] != "completed":
+        print(f"account case did not complete: {store.get_run(run['id']).get('error')}", flush=True)
+    return case
+
+
 def main():
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
     data = tempfile.mkdtemp(prefix="cp-preview-")
@@ -297,9 +327,10 @@ def main():
     case_k = seed_cost_note(store, runs)
     keyed = seed_key_cases(store, runs)
     historic = seed_historic(store)
+    case_account = seed_account(store, runs)
     runs.model_factory = factory_b
     print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}"
-          f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}", flush=True)
+          f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}  account {case_account['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 
