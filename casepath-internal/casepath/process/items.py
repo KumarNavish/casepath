@@ -199,10 +199,21 @@ def ask_of(graph, d, row, files):
     return None
 
 
+def trigger_question(graph, fact_id, facts):
+    """Whether the question for a deadline's trigger date is asked: "ask" when a deadline it starts applies (no condition,
+    or its condition holds) or the fact starts none, "offer" when the conditions depend on a fact the file leaves open,
+    None when every deadline it starts is established as not applying (the question does not appear)."""
+    holds = [True if not d.get("when") else evaluate_condition(d["when"], facts or {})
+             for d in graph.get("deadlines") or () if d.get("trigger") == fact_id]
+    return "ask" if not holds or True in holds else "offer" if None in holds else None
+
+
 def open_customer_questions(graph, facts):
     """The questions the first request asks by default: a fact the customer is asked (``ask_customer`` true, not
-    "offered") that is still open. Offered questions wait unticked and never make a letter by themselves."""
-    return [f for f in graph["facts"] if f.get("ask_customer") is True and facts.get(f["id"]) is None]
+    "offered") that is still open, a trigger date only while a deadline it starts applies. Offered questions wait
+    unticked and never make a letter by themselves."""
+    return [f for f in graph["facts"] if f.get("ask_customer") is True and facts.get(f["id"]) is None
+            and trigger_question(graph, f["id"], facts) == "ask"]
 
 
 def build_items(state, result, files=None, events=None):
@@ -402,12 +413,14 @@ def build_items(state, result, files=None, events=None):
                     evidence=[], node=here.get("id"), origin="workflow", chain=True, label=f.get("customer_question") or f["question"], ask="now")
         if planned and planned.get("kind") == "A1" and action and action[0] == "A1":
             for f in graph["facts"]:
-                if f.get("ask_customer") and known.get(f["id"]) is None:
+                # a trigger date is asked only while a deadline it starts applies: offered while that depends on an open fact
+                trigger = trigger_question(graph, f["id"], known)
+                if f.get("ask_customer") and known.get(f["id"]) is None and trigger:
                     asked = f.get("customer_question") or f["question"]
                     # a question's default follows practice: "offered" ones Protekta rarely asks wait unticked
                     add("letter_question", f["id"], value=asked, stated_as="put_to_handler", verdict=None, evidence=[],
                         node=here.get("id"), origin="workflow", chain=True, label=asked,
-                        ask="proposed" if f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers else "now")
+                        ask="proposed" if trigger == "offer" or f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers else "now")
             # A key point that is advice the customer can act on now goes into the first request with its article: ticked when
             # its condition holds, offered while it depends on an open fact. Where it applies, it stands for the area's hint
             # that says the same (every article of the hint is one of the point's); where it is open and such a hint is in
