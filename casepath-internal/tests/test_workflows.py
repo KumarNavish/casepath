@@ -79,7 +79,7 @@ class RoutingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             for index, row in enumerate((FIXTURE,) + extra):
                 Path(directory, f"{index}.json").write_text(json.dumps(row))
-            return Catalogue.load(directory)
+            return Catalogue.load(directory, areas=False)  # the example alone, without the shipped areas
 
     def test_route_selects_asks_or_says_unmapped(self):
         catalogue = self.catalogue()
@@ -87,7 +87,7 @@ class RoutingTests(unittest.TestCase):
         asked = route(catalogue, {})
         self.assertEqual((asked["status"], asked["needs"]), ("needs_facts", ["legal_area"]))
         self.assertEqual(route(catalogue, {"legal_area": "other"})["status"], "unmapped")
-        self.assertEqual(route(Catalogue.load(None), {"legal_area": "loan"})["status"], "unmapped")
+        self.assertEqual(route(Catalogue.load(None, areas=False), {"legal_area": "loan"})["status"], "unmapped")
 
     def test_source_supported_fallback(self):
         fallback = copy.deepcopy(FIXTURE)

@@ -24,6 +24,7 @@ FORMAT = "casepath.workflow/1"
 ID = re.compile(r"^[a-z0-9][a-z0-9_.-]{0,79}$")
 FACT_TYPES = {"enum", "boolean", "text", "date"}
 STATUSES = {"draft", "reviewed"}
+CATALOGUE_SETTINGS = "casepath.catalogue/1"  # a directory's own settings file, not a workflow
 SOURCE_KINDS = {"process_diagram", "process_guidance", "case_example", "expert_review", "knowledge", "case_edit"}
 
 
@@ -209,18 +210,21 @@ class Catalogue:
     workflows: tuple
 
     @classmethod
-    def load(cls, directory):
+    def load(cls, directory, *, areas=True):
         """The workflows in a directory, each a workflow or an area module (composed with the shipped backbone), and the
-        shipped handler areas that build on what the directory holds: an area joins when the directory has an intake
-        workflow it supersedes or builds on, unless the directory has its own workflow of that id."""
+        shipped handler areas: they join by default, also with no directory, so out of the box no case is unmapped. A
+        directory opts out with a settings file ({"format": "casepath.catalogue/1", "shipped_areas": false}); a
+        workflow of the directory with an area's id wins over the shipped area; an intake an area supersedes stays
+        readable but is no longer routed."""
         from . import area
 
-        if directory is None:
-            return cls(())
         rows = []
-        for path in sorted(Path(directory).glob("*.json")):
+        for path in sorted(Path(directory).glob("*.json")) if directory is not None else []:
             try:
                 data = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(data, dict) and data.get("format") == CATALOGUE_SETTINGS:
+                    areas = areas and data.get("shipped_areas", True) is not False
+                    continue
                 if isinstance(data, dict) and data.get("format") == area.BACKBONE_FORMAT:
                     continue
                 if isinstance(data, dict) and data.get("format") == area.AREA_FORMAT:
@@ -229,9 +233,8 @@ class Catalogue:
             except (CatalogueError, json.JSONDecodeError) as error:
                 raise CatalogueError(f"{path.name}: {error}") from error
         present = {w["id"] for w in rows}
-        for seed in area.shipped():
-            if seed["id"] not in present and present & set(seed.get("supersedes", []) + seed.get("builds_on", [])):
-                rows.append(seed)
+        if areas:
+            rows += [seed for seed in area.shipped() if seed["id"] not in present]
         keys = [(w["id"], w["version"]) for w in rows]
         if len(keys) != len(set(keys)):
             raise CatalogueError("a workflow id and version appear twice")

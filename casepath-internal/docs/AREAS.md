@@ -13,7 +13,7 @@ python -m casepath areas casepath/process/areas/my-area.json      # validates an
 python -m casepath areas --law 220=or.html 210=zgb.html            # every passage against the official text (fedlex filestore HTML)
 ```
 
-A file in `casepath/process/areas/` ships with CasePath. A file of the same format in the deployment's catalogue directory (`CASEPATH_WORKFLOW_CATALOGUE`) is composed the same way and wins over a shipped module of the same id.
+A file in `casepath/process/areas/` ships with CasePath and is on by default. A file of the same format in the deployment's catalogue directory (`CASEPATH_WORKFLOW_CATALOGUE`) is composed the same way and wins over a shipped module of the same id.
 
 **Worked example: a neighbour dispute (Art. 684 ZGB).** Only the new parts are shown; `assessment`, `stages`, `notes` are as in any module.
 
@@ -57,7 +57,7 @@ Checked in this order: cover refused → closing; first request not yet sent →
 
 The routing fact `rechtsgebiet` names area and concern («Mietrecht / Kündigung»), read from the files with a located quote. One value selects its area; nothing established, or «Übriges Recht», goes to `allgemein`, which names the other areas as candidates for a person to pick. A second topic the reader names that is another area's own (its short title or value) is offered beside the chosen area («Prozess bestätigen»).
 
-A shipped area joins a deployment's catalogue when the catalogue holds an intake workflow it supersedes or builds on: `mietmangel-handler` replaces `osm-mold`, `vertrag-darlehen` replaces `osm-loan`, `allgemein` replaces `osm-fallback`, and the other areas build on `osm-fallback`. Replaced intakes stay readable for stored runs but are no longer routed. With no catalogue, or one without these intakes, no shipped area joins.
+Every shipped area joins by default, also with no catalogue directory, so out of the box no case is unmapped. A catalogue directory opts out with a settings file, e.g. `catalogue.json` = `{"format": "casepath.catalogue/1", "shipped_areas": false}`. A workflow or area file in the directory with an area's id wins over the shipped area. An intake an area supersedes (`mietmangel-handler` → `osm-mold`, `vertrag-darlehen` → `osm-loan`, `allgemein` → `osm-fallback`) stays readable for stored runs but is no longer routed.
 
 ## Stored runs
 
