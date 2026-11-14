@@ -186,7 +186,8 @@ def check_job(job):
 
 def case_files(files):
     """The files as the agents see them: id, name, kind and the extraction's text and structure."""
-    return [{"id": f["id"], "name": f["name"], "kind": f["kind"], **f["extraction"]} for f in files]
+    return [{"id": f["id"], "name": f["name"], "kind": f["kind"], **f["extraction"], **({"created_at": f["created_at"]} if f.get("created_at") else {})}
+            for f in files]
 
 
 def catalogue_of(job):

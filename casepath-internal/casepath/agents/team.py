@@ -183,6 +183,9 @@ class CaseWork:
         self.case, self.base, self.knowledge, self.voice = case, base_workflow, list(knowledge), voice or {}
         self.employee_edits, self.agent_edits = list(edits), []
         self.evidence = Evidence(files)
+        # What arrived and when, as the case view sees it (dates, senders, cut, upload time): the stage the agents act on
+        # is the stage the opened case shows.
+        self.dated = [{"extraction": {k: f[k] for k in ("segments", "cut_of") if k in f}, "created_at": f.get("created_at")} for f in files]
         self.file_ids = list(self.evidence.files)
         self.total_chars = sum(len(t) for f in self.evidence.files.values() for _, t in f["pages_text"])
         if not self.file_ids:
@@ -312,7 +315,8 @@ class CaseWork:
         asked, partial = casegraph.whole_findings(self.graph, self.findings())  # a need for all of something stays asked
         answered = {k: v for k, (v, _) in casegraph.fact_overrides(self.graph, self.employee_edits).items()}  # the case worker's answers
         facts = casegraph.derive_facts(self.graph, {**self.accepted_facts(), **answered}, asked,
-                                       lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked), partial=partial)
+                                       lambda f: workflows.evaluate(self.graph, f, asked, checked=missing_checked), partial=partial,
+                                       files=self.dated)
         return casegraph.mark_partial(workflows.evaluate(self.graph, facts, asked, checked=missing_checked), partial)
 
     def unverified(self):

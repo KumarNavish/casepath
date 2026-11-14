@@ -274,6 +274,40 @@ class SyntheticRunTests(unittest.TestCase):
         self.assertEqual(outcome["status"], "completed", outcome.get("error"))
         return outcome
 
+    def test_the_run_and_the_opened_case_agree_when_what_arrived_decides_the_stage(self):
+        text = ("SYNTHETISCHER FALL. Protekta forderte am 1. März 2024 Unterlagen an und fragte am 20. März 2024 nach. "
+                "Die Mieterin antwortete am 28. März 2024 und schickte die Mängelrüge. Die Mängelrüge ging schriftlich an die Verwaltung. "
+                "Schadenersatz verlangt sie nicht. Über den Mietzins wird nicht gestritten.")
+        cite = lambda quote: [{"file": "f1", "quote": quote}]
+        record = lambda f, v, q: ("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)})
+        model = ScriptedModel([
+            [record("handlung_a1", "2024-03-01", "Protekta forderte am 1. März 2024 Unterlagen an"),
+             record("handlung_a4", "2024-03-20", "fragte am 20. März 2024 nach"),
+             record("maengelruege_schriftlich", "ja", "Die Mängelrüge ging schriftlich an die Verwaltung."),
+             record("will_schadenersatz", "nein", "Schadenersatz verlangt sie nicht."),
+             record("streit_mietzins", "nein", "Über den Mietzins wird nicht gestritten."), report("claim_reader", request="Schimmel im Bad.")],
+            [("record_document", {"document": "maengelruege", "status": "present", "files": ["f1"], "citations": cite("schickte die Mängelrüge"), "note": ""}),
+             report("document_finder")],
+            *[[report("result_checker", answer="Die Einschätzung ist vorbereitet.")]] * 3,
+        ], routing=[{"fact": "rechtsgebiet", "value": "Mietrecht / Mangel", "citations": cite("schickte die Mängelrüge")}])
+        segments = [{"first_page": 1, "last_page": 1, "kind": "Brief", "date": "20.03.2024", "sender": "Protekta Rechtsschutz AG", "recipient": "", "title": "", "summary": ""},
+                    {"first_page": 1, "last_page": 1, "kind": "E-Mail", "date": "28.03.2024", "sender": "Anna Beispiel", "recipient": "", "title": "", "summary": ""}]
+        extraction = {"text": text, "pages": None, "readable": True, "note": "", "segments": segments, "cut_of": {"as_of": "2024-04-10"}}
+        edits = [{"id": "ed_1", "op": "set_fact", "args": {"fact": "deckung", "value": "bestätigt"}, "status": "active"}]  # the handler's decision
+        job = {"format": core.JOB, "case": {"id": "case_r", "title": "Schimmel (synthetisch)", "intake": {}},
+               "files": [{"id": "f1", "name": "akte.txt", "kind": "text", "media_type": "text/plain", "sha256": "abc", "extraction": extraction}],
+               "workflows": list(catalogue(*intakes("osm-mold")).workflows), "knowledge": [], "edits": edits, "options": {"read_scans": True}}
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(json.loads(json.dumps(job)), model, core.DirectoryBlobs(blobs))
+        self.assertEqual(outcome["status"], "completed", outcome.get("error"))
+        stored = outcome["result"]
+        view = core.evaluate(area.workflow("mietmangel-handler"), [], edits, stored, "case_r", files=[{"extraction": extraction}])
+        self.assertEqual(view["evaluation"]["current"]["step"], "beurteilen")  # the customer answered: the assessment, not A12
+        self.assertEqual(stored["evaluation"]["current"]["step"], view["evaluation"]["current"]["step"])
+        action = lambda evaluation: {i["item_id"]: i for i in build_items({**view, "evaluation": evaluation}, stored, [{"extraction": extraction}])}["next_action:0"]["action"]
+        self.assertEqual(action(stored["evaluation"]), action(view["evaluation"]))
+        self.assertEqual(action(view["evaluation"]), "A5")
+
     def test_every_area_ends_on_a_complete_first_request(self):
         self.assertEqual(set(CASES), {w["id"] for w in area.shipped()})
         for wid, case in CASES.items():
