@@ -28,10 +28,27 @@
     "title": "ActionChoice",
     "type": "object"
    },
+   "Body_create_from_files_api_cases_from_files_post": {
+    "properties": {
+     "files": {
+      "items": {
+       "format": "binary",
+       "type": "string"
+      },
+      "title": "Files",
+      "type": "array"
+     }
+    },
+    "required": [
+     "files"
+    ],
+    "title": "Body_create_from_files_api_cases_from_files_post",
+    "type": "object"
+   },
    "Body_upload_api_cases__case_id__files_post": {
     "properties": {
      "file": {
-      "contentMediaType": "application/octet-stream",
+      "format": "binary",
       "title": "File",
       "type": "string"
      }
@@ -40,6 +57,21 @@
      "file"
     ],
     "title": "Body_upload_api_cases__case_id__files_post",
+    "type": "object"
+   },
+   "CaseTitle": {
+    "properties": {
+     "title": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "title"
+    ],
+    "title": "CaseTitle",
     "type": "object"
    },
    "CutRequest": {
@@ -384,13 +416,6 @@
    },
    "ValidationError": {
     "properties": {
-     "ctx": {
-      "title": "Context",
-      "type": "object"
-     },
-     "input": {
-      "title": "Input"
-     },
      "loc": {
       "items": {
        "anyOf": [
@@ -535,6 +560,43 @@
      }
     },
     "summary": "Create Case"
+   }
+  },
+  "/api/cases/from-files": {
+   "post": {
+    "description": "A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,\nand its preparation started at once.",
+    "operationId": "create_from_files_api_cases_from_files_post",
+    "requestBody": {
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_create_from_files_api_cases_from_files_post"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Create From Files"
    }
   },
   "/api/cases/{case_id}": {
@@ -1137,6 +1199,53 @@
      }
     },
     "summary": "Study Copy"
+   }
+  },
+  "/api/cases/{case_id}/title": {
+   "put": {
+    "operationId": "rename_case_api_cases__case_id__title_put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CaseTitle"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Rename Case"
    }
   },
   "/api/cases/{case_id}/workflow": {

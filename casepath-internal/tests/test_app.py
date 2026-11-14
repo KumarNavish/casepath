@@ -551,11 +551,13 @@ class AppTests(unittest.TestCase):
         before = client.get(f"/api/cases/{case['id']}").json()
         kinds = {o["kind"]: o for o in before["action_options"]}
         self.assertEqual(before["draft"]["kind"], "A1")
+        self.assertEqual(before["draft"]["needs"], [])  # the first request does not wait for the cover decision (it registers provisionally)
         self.assertTrue({"A1", "A5", "A6"} <= set(kinds))  # this stage, its follow-up and the next stage
         self.assertEqual(client.post(f"/api/cases/{case['id']}/action", json={"kind": "A10", "reason_code": "1"}).status_code, 422)  # not near
         self.assertEqual(client.post(f"/api/cases/{case['id']}/action", json={"kind": "A5", "reason_code": "5"}).status_code, 201)
         after = client.get(f"/api/cases/{case['id']}").json()
         self.assertEqual(after["draft"]["kind"], "A5")
+        self.assertEqual(after["draft"]["needs"], ["deckung"])  # the assessment does
         self.assertIn("Grundsätzlich hat die Mieterschaft", after["draft"]["text"])
         self.assertNotEqual(after["follow_up"]["due"], before["follow_up"]["due"])  # A5's own days, not A1's
         log = client.get(f"/api/cases/{case['id']}/events").json()["events"]
@@ -563,6 +565,24 @@ class AppTests(unittest.TestCase):
         if "A2" in kinds:  # a kind without a draft says why
             client.post(f"/api/cases/{case['id']}/action", json={"kind": "A2", "reason_code": "1"})
             self.assertTrue(client.get(f"/api/cases/{case['id']}").json()["draft"]["none"])
+
+    def test_files_dropped_on_the_case_list_make_a_case_named_from_the_mail_and_start_its_preparation(self):
+        client = self.client()
+        created = client.post("/api/cases/from-files", files=[("files", ("message.eml", EMAIL, "message/rfc822")),
+                                                              ("files", ("Foto.jpg", b"\xff\xd8\xff\xe0 not much", "image/jpeg"))])
+        self.assertEqual(created.status_code, 201, created.text)
+        body = created.json()
+        self.assertEqual(body["case"]["title"], "Schimmel im Bad")  # the first e-mail's subject
+        self.assertEqual([f["name"] for f in body["files"]], ["message.eml", "Foto.jpg"])
+        self.assertIsNotNone(body["run"])  # preparation started at once
+        self.assertEqual(client.get(f"/api/cases/{body['case']['id']}").json()["run"]["id"], body["run"]["id"])
+        named = client.post("/api/cases/from-files", files=[("files", ("Mietvertrag Kramgasse.pdf", b"%PDF-1.4 x", "application/pdf"))]).json()
+        self.assertEqual(named["case"]["title"], "Mietvertrag Kramgasse")  # no e-mail: the first file's name
+        self.assertEqual(client.put(f"/api/cases/{named['case']['id']}/title", json={"title": "Mangel Kramgasse 5"}).json()["title"], "Mangel Kramgasse 5")
+        self.assertEqual(client.put(f"/api/cases/{named['case']['id']}/title", json={"title": ""}).status_code, 422)
+        self.assertEqual(client.post("/api/cases/from-files", files=[("files", ("leer.txt", b"", "text/plain"))]).status_code, 422)
+        listed = {c["id"]: c for c in client.get("/api/cases").json()["cases"]}
+        self.assertIn("closed", listed[named["case"]["id"]])
 
 
 class RoutingTests(unittest.TestCase):

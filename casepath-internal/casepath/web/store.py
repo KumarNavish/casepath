@@ -114,6 +114,12 @@ class CaseStore:
             row["intake"] = json.loads(row["intake"])
         return rows
 
+    def rename_case(self, case_id, title):
+        with self._lock:
+            self.get_case(case_id)
+            self._db.execute("update cases set title=?, updated_at=? where id=?", (title, now(), case_id))
+        return self.get_case(case_id)
+
     def select_workflow(self, case_id, workflow_id, version, user):
         with self._lock:
             self.get_case(case_id)
