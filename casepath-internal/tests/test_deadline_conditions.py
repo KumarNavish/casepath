@@ -96,12 +96,24 @@ class TriggerQuestionTests(unittest.TestCase):
         _, granted = listed("betreibung-schuldner", base + [("provisorisch", True)])
         self.assertIn("letter_question:rechtsoeffnung_eroeffnet", granted)
 
+    def test_a_deadline_that_only_waits_for_a_step_not_yet_taken_asks_its_date(self):
+        graph = {"deadlines": [{"trigger": "a", "when": {"not": {"fact": "done", "is": True}}},
+                               {"trigger": "b", "when": {"all": [{"fact": "sub", "is": True}, {"not": {"fact": "done", "is": True}}]}}]}
+        self.assertEqual(trigger_question(graph, "a", {}), "ask")  # nothing shows the step was taken: the date is asked
+        self.assertIsNone(trigger_question(graph, "a", {"done": True}))
+        self.assertEqual(trigger_question(graph, "b", {}), "offer")  # whether the sub-case exists is open
+        self.assertEqual(trigger_question(graph, "b", {"sub": True}), "ask")
+        debtor = area.workflow("betreibung-schuldner")
+        self.assertIn("zahlungsbefehl_zugestellt", [x["id"] for x in open_customer_questions(debtor, {})])
+
     def test_a_ticked_trigger_question_is_only_offered_while_its_condition_is_open(self):
         for w in area.shipped():
             graph = area.workflow(w["id"])
             for f in graph["facts"]:
                 deadlines = [d for d in graph.get("deadlines", []) if d["trigger"] == f["id"]]
                 if f.get("ask_customer") is not True or not deadlines or not all(d.get("when") for d in deadlines):
+                    continue
+                if any(trigger_question(graph, f["id"], {}) == "ask" for _ in [0]):  # only waits for a step not yet taken
                     continue
                 with self.subTest(area=w["id"], fact=f["id"]):  # nothing known: the conditions are open, nothing is ticked
                     self.assertNotIn(f["id"], [x["id"] for x in open_customer_questions(graph, {})])

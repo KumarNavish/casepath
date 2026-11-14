@@ -199,13 +199,29 @@ def ask_of(graph, d, row, files):
     return None
 
 
+def _unless_done(condition, facts):
+    """Whether a condition holds when every negated fact the file leaves open is read as "not done"."""
+    if "not" in condition:
+        return evaluate_condition(condition["not"], facts) is not True
+    if "all" in condition:
+        return all(_unless_done(c, facts) for c in condition["all"])
+    if "any" in condition:
+        return any(_unless_done(c, facts) for c in condition["any"])
+    return evaluate_condition(condition, facts) is True
+
+
 def trigger_question(graph, fact_id, facts):
     """Whether the question for a deadline's trigger date is asked: "ask" when a deadline it starts applies (no condition,
-    or its condition holds) or the fact starts none, "offer" when the conditions depend on a fact the file leaves open,
-    None when every deadline it starts is established as not applying (the question does not appear)."""
-    holds = [True if not d.get("when") else evaluate_condition(d["when"], facts or {})
-             for d in graph.get("deadlines") or () if d.get("trigger") == fact_id]
-    return "ask" if not holds or True in holds else "offer" if None in holds else None
+    or its condition holds) or the fact starts none, or the only thing open is whether a step was already taken ("not … is true" with the fact
+    unknown); "offer" when the conditions depend otherwise on a fact the file leaves open; None when every deadline it starts is established as not applying (the question does not appear)."""
+    starts = [d for d in graph.get("deadlines") or () if d.get("trigger") == fact_id]
+    holds = [True if not d.get("when") else evaluate_condition(d["when"], facts or {}) for d in starts]
+    if not holds or True in holds:
+        return "ask"
+    # "not yet done" is assumed while the file does not show the step was taken: the date of a deadline that only
+    # waits for that is asked, because missing it costs most
+    pending = any(h is None and _unless_done(d["when"], facts or {}) for d, h in zip(starts, holds))
+    return "ask" if pending else "offer" if None in holds else None
 
 
 def open_customer_questions(graph, facts):
