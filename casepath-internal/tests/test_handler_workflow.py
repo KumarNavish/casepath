@@ -33,8 +33,8 @@ class HandlerWorkflowTests(unittest.TestCase):
             self.assertIn("mietmangel-handler", [w["id"] for w in catalogue.routable()])
             self.assertIsNotNone(catalogue.get("osm-mold"))
         with tempfile.TemporaryDirectory() as tmp:  # out of the box: every shipped area, nothing unmapped
-            self.assertEqual(len(workflows.Catalogue.load(tmp).routable()), 14)
-            self.assertEqual(len(workflows.Catalogue.load(None).routable()), 14)
+            self.assertEqual(len(workflows.Catalogue.load(tmp).routable()), 15)
+            self.assertEqual(len(workflows.Catalogue.load(None).routable()), 15)
             (Path(tmp) / "catalogue.json").write_text(json.dumps({"format": "casepath.catalogue/1", "shipped_areas": False}))
             self.assertEqual(workflows.Catalogue.load(tmp).workflows, ())  # a catalogue may opt out
 

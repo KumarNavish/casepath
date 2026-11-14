@@ -495,5 +495,48 @@
   ],
   "hint": "Art. 684 ZGB",
   "deadlines": {}
+ },
+ "inkasso": {
+  "title": "Restkaufpreis für ein privat verkauftes Auto",
+  "text": "SYNTHETISCHER FALL. Ich habe am 1. August 2026 mein Auto privat an Herrn Max Beispiel verkauft, für CHF 6'000. Er hat CHF 4'000 bezahlt; den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen. Ich habe ihn am 15. September 2026 schriftlich gemahnt, er hat nicht reagiert. Sara Muster",
+  "routing": [
+   "Inkasso-Rechtsschutz / offene Forderung der Kundschaft",
+   "den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen"
+  ],
+  "facts": [
+   [
+    "forderung",
+    "Restkaufpreis von CHF 2'000 aus dem privaten Verkauf eines Autos an Max Beispiel",
+    "Er hat CHF 4'000 bezahlt; den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen."
+   ],
+   [
+    "faelligkeit",
+    "2026-08-31",
+    "den Rest von CHF 2'000 hätte er laut Kaufvertrag bis 31. August 2026 zahlen müssen"
+   ],
+   [
+    "gemahnt",
+    "ja",
+    "Ich habe ihn am 15. September 2026 schriftlich gemahnt"
+   ],
+   [
+    "fuenf_jahre",
+    "nein",
+    "Ich habe am 1. August 2026 mein Auto privat an Herrn Max Beispiel verkauft"
+   ]
+  ],
+  "documents": [
+   "Vertrag, Bestellung oder Auftragsbestätigung, aus dem die Forderung entsteht",
+   "Rechnung mit Zahlungsfrist",
+   "Schriftliche Mahnung an den Schuldner",
+   "Korrespondenz mit dem Schuldner, insbesondere Einwände, Zahlungsversprechen und Belege von Teilzahlungen"
+  ],
+  "questions": [
+   "bestritten"
+  ],
+  "hint": "Art. 102, 104 OR",
+  "deadlines": {
+   "verjaehrung_zehn": "2036-09-01"
+  }
  }
 }

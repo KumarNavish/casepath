@@ -1,0 +1,69 @@
+{
+ "format": "casepath.area/1",
+ "id": "inkasso",
+ "version": "2026-11-14.2",
+ "backbone": "2026-11-14.2",
+ "short_title": "Inkasso einer Forderung",
+ "title": "Inkasso einer Geldforderung der Kundschaft: Verzug, Verzugszins, Verjährung (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Obligationenrecht (SR 220): Erfüllungszeit und Verzug (Art. 75, 102, 104 OR), Verjährung (Art. 127 ff. OR)"},
+  {"id": "avb", "kind": "knowledge", "title": "Protekta, Rechtsschutzversicherung für Privatpersonen, Allgemeine Bedingungen RSP-01.2026, Art. D1 Ziff. 6 «Inkasso-Rechtsschutz» (docs/sources/protekta/avb-privat-01-2026.txt)"}
+ ],
+ "law": {
+  "75": {"cite": "Art. 75 OR", "sr": "220", "article": "75", "passage": "Ist die Zeit der Erfüllung weder durch Vertrag noch durch die Natur des Rechtsverhältnisses bestimmt, so kann die Erfüllung sogleich geleistet und gefordert werden.", "verified": true},
+  "102": {"cite": "Art. 102 Abs. 1 OR", "sr": "220", "article": "102", "passage": "Ist eine Verbindlichkeit fällig, so wird der Schuldner durch Mahnung des Gläubigers in Verzug gesetzt.", "verified": true},
+  "102.2": {"cite": "Art. 102 Abs. 2 OR", "sr": "220", "article": "102", "passage": "Wurde für die Erfüllung ein bestimmter Verfalltag verabredet, oder ergibt sich ein solcher infolge einer vorbehaltenen und gehörig vorgenommenen Kündigung, so kommt der Schuldner schon mit Ablauf dieses Tages in Verzug.", "verified": true},
+  "104": {"cite": "Art. 104 Abs. 1 OR", "sr": "220", "article": "104", "passage": "Ist der Schuldner mit der Zahlung einer Geldschuld in Verzug, so hat er Verzugszinse zu fünf vom Hundert für das Jahr zu bezahlen, selbst wenn die vertragsmässigen Zinse weniger betragen.", "verified": true},
+  "127": {"cite": "Art. 127 OR", "sr": "220", "article": "127", "passage": "Mit Ablauf von zehn Jahren verjähren alle Forderungen, für die das Bundeszivilrecht nicht etwas anderes bestimmt.", "verified": true},
+  "128": {"cite": "Art. 128 Ziff. 1 OR", "sr": "220", "article": "128", "passage": "Mit Ablauf von fünf Jahren verjähren die Forderungen: 1. für Miet-, Pacht- und Kapitalzinse sowie für andere periodische Leistungen;", "verified": true},
+  "128.3": {"cite": "Art. 128 Ziff. 3 OR", "sr": "220", "article": "128", "passage": "3. aus Handwerksarbeit, Kleinverkauf von Waren, ärztlicher Besorgung, Berufsarbeiten von Anwälten, Rechtsagenten, Prokuratoren und Notaren sowie aus dem Arbeitsverhältnis von Arbeitnehmern.", "verified": true},
+  "130": {"cite": "Art. 130 Abs. 1 OR", "sr": "220", "article": "130", "passage": "Die Verjährung beginnt mit der Fälligkeit der Forderung.", "verified": true},
+  "135": {"cite": "Art. 135 OR", "sr": "220", "article": "135", "passage": "Die Verjährung wird unterbrochen: 1. durch Anerkennung der Forderung von seiten des Schuldners, namentlich auch durch Zins- und Abschlagszahlungen, Pfand- und Bürgschaftsbestellung; 2. durch Schuldbetreibung, durch Schlichtungsgesuch, durch Klage oder Einrede", "verified": true},
+  "137": {"cite": "Art. 137 Abs. 1 OR", "sr": "220", "article": "137", "passage": "Mit der Unterbrechung beginnt die Verjährung von neuem.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Inkasso-Rechtsschutz / offene Forderung der Kundschaft"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Inkasso-Rechtsschutz / offene Forderung der Kundschaft"], "question": "Will die Kundschaft eine Geldforderung eintreiben, die ihr jemand schuldet und nicht bezahlt?", "source_refs": ["law#102"],
+   "not_this": ["Die Kundschaft hat selbst einen Zahlungsbefehl erhalten und ist Schuldnerin: Betreibung gegen die Kundschaft", "Streit darüber, ob die eigene Leistung mangelhaft war: Vertragsrecht (Kauf, Werkvertrag)", "Rückzahlung eines Darlehens: Vertragsrecht / Darlehen"]},
+  {"id": "forderung", "type": "text", "question": "Worauf beruht die Forderung (Vertrag, Rechnung), wie hoch ist sie und wer schuldet sie?", "source_refs": ["law#130", "avb#d1-6"], "ask_customer": true, "customer_question": "Worauf beruht Ihre Forderung (z.B. Vertrag, Rechnung), und wie hoch ist der offene Betrag?"},
+  {"id": "faelligkeit", "type": "date", "question": "Seit wann ist die Forderung fällig (vereinbarter Verfalltag oder Ablauf der Zahlungsfrist der Rechnung; nicht das Rechnungsdatum)?", "source_refs": ["law#130", "law#102.2", "law#75"], "ask_customer": true, "customer_question": "Bis wann hätte der Schuldner bezahlen müssen (Zahlungsfrist oder vereinbarter Termin)?",
+   "not_this": ["Rechnungsdatum, wenn eine Zahlungsfrist lief", "Datum der Mahnung"]},
+  {"id": "gemahnt", "type": "boolean", "question": "Hat die Kundschaft den Schuldner schriftlich gemahnt?", "source_refs": ["law#102", "avb#d1-6"], "ask_customer": true, "customer_question": "Haben Sie den Schuldner bereits schriftlich gemahnt? Wenn ja, wann?"},
+  {"id": "bestritten", "type": "boolean", "question": "Bestreitet der Schuldner die Forderung oder erhebt er Einwände (z.B. Mängel, Verrechnung)?", "source_refs": ["avb#d1-6"], "ask_customer": true, "customer_question": "Hat der Schuldner die Forderung bestritten oder Einwände erhoben?"},
+  {"id": "fuenf_jahre", "type": "boolean", "question": "Fällt die Forderung unter die fünfjährige Verjährung (periodische Leistungen wie Miet- oder Kapitalzinse, Handwerksarbeit, Kleinverkauf von Waren, ärztliche Besorgung, Berufsarbeit von Anwälten oder Notaren, Arbeitsverhältnis)?", "source_refs": ["law#128", "law#128.3", "law#127"]},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist der Schuldner?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schuldner, Betreibungsamt, Gericht)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "grundlage", "title": "Vertrag, Bestellung oder Auftragsbestätigung, aus dem die Forderung entsteht", "why": "Zeigt Grund, Höhe und Fälligkeit der Forderung; mit der Fälligkeit beginnt die Verjährung (Art. 130 OR).", "source_refs": ["law#130", "law#75"], "stage": "klaeren"},
+  {"id": "rechnung", "title": "Rechnung mit Zahlungsfrist", "why": "Ein vereinbarter Verfalltag setzt den Schuldner mit seinem Ablauf in Verzug (Art. 102 Abs. 2 OR).", "source_refs": ["law#102.2"], "stage": "klaeren"},
+  {"id": "mahnung", "title": "Schriftliche Mahnung an den Schuldner", "why": "Durch die Mahnung kommt der Schuldner einer fälligen Forderung in Verzug und schuldet Verzugszins (Art. 102, 104 OR); der Inkasso-Rechtsschutz setzt eine schriftliche Mahnung voraus (AVB Art. D1 Ziff. 6).", "required_when": {"any": [{"fact": "gemahnt", "is": true}, {"fact": "gemahnt", "known": false}]}, "source_refs": ["law#102", "law#104", "avb#d1-6"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Korrespondenz mit dem Schuldner, insbesondere Einwände, Zahlungsversprechen und Belege von Teilzahlungen", "why": "Eine Anerkennung, auch durch eine Abschlagszahlung, unterbricht die Verjährung (Art. 135 OR); Einwände zeigen, ob die Forderung bestritten ist.", "source_refs": ["law#135", "avb#d1-6"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "verzug", "when": true, "text": "Der Schuldner einer fälligen Forderung kommt durch Ihre Mahnung in Verzug, bei einem vereinbarten Zahlungstermin schon mit dessen Ablauf; ab dann schuldet er Verzugszins von fünf Prozent im Jahr.", "legal_basis": "Art. 102, 104 OR", "source_refs": ["law#102", "law#102.2", "law#104"]},
+  {"id": "verjaehrung", "when": true, "text": "Forderungen verjähren in der Regel zehn Jahre, bestimmte Forderungen wie Zinse, Handwerksarbeit oder Kleinverkauf von Waren fünf Jahre nach ihrer Fälligkeit; eine Anerkennung des Schuldners oder eine Betreibung unterbricht die Verjährung, die dann neu beginnt.", "legal_basis": "Art. 127, 128, 130, 135, 137 OR", "source_refs": ["law#127", "law#128", "law#128.3", "law#130", "law#135", "law#137"]},
+  {"id": "deckung_inkasso", "when": true, "text": "Der Inkasso-Rechtsschutz umfasst bis zu zwei Mal pro Kalenderjahr das Inkasso unbestrittener, fälliger und nicht verjährter Forderungen von mindestens CHF 500 aus Verträgen, die im Privat-Rechtsschutz versichert sind, wenn Sie bereits schriftlich gemahnt haben.", "legal_basis": "Allgemeine Bedingungen RSP-01.2026, Art. D1 Ziff. 6", "source_refs": ["avb#d1-6"]}
+ ],
+ "stages": {
+  "klaeren": {"source_refs": ["law#102", "avb#d1-6"]},
+  "beurteilen": {"source_refs": ["law#102", "law#104", "law#127", "law#128", "law#130"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich kommt der Schuldner einer fälligen Forderung durch Mahnung in Verzug, bei einem vereinbarten Verfalltag schon mit dessen Ablauf (Art. 102 OR), und schuldet ab dann Verzugszins von fünf vom Hundert für das Jahr (Art. 104 OR)."},
+  "conditions": {"text": "Voraussetzung ist, dass die Forderung fällig und nicht verjährt ist; die Verjährung beginnt mit der Fälligkeit und beträgt zehn Jahre, für die in Art. 128 OR genannten Forderungen fünf Jahre (Art. 127, 130 OR)."},
+  "demand": {"text": "Wir fordern Sie auf, den offenen Betrag samt Verzugszins von fünf Prozent (Art. 104 OR) bis {frist} zu bezahlen; andernfalls wird unsere Kundschaft ohne weitere Ankündigung die Betreibung einleiten."}
+ },
+ "deadlines": [
+  {"id": "verjaehrung_zehn", "title": "Verjährung der Forderung", "trigger": "faelligkeit", "period": {"years": 10}, "from": "nach der Fälligkeit", "when": {"fact": "fuenf_jahre", "is": false}, "when_text": "nur wenn keine der fünfjährigen Verjährungen gilt", "check": "Unterbrechung durch Anerkennung, Betreibung, Schlichtungsgesuch oder Klage prüfen; danach beginnt die Verjährung neu (Art. 135, 137 OR)", "basis": "Art. 127 OR", "missed": "Danach ist die Forderung verjährt.", "question": "Bis wann hätte der Schuldner bezahlen müssen (Zahlungsfrist oder vereinbarter Termin)?", "source_refs": ["law#127", "law#130", "law#135", "law#137"], "party": "kunde"},
+  {"id": "verjaehrung_fuenf", "title": "Verjährung der Forderung (fünf Jahre)", "trigger": "faelligkeit", "period": {"years": 5}, "from": "nach der Fälligkeit", "when": {"fact": "fuenf_jahre", "is": true}, "when_text": "nur für periodische Leistungen, Handwerksarbeit, Kleinverkauf von Waren, Berufsarbeit und Forderungen aus dem Arbeitsverhältnis", "check": "Unterbrechung durch Anerkennung, Betreibung, Schlichtungsgesuch oder Klage prüfen; danach beginnt die Verjährung neu (Art. 135, 137 OR)", "basis": "Art. 128 OR", "missed": "Danach ist die Forderung verjährt.", "question": "Bis wann hätte der Schuldner bezahlen müssen (Zahlungsfrist oder vereinbarter Termin)?", "source_refs": ["law#128", "law#128.3", "law#130", "law#135", "law#137"], "party": "kunde"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": [
+  {"text": "Ist die Kundschaft selbst Schuldnerin und hat sie einen Zahlungsbefehl erhalten, gilt die Frist für den Rechtsvorschlag nach dem Schuldbetreibungs- und Konkursgesetz (SR 281.1); sie ist am amtlichen Text geprüft, hier aber nicht abgebildet, weil der Backbone SR 281.1 nicht führt: Frist von Hand prüfen.", "source_refs": ["law#135"]},
+  {"text": "Bestreitet der Schuldner die Forderung, ist sie nicht mehr unbestritten im Sinne des Inkasso-Rechtsschutzes; ob dann der Streit aus dem zugrunde liegenden Vertrag versichert ist, ist bei der Deckung zu prüfen.", "source_refs": ["avb#d1-6"]}
+ ]
+}
