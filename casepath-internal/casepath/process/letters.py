@@ -104,6 +104,11 @@ def statutory(item):
     what = "Termin der Gegenpartei" if item.get("party") == "gegenpartei" else "Gesetzliche Frist"  # the other side's date is not the customer's
     if item.get("condition"):
         what = f"{what} ({item['condition']})"
+    if item.get("possible"):  # its trigger date is not settled: never left out, its date is asked
+        what = "ein Termin der Gegenpartei" if item.get("party") == "gegenpartei" else "eine gesetzliche Frist"
+        return (f"Möglicherweise läuft {what}" + (f" ({item['condition']})" if item.get("condition") else "") + f" «{title}»"
+                + (f": nach dem Datum in Ihren Unterlagen {'ab' if item.get('direction') == 'ab' else 'bis'} {_day(item['candidate'])}" if item.get("candidate") else "")
+                + "; das massgebende Datum prüfen wir noch, bitte nennen Sie es uns.")
     if day:
         return f"{what} «{title}»: nach unserer Berechnung {'ab' if item.get('direction') == 'ab' else 'bis'} {day}."
     if item.get("due_text"):
@@ -163,19 +168,30 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     }
 
 
+PLACEHOLDER = re.compile(r"\{([a-z_]+)\}")
+NOTHING = "kein Entwurf: der Brief hätte keinen Inhalt"
+
+
 def render(kind, forms, ctx):
-    """The draft for one action kind: the frame (reference, greeting, closing) around the form's parts; parts that come out
-    empty (no questions, no hints) are left out. Returns (text, None) or (None, reason) when the kind has no draft."""
+    """The draft for one action kind: the frame (reference, greeting, closing) around the form's parts. A form never
+    renders empty: a part whose placeholders all come out empty (no documents, no questions, no hints) is left out with
+    its fixed words, so no empty list is announced; a form that names what it is for (``asks``: its placeholders) and
+    has none of them filled has no draft and says why (``empty``). Offered lines nobody ticked are not in ``ctx``.
+    Returns (text, None) or (None, reason) when the kind has no draft."""
     form = (forms or {}).get(kind)
     if not form:
         return None, "für diese Handlung ist kein Formular hinterlegt"
     if form.get("none"):
         return None, form["none"]
-    if kind == "A1" and not ctx.get("liste"):
-        return "", None  # nothing to ask for: no first request
+    filled = lambda name: bool(str(ctx.get(name) or "").strip())
+    if form.get("asks") and not any(filled(name) for name in form["asks"]):
+        return None, form.get("empty") or NOTHING
     frame = forms.get("_frame") or {"head": [], "tail": []}
     fill = lambda text: text.format(**ctx)
-    body = [fill(p) for p in form["parts"]]
+    kept = [p for p in form["parts"] if not PLACEHOLDER.findall(p) or any(filled(n) for n in PLACEHOLDER.findall(p))]
+    body = [fill(p) for p in kept]
+    if not any(part.strip() for part in body):
+        return None, form.get("empty") or NOTHING
     lines = [fill(p) for p in frame["head"]] + [b for part in body if part.strip() for b in (part, "")] + [fill(p) for p in frame["tail"]][1:]
     return "\n".join(lines).strip(), None
 

@@ -87,7 +87,23 @@ def validate_backbone(backbone):
         if not re.fullmatch(r"A\d{1,2}", kind) or any(f not in facts for f in row.get("depends_on", [])):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
     check_stage_work(backbone)
+    check_forms(backbone["forms"])
     return incoming.validate(backbone)
+
+
+def check_forms(forms):
+    """A form never renders empty: it has parts or says why there is no draft (``none``), and a form that names what it
+    is for (``asks``: placeholders of its parts) says why there is no draft when none of them is filled (``empty``)."""
+    for kind, form in forms.items():
+        if kind.startswith("_"):
+            continue
+        if not form.get("none") and not form.get("parts"):
+            raise CatalogueError(f"backbone: form {kind} needs parts or the reason it has no draft (none)")
+        asks = form.get("asks")
+        if asks is not None:
+            named = {n for p in form.get("parts", []) for n in re.findall(r"\{([a-z_]+)\}", p)}
+            if not asks or set(asks) - named or not str(form.get("empty") or "").strip():
+                raise CatalogueError(f"backbone: form {kind} asks for placeholders of its parts and says why there is no draft without them (empty)")
 
 
 def check_stage_work(backbone):
@@ -202,6 +218,9 @@ def validate_module(module, backbone):
     if not module.get("practice") and re.search(r"\d+\s*(?:von|of)\s*\d+|\d+of\d+", json.dumps(body, ensure_ascii=False)):
         raise CatalogueError(f"{where}: practice counts belong only to a module observed in practice")
     facts = {f["id"]: f for f in module["facts"]}
+    for f in module["facts"]:  # the nearest thing that does not count as the fact: one line the reader and checker are given
+        if "not_this" in f and not (isinstance(f["not_this"], str) and 10 <= len(f["not_this"].strip()) <= 300):
+            raise CatalogueError(f"{where}: fact {f['id']}: not_this is one line of 10 to 300 characters")
     if set(facts) & {f["id"] for f in backbone["facts"]}:
         raise CatalogueError(f"{where}: a fact repeats a backbone fact")
     stages = {s["id"] for s in backbone["steps"]}
@@ -226,6 +245,8 @@ def validate_module(module, backbone):
                 raise CatalogueError(f"{where}: deadline {d.get('id')} needs {field}")
         if (facts.get(d["trigger"]) or {}).get("type") != "date":
             raise CatalogueError(f"{where}: deadline {d['id']} needs a date fact of this module as its trigger")
+        if d.get("period_from") and (facts.get(d["period_from"]) or {}).get("type") != "text":
+            raise CatalogueError(f"{where}: deadline {d['id']}: period_from names a text fact of this module (the agreed period)")
         if d["id"] in facts or not cited_articles(d["basis"]):
             raise CatalogueError(f"{where}: deadline {d['id']} needs its own id and an article as its basis")
         period = d["period"]
@@ -275,7 +296,7 @@ def compose(backbone, module):
         group = [d for d in m["deadlines"] if d["trigger"] == trigger and d.get("hint", True)]
         whens = [d["when"] for d in group if d.get("when")]
         unknown = {"fact": trigger, "known": False}
-        hints.append({"id": f"frist-{group[0]['id']}",
+        hints.append({"id": f"frist-{group[0]['id']}", "trigger": trigger,
                       "when": {"all": [unknown, whens[0] if len(whens) == 1 else {"any": whens}]} if len(whens) == len(group) else unknown,
                       "text": "Möglicherweise läuft eine gesetzliche Frist: " + "; ".join(f"{d['title']}, {period_text(d)}" for d in group)
                               + f". {group[0]['missed']}",
@@ -376,6 +397,34 @@ def _add_months(start, months):
     return date(year, month, min(start.day, last))
 
 
+NUMBERS = {"ein": 1, "eine": 1, "einem": 1, "einen": 1, "einer": 1, "zwei": 2, "drei": 3, "vier": 4, "fünf": 5, "sechs": 6, "sieben": 7,
+           "acht": 8, "neun": 9, "zehn": 10, "elf": 11, "zwölf": 12, "vierzehn": 14, "zwanzig": 20, "dreissig": 30, "sechzig": 60, "neunzig": 90}
+UNITS = {"tag": "days", "woche": "weeks", "monat": "months", "jahr": "years"}
+
+
+def agreed_period(text):
+    """An agreed period in words ("sechs Wochen", "3 Monate", "einem Monat") as a period {unit: n}; None when it does not
+    name exactly one number and one unit."""
+    found = re.findall(r"(\d{1,3}|[a-zäöü]+)\s+(tag|woche|monat|jahr)\w*", str(text).lower())
+    found = [(int(n) if n.isdigit() else NUMBERS.get(n), unit) for n, unit in found]
+    found = [(n, u) for n, u in found if n]
+    return {UNITS[found[0][1]]: found[0][0]} if len(found) == 1 else None
+
+
+STATED_PERIOD = re.compile(r"(\d{1,3}) (days|weeks|months|years) (from|before) (\d{4}-\d{2}-\d{2})")
+
+
+def statutory_period(deadlines, value):
+    """The area's statutory deadline a recorded period restates ("1 years from 2026-05-31" for a deadline of one year), or
+    None. Such a period is the law's, even when a file quotes the law: the area computes it as its own item from the
+    trigger date, so it is never a reading of the deadline fact (and never a rejected one)."""
+    m = STATED_PERIOD.fullmatch(str(value or "").strip())
+    if not m:
+        return None
+    n, unit = int(m.group(1)), m.group(2)
+    return next((d for d in deadlines or () if isinstance(d.get("period"), dict) and d["period"].get(unit) == n), None)
+
+
 def compute_deadline(d, trigger_value, facts=None):
     """(value, rule) for one statutory deadline: an ISO date, or "prüfen" with the reason. None when its condition fails.
 
@@ -396,6 +445,12 @@ def compute_deadline(d, trigger_value, facts=None):
     if start is None:
         return "prüfen", "; ".join([f"Auslöser «{raw}» ohne genaues Datum, prüfen"] + notes)
     shown = start.strftime("%d.%m.%Y")
+    agreed = (facts or {}).get(d["period_from"]) if d.get("period_from") else None
+    if agreed not in (None, ""):  # a period the parties agreed governs instead of the law's default (e.g. a notice period)
+        period = agreed_period(agreed)
+        if period is None:
+            return "prüfen", "; ".join([f"vereinbarte Frist «{agreed}» ab {shown}: Dauer prüfen"] + notes)
+        notes.append(f"vereinbarte Frist «{agreed}»")
     if period == "sofort":
         return "prüfen", "; ".join([f"«sofort» ab {shown}: kein festes Datum, prüfen"] + notes)
     unit, n = next(iter(period.items()))

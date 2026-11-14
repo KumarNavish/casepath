@@ -21,9 +21,9 @@
   {"id": "zeugnis_erhalten", "type": "boolean", "question": "Hat die Kundschaft ein Zeugnis erhalten?", "source_refs": ["law#330a"], "ask_customer": true, "customer_question": "Haben Sie bereits ein Zeugnis erhalten?"},
   {"id": "art", "type": "enum", "values": ["Vollzeugnis", "Arbeitsbestätigung"], "question": "Verlangt die Kundschaft ein Vollzeugnis oder eine Arbeitsbestätigung (nur Art und Dauer)?", "source_refs": ["law#330a", "law#330a.2"]},
   {"id": "beanstandung", "type": "text", "question": "Was beanstandet die Kundschaft am Zeugnis (Formulierungen zu Leistung oder Verhalten, Funktion, Dauer)?", "source_refs": ["law#330a"], "ask_customer": true, "customer_question": "Welche Stellen des Zeugnisses möchten Sie ändern lassen, und wie sollten sie lauten?"},
-  {"id": "arbeitsende", "type": "date", "question": "Wann endete das Arbeitsverhältnis?", "source_refs": ["law#330a"]},
+  {"id": "arbeitsende", "type": "date", "question": "Wann endete das Arbeitsverhältnis?", "not_this": "der Tag, an dem gekündigt wurde: gefragt ist das Ende des Arbeitsverhältnisses", "source_refs": ["law#330a"]},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist die Arbeitgeberin?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Arbeitgeberin, Gericht)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Arbeitgeberin, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "zeugnis", "title": "Das erhaltene Arbeitszeugnis (und allfällige Zwischenzeugnisse)", "why": "Das Zeugnis muss sich über Art und Dauer des Arbeitsverhältnisses sowie über Leistungen und Verhalten aussprechen (Art. 330a OR).", "required_when": {"fact": "zeugnis_erhalten", "is": true}, "source_refs": ["law#330a"], "stage": "klaeren"},

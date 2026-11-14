@@ -11,7 +11,7 @@ import json
 import re
 
 from . import incoming
-from .area import compute_deadline, period_text
+from .area import compute_deadline, period_text, statutory_period
 from .clock import parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
 
@@ -111,6 +111,58 @@ def _day(value):
     return d.strftime("%d.%m.%Y") if d else str(value)
 
 
+def practice_tag(document):
+    """The tag a practice need carries wherever the handler sees it: how often Protekta asked for it ("in 6 von 7 Fällen
+    verlangt"), from a practice rule of Knowledge or the module's own practice count; None for a need from the law alone."""
+    if document.get("practice"):
+        return document["practice"]
+    m = next((m for r in document.get("source_refs") or () if (m := re.fullmatch(r"practice#(\d+)of(\d+)", str(r)))), None)
+    return f"in {m.group(1)} von {m.group(2)} Fällen verlangt" if m else None
+
+
+def unsettled_trigger(result, fact_id):
+    """A trigger date read but not settled: {value, why, verdict, citations} when the source checker rejected the reading or
+    two readings differ; None when it was never read."""
+    row = next((f for f in result.get("facts", []) if f.get("fact") == fact_id), None)
+    if not row or row.get("value") in (None, ""):
+        return None
+    if row.get("status") == "conflicting":
+        why = "zwei Lesungen der Akte widersprechen sich" + (f" (auch «{row['second_value']}»)" if row.get("second_value") else "")
+    elif row.get("status") == "established" and row.get("verdict") == "rejected":
+        why = "von der Quellenprüfung nicht bestätigt"
+    else:
+        return None
+    return {"value": row["value"], "why": why, "verdict": row.get("verdict"), "citations": row.get("citations")}
+
+
+def ask_of(graph, d, row, files):
+    """Whether one document need of the evaluation is asked now, offered ("proposed"), asked later or not at all (None):
+    the one rule the item list, the first request and the stage's way out ("nichts anzufordern") share."""
+    by_stage = any(x.get("action") for x in graph["steps"])
+    guess = str(d.get("edit") or "").startswith("pb") and not d.get("knowledge")  # the process builder's own addition
+    if row["status"] == "present":
+        return None
+    if d.get("offered") and row["required"] in {"yes", "depends"}:
+        return "proposed"  # practice is split: a mention of the missing document ticks it as its own line
+    if row.get("partial") and d.get("when_partly_present") == "offer" and row["required"] in {"yes", "depends"}:
+        return "proposed"  # an open-ended need partly in the file: offered (from the law alone, no practice says to ask again)
+    if d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]):
+        return "proposed"  # practice: with evidence of this kind in the file, Protekta does not ask for more (4 of 5)
+    if by_stage and guess:
+        return "proposed"  # an agent's guess: offered in the checklist, unticked, for the handler to tick
+    if row["required"] == "yes" or (row["required"] == "depends" and not by_stage and not guess):
+        return "now"  # in the handler's workflow a need whose condition nobody has established waits: it is asked later
+    if row["required"] == "depends":
+        return "later"
+    return None
+
+
+def open_customer_questions(graph, facts):
+    """The questions the first request asks by default: a fact the customer is asked (``ask_customer`` true, not
+    "offered") that is still open. Offered questions wait unticked and never make a letter by themselves."""
+    return [f for f in graph["facts"] if f.get("ask_customer") is True and facts.get(f["id"]) is None]
+
+
 def build_items(state, result, files=None):
     graph, ev, result = state.get("process"), state.get("evaluation"), result or {}
     items = []
@@ -130,22 +182,7 @@ def build_items(state, result, files=None):
         found = {d["document"]: d for d in result.get("documents", [])}
         for row in ev["documents"]:
             d = docs.get(row["document"], {})
-            if ev.get("outcome") or row["status"] == "present":
-                ask = None
-            elif d.get("offered") and row["required"] in {"yes", "depends"}:
-                ask = "proposed"  # practice is split: a mention of the missing document ticks it as its own line
-            elif row.get("partial") and d.get("when_partly_present") == "offer" and row["required"] in {"yes", "depends"}:
-                ask = "proposed"  # an open-ended need partly in the file: offered (from the law alone, no practice says to ask again)
-            elif d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]):
-                ask = "proposed"  # practice: with evidence of this kind in the file, Protekta does not ask for more (4 of 5)
-            elif graph.get("action_by_stage") and str(d.get("edit") or "").startswith("pb") and not d.get("knowledge"):  # an agent's guess
-                ask = "proposed"  # the process builder's own addition: offered in the checklist, unticked, for the handler to tick
-            elif row["required"] == "yes" or (row["required"] == "depends" and not graph.get("action_by_stage") and not (str(d.get("edit") or "").startswith("pb") and not d.get("knowledge"))):
-                ask = "now"  # in the handler's workflow a need whose condition nobody has established waits: it is asked later
-            elif row["required"] == "depends":
-                ask = "later"
-            else:
-                ask = None
+            ask = None if ev.get("outcome") else ask_of(graph, d, row, files)
             note = (found.get(row["document"]) or {}).get("note")
             disputed = found.get(row["document"]) or {}
             if ask == "now" and disputed.get("verdict") == "rejected" and disputed.get("status") in {"absent", "unusable"}:
@@ -156,6 +193,7 @@ def build_items(state, result, files=None):
                 node=row.get("step"), origin=_origin(d), chain=True, label=row["title"], status=row["status"],
                 legal_basis=d.get("legal_basis") or row.get("legal_basis"),
                 required=row["required"], ask=ask, part_of=part_of.get(row["document"]),
+                **({"practice": practice_tag(d)} if practice_tag(d) else {}),
                 reason=("liegt teilweise vor" if row.get("partial") and d.get("when_partly_present") == "offer" else
                         f'{_in_file(files, d["offered_when_in_file"]["kinds"])} Fotos/Protokolle liegen vor'
                         if d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]) else
@@ -171,6 +209,10 @@ def build_items(state, result, files=None):
         for key in overrides:  # a fact a case worker set shows the value set, whatever the run read
             rows[key] = {**rows.get(key, {"fact": key, "citations": []}), "status": "established", "value": set_by_hand.get(key),
                          "verdict": "set_by_handler", "by_edit": overrides[key]}
+        statutory = graph.get("deadlines") or []
+        for key, fact in list(rows.items()):  # a statutory period read into a deadline fact is the area's own computed item
+            if (definitions.get(key) or {}).get("deadline") and fact.get("verdict") != "set_by_handler" and statutory_period(statutory, fact.get("value")):
+                rows[key] = {"fact": key, "status": "unknown", "value": None, "citations": []}
         for fact in rows.values():
             if fact["fact"] not in definitions:
                 continue
@@ -184,9 +226,12 @@ def build_items(state, result, files=None):
                 label=definitions[fact["fact"]].get("question"), chat_only=fact["fact"] in customer, path=fact["fact"] in waiting,
                 **({"part": fact["part"]} if fact.get("part") else {}))
         for d in result.get("deadlines", []):
+            if statutory_period(statutory, d.get("stated")):
+                continue  # the law's period, listed below as the area's own deadline
             add("deadline", d["fact"], value=d["date"], stated_as="computed" if d.get("computed") else "established", verdict="accepted",
                 evidence=[], node=_fact_node(graph, d["fact"]), origin="workflow", chain=True, label=d.get("question"),
                 **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
+        unsettled_triggers = set()
         for d in graph.get("deadlines", []):  # the area's statutory deadlines, from the trigger date the case establishes
             trigger = (state.get("facts") or {}).get(d["trigger"])
             computed = compute_deadline(d, trigger, state.get("facts") or {}) if trigger is not None else None
@@ -198,6 +243,20 @@ def build_items(state, result, files=None):
                     rule=computed[1], legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"),
                     party=d.get("party", "kunde"), **({"condition": d["when_text"]} if unsettled else {}),
                     **({"due_text": f"{period_text(d)} am {_day(trigger)}"} if backwards else {}))
+            elif trigger is None and (doubt := unsettled_trigger(result, d["trigger"])):
+                # A trigger date that was read but not settled (the checker rejected it, or two readings differ) never makes
+                # its deadline disappear: it is shown as possible, with the date the reading gives, and the date is asked.
+                maybe = compute_deadline(d, doubt["value"], state.get("facts") or {})
+                if maybe is None:
+                    continue  # its condition fails: the deadline does not apply
+                unsettled_triggers.add(d["trigger"])
+                candidate = maybe[0] if re.fullmatch(r"\d{4}-\d{2}-\d{2}", maybe[0]) else None
+                add("deadline", d["id"], value="prüfen", stated_as="possible", verdict=doubt["verdict"], evidence=_evidence(doubt["citations"]),
+                    node=_fact_node(graph, d["trigger"]), origin="law", chain=True, label=d["title"], stated=str(doubt["value"]),
+                    rule=f"Auslöser «{doubt['value']}» {doubt['why']}" + (f"; danach bis {_day(candidate)}" if candidate else "") + "; Datum prüfen",
+                    legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
+                    possible=True, **({"candidate": candidate} if candidate else {}),
+                    **({"condition": d["when_text"]} if d.get("when") and evaluate_condition(d["when"], state.get("facts") or {}) is None else {}))
         asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
         lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
         steps = {x["id"]: x for x in graph["steps"]}
@@ -285,10 +344,12 @@ def build_items(state, result, files=None):
                     # a question's default follows practice: "offered" ones Protekta rarely asks wait unticked
                     add("letter_question", f["id"], value=asked, stated_as="put_to_handler", verdict=None, evidence=[],
                         node=here.get("id"), origin="workflow", chain=True, label=asked,
-                        ask="proposed" if f["ask_customer"] == "offered" else "now")
+                        ask="proposed" if f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers else "now")
             for hint in graph.get("hints", []):
                 if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True:
                     continue
+                if hint.get("trigger") in unsettled_triggers:
+                    continue  # the possible deadline itself is in the letter, with its date to check
                 add("hint", hint["id"], value=hint["text"], stated_as="established", verdict=None, evidence=[], node=here.get("id"),
                     origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
             for hint in graph.get("hints", []):  # a hint whose condition is still open is offered too: Protekta gives it early

@@ -1026,7 +1026,8 @@ function documentsView() {
   const rows = recorded("document");
   const origin = (id) => { const d = S.data.process.documents.find((x) => x.id === id) || {};
     const k = d.knowledge && (S.knowledge || []).find((x) => x.id === d.knowledge);
-    return d.knowledge ? practiceNote(d.knowledge) : d.legal_basis ? d.legal_basis
+    const own = (item("document", id) || {}).practice;
+    return own ? own : d.knowledge ? practiceNote(d.knowledge) : d.legal_basis ? d.legal_basis
       : d.edit ? T("added for this case", "für diesen Fall ergänzt") : T("from the process", "aus dem Prozess"); };
   const asked = new Set(missingDocs().map((i) => i.key)), missing = asked.size;  // the same count as the Übersicht's
   if (!ev.documents.length) return `<h1 class="cp-title">${T("Documents", "Dokumente")}</h1><p class="cp-empty">${T("No document needs: no documented process with documents applies to this case yet. Choose the fitting process in the overview, then prepare the case again.", "Keine Dokumente verlangt: Für diesen Fall gilt noch kein hinterlegter Prozess mit Dokumenten. Wählen Sie in der Übersicht den passenden Prozess und bereiten Sie den Fall erneut vor.")}</p>`;
@@ -1389,12 +1390,13 @@ function lineTag(i) {
   // passage), else to the rule of its step.
   const pd = ((S.data.process || {}).documents || []).find((d) => d.id === i.key) || {};
   const law = lawOf(i);
-  if (law && !(i.evidence || []).some((e) => e.file) && !(i.ask === "proposed" && i.reason)) {
+  if (law && !i.practice && !(i.evidence || []).some((e) => e.file) && !(i.ask === "proposed" && i.reason)) {
     const cite = i.legal_basis || law.cite;
     return `<button class="cp-tag cp-law" type="button" data-passage="${esc(i.item_id)}" title="${esc(`${law.cite}: «${law.passage}»`)}" aria-expanded="${S.passage === i.item_id}">${esc(cite)}</button>`
       + (S.passage === i.item_id ? `<div class="cp-passage">${esc(law.cite)}: «${esc(law.passage)}»</div>` : "");
   }
-  const text = i.legal_basis ? i.legal_basis : pd.knowledge ? practiceNote(pd.knowledge) : practiceCount(i) && i.ask === "now" ? practiceCount(i)
+  // a practice need's tag is its count ("in 6 von 7 Fällen verlangt"), carried by the item itself, wherever it is shown
+  const text = i.practice ? i.practice : i.legal_basis ? i.legal_basis : pd.knowledge ? practiceNote(pd.knowledge) : practiceCount(i) && i.ask === "now" ? practiceCount(i)
     : i.ask === "proposed" && i.reason && /liegen vor/.test(i.reason) ? i.reason : i.ask === "proposed" ? T("for this case", "für diesen Fall")
     : i.ask === "later" ? T("later, if needed", "später, falls nötig") : i.kind === "letter_question" ? T("only the customer knows", "nur die Kundschaft weiss es") : T("case handling", "Fallbearbeitung");
   const c = (i.evidence || []).find((e) => e.file);

@@ -25,15 +25,15 @@
  "applies_when": {"fact": "rechtsgebiet", "is": "Vertragsrecht / Kauf mit Mangel"},
  "facts": [
   {"id": "rechtsgebiet", "type": "enum", "values": ["Vertragsrecht / Kauf mit Mangel"], "question": "Hat die gekaufte Sache einen Mangel?", "source_refs": ["law#197"]},
-  {"id": "ablieferung", "type": "date", "question": "Wann wurde die Sache übergeben (abgeliefert)?", "source_refs": ["law#210"]},
-  {"id": "mangel_entdeckt", "type": "date", "question": "Wann wurde der Mangel entdeckt?", "source_refs": ["law#201.3"], "ask_customer": "offered", "customer_question": "Wann haben Sie den Mangel bemerkt?"},
-  {"id": "angezeigt", "type": "boolean", "question": "Wurde der Mangel dem Verkäufer angezeigt?", "source_refs": ["law#201"], "ask_customer": true, "customer_question": "Haben Sie den Mangel dem Verkäufer gemeldet? Wenn ja, wann und in welcher Form?"},
+  {"id": "ablieferung", "type": "date", "question": "Wann wurde die Sache übergeben (abgeliefert)?", "not_this": "das Datum des Kaufvertrags, wenn die Sache an einem anderen Tag übergeben wurde: gefragt ist die Übergabe", "source_refs": ["law#210"]},
+  {"id": "mangel_entdeckt", "type": "date", "question": "Wann wurde der Mangel entdeckt?", "not_this": "der Tag, an dem der Mangel dem Verkäufer gemeldet wurde", "source_refs": ["law#201.3"], "ask_customer": "offered", "customer_question": "Wann haben Sie den Mangel bemerkt?"},
+  {"id": "angezeigt", "type": "boolean", "question": "Wurde der Mangel dem Verkäufer angezeigt?", "not_this": "eine Frage an den Verkäufer ohne Meldung des Mangels", "source_refs": ["law#201"], "ask_customer": true, "customer_question": "Haben Sie den Mangel dem Verkäufer gemeldet? Wenn ja, wann und in welcher Form?"},
   {"id": "occasion", "type": "boolean", "question": "Geht es um eine gebrauchte Sache, z.B. ein Occasionsfahrzeug?", "source_refs": ["law#210.4"]},
   {"id": "ausschluss", "type": "boolean", "question": "Enthält der Vertrag einen Ausschluss der Gewährleistung (z.B. «wie besichtigt», «ohne Garantie»)?", "source_refs": ["law#199"]},
   {"id": "zusicherungen", "type": "text", "question": "Welche Eigenschaften hat der Verkäufer zugesichert (z.B. Kilometerstand, unfallfrei, frisch geprüft)?", "source_refs": ["law#197", "law#200"]},
   {"id": "ziel", "type": "text", "question": "Was will die Kundschaft erreichen?", "source_refs": ["law#205"], "ask_customer": true, "customer_question": "Was möchten Sie erreichen (Rückgängigmachen des Kaufs, Herabsetzung des Preises, Reparatur oder Schadenersatz)?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist der Verkäufer?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Verkäufer, Gericht)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Verkäufer, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "kaufvertrag", "title": "Kaufvertrag (bei Fahrzeugen mit allen Beilagen)", "why": "Zeigt Kaufsache, Preis, zugesicherte Eigenschaften und einen allfälligen Ausschluss der Gewährleistung (Art. 197, 199 OR).", "source_refs": ["law#197", "law#199"], "stage": "klaeren"},

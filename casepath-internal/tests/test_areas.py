@@ -57,7 +57,8 @@ class CompositionTests(unittest.TestCase):
     # What the split changed on purpose: the clarifying stage's way out (silence, not incompleteness, ends benefits; a
     # replied case with its points answered goes to the assessment), three derived facts, and the assessment's
     # "bitte reichen Sie noch nach". Everything else is the former seed, field for field.
-    CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt"} | INCOMING_FACTS
+    CHANGED_FACTS = {"mitwirkung_fehlt", "kunde_geantwortet", "keine_punkte_offen", "beurteilbar", "erledigt_gemeldet", "weiteres_gewuenscht", "sache_erledigt",
+                     "nichts_anzufordern"} | INCOMING_FACTS
 
     def test_the_composed_tenancy_defect_workflow_is_the_seed_it_replaces_but_for_the_named_rule_change(self):
         composed = area.workflow("mietmangel-handler")
@@ -67,7 +68,8 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
         self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.2"))  # stored runs: same id, newer version governs
-        self.assertEqual([f for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
+        unnear = lambda f: {k: v for k, v in f.items() if k != "not_this"}  # plus: the nearest thing that does not count, for the reader
+        self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
         unformed = lambda step: {**step, **({"action": {k: v for k, v in step["action"].items() if k != "form"}} if "action" in step else {})}
         self.assertEqual([unformed(unruled(s)) for s in composed["steps"] if s["id"] not in {"klaeren", "abschluss_erledigt", "abwicklung"}],
@@ -75,7 +77,8 @@ class CompositionTests(unittest.TestCase):
         settle = lambda w: next(s for s in w["steps"] if s["id"] == "abwicklung")["next"][0]["when"]
         self.assertEqual(settle(composed), {"all": [settle(FROZEN), {"fact": "kosten_offen", "is": False}]})  # no closing with a cost claim open
         self.assertEqual(next(s for s in composed["steps"] if s["id"] == "abschluss_still")["action"]["form"], "A12_still")  # no end of benefits
-        self.assertEqual({k: {f: x for f, x in v.items() if f != "needs"} for k, v in composed["forms"].items() if k not in {"A5", "A12_still", "A12_erledigt"} | INCOMING_FORMS},
+        self.assertEqual({k: {f: x for f, x in v.items() if f not in {"needs", "asks", "empty"}} for k, v in composed["forms"].items()  # plus: what A1 is for
+                          if k not in {"A5", "A12_still", "A12_erledigt"} | INCOMING_FORMS},
                          {k: v for k, v in FROZEN["forms"].items() if k != "A5"})
         self.assertEqual((composed["forms"]["A1"]["needs"], composed["forms"]["A8"]["needs"]), ([], ["deckung", "vorgehen"]))
         self.assertEqual(composed["short_title"], "Mietmangel")
@@ -104,6 +107,9 @@ class CompositionTests(unittest.TestCase):
                              items_sha256([i for i in b if i["key"] not in self.CHANGED_FACTS]))
             for kind in ("A1", "A4", "A6", "A7", "A8", "A10", "A12"):
                 ctx = letters.context(case, a, [], {"due": "2025-03-01"})
+                if kind == "A1" and not (ctx["liste"] or ctx["fragen"]):  # the named change: a first request with nothing to ask is no letter
+                    self.assertEqual(letters.render(kind, new["forms"], ctx), (None, new["forms"]["A1"]["empty"]))
+                    continue
                 self.assertEqual(letters.render(kind, old["forms"], ctx), letters.render(kind, new["forms"], ctx), kind)
 
     def test_every_shipped_area_is_valid_draft_cited_and_labelled(self):
@@ -310,7 +316,8 @@ class BenchmarkFindingsTests(unittest.TestCase):
         _, yes = self.listed("vertrag-darlehen", loan + [("rueckforderung_schriftlich", True)])
         self.assertEqual(yes["document:kuendigung_rueckforderung"]["ask"], "now")
         general = [("rechtsgebiet", "Übriges Recht")]
-        self.assertEqual(self.listed("allgemein", general)[1]["document:fristschreiben"]["ask"], "now")  # left open: asked
+        open_ = self.listed("allgemein", general)[1]  # a letter that only exists once someone set a deadline: the question first
+        self.assertEqual((open_["document:fristschreiben"]["ask"], open_["letter_question:frist"]["ask"]), ("later", "now"))
         self.assertEqual(self.listed("allgemein", general + [("frist", "2026-12-01")])[1]["document:fristschreiben"]["ask"], "now")
         self.assertNotIn("document:fristschreiben", self.listed("allgemein", general + [("frist", "none")])[1])
         self.assertNotIn("document:rueckgabeprotokoll", self.listed("miete-kaution", [("rechtsgebiet", "Mietrecht / Kaution und Rückgabe"),
