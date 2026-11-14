@@ -7,6 +7,8 @@ the words in the document or is rejected.
 """
 import re
 
+from .hygiene import clean
+
 PAGE = re.compile(r"\[page (\d+)\]\n")
 WORD = re.compile(r"\w+", re.UNICODE)
 
@@ -37,6 +39,11 @@ class Evidence:
                 raws.append((None, raw))
             pages = [(page, normalise(chunk)) for page, chunk in raws]
             self.files[row["id"]] = {**{k: v for k, v in row.items() if k != "text"}, "pages_text": pages, "pages_raw": raws}
+        # What a model reads: text repeated across the documents left out (hygiene.py). Quotes are still located in the
+        # original (pages_text), never in this.
+        read, self.hygiene = clean(self.files)
+        for file_id, source in self.files.items():
+            source["pages_read"] = [(page, normalise(chunk)) for page, chunk in read.get(file_id, source["pages_raw"])]
 
     def catalogue(self):
         return [{"file": fid, "name": f.get("name"), "kind": f.get("kind"), "readable": bool(f["pages_text"]),
@@ -48,7 +55,7 @@ class Evidence:
 
     def read(self, file_id, from_page=None, to_page=None, limit=24000):
         source = self.files[file_id]
-        chosen = [(p, t) for p, t in source["pages_text"]
+        chosen = [(p, t) for p, t in source["pages_read"]
                   if p is None or ((from_page is None or p >= from_page) and (to_page is None or p <= to_page))]
         parts, used, next_page = [], 0, None
         for page, text in chosen:
@@ -63,12 +70,15 @@ class Evidence:
         return {"file": file_id, "text": "\n\n".join(parts), "truncated": next_page is not None, "next_page": next_page,
                 "note": source.get("note")}
 
-    def locate(self, file_id, quote):
+    def locate(self, file_id, quote, first=None, last=None):
+        """The quote in the original text of the file (pages ``first`` … ``last`` when given: one document of it)."""
         source = self.files.get(file_id)
         needle = normalise(quote or "")
         if source is None or len(needle) < 8:
             return None
         for page, text in source["pages_text"]:
+            if first is not None and (page is None or not first <= page <= last):
+                continue
             start = text.find(needle)
             if start >= 0:
                 return {"file": file_id, "page": page, "start": start, "end": start + len(needle), "quote": needle}
@@ -86,7 +96,7 @@ class Evidence:
             return []
         hits = []
         for file_id, source in self.files.items():
-            for page, text in source["pages_text"]:
+            for page, text in source["pages_read"]:
                 for start in range(0, max(len(text), 1), window // 2):
                     chunk = text[start:start + window]
                     words = {_fold(w) for w in WORD.findall(chunk)}

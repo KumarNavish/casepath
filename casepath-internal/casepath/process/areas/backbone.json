@@ -1,7 +1,7 @@
 {
  "format": "casepath.backbone/1",
  "id": "fallbearbeitung",
- "version": "2026-11-14.6",
+ "version": "2026-11-15.1",
  "title": "Fallbearbeitung Rechtsschutz: Stufen, Handlungen, Entscheide, Uhr und Formulare",
  "sources": [
   {"id": "practice", "kind": "process_guidance", "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"}
@@ -211,5 +211,6 @@
   {"when": {"fact": "vorgehen", "is": "Mandat an Anwaltskanzlei"}, "stage": "mandat"}
  ],
  "set_dates": {"question": "Oder hat ein Gericht, eine Behörde oder die Gegenpartei der Kundschaft einen Termin gesetzt (Verhandlung, Frist zur Stellungnahme, verlangte Zahlung), auch einen abgelaufenen? Datum als JJJJ-MM-TT, danach « · » was fällig ist « · » wer es gesetzt hat « · » in welchem Schreiben, z.B. «2025-04-23 · Schlichtungsverhandlung · Schlichtungsbehörde Bern · Vorladung»."},
- "deadline_margin_days": 7
+ "deadline_margin_days": 7,
+ "record": {"parties": {"kunde": "Kundschaft", "versicherer": "Protekta", "kanzlei": "Kanzlei", "gegenpartei": "Gegenpartei", "behoerde": "Gericht/Behörde", "andere": "Andere"}, "kinds": {"meldung": {"title": "Meldung des Falls"}, "anforderung": {"title": "Anforderung von Unterlagen oder Angaben", "code": "1", "code_to": {"gegenpartei": "8", "kanzlei": "2"}}, "mahnung": {"title": "Erinnerung", "code": "1", "code_to": {"gegenpartei": "9", "kanzlei": "2"}}, "antwort": {"title": "Antwort"}, "unterlagen": {"title": "Unterlagen zugestellt"}, "einschaetzung": {"title": "Rechtliche Einschätzung", "code": "5"}, "telefon": {"title": "Telefonnotiz", "code": "2"}, "schreiben_gegenpartei": {"title": "Schreiben an die Gegenpartei", "code": "8"}, "angebot": {"title": "Angebot", "code": "9"}, "gegenangebot": {"title": "Gegenangebot", "code": "9"}, "annahme": {"title": "Annahme", "code": "9"}, "mandat": {"title": "Mandat", "code": "10"}, "kostengutsprache": {"title": "Kostengutsprache", "code": "10"}, "bericht": {"title": "Bericht der Kanzlei"}, "kostenforderung": {"title": "Kostenforderung"}, "zahlung": {"title": "Zahlung", "code": "11"}, "zahlungsbestaetigung": {"title": "Zahlungsbestätigung", "code": "11"}, "termin": {"title": "Termin oder Vorladung"}, "entscheid": {"title": "Entscheid"}, "abschlussankuendigung": {"title": "Abschlussankündigung", "code": "6", "again": "7"}, "abschluss": {"title": "Abschluss", "code": "12"}, "andere": {"title": "Anderes"}}, "phone_code": "2", "source_refs": ["practice#7of7"], "note": "Der Verlauf der Akte: je Dokument ein Eintrag (Datum, von, an, Art des Schritts, was verlangt, beantwortet, vereinbart, bezahlt, nächster Schritt), jedes Element mit Zitat. code: die Handlung von Protekta, die ein solcher Eintrag von Protekta ist (A1 …); code_to: an diese Partei; again: eine weitere Abschlussankündigung"}
 }
