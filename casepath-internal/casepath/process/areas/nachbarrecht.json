@@ -1,0 +1,79 @@
+{
+ "format": "casepath.area/1",
+ "id": "nachbarrecht",
+ "version": "2026-11-14.2",
+ "backbone": "2026-11-14.2",
+ "short_title": "Nachbarrecht",
+ "title": "Streit mit Nachbarn: übermässige Einwirkungen, Pflanzen, Bauarbeiten, Eingriffe an der Grenze (aus dem Gesetz abgeleitet)",
+ "status": "draft",
+ "builds_on": ["osm-fallback"],
+ "sources": [
+  {"id": "law", "kind": "process_guidance", "title": "Zivilgesetzbuch (SR 210), Grundeigentum: Inhalt und Schranken, Nachbarrecht (Art. 641, 679 ff. ZGB); Besitzesschutz (Art. 928 f. ZGB)"}
+ ],
+ "law": {
+  "zgb-7": {"cite": "Art. 7 ZGB", "sr": "210", "article": "7", "passage": "Die allgemeinen Bestimmungen des Obligationenrechtes über die Entstehung, Erfüllung und Aufhebung der Verträge finden auch Anwendung auf andere zivilrechtliche Verhältnisse.", "verified": true},
+  "641": {"cite": "Art. 641 Abs. 2 ZGB", "sr": "210", "article": "641", "passage": "Er hat das Recht, sie von jedem, der sie ihm vorenthält, herauszuverlangen und jede ungerechtfertigte Einwirkung abzuwehren.", "verified": true},
+  "679": {"cite": "Art. 679 Abs. 1 ZGB", "sr": "210", "article": "679", "passage": "Wird jemand dadurch, dass ein Grundeigentümer sein Eigentumsrecht überschreitet, geschädigt oder mit Schaden bedroht, so kann er auf Beseitigung der Schädigung oder auf Schutz gegen drohenden Schaden und auf Schadenersatz klagen.", "verified": true},
+  "679a": {"cite": "Art. 679a ZGB", "sr": "210", "article": "679a", "passage": "Fügt ein Grundeigentümer bei rechtmässiger Bewirtschaftung seines Grundstücks, namentlich beim Bauen, einem Nachbarn vorübergehend übermässige und unvermeidliche Nachteile zu und verursacht er dadurch einen Schaden, so kann der Nachbar vom Grundeigentümer lediglich Schadenersatz verlangen.", "verified": true},
+  "684": {"cite": "Art. 684 Abs. 1 ZGB", "sr": "210", "article": "684", "passage": "Jedermann ist verpflichtet, bei der Ausübung seines Eigentums, wie namentlich bei dem Betrieb eines Gewerbes auf seinem Grundstück, sich aller übermässigen Einwirkung auf das Eigentum der Nachbarn zu enthalten.", "verified": true},
+  "684.2": {"cite": "Art. 684 Abs. 2 ZGB", "sr": "210", "article": "684", "passage": "Verboten sind insbesondere alle schädlichen und nach Lage und Beschaffenheit der Grundstücke oder nach Ortsgebrauch nicht gerechtfertigten Einwirkungen durch Luftverunreinigung, üblen Geruch, Lärm, Schall, Erschütterung, Strahlung oder durch den Entzug von Besonnung oder Tageslicht.", "verified": true},
+  "685": {"cite": "Art. 685 Abs. 1 ZGB", "sr": "210", "article": "685", "passage": "Bei Grabungen und Bauten darf der Eigentümer die nachbarlichen Grundstücke nicht dadurch schädigen, dass er ihr Erdreich in Bewegung bringt oder gefährdet oder vorhandene Vorrichtungen beeinträchtigt.", "verified": true},
+  "686": {"cite": "Art. 686 Abs. 1 ZGB", "sr": "210", "article": "686", "passage": "Die Kantone sind befugt, die Abstände festzusetzen, die bei Grabungen und Bauten zu beobachten sind.", "verified": true},
+  "687": {"cite": "Art. 687 Abs. 1 ZGB", "sr": "210", "article": "687", "passage": "Überragende Äste und eindringende Wurzeln kann der Nachbar, wenn sie sein Eigentum schädigen und auf seine Beschwerde hin nicht binnen angemessener Frist beseitigt werden, kappen und für sich behalten.", "verified": true},
+  "688": {"cite": "Art. 688 ZGB", "sr": "210", "article": "688", "passage": "Die Kantone sind befugt, für Anpflanzungen je nach der Art des Grundstückes und der Pflanzen bestimmte Abstände vom nachbarlichen Grundstück vorzuschreiben", "verified": true},
+  "928": {"cite": "Art. 928 ZGB", "sr": "210", "article": "928", "passage": "Wird der Besitz durch verbotene Eigenmacht gestört, so kann der Besitzer gegen den Störenden Klage erheben, auch wenn dieser ein Recht zu haben behauptet. Die Klage geht auf Beseitigung der Störung, Unterlassung fernerer Störung und Schadenersatz.", "verified": true},
+  "929": {"cite": "Art. 929 Abs. 1 ZGB", "sr": "210", "article": "929", "passage": "Die Klage aus verbotener Eigenmacht ist nur zulässig, wenn der Besitzer sofort, nachdem ihm der Eingriff und der Täter bekannt geworden sind, die Sache zurückfordert oder Beseitigung der Störung verlangt.", "verified": true},
+  "929.2": {"cite": "Art. 929 Abs. 2 ZGB", "sr": "210", "article": "929", "passage": "Die Klage verjährt nach Ablauf eines Jahres; das mit der Entziehung oder Störung zu laufen beginnt, auch wenn der Besitzer erst später von dem Eingriff und dem Täter Kenntnis erhalten hat.", "verified": true}
+ },
+ "applies_when": {"fact": "rechtsgebiet", "is": "Nachbarrecht / Einwirkungen, Pflanzen, Grenzen"},
+ "facts": [
+  {"id": "rechtsgebiet", "type": "enum", "values": ["Nachbarrecht / Einwirkungen, Pflanzen, Grenzen"], "question": "Streitet die Kundschaft mit einem Nachbarn über Einwirkungen von dessen Grundstück (Lärm, Geruch, Rauch, Schatten, Erschütterung), über Bäume, Hecken, Äste oder Wurzeln, über Bauarbeiten nebenan oder über Eingriffe an der Grenze?", "source_refs": ["law#684"],
+   "not_this": ["Lärm von Mitmietern im selben Haus, gegenüber der Vermieterschaft: Mietrecht / Mangel", "Einsprache gegen ein Baugesuch des Nachbarn: öffentliches Baurecht", "Streit unter Stockwerkeigentümern über gemeinschaftliche Teile: Sachenrecht"]},
+  {"id": "art_stoerung", "type": "text", "question": "Worin besteht die Störung (Lärm, Geruch, Rauch, Schattenwurf, überragende Äste, eindringende Wurzeln, Bauarbeiten, Eingriff an der Grenze), wann tritt sie auf und seit wann?", "source_refs": ["law#684.2", "law#687"], "ask_customer": true, "customer_question": "Worin besteht die Störung, wann tritt sie auf und seit wann?"},
+  {"id": "eigentuemer", "type": "boolean", "question": "Ist die Kundschaft Eigentümerin des betroffenen Grundstücks (nicht Mieterin)?", "source_refs": ["law#641", "law#679", "law#928"], "ask_customer": true, "customer_question": "Gehört Ihnen das betroffene Grundstück, oder sind Sie Mieterin oder Mieter?"},
+  {"id": "aeste_wurzeln", "type": "boolean", "question": "Geht es um überragende Äste oder eindringende Wurzeln von Pflanzen des Nachbarn?", "source_refs": ["law#687", "law#688"]},
+  {"id": "beschwerde", "type": "boolean", "question": "Hat sich die Kundschaft beim Nachbarn beschwert und ihm eine Frist zur Beseitigung gesetzt?", "source_refs": ["law#687"], "ask_customer": true, "customer_question": "Haben Sie sich beim Nachbarn bereits beschwert? Wenn ja, wann und wie?"},
+  {"id": "schaden", "type": "boolean", "question": "Ist ein Schaden entstanden oder droht einer (z.B. an Gebäude, Garten, Leitungen)?", "source_refs": ["law#679"]},
+  {"id": "bauarbeiten", "type": "boolean", "question": "Gehen die Einwirkungen von Bau- oder Grabarbeiten auf dem Nachbargrundstück aus?", "source_refs": ["law#679a", "law#685"]},
+  {"id": "eigenmacht", "type": "boolean", "question": "Hat der Nachbar eigenmächtig in den Besitz der Kundschaft eingegriffen (z.B. auf ihrem Grundstück gebaut, etwas entfernt oder zerstört, den Zugang versperrt)?", "source_refs": ["law#928"],
+   "not_this": ["blosse Einwirkungen von seinem eigenen Grundstück aus, wie Lärm oder Geruch"]},
+  {"id": "eingriff", "type": "date", "question": "An welchem Tag geschah der eigenmächtige Eingriff in den Besitz (nicht der Tag, an dem die Kundschaft davon erfuhr)?", "source_refs": ["law#929.2"], "ask_customer": "offered", "customer_question": "An welchem Tag hat der Nachbar eingegriffen?"},
+  {"id": "eingriff_bekannt", "type": "date", "question": "An welchem Tag erfuhr die Kundschaft vom Eingriff und davon, wer ihn vorgenommen hat?", "source_refs": ["law#929"], "ask_customer": "offered", "customer_question": "Wann haben Sie vom Eingriff erfahren, und wann haben Sie den Nachbarn aufgefordert, ihn rückgängig zu machen?"},
+  {"id": "gegenpartei", "type": "text", "question": "Wer ist der Nachbar (Eigentümer, Mieter oder Bauherr des Nachbargrundstücks)?", "source_refs": ["practice#ablauf"]},
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Nachbar, Behörde, Gericht)?", "source_refs": ["practice#ablauf"]}
+ ],
+ "documents": [
+  {"id": "protokoll", "title": "Protokoll der Störungen (Datum, Uhrzeit, Dauer und Art der Einwirkung)", "why": "Verboten sind übermässige Einwirkungen, gemessen an Lage, Beschaffenheit der Grundstücke und Ortsgebrauch (Art. 684 ZGB); Häufigkeit und Dauer sind zu belegen.", "source_refs": ["law#684", "law#684.2"], "stage": "klaeren"},
+  {"id": "fotos", "title": "Fotos, Videos oder Messungen der Einwirkung (z.B. Äste, Wurzeln, Schäden, Lärm)", "why": "Zeigt Art und Ausmass der Einwirkung (Art. 684 ZGB) und ob Äste oder Wurzeln das Eigentum schädigen (Art. 687 ZGB).", "source_refs": ["law#684.2", "law#687"], "stage": "klaeren"},
+  {"id": "beschwerde_dok", "title": "Beschwerde an den Nachbarn mit Fristansetzung und seine Antwort", "why": "Überragende Äste und eindringende Wurzeln dürfen erst gekappt werden, wenn sie auf Beschwerde hin nicht binnen angemessener Frist beseitigt werden (Art. 687 ZGB).", "required_when": {"fact": "beschwerde", "is": true}, "source_refs": ["law#687"], "stage": "klaeren"},
+  {"id": "grundbuch", "title": "Grundbuchauszug und Situationsplan mit dem Grenzverlauf", "why": "Zeigt Eigentum und Grenze, aus denen sich das Recht ergibt, ungerechtfertigte Einwirkungen abzuwehren (Art. 641 ZGB), und wo Äste oder Wurzeln die Grenze überschreiten (Art. 687 ZGB).", "required_when": {"all": [{"fact": "eigentuemer", "is": true}, {"any": [{"fact": "aeste_wurzeln", "is": true}, {"fact": "eigenmacht", "is": true}]}]}, "source_refs": ["law#641", "law#687"], "stage": "klaeren"},
+  {"id": "mietvertrag", "title": "Mietvertrag", "why": "Auch wer ein Grundstück nur besitzt, etwa als Mieterin, kann gegen eine Störung durch verbotene Eigenmacht klagen (Art. 928 ZGB); der Mietvertrag zeigt den Besitz.", "required_when": {"fact": "eigentuemer", "is": false}, "source_refs": ["law#928"], "stage": "klaeren"},
+  {"id": "schadenbelege", "title": "Belege des Schadens (Rechnungen, Kostenvoranschlag, Bericht einer Fachperson)", "why": "Wer durch eine Überschreitung des Eigentumsrechts geschädigt wird, kann Schadenersatz verlangen (Art. 679 ZGB); der Schaden ist zu belegen.", "required_when": {"fact": "schaden", "is": true}, "source_refs": ["law#679", "law#679a"], "stage": "klaeren"},
+  {"id": "korrespondenz", "title": "Korrespondenz mit dem Nachbarn, der Verwaltung oder Behörden", "why": "Zeigt, wann die Störung gemeldet und ihre Beseitigung verlangt wurde (Art. 679, 687 ZGB).", "source_refs": ["law#679", "law#687"], "stage": "klaeren"}
+ ],
+ "hints": [
+  {"id": "uebermass", "when": true, "text": "Übermässige Einwirkungen auf das Nachbargrundstück, etwa durch Lärm, Geruch, Rauch, Erschütterung oder Entzug von Besonnung, sind verboten; ob sie übermässig sind, richtet sich nach Lage und Beschaffenheit der Grundstücke und nach dem Ortsgebrauch. Bitte halten Sie jede Störung mit Datum, Uhrzeit und Dauer fest.", "legal_basis": "Art. 684 ZGB", "source_refs": ["law#684", "law#684.2"]},
+  {"id": "aeste", "when": {"fact": "aeste_wurzeln", "is": true}, "text": "Überragende Äste und eindringende Wurzeln, die Ihr Eigentum schädigen, dürfen Sie erst kappen, wenn der Nachbar sie auf Ihre Beschwerde hin nicht binnen angemessener Frist beseitigt; beschweren Sie sich deshalb schriftlich und setzen Sie eine Frist. Abstände für Pflanzen regelt das kantonale Recht.", "legal_basis": "Art. 687, 688 ZGB", "source_refs": ["law#687", "law#688"]},
+  {"id": "bau", "when": {"fact": "bauarbeiten", "is": true}, "text": "Verursachen rechtmässige Bauarbeiten nebenan vorübergehend übermässige und unvermeidliche Nachteile, kann nur Schadenersatz verlangt werden; bei Grabungen und Bauten darf das Erdreich des Nachbarn nicht in Bewegung gebracht oder gefährdet werden.", "legal_basis": "Art. 679a, 685 ZGB", "source_refs": ["law#679a", "law#685"]},
+  {"id": "eigenmacht", "when": {"fact": "eigenmacht", "is": true}, "text": "Gegen einen eigenmächtigen Eingriff in Ihren Besitz können Sie nur klagen, wenn Sie sofort, nachdem Sie Eingriff und Täter kennen, die Rückgabe oder die Beseitigung der Störung verlangen; die Klage verjährt ein Jahr nach dem Eingriff.", "legal_basis": "Art. 929 ZGB", "source_refs": ["law#929", "law#929.2"]}
+ ],
+ "stages": {
+  "klaeren": {"source_refs": ["law#684"]},
+  "beurteilen": {"source_refs": ["law#679", "law#684", "law#684.2", "law#687", "law#928"]}
+ },
+ "assessment": {
+  "rights": {"text": "Grundsätzlich hat sich jeder Grundeigentümer aller übermässigen Einwirkung auf das Eigentum der Nachbarn zu enthalten (Art. 684 ZGB); wer dadurch geschädigt oder mit Schaden bedroht wird, kann auf Beseitigung, auf Schutz gegen drohenden Schaden und auf Schadenersatz klagen (Art. 679 ZGB)."},
+  "conditions": {"text": "Voraussetzung ist, dass die Einwirkung nach Lage und Beschaffenheit der Grundstücke oder nach Ortsgebrauch nicht gerechtfertigt, also übermässig ist (Art. 684 ZGB); überragende Äste und eindringende Wurzeln dürfen erst gekappt werden, wenn sie das Eigentum schädigen und auf Beschwerde hin nicht binnen angemessener Frist beseitigt werden (Art. 687 ZGB)."},
+  "demand": {"text": "Wir fordern Sie auf, die übermässigen Einwirkungen bis {frist} zu beseitigen und künftig zu unterlassen (Art. 684 ZGB), und behalten uns die Klage auf Beseitigung und Schadenersatz (Art. 679 ZGB) ausdrücklich vor."}
+ },
+ "deadlines": [
+  {"id": "besitz_rueckforderung", "title": "Rückforderung oder Verlangen der Beseitigung nach einem eigenmächtigen Eingriff", "trigger": "eingriff_bekannt", "period": "sofort", "from": "nach Kenntnis von Eingriff und Täter", "when": {"fact": "eigenmacht", "is": true}, "when_text": "nur bei einem eigenmächtigen Eingriff in den Besitz", "basis": "Art. 929 Abs. 1 ZGB", "missed": "Ohne sofortige Rückforderung oder Aufforderung zur Beseitigung ist die Klage aus verbotener Eigenmacht nicht zulässig; die Rechte aus dem Eigentum (Art. 641, 679 ZGB) bleiben zu prüfen.", "question": "Wann haben Sie vom Eingriff erfahren, und wann haben Sie den Nachbarn aufgefordert, ihn rückgängig zu machen?", "source_refs": ["law#929", "law#641", "law#679"], "party": "kunde"},
+  {"id": "besitz_klage", "title": "Klage aus verbotener Eigenmacht", "trigger": "eingriff", "period": {"years": 1}, "from": "nach der Entziehung oder Störung, auch bei späterer Kenntnis", "when": {"fact": "eigenmacht", "is": true}, "when_text": "nur bei einem eigenmächtigen Eingriff in den Besitz", "check": "Berechnung nach Art. 77 OR über Art. 7 ZGB, prüfen; bei andauernder Störung den massgebenden Tag prüfen", "basis": "Art. 929 Abs. 2 ZGB", "missed": "Danach ist die Klage aus verbotener Eigenmacht verjährt; die Rechte aus dem Eigentum (Art. 641, 679 ZGB) bleiben zu prüfen.", "question": "An welchem Tag hat der Nachbar eingegriffen?", "source_refs": ["law#929.2", "law#zgb-7"], "party": "kunde"}
+ ],
+ "notes": [],
+ "summary": [],
+ "open_questions": [
+  {"text": "Abstände für Pflanzen und Bauten und allfällige Fristen zur Beseitigung von Pflanzen regelt das kantonale Recht (Art. 686, 688 ZGB); es ist hier nicht hinterlegt: prüfen.", "source_refs": ["law#686", "law#688"]},
+  {"text": "Für die Abwehr übermässiger Einwirkungen (Art. 684 ZGB) und die Klage auf Beseitigung (Art. 679 ZGB) nennt das Zivilgesetzbuch keine eigene Frist; deshalb wird dafür kein Datum berechnet: prüfen.", "source_refs": ["law#679", "law#684"]}
+ ]
+}
