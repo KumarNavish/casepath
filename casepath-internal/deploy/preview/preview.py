@@ -138,19 +138,24 @@ def main():
                                                     "note": "No lease is among the files."}), report("document_finder", summary="No lease among the files.")]], pause)
     runs.model_factory = factory
     # Case C: a synthetic case on the handler's workflow with a stored result (no model), so its stage actions,
-    # its letter and "andere Handlung" can be tried in the browser.
-    case_c = store.create_case("Schimmel im Bad, Handler-Prozess (synthetisch)", {"synthetic": True}, "N. Kumar")
+    # its letter and "andere Handlung" can be tried in the browser. Case D is the same, for the gesture checks.
     from casepath.read.extract import extract
-    row = extract("Meldung Lea Brunner.eml", "message/rfc822", EMAIL)
-    email_c = store.add_file(case_c["id"], "Meldung Lea Brunner.eml", row["media_type"], row["kind"], EMAIL, row, "N. Kumar")["id"]
-    fact = lambda f, v, quote=None: {"fact": f, "status": "established", "verdict": "accepted", "value": v,
-                                      "citations": [{"file": email_c, "quote": quote}] if quote else []}
-    run_c = store.create_run(case_c["id"], "N. Kumar")
-    store.update_run(run_c["id"], status="completed", workflow_id="mietmangel-handler", finished_at="2026-11-12T10:00:00+00:00",
-                     result={"facts": [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja", TOLD)], "documents": [],
-                             "brief": {"request": "Lea Brunner möchte Hilfe, weil im Badezimmer immer wieder Schimmel auftritt.",
-                                       "parties": [{"role": "Mieterin (VN)", "name": "Frau Lea Brunner"}], "timeline": []}})
-    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}", flush=True)
+
+    def handler_case(title):
+        case = store.create_case(title, {"synthetic": True}, "N. Kumar")
+        row = extract("Meldung Lea Brunner.eml", "message/rfc822", EMAIL)
+        email = store.add_file(case["id"], "Meldung Lea Brunner.eml", row["media_type"], row["kind"], EMAIL, row, "N. Kumar")["id"]
+        fact = lambda f, v, quote=None: {"fact": f, "status": "established", "verdict": "accepted", "value": v,
+                                          "citations": [{"file": email, "quote": quote}] if quote else []}
+        run = store.create_run(case["id"], "N. Kumar")
+        store.update_run(run["id"], status="completed", workflow_id="mietmangel-handler", finished_at="2026-11-12T10:00:00+00:00",
+                         result={"facts": [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("maengelruege_schriftlich", "ja", TOLD)], "documents": [],
+                                 "brief": {"request": "Lea Brunner möchte Hilfe, weil im Badezimmer immer wieder Schimmel auftritt.",
+                                           "parties": [{"role": "Mieterin (VN)", "name": "Frau Lea Brunner"}], "timeline": []}})
+        return case
+    case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
+    case_d = handler_case("Schimmel im Bad, zweite Meldung (synthetisch)")
+    print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 
