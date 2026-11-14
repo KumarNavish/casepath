@@ -44,7 +44,7 @@ Upload `build/casepath-app/` to the workspace. Fill in the three `FILL-IN`s in i
 casepath/              python -m casepath <command>   (no command: the list)
   read/                files → text, page images, documents, quotes (PDF, fax and Outlook readers on the standard library)
   agents/              lead, five agents and their plan (team.py); one job in, one outcome out (core.py); model clients
-  process/             workflows, each case's own process, Knowledge
+  process/             workflows, each case's own process, Knowledge; areas/: the handler's backbone and one module per legal area (docs/AREAS.md)
   web/                 API (app.py), case store, sign-in, volume, case report, workspace (ui/)
   quality/             benchmark, evaluator, synthetic cases, content-free scorecards
   config.py            every setting, from the environment
