@@ -127,6 +127,8 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     hints += [{"value": statutory(i), "legal_basis": i.get("legal_basis")} for i in items  # a statutory deadline of the area
               if i["kind"] == "deadline" and i.get("origin") == "law" and lines.get(i["item_id"], True)]
     listed = request_list(items, events, evaluation, process) if evaluation else [f"– {label(i)}" for i in docs]
+    came = (next((i for i in items if i["kind"] == "next_action"), None) or {}).get("incoming") or {}  # what came in, as read
+    came_quote = next((e["quote"] for e in (facts.get(came.get("fact")) or {}).get("evidence") or () if e.get("quote")), None)
     return {
         "referenz": ref.group(0) if ref else case.get("id", "")[-8:].upper(),
         "referenz_kopf": f"Unsere Referenz: {ref.group(0)}\n\n" if ref else "",
@@ -153,6 +155,11 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "vorhanden": ", ".join(label(i) for i in present) or "gemäss Akten",
         "gegenpartei": next((p["value"] for p in parties if p.get("value") and "mieter" not in str(p.get("label") or "").lower()), "…"),
         "heute": (today or as_of(files)).strftime("%d.%m.%Y"),
+        # an end of benefits on the mandated firm's report: its date and its own words on what was withheld, as read; the
+        # clause of the general conditions is the handler's to fill in, never invented
+        "eingang_datum": _day(came.get("date")) or gap("Datum der Meldung der Kanzlei"),
+        "vorenthalten": f"«{came_quote}»" if came_quote else gap("was die Kanzlei als verweigert oder verschwiegen meldet"),
+        "avb_ziffer": gap("Ziffer der AVB"),
     }
 
 

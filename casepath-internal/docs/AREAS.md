@@ -47,7 +47,23 @@ Checked in this order: cover refused → closing; first request not yet sent →
 
 ## Stage floor (backbone rule, every area)
 
-A case is at least at the latest stage, in backbone order, that its history places it: each action kind names its stage in `action_kinds` (A1, A4 → klären; A5 → beurteilen; A8, A9 → gegenpartei; A10 → mandat; A11 → abwicklung), and `floor_decisions` names the stages a handler decision places it (cover refused; the way to proceed decided). The walk starts at the floor when it would stop before it; documents of the stages behind stay listed but never pull the case back. A stage action already in the history is not proposed again: its follow-up comes next, counted from the last dated action (`since`), unless the follow-up is one the clock governs (A6, A7, A12), which waits for the clock. Clock rules name the stages they apply in (`stages`).
+A case is at least at the latest stage, in backbone order, that its history places it: each action kind names its stage in `action_kinds` (A1, A4 → klären; A5 → beurteilen; A8, A9 → gegenpartei; A10 → mandat), and `floor_decisions` names the stages a handler decision places it (cover refused; the way to proceed decided; benefits ended on the firm's report). A payment (A11) places no floor: under a mandate it also pays the firm's cost notes, so the settlement stage is reached by the settlement itself (`einigung`). The walk starts at the floor when it would stop before it; documents of the stages behind stay listed but never pull the case back. A stage action already in the history is not proposed again: its follow-up comes next, counted from the last dated action (`since`), unless the follow-up is one the clock governs (A6, A7, A12), which waits for the clock. Clock rules name the stages they apply in (`stages`).
+
+## What comes in (backbone overlay, every area)
+
+A case a law firm handles under a mandate moves by what comes in, not by the clock. The backbone's `incoming` list names each kind of item that comes in from a third party and the action it calls for; `casepath/process/incoming.py` evaluates it. Shipped, in priority order: the firm reports that the customer does not cooperate or ends the mandate (the handler's decision «Leistungen einstellen?»: yes → A12 with the end-of-benefits letter, whose clause of the general conditions is a marked gap; no → back to the way to proceed); an offer or reply of the other side (A9, no draft); a cost claim of the firm or a court (A11, no draft until a form exists; it can repeat and keeps the case from closing through the derived fact `kosten_offen`); a payment received (A11, confirm); a report on the state of the matter (a file note, no stage change). Each is observed «in 1 von 7 Dossiers»; outside the observed area the count is dropped like every other practice count.
+
+Each kind has one text fact the reader establishes from one document: who sent what when, the latest of its kind; most files have none, and then nothing is recorded. That adds five facts to a run's reading (`eingang_kostenforderung`, `eingang_bericht`, `eingang_mitwirkung`, `eingang_angebot`, `eingang_zahlung`); `leistungen_einstellen` and `eingang_erledigt_bis` are the handler's, `kosten_offen` is computed. An item is open until the case's history (A-codes with dates) shows an action of a kind in its `answered_by` dated after it (`"any"`: any action), or the handler marks items up to a date done (`eingang_erledigt_bis`, the «erledigt» link beside the reason). The first open item is the prepared action, outranking the stage's action and the clock; its reason line names the item with its source one click away; the others follow as «danach». The customer's own statutory deadline still leads the card and caps the follow-up. Only the latest item of each kind is read: an earlier claim paid together with a later one is answered with it.
+
+**Add a kind.** Add its text fact to the backbone's `facts` (question: who sent what, its date as YYYY-MM-DD, from one document, «keine …: nicht erfassen»), then one row in `incoming`:
+
+```json
+{"id": "vorschuss", "fact": "eingang_vorschuss", "title": "Kostenvorschuss des Gerichts", "what": "…", "from": ["gericht"], "priority": 6,
+ "handler_decision": false, "action": {"kind": "A11", "title": "Kostenvorschuss leisten", "form": "A11_kosten", "next_in_days": 10},
+ "answered_by": ["11"], "note": "in 1 von 7 Dossiers beobachtet", "source_refs": ["practice#1of7"]}
+```
+
+`from` is among kanzlei, gericht, gegenpartei, kunde; `form` must be a backbone form (one with `none` says why there is no draft); `priority` is the kind's own; `blocks_closing: true` keeps the case from closing while it is open; `decision` names a handler-only fact and the action on yes and on no. The validator refuses a kind without these, with a fact that is not a read text fact, or with an unknown form.
 
 ## What the validator refuses
 

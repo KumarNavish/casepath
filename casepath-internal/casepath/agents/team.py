@@ -66,7 +66,9 @@ the date of the latest such letter or note), each with one quote that shows that
 history list uses these codes with their dates: A1 request for documents,
 A2 phone note, A3 upload link, A4 question back, A5 legal assessment, A6 pending with a deadline, A7 status inquiry
 announcing closure, A8 letter to the other side, A9 negotiation, A10 mandate to a law firm, A11 payment handling,
-A12 closing or end of benefits. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
+A12 closing or end of benefits. For what came in from a mandated law firm, a court, the other side or as a payment (the
+eingang_ facts), record the latest of each kind from that one document: who sent what, with its date as YYYY-MM-DD;
+most files have none, and then you record nothing. When a value names alternatives ("A / B"), record it when a quote supports either part and name that part in
 "part" (for example "open points: refusal of 26.08.2024"); a reply or act that leaves the matter unresolved supports the
 "open points" part, and the "no reaction" part alone needs a sentence saying nobody answered.
 For a date: YYYY-MM-DD, or YYYY-MM or YYYY when the file states no day. When the file states only a period from or before

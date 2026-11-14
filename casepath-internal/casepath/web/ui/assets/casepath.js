@@ -1217,7 +1217,8 @@ function blockers(ev) {
   const routing = (S.data.run || {}).routing || ((S.data.lastCompleted || {}).routing) || {};
   if (routing.other_topic) out.push({ text: T(`Confirm the process: the case also concerns ${routing.other_topic.topic}`, `Prozess bestätigen: auch «${routing.other_topic.topic}»`), choose: true, cite: (routing.other_topic.citations || [])[0] });
   if (ev && !ev.documents.length) out.push({ text: T("Which process fits this case?", "Welcher Prozess passt zu diesem Fall?"), choose: true });
-  for (const k of decisions(ev).blocking) out.push({ text: plainQuestion((item("fact", k).label || {}).de), decide: k });
+  const came = item("next_action", "0") || {};  // a decision on what came in: its source one click away
+  for (const k of decisions(ev).blocking) out.push({ text: plainQuestion((item("fact", k).label || {}).de), decide: k, cite: came.incoming ? (came.evidence || [])[0] : null });
   const needs = (S.data.draft || {}).needs || [];
   for (const f of Object.values(recorded("fact"))) {
     if (f.status === "conflicting" && needs.includes(f.fact)) out.push({ text: T(`The files disagree: ${questionOf(f.fact)}`, `Die Akten widersprechen sich: ${plainQuestion(questionOf(f.fact))}`), fact: f.fact, cite: (f.citations || [])[0] });
@@ -1444,7 +1445,14 @@ function preparedView(ev, st) {
   const letter = draft.text || "";
   const missing = missingDocs().length;
   const claimFile = (S.data.files || [])[0];
-  const weil = [act && act.reason ? esc(act.reason) : "",
+  // What came in and is still open: the reason names it, its source is one click away, the handler can mark it done,
+  // and further open items follow in their order.
+  const came = act && act.incoming, src = came && (act.evidence || [])[0];
+  const cameLine = came ? [esc(act.reason || ""),
+    src ? `<button class="cp-source-chip" data-cite-file="${esc(src.file)}" data-page="${src.page || ""}" title="${esc(src.quote || "")}">${src.page ? `${T("p.", "S.")} ${src.page}` : T("source", "Quelle")}</button>` : "",
+    `<button class="cp-link" data-decide="eingang_erledigt_bis" data-value="${esc(came.date || new Date().toISOString().slice(0, 10))}">${T("done", "erledigt")}</button>`,
+    (act.then || []).length ? `· ${T("then", "danach")}: ${(act.then || []).map((t) => esc(`${t.title}${t.date ? ` vom ${dateText(t.date)}` : ""}`)).join(" · ")}` : ""].filter(Boolean).join(" ") : "";
+  const weil = came ? cameLine : [act && act.reason ? esc(act.reason) : "",
     claimFile ? `<button class="cp-link" data-cite-file="${esc(claimFile.id)}" data-page="">${T("claim received", "Schadenmeldung eingegangen")}</button>` : "",
     missing ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`${missing} document(s) missing`, `${missing} Unterlage${missing > 1 ? "n" : ""} fehl${missing > 1 ? "en" : "t"}`)}</a>` : ""].filter(Boolean).join(" · ");
   const options = (S.data.action_options || []).filter((o) => !act || o.kind !== act.action);

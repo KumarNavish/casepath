@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 
+from . import incoming
 from .area import compute_deadline, period_text
 from .clock import parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
@@ -210,6 +211,13 @@ def build_items(state, result, files=None):
             planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": FOLLOW_UP_TITLES.get(quiet["then"], quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
                        "reason": f'keine Antwort seit {quiet["last"]} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
+        # What came in and is still unanswered outranks the stage's own action and the clock (the customer's own statutory
+        # deadline still leads the card and caps the follow-up); the others wait, in priority order.
+        open_items = incoming.pending(graph, known_facts)
+        if open_items:
+            act = open_items[0]["action"]
+            planned = {"kind": act["kind"], "title": act["title"], "form": act["form"], "next_in_days": act.get("next_in_days"),
+                       "follow_up": None, "skip_if": None, "reason": incoming.reason(open_items[0])}
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
             action = (planned["kind"], title, {"de": title, "en": title})
@@ -230,7 +238,13 @@ def build_items(state, result, files=None):
             add("next_action", "0", **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
                                         **({"reason": planned["reason"]} if planned.get("reason") else {}),
                                         **({"since": planned["since"]} if planned.get("since") else {}),
-                                        **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}), value=action[1], stated_as="established", verdict=None, evidence=[], node=(ev.get("current") or {}).get("step"),
+                                        **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}),
+                **({"incoming": {"kind": open_items[0]["kind"]["id"], "fact": open_items[0]["fact"], "date": open_items[0]["date"],
+                                 "value": open_items[0]["value"]},
+                    "then": [{"kind": r["kind"]["id"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"]}
+                             for r in open_items[1:]]} if open_items else {}),
+                value=action[1], stated_as="established", verdict=None,
+                evidence=_evidence((rows.get(open_items[0]["fact"]) or {}).get("citations")) if open_items else [], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
         # The first request asks, besides documents, what only the customer can say, and gives the hints the law calls for.
         known = state.get("facts") or {}

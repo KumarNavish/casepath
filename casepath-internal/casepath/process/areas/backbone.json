@@ -31,7 +31,15 @@
   {"id": "beurteilbar", "type": "boolean", "derived": "assess_needs_present", "question": "Liegen die Unterlagen vor, ohne die keine Einschätzung möglich ist (falls das Rechtsgebiet solche nennt)?", "source_refs": ["practice#3of7"]},
   {"id": "erledigt_gemeldet", "type": "boolean", "question": "Ist die Sache gemäss den Akten erledigt (Einigung erzielt oder Problem behoben)?", "source_refs": ["practice#erledigt"]},
   {"id": "weiteres_gewuenscht", "type": "boolean", "question": "Wünscht die Kundschaft trotz Erledigung noch etwas (weitere Schritte, Kosten, eine Zahlung)?", "source_refs": ["practice#erledigt"]},
-  {"id": "sache_erledigt", "type": "boolean", "derived": "settled", "question": "Ist die Sache erledigt, ohne dass die Kundschaft noch etwas wünscht oder eine Forderung offen ist?", "source_refs": ["practice#erledigt"]}
+  {"id": "sache_erledigt", "type": "boolean", "derived": "settled", "question": "Ist die Sache erledigt, ohne dass die Kundschaft noch etwas wünscht oder eine Forderung offen ist?", "source_refs": ["practice#erledigt"]},
+  {"id": "eingang_kostenforderung", "type": "text", "question": "Zuletzt eingegangene Kostenforderung der beauftragten Kanzlei oder eines Gerichts (Kostenvorschuss, Zwischen- oder Schlussrechnung, Gerichtskosten): wer verlangt was mit Datum (JJJJ-MM-TT) und, falls genannt, Betrag und ob im Rahmen der Kostengutsprache, aus diesem einen Schreiben. Keine solche Forderung: nicht erfassen.", "source_refs": ["practice#1of7"]},
+  {"id": "eingang_bericht", "type": "text", "question": "Zuletzt eingegangener Bericht der beauftragten Kanzlei zum Stand der Sache: Kanzlei, Inhalt in wenigen Worten und Datum (JJJJ-MM-TT), auch ob er eine Information an die Kundschaft verlangt, aus diesem einen Bericht. Kein solcher Bericht: nicht erfassen.", "source_refs": ["practice#1of7"]},
+  {"id": "eingang_mitwirkung", "type": "text", "question": "Meldung der beauftragten Kanzlei, dass die Kundschaft nicht mitwirkt (Unterlagen trotz Aufforderung verweigert, Tatsachen verschwiegen) oder dass sie das Mandat beendet: Kanzlei, was sie meldet und Datum (JJJJ-MM-TT), aus diesem einen Schreiben. Keine solche Meldung: nicht erfassen.", "source_refs": ["practice#1of7"]},
+  {"id": "eingang_angebot", "type": "text", "question": "Zuletzt eingegangenes Angebot oder Antwort der Gegenpartei oder ihres Anwalts: Absender, was angeboten oder geantwortet wird und Datum (JJJJ-MM-TT), aus diesem einen Schreiben. Keines: nicht erfassen.", "source_refs": ["practice#1of7"]},
+  {"id": "eingang_zahlung", "type": "text", "question": "Zuletzt eingegangene Zahlung (der Gegenpartei oder an die Kundschaft): wer zahlte welchen Betrag mit Datum (JJJJ-MM-TT), aus diesem einen Beleg oder Schreiben. Keine: nicht erfassen.", "source_refs": ["practice#1of7"]},
+  {"id": "leistungen_einstellen", "type": "boolean", "handler_only": true, "question": "Leistungen einstellen? (Entscheid der Fallbearbeitung nach der Meldung der Kanzlei)", "source_refs": ["practice#1of7"]},
+  {"id": "eingang_erledigt_bis", "type": "date", "handler_only": true, "question": "Eingänge bis zu diesem Datum erledigt (Entscheid der Fallbearbeitung)", "source_refs": ["practice#1of7"]},
+  {"id": "kosten_offen", "type": "boolean", "derived": "cost_claim_open", "question": "Ist eine eingegangene Kostenforderung noch nicht beglichen?", "source_refs": ["practice#1of7"]}
  ],
  "start": "eingang",
  "steps": [
@@ -41,7 +49,7 @@
   {"id": "vorgehen", "title": "Vorgehen festlegen", "role": "Entscheidung", "source_refs": ["practice#2of7"], "documents": [], "next": [{"to": "gegenpartei", "label": "selbst führen", "when": {"fact": "vorgehen", "is": "Selbst führen"}}, {"to": "mandat", "label": "mandatieren", "when": {"fact": "vorgehen", "is": "Mandat an Anwaltskanzlei"}}]},
   {"id": "gegenpartei", "title": "Gegenüber der Gegenpartei vorgehen", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A8", "title": "Schreiben an die Gegenpartei (Entwurf zuerst an die Kundschaft)", "next_in_days": 14, "follow_up": "A9"}, "next": [{"to": "abwicklung", "label": "Einigung", "when": {"fact": "einigung", "is": true}}]},
   {"id": "mandat", "title": "Mandat an Anwaltskanzlei", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A10", "title": "Mandatsanfrage, Kostengutsprache und Information der Kundschaft", "next_in_days": 30, "follow_up": "A2"}, "next": [{"to": "abwicklung", "label": "Mandat abgeschlossen", "when": {"fact": "einigung", "is": true}}]},
-  {"id": "abwicklung", "title": "Abwicklung der Einigung", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A11", "title": "Zahlung abwickeln (IBAN, Auszahlung nachverfolgen)", "next_in_days": 21, "follow_up": "A11"}, "next": [{"to": "abschluss_zahlung", "label": "Zahlung erhalten", "when": {"fact": "zahlung_erhalten", "is": true}}]},
+  {"id": "abwicklung", "title": "Abwicklung der Einigung", "role": "Fallbearbeitung", "source_refs": ["practice#1of7"], "documents": [], "action": {"kind": "A11", "title": "Zahlung abwickeln (IBAN, Auszahlung nachverfolgen)", "next_in_days": 21, "follow_up": "A11"}, "next": [{"to": "abschluss_zahlung", "label": "Zahlung erhalten", "when": {"all": [{"fact": "zahlung_erhalten", "is": true}, {"fact": "kosten_offen", "is": false}]}}]},
   {"id": "abschluss_erledigt", "title": "Abschluss: Sache erledigt", "role": "Fallbearbeitung", "source_refs": ["practice#erledigt"], "documents": [], "outcome": "erledigt", "action": {"kind": "A12", "title": "Dossier schliessen", "form": "A12_erledigt"}, "next": []},
   {"id": "abschluss_still", "title": "Abschluss: keine Rückmeldung", "role": "Fallbearbeitung", "source_refs": ["practice#2of7"], "documents": [], "outcome": "stillschweigen", "action": {"kind": "A12", "title": "Dossier schliessen", "form": "A12_still"}, "next": []},
   {"id": "abschluss_beraten", "title": "Abschluss: Beratung erfolgt", "role": "Fallbearbeitung", "source_refs": ["practice#2of7"], "documents": [], "outcome": "beraten", "action": {"kind": "A12", "title": "Dossier schliessen", "form": "A12_erledigt"}, "next": []},
@@ -77,7 +85,12 @@
   "A11": {"title": "Zahlung bestätigen", "none": "Betrag und Datum kommen aus dem Zahlungssystem"},
   "_frame": {"head": ["{referenz_kopf}{anrede}", ""], "tail": ["", "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.", "", "Freundliche Grüsse"]},
   "A12_still": {"title": "Dossier schliessen", "none": "die Schliessung wurde im letzten Schreiben angekündigt"},
-  "A12_erledigt": {"title": "Dossier schliessen", "none": "die Sache ist gemäss den Akten erledigt; ein Abschlussschreiben verfasst die Fallbearbeitung bei Bedarf"}
+  "A12_erledigt": {"title": "Dossier schliessen", "none": "die Sache ist gemäss den Akten erledigt; ein Abschlussschreiben verfasst die Fallbearbeitung bei Bedarf"},
+  "A11_kosten": {"title": "Kostenforderung prüfen und begleichen", "none": "für eine Bestätigung an die Kanzlei ist kein Formular hinterlegt; geprüft und bezahlt wird im Zahlungssystem"},
+  "A2_bericht": {"title": "Aktennotiz zum Bericht der Kanzlei", "none": "die Aktennotiz schreibt die Fallbearbeitung; die Kundschaft wird nur informiert, wenn der Bericht es verlangt"},
+  "A12_mitwirkung_entscheid": {"title": "Leistungen einstellen?", "none": "erst nach Ihrem Entscheid «Leistungen einstellen?»", "needs": ["leistungen_einstellen"]},
+  "A12_mitwirkung_kanzlei": {"title": "Leistungseinstellung wegen fehlender Mitwirkung", "to": "Kundschaft", "needs": ["leistungen_einstellen"], "parts": ["Die von Ihnen beauftragte Kanzlei hat uns mit Schreiben vom {eingang_datum} mitgeteilt, dass Sie bei der Bearbeitung Ihres Falles nicht mitgewirkt haben: {vorenthalten}", "Damit haben Sie Ihre Pflicht zur Mitwirkung gemäss den Allgemeinen Versicherungsbedingungen ({avb_ziffer}) verletzt. Wir stellen unsere Leistungen in diesem Fall daher ein und schliessen Ihr Dossier."]},
+  "vorgehen_neu": {"title": "Weiteres Vorgehen festlegen", "none": "das Mandat ist beendet und die Leistungen laufen weiter; wie es weitergeht (selbst führen, neu mandatieren oder abschliessen), entscheidet die Fallbearbeitung", "needs": ["vorgehen"]}
  },
  "practice_elsewhere": {"ref": "practice#ablauf", "title": "Ablauf der Fallbearbeitung (Handlungen A1–A12, Wiedervorlagen), aus der Praxis im Mietrecht übernommen; in diesem Rechtsgebiet nicht beobachtet"},
  "action_kinds": {
@@ -92,7 +105,7 @@
   "A8": {"title": "Schreiben an die Gegenpartei", "depends_on": ["deckung", "vorgehen"], "stage": "gegenpartei"},
   "A9": {"title": "Antwort in der Verhandlung", "depends_on": ["deckung", "vorgehen"], "stage": "gegenpartei"},
   "A10": {"title": "Mandat und Kostengutsprache", "depends_on": ["deckung", "vorgehen"], "stage": "mandat"},
-  "A11": {"title": "Zahlung abwickeln", "depends_on": ["deckung"], "stage": "abwicklung"},
+  "A11": {"title": "Zahlung abwickeln", "depends_on": ["deckung"]},
   "A12": {"title": "Dossier abschliessen", "depends_on": []}
  },
  "laws": {
@@ -109,8 +122,30 @@
   "samstag": {"cite": "Art. 1 Bundesgesetz über den Fristenlauf an Samstagen (SR 173.110.3)", "sr": "173.110.3", "article": "1", "verified": true, "passage": "Hinsichtlich der gesetzlichen Fristen des eidgenössischen Rechts und der kraft eidgenössischen Rechts von Behörden angesetzten Fristen wird der Samstag einem anerkannten Feiertag gleichgestellt."}
  },
  "cooperation": {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": ["protekta", "rechtsschutz"], "source": "Mitwirkung fehlt erst, wenn mindestens zwei Anforderungen mit Frist ohne Antwort blieben; eine Rückfrage (A4) zählt nicht"},
+ "incoming": [
+  {"id": "mitwirkung", "fact": "eingang_mitwirkung", "title": "Meldung der Kanzlei: Kundschaft wirkt nicht mit", "what": "Die beauftragte Kanzlei meldet, dass die Kundschaft Unterlagen trotz Aufforderung verweigert oder Tatsachen verschwiegen hat, oder sie beendet das Mandat", "from": ["kanzlei"], "priority": 1, "handler_decision": true,
+   "action": {"kind": "A12", "title": "Leistungen einstellen?", "form": "A12_mitwirkung_entscheid", "next_in_days": null}, "answered_by": ["12"],
+   "decision": {"fact": "leistungen_einstellen",
+                "yes": {"kind": "A12", "title": "Leistungseinstellung wegen fehlender Mitwirkung mitteilen", "form": "A12_mitwirkung_kanzlei", "next_in_days": null, "answered_by": ["12"]},
+                "no": {"kind": "vorgehen", "title": "Weiteres Vorgehen festlegen (Mandat beendet)", "form": "vorgehen_neu", "next_in_days": 14, "answered_by": "any"}},
+   "note": "in 1 von 7 Dossiers beobachtet: die Kanzlei meldete verweigerte Unterlagen und eine verschwiegene Tatsache und beendete das Mandat; die Leistungen wurden ohne vorgängige Mahnung mit der Verletzung der Mitwirkungspflicht gemäss den Allgemeinen Versicherungsbedingungen eingestellt", "source_refs": ["practice#1of7"]},
+  {"id": "angebot", "fact": "eingang_angebot", "title": "Angebot oder Antwort der Gegenpartei", "what": "Ein Angebot oder eine Antwort der Gegenpartei oder ihres Anwalts", "from": ["gegenpartei"], "priority": 2, "handler_decision": true,
+   "action": {"kind": "A9", "title": "Antwort auf das Angebot der Gegenpartei", "form": "A9", "next_in_days": 14}, "answered_by": ["8", "9"],
+   "note": "in 1 von 7 Dossiers beobachtet", "source_refs": ["practice#1of7"]},
+  {"id": "kostenforderung", "fact": "eingang_kostenforderung", "title": "Kostenforderung", "what": "Eine Kostenforderung der beauftragten Kanzlei oder eines Gerichts: Kostenvorschuss, Zwischen- oder Schlussrechnung, Gerichtskosten; sie kann sich wiederholen", "from": ["kanzlei", "gericht"], "priority": 3, "handler_decision": false, "blocks_closing": true,
+   "action": {"kind": "A11", "title": "Kostenforderung prüfen und begleichen", "form": "A11_kosten", "next_in_days": 30}, "answered_by": ["11"],
+   "note": "in 1 von 7 Dossiers beobachtet", "source_refs": ["practice#1of7"]},
+  {"id": "zahlung", "fact": "eingang_zahlung", "title": "Zahlungseingang", "what": "Eine Zahlung der Gegenpartei oder an die Kundschaft ist eingegangen", "from": ["gegenpartei", "kunde"], "priority": 4, "handler_decision": false,
+   "action": {"kind": "A11", "title": "Zahlungseingang bestätigen", "form": "A11", "next_in_days": 14}, "answered_by": ["11", "12"],
+   "note": "in 1 von 7 Dossiers beobachtet", "source_refs": ["practice#1of7"]},
+  {"id": "bericht", "fact": "eingang_bericht", "title": "Bericht der Kanzlei", "what": "Ein Bericht der beauftragten Kanzlei zum Stand der Sache; ändert die Stufe nicht", "from": ["kanzlei"], "priority": 5, "handler_decision": false,
+   "action": {"kind": "A2", "title": "Aktennotiz zum Bericht der Kanzlei", "form": "A2_bericht", "next_in_days": 30}, "answered_by": "any",
+   "note": "in 1 von 7 Dossiers beobachtet", "source_refs": ["practice#1of7"]}
+ ],
+ "incoming_done": "eingang_erledigt_bis",
  "floor_decisions": [
   {"when": {"fact": "deckung", "is": "abgelehnt"}, "stage": "abschluss_mitwirkung"},
+  {"when": {"fact": "leistungen_einstellen", "is": true}, "stage": "abschluss_mitwirkung"},
   {"when": {"fact": "vorgehen", "is": "Selbst führen"}, "stage": "gegenpartei"},
   {"when": {"fact": "vorgehen", "is": "Mandat an Anwaltskanzlei"}, "stage": "mandat"}
  ],

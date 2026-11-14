@@ -1,10 +1,11 @@
 """A handler's process for any legal area: one backbone and one small area module, composed at load time.
 
 The backbone (areas/backbone.json) is what every legal-protection case shares: the stages, the action kinds A0–A12 and
-which handler decisions each depends on, the handler's decisions (cover, way to proceed), the derived facts, the clock
-and Protekta's letter forms. An area module (areas/<id>.json) holds only what differs: the routing value, the facts with
-their customer questions, the documents with their legal reason and stage, first hints, statutory deadlines, the legal
-frame of the assessment letter (A5) and of the letter to the other side (A8), and the law it cites. Composition yields an
+which handler decisions each depends on, the handler's decisions (cover, way to proceed), the derived facts, the clock,
+Protekta's letter forms, and what comes in from third parties with the action it calls for (incoming.py). An area module
+(areas/<id>.json) holds only what differs: the routing value, the facts with their customer questions, the documents
+with their legal reason and stage, first hints, statutory deadlines, the legal frame of the assessment letter (A5) and
+of the letter to the other side (A8), and the law it cites. Composition yields an
 ordinary workflow (casepath.workflow/1), so routing, evaluation, items and letters are unchanged.
 
 Every article a module cites carries a short verbatim passage of the official text (at most 40 words) and says whether it
@@ -24,6 +25,7 @@ from pathlib import Path
 import re
 import sys
 
+from . import incoming
 from .clock import parse_date
 from .workflows import FORMAT, CatalogueError, _check_condition as check_condition, evaluate_condition, validate_workflow
 
@@ -84,7 +86,7 @@ def validate_backbone(backbone):
     for kind, row in backbone["action_kinds"].items():
         if not re.fullmatch(r"A\d{1,2}", kind) or any(f not in facts for f in row.get("depends_on", [])):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
-    return backbone
+    return incoming.validate(backbone)
 
 
 def validate_module(module, backbone):
@@ -217,6 +219,7 @@ def compose(backbone, module):
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []), "deadlines": m["deadlines"],
+                "incoming": bb.get("incoming", []), "incoming_done": bb.get("incoming_done"),
                 "settled": {"when": m.get("settled_when"), "claims_open_when": m.get("claims_open_when")},
                 "law": {**{k: v for k, v in bb["law"].items()}, **m["law"]}, "laws": bb["laws"]}
     try:
