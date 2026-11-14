@@ -206,6 +206,8 @@ def compose(backbone, module):
                 "outcomes": bb["outcomes"], "hints": hints,
                 **{k: m.get(k, []) for k in ("notes", "summary", "open_questions")},
                 "clock": bb["clock"], "forms": forms, "action_kinds": bb["action_kinds"], "cooperation": bb["cooperation"],
+                "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
+                          "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []), "deadlines": m["deadlines"],
                 "law": {**{k: v for k, v in bb["law"].items()}, **m["law"]}, "laws": bb["laws"]}
     try:

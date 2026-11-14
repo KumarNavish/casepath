@@ -15,7 +15,7 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "deadlines", "law", "laws"}
+NEW_KEYS = {"short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadlines", "law", "laws"}
 
 
 def intakes(*ids):
@@ -46,8 +46,9 @@ class CompositionTests(unittest.TestCase):
 
     def test_the_composed_tenancy_defect_workflow_is_the_seed_it_replaces_but_for_the_named_rule_change(self):
         composed = area.workflow("mietmangel-handler")
-        same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms"}}
+        same = lambda w: {k: v for k, v in w.items() if k not in NEW_KEYS | {"version", "facts", "steps", "forms", "clock"}}
         self.assertEqual(same(composed), same(FROZEN))
+        self.assertEqual([{k: v for k, v in r.items() if k != "stages"} for r in composed["clock"]], FROZEN["clock"])  # rules now name their stages
         self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-14.1"))  # stored runs: same id, newer version governs
         self.assertEqual([f for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
                          [f for f in FROZEN["facts"] if f["id"] not in self.CHANGED_FACTS])
@@ -66,7 +67,6 @@ class CompositionTests(unittest.TestCase):
         cases = [(base, [document("mietvertrag")]), ([fact("rechtsgebiet", "Mietrecht / Mangel"), fact("mangel_gemeldet", True)], []),
                  (base + [fact("bisherige_handlungen", "A1 2024-02-20; A2 2024-03-18")], [document("mietvertrag")]),
                  (base + [fact("handlung_a1", "2024-03-12")], []),
-                 (base + [fact("handlung_a1", "2024-09-11"), fact("handlung_a5", "2024-10-18")], [document("mietvertrag")]),
                  (base + [fact("bisherige_handlungen", "A1 2024-08-28; A4 2024-09-10"), fact("deckung", "bestätigt")],
                   [document(d) for d in ("mietvertrag", "maengelruege", "fotos")])]
         looked = [{"name": "Schadenmeldung.pdf", "extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2024"}]}}]
@@ -174,6 +174,34 @@ class CooperationTests(unittest.TestCase):
         asked_back = self.answered + [fact("handlung_a1", "2024-01-10"), fact("handlung_a4", "2024-02-20")]  # A4 sets no deadline
         self.assertFalse(self.next_action(self.wf, asked_back, [], before, "2024-06-01")[0]["facts"]["mitwirkung_fehlt"])
         self.assertFalse(core.evaluate(self.wf, [], [], {"facts": facts, "documents": []}, "c")["facts"]["mitwirkung_fehlt"])  # files unknown
+
+
+class StageFloorTests(unittest.TestCase):
+    """A case is at least at the stage its history places it: an action taken or a handler decision made."""
+
+    def test_a_mandate_and_a_phone_note_place_the_case_in_the_mandate_branch_whatever_documents_are_missing(self):
+        from casepath.process.clock import follow_up
+        wf = area.workflow("mietmangel-handler")
+        facts = [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("deckung", "bestätigt"), fact("vorgehen", "Mandat an Anwaltskanzlei"),
+                 fact("bisherige_handlungen", "A1 2024-01-10; A10 2024-03-01; A2 2024-04-02"), fact("handlung_a1", "2024-01-10"),
+                 fact("handlung_a2", "2024-04-02")]
+        files = [{"name": "Akte.pdf", "extraction": {"cut_of": {"as_of": "2024-05-20"}, "segments": [{"date": "02.04.2024", "sender": "Protekta"}]}}]
+        result = {"facts": facts, "documents": [], "brief": {"request": "Schimmel.", "parties": [], "timeline": []}}
+        state = core.evaluate(wf, [], [], result, "c", files=files)
+        self.assertEqual(state["evaluation"]["current"]["step"], "mandat")  # not "klaeren", though no document is in the file
+        nxt = {i["item_id"]: i for i in build_items(state, result, files)}["next_action:0"]
+        self.assertEqual((nxt["action"], nxt["next_in_days"], nxt["since"]), ("A2", 30, "2024-04-02"))  # A10 is done: its follow-up, not A6
+        self.assertEqual(follow_up(nxt["next_in_days"], files, [], since=nxt["since"])["due"], "2024-05-02")
+        self.assertIn("mietvertrag", {d["document"] for d in state["evaluation"]["documents"]})  # still listed, never pulling it back
+
+    def test_an_assessment_in_the_history_places_the_case_at_least_in_assessing_and_a_fresh_case_is_unchanged(self):
+        wf = area.workflow("mietmangel-handler")
+        facts = [fact("rechtsgebiet", "Mietrecht / Mangel"), fact("handlung_a1", "2024-09-11"), fact("handlung_a5", "2024-10-18")]
+        state = core.evaluate(wf, [], [], {"facts": facts, "documents": []}, "c")
+        self.assertEqual(state["evaluation"]["current"]["step"], "beurteilen")
+        fresh = core.evaluate(wf, [], [], {"facts": facts[:1], "documents": []}, "c")
+        self.assertEqual(fresh["evaluation"]["current"]["step"], "klaeren")
+        self.assertIsNone(workflows.stage_floor(wf, {"rechtsgebiet": "Mietrecht / Mangel"}))
 
 
 class DeadlineTests(unittest.TestCase):

@@ -51,11 +51,11 @@
   {"id": "mitwirkung", "title": "Abgeschlossen: Leistungseinstellung wegen fehlender Mitwirkung", "source_refs": ["practice#1of7"]}
  ],
  "clock": [
-  {"after": ["1", "4"], "days": 28, "then": "A6", "deadline_days": 25, "follow_up": "A7", "source": "practice#2of7 (3-4 Wochen nach Anforderung)"},
-  {"after": ["2"], "days": 28, "then": "A6", "deadline_days": 25, "follow_up": "A7", "source": "practice#2of7 (nach Telefonat)"},
-  {"after": ["6"], "days": 28, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7"},
-  {"after": ["5"], "days": 90, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7 (3-4 Monate nach Einschätzung)"},
-  {"after": ["7"], "days": 14, "then": "A12", "deadline_days": null, "source": "practice#2of7 (Abschluss nach Statusanfrage)"}
+  {"after": ["1", "4"], "days": 28, "then": "A6", "deadline_days": 25, "follow_up": "A7", "source": "practice#2of7 (3-4 Wochen nach Anforderung)", "stages": ["klaeren"]},
+  {"after": ["2"], "days": 28, "then": "A6", "deadline_days": 25, "follow_up": "A7", "source": "practice#2of7 (nach Telefonat)", "stages": ["klaeren"]},
+  {"after": ["6"], "days": 28, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7", "stages": ["klaeren"]},
+  {"after": ["5"], "days": 90, "then": "A7", "deadline_days": 7, "follow_up": "A12", "source": "practice#1of7 (3-4 Monate nach Einschätzung)", "stages": ["beurteilen"]},
+  {"after": ["7"], "days": 14, "then": "A12", "deadline_days": null, "source": "practice#2of7 (Abschluss nach Statusanfrage)", "stages": ["klaeren", "beurteilen"]}
  ],
  "forms": {
   "A1": {"title": "Unterlagen und Angaben anfordern", "to": "Kundschaft", "parts": ["{registrierung}", "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.", "{fragen}", "{hinweise}", "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.", "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."]},
@@ -74,18 +74,18 @@
  },
  "practice_elsewhere": {"ref": "practice#ablauf", "title": "Ablauf der Fallbearbeitung (Handlungen A1–A12, Wiedervorlagen), aus der Praxis im Mietrecht übernommen; in diesem Rechtsgebiet nicht beobachtet"},
  "action_kinds": {
-  "A0": {"title": "Eingangsbestätigung", "depends_on": []},
-  "A1": {"title": "Unterlagen und Angaben anfordern", "depends_on": []},
+  "A0": {"title": "Eingangsbestätigung", "depends_on": [], "stage": "eingang"},
+  "A1": {"title": "Unterlagen und Angaben anfordern", "depends_on": [], "stage": "klaeren"},
   "A2": {"title": "Telefonnotiz", "depends_on": []},
   "A3": {"title": "Upload-Link", "depends_on": []},
-  "A4": {"title": "Rückfrage zu einem Punkt", "depends_on": []},
-  "A5": {"title": "Rechtliche Einschätzung", "depends_on": ["deckung"]},
+  "A4": {"title": "Rückfrage zu einem Punkt", "depends_on": [], "stage": "klaeren"},
+  "A5": {"title": "Rechtliche Einschätzung", "depends_on": ["deckung"], "stage": "beurteilen"},
   "A6": {"title": "Dossier pendent halten mit Frist", "depends_on": []},
   "A7": {"title": "Statusanfrage mit Abschlussankündigung", "depends_on": []},
-  "A8": {"title": "Schreiben an die Gegenpartei", "depends_on": ["deckung", "vorgehen"]},
-  "A9": {"title": "Antwort in der Verhandlung", "depends_on": ["deckung", "vorgehen"]},
-  "A10": {"title": "Mandat und Kostengutsprache", "depends_on": ["deckung", "vorgehen"]},
-  "A11": {"title": "Zahlung abwickeln", "depends_on": ["deckung"]},
+  "A8": {"title": "Schreiben an die Gegenpartei", "depends_on": ["deckung", "vorgehen"], "stage": "gegenpartei"},
+  "A9": {"title": "Antwort in der Verhandlung", "depends_on": ["deckung", "vorgehen"], "stage": "gegenpartei"},
+  "A10": {"title": "Mandat und Kostengutsprache", "depends_on": ["deckung", "vorgehen"], "stage": "mandat"},
+  "A11": {"title": "Zahlung abwickeln", "depends_on": ["deckung"], "stage": "abwicklung"},
   "A12": {"title": "Dossier abschliessen", "depends_on": []}
  },
  "laws": {
@@ -101,5 +101,10 @@
   "132": {"cite": "Art. 132 OR", "sr": "220", "article": "132", "verified": true, "passage": "Im Übrigen gelten die Vorschriften für die Fristberechnungen bei der Erfüllung auch für die Verjährung."},
   "samstag": {"cite": "Art. 1 Bundesgesetz über den Fristenlauf an Samstagen (SR 173.110.3)", "sr": "173.110.3", "article": "1", "verified": true, "passage": "Hinsichtlich der gesetzlichen Fristen des eidgenössischen Rechts und der kraft eidgenössischen Rechts von Behörden angesetzten Fristen wird der Samstag einem anerkannten Feiertag gleichgestellt."}
  },
- "cooperation": {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": ["protekta", "rechtsschutz"], "source": "Mitwirkung fehlt erst, wenn mindestens zwei Anforderungen mit Frist ohne Antwort blieben; eine Rückfrage (A4) zählt nicht"}
+ "cooperation": {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": ["protekta", "rechtsschutz"], "source": "Mitwirkung fehlt erst, wenn mindestens zwei Anforderungen mit Frist ohne Antwort blieben; eine Rückfrage (A4) zählt nicht"},
+ "floor_decisions": [
+  {"when": {"fact": "deckung", "is": "abgelehnt"}, "stage": "abschluss_mitwirkung"},
+  {"when": {"fact": "vorgehen", "is": "Selbst führen"}, "stage": "gegenpartei"},
+  {"when": {"fact": "vorgehen", "is": "Mandat an Anwaltskanzlei"}, "stage": "mandat"}
+ ]
 }

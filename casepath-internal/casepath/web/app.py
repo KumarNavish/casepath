@@ -408,7 +408,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     current = state(row["id"])
                     listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]))
                     action = next((i for i in listed if i["kind"] == "next_action"), None)
-                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]))
+                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]), since=(action or {}).get("since"))
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"]}
                     # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
@@ -448,7 +448,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             option = next((o for o in options if o["kind"] == picked), {"title": picked, "next_in_days": action.get("next_in_days")})
             action.update(action=picked, value=option["title"], label={"de": option["title"], "en": option["title"]},
                           next_in_days=option["next_in_days"], chosen_by_handler=True)
-        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id))
+        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id), since=(action or {}).get("since"))
         events, files = store.list_case_events(case_id), store.list_files(case_id)
         draft = None
         if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed

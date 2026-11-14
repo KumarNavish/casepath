@@ -33,7 +33,7 @@ def as_of(files, today=None):
     return today or date.today()
 
 
-def silence(rules, facts, files, today=None):
+def silence(rules, facts, files, today=None, stage=None):
     """The follow-up that is due because nobody answered: the insurer's last outgoing action expects an answer, nothing
     dated arrived after it, and the day the case is looked at is past the expected date. None otherwise.
 
@@ -47,7 +47,7 @@ def silence(rules, facts, files, today=None):
                  default=sent)
     if latest > sent:  # something dated came in after our last letter: not silence
         return None
-    rule = next((r for r in rules if code in r["after"]), None)
+    rule = next((r for r in rules if code in r["after"] and (stage is None or r.get("stages") is None or stage in r["stages"])), None)
     day = as_of(files, today)
     if rule and (day - sent).days > rule["days"]:
         return {**rule, "last": f"A{code}", "since": sent.isoformat(), "as_of": day.isoformat(), "silent_days": (day - sent).days}
@@ -66,9 +66,10 @@ def reference_day(files, today=None):
     return max(days) if days else (today or date.today())
 
 
-def follow_up(next_in_days, files, events, today=None):
-    """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date."""
-    ref = reference_day(files, today)
+def follow_up(next_in_days, files, events, today=None, since=None):
+    """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date.
+    ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from."""
+    ref = parse_date(since) if since and parse_date(since) else reference_day(files, today)
     set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date")]
     if set_by_hand:
         return {"due": set_by_hand[-1]["date"], "reference": ref.isoformat(), "set_by": set_by_hand[-1].get("expert")}
