@@ -3,6 +3,7 @@
  "id": "mietmangel-handler",
  "version": "2026-11-12.5",
  "title": "Mietmangel — Fallbearbeitung Rechtsschutz (aus Praxis und Gesetz abgeleitet)",
+ "short_title": "Mietmangel",
  "status": "draft",
  "supersedes": [
   "osm-mold"
@@ -948,6 +949,7 @@
   "A1": {
    "title": "Unterlagen und Angaben anfordern",
    "to": "Kundschaft",
+   "needs": [],
    "parts": [
     "{registrierung}",
     "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n{liste}\n– allfällige weitere relevante Unterlagen und Informationen.",
@@ -960,6 +962,7 @@
   "A4": {
    "title": "Rückfrage zu einem Punkt",
    "to": "Kundschaft",
+   "needs": [],
    "parts": [
     "Vielen Dank für Ihre Unterlagen.",
     "Damit wir weiterfahren können, bitten wir Sie um Auskunft zu folgendem Punkt:\n{fragen_oder_offen}",
@@ -969,6 +972,9 @@
   "A5": {
    "title": "Rechtliche Einschätzung",
    "to": "Kundschaft",
+   "needs": [
+    "deckung"
+   ],
    "parts": [
     "Vielen Dank für Ihre Unterlagen.",
     "Grundsätzlich hat die Mieterschaft bei einem Mangel an der Mietsache Anspruch auf Beseitigung des Mangels, auf eine verhältnismässige Herabsetzung des Mietzinses und unter Umständen auf Schadenersatz (Art. 259a OR).",
@@ -980,6 +986,7 @@
   "A6": {
    "title": "Dossier pendent halten mit Frist",
    "to": "Kundschaft",
+   "needs": [],
    "parts": [
     "Vielen Dank für {anlass}.",
     "Wir halten Ihr Dossier vorerst noch pendent und erwarten {erwartet}.",
@@ -989,6 +996,7 @@
   "A7": {
    "title": "Statusanfrage mit Abschlussankündigung",
    "to": "Kundschaft",
+   "needs": [],
    "parts": [
     "Nachdem seit unserem letzten Kontakt vom {letzter_kontakt} einige Zeit vergangen ist und wir seither nichts mehr von Ihnen gehört haben, erlauben wir uns, uns bei Ihnen zu erkundigen, ob Sie hinsichtlich Ihres Anliegens noch rechtliche Unterstützung benötigen.",
     "Ohne Ihre Rückmeldung bis {frist} gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."
@@ -997,6 +1005,10 @@
   "A8": {
    "title": "Schreiben an die Gegenpartei (Entwurf an die Kundschaft)",
    "to": "Gegenpartei, als Entwurf zuerst an die Kundschaft",
+   "needs": [
+    "deckung",
+    "vorgehen"
+   ],
    "parts": [
     "Wir zeigen Ihnen an, dass wir die Interessen unserer Versicherten in dieser Angelegenheit vertreten.",
     "Unpräjudiziell und ohne Anerkennung einer Rechtspflicht halten wir Folgendes fest: {anliegen}",
@@ -1006,6 +1018,10 @@
   "A10": {
    "title": "Mandat und Kostengutsprache",
    "to": "Anwaltskanzlei, Kopie an die Kundschaft",
+   "needs": [
+    "deckung",
+    "vorgehen"
+   ],
    "parts": [
     "Vielen Dank für die Übernahme des Mandats in dieser Angelegenheit.",
     "Wir erteilen Ihnen Kostengutsprache nach den bekannten Modalitäten wie folgt: Abklärung der Sach- und Rechtslage sowie aussergerichtliche Bemühungen.",
@@ -1016,6 +1032,7 @@
   "A12": {
    "title": "Dossier abschliessen",
    "to": "Kundschaft",
+   "needs": [],
    "parts": [
     "Mit Schreiben vom {letzter_kontakt} haben wir Sie um folgende Unterlagen gebeten:\n{verlangt}",
     "Da wir diese bis heute nicht erhalten haben, können wir Ihren Fall nicht weiter bearbeiten und schliessen Ihr Dossier. Die Leistungen aus diesem Fall enden damit."

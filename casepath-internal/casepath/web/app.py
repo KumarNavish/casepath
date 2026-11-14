@@ -65,6 +65,10 @@ class NewCase(BaseModel):
     intake: dict = {}
 
 
+class CaseTitle(BaseModel):
+    title: str = Field(min_length=1, max_length=300)
+
+
 EVENT_KINDS = {"filenote.copied", "session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
                "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
                "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
@@ -380,7 +384,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/workflows")
     def list_workflows(who=Depends(user)):
-        return {"workflows": [{**workflows.ref(w), "sources": w["sources"], "steps": len(w["steps"]),
+        return {"workflows": [{**workflows.ref(w), "short_title": w.get("short_title") or w["title"], "sources": w["sources"], "steps": len(w["steps"]),
                                "documents": len(w["documents"]), "open_questions": len(w.get("open_questions", []))}
                               for w in catalogue.latest()]}
 
@@ -395,6 +399,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def list_cases(who=Depends(user)):
         rows = store.list_cases()
         for row in rows:  # the next date a case is to be looked at: the list sorts by it
+            events = store.list_case_events(row["id"])
+            row["closed"] = any(e["kind"] == "case.closed" for e in events)
+            completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
+            row["new_files"] = sum(1 for f in store.list_files(row["id"]) if completed and f.get("created_at", "") > completed.get("created_at", ""))
             if row.get("run_status") == "completed":
                 try:
                     current = state(row["id"])
@@ -419,6 +427,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(422, "A title of up to 300 characters is required.")
         return store.create_case(title, body.intake, who)
 
+    @app.put("/api/cases/{case_id}/title")
+    def rename_case(case_id: str, body: CaseTitle, who=Depends(user)):
+        title = body.title.strip()
+        if not title:
+            raise HTTPException(422, "A title of up to 300 characters is required.")
+        return found(store.rename_case, case_id, title)
+
     @app.get("/api/cases/{case_id}")
     def get_case(case_id: str, who=Depends(user)):
         current = state(case_id)
@@ -440,7 +455,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             kind = "A1" if action.get("action") == "request" else action.get("action")
             text, none = letters.render(kind, forms, letters.context(current["case"], listed, events, clock, files,
                                                                                     evaluation=current["evaluation"], process=current["process"]))
-            draft = {"kind": action.get("action"), "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none}
+            draft = {"kind": action.get("action"), "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none,
+                     "needs": (forms.get(kind) or {}).get("needs") or []}  # the handler decisions this action waits for
         # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
         new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
         changes = None
@@ -627,8 +643,33 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         name = Path(file.filename or "file").name[:255]
         return await run_in_threadpool(add_with_attachments, case_id, name, file.content_type, data, who)  # a large PDF must not block the server
 
+    async def create_from_files(request: Request, files: list[UploadFile] = File(...), who=Depends(user)):
+        """A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,
+        and its preparation started at once."""
+        received = []
+        for file in files:
+            data = await file.read(settings.max_upload_bytes + 1)
+            if len(data) > settings.max_upload_bytes:
+                raise HTTPException(413, f"Files up to {settings.max_upload_bytes // (1024 * 1024)} MB are accepted.")
+            if data:
+                received.append((Path(file.filename or "file").name[:255], file.content_type, data))
+        if not received:
+            raise HTTPException(422, "The files are empty.")
+        case = store.create_case(Path(received[0][0]).stem[:300] or "Neuer Fall", {"source": "upload"}, who)
+        rows = [await run_in_threadpool(add_with_attachments, case["id"], name, declared, data, who) for name, declared, data in received]
+        mails = [r for r in rows if r.get("kind") == "email"]
+        subject = _headers(store.get_file(mails[0]["id"], True)["extraction"].get("text", "")).get("Subject", "").strip() if mails else ""
+        if subject:
+            case = store.rename_case(case["id"], re.sub(r"^((AW|WG|RE|FW|Fwd?)\s*:\s*)+", "", subject, flags=re.I)[:300] or subject[:300])
+        try:
+            run = runs.start(case["id"], who, model_token(request))
+        except Conflict:
+            run = None
+        return {"case": store.get_case(case["id"]), "files": rows, "run": run}
+
     if uploads:  # a runtime without the form parser serves prepared cases only (imported from the volume)
         app.post("/api/cases/{case_id}/files", status_code=201)(upload)
+        app.post("/api/cases/from-files", status_code=201)(create_from_files)
 
     @app.get("/api/files/{file_id}/original")
     def original(file_id: str, pages: str | None = None, who=Depends(user)):
