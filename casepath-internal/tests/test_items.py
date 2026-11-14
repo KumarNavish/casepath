@@ -35,7 +35,7 @@ class ItemTests(unittest.TestCase):
         self.assertFalse(items["fact:notified"]["chat_only"])
         self.assertEqual(items["fact:notified"]["stated_as"], "computed")
         self.assertEqual((items["document:ruege"]["part_of"], items["document:korr"]["legal_basis"]), ("korr", "Art. 257g OR"))
-        self.assertEqual(items["next_action:0"]["label"]["de"], "1 Unterlage(n) beim Kunden anfordern")
+        self.assertEqual(items["next_action:0"]["label"]["de"], "1 Unterlage beim Kunden anfordern")
         self.assertEqual(set(items["step:n3"]["label"]), {"de", "en"})
         self.assertFalse(items["answer:0"]["chain"])
 

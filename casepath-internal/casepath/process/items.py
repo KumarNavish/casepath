@@ -208,7 +208,7 @@ def build_items(state, result, files=None):
             title = ev["outcome"].get("title") or ev["outcome"]["id"]
             action = ("close", title, {"de": f"Fall abschliessen: {title}", "en": f"Close the case: {title}"})
         elif asked:
-            action = ("request", f"{lines} documents", {"de": f"{lines} Unterlage(n) beim Kunden anfordern", "en": f"Request {lines} document(s) from the customer"})
+            action = ("request", f"{lines} documents", {"de": f"{lines} Unterlage{'' if lines == 1 else 'n'} beim Kunden anfordern", "en": f"Request {lines} document{'' if lines == 1 else 's'} from the customer"})
         elif ev.get("next_actions"):
             first = ev["next_actions"][0]
             action = ({"obtain": "request"}.get(first["kind"], first["kind"]), first["text"], first["text"])

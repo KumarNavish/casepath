@@ -412,7 +412,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"]}
                     # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
-                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
+                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and i.get("direction") != "ab" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
                     dates = [d for d in [row["follow_up"], deadlines[0] if deadlines else None] if d]
                     row["next_date"] = min(dates) if dates else None
                     row["next_date_kind"] = None if not dates else "frist" if deadlines and row["next_date"] == deadlines[0] else "wiedervorlage"

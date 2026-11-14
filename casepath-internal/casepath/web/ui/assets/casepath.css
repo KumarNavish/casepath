@@ -350,6 +350,8 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-frist+.cp-frist{margin-top:6px}
 .cp-frist.late b,.cp-frist.late{color:var(--crimson)}
 .cp-frist.soon b{color:var(--crimson)}
+.cp-frist.late,.cp-frist.soon{font-weight:600}
+.cp-frist.check b{color:var(--crimson)}
 .cp-case-tools{margin:14px 0 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 .cp-small{padding:5px 11px;font-size:13.5px}
 .cp-button[aria-pressed="true"]{border-color:var(--crimson);color:var(--crimson);background:var(--crimson-wash);font-weight:600}

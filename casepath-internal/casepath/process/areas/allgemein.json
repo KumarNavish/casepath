@@ -22,7 +22,7 @@
   {"id": "ziel", "type": "text", "question": "Was will die Kundschaft erreichen?", "source_refs": ["practice#ablauf"], "ask_customer": true, "customer_question": "Was möchten Sie erreichen?"},
   {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Gegenpartei, Gericht, Behörde)?", "source_refs": ["practice#ablauf"], "ask_customer": true, "customer_question": "Läuft eine Frist, etwa aus einem Schreiben der Gegenpartei, eines Gerichts oder einer Behörde? Wenn ja, bis wann?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist die Gegenpartei (Name und Adresse)?", "source_refs": ["intake#title"]},
-  {"id": "vertrag", "type": "boolean", "question": "Geht es um einen Vertrag oder um einen Entscheid (z.B. einer Behörde)?", "source_refs": ["law#zgb-8"]},
+  {"id": "vertrag", "type": "boolean", "question": "Geht es um einen Vertrag oder um einen Entscheid (z.B. einer Behörde)?", "source_refs": ["law#zgb-8"], "ask_customer": "offered", "customer_question": "Geht es um einen Vertrag oder um einen Entscheid (z.B. einer Behörde)? Wenn ja, senden Sie uns diesen bitte mit."},
   {"id": "ereignisdatum", "type": "date", "question": "Wann ereignete sich der Vorfall?", "source_refs": ["intake#title"]},
   {"id": "streitwert", "type": "text", "question": "Um welchen Betrag geht es?", "source_refs": ["intake#title"]}
  ],

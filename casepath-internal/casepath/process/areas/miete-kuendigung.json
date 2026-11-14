@@ -26,8 +26,8 @@
   {"id": "kuendigung_erhalten", "type": "date", "question": "Wann hat die Kundschaft die Kündigung erhalten?", "source_refs": ["law#273"], "ask_customer": true, "customer_question": "Wann haben Sie die Kündigung erhalten?"},
   {"id": "mietende", "type": "date", "question": "Auf welchen Termin wurde gekündigt?", "source_refs": ["law#266a"], "ask_customer": "offered", "customer_question": "Auf welchen Tag endet Ihr Mietverhältnis?"},
   {"id": "befristet", "type": "boolean", "question": "Ist das Mietverhältnis befristet?", "source_refs": ["law#273.2"]},
-  {"id": "will_anfechten", "type": "boolean", "question": "Will die Kundschaft die Kündigung anfechten oder eine Erstreckung verlangen?", "source_refs": ["law#271", "law#272"], "ask_customer": true, "customer_question": "Möchten Sie die Kündigung anfechten oder eine Erstreckung des Mietverhältnisses verlangen?"},
-  {"id": "will_erstreckung", "type": "boolean", "question": "Will die Kundschaft eine Erstreckung des Mietverhältnisses?", "source_refs": ["law#272"]},
+  {"id": "will_anfechten", "type": "boolean", "question": "Will die Kundschaft die Kündigung anfechten oder eine Erstreckung verlangen?", "source_refs": ["law#271", "law#272"], "ask_customer": true, "customer_question": "Möchten Sie die Kündigung anfechten?"},
+  {"id": "will_erstreckung", "type": "boolean", "question": "Will die Kundschaft eine Erstreckung des Mietverhältnisses?", "source_refs": ["law#272"], "ask_customer": true, "customer_question": "Möchten Sie eine Erstreckung des Mietverhältnisses verlangen, also mehr Zeit bis zum Auszug?"},
   {"id": "grund_genannt", "type": "boolean", "question": "Hat die Vermieterschaft die Kündigung begründet?", "source_refs": ["law#271"], "ask_customer": "offered", "customer_question": "Hat die Vermieterschaft die Kündigung begründet, und wenn ja wie?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist die Vermieterschaft oder Verwaltung?", "source_refs": ["practice#ablauf"]},
   {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schlichtungsbehörde, Gericht, Vermieterschaft)?", "source_refs": ["practice#ablauf"]}

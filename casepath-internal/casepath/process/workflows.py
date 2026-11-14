@@ -325,10 +325,11 @@ def stage_floor(workflow, facts):
     return max(found, key=order.index) if found else None
 
 
-def _from_floor(workflow, facts, path):
-    """The step to walk from: the floor when the plain walk stops before it."""
-    floor = stage_floor(workflow, facts)
-    if floor is None or not path:
+def _from_floor(workflow, facts, path, floor=None):
+    """The step to walk from: the floor when the plain walk stops before it. An open answer never sets a floor: under
+    deferral the floor comes from the established facts only (``floor``)."""
+    floor = floor or stage_floor(workflow, facts)
+    if floor in (None, "__none__") or not path:
         return None
     order = [s["id"] for s in workflow["steps"]]
     return floor if order.index(path[-1]) < order.index(floor) else None
@@ -546,7 +547,8 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
         base["deferral"] = {"mode": "first_open_branch", "open_facts": open_facts,
                             "reason": "too many answers to compare; the walk stops at the first open branch"}
         return base
-    fast = _Reach(workflow)
+    fixed = stage_floor(workflow, facts) or "__none__"  # the floor of what is established, the same in every completion
+    fast = _Reach(workflow, fixed)
     combos = list(itertools.product(*domains))
     completions = []  # (answer values, ordered path, items needed as a bit set, document needs)
     bit = {}  # ("step", id) or ("document", id) -> its bit
@@ -628,7 +630,7 @@ def evaluate(workflow, facts, findings=None, *, checked=False):
             values = completions[index][0]
             answer = {f: v for f, v in zip(open_facts, values) if v is not UNSET}
             known = {**facts, **answer}
-            start = _from_floor(workflow, known, [r["step"] for r in _walk(workflow, known, findings, checked=checked)["path"]])
+            start = _from_floor(workflow, known, [r["step"] for r in _walk(workflow, known, findings, checked=checked)["path"]], fixed)
             full[index] = {d["document"]: d for d in _walk(workflow, known, findings, checked=checked, start=start)["documents"]}
         return full[index]
 
@@ -687,8 +689,8 @@ def _known_facts(workflow):
 class _Reach:
     """The plain walk's path and the documents it lists, without building rows: the same rules as ``_walk``."""
 
-    def __init__(self, workflow):
-        self.workflow = workflow
+    def __init__(self, workflow, floor=None):
+        self.workflow, self.floor = workflow, floor
         self.order = [s["id"] for s in workflow["steps"]]
         self.steps = {s["id"]: s for s in workflow["steps"]}
         self.start = workflow["start"]
@@ -697,7 +699,7 @@ class _Reach:
 
     def reach(self, facts):
         path, behind = self._path(facts, None), []
-        floor = _from_floor(self.workflow, facts, path)
+        floor = _from_floor(self.workflow, facts, path, self.floor)
         if floor:
             path, behind = self._path(facts, floor), self.order[:self.order.index(floor)]
         steps = self.steps

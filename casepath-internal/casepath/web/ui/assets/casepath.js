@@ -1207,7 +1207,7 @@ function decisions(ev) {
   const needs = ((S.data.draft || {}).needs || []).filter((k) => item("fact", k));
   const set = (S.data.edits || []).filter((e) => e.status === "active" && e.op === "set_fact").map((e) => e.args.fact);
   const keys = [...new Set([...needs, ...((ev && ev.waiting_for) || []).map((w) => w.fact), ...set])]
-    .filter((k) => (item("fact", k) || {}).values && !chatOnly().has(k) && (needs.includes(k) || /Entscheid/.test(((item("fact", k) || {}).label || {}).de || "") || set.includes(k) || ((ev && ev.waiting_for) || []).some((w) => w.fact === k)));
+    .filter((k) => (item("fact", k) || {}).values && !chatOnly().has(k) && !item("letter_question", k) && (needs.includes(k) || /Entscheid/.test(((item("fact", k) || {}).label || {}).de || "") || set.includes(k) || ((ev && ev.waiting_for) || []).some((w) => w.fact === k)));
   return { blocking: keys.filter((k) => needs.includes(k) && answered(k) === null), other: keys.filter((k) => !(needs.includes(k) && answered(k) === null)) };
 }
 // "Vorher zu klären": only what the prepared action waits for: its decisions (from the workflow's forms), files that
@@ -1252,9 +1252,19 @@ function sideView(ev) {
     || (brief.parties || []).map((p) => `${esc(p.name)} <span class="cp-muted">· ${esc(p.role)}</span>`).join("<br>");
   const stand = !ev ? T("no process yet", "noch kein Prozess") : ev.outcome ? `${T("End", "Abschluss")}: ${esc(ev.outcome.title)}`
     : ev.current ? esc(shortTitle(ev.current.title)) : "—";
-  const deadlines = (S.data.items || []).filter((i) => i.kind === "deadline" && /^\d{4}-\d{2}-\d{2}/.test(String(i.value || ""))).sort((a, b) => String(a.value).localeCompare(String(b.value)));
-  const fristen = deadlines.length ? deadlines.map((d) => { const n = daysTo(d.value);
-      return `<div class="cp-frist ${n < 0 ? "late" : n <= 14 ? "soon" : ""}"><b>${dateText(d.value)}</b> ${n < 0 ? T(`· overdue ${-n} d`, `· seit ${-n} T. abgelaufen`) : n <= 14 ? T(`· in ${n} d`, `· in ${n} T.`) : ""}<br>${esc(plainQuestion((d.label || {}).de || d.key))}${d.stated ? ` <span class="cp-muted">· ${esc(d.stated)}</span>` : ""}</div>`; }).join("")
+  // Deadlines: those stated in the file and the area's statutory ones (date, title, article); "prüfen" where the law gives
+  // no date; "Frist möglich … Datum fehlt" while the date that starts one is not in the file.
+  const dated = (i) => /^\d{4}-\d{2}-\d{2}/.test(String(i.value || ""));
+  const deadlines = (S.data.items || []).filter((i) => i.kind === "deadline").sort((a, b) => (dated(b) - dated(a)) || String(a.value).localeCompare(String(b.value)));
+  const fristRow = (d) => {
+    const title = esc(plainQuestion((d.label || {}).de || d.key)), basis = d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "";
+    if (!dated(d)) return `<div class="cp-frist check" title="${esc(d.rule || "")}"><b>${T("check", "prüfen")}</b><br>${title}${basis}</div>`;
+    const n = daysTo(d.value), ab = d.direction === "ab";
+    return `<div class="cp-frist ${ab ? "" : n < 0 ? "late" : n <= 14 ? "soon" : ""}" title="${esc(d.rule || "")}"><b>${ab ? T("from ", "ab ") : ""}${dateText(d.value)}</b> ${ab ? "" : n < 0 ? T(`· overdue ${-n} d`, `· seit ${-n} T. abgelaufen`) : n <= 14 ? T(`· in ${n} d`, `· in ${n} T.`) : ""}<br>${title}${basis}${d.stated && !d.legal_basis ? ` <span class="cp-muted">· ${esc(d.stated)}</span>` : ""}</div>`; };
+  const shown = new Set(deadlines.map((d) => d.key));
+  const possible = ((S.data.process || {}).deadlines || []).filter((d) => !shown.has(d.id) && d.hint !== false && (item("fact", d.trigger) || {}).value == null)
+    .map((d) => `<div class="cp-frist soon">${T("Possible deadline", "Frist möglich")}: ${esc(d.title)} – ${T("date missing", "Datum fehlt")} <span class="cp-muted">· ${esc(d.basis)}</span></div>`).join("");
+  const fristen = deadlines.length || possible ? deadlines.map(fristRow).join("") + possible
     : `<span class="cp-muted">${T("no deadline found – please check the files", "keine Frist gefunden – bitte in den Akten prüfen")}</span>`;
   const own = decisions(ev).other.map((k) => `<dt>${T("Your decision", "Ihr Entscheid")}</dt><dd data-item="fact:${esc(k)}">${esc(plainQuestion((item("fact", k).label || {}).de))}<span class="cp-point-actions">${decisionButtons(k)}</span></dd>`).join("");
   const flagged = (S.data.files || []).filter((f) => ((f.extraction || {}).instruction_like || []).length);
@@ -1646,7 +1656,16 @@ async function renderCase() {
   else if (tab === "history") main = historyView();
   else if (tab === "overview") main = `${overviewView()}${S.overviewSource || !hasPrepared() ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
   else main = processView();
+  // What the handler is typing survives a re-render (a run's progress or a reload redraws the page).
+  const typing = [...document.querySelectorAll("#app input[id], #app textarea[id]")].filter((el) => el.value)
+    .map((el) => ({ id: el.id, value: el.value, focus: el === document.activeElement, start: el.selectionStart, end: el.selectionEnd }));
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
+  for (const t of typing) {
+    const el = document.getElementById(t.id);
+    if (!el || el.value) continue;
+    el.value = t.value;
+    if (t.focus) { el.focus(); try { el.setSelectionRange(t.start, t.end); } catch (e) { /* not a text field */ } }
+  }
   keepMotion($("#app"));
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
