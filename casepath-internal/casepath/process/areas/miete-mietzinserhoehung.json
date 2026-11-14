@@ -20,13 +20,13 @@
  "applies_when": {"fact": "rechtsgebiet", "is": "Mietrecht / Mietzinserhöhung"},
  "facts": [
   {"id": "rechtsgebiet", "type": "enum", "values": ["Mietrecht / Mietzinserhöhung"], "question": "Hat die Vermieterschaft eine Erhöhung des Mietzinses mitgeteilt?", "source_refs": ["law#269d"]},
-  {"id": "erhoehung_erhalten", "type": "date", "question": "Wann wurde der Kundschaft die Mietzinserhöhung mitgeteilt?", "source_refs": ["law#270b"]},
-  {"id": "erhoehung_ab", "type": "date", "question": "Ab wann soll der neue Mietzins gelten?", "source_refs": ["law#269d"]},
+  {"id": "erhoehung_erhalten", "type": "date", "question": "Wann wurde der Kundschaft die Mietzinserhöhung mitgeteilt?", "not_this": "das Datum auf dem Formular, wenn die Mitteilung später zuging, und der Tag, ab dem der neue Mietzins gilt", "source_refs": ["law#270b"]},
+  {"id": "erhoehung_ab", "type": "date", "question": "Ab wann soll der neue Mietzins gelten?", "not_this": "der Tag, an dem die Mitteilung zuging", "source_refs": ["law#269d"]},
   {"id": "formular", "type": "boolean", "question": "Wurde die Erhöhung auf dem vom Kanton genehmigten Formular mitgeteilt und begründet?", "source_refs": ["law#269d", "law#269d.2"]},
   {"id": "begruendung", "type": "text", "question": "Wie begründet die Vermieterschaft die Erhöhung (z.B. Kostensteigerungen, Mehrleistungen, orts- oder quartierübliche Mietzinse)?", "source_refs": ["law#269a"]},
   {"id": "will_anfechten", "type": "boolean", "question": "Will die Kundschaft die Erhöhung anfechten?", "source_refs": ["law#270b"], "ask_customer": true, "customer_question": "Möchten Sie die Mietzinserhöhung anfechten?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist die Vermieterschaft oder Verwaltung?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schlichtungsbehörde, Gericht, Vermieterschaft)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine weitere Frist (Schlichtungsbehörde, Gericht, Vermieterschaft)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "mietvertrag", "title": "Mietvertrag", "why": "Zeigt den bisherigen Mietzins und die Kündigungstermine, auf die eine Erhöhung mitgeteilt werden kann (Art. 269d OR).", "source_refs": ["law#269d"], "stage": "klaeren"},

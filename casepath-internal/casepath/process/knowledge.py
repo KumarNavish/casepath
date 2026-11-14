@@ -135,6 +135,25 @@ def _seed_one(store, spec, item_id, data, path):
     return 1
 
 
+def seed_items(families, directory=SEED_DIR):
+    """The Knowledge items shipped with the build for these process families, as ``seed`` adds them to an empty store
+    (same ids, active): what a fresh deployment applies, for checks that run without a store."""
+    import json
+
+    out = []
+    for path in sorted(__import__("pathlib").Path(directory).glob("*.json")):
+        data = json.loads(path.read_text())
+        for raw in data["items"]:
+            for n, family in enumerate([raw["family"]] if isinstance(raw["family"], str) else raw["family"]):
+                if family in families:
+                    item = new_item(family, raw["kind"], raw["content"], applies_when=raw.get("applies_when"),
+                                    applies_when_text=raw.get("applies_when_text", ""), origin={"by": "build", "file": path.name},
+                                    evidence=raw.get("evidence", ()), status="active")
+                    item["id"] = f"know-seed-{raw['seed']}" + (f"--{family}" if n else "")
+                    out.append(item)
+    return out
+
+
 def seed(store, families, directory=SEED_DIR):
     """Add the Knowledge items shipped with the build, once.
 

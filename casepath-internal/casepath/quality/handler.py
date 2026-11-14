@@ -11,11 +11,14 @@ not state the trigger, ``not_applicable`` where the rule's condition fails).
 
 ``score-saved`` reads a JSON list written by a browser script on the deployed product, one row per case: {case,
 workflow, action, now, offered, letter_lines, letter_gaps, follow_up, deadlines: [{id, date}], seconds, tokens:
-{non_cached, output}}. It prints one line per case, a table, totals and the failed checks grouped by area: ids and
-counts only, no case content.
+{non_cached, output}}, optionally letter_none (the product's reason for no draft) and letter_missing (the parts of the
+form the draft lacks). It prints one line per case, a table, totals and the failed checks grouped by area: ids and
+counts only, no case content. A first request that is incomplete says why: 0 lines, gaps, a missing part, no draft.
 
-``self-check`` evaluates each case with the product's rules as if the reading were perfect (the truth's facts and
-present documents) and prints where the documents asked now differ from ``ask_now``.
+``self-check`` evaluates each case with the product's rules as if the reading were perfect (the truth's facts, its
+present documents and the part of an open-ended need it calls offered) together with the practice rules a fresh
+deployment seeds (Knowledge; their needs are named "k-<item id>"), and prints where the documents asked now, the next
+action or the statutory deadlines differ from the truth.
 """
 import json
 from pathlib import Path
@@ -36,6 +39,20 @@ def areas(catalogue_dir=None):
     return {w["id"]: w for w in Catalogue.load(catalogue_dir).latest()}
 
 
+def knowledge(workflow):
+    """The practice rules a fresh deployment applies to this area (the build's seeded, active Knowledge)."""
+    from ..process.knowledge import seed_items
+
+    return seed_items({workflow["id"]})
+
+
+def case_process(workflow):
+    """The area's process as a case of it starts: the area plus the seeded practice rules (their needs are "k-<item id>")."""
+    from ..process import casegraph
+
+    return casegraph.build(workflow, knowledge=knowledge(workflow))[0]
+
+
 def check_truth(case, workflows):
     """Raise BenchmarkError when the case's truth_handler names an unknown area, document, fact or deadline."""
     truth, where = case.get("truth_handler"), short_id(case)
@@ -46,7 +63,8 @@ def check_truth(case, workflows):
         raise BenchmarkError(f"{where}: area {truth.get('area')!r} is not in the catalogue")
     if truth.get("action") not in workflow.get("action_kinds", {}):
         raise BenchmarkError(f"{where}: action {truth.get('action')!r} is not an action kind")
-    docs, facts = {d["id"] for d in workflow["documents"]}, {f["id"] for f in workflow["facts"]}
+    process = case_process(workflow)
+    docs, facts = {d["id"] for d in process["documents"]}, {f["id"] for f in process["facts"]}
     named = [d for key in LISTS for d in truth.get(key, [])] + list(truth.get("depends", {}))
     if set(named) - docs or len(named) != len(set(named)):
         raise BenchmarkError(f"{where}: documents {sorted(set(named) - docs)} unknown, or one listed twice")
@@ -78,25 +96,41 @@ def score_row(truth, row):
     present = set(truth.get("present", []))
     given = {d.get("id"): d.get("date") for d in row.get("deadlines") or []}
     verdicts = [deadline_verdict(d, given) for d in truth.get("deadline", [])]
-    letter = None
+    letter, why = None, []
     if truth.get("action") == "A1":  # only a first request has a letter to complete
-        letter = (row.get("letter_lines") or 0) > 0 and (row.get("letter_gaps") or 0) == 0
+        why = letter_faults(row)
+        letter = not why
     tokens = row.get("tokens") or {}
     return {
         "area": row.get("workflow") == truth["area"],
         "action": row.get("action") == truth["action"],
         "hit": sorted(asked & expected), "expected": len(expected),
         "extra": sorted(asked - expected - neutral - present), "present_asked": sorted(asked & present),
-        "letter": letter,
+        "letter": letter, "letter_why": why,
         "deadline": None if not verdicts else "wrong" if "wrong" in verdicts else "missing" if "missing" in verdicts else "right",
         "deadline_failed": [d["id"] for d, v in zip(truth.get("deadline", []), verdicts) if v != "right"],
         "seconds": row.get("seconds"), "non_cached": tokens.get("non_cached"), "output": tokens.get("output"),
     }
 
 
+def letter_faults(row):
+    """Why a saved first request is incomplete, as short ids: "0 lines", "<n> gaps", "missing <part>" for each part the
+    row names as missing (``letter_missing``), "no draft" when the product gave a reason instead (``letter_none``)."""
+    out = []
+    if row.get("letter_none"):
+        out.append("no draft")
+    if not (row.get("letter_lines") or 0):
+        out.append("0 lines")
+    if row.get("letter_gaps"):
+        out.append(f"{row['letter_gaps']} gap{'' if row['letter_gaps'] == 1 else 's'}")
+    out += [f"missing {part}" for part in row.get("letter_missing") or ()]
+    return out
+
+
 def failures(case_id, s):
-    out = [f"{case_id} {check}" for check, failed in (("area", not s["area"]), ("action", not s["action"]),
-                                                      ("letter incomplete", s["letter"] is False)) if failed]
+    out = [f"{case_id} {check}" for check, failed in (("area", not s["area"]), ("action", not s["action"])) if failed]
+    if s["letter"] is False:
+        out.append(f"{case_id} letter incomplete ({', '.join(s['letter_why'])})")
     out += [f"{case_id} not asked {d}" for d in s["missed"]] + [f"{case_id} extra {d}" for d in s["extra"]]
     out += [f"{case_id} present asked {d}" for d in s["present_asked"]]
     out += [f"{case_id} deadline {d}" for d in s["deadline_failed"]]
@@ -132,7 +166,8 @@ def render(scored):
             continue
         docs = f"{len(s['hit'])}/{s['expected']}"
         lines.append(f"{cid} area {_mark(s['area'])} action {_mark(s['action'])} documents {docs} extra {len(s['extra'])} "
-                     f"present asked {len(s['present_asked'])} letter {_mark(s['letter'])} deadline {_mark(s['deadline'])}")
+                     f"present asked {len(s['present_asked'])} letter {_mark(s['letter'])}"
+                     + (f" ({', '.join(s['letter_why'])})" if s["letter"] is False else "") + f" deadline {_mark(s['deadline'])}")
         table.append((cid, _mark(s["area"]), _mark(s["action"]), docs, str(len(s["extra"])), str(len(s["present_asked"])),
                       _mark(s["letter"]), _mark(s["deadline"]), _mark(s["seconds"]), f"{_mark(s['non_cached'])}/{_mark(s['output'])}"))
     done = [s for _, _, s in scored if s is not None]
@@ -175,15 +210,19 @@ def rules(case, workflow):
     from ..agents import core
     from ..process.items import build_items
 
+    from ..process.casegraph import open_ended
+
     truth = case["truth_handler"]
     facts = {"rechtsgebiet": workflow["applies_when"]["is"], **truth.get("facts", {})}
+    # an open-ended need ("Sämtliche …") the truth calls offered is one the file holds in part: the reading finds that part
+    held = truth.get("present", []) + [d for d in truth.get("offered", []) if d in open_ended(case_process(workflow))]
     result = {"facts": [{"fact": k, "status": "established", "verdict": "accepted", "value": v, "citations": []}
                         for k, v in facts.items() if v is not None],
               "documents": [{"document": d, "status": "present", "verdict": "accepted", "files": ["f"], "citations": []}
-                            for d in truth.get("present", [])],
+                            for d in held],
               "brief": {"request": "", "parties": [], "timeline": []}}
     files = _files(case)
-    items = build_items(core.evaluate(workflow, [], [], result, short_id(case), files=files), result, files)
+    items = build_items(core.evaluate(workflow, knowledge(workflow), [], result, short_id(case), files=files), result, files)
     pick = lambda ask: sorted(i["key"] for i in items if i["kind"] == "document" and i.get("ask") == ask)
     action = next((i.get("action") for i in items if i["kind"] == "next_action"), None)
     return {"now": pick("now"), "offered": pick("proposed"), "later": pick("later"), "action": action,

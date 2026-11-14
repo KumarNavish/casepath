@@ -21,13 +21,14 @@
  "facts": [
   {"id": "rechtsgebiet", "type": "enum", "values": ["Vertragsrecht / Darlehen"], "question": "Geht es um ein Darlehen?", "source_refs": ["law#312", "intake#title"]},
   {"id": "darlehenssumme", "type": "text", "question": "Welche Summe wurde geliehen, und wann wurde sie übergeben?", "source_refs": ["law#312"]},
-  {"id": "schriftlich", "type": "boolean", "question": "Gibt es einen schriftlichen Darlehensvertrag oder eine Schuldanerkennung?", "source_refs": ["law#zgb-8"], "ask_customer": "offered", "customer_question": "Gibt es einen schriftlichen Vertrag oder eine Schuldanerkennung?"},
-  {"id": "termin_vereinbart", "type": "boolean", "question": "Wurde ein Rückzahlungstermin oder eine Kündigungsfrist vereinbart?", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Wurde vereinbart, wann oder mit welcher Frist das Darlehen zurückzuzahlen ist?"},
+  {"id": "schriftlich", "type": "boolean", "question": "Gibt es einen schriftlichen Darlehensvertrag oder eine Schuldanerkennung?", "not_this": "ein Zahlungsbeleg oder die eigene Notiz der Kundschaft: gefragt ist ein Vertrag oder eine Erklärung des Borgers", "source_refs": ["law#zgb-8"], "ask_customer": "offered", "customer_question": "Gibt es einen schriftlichen Vertrag oder eine Schuldanerkennung?"},
+  {"id": "termin_vereinbart", "type": "boolean", "question": "Wurde ein bestimmter Termin (ein Tag) für die Rückzahlung vereinbart?", "not_this": "eine Kündigungsklausel (z.B. «kann mit einer Frist von sechs Wochen gekündigt werden»): sie ist kein Termin, sondern eine Kündigungsfrist (kuendigungsfrist)", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Wurde vereinbart, wann oder mit welcher Frist das Darlehen zurückzuzahlen ist?"},
+  {"id": "kuendigungsfrist", "type": "text", "question": "Welche Kündigungsfrist wurde für das Darlehen vereinbart (z.B. «sechs Wochen»)?", "not_this": "die Zahlungsfrist, die die Kundschaft in ihrer Kündigung oder Aufforderung gesetzt hat", "source_refs": ["law#318"]},
   {"id": "zins", "type": "text", "question": "Wurde ein Zins verabredet, und welcher?", "source_refs": ["law#313"], "ask_customer": true, "customer_question": "Wurde ein Zins vereinbart, und wenn ja welcher?"},
-  {"id": "rueckforderung_schriftlich", "type": "boolean", "question": "Hat die Kundschaft das Darlehen schriftlich zurückgefordert oder gekündigt?", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Haben Sie das Darlehen schriftlich zurückgefordert oder gekündigt?"},
-  {"id": "aufforderung", "type": "date", "question": "Wann wurde die Rückzahlung erstmals verlangt?", "source_refs": ["law#318"]},
+  {"id": "rueckforderung_schriftlich", "type": "boolean", "question": "Hat die Kundschaft das Darlehen schriftlich zurückgefordert oder gekündigt?", "not_this": "eine Nachfrage im Chat oder am Telefon, wie es mit dem Geld stehe", "source_refs": ["law#318"], "ask_customer": true, "customer_question": "Haben Sie das Darlehen schriftlich zurückgefordert oder gekündigt?"},
+  {"id": "aufforderung", "type": "date", "question": "Wann hat die Kundschaft die Rückzahlung erstmals verlangt oder das Darlehen gekündigt?", "not_this": "eine beiläufige Nachfrage (z.B. «wie läuft es mit dem Geld?») oder ein Versprechen des Borgers; und nicht die Datumszeile eines Briefs allein: zu zitieren ist der Satz, der die Rückzahlung verlangt oder kündigt", "source_refs": ["law#318"]},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist der Borger (die Gegenpartei)?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Gegenpartei, Betreibung, Gericht)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Gegenpartei, Betreibung, Gericht)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "darlehensvertrag", "title": "Darlehensvertrag oder Schuldanerkennung", "why": "Belegt die Übertragung der Summe und die Pflicht zur Rückerstattung (Art. 312 OR).", "required_when": {"not": {"fact": "schriftlich", "is": false}}, "source_refs": ["law#312"], "stage": "klaeren"},
@@ -37,8 +38,8 @@
  ],
  "hints": [
   {"id": "zins", "when": true, "text": "Im gewöhnlichen Verkehr ist ein Darlehen nur verzinslich, wenn Zinse verabredet sind.", "legal_basis": "Art. 313 OR", "source_refs": ["law#313"]},
-  {"id": "sechs_wochen", "when": {"fact": "termin_vereinbart", "is": false}, "text": "Ist für die Rückzahlung weder ein Termin noch eine Kündigungsfrist vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]},
-  {"id": "aufforderung", "when": {"fact": "rueckforderung_schriftlich", "is": false}, "text": "Ist kein Termin vereinbart, beginnt die Frist von sechs Wochen für die Rückzahlung erst mit der ersten Aufforderung; wir empfehlen, die Rückzahlung schriftlich, idealerweise per Einschreiben, zu verlangen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]}
+  {"id": "sechs_wochen", "when": {"all": [{"fact": "termin_vereinbart", "is": false}, {"fact": "kuendigungsfrist", "known": false}]}, "text": "Ist für die Rückzahlung weder ein Termin noch eine Kündigungsfrist vereinbart, ist das Darlehen innerhalb sechs Wochen von der ersten Aufforderung an zurückzubezahlen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]},
+  {"id": "aufforderung", "when": {"fact": "rueckforderung_schriftlich", "is": false}, "text": "Ist kein Termin vereinbart, beginnt die Frist für die Rückzahlung (sechs Wochen oder die vereinbarte Kündigungsfrist) erst mit der ersten Aufforderung oder Kündigung; wir empfehlen, die Rückzahlung schriftlich, idealerweise per Einschreiben, zu verlangen.", "legal_basis": "Art. 318 OR", "source_refs": ["law#318"]}
  ],
  "stages": {
   "beurteilen": {"source_refs": ["law#312", "law#318"]}
@@ -49,7 +50,7 @@
   "demand": {"text": "Wir fordern Sie auf, das Darlehen bis {frist} zurückzubezahlen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "rueckzahlung", "title": "Rückzahlung des Darlehens ohne vereinbarten Termin", "trigger": "aufforderung", "period": {"weeks": 6}, "from": "von der ersten Aufforderung an", "when": {"fact": "termin_vereinbart", "is": false}, "basis": "Art. 318 OR", "missed": "Danach ist das Darlehen zurückzubezahlen; die weiteren Schritte gegen die Gegenpartei sind zu prüfen.", "question": "Wann haben Sie die Rückzahlung erstmals verlangt?", "source_refs": ["law#318"], "party": "gegenpartei", "when_text": "nur wenn kein Rückzahlungstermin vereinbart ist"}
+  {"id": "rueckzahlung", "title": "Rückzahlung des Darlehens ohne vereinbarten Termin", "trigger": "aufforderung", "period": {"weeks": 6}, "period_from": "kuendigungsfrist", "from": "von der ersten Aufforderung oder Kündigung an", "when": {"fact": "termin_vereinbart", "is": false}, "check": "ist Rückzahlung auf beliebige Aufforderung hin vereinbart, ist das Darlehen ohne die sechs Wochen fällig", "basis": "Art. 318 OR", "missed": "Danach ist das Darlehen zurückzubezahlen; die weiteren Schritte gegen die Gegenpartei sind zu prüfen.", "question": "Wann haben Sie die Rückzahlung erstmals verlangt oder das Darlehen gekündigt?", "source_refs": ["law#318"], "party": "gegenpartei", "when_text": "nur wenn kein Rückzahlungstermin vereinbart ist"}
  ],
  "notes": [],
  "summary": [],

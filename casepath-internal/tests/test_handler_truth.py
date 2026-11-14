@@ -21,8 +21,8 @@ LOAN = {"area": "vertrag-darlehen", "action": "A1",
         "facts": {"schriftlich": True, "termin_vereinbart": False, "aufforderung": "2026-03-02"},
         "ask_now": ["auszahlungsbeleg", "korrespondenz"], "present": ["darlehensvertrag", "kuendigung_rueckforderung"],
         "offered": [], "not_needed": [], "depends": {}, "deadline": [{"id": "rueckzahlung", "date": "2026-04-13"}], "notes": ""}
-NOISE = {"area": "allgemein", "action": "A1", "facts": {}, "ask_now": ["korrespondenz", "fristschreiben"], "present": ["beweismittel"],
-         "offered": [], "not_needed": [], "depends": {"vertrag_entscheid": "vertrag"}, "deadline": [], "notes": ""}
+NOISE = {"area": "allgemein", "action": "A1", "facts": {}, "ask_now": ["korrespondenz"], "present": ["beweismittel"],
+         "offered": [], "not_needed": [], "depends": {"vertrag_entscheid": "vertrag", "fristschreiben": "frist"}, "deadline": [], "notes": ""}
 
 
 def write_suite(directory, loan=LOAN):
@@ -54,13 +54,16 @@ class ScoreSavedTests(unittest.TestCase):
         loan, noise = scored["X01"], scored["X02"]
         self.assertEqual((loan["area"], loan["action"], loan["hit"], loan["expected"]), (True, True, ["auszahlungsbeleg"], 2))
         self.assertEqual((loan["extra"], loan["present_asked"], loan["letter"], loan["deadline"]), (["inserat"], ["darlehensvertrag"], True, "wrong"))
-        self.assertEqual((noise["hit"], noise["extra"], noise["letter"], noise["deadline"]), (["fristschreiben", "korrespondenz"], [], False, None))
+        self.assertEqual((noise["hit"], noise["extra"], noise["letter"], noise["deadline"]), (["korrespondenz"], [], False, None))
         text = handler.render(handler.score_saved(RESULTS, self.cases))
         self.assertIn("X01 area ok action ok documents 1/2 extra 1 present asked 1 letter ok deadline wrong", text)
         self.assertIn("vertrag-darlehen: X01 not asked korrespondenz, X01 extra inserat, X01 present asked darlehensvertrag, X01 deadline rueckzahlung", text)
-        self.assertIn("allgemein: X02 letter incomplete", text)
+        self.assertIn("allgemein: X02 letter incomplete (1 gap)", text)
+        self.assertIn("X02 area ok action ok documents 1/1 extra 0 present asked 0 letter FAIL (1 gap) deadline -", text)
+        empty = handler.score_row(NOISE, {**RESULTS[1], "letter_lines": 0, "letter_gaps": 0, "letter_missing": ["Fragen"]})
+        self.assertEqual((empty["letter"], empty["letter_why"]), (False, ["0 lines", "missing Fragen"]))  # why, not only that
         total = next(line for line in text.splitlines() if line.startswith("total"))
-        self.assertEqual(total.split(), ["total", "2/2", "2/2", "3/4", "1", "1", "1/2", "0/1", "71.5", "2000/500"])
+        self.assertEqual(total.split(), ["total", "2/2", "2/2", "2/3", "1", "1", "1/2", "0/1", "71.5", "2000/500"])
         self.assertNotIn("Darlehen zurück", text)  # ids and counts only
 
     def test_a_case_without_a_row_and_dates_where_the_trigger_is_missing(self):
@@ -94,7 +97,7 @@ class SelfCheckTests(unittest.TestCase):
             rows = {cid: (got, diff) for cid, _, got, diff in handler.self_check(load_suite(tmp), workflows)}
         self.assertEqual(rows["X01"][1], {})
         self.assertEqual(rows["X01"][0]["deadlines"], [("rueckzahlung", "2026-04-13")])  # six weeks, same weekday
-        self.assertEqual((rows["X02"][1], rows["X02"][0]["later"]), ({}, ["vertrag_entscheid"]))
+        self.assertEqual((rows["X02"][1], rows["X02"][0]["later"]), ({}, ["fristschreiben", "vertrag_entscheid"]))
         with tempfile.TemporaryDirectory() as tmp:
             write_suite(tmp, {**LOAN, "ask_now": ["korrespondenz"], "deadline": [{"id": "rueckzahlung", "date": "trigger_missing"}]})
             diff = handler.self_check(load_suite(tmp), workflows)[0][3]

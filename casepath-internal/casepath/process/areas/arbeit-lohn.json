@@ -22,13 +22,13 @@
  "applies_when": {"fact": "rechtsgebiet", "is": "Arbeitsrecht / Lohn"},
  "facts": [
   {"id": "rechtsgebiet", "type": "enum", "values": ["Arbeitsrecht / Lohn"], "question": "Schuldet die Arbeitgeberin Lohn?", "source_refs": ["law#322"]},
-  {"id": "lohn_faellig_seit", "type": "date", "question": "Seit wann ist Lohn ausstehend (Fälligkeit des ältesten offenen Lohns)?", "source_refs": ["law#323", "law#128.3"]},
+  {"id": "lohn_faellig_seit", "type": "date", "question": "Seit wann ist Lohn ausstehend (Fälligkeit des ältesten offenen Lohns)?", "not_this": "der Tag, an dem die Kundschaft den Lohn gemahnt hat: gefragt ist die Fälligkeit des ältesten offenen Lohns", "source_refs": ["law#323", "law#128.3"]},
   {"id": "betrag", "type": "text", "question": "Welcher Betrag ist offen, und wofür (Monatslohn, Überstunden, Lohn bei Krankheit, Provision)?", "source_refs": ["law#322"], "ask_customer": true, "customer_question": "Welcher Betrag ist offen, und wofür (Monatslohn, Überstunden, Lohn während Krankheit, Provision)?"},
   {"id": "ueberstunden", "type": "boolean", "question": "Geht es um Überstunden?", "source_refs": ["law#321c"]},
   {"id": "krankheit", "type": "boolean", "question": "Geht es um Lohn während Krankheit oder Unfall?", "source_refs": ["law#324a"]},
-  {"id": "beendet", "type": "boolean", "question": "Ist das Arbeitsverhältnis beendet?", "source_refs": ["law#341"], "ask_customer": "offered", "customer_question": "Besteht das Arbeitsverhältnis noch, oder auf welchen Tag wurde es beendet?"},
+  {"id": "beendet", "type": "boolean", "question": "Ist das Arbeitsverhältnis beendet?", "not_this": "eine Kündigung, deren Frist noch läuft: bis zu ihrem Ende besteht das Arbeitsverhältnis", "source_refs": ["law#341"], "ask_customer": "offered", "customer_question": "Besteht das Arbeitsverhältnis noch, oder auf welchen Tag wurde es beendet?"},
   {"id": "gegenpartei", "type": "text", "question": "Wer ist die Arbeitgeberin?", "source_refs": ["practice#ablauf"]},
-  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Arbeitgeberin, Gericht, Betreibung)?", "source_refs": ["practice#ablauf"]}
+  {"id": "frist", "type": "date", "deadline": true, "question": "Läuft eine Frist (Arbeitgeberin, Gericht, Betreibung)?", "not_this": "eine gesetzliche Frist, die sich erst aus dem Gesetz ergibt (CasePath berechnet sie selbst als eigene Frist)", "source_refs": ["practice#ablauf"]}
  ],
  "documents": [
   {"id": "arbeitsvertrag", "title": "Arbeitsvertrag (mit Personalreglement oder Gesamtarbeitsvertrag, falls anwendbar)", "why": "Zeigt den verabredeten Lohn (Art. 322 OR).", "source_refs": ["law#322"], "stage": "klaeren"},

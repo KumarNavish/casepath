@@ -91,8 +91,15 @@ def _insert_step(graph, step_id, before, title, why, ref, legal_basis=None, sugg
                            "source_refs": [ref], "documents": [], "next": [{"to": before, "label": None, "when": True}]})
 
 
+def practice_count(item):
+    """A practice rule's count as the handler sees it ("in 6 von 7 Fällen verlangt"), from its first evidence; None."""
+    m = re.search(r"(\d+) von (\d+)", str(((item.get("evidence") or [{}])[0] or {}).get("text") or ""))
+    return f"in {m.group(1)} von {m.group(2)} Fällen verlangt" if m else None
+
+
 def _apply_knowledge(graph, item, facts_known):
     content, ref = item["content"], f"knowledge#{item['id']}@v{item['version']}"
+    count = practice_count(item)
     used = {f["id"] for f in graph["facts"]}
     condition = item.get("applies_when")
     try:
@@ -111,14 +118,14 @@ def _apply_knowledge(graph, item, facts_known):
         for step in graph["steps"]:
             step["documents"] = [d for d in step.get("documents", []) if d != document["id"]]
         document.update(title=content["title"], why=content["why"], source_refs=document["source_refs"] + [ref],
-                        knowledge=item["id"], **({"required_when": condition} if condition else {}))
+                        knowledge=item["id"], **({"required_when": condition} if condition else {}), **({"practice": count} if count else {}))
         document.pop("optional", None)
         return {"item": item["id"], "applied": True, "document": document["id"], "replaced": True}
     if item["kind"] == "document_need":
         document_id = f"k-{item['id']}"
         graph["documents"].append({"id": document_id, "title": content["title"], "why": content["why"],
                                    "required_when": _combine(condition, content.get("required_when")),
-                                   "source_refs": [ref], "suggested": suggested, "knowledge": item["id"],
+                                   "source_refs": [ref], "suggested": suggested, "knowledge": item["id"], **({"practice": count} if count else {}),
                                    **({"includes": [d for d in content["includes"] if d in {x["id"] for x in graph["documents"]}]}
                                       if content.get("includes") else {})})
         step = content.get("step") if content.get("step") in {s["id"] for s in graph["steps"]} else None
@@ -355,6 +362,8 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
     now is present; an open-ended need partly present does not hold it up. no_stage_fact_open / one_stage_fact_open:
     the stage's points only the customer can answer. assess_needs_present: the documents an area names as needed for
     any assessment. missing_after_two_requests (older workflows): asked at least twice and still incomplete.
+    nothing_to_ask: no document of the evaluation is asked now (items.ask_of) and no question to the customer is open, so
+    the clarifying stage is complete without a first request.
     cost_claim_open: a cost claim came in (incoming items) and is still open (``incoming_dates``: the document dates of items read
     without their own, incoming.document_dates); it keeps the case from closing, as does settled.
     ``evaluate(facts)`` is the plain evaluation; it is called once without the derived facts.
@@ -415,6 +424,12 @@ def derive_facts(graph, facts, findings, evaluate, *, partial=None, files=None, 
             out[fact] = not open_stage_facts(graph, out, evaluation)
         elif kind == "assess_needs_present":
             out[fact] = all(d in present and (findings.get(d) or {}).get("status", "present") == "present" for d in graph.get("assess_needs", []))
+        elif kind == "nothing_to_ask":  # a first request would ask for nothing: the file holds what the stage needs, no question is open
+            from .items import ask_of, open_customer_questions
+            docs = {d["id"]: d for d in graph["documents"]}
+            rows = [{**r, **({"partial": True} if r["document"] in (partial or {}) else {})} for r in evaluation["documents"]]
+            out[fact] = (not any(ask_of(graph, docs.get(r["document"], {}), r, files) == "now" for r in rows)
+                         and not open_customer_questions(graph, out))
     return out
 
 
