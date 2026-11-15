@@ -811,7 +811,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     # corrects, and a drafted answer to a customer's question the handler takes with one click
     class RecommendationChoice(BaseModel):
         model_config = ConfigDict(extra="forbid")
-        chosen: list[str] | Literal["aussichten_nicht_genuegend"]
+        chosen: list[str] = Field(min_length=1, max_length=12)
         proposal: list[str] = Field(default_factory=list, max_length=12)
         reason_code: Literal["1", "2", "3", "4", "5", "6", "none"] | None = None
 
@@ -838,10 +838,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.post("/api/cases/{case_id}/recommendation", status_code=201)
     def adopt_recommendation(case_id: str, body: RecommendationChoice, who=Depends(user)):
-        """«Empfehlung»: the handler adopts the proposed ways («übernehmen · Aussichten genügend»), picks among the ways
-        that hold («ändern»), or judges the prospects insufficient («Aussichten nicht genügend»: the refusal for lack of
-        prospects is prepared instead). The adoption names the proposal it was made on; it lapses when a chosen way no
-        longer holds or the proposal changes. With the adoption the prospects count as sufficient unless already judged."""
+        """«Empfehlung»: the handler adopts the proposed ways («übernehmen») or picks among the ways that hold, one per
+        wish («ändern»). The adoption names the proposal it was made on; it lapses when a chosen way no longer holds or the
+        proposal changes. The prospects of success are judged on their own (set_fact aussichten, Art. 169 AVO): adopting a
+        way judges nothing about them."""
         from ..process import assessment
         current, listed, events, marks, brief = _assessed(case_id)
         if not brief or not brief.get("has_options") or not brief.get("assessment"):
@@ -850,31 +850,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(409, "Zuerst entscheiden: Deckung")
         if list(body.proposal) != list(brief["proposal"]):
             raise HTTPException(422, "Der Vorschlag hat sich seit dem Laden geändert; bitte neu laden.")
-        low = body.chosen == assessment.PROSPECTS_LOW
-        chosen = assessment.PROSPECTS_LOW if low else list(dict.fromkeys(body.chosen))
-        if not low:
-            holding = {o["id"]: o for o in brief["options"] if o["state"] == "holds" and not o["held"]}
-            titles = {o["id"]: o["title"] for o in brief["options"]}
-            if not chosen:
-                raise HTTPException(422, "Bitte mindestens einen Weg wählen.")
-            wrong = [x for x in chosen if x not in holding]
-            if wrong:
-                raise HTTPException(422, f"«{titles.get(wrong[0], wrong[0])}» trifft nach der Akte nicht zu.")
+        chosen = list(dict.fromkeys(body.chosen))
+        holding = {o["id"]: o for o in brief["options"] if o["state"] == "holds" and not o["held"]}
+        titles = {o["id"]: o["title"] for o in brief["options"]}
+        wrong = [x for x in chosen if x not in holding]
+        if wrong:
+            raise HTTPException(422, f"«{titles.get(wrong[0], wrong[0])}» trifft nach der Akte nicht zu.")
+        wishes = [holding[x]["wish"] for x in chosen]
+        if len(set(wishes)) != len(wishes):
+            raise HTTPException(422, "Je Wunsch der Kundschaft ein Weg.")
         event = record(case_id, who, "item.corrected", item_id=assessment.EMPFEHLUNG, chosen=chosen, proposal=list(brief["proposal"]),
                        reason=body.reason_code or "none")
-        value = "nicht genügend" if low else "genügend"
-        before = current["facts"].get("aussichten")
-        edit = None
-        if (low and before != value) or (not low and before in (None, "noch nicht beurteilt")):
-            args = {"fact": "aussichten", "value": value}
-            try:
-                casegraph.check_edit(current["process"], {"op": "set_fact", "args": args})
-            except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
-                raise HTTPException(422, f"This change cannot be applied: {error}") from None
-            edit = store.add_edit(case_id, "set_fact", args, who, "mit der Empfehlung übernommen" if not low else "Aussichten nicht genügend")
-            record(case_id, who, "item.corrected", item_id="fact:aussichten", edit_id=edit["id"], op="set_fact", reason="none",
-                   note_present=True, before=before, after=value)
-        return {"event": event, "edit": edit}
+        return {"event": event}
 
     @app.post("/api/cases/{case_id}/answer", status_code=201)
     def take_answer(case_id: str, body: AnswerChoice, who=Depends(user)):

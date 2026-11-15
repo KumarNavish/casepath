@@ -40,8 +40,9 @@ MAX_PASSAGE_WORDS = 80  # a whole paragraph: a deposit's conditions are one sent
 KINDS = ("vorher", "anspruch")
 STATES = ("beantwortet", "bedingt")
 NEXT = ("discuss", "residual")
-PLACEHOLDERS = {"wuensche", "daten", "datum", "posten", "frage", "wert", "bedingung", "betrag"}
-WORDING = ("wish", "replies_all", "replies_some", "claims", "claim_amount", "claim_line", "join", "conditional", "discuss")
+PLACEHOLDERS = {"wuensche", "daten", "datum", "posten", "frage", "wert", "bedingung", "betrag", "folge"}
+WORDING = ("wish", "replies_all", "replies_some", "claims", "claim_amount", "claim_line", "join", "conditional", "discuss",
+           "changes", "open_wish", "open_only")
 PLURAL = ("replies_all", "replies_some")
 NEGATIONS = {"nicht", "kein", "keine", "keinen", "keiner", "keinem", "nie", "niemals", "ohne"}
 MONTHS = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
@@ -49,6 +50,14 @@ NOT_RECORDED = "nicht erfasst"
 REVIEW = {"geprueft": "geprüft", "aenderung": "in Prüfung", "frage": "Frage offen"}
 UNREVIEWED = "nicht juristisch geprüft"
 REVIEW_ORDER = ("Frage offen", "in Prüfung", UNREVIEWED, "geprüft")  # the weakest first
+EVIDENCE = ("claims",)  # a condition the case's evidence settles rather than a fact: the claimed costs documented by receipts
+# What the reader records for a claimed cost and for the receipt that would document it (agents/team.py): the kind of
+# expense, whom the receipt bills, and the role of its amount. Code compares them (agreement); a shared word or amount is no
+# proof.
+EXPENSES = ("Energie", "Reinigung", "Reparatur", "Ersatzanschaffung", "Miete und Nebenkosten", "Unterkunft", "Transport", "Honorar",
+            "Gutachten", "Gebühren", "Lohn", "Gesundheit", "andere")
+ROLES = ("requested", "promised", "disputed", "paid", "refunded")
+PAYERS = ("kunde", "versicherer", "kanzlei", "gegenpartei", "behoerde", "andere", "unbekannt")  # whom a receipt bills (account.PARTIES)
 
 
 # Loading ------------------------------------------------------------------------------------------------------------
@@ -174,7 +183,8 @@ def element_ids(data):
     each joining sentence."""
     return ([f"empfehlung.{o['id']}" for o in data.get("options") or ()]
             + [f"antwort.{a['points'][0]}.{a['intent']}" for a in data.get("answers") or ()]
-            + [f"fall.{c['id']}" for c in data.get("case_lines") or ()] + [f"wortlaut.{k}" for k in data.get("wording") or {}])
+            + [f"fall.{c['id']}" for c in data.get("case_lines") or ()] + [f"wortlaut.{k}" for k in data.get("wording") or {}]
+            + [f"rueckfrage.{f}" for f in data.get("asks") or {}])
 
 
 def _count(observed):
@@ -230,7 +240,13 @@ def validate(data, workflow):
     for w in data["wishes"]:
         if (facts.get(w.get("fact")) or {}).get("type") != "boolean" or not str(w.get("text") or "").strip() or w["fact"] in wishes:
             raise CatalogueError(f"{where}: a wish names a yes/no fact of the area once, with its words")
+        if not w.get("stems") or not all(isinstance(x, str) and x and x == x.lower() and x.strip() == x for x in w["stems"]):
+            raise CatalogueError(f"{where}: the wish {w['fact']!r} names the word beginnings the customer says it with (stems)")
         wishes[w["fact"]] = w
+    for fact, ask in (data.get("asks") or {}).items():  # the customer's question for a fact, and its indirect form
+        if fact not in facts or not isinstance(ask, dict) or set(ask) != {"frage", "ob"} or not str(ask["frage"]).rstrip().endswith("?") \
+                or not str(ask["ob"]).strip() or str(ask["ob"]).rstrip().endswith(("?", ".")):
+            raise CatalogueError(f"{where}: asks names a fact of the area with its question (frage, ending «?») and its indirect form (ob)")
     seen = set()
     for c in data["case_lines"]:
         here = f"{where}: case line {c.get('id')!r}"
@@ -291,6 +307,9 @@ def validate(data, workflow):
             if cond.get("kind") not in KINDS or not str(cond.get("text") or "").strip():
                 raise CatalogueError(f"{ch}: a condition is «vorher» or «anspruch», with its text")
             _part({"law": cond.get("law"), "requires": cond.get("requires"), "text": cond["text"]}, law, ch, sentence=False)
+            if cond.get("evidence") is not None and (cond["evidence"] not in EVIDENCE or cond["kind"] != "anspruch" or cond.get("fact")
+                                                     or not any(n_.get("names_claim") for n_ in o.get("needs") or ())):
+                raise CatalogueError(f"{ch}: a condition the evidence settles is an «anspruch» without a fact, of an option that asks the receipts")
             if cond.get("fact"):
                 _fact_condition(cond, facts, ch)
                 if cond["fact"] not in data["sofern"]:
@@ -369,6 +388,12 @@ def facts_named(data):
     return out
 
 
+def implies(fact, data):
+    """The facts the file's implications settle from this one («schriftlich gemeldet» → «gemeldet»)."""
+    from .workflows import condition_facts
+    return [r["then"]["fact"] for r in (data or {}).get("implies") or () if fact in condition_facts(r["when"])]
+
+
 def implied_by(fact, facts, data):
     """The facts an implied value of ``fact`` rests on (the conditions of the implication that gave it), or []."""
     for rule in (data or {}).get("implies") or ():
@@ -433,6 +458,106 @@ def amount_of(text):
     return _number(m.group(0)) if m else None
 
 
+# Claims and receipts: what a receipt documents ----------------------------------------------------------------------------
+# The reader records, in the same call that reads the claim, what the claim and the receipt it names are about (the field
+# names Slice C reads too, NEEDS_C §1): what the cost is for (``expense``, in the document's words, and its kind,
+# ``expense_kind``), who billed it (``party``), the period ({from, to}, as written), the transaction (an invoice, meter or
+# booking number), and for the receipt whom it bills (``payer``) and the role of its amount (requested, promised, disputed,
+# paid, refunded). A receipt documents a claim only when these agree; a shared word or the same amount is a candidate,
+# never proof. Model-free: the reading gives the fields once, code compares them here.
+
+DATE_RE = re.compile(r"\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b")
+MONTH_RE = re.compile(r"\b(" + "|".join(m.lower() for m in MONTHS) + r")\s+(\d{4})\b")
+MONTH_NUM_RE = re.compile(r"(?<![\d.])(\d{1,2})\.(\d{4})\b")
+ISO_RE = re.compile(r"^(\d{4})-(\d{2})-(\d{2})$")
+WORD4 = re.compile(r"[a-zäöüß]{4,}")
+LEGAL_FORMS = {"gmbh", "sàrl", "sarl", "genossenschaft", "verein", "stiftung"}
+ROUGH = re.compile(r"\b(?:rund|ca\.?|circa|etwa|ungefähr|knapp|gut)\b", re.I)
+DOCUMENTING = ("requested", "paid")  # billed to the customer's side, or paid: the cost was incurred
+CUSTOMER_SIDE = ("kunde", "versicherer", "kanzlei")
+
+
+def period_of(text):
+    """The first and last day a period covers: {from, to} as ISO days, or as written («07.08.2026 bis 04.09.2026»,
+    «August 2026», «08.2026»); None."""
+    from datetime import date, timedelta
+    if isinstance(text, dict):
+        days = []
+        for value in (text.get("from"), text.get("to")):
+            m = ISO_RE.match(str(value or "").strip())
+            if m:
+                try:
+                    days.append(date(int(m.group(1)), int(m.group(2)), int(m.group(3))))
+                except ValueError:
+                    continue
+        return (min(days), max(days)) if days else None
+    t = str(text or "").lower()
+    days = []
+    for d, m, y in DATE_RE.findall(t):
+        try:
+            days.append(date(int(y), int(m), int(d)))
+        except ValueError:
+            continue
+    months = [(MONTHS_LOWER.index(name) + 1, int(y)) for name, y in MONTH_RE.findall(t)]
+    months += [(int(m), int(y)) for m, y in MONTH_NUM_RE.findall(DATE_RE.sub(" ", t)) if 1 <= int(m) <= 12]
+    for m, y in months:
+        first = date(y, m, 1)
+        days += [first, (date(y + (m == 12), m % 12 + 1, 1) - timedelta(days=1))]
+    return (min(days), max(days)) if days else None
+
+
+MONTHS_LOWER = [m.lower() for m in MONTHS]
+
+
+def _names(text):
+    return {w for w in WORD4.findall(str(text or "").lower()) if w not in LEGAL_FORMS}
+
+
+def agreement(claim, receipt):
+    """How a receipt, as the reader recorded what it documents, agrees with a claim: {expense, payer, party, period,
+    transaction, amount, role}, each True (agrees), False (differs) or None (one side does not say). The expense must be
+    of the same kind (a kind, not «andere»), the receipt must bill the customer's side and its amount be a cost borne
+    (billed or paid; never refunded, disputed or only promised), nothing may differ (the issuer, the period, the number,
+    the amount within its rounding: «rund CHF 85»), and the amount, the transaction or the period must agree; then the
+    receipt documents the claim (``documented``). A word or an amount the two share decides nothing by itself."""
+    c, r = claim or {}, receipt or {}
+    out = {}
+    ck, rk = c.get("expense_kind") or None, r.get("expense_kind") or None
+    out["expense"] = None if not ck or not rk else (ck == rk and ck != "andere")
+    payer = r.get("payer")
+    out["payer"] = None if payer in (None, "", "unbekannt") else payer in CUSTOMER_SIDE
+    cn, rn = _names(c.get("party")), _names(r.get("party"))
+    out["party"] = None if not cn or not rn else bool(cn & rn)
+    cp, rp = period_of(c.get("period")), period_of(r.get("period"))
+    out["period"] = None if not cp or not rp else (cp[0] <= rp[1] and rp[0] <= cp[1])
+    ct, rt = (re.sub(r"\W", "", str(x.get("transaction") or "")).lower() for x in (c, r))
+    out["transaction"] = None if not ct or not rt else ct == rt
+    ca, ra = amount_of(c.get("amount")), amount_of(r.get("amount"))
+    rough = bool(ROUGH.search(" ".join([str(c.get("amount") or "")] + [str(x.get("quote") or "") for x in c.get("citations") or ()])))
+    tolerance = max(1.0, 0.05 * ca) if ca is not None and rough else max(0.5, 0.01 * ca) if ca is not None else 0
+    out["amount"] = None if ca is None or ra is None else abs(ca - ra) <= tolerance
+    out["role"] = None if not r.get("role") else r["role"] in DOCUMENTING
+    documented = (out["expense"] is True and out["role"] is True and False not in out.values()
+                  and any(out[k] is True for k in ("amount", "transaction", "period")))
+    return {**out, "documented": documented}
+
+
+FIELD_WORDS = {"expense": "Ausgabe", "payer": "an wen gerichtet", "party": "wer abgerechnet hat", "period": "Zeitraum",
+               "transaction": "Nummer", "amount": "Betrag", "role": "Art des Betrags"}
+ROLE_WORDS = {"requested": "verlangt", "promised": "angekündigt", "disputed": "bestritten", "paid": "bezahlt", "refunded": "erstattet"}
+
+
+def disagreement(agreed):
+    """What a receipt that does not document a claim differs in, in the handler's words («Ausgabe, Zeitraum»), else why
+    it decides nothing («Ausgabe nicht bestimmt», «nichts Bestimmtes stimmt überein»)."""
+    wrong = [FIELD_WORDS[k] for k in FIELD_WORDS if (agreed or {}).get(k) is False]
+    if wrong:
+        return ", ".join(wrong)
+    if (agreed or {}).get("expense") is None:
+        return "Ausgabe nicht bestimmt"
+    return "nichts Bestimmtes stimmt überein"
+
+
 # Review state of an element ------------------------------------------------------------------------------------------
 
 def review_state(area_id, element, marks):
@@ -454,17 +579,28 @@ def practice(option):
     return f"Praxis: {(option.get('observed') or {}).get('count') or NOT_RECORDED}"
 
 
-def _condition_state(cond, facts, weak):
+def _condition_state(cond, facts, weak, claims=None):
+    """«erfüllt», «offen», «nicht erfüllt», «widersprüchlich» (read two ways, or against the customer's own words: never
+    relied on, whatever the value), «vermutet» (a presumed value) or «nicht geprüft» (no fact settles it). A condition the
+    evidence settles («claims»): «erfüllt» once every claimed cost the case names is documented by its receipt, «offen»
+    while one is not, «nicht geprüft» without a named claim."""
+    if cond.get("evidence") == "claims":
+        named = [c for c in claims or () if c.get("checked")]
+        if not named:
+            return "nicht geprüft"
+        return "erfüllt" if all(c.get("documented") for c in named) else "offen"
     fact = cond.get("fact")
     if not fact:
         return "nicht geprüft"
-    value = facts.get(fact)
+    value, kind = facts.get(fact), (weak or {}).get(fact)
+    if kind == "conflicting":
+        return "widersprüchlich"
     if value is None:
-        return "widersprüchlich" if (weak or {}).get(fact) == "conflicting" else "offen"
+        return "offen"
     holds = evaluate_condition({k: cond[k] for k in ("fact", "is", "in", "known") if k in cond}, facts)
     if holds is False:
         return "nicht erfüllt"
-    return "vermutet" if (weak or {}).get(fact) else "erfüllt"
+    return "vermutet" if kind else "erfüllt"
 
 
 def _weak(weak):
@@ -474,13 +610,15 @@ def _weak(weak):
     return {f: "presumed" for f in weak or ()}
 
 
-def evaluate(data, facts, weak=(), flags=None, marks=None, intents=(), area_id=None):
+def evaluate(data, facts, weak=(), flags=None, marks=None, intents=(), area_id=None, claims=None):
     """Each option on the case's facts (the file's implications applied): {id, title, wish, state: holds | open | fails,
     conditions [{text, kind, fact, state, law}], triggers [{fact, state}], weak [facts], review, observed, propose, held}.
     A trigger (the wish, ``when``, a question with the intent ``asked``) false fails it, unknown leaves it open. A «vorher»
     condition decides holds, open or fails by its fact, and without a fact («nicht geprüft») leaves the option open; an
     «anspruch» condition without a fact is «nicht geprüft» and the option may hold (the advice states it). A presumed value
-    is «vermutet»: the option holds with it, «unter Vorbehalt»; a contradictory reading leaves it open."""
+    is «vermutet»: the option holds with it, «unter Vorbehalt»; a contradictory reading leaves it open. A condition the
+    evidence settles (the receipts of the claimed costs, ``claims``) never opens or fails the option: its advice asks for
+    the evidence, and the condition shows whether it is in."""
     if not data:
         return []
     weak = _weak(weak)
@@ -492,13 +630,15 @@ def evaluate(data, facts, weak=(), flags=None, marks=None, intents=(), area_id=N
         triggers = []
         for cond in [{"fact": o["wish"], "is": True}] + list(o.get("when") or ()):
             triggers.append({"fact": cond["fact"], "state": _condition_state(cond, facts, weak)})
-        conditions = [{"text": c["text"], "kind": c["kind"], "fact": c.get("fact"), "state": _condition_state(c, facts, weak),
-                       "law": c.get("law") or [], "expects": {k: c[k] for k in ("is", "in", "known") if k in c}} for c in o.get("conditions") or ()]
-        states = [t["state"] for t in triggers] + [c["state"] for c in conditions]
+        conditions = [{"text": c["text"], "kind": c["kind"], "fact": c.get("fact"), "state": _condition_state(c, facts, weak, claims),
+                       "law": c.get("law") or [], "expects": {k: c[k] for k in ("is", "in", "known") if k in c},
+                       "settled_by": c.get("evidence")} for c in o.get("conditions") or ()]
+        deciding = [c for c in conditions if not c["settled_by"]]
+        states = [t["state"] for t in triggers] + [c["state"] for c in deciding]
         if "nicht erfüllt" in states or (o.get("asked") and o["asked"] not in asked):
             state = "fails"
         elif any(t["state"] in ("offen", "widersprüchlich") for t in triggers) or any(
-                c["state"] in ("offen", "widersprüchlich") or (c["kind"] == "vorher" and c["state"] == "nicht geprüft") for c in conditions):
+                c["state"] in ("offen", "widersprüchlich") or (c["kind"] == "vorher" and c["state"] == "nicht geprüft") for c in deciding):
             state = "open"
         else:
             state = "holds"
@@ -534,6 +674,55 @@ def option(data, option_id):
     return next((o for o in (data or {}).get("options") or () if o["id"] == option_id), None)
 
 
+def aim(data, option_id):
+    """What an option recommends, as a clause after «ob wir Ihnen empfehlen, »: its first advice part, without its articles."""
+    o = option(data, option_id) or {}
+    first = next((p for p in o.get("advice") or () if not p.get("with_template")), None)
+    return str((first or {}).get("text") or "").strip(" ;,")
+
+
+# The customer's own words against a wish read from them ---------------------------------------------------------------------
+
+CLAUSES = re.compile(r"[,;:.!?]|\b(?:aber|sondern|doch|jedoch)\b")
+WORD_RE = re.compile(r"[a-zäöüß]+")
+NEAR = 4  # a negation counts for a wish's word within this many words of it, in the same clause
+
+
+def says_wish(text, stems):
+    """Whether a text speaks of a wish and how: True (it says it), False (it says it negated: «keine Reduktion», «möchte
+    ich nicht»), None (no word of the wish)."""
+    found = None
+    for clause in CLAUSES.split(str(text or "").lower()):
+        words = WORD_RE.findall(clause)
+        at = [i for i, w in enumerate(words) if any(w.startswith(s) or s in w for s in stems)]
+        if not at:
+            continue
+        neg = [i for i, w in enumerate(words) if w in NEGATIONS]
+        negated = any(abs(i - j) <= NEAR for i in at for j in neg)
+        if negated:
+            return False
+        found = True
+    return found
+
+
+def contradicted(data, facts, quotes, texts=()):
+    """The wishes whose value the customer's own words contradict: {fact: the words}. A wish read «ja» from a sentence that
+    negates it («Eine Mietzinsreduktion möchte ich nicht.»), or that a question of the customer negates, and a wish read
+    «nein» from a sentence that says it plainly. ``quotes``: {fact: the quotes it was read from}; ``texts``: the
+    customer's questions. Such a wish is never relied on: its ways are not proposed, the handler decides."""
+    out = {}
+    for w in (data or {}).get("wishes") or ():
+        value = (facts or {}).get(w["fact"])
+        if value is None:
+            continue
+        for text in list((quotes or {}).get(w["fact"]) or ()) + list(texts or ()):
+            said = says_wish(text, w["stems"])
+            if said is not None and said != value and (said is False or text in ((quotes or {}).get(w["fact"]) or ())):
+                out[w["fact"]] = text
+                break
+    return out
+
+
 # Texts ------------------------------------------------------------------------------------------------------------------
 
 def _with_cite(text, refs, data, workflow):
@@ -545,9 +734,10 @@ def _with_cite(text, refs, data, workflow):
     return f"{text[:-1]} ({named})." if text.endswith(".") else f"{text} ({named})."
 
 
-def answer_parts(data, workflow, intent_row, *, template=False, residual=True):
+def answer_parts(data, workflow, intent_row, *, template=False, residual=True, documented=False):
     """The sentences of an answer, each with its articles: a part about the enclosed template only when it goes with the
-    letter (``template``), the pointer to what is still missing only when something is (``residual``)."""
+    letter (``template``), the pointer to what is still missing only when something is (``residual``), the part that says
+    the evidence is in only once it is (``documented``)."""
     points = {p["id"]: p for p in (workflow or {}).get("key_points") or ()}
     out = []
     for part in intent_row["parts"]:
@@ -555,15 +745,17 @@ def answer_parts(data, workflow, intent_row, *, template=False, residual=True):
             continue
         if part.get("with_residual") and not residual:
             continue
+        if part.get("with_documented") and not documented:
+            continue
         text = points[part["follows"]]["follows"] if part.get("follows") else part["text"]
         out.append(_with_cite(text, [] if part.get("basis") == "prudence" or part.get("plain") else part.get("law"), data, workflow))
     return out
 
 
-def answer_text(data, workflow, intent_row, *, template=False, residual=True, ask=None):
+def answer_text(data, workflow, intent_row, *, template=False, residual=True, ask=None, documented=False):
     """An answer as the letter says it: its parts, and for a conditional answer whose point waits for an answer of the
     customer the question that settles it (``ask``)."""
-    parts = answer_parts(data, workflow, intent_row, template=template, residual=residual) if intent_row else []
+    parts = answer_parts(data, workflow, intent_row, template=template, residual=residual, documented=documented) if intent_row else []
     if ask:
         parts.append(data["wording"]["conditional"].replace("{frage}", ask.rstrip()))
     return " ".join(parts)

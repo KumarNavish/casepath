@@ -1,15 +1,23 @@
 """The decision brief of the legal assessment (A5) and the parts of its letter, from what the case establishes.
 
 The handler opens a reply and finds the assessment prepared: what the customer wants and asks, the rule each question asks
-about with its conditions and how the case meets them, the ways to proceed with a recommendation to adopt or correct, what
-would change it, and a residual request for only what is still missing. Code decides; the reader only tags the questions
-(``about``) and reads the claims; nothing here calls a model.
+about with its conditions and how the case meets them, the ways to proceed with a recommendation and its alternative to
+adopt or correct, what would change it, and a residual request for only what is still missing, each line naming the
+judgment it would settle. Code decides; the reader only tags the questions (``about``) and reads the claims and what their
+receipts document; nothing here calls a model.
 
 - Each customer question is evaluated by the key point its tags name and the intent its words ask (keypoints.status, the
   guard table): «beantwortet» or «bedingt» (with its smallest next step) from the area's answers (options.py), «prüfen»
   with a drafted answer the handler takes with one click, or «offen». A question the handler answered so stays answered.
-- The options of the area hold on established, accepted facts only; one holding, proposable option per wish is proposed;
-  the handler's adoption («übernehmen») holds while its options hold and the proposal is the one adopted.
+  A question whose answer waits for the receipts of a claimed cost is «beantwortet» once a receipt documents it.
+- The options of the area hold on established, accepted facts only. A wish the customer's own words contradict, a value
+  read two ways or a question that negates what an option is triggered by never carries a proposal; a presumed value
+  carries it only «unter Vorbehalt», the condition named. One holding, proposable option per wish is proposed, with the
+  alternative beside it; the handler's adoption («übernehmen») holds while its options hold and the proposal is the one
+  adopted. The prospects of success (Art. 169 AVO) are the handler's separate decision.
+- What the file leaves open is asked precisely: the customer's question for the missing fact with what its answer
+  decides («davon hängt ab, ob wir Ihnen empfehlen, …»); every residual line and ask names what it blocks (``blocks``:
+  the question, the option, the condition). When a later arrival settles it, the brief shows it under ``resolved``.
 - «In Ihrem Fall» states the wish, the replies, the facts the recommendation rests on (each with its source and date) and
   the costs claimed; «Bitte reichen Sie uns noch nach» asks for the receipts of a claimed cost and what is still owed.
 - Areas without an options file get the brief and the questions' evaluation; no recommendation is filled.
@@ -22,13 +30,17 @@ from . import account, customer_letters, keypoints, options, review as reviews
 from .clock import parse_date
 
 TAKEN = "beantwortet (Fallbearbeitung)"
+DOCUMENTED = "Belege liegen vor"
 GAP_WHAT = {"wish": "was Sie möchten", "replies_all": "Ihre Antworten auf unsere Fragen", "replies_some": "Ihre Antworten auf unsere Fragen",
             "claims": "die geltend gemachten Kosten", "claim_amount": "der genannte Betrag", "claim_line": "Belege zu den geltend gemachten Kosten",
-            "join": "die weitere Empfehlung", "conditional": "was noch fehlt", "discuss": "das weitere Vorgehen"}
+            "join": "die weitere Empfehlung", "conditional": "was noch fehlt", "discuss": "das weitere Vorgehen",
+            "changes": "worauf die Empfehlung beruht", "open_wish": "die Frage, von der die Empfehlung abhängt",
+            "open_only": "die Frage, von der die Empfehlung abhängt"}
 ANSWER = "Antwort auf diese Frage"
 RECOMMENDATION = "die Empfehlung an die Kundschaft"
 EMPFEHLUNG = "point:empfehlung"
-PROSPECTS_LOW = "aussichten_nicht_genuegend"
+UNJUDGED = (None, "", "offen", "noch nicht beurteilt")  # the prospects not judged yet
+PROSPECTS = "Erfolgsaussichten"
 
 
 def gap(what):
@@ -37,7 +49,9 @@ def gap(what):
 
 
 def _evidence(citations):
-    return [{"file": c.get("file"), "page": c.get("page"), "quote": c.get("quote")} for c in citations or () if c]
+    """The quotes a line rests on, each where it stands (file, page and its place on the page, for the source to open
+    at the passage)."""
+    return [{k: c.get(k) for k in ("file", "page", "start", "end", "quote")} for c in citations or () if c]
 
 
 def _day(value):
@@ -59,11 +73,13 @@ def weak_of(result, state):
             if f.get("status") in ("presumed", "conflicting") and f.get("fact") not in own}
 
 
-def stated(fact, result, state):
+def stated(fact, result, state, contra=None):
     """Whether «In Ihrem Fall» may state a fact: the handler set it, or the run established it with a quote the source
-    checker accepted. A presumed or contradictory value never."""
+    checker accepted and the customer's own words do not contradict it. A presumed or contradictory value never."""
     if fact in ((state or {}).get("overrides") or {}):
         return True
+    if fact in (contra or {}):
+        return False
     row = fact_rows(result).get(fact) or {}
     return row.get("status") == "established" and row.get("verdict") == "accepted" and bool(row.get("citations"))
 
@@ -94,6 +110,14 @@ def question_of(graph, fact):
     return re.sub(r"\s*\((Entscheid|CasePath)[^)]*\)?", "", str(row.get("question") or fact)).strip()
 
 
+def values_of(graph, fact):
+    """The values a fact can take, as the handler sets it: an enum's values, else yes and no for a yes/no fact."""
+    row = next((f for f in (graph or {}).get("facts") or () if f["id"] == fact), {})
+    if row.get("values"):
+        return [v for v in row["values"] if v != "offen"]
+    return [True, False] if row.get("type") == "boolean" else []
+
+
 def quoted_day(cite, acc):
     """The date of the document a quote comes from: of the account's entries in the quote's file, the one whose own quote
     stands closest before it on the same page, else the nearest page before, else the only one. None when unknown."""
@@ -110,6 +134,19 @@ def quoted_day(cite, acc):
     if paged:
         return max(paged, key=lambda e: e["page"])["date"]
     return entries[0]["date"] if len(entries) == 1 else None
+
+
+def contradictions(data, facts, result, state):
+    """The wishes the customer's own words contradict (options.contradicted): {fact: the words}. Their own quotes and the
+    customer's questions are read against them; a wish the handler set is the handler's and never contradicted."""
+    if not data:
+        return {}
+    wishes = {w["fact"] for w in data.get("wishes") or ()}
+    quotes = {f["fact"]: [c.get("quote") for c in f.get("citations") or () if c.get("quote")]
+              for f in (result or {}).get("facts") or () if f.get("fact") in wishes}
+    texts = [q.get("question") for q in ((result or {}).get("brief") or {}).get("questions") or () if q.get("question")]
+    own = set((state or {}).get("overrides") or {})
+    return {f: t for f, t in options.contradicted(data, facts, quotes, texts).items() if f not in own}
 
 
 # The log: answers the handler took, the adoption of the recommendation ------------------------------------------------
@@ -135,19 +172,39 @@ def ticked(events):
 
 # Claims and the residual ------------------------------------------------------------------------------------------------
 
-def claims_of(result):
+def claims_of(result, files=None, acc=None):
     """The costs the customer asks to have compensated, as the reading located them: [{i, what, amount, checked,
-    documented, citations, receipt}] in the brief's order (``i`` its place there)."""
-    return [{**c, "i": i} for i, c in enumerate(((result or {}).get("brief") or {}).get("claims") or ())]
+    documented, citations, receipt, documents, agree, rejected}] in the brief's order (``i`` its place there). A claim the
+    reading's own receipt does not document may still be documented by a receipt among the case's files whose recorded
+    details agree with it (account.documented, Slice C, where the account has it; never a receipt the reading set aside
+    for this claim): ``held`` names it."""
+    claims = [{**c, "i": i} for i, c in enumerate(((result or {}).get("brief") or {}).get("claims") or ())]
+    check = getattr(account, "documented", None)
+    if check is None or files is None:
+        return claims
+    for c in claims:
+        if c.get("checked") and not c.get("documented"):
+            set_aside = {x.get("file") for r in c.get("rejected") or () for x in r.get("citations") or ()}
+            hit = check(c, files, (acc or {}).get("entries"))
+            if hit and hit.get("file") not in set_aside:
+                c.update(documented=True, held=hit)
+    return claims
 
 
 def _document(items, need):
     return next((i for i in items or () if i["kind"] == "document" and i["key"] == need), None)
 
 
+def evidence_condition(data, option_id):
+    """The text of an option's condition the receipts of the claimed costs settle, or None."""
+    o = options.option(data, option_id) or {}
+    return next((c["text"] for c in o.get("conditions") or () if c.get("evidence") == "claims"), None)
+
+
 def need_lines(data, option_id, claims, items, events=None):
     """What an option's needs still ask for: one «Belege zu: …» per claimed cost (named, its words in its quote) that no
-    receipt documents, even when the need reads present; without a claim, the need's title while it is not present."""
+    receipt documents, even when the need reads present; without a claim, the need's title while it is not present. Each
+    line names what it blocks: the option and, for a claim, the condition the receipts settle."""
     o = options.option(data, option_id) or {}
     lines = []
     for need in o.get("needs") or ():
@@ -159,12 +216,32 @@ def need_lines(data, option_id, claims, items, events=None):
                 for c in named:
                     if not c.get("documented"):
                         lines.append({"key": f"residual:claim.{c['i']}", "line": data["wording"]["claim_line"].replace("{posten}", c["what"]),
-                                      "kind": "claim", "ref": c["i"], "evidence": _evidence(c.get("citations")), "wording": "claim_line"})
+                                      "kind": "claim", "ref": c["i"], "evidence": _evidence(c.get("citations")), "wording": "claim_line",
+                                      "blocks": {"question": None, "option": option_id, "condition": evidence_condition(data, option_id)},
+                                      **({"rejected": [_rejected(r) for r in c["rejected"]]} if c.get("rejected") else {})})
                 continue
         if not present and doc is not None:
             lines.append({"key": f"residual:document.{need['document']}", "line": (doc.get("label") or {}).get("de") or need["document"],
-                          "kind": "document", "ref": need["document"], "evidence": []})
+                          "kind": "document", "ref": need["document"], "evidence": [],
+                          "blocks": {"question": None, "option": option_id, "condition": None}})
     return lines
+
+
+def _rejected(receipt):
+    """A receipt the reading named for a claim that does not document it, as the brief shows it: its words, what it is
+    about and what differs."""
+    docs = receipt.get("documents") or {}
+    return {"evidence": _evidence(receipt.get("citations")), "expense": docs.get("expense"), "kind": docs.get("expense_kind"), "amount": docs.get("amount"),
+            "role": options.ROLE_WORDS.get(docs.get("role"), docs.get("role")), "differs": options.disagreement(receipt.get("agree"))}
+
+
+def documented_all(data, option_id, claims):
+    """Whether the receipts are in for an option whose needs name the claimed costs: every named claim documented."""
+    o = options.option(data, option_id) or {}
+    if not any(n.get("names_claim") for n in o.get("needs") or ()):
+        return False
+    named = [c for c in claims if c.get("checked")]
+    return bool(named) and all(c.get("documented") for c in named)
 
 
 # The assessment before the cover decision -------------------------------------------------------------------------------
@@ -222,9 +299,11 @@ def _context(state, result, items, events, marks=None):
     data = options.load(graph.get("id")) if graph.get("id") else None
     facts = options.implied((state or {}).get("facts") or {}, data)
     weak = weak_of(result, state)
+    contra = contradictions(data, facts, result, state)
+    weak.update({f: "conflicting" for f in contra})  # read against the customer's own words: never relied on
     flagged = reviews.flags(graph, marks)
     points = [p for p in keypoints.evaluate(graph, facts, failing=True, weak=set(weak)) if not flagged.key_point(p["id"])]
-    return graph, data, facts, weak, flagged, points
+    return graph, data, facts, weak, flagged, points, contra
 
 
 def applying_points(state, result, items, events, marks=None):
@@ -244,29 +323,53 @@ def _residual_named(data, option_id, claims, items, events):
     return any(state.get(l["key"], True) for l in lines)
 
 
-def evaluate_questions(state, result, items, events, marks=None):
+def customer_ask(data, flagged, fact, fallback):
+    """The question to the customer for an open fact: the options file's wording (direct, and indirect «ob …»), unless a
+    jurist holds it; else the module's question for it."""
+    ask = ((data or {}).get("asks") or {}).get(fact)
+    if ask and not flagged.ask(fact):
+        return ask["frage"], ask["ob"]
+    return fallback, None
+
+
+def wants_intent(text, intent_row):
+    """Whether a question asks for what its intent names, rather than rejecting it: no negation stands before one of the
+    intent's stems (a stem that carries its own negation, «nicht zahl», asks for it)."""
+    if not intent_row:
+        return False
+    stems = list(intent_row.get("stems") or ())
+    carrying = [w for w in stems if keypoints.NEGATIONS & set(keypoints.WORDS.findall(w))]
+    return not keypoints.negated(text, stems, carrying)
+
+
+def evaluate_questions(state, result, items, events, marks=None, files=None):
     """Each of the brief's customer questions, evaluated: [{i, item_id, text, about, row, state, reason, points, intent,
-    answer, answered_by, offered [{point, intent, text}], ask, next, taken, held}] in the brief's order. ``items``: the
-    item list built so far (the templates that go out with the assessment, the documents present)."""
-    graph, data, facts, weak, flagged, points = _context(state, result, items, events, marks)
+    answer, answered_by, offered [{point, intent, text}], ask, next, taken, held, wants}] in the brief's order. ``items``:
+    the item list built so far (the templates that go out with the assessment, the documents present)."""
+    graph, data, facts, weak, flagged, points, contra = _context(state, result, items, events, marks)
     brief = (result or {}).get("brief") or {}
     if not graph:
         return []
     by_id = {p["id"]: p for p in points}
     wishes = {w["fact"]: w["text"] for w in (data or {}).get("wishes") or ()}
-    claims = claims_of(result)
+    claims = claims_of(result, files, (state or {}).get("account"))
     taken = taken_answers(events)
 
     def held(row):
         return bool(row) and flagged.answer(row["points"][0], row["intent"])
 
+    def parts(intent_row):
+        nxt = intent_row.get("next") or {}
+        residual = nxt.get("kind") != "residual" or _residual_named(data, nxt["option"], claims, items, events)
+        documented = nxt.get("kind") == "residual" and documented_all(data, nxt["option"], claims)
+        template = all(enclosed(items, events, p["with_template"]) for p in intent_row["parts"] if p.get("with_template"))
+        return residual, documented, template
+
     def render(point_id, intent_row):
         """The answer of a point for one intent, as the letter would say it; the point's own sentence without an intent."""
         if intent_row is not None and data:
-            nxt = intent_row.get("next") or {}
-            residual = nxt.get("kind") != "residual" or _residual_named(data, nxt["option"], claims, items, events)
-            template = all(enclosed(items, events, p["with_template"]) for p in intent_row["parts"] if p.get("with_template"))
-            return options.answer_text(data, graph, intent_row, template=template, residual=residual)
+            residual, documented, template = parts(intent_row)
+            return options.answer_text(data, graph, intent_row, template=template, residual=residual, documented=documented)
         return keypoints.sentence(by_id[point_id])
 
     def offer(ids, text):
@@ -286,15 +389,23 @@ def evaluate_questions(state, result, items, events, marks=None):
         rows = options.answers_for(data, valid or ([candidate["id"]] if candidate else [])) if data else []
         intent_row = options.intent(text, rows) if data else None
         st = keypoints.status({"question": text, "about": valid}, points, candidate, intent_row, facts, wishes)
+        ask = st["ask"]
+        if ask and ask.get("fact"):  # the open fact asked in the customer's words where the area words it
+            direct, indirect = customer_ask(data, flagged, ask["fact"], ask["question"])
+            ask = {**ask, "question": direct, "ob": indirect}
         row = {"i": i, "item_id": item_id, "text": text, "about": list(q.get("about") or ()), "row": st["row"], "state": st["state"],
-               "reason": st["reason"], "points": st["points"], "intent": st["intent"], "answer": None, "answered_by": None,
-               "offered": [], "ask": st["ask"], "next": st["next"], "taken": False, "held": False, "evidence": _evidence(q.get("citations"))}
+               "reason": ask["question"] if ask and st["row"] == 8 else st["reason"], "points": st["points"], "intent": st["intent"],
+               "answer": None, "answered_by": None, "offered": [], "ask": ask, "next": st["next"], "taken": False, "held": False,
+               "evidence": _evidence(q.get("citations")),
+               # the question asks for what its intent names (not a negation of it, not a wish the customer rejected)
+               "wants": bool(intent_row) and st["row"] != 4 and wants_intent(text, intent_row)}
         took = taken.get(item_id)
         if took and (by_id.get(took["point"]) or {}).get("state") == "applies":  # the handler took an answer: it stays while its point applies
             chosen = _answer_row(data, took.get("intent")) if took.get("intent") else None
             row.update(state="beantwortet", reason=TAKEN, row=None, taken=True, answered_by=took["point"], ask=None, next=None,
                        answer=render(took["point"], chosen), points=list(dict.fromkeys([took["point"]] + st["points"])),
-                       intent=(chosen or {}).get("intent") or st["intent"], by=took.get("expert"), at=took.get("at"))
+                       intent=(chosen or {}).get("intent") or st["intent"], by=took.get("expert"), at=took.get("at"),
+                       wants=bool(chosen) and wants_intent(text, chosen))
             out.append(row)
             continue
         if st["state"] in ("beantwortet", "bedingt") and not data:
@@ -306,12 +417,10 @@ def evaluate_questions(state, result, items, events, marks=None):
                 row.update(state="pruefen", reason="Antwort in Prüfung", held=True)
             else:
                 nxt = (intent_row or {}).get("next") or {}
-                residual = nxt.get("kind") != "residual" or _residual_named(data, nxt["option"], claims, items, events)
-                template = all(enclosed(items, events, p["with_template"]) for p in (intent_row or {}).get("parts") or () if p.get("with_template"))
-                ask = (st["ask"] or {}).get("question")
+                residual, documented, template = parts(intent_row) if intent_row else (True, False, False)
                 wording_held = bool(ask) and flagged.wording("conditional")
-                answer = options.answer_text(data, graph, intent_row, template=template, residual=residual,
-                                             ask=None if wording_held else ask) if (intent_row or ask) else None
+                answer = options.answer_text(data, graph, intent_row, template=template, residual=residual, documented=documented,
+                                             ask=None if wording_held else (ask or {}).get("question")) if (intent_row or ask) else None
                 if wording_held:
                     answer = " ".join(x for x in (answer, gap(f"{GAP_WHAT['conditional']} ({reviews.IN_REVIEW})")) if x)
                 if nxt.get("kind") == "residual":  # the answer points to the receipts asked below: they are asked below
@@ -319,7 +428,12 @@ def evaluate_questions(state, result, items, events, marks=None):
                     lines = [l for l in need_lines(data, nxt["option"], claims, items, events) if ticked(events).get(l["key"], True)]
                     if residual and lines and st["row"] == 9:
                         row["reason"] = lines[0]["line"]  # what it waits for: the first line of the residual it points to
-                row.update(answer=answer, answered_by=st["points"][0] if st["state"] == "beantwortet" else None)
+                    if documented and not residual and st["row"] == 9:
+                        # the receipts the answer waited for are in: the question is answered, the evidence beside it
+                        row.update(state="beantwortet", row=10, reason=DOCUMENTED, next=None,
+                                   evidence_in=[e for c in claims if c.get("checked") for e in _evidence((c.get("receipt") or [])[:1])])
+                state_now = row["state"]
+                row.update(answer=answer, answered_by=st["points"][0] if state_now == "beantwortet" else None)
         else:
             row["offered"] = offer(st["offered"], text)
         out.append(row)
@@ -363,12 +477,35 @@ def _sentence(text):
     return text if re.search(r"[.?!]»?$", text) else f"{text}."
 
 
+def _missing(evaluated_option):
+    """The open fact that keeps an option from holding, and the condition it settles: (fact, condition text) or None. A
+    trigger first (its fact), then a «vorher» condition with a fact."""
+    for t in evaluated_option["triggers"]:
+        if t["state"] == "offen":
+            return t["fact"], None
+    for c in evaluated_option["conditions"]:
+        if c["fact"] and c["state"] == "offen" and not c.get("settled_by"):
+            return c["fact"], c["text"]
+    return None
+
+
+def _branches(data, facts, weak, flagged, marks, intents, claims, area_id, fact, values):
+    """What the answer for an open fact decides: for each value it may take, the ways proposed then (titles)."""
+    out = []
+    for value in values:
+        trial = {**facts, fact: value}
+        evaluated = options.evaluate(data, trial, weak, flagged, marks, intents=intents, area_id=area_id, claims=claims)
+        out.append({"value": value, "proposal": [(options.option(data, x) or {}).get("title") for x in options.proposal(data, trial, evaluated)]})
+    return out
+
+
 def build(state, result, items, files, events, marks):
     """The decision brief of the prepared action: wishes, questions, rules with their conditions, the options with the
-    proposal and the adoption, what would change it, the residual and the asks, the letter's parts (an assessment of an
-    area with an options file only), what blocks the approval, the premise the letter rests on, and a summary. None for a
-    case without a process."""
-    graph, data, facts, weak, flagged, points = _context(state, result, items, events, marks)
+    proposal, its alternative and the adoption, what would change it, the residual and the asks (each with what it blocks
+    and, for a fact, what its answer decides), what the latest arrival settled, the facts the letter rests on, the letter's
+    parts (an assessment of an area with an options file only), what blocks the approval, the premise and a summary. None
+    for a case without a process."""
+    graph, data, facts, weak, flagged, points, contra = _context(state, result, items, events, marks)
     if not graph:
         return None
     case_facts = (state or {}).get("facts") or {}
@@ -378,31 +515,27 @@ def build(state, result, items, files, events, marks):
     a5 = act.get("action") == "A5" and (act.get("form") or "A5") == "A5"
     premise_action = act.get("premise") or None
     questions = [i for i in items or () if i["kind"] == "customer_question"]
-    claims = claims_of(result)
+    claims = claims_of(result, files, acc)
     lines_state = ticked(events)
     by_point = {p["id"]: p for p in points}
 
-    # options, proposal, adoption
-    intents = {q.get("intent") for q in questions if q.get("intent")}
-    evaluated = options.evaluate(data, facts, weak, flagged, marks, intents=intents, area_id=area_id) if data else []
+    # options, proposal, adoption; an option a question triggers only when the question asks for it (not «keine Hinterlegung»)
+    intents = {q.get("intent") for q in questions if q.get("intent") and q.get("wants", True)}
+    evaluated = options.evaluate(data, facts, weak, flagged, marks, intents=intents, area_id=area_id, claims=claims) if data else []
     by_option = {e["id"]: e for e in evaluated}
     proposal = options.proposal(data, facts, evaluated) if data else []
     decided = adoption_of(events)
     adopted, chosen, lapse = None, [], None
-    if decided and data:
-        picked = decided.get("chosen")
-        if picked == PROSPECTS_LOW:
-            adopted = {"chosen": PROSPECTS_LOW, "proposal": decided.get("proposal") or [], "by": decided.get("expert"), "at": decided.get("at"), "valid": True}
-        else:
-            picked = [x for x in picked or () if isinstance(x, str)]
-            failing = [x for x in picked if (by_option.get(x) or {}).get("state") != "holds" or (by_option.get(x) or {}).get("held")]
-            if failing:
-                lapse = f"Empfehlung erneut bestätigen: {(options.option(data, failing[0]) or {}).get('title') or failing[0]} trifft nicht mehr zu"
-            elif list(decided.get("proposal") or []) != proposal:
-                lapse = "Empfehlung erneut bestätigen: Vorschlag geändert"
-            adopted = {"chosen": picked, "proposal": decided.get("proposal") or [], "by": decided.get("expert"), "at": decided.get("at"),
-                       "valid": lapse is None, **({"lapse": lapse} if lapse else {})}
-            chosen = picked if lapse is None else []
+    if decided and data and isinstance(decided.get("chosen"), list):
+        picked = [x for x in decided.get("chosen") or () if isinstance(x, str)]
+        failing = [x for x in picked if (by_option.get(x) or {}).get("state") != "holds" or (by_option.get(x) or {}).get("held")]
+        if failing:
+            lapse = f"Empfehlung erneut bestätigen: {(options.option(data, failing[0]) or {}).get('title') or failing[0]} trifft nicht mehr zu"
+        elif list(decided.get("proposal") or []) != proposal:
+            lapse = "Empfehlung erneut bestätigen: Vorschlag geändert"
+        adopted = {"chosen": picked, "proposal": decided.get("proposal") or [], "by": decided.get("expert"), "at": decided.get("at"),
+                   "valid": lapse is None, **({"lapse": lapse} if lapse else {})}
+        chosen = picked if lapse is None else []
     used = chosen or proposal  # the letter states the adopted options, else the proposed ones
     selectable = [e for e in evaluated if e["state"] == "holds" and not e["held"]]
 
@@ -415,11 +548,19 @@ def build(state, result, items, files, events, marks):
                               "row": q.get("row"), "about": q.get("about") or [], "points": q.get("points") or [], "intent": q.get("intent"),
                               "answer": q.get("answer"), "offered": q.get("offered") or [], "evidence": q.get("evidence") or [],
                               "taken": bool(q.get("taken")), "entry": (req or {}).get("entries", [None])[0] if req else None,
-                              "request": (req or {}).get("id"), "waits_for": waits, "next": q.get("next"), "ask": q.get("waits")})
+                              "request": (req or {}).get("id"), "waits_for": waits, "next": q.get("next"), "ask": q.get("waits"),
+                              "evidence_in": q.get("evidence_in") or []})
     for extra in account_questions(acc, out_questions):
         out_questions.append({"item_id": None, "text": extra["what"], "state": "offen", "reason": "nicht beantwortet", "row": None,
                               "about": [], "points": [], "intent": None, "answer": None, "offered": [], "evidence": _evidence(extra["citations"]),
-                              "taken": False, "entry": None, "request": extra["request"], "waits_for": None, "next": None, "ask": None})
+                              "taken": False, "entry": None, "request": extra["request"], "waits_for": None, "next": None, "ask": None,
+                              "evidence_in": []})
+    pointing = {}  # option id → the question whose answer points to its residual (the judgment the receipts settle)
+    for q in out_questions:
+        nxt = q.get("next") or {}
+        option_id = nxt.get("option") or ((_answer_row(data, q["intent"]) or {}).get("next") or {}).get("option") if q.get("intent") else None
+        if option_id and q["item_id"]:
+            pointing.setdefault(option_id, q["item_id"])
 
     # residual: what the used options need, and what is still owed to us; the claim lines a conditional answer points to
     residual, seen_heads = [], set()
@@ -429,7 +570,8 @@ def build(state, result, items, files, events, marks):
         candidates = [l for oid in list(dict.fromkeys(used + [p for p in pointed if p])) for l in need_lines(data, oid, claims, items, events)]
         for r in account.open_items(acc, "kunde", account.OWED_TO_US):
             candidates.append({"key": f"residual:request.{r['request']}", "line": f"{r['what']} (erstmals verlangt am {_day(r['first']) or 'ohne Datum'})",
-                               "kind": "request", "ref": r["request"], "evidence": []})
+                               "kind": "request", "ref": r["request"], "evidence": [],
+                               "blocks": {"question": None, "option": None, "condition": None}})
         for line in candidates:
             head = account._head(line["line"])
             if line["kind"] != "claim" and (head in seen_heads or head in present_heads):
@@ -437,12 +579,61 @@ def build(state, result, items, files, events, marks):
             if line["kind"] == "claim" and flagged.wording("claim_line"):
                 line = {**line, "line": gap(f"{GAP_WHAT['claim_line']} ({reviews.IN_REVIEW})"), "held": True}
             seen_heads.add(head)
-            residual.append({**line, "ticked": lines_state.get(line["key"], True)})
-    asks = [{"key": r["key"], "what": r["line"], "kind": r["kind"], "ref": r["ref"]} for r in residual if r["ticked"]]
-    for q in questions:
+            blocks = dict(line.get("blocks") or {"question": None, "option": None, "condition": None})
+            if blocks.get("option") and not blocks.get("question"):
+                blocks["question"] = pointing.get(blocks["option"])
+            residual.append({**line, "blocks": blocks, "ticked": lines_state.get(line["key"], True)})
+    asks = [{"key": r["key"], "what": r["line"], "kind": r["kind"], "ref": r["ref"], "blocks": r["blocks"]} for r in residual if r["ticked"]]
+
+    def option_of(fact):
+        """An option open on this fact (of a wish the customer has, or of the wish the fact is), with the condition it
+        settles: (id, text)."""
+        for e in evaluated:
+            if (facts.get(e["wish"]) is True or e["wish"] == fact) and e["state"] == "open":
+                missing = _missing(e)
+                if missing and missing[0] == fact:
+                    return e["id"], missing[1] or question_of(graph, fact)
+        return None, None
+    for q in questions:  # a conditional answer waits for a fact: asked once, in the customer's words, with what it decides
         ask = q.get("waits") or {}
         if q.get("answer_state") == "bedingt" and ask.get("fact") and not any(a["key"] == f"fact:{ask['fact']}" for a in asks):
-            asks.append({"key": f"fact:{ask['fact']}", "what": ask.get("question"), "kind": "fact", "ref": ask["fact"]})
+            option_id, condition = option_of(ask["fact"])
+            asks.append({"key": f"fact:{ask['fact']}", "what": ask.get("question"), "kind": "fact", "ref": ask["fact"],
+                         "decides": f"die Antwort auf die Frage «{q.get('value')}»",
+                         "blocks": {"question": q["item_id"], "option": option_id, "condition": condition or question_of(graph, ask["fact"])}})
+
+    # a wish the customer has with no way that holds, open on a fact the file leaves open: asked with what it decides
+    open_wishes = []
+    holding_wishes = {e["wish"] for e in selectable}
+    if data and a5:
+        for w in data["wishes"]:
+            if facts.get(w["fact"]) is not True or w["fact"] in holding_wishes or w["fact"] in contra:
+                continue
+            ways = sorted([e for e in evaluated if e["wish"] == w["fact"] and e["state"] == "open" and e["propose"] and not e["held"]],
+                          key=lambda e: (-(options._count(options.option(data, e["id"]).get("observed")) or (0, 0))[0],
+                                         [o["id"] for o in data["options"]].index(e["id"])))
+            for e in ways:
+                missing = _missing(e)
+                if not missing:
+                    continue
+                fact, condition = missing
+                direct, indirect = customer_ask(data, flagged, fact, question_of(graph, fact))  # without the area's wording (held
+                aim = options.aim(data, e["id"])  # by a jurist) the letter keeps a gap for it: no question is invented
+                open_wishes.append({"wish": w["fact"], "option": e["id"], "fact": fact, "frage": direct, "ob": indirect, "folge": aim})
+                key = f"fact:{fact}"
+                blocks = {"question": next((q["item_id"] for q in questions if fact in ((by_point.get((q.get("points") or [None])[0]) or {}).get("facts") or ())), None),
+                          "option": e["id"], "condition": condition or question_of(graph, fact)}
+                existing = next((a for a in asks if a["key"] == key), None)
+                if existing:
+                    existing.setdefault("decides", f"ob wir Ihnen empfehlen, {aim}")
+                    existing["blocks"] = {**blocks, **{k: v for k, v in existing["blocks"].items() if v}}
+                else:
+                    asks.append({"key": key, "what": direct, "kind": "fact", "ref": fact, "decides": f"ob wir Ihnen empfehlen, {aim}",
+                                 "blocks": blocks})
+                break
+    for a in asks:
+        if a["kind"] == "fact":
+            a["branches"] = _branches(data, facts, weak, flagged, marks, intents, claims, area_id, a["ref"], values_of(graph, a["ref"])) if data else []
 
     # the premise the letter rests on
     premise_facts = ["deckung", "aussichten"]
@@ -463,7 +654,7 @@ def build(state, result, items, files, events, marks):
         else:
             in_case.append({"key": line_key, "text": text, "evidence": evidence})
     if data:
-        wished = [w for w in data["wishes"] if facts.get(w["fact"]) is True and stated(w["fact"], result, state)]
+        wished = [w for w in data["wishes"] if facts.get(w["fact"]) is True and stated(w["fact"], result, state, contra)]
         if wished:
             say("wish", data["wording"]["wish"].replace("{wuensche}", options.joined([w["text"] for w in wished])),
                 [e for w in wished for e in fact_evidence(w["fact"], result, state)][:3], "wish")
@@ -475,7 +666,7 @@ def build(state, result, items, files, events, marks):
         wanted = list(dict.fromkeys(premise_facts))
         for line in data["case_lines"]:
             fact = line["fact"]
-            if fact not in wanted or not stated(fact, result, state):
+            if fact not in wanted or not stated(fact, result, state, contra):
                 continue
             cond = {k: line[k] for k in ("fact", "is", "in", "known") if k in line}
             from .workflows import evaluate_condition
@@ -492,7 +683,10 @@ def build(state, result, items, files, events, marks):
                     continue  # the day the customer said it is not known: not stated with a date it does not have
                 text = text.replace("{datum}", when)
             in_case.append({"key": f"fall.{line['id']}", "text": text, "evidence": evidence, "fact": fact})
-        named = [c for c in claims if c.get("checked")]
+        # the costs claimed, while the customer still wants them compensated (a withdrawn claim is not stated)
+        live = any(facts.get(o["wish"]) is True and o["wish"] not in contra for o in data["options"]
+                   if any(n.get("names_claim") for n in o.get("needs") or ()))
+        named = [c for c in claims if c.get("checked")] if live else []
         if named:
             items_text = [c["what"] + (data["wording"]["claim_amount"].replace("{betrag}", c["amount"]) if c.get("amount") and not flagged.wording("claim_amount") else "")
                           for c in named]
@@ -525,11 +719,15 @@ def build(state, result, items, files, events, marks):
                 same["options"].append(e["id"])
                 continue
             fact = c["fact"]
+            if c.get("settled_by") == "claims":  # the receipts of the claimed costs: their quotes, the receipt's once it documents them
+                evidence = [x for k in claims if k.get("checked") for x in _evidence((k.get("receipt") or [])[:1] if k.get("documented") else k.get("citations"))][:3]
+            else:
+                evidence = fact_evidence(fact, result, state, data) if fact else []
             rule["conditions"].append({"text": c["text"], "kind": c["kind"], "fact": fact, "question": question_of(graph, fact) if fact else None,
-                                       "value": facts.get(fact) if fact else None, "state": c["state"],
-                                       "evidence": fact_evidence(fact, result, state, data) if fact else [],
+                                       "value": facts.get(fact) if fact else None, "state": c["state"], "evidence": evidence,
                                        "read": read_of(_source_fact(fact, case_facts, data), result, state) if fact else None,
-                                       "options": [e["id"]]})
+                                       "settled_by": c.get("settled_by"), "options": [e["id"]],
+                                       **({"contradicted": contra[fact]} if fact in contra else {})})
     definitions = {f["id"]: f for f in graph.get("facts") or ()}
     whens = {p["id"]: p["when"] for p in graph.get("key_points") or ()}
     for q in questions:  # the conditions of the rule each tagged point states, one per fact it names
@@ -544,7 +742,7 @@ def build(state, result, items, files, events, marks):
                  "read": read_of(_source_fact(leaf["fact"], case_facts, data), result, state)} for leaf in _leaves(whens.get(pid))]}
             rules.append(by_rule[key])
 
-    # the options as the brief shows them
+    # the options as the brief shows them, each wish's proposal with what it rests on «unter Vorbehalt», and its alternative
     shown = []
     for e in evaluated:
         if facts.get(e["wish"]) is not True and e["id"] not in used:
@@ -552,15 +750,31 @@ def build(state, result, items, files, events, marks):
         spec = options.option(data, e["id"])
         refs = [r for part in spec["advice"] for r in part.get("law") or ()]
         template = all(enclosed(items, events, p["with_template"]) for p in spec["advice"] if p.get("with_template"))
+        reserve = [{"fact": x["fact"], "question": question_of(graph, x["fact"]), "condition": x.get("text") or question_of(graph, x["fact"]),
+                    "state": x["state"]} for x in e["triggers"] + e["conditions"] if x["state"] == "vermutet" and x["fact"]]
         shown.append({**{k: e[k] for k in ("id", "title", "wish", "state", "weak", "review", "observed", "practice", "propose", "held", "why_not")},
                       "cite": options.cite(refs, data, graph), "law": options.rows(refs, data, graph),
                       "advice": options.advice_text(data, graph, e["id"], template=template, weak=e["weak"]),
                       "needs": [n["document"] for n in spec.get("needs") or ()], "changes_if": spec.get("changes_if") or [],
-                      "conditions": e["conditions"], "triggers": e["triggers"], "proposed": e["id"] in proposal, "chosen": e["id"] in chosen})
+                      "conditions": e["conditions"], "triggers": e["triggers"], "proposed": e["id"] in proposal, "chosen": e["id"] in chosen,
+                      "reserve": reserve, "missing": (lambda m: {"fact": m[0], "condition": m[1] or question_of(graph, m[0])} if m else None)(_missing(e))
+                      if e["state"] == "open" else None})
+    alternatives = []
+    for oid in used:
+        first = by_option.get(oid)
+        if not first:
+            continue
+        for e in evaluated:
+            if e["wish"] != first["wish"] or e["id"] in used or e["state"] == "fails":
+                continue
+            why = (e.get("why_not") if e["state"] == "holds" and not e["propose"] else
+                   f"in Prüfung ({e['review']})" if e["held"] else
+                   f"offen: {(_missing(e) or (None, None))[1] or next((c['text'] for c in e['conditions'] if c['state'] == 'nicht geprüft' and c['kind'] == 'vorher'), '')}")
+            alternatives.append({"to": oid, "id": e["id"], "title": e["title"], "state": e["state"], "selectable": e["state"] == "holds" and not e["held"],
+                                 "why": why, "practice": e["practice"], "review": e["review"]})
 
     # what would change it
     changes, seen = [], set()
-    holding_wishes = {e["wish"] for e in selectable}
     sources = [e for e in evaluated if e["id"] in used] + [e for e in evaluated if facts.get(e["wish"]) is True and e["wish"] not in holding_wishes
                                                             and e["state"] == "open"]
     for e in sources:
@@ -580,12 +794,52 @@ def build(state, result, items, files, events, marks):
                     seen.add(text)
                     changes.append({"condition": text, "option": e["id"]})
 
+    # the facts that decide the prepared answers and the recommendation, each with its source and how it came: the few the
+    # handler checks instead of the whole file (new from the latest arrival, set by the handler, or read once)
+    newly = set(((result or {}).get("update") or {}).get("facts") or ())
+    deciding, shown_facts = [], set()
+    for fact in dict.fromkeys(f for f in premise_facts if f not in ("deckung", "aussichten")):
+        source = _source_fact(fact, case_facts, data)
+        if source in shown_facts or (facts.get(fact) is None and fact not in weak):
+            continue
+        shown_facts.add(source)
+        state_now = ("widersprüchlich" if weak.get(source) == "conflicting" else "vermutet" if weak.get(source) else "erfüllt")
+        deciding.append({"fact": source, "question": question_of(graph, source), "value": facts.get(source), "state": state_now,
+                         "read": read_of(source, result, state), "evidence": fact_evidence(source, result, state, data)[:1],
+                         "changed": "korrigiert" if source in ((state or {}).get("overrides") or {}) else "neu" if source in newly else None,
+                         "values": values_of(graph, source), **({"contradicted": contra[source]} if source in contra else {})})
+
+    # what the latest arrival settled: a receipt that documents a claimed cost, a fact the residual or an answer waited for
+    resolved = []
+    if data:
+        for c in claims:
+            if not (c.get("checked") and c.get("documented")):
+                continue
+            option_id = next((o["id"] for o in data["options"] if any(n.get("names_claim") for n in o.get("needs") or ())), None)
+            now = {"option": (by_option.get(option_id) or {}).get("state"), "condition": "erfüllt",
+                   "question": next((q["state"] for q in out_questions if q["item_id"] == pointing.get(option_id)), None)}
+            resolved.append({"key": f"residual:claim.{c['i']}", "line": data["wording"]["claim_line"].replace("{posten}", c["what"]),
+                             "by": _evidence((c.get("receipt") or [])[:1]) or ([{"file": c["held"].get("file")}] if c.get("held") else []),
+                             "blocks": {"question": pointing.get(option_id), "option": option_id, "condition": evidence_condition(data, option_id)},
+                             "now": now})
+        for d in deciding:
+            if d["changed"] != "neu":
+                continue
+            related = {d["fact"], *options.implies(d["fact"], data)}  # the fact and what the file settles by it
+            question = next((q for q in out_questions if q["item_id"]
+                             and related & {f for pid in q["points"] for f in (by_point.get(pid) or {}).get("facts") or ()}), None)
+            option = next((e for e in evaluated if e["id"] in used and related & set(_option_facts(data, e["id"], case_facts))), None)
+            resolved.append({"key": f"fact:{d['fact']}", "line": d["question"], "value": d["value"], "by": d["evidence"],
+                             "blocks": {"question": (question or {}).get("item_id"), "option": (option or {}).get("id"),
+                                        "condition": d["question"]},
+                             "now": {"question": (question or {}).get("state"), "option": (option or {}).get("state"), "condition": d["state"]}})
+
     # the letter's parts: only an assessment of an area with an options file
     letter = None
     if data and a5:
         im_fall = "\n".join(l["text"] for l in in_case) if in_case else None
         zu_fragen = _zu_fragen(out_questions)
-        empfehlung = _recommendation(data, graph, used, by_option, items, events, flagged)
+        empfehlung = _recommendation(data, graph, used, by_option, items, events, flagged, case_facts, open_wishes)
         if acc is not None:
             ticked_lines = [r["line"] for r in residual if r["ticked"]]
             nachzureichen = "\n".join(["Bitte reichen Sie uns noch nach:"] + [f"– {l}" for l in ticked_lines]) if ticked_lines else ""
@@ -593,12 +847,14 @@ def build(state, result, items, files, events, marks):
             nachzureichen = None  # a run without the account: the documents still asked, as before
         letter = {"im_fall": im_fall, "zu_fragen": zu_fragen, "empfehlung": empfehlung, "nachzureichen": nachzureichen}
 
-    # decisions that block the approval
+    # decisions that block the approval: the cover (while the assessment rests on it), the recommendation, the prospects
     blocking = []
     if a5 and premise_action and case_facts.get("deckung") in (None, "offen"):
         blocking.append({"kind": "decision", "key": "deckung", "text": "Deckung"})
-    if a5 and data and selectable and not chosen and not (adopted and adopted.get("chosen") == PROSPECTS_LOW):
+    if a5 and data and selectable and not chosen:
         blocking.append({"kind": "decision", "key": "empfehlung", "text": lapse or "Empfehlung übernehmen"})
+    if a5 and case_facts.get("aussichten") in UNJUDGED:
+        blocking.append({"kind": "decision", "key": "aussichten", "text": PROSPECTS})
 
     premise = {f: facts.get(f) if f not in ("deckung", "aussichten") else case_facts.get(f) for f in dict.fromkeys(premise_facts)}
     for line in in_case:
@@ -615,15 +871,20 @@ def build(state, result, items, files, events, marks):
     review_states = [by_option[x]["review"] for x in used if x in by_option]
     return {"area": area_id, "has_options": bool(data), "assessment": a5, "under_premise": bool(a5 and premise_action),
             "premise_action": premise_action,
-            "wishes": [{"fact": w["fact"], "text": w["text"], "evidence": fact_evidence(w["fact"], result, state)}
+            "wishes": [{"fact": w["fact"], "text": w["text"], "evidence": fact_evidence(w["fact"], result, state),
+                        **({"contradicted": contra[w["fact"]]} if w["fact"] in contra else {})}
                        for w in (data or {}).get("wishes") or () if facts.get(w["fact"]) is True],
             "questions": out_questions, "rules": [r for r in rules if r["conditions"]], "options": shown,
-            "proposal": proposal, "adopted": adopted, "chosen": chosen, "options_sha256": options.sha256(area_id) if data else None,
+            "proposal": proposal, "alternatives": alternatives, "adopted": adopted, "chosen": chosen,
+            "options_sha256": options.sha256(area_id) if data else None,
             "options_version": (data or {}).get("version"), "review": options.weakest(review_states) if review_states else None,
-            "changes_if": changes, "residual": residual, "asks": asks, "in_case": in_case, "letter": letter, "blocking": blocking,
+            "changes_if": changes, "residual": residual, "asks": asks, "open_wishes": open_wishes, "resolved": resolved,
+            "deciding": deciding, "contradicted": contra, "in_case": in_case, "letter": letter, "blocking": blocking,
             "premise": premise, "candidates": candidates, "label": (data or {}).get("label"),
             "summary": {"answered": states.count("beantwortet"), "conditional": states.count("bedingt"), "open": states.count("offen"),
-                        "check": states.count("pruefen"), "proposal": titles, "residual": sum(1 for r in residual if r["ticked"])}}
+                        "check": states.count("pruefen"), "proposal": titles, "residual": sum(1 for r in residual if r["ticked"]),
+                        "asked": sum(1 for a in asks if a["kind"] == "fact"), "resolved": len(resolved),
+                        "decisions": [b["key"] for b in blocking if b["kind"] == "decision"]}}
 
 
 def _source_fact(fact, facts, data):
@@ -645,18 +906,20 @@ def _leaves(condition):
 
 def _leaf_state(leaf, facts, weak):
     from .workflows import evaluate_condition
+    if weak.get(leaf["fact"]) == "conflicting":
+        return "widersprüchlich"
     if facts.get(leaf["fact"]) is None and "known" not in leaf:
-        return "widersprüchlich" if weak.get(leaf["fact"]) == "conflicting" else "offen"
+        return "offen"
     holds = evaluate_condition(leaf, facts)
     return "nicht erfüllt" if holds is False else "vermutet" if weak.get(leaf["fact"]) else "erfüllt"
 
 
 def _fact_day(fact, result, state, acc):
-    """The day the customer said what a fact holds: the date of the document its quote comes from; the day the handler
-    set it for a fact the handler set."""
+    """The day the customer said what a fact holds: the date of the document its quote comes from. A fact the handler set
+    (the state knows its edit, not its day) has no such date: its line is not stated with one."""
     edit = ((state or {}).get("overrides") or {}).get(fact)
     if edit:
-        return _day(str(edit.get("at") or "")[:10])
+        return _day(str(edit.get("at") or "")[:10]) if isinstance(edit, dict) else None
     for cite in (fact_rows(result).get(fact) or {}).get("citations") or ():
         day = quoted_day(cite, acc)
         if day:
@@ -704,11 +967,21 @@ def _zu_fragen(questions):
     return "\n".join(["Zu Ihren Fragen:"] + [f"– {options.joined([f'«{t}»' for t in row['texts']])}: {row['answer']}" for row in lines])
 
 
-def _recommendation(data, graph, used, by_option, items, events, flagged):
+def _recommendation(data, graph, used, by_option, items, events, flagged, facts, open_wishes=()):
     """The recommendation as it follows «Wir empfehlen Ihnen, »: the first option's advice, then «Zudem empfehlen wir
-    Ihnen, » and the next, ending with a full stop; the gap when there is none."""
+    Ihnen, » and the next, ending with a full stop; then what it rests on (the facts that would change it, each in its
+    «sofern» words) and, for a wish no way holds for yet, the question that decides it with what it decides. Without a way
+    that holds: the question first («uns mitzuteilen, …; davon hängt ab, …»), else the gap."""
+    def asked(row, key):
+        if flagged.wording(key) or not row.get("ob"):
+            return gap(f"{GAP_WHAT[key]} ({reviews.IN_REVIEW})")
+        return data["wording"][key].replace("{frage}", row["ob"]).replace("{folge}", row["folge"])
     if not used:
-        return gap(RECOMMENDATION)
+        if not open_wishes:
+            return gap(RECOMMENDATION)
+        first, rest = open_wishes[0], open_wishes[1:]
+        text = _sentence(asked(first, "open_only"))
+        return " ".join([text] + [_sentence(asked(row, "open_wish")) for row in rest])
     texts = []
     for oid in used:
         spec = options.option(data, oid)
@@ -718,4 +991,21 @@ def _recommendation(data, graph, used, by_option, items, events, flagged):
     for text in texts[1:]:
         join = gap(f"{GAP_WHAT['join']} ({reviews.IN_REVIEW})") + " " if flagged.wording("join") else data["wording"]["join"]
         out = f"{_sentence(out)} {join}{text}"
-    return _sentence(out)
+    out = _sentence(out)
+    wishes = {w["fact"] for w in data["wishes"]}
+    resting = []  # the facts of the case the recommendation rests on, as they hold now (never a wish: that is the customer's)
+    for oid in used:
+        for entry in (options.option(data, oid) or {}).get("changes_if") or ():
+            if ":" in entry or entry in wishes or entry not in data["sofern"] or facts.get(entry) is None:
+                continue
+            weak = (by_option.get(oid) or {}).get("weak") or ()
+            if entry in weak:
+                continue  # already said «sofern …» in the advice
+            resting.append(data["sofern"][entry])
+    resting = list(dict.fromkeys(resting))
+    if resting:
+        out += " " + (gap(f"{GAP_WHAT['changes']} ({reviews.IN_REVIEW})") if flagged.wording("changes")
+                      else data["wording"]["changes"].replace("{bedingung}", options.joined(resting)))
+    for row in open_wishes:
+        out += " " + _sentence(asked(row, "open_wish"))
+    return out

@@ -1,7 +1,7 @@
 {
  "format": "casepath.options/1",
  "area": "mietmangel-handler",
- "version": "2026-11-15.1",
+ "version": "2026-11-15.2",
  "status": "draft",
  "label": "aus Gesetz und Praxis abgeleitet, noch nicht freigegeben",
  "law": {
@@ -16,11 +16,21 @@
   {"when": {"fact": "maengelruege_schriftlich", "is": true}, "then": {"fact": "mangel_gemeldet", "is": true}}
  ],
  "wishes": [
-  {"fact": "will_beseitigung", "text": "die Beseitigung des Mangels"},
-  {"fact": "will_reduktion", "text": "eine Herabsetzung des Mietzinses"},
-  {"fact": "will_schadenersatz", "text": "den Ersatz Ihrer Kosten und Schäden"},
-  {"fact": "will_auszug", "text": "einen vorzeitigen Auszug"}
+  {"fact": "will_beseitigung", "text": "die Beseitigung des Mangels", "stems": ["beseitig", "beheb", "entfern", "reparier", "sanier"]},
+  {"fact": "will_reduktion", "text": "eine Herabsetzung des Mietzinses", "stems": ["reduktion", "herabsetz", "reduzier", "minderung"]},
+  {"fact": "will_schadenersatz", "text": "den Ersatz Ihrer Kosten und Schäden", "stems": ["ersatz", "ersetz", "erstatt", "vergüt", "entschädig"]},
+  {"fact": "will_auszug", "text": "einen vorzeitigen Auszug", "stems": ["auszieh", "auszug", "kündig"]}
  ],
+ "asks": {
+  "mangel_besteht": {"frage": "Besteht der Mangel heute noch?", "ob": "ob der Mangel heute noch besteht"},
+  "reaktion_vermieter": {"frage": "Wie hat die Vermieterschaft auf Ihre Meldung reagiert?", "ob": "wie die Vermieterschaft auf Ihre Meldung reagiert hat"},
+  "maengelruege_schriftlich": {"frage": "Haben Sie der Vermieterschaft den Mangel schriftlich gemeldet, und wenn ja, wann?", "ob": "ob und wann Sie der Vermieterschaft den Mangel schriftlich gemeldet haben"},
+  "mangel_gemeldet": {"frage": "Haben Sie der Vermieterschaft den Mangel gemeldet, und wenn ja, wann und wie?", "ob": "ob, wann und wie Sie der Vermieterschaft den Mangel gemeldet haben"},
+  "will_beseitigung": {"frage": "Möchten Sie, dass die Vermieterschaft den Mangel beseitigt?", "ob": "ob Sie möchten, dass die Vermieterschaft den Mangel beseitigt"},
+  "will_reduktion": {"frage": "Möchten Sie eine Herabsetzung des Mietzinses verlangen?", "ob": "ob Sie eine Herabsetzung des Mietzinses verlangen möchten"},
+  "will_schadenersatz": {"frage": "Möchten Sie Ersatz für Kosten oder Schäden verlangen, die Ihnen der Mangel verursacht hat?", "ob": "ob Sie Ersatz für Kosten oder Schäden verlangen möchten, die Ihnen der Mangel verursacht hat"},
+  "will_auszug": {"frage": "Möchten Sie die Wohnung wegen des Mangels vorzeitig verlassen?", "ob": "ob Sie die Wohnung wegen des Mangels vorzeitig verlassen möchten"}
+ },
  "case_lines": [
   {"id": "ruege", "fact": "maengelruege_schriftlich", "is": true, "text": "Sie haben den Mangel der Vermieterschaft schriftlich gemeldet."},
   {"id": "ruege_fehlt", "fact": "maengelruege_schriftlich", "is": false, "text": "Sie haben den Mangel der Vermieterschaft bisher nicht schriftlich gemeldet."},
@@ -40,7 +50,10 @@
   "claim_line": "Belege zu: {posten}",
   "join": "Zudem empfehlen wir Ihnen, ",
   "conditional": "Das hängt noch von einer Angabe ab; bitte teilen Sie uns mit: {frage}",
-  "discuss": "Wir empfehlen Ihnen, das vorher mit uns zu besprechen."
+  "discuss": "Wir empfehlen Ihnen, das vorher mit uns zu besprechen.",
+  "changes": "Unsere Empfehlung beruht darauf, dass {bedingung}; ändert sich daran etwas, teilen Sie uns das bitte mit.",
+  "open_wish": "Bitte teilen Sie uns zudem mit, {frage}; davon hängt ab, ob wir Ihnen empfehlen, {folge}.",
+  "open_only": "uns mitzuteilen, {frage}; davon hängt ab, ob wir Ihnen empfehlen, {folge}"
  },
  "sofern": {
   "mangel_besteht": "der Mangel weiterhin besteht",
@@ -73,7 +86,8 @@
    {"text": "Wir empfehlen Ihnen, den Mietzins bis dahin nicht eigenmächtig zu kürzen.", "basis": "prudence"}]},
   {"points": ["schadenersatz"], "intent": "ersatz", "stems": ["ersetz", "ersatz", "erstatt", "vergüt", "entschädig", "übernimmt", "übernommen"], "state": "bedingt", "next": {"kind": "residual", "option": "schadenersatz"}, "parts": [
    {"text": "Hat Ihnen der Mangel einen Schaden verursacht, muss die Vermieterschaft Ihnen dafür Ersatz leisten, wenn sie nicht beweist, dass sie kein Verschulden trifft", "law": ["law#259e"], "requires": ["schaden", "ersatz", "verschulden"]},
-   {"text": "Wir empfehlen Ihnen, die Kosten mit Belegen nachzuweisen; welche uns noch fehlen, steht unten.", "basis": "prudence", "with_residual": true}]},
+   {"text": "Wir empfehlen Ihnen, die Kosten mit Belegen nachzuweisen; welche uns noch fehlen, steht unten.", "basis": "prudence", "with_residual": true},
+   {"text": "Die Belege zu Ihren Kosten liegen uns vor.", "plain": true, "with_documented": true}]},
   {"points": ["meldung"], "intent": "melden", "stems": ["meld", "rüge", "rügen", "mitteil", "informier"], "state": "beantwortet", "parts": [
    {"follows": "meldung", "law": ["law#257g"], "requires": ["melden"]}]},
   {"points": ["kuendigung"], "intent": "ausziehen", "stems": ["auszieh", "kündig", "auszug"], "state": "bedingt", "next": {"kind": "discuss"}, "parts": [
@@ -109,7 +123,8 @@
   {"id": "schadenersatz", "title": "Kosten belegen und Ersatz verlangen", "wish": "will_schadenersatz", "when": [],
    "conditions": [
     {"text": "Schaden durch den Mangel", "kind": "anspruch", "law": ["law#259e"], "requires": ["Schaden"]},
-    {"text": "kein Entlastungsbeweis der Vermieterschaft", "kind": "anspruch", "law": ["law#259e"], "requires": ["Verschulden"]}],
+    {"text": "kein Entlastungsbeweis der Vermieterschaft", "kind": "anspruch", "law": ["law#259e"], "requires": ["Verschulden"]},
+    {"text": "Kosten mit Belegen nachgewiesen", "kind": "anspruch", "evidence": "claims", "law": ["law#259e"], "requires": ["Schaden"]}],
    "advice": [
     {"text": "Ihre Kosten mit Belegen zu beziffern, damit der Ersatz bei der Vermieterschaft verlangt werden kann", "basis": "prudence"},
     {"text": "; die Vermieterschaft muss Ihnen den Schaden aus dem Mangel ersetzen, wenn sie nicht beweist, dass sie kein Verschulden trifft", "law": ["law#259e"], "requires": ["Schaden", "Verschulden"]}],

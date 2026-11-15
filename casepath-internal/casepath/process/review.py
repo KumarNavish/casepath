@@ -343,7 +343,9 @@ class Model:
 
     WORDING_TITLES = {"wish": "Was die Kundschaft möchte", "replies_all": "Antworten auf alle Fragen", "replies_some": "Antworten auf einen Teil der Fragen",
                       "claims": "Geltend gemachte Kosten", "claim_amount": "Betrag nach Angaben der Kundschaft", "claim_line": "Nachzureichende Belege",
-                      "join": "Weitere Empfehlung", "conditional": "Antwort, die von einer Angabe abhängt", "discuss": "Vorher besprechen"}
+                      "join": "Weitere Empfehlung", "conditional": "Antwort, die von einer Angabe abhängt", "discuss": "Vorher besprechen",
+                      "changes": "Worauf die Empfehlung beruht", "open_wish": "Offener Wunsch: Frage und was sie entscheidet",
+                      "open_only": "Nur offene Wünsche: Frage und was sie entscheidet"}
 
     def _options(self, m, facts, cond, law, laws):
         """The area's options file (options.py), each element beside its passages: a recommendation with when it applies, its
@@ -397,6 +399,10 @@ class Model:
             text = "\n".join(f"{'eine Nachricht' if k == 'one' else 'mehrere'}: {v}" for k, v in value.items()) if isinstance(value, dict) else value
             self._add(wid, f"wortlaut.{key}", "wortlaut", self.WORDING_TITLES.get(key, key), [("Wortlaut", text, isinstance(value, dict))],
                       {"key": key, "wording": value})
+        for fact, ask in (data.get("asks") or {}).items():  # the question to the customer when the file leaves a fact open
+            self._add(wid, f"rueckfrage.{fact}", "fragen", ask["frage"], [
+                ("Gefragt, wenn", f"«{_short((facts.get(fact) or {}).get('question') or fact)}» offen ist und eine Antwort oder Empfehlung davon abhängt"),
+                ("Im Satz", ask["ob"])], {"fact": fact, "ask": ask})
 
     def _backbone(self):
         area, bb = self.area, self.bb
@@ -681,6 +687,10 @@ class Flags:
 
     def wording(self, key):
         return self._held(f"wortlaut.{key}")
+
+    def ask(self, fact):
+        """The options file's question to the customer for a fact, under a jurist's «Änderung nötig» or «Frage»."""
+        return self._held(f"rueckfrage.{fact}")
 
     def deadline(self, deadline_id):
         d = next((x for x in self.graph.get("deadlines") or () if x["id"] == deadline_id), None)

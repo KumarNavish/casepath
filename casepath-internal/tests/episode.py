@@ -329,7 +329,7 @@ def analog(d0=D0, names=None, dated_request=False):
         asked_in = [fb, fb, fc]
         tags = [["hinterlegung"], ["hinterlegung"], ["schadenersatz"]]  # the reader's tags: the rule each question asks about
         claims_b = [claim("Stromkosten für den Bautrockner", "Die Stromkosten für den Bautrockner von rund CHF 85 möchte ich ersetzt haben.",
-                          amount="CHF 85", file=fc)]
+                          amount="CHF 85", file=fc, kind="Energie")]
     else:
         body_1 = (f"Guten Tag\n\nGerne beantworte ich Ihre Rückfrage vom {dotted(day(16))}.\nDer Schimmel ist immer noch da. Auf meine letzte Meldung "
                   "hat die Verwaltung nicht mehr reagiert.\nDen Mietzins zahle ich bisher vollständig. Darf ich die Miete hinterlegen?\n\n"
@@ -463,7 +463,13 @@ def branches(ns):
                   f"Betreff: Rechtliche Einschätzung {ref}",
                   asks=[ask("Belege zu: Stromkosten für den Bautrockner", "kunde", "> – Belege zu: Stromkosten für den Bautrockner")]),
             entry(first + 2, "ft", None, None, "andere", "kunde", "andere", "Stromabrechnung Bautrockner CHF 85.40", "Betrag: CHF 85.40")],
-            [], "Die Kundschaft reicht die Stromabrechnung für den Bautrockner ein.")
+            [], "Die Kundschaft reicht die Stromabrechnung für den Bautrockner ein.",
+            # the cost claimed before, in the words of the request that asked its receipts, with the bill and what it documents
+            claims=[claim("Stromkosten für den Bautrockner", "Stromabrechnung anbei.", file="fs", kind="Energie",
+                          receipt={"file": "ft", "quote": "Betrag: CHF 85.40", "expense": "Verbrauch Bautrockner", "kind": "Energie",
+                                   "party": "Energie Beispiel AG", "payer": "kunde", "transaction": "08-4411",
+                                   "period": {"from": ns.day(6).isoformat(), "to": ns.day(34).isoformat()},
+                                   "amount": "CHF 85.40", "role": "requested"})])
 
     return {
         "B-silence": SimpleNamespace(label="B-silence", what="nothing from the customer: the case looked at A5 + 91 days", days=SILENCE_DAYS,

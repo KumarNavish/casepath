@@ -152,22 +152,34 @@ def fact_question(items, fact):
 
 def recommendation(assessment):
     """The «Empfehlung» decision of an assessment with options (assessment.build): the proposed ways with the weakest
-    review state among them, to adopt («übernehmen · Aussichten genügend»), to change among the ways that hold (the
-    selectable-only ones too, each with its practice count and review state), or the prospects judged insufficient. None
-    when nothing is to adopt (no way holds), or the adoption holds."""
+    review state among them and what they rest on «unter Vorbehalt», to adopt («übernehmen») or to change among the ways
+    that hold, one per wish (the selectable-only ones too, each with its practice count and review state). The prospects
+    of success are a decision of their own (``prospects``). None when nothing is to adopt (no way holds), or the adoption
+    holds."""
     a = assessment or {}
     if not (a.get("has_options") and a.get("assessment")) or not any(b["key"] == "empfehlung" for b in a.get("blocking") or ()):
         return None
     titles = {o["id"]: o["title"] for o in a.get("options") or ()}
     shown = [titles.get(x, x) for x in a.get("proposal") or ()]
     lapse = next((b["text"] for b in a["blocking"] if b["key"] == "empfehlung" and b["text"] != "Empfehlung übernehmen"), None)
-    holding = [{k: o[k] for k in ("id", "title", "practice", "review", "propose", "weak", "why_not")} | {"proposed": o["id"] in a["proposal"]}
+    holding = [{k: o[k] for k in ("id", "title", "wish", "practice", "review", "propose", "weak", "why_not", "reserve")} | {"proposed": o["id"] in a["proposal"]}
                for o in a.get("options") or () if o["state"] == "holds" and not o["held"]]
+    reserve = [r["condition"] for o in a.get("options") or () if o["id"] in (a.get("proposal") or ()) for r in o.get("reserve") or ()]
     review = a.get("review") or "nicht juristisch geprüft"
     return {"key": "empfehlung", "question": f"Empfehlung: {' · '.join(shown)}" if shown else "Empfehlung wählen", "review": review,
-            "detail": review, "lapse": lapse, "proposal": list(a.get("proposal") or []), "options": holding,
-            "answers": ([{"label": "übernehmen · Aussichten genügend", "adopt": True}] if shown else [])
-            + [{"label": "ändern", "change": True}, {"label": "Aussichten nicht genügend", "low": True}]}
+            "detail": review + (f" · unter Vorbehalt: {'; '.join(dict.fromkeys(reserve))}" if reserve else ""), "lapse": lapse,
+            "reserve": list(dict.fromkeys(reserve)), "proposal": list(a.get("proposal") or []), "options": holding,
+            "alternatives": list(a.get("alternatives") or []),
+            "answers": ([{"label": "übernehmen", "adopt": True}] if shown else []) + [{"label": "ändern", "change": True}]}
+
+
+def prospects(items):
+    """The prospects decision (Art. 169 AVO, cover.json): its own question, basis and consequence; «nicht genügend»
+    prepares the refusal for lack of prospects instead of the assessment."""
+    check = next((i for i in items if i["kind"] == "check" and i["key"] == "aussichten"), None) or {}
+    return {"key": "aussichten", "question": "Erfolgsaussichten", "detail": check.get("legal_basis"), "law": check.get("law"),
+            "consequence": check.get("text"),
+            "answers": [{"label": "genügend", "decide": "aussichten", "value": "genügend"}, {"label": "nicht genügend", "decide": "aussichten", "value": "nicht genügend"}]}
 
 
 def decision(items, draft, stage, routing=None, assessment=None):
@@ -175,7 +187,7 @@ def decision(items, draft, stage, routing=None, assessment=None):
     never asked again (cover at the mandate, the way to proceed once the case is past it); the cover check never at intake.
     An assessment prepared on the premise of the cover (the action's ``premise``) asks the cover at «klären» too: it is
     what the assessment waits for. ``assessment``: the prepared action's decision brief (assessment.build): where the area
-    has options, the «Empfehlung» stands for the prospects decision."""
+    has options, the «Empfehlung» comes before the prospects decision, each its own."""
     act = next((i for i in items if i["kind"] == "next_action"), None) or {}
     needs = list((draft or {}).get("needs") or ())
     premise = bool(act.get("premise"))
@@ -198,21 +210,21 @@ def decision(items, draft, stage, routing=None, assessment=None):
         words = {"bestätigt": "bestätigen", "abgelehnt": "ablehnen", "ja": "Ja", "nein": "Nein", True: "Ja", False: "Nein"}
         return {"key": fact, "question": fact_question(items, fact),
                 "answers": [{"label": words.get(v, str(v)), "decide": fact, "value": v} for v in values if v != "offen"]}
-    prospects = next((i for i in items if i["kind"] == "check" and i["key"] == "aussichten"), None)
-    if prospects and act.get("action") == "A5" and answered(items, "aussichten") is None:
-        if stage not in LATE_STAGES and answered(items, "deckung") is None and (stage not in ("eingang", "klaeren") or premise):
+    check = next((i for i in items if i["kind"] == "check" and i["key"] == "aussichten"), None)
+    if check and act.get("action") == "A5":
+        # the assessment's decisions, one at a time: the cover (while the assessment rests on it), the recommendation (where
+        # the area has options: adopt or change; again when an adopted way no longer holds), then the prospects of the way
+        # chosen («Hat das Vorgehen genügend Aussicht auf Erfolg?»), each with its own basis; they can differ
+        adopt = recommendation(assessment)
+        unjudged = answered(items, "aussichten") in (None, "noch nicht beurteilt")
+        if (adopt or unjudged) and stage not in LATE_STAGES and answered(items, "deckung") is None and (stage not in ("eingang", "klaeren") or premise):
             summary = next((i for i in items if i["kind"] == "cover" and i["key"] == "summary"), None)
             return {"key": "deckung", "question": "Deckung", "detail": (summary or {}).get("value", "").replace("Deckung: ", ""),
                     "answers": [{"label": "bestätigen", "decide": "deckung", "value": "bestätigt"}, {"label": "ablehnen", "decline": True}]}
-        adopt = recommendation(assessment)
         if adopt:
             return adopt
-        return {"key": "aussichten", "question": "Erfolgsaussichten", "law": prospects.get("law"),
-                "answers": [{"label": "genügend", "decide": "aussichten", "value": "genügend"}, {"label": "nicht genügend", "decide": "aussichten", "value": "nicht genügend"}]}
-    if act.get("action") == "A5":  # adopted once, then a chosen way no longer holds or the proposal changed: confirm again
-        adopt = recommendation(assessment)
-        if adopt:
-            return adopt
+        if unjudged:
+            return prospects(items)
     if act.get("form") == FEE_NOTE or (draft or {}).get("form") == FEE_NOTE:
         claim = act.get("incoming") or {}
         return {"key": "kostennote", "question": "Kostennote",

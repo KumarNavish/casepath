@@ -43,10 +43,13 @@ def replied():
     return copy.deepcopy(_PREPARED["result"])
 
 
+NEUTRAL = {"file": "fb", "page": None, "start": 0, "end": 10, "quote": "Gerne beantworte ich"}
+
+
 def changed(result, facts=None, questions=None, claims=None):
     """The result with facts changed as a reading would have them: a value (established and accepted, quoted where the
-    run quoted it), {value, status} for a presumed or contradictory reading, None for unknown; the brief's questions and
-    claims replaced where given."""
+    run quoted the same value, else from the reply's first words), {value, status, quote?} for a presumed or contradictory
+    reading or a value read from given words, None for unknown; the brief's questions and claims replaced where given."""
     rows = {f["fact"]: f for f in result["facts"]}
     for name, value in (facts or {}).items():
         if value is None:
@@ -54,8 +57,9 @@ def changed(result, facts=None, questions=None, claims=None):
             continue
         spec = value if isinstance(value, dict) else {"value": value, "status": "established"}
         old = rows.get(name) or {}
-        rows[name] = {"fact": name, "status": spec["status"], "value": spec["value"],
-                      "citations": old.get("citations") or [{"file": "fb", "page": None, "start": 0, "end": 10, "quote": "Gerne beantworte ich"}],
+        same = old.get("value") == spec["value"]
+        cites = ([{**NEUTRAL, "quote": spec["quote"]}] if spec.get("quote") else old.get("citations") if same and old.get("citations") else [NEUTRAL])
+        rows[name] = {"fact": name, "status": spec["status"], "value": spec["value"], "citations": cites,
                       "verdict": "accepted" if spec["status"] == "established" else spec["status"], "by": "claim_reader"}
     result["facts"] = list(rows.values())
     if questions is not None:
@@ -68,8 +72,8 @@ def changed(result, facts=None, questions=None, claims=None):
 class Case:
     """The case as its view builds it on the A5's day: state, items, brief, the prepared letter and the decision."""
 
-    def __init__(self, result, edits=(), events=(), marks=None, day=None):
-        files = ep.looked_at(FILES, day or NS.a5_day)
+    def __init__(self, result, edits=(), events=(), marks=None, day=None, files=None):
+        files = ep.looked_at(files or FILES, day or NS.a5_day)
         self.result, self.events, self.marks = result, list(events), marks or {}
         self.state = core.evaluate(area.workflow(WID), [], list(edits), result, ep.case_row()["id"], files=files)
         self.items = build_items(self.state, result, files, self.events, self.marks)
@@ -128,11 +132,18 @@ class QuestionTests(unittest.TestCase):
     def test_a_question_whose_point_is_open_is_conditional_and_asks_the_missing_fact(self):
         case = Case(changed(replied(), facts={"will_schadenersatz": None}), DECKUNG)
         q = case.question(2)
-        customer = "Was möchten Sie erreichen (Behebung des Mangels, Mietzinsreduktion, Ersatz von Schäden oder Kosten)?"
+        # changed with the precise questions (steering, point 2): the area's own question for the open fact, in the customer's
+        # words, instead of the module's general «Was möchten Sie erreichen …?»
+        customer = "Möchten Sie Ersatz für Kosten oder Schäden verlangen, die Ihnen der Mangel verursacht hat?"
         self.assertEqual((q["state"], q["row"], q["reason"], q["ask"]["fact"]), ("bedingt", 8, customer, "will_schadenersatz"))
         self.assertIn("kein Verschulden trifft (Art. 259e OR)", q["answer"])  # what the rule says, whatever the answer
         self.assertTrue(q["answer"].endswith(f"Das hängt noch von einer Angabe ab; bitte teilen Sie uns mit: {customer}"))
-        self.assertIn({"key": "fact:will_schadenersatz", "what": customer, "kind": "fact", "ref": "will_schadenersatz"}, case.brief["asks"])
+        ask = next(a for a in case.brief["asks"] if a["key"] == "fact:will_schadenersatz")
+        self.assertEqual((ask["what"], ask["kind"], ask["ref"], ask["decides"]),
+                         (customer, "fact", "will_schadenersatz", "die Antwort auf die Frage «Werden mir die Stromkosten für den Bautrockner ersetzt?»"))
+        self.assertEqual((ask["blocks"]["question"], ask["blocks"]["option"]), ("customer_question:2", "schadenersatz"))
+        self.assertEqual([(b["value"], b["proposal"]) for b in ask["branches"]],
+                         [(True, ["Frist zur Beseitigung setzen", "Kosten belegen und Ersatz verlangen"]), (False, ["Frist zur Beseitigung setzen"])])
         self.assertIn("residual:claim.0", [a["key"] for a in case.brief["asks"]])  # the answer points to the receipts: asked below
 
     def test_a_keyword_alone_never_answers(self):
@@ -380,8 +391,11 @@ class OptionTests(unittest.TestCase):
     def test_unchecked_elements_of_259e_show_nicht_geprueft(self):
         rule = self.case.rule("259e")
         self.assertEqual(rule["cite"], "Art. 259e OR")
+        # the third condition is the evidence the residual asks for: «offen» until a receipt documents the claimed cost
         self.assertEqual([(c["text"], c["state"]) for c in rule["conditions"]],
-                         [("Schaden durch den Mangel", "nicht geprüft"), ("kein Entlastungsbeweis der Vermieterschaft", "nicht geprüft")])
+                         [("Schaden durch den Mangel", "nicht geprüft"), ("kein Entlastungsbeweis der Vermieterschaft", "nicht geprüft"),
+                          ("Kosten mit Belegen nachgewiesen", "offen")])
+        self.assertEqual(rule["conditions"][2]["evidence"][0]["quote"], "Die Stromkosten für den Bautrockner von rund CHF 85 möchte ich ersetzt haben.")
         self.assertEqual(self.case.option("schadenersatz")["state"], "holds")
 
     def test_hinterlegung_stays_open_on_its_unshown_precondition(self):
@@ -543,13 +557,14 @@ class InCaseTests(unittest.TestCase):
         receipts = NS.branches["B-receipts"].core_files()
         work = team.CaseWork(case=ep.case_row(), files=core.case_files(FILES + receipts), base_workflow=area.workflow(WID))
         quote = "Die Stromkosten für den Bautrockner von rund CHF 85 möchte ich ersetzt haben."
-        shop = {"file": "fa", "quote": "1 Schimmelentferner Spray 500 ml  CHF 18.90"}  # the shop's receipt of d+13
-        bill = {"file": "ft", "quote": "Verbrauch Bautrockner"}
+        shop = {"file": "fa", "quote": "1 Schimmelentferner Spray 500 ml  CHF 18.90", "kind": "Ersatzanschaffung", "amount": "CHF 18.90"}  # d+13
+        bill = {"file": "ft", "quote": "Verbrauch Bautrockner", "kind": "Energie", "amount": "CHF 85.40", "role": "requested"}
         brief = team._located_brief(work, {"summary": "x", "questions": [], "claims": [
-            claim("Stromkosten für den Bautrockner", quote, amount="CHF 85", receipt=shop, file="fc"),
-            claim("Stromkosten für den Bautrockner", quote, amount="CHF 85", receipt=bill, file="fc")]})
-        self.assertEqual([bool(c["receipt"]) for c in brief["claims"]], [True, True])  # both located in a file of the case
-        self.assertEqual([c["documented"] for c in brief["claims"]], [False, True])  # only the bill names the cost
+            claim("Stromkosten für den Bautrockner", quote, amount="CHF 85", receipt=shop, file="fc", kind="Energie"),
+            claim("Stromkosten für den Bautrockner", quote, amount="CHF 85", receipt=bill, file="fc", kind="Energie")]})
+        self.assertEqual([c["documented"] for c in brief["claims"]], [False, True])  # only the bill documents the cost
+        self.assertEqual([len(c["rejected"]) for c in brief["claims"]], [1, 0])  # the shop's receipt located, kept as rejected
+        self.assertEqual(brief["claims"][0]["receipt"], [])  # what account.held reads: only a receipt that documents the claim
         documented = Case(changed(replied(), claims=brief["claims"][1:]), DECKUNG)
         self.assertEqual([r for r in documented.brief["residual"] if r["kind"] == "claim"], [])
 
@@ -596,7 +611,9 @@ class InCaseTests(unittest.TestCase):
         self.assertIn("residual", __import__("casepath.process.items", fromlist=["SCREEN_KINDS"]).SCREEN_KINDS)
 
     def test_the_asks_are_the_ticked_residual_and_each_conditional_answers_fact(self):
-        self.assertEqual(self.case.brief["asks"], [{"key": "residual:claim.0", "what": "Belege zu: Stromkosten für den Bautrockner", "kind": "claim", "ref": 0}])
+        self.assertEqual(self.case.brief["asks"], [{"key": "residual:claim.0", "what": "Belege zu: Stromkosten für den Bautrockner", "kind": "claim", "ref": 0,
+                                                    "blocks": {"question": "customer_question:2", "option": "schadenersatz",
+                                                               "condition": "Kosten mit Belegen nachgewiesen"}}])
         open_ = Case(changed(replied(), facts={"mangel_besteht": None}), DECKUNG)
         keys = [a["key"] for a in open_.brief["asks"]]
         self.assertIn("fact:mangel_besteht", keys)  # the deposit's point waits for it
@@ -626,26 +643,41 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(self.decided.decision["key"], "empfehlung")
         self.assertEqual(self.decided.decision["question"], "Empfehlung: Frist zur Beseitigung setzen · Kosten belegen und Ersatz verlangen")
         self.assertEqual(self.decided.decision["review"], "nicht juristisch geprüft")
-        self.assertEqual([a["label"] for a in self.decided.decision["answers"]], ["übernehmen · Aussichten genügend", "ändern", "Aussichten nicht genügend"])
+        # the recommendation alone: the prospects are a decision of their own (steering, point 1)
+        self.assertEqual([a["label"] for a in self.decided.decision["answers"]], ["übernehmen", "ändern"])
         self.assertIn("frist_androhung", [o["id"] for o in self.decided.decision["options"]])  # the selectable-only way, under «ändern»
 
     def test_the_a5_under_the_premise_cannot_be_approved_before_the_decision(self):
-        self.assertEqual([b["key"] for b in self.before.brief["blocking"]], ["deckung", "empfehlung"])
+        self.assertEqual([b["key"] for b in self.before.brief["blocking"]], ["deckung", "empfehlung", "aussichten"])
         self.assertTrue(self.before.brief["under_premise"])
-        self.assertEqual([b["key"] for b in self.decided.brief["blocking"]], ["empfehlung"])
+        self.assertEqual([b["key"] for b in self.decided.brief["blocking"]], ["empfehlung", "aussichten"])
         adopted = Case(replied(), DECKUNG + ep.decided(("aussichten", "genügend")), [adopt(self.decided.brief["proposal"], self.decided.brief["proposal"])])
         self.assertEqual(adopted.brief["blocking"], [])
         self.assertIsNone(adopted.decision)
 
-    def test_the_recommendation_decision_records_adoption_and_prospects_and_fills_the_letter(self):
+    def test_the_recommendation_and_the_prospects_are_two_decisions_that_can_differ(self):
         proposal = self.decided.brief["proposal"]
         self.assertFalse(letters.has_gap(self.decided.text))  # the proposal fills the letter before it is adopted
-        adopted = Case(replied(), DECKUNG + ep.decided(("aussichten", "genügend")), [adopt(proposal, proposal)])
+        # adopting the way judges nothing about the prospects: they are asked next, with their own basis (Art. 169 AVO)
+        adopted = Case(replied(), DECKUNG, [adopt(proposal, proposal)])
         self.assertEqual((adopted.brief["chosen"], adopted.brief["adopted"]["valid"]), (proposal, True))
+        self.assertEqual([b["key"] for b in adopted.brief["blocking"]], ["aussichten"])
+        self.assertEqual((adopted.decision["key"], adopted.decision["question"], adopted.decision["detail"]),
+                         ("aussichten", "Erfolgsaussichten", "Art. 169 Abs. 2 AVO"))
+        self.assertEqual([r["cite"] for r in adopted.decision["law"]], ["Art. 169 Abs. 2 AVO", "Art. 169 Abs. 3 AVO"])
+        self.assertIn("Ablehnung", adopted.decision["consequence"])
+        self.assertEqual([a["label"] for a in adopted.decision["answers"]], ["genügend", "nicht genügend"])
         self.assertIn("Wir empfehlen Ihnen, der Vermieterschaft schriftlich eine angemessene Frist", adopted.text)
-        low = Case(replied(), DECKUNG + ep.decided(("aussichten", "nicht genügend")), [adopt("aussichten_nicht_genuegend", proposal)])
+        # judged first, the prospects leave the recommendation open: the two never stand for each other
+        judged = Case(replied(), DECKUNG + ep.decided(("aussichten", "genügend")))
+        self.assertEqual(([b["key"] for b in judged.brief["blocking"]], judged.decision["key"]), (["empfehlung"], "empfehlung"))
+        # they differ: another way adopted, the prospects sufficient; or the way adopted and the prospects not sufficient
+        other = Case(replied(), DECKUNG + ep.decided(("aussichten", "genügend")), [adopt(["frist_androhung", "schadenersatz"], proposal)])
+        self.assertEqual((other.brief["blocking"], other.decision, other.brief["chosen"]), ([], None, ["frist_androhung", "schadenersatz"]))
+        low = Case(replied(), DECKUNG + ep.decided(("aussichten", "nicht genügend")), [adopt(proposal, proposal)])
         self.assertEqual(low.draft["form"], "A5_aussichtslos")  # the existing refusal for lack of prospects
         self.assertIsNone(low.brief["letter"])
+        self.assertEqual(low.brief["blocking"], [])
 
     def test_an_adoption_lapses_when_a_chosen_option_fails_or_the_proposal_changes(self):
         proposal = self.decided.brief["proposal"]
@@ -690,7 +722,12 @@ class WithoutOptionsTests(unittest.TestCase):
         about = schema["properties"]["questions"]["items"]["properties"]["about"]
         self.assertEqual((about["items"]["enum"], about["maxItems"]), (["meldung", "reduktion", "hinterlegung", "schadenersatz", "kuendigung"], 2))
         claims = schema["properties"]["claims"]["items"]["properties"]
-        self.assertEqual(sorted(claims), ["amount", "citations", "receipt", "what"])
+        # what a claim and its receipt are about, so code can compare them (steering, point 5)
+        self.assertEqual(sorted(claims), ["amount", "citations", "expense", "expense_kind", "party", "period", "receipt", "role", "transaction", "what"])
+        self.assertEqual(sorted(claims["receipt"]["items"]["properties"]),
+                         ["amount", "citations", "expense", "expense_kind", "party", "payer", "period", "role", "transaction"])
+        self.assertEqual(sorted(claims["period"]["properties"]), ["from", "to"])  # as Slice C reads it (NEEDS_C §1)
+        self.assertEqual(claims["receipt"]["items"]["properties"]["role"]["enum"], ["requested", "promised", "disputed", "paid", "refunded"])
         from tests.test_team import FIXTURE as PLAIN, FILES as PLAIN_FILES
         bare = team.CaseWork(case={"title": "x"}, files=PLAIN_FILES, base_workflow=PLAIN)
         about = team._report_schema(bare, "claim_reader")["properties"]["questions"]["items"]["properties"]["about"]
@@ -758,8 +795,10 @@ class EpisodeTests(unittest.TestCase):
         self.assertEqual([r["line"] for r in brief["residual"]], ["Belege zu: Stromkosten für den Bautrockner"])
         self.assertEqual([a["key"] for a in brief["asks"]], ["residual:claim.0"])
         self.assertEqual([q["item_id"] for q in brief["questions"] if q["state"] == "beantwortet"], ["customer_question:0"])
-        self.assertEqual(brief["summary"], {"answered": 1, "conditional": 2, "open": 0, "check": 0, "residual": 1,
+        self.assertEqual(brief["summary"], {"answered": 1, "conditional": 2, "open": 0, "check": 0, "residual": 1, "asked": 0, "resolved": 3,
+                                            "decisions": ["empfehlung", "aussichten"],
                                             "proposal": ["Frist zur Beseitigung setzen", "Kosten belegen und Ersatz verlangen"]})
+        self.assertTrue(all(isinstance(q["row"], int) for q in brief["questions"]))  # the guard row that decided each (MEASURE)
         adopted = Case(replied(), DECKUNG + ep.decided(("aussichten", "genügend")), [adopt(brief["proposal"], brief["proposal"])])
         self.assertNotIn("[bitte ergänzen", adopted.text)
         self.assertEqual((adopted.brief["blocking"], adopted.decision), ([], None))
@@ -785,6 +824,277 @@ class EpisodeTests(unittest.TestCase):
         ctx = letters.context(ep.case_row(), items, [], {"due": "2026-08-22"}, evaluation=state["evaluation"], process=state["process"], assessment=brief)
         plain = letters.context(ep.case_row(), items, [], {"due": "2026-08-22"}, evaluation=state["evaluation"], process=state["process"])
         self.assertEqual(letters.render("A1", state["process"]["forms"], ctx), letters.render("A1", state["process"]["forms"], plain))
+
+
+# -- the package a handler adopts: every question, the conditions, the alternative, what would change it, the remainder ---------
+
+class PackageTests(unittest.TestCase):
+    """Steering, point 2: the package answers each question, applies each condition to the evidence, gives the recommended
+    next step and the meaningful alternative, says what would change it, and asks only the smallest remainder; where the
+    evidence cannot support an answer, a precise question with what its answer decides, never «bitte prüfen»."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.case = Case(replied(), DECKUNG)
+
+    def test_the_letter_says_what_the_recommendation_rests_on_and_the_brief_names_the_alternative(self):
+        letter = self.case.brief["letter"]["empfehlung"]
+        self.assertTrue(letter.endswith("Unsere Empfehlung beruht darauf, dass der Mangel weiterhin besteht und die Vermieterschaft den Mangel "
+                                        "nicht behoben hat; ändert sich daran etwas, teilen Sie uns das bitte mit."))
+        # the alternative to the proposed way, beside it, each with why it is not the proposal
+        rows = {(a["to"], a["id"]): a for a in self.case.brief["alternatives"]}
+        androhung = rows[("frist_beseitigung", "frist_androhung")]
+        self.assertEqual((androhung["selectable"], androhung["why"], androhung["practice"]),
+                         (True, "Ob die Vorlage die Hinterlegung androhen soll, ist eine offene Frage der Prüfung", "Praxis: 0 von 7"))
+        deposit = rows[("frist_beseitigung", "hinterlegung")]
+        self.assertEqual((deposit["selectable"], deposit["why"]), (False, "offen: Frist mit Androhung der Hinterlegung schriftlich gesetzt und unbenützt abgelaufen"))
+        self.assertIn("eine Hinterlegung droht sie nicht an", self.case.question(1)["answer"])  # the customer reads the alternative where she asked it
+        # each question answered, each condition applied to the evidence, nothing left to «prüfen» in the letter
+        self.assertEqual([q["state"] for q in self.case.brief["questions"]], ["beantwortet", "bedingt", "bedingt"])
+        self.assertTrue(all(c["state"] in ("erfüllt", "nicht geprüft", "offen") and (c["evidence"] or c["state"] == "nicht geprüft")
+                            for r in self.case.brief["rules"] for c in r["conditions"]))
+        self.assertNotIn("bitte prüfen", self.case.text)
+        self.assertFalse(letters.has_gap(self.case.text))
+        self.assertEqual([d["fact"] for d in self.case.brief["deciding"]],
+                         ["will_beseitigung", "mangel_besteht", "maengelruege_schriftlich", "reaktion_vermieter", "will_schadenersatz"])
+        self.assertEqual([d["changed"] for d in self.case.brief["deciding"]], [None, "neu", None, "neu", "neu"])  # what the replies brought
+
+    def test_an_open_fact_is_asked_precisely_with_what_its_answer_decides(self):
+        case = Case(changed(replied(), facts={"reaktion_vermieter": None}), DECKUNG)
+        self.assertEqual(case.brief["proposal"], ["schadenersatz"])  # no way of the wish to remedy holds without the reaction
+        self.assertIn("Bitte teilen Sie uns zudem mit, wie die Vermieterschaft auf Ihre Meldung reagiert hat; davon hängt ab, ob wir Ihnen "
+                      "empfehlen, der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung des Mangels zu setzen.", case.text)
+        ask = next(a for a in case.brief["asks"] if a["key"] == "fact:reaktion_vermieter")
+        self.assertEqual((ask["what"], ask["blocks"]), ("Wie hat die Vermieterschaft auf Ihre Meldung reagiert?",
+                                                         {"question": None, "option": "frist_beseitigung", "condition": "Sie hat ihn nicht beseitigt"}))
+        self.assertEqual({b["value"]: b["proposal"] for b in ask["branches"]},  # what each answer decides, by the same rules
+                         {"Mangel behoben / Einigung": ["Kosten belegen und Ersatz verlangen"],
+                          "Abgelehnt / offene Punkte": ["Frist zur Beseitigung setzen", "Kosten belegen und Ersatz verlangen"],
+                          "Keine Reaktion": ["Frist zur Beseitigung setzen", "Kosten belegen und Ersatz verlangen"]})
+        self.assertNotIn("bitte prüfen", case.text)
+        self.assertFalse(letters.has_gap(case.text))
+        # nothing to propose at all: the recommendation is the question and what it decides, not a gap
+        alone = Case(changed(replied(), facts={"reaktion_vermieter": None, "will_schadenersatz": False}), DECKUNG)
+        self.assertIn("Wir empfehlen Ihnen, uns mitzuteilen, wie die Vermieterschaft auf Ihre Meldung reagiert hat; davon hängt ab, ob wir "
+                      "Ihnen empfehlen, der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung des Mangels zu setzen.", alone.text)
+        self.assertNotIn("[bitte ergänzen: die Empfehlung", alone.text)
+        self.assertNotIn("Sie machen folgende Kosten geltend", alone.text)  # a claim no longer wanted is not stated
+        held = Case(changed(replied(), facts={"reaktion_vermieter": None}), DECKUNG,
+                    marks={f"{WID}:rueckfrage.reaktion_vermieter": {"mark": "frage", "content_sha256": "x"}})
+        self.assertNotIn("wie die Vermieterschaft auf Ihre Meldung reagiert hat", held.text)  # a question under review is not used
+        self.assertIn("[bitte ergänzen: die Frage, von der die Empfehlung abhängt (in Prüfung)]", held.text)
+        self.assertEqual(next(a for a in held.brief["asks"] if a["key"] == "fact:reaktion_vermieter")["what"], "Wie hat die Vermieterschaft reagiert?")
+
+
+# -- a plausible but wrong recommendation ----------------------------------------------------------------------------------------
+
+class WrongRecommendationTests(unittest.TestCase):
+    """Steering, point 3: not only a missing citation; an option whose conditions hold only on a presumed or contradicted
+    fact, or one a question's word triggers while the customer wants the opposite, is not proposed, or only «unter
+    Vorbehalt» with the failing condition named."""
+
+    def test_a_wish_read_against_the_customers_own_words_is_not_proposed(self):
+        # the reading recorded «Herabsetzung gewünscht» from the very sentence that rejects it
+        misread = {"will_reduktion": {"value": True, "status": "established", "quote": "Eine Mietzinsreduktion möchte ich nicht."}}
+        case = Case(changed(replied(), facts=misread), DECKUNG)
+        self.assertEqual(case.brief["contradicted"], {"will_reduktion": "Eine Mietzinsreduktion möchte ich nicht."})
+        self.assertNotIn("reduktion", case.brief["proposal"])
+        self.assertEqual(case.option("reduktion")["state"], "open")
+        self.assertEqual(case.option("reduktion")["triggers"][0]["state"], "widersprüchlich")
+        self.assertNotIn("Herabsetzung", case.brief["in_case"][0]["text"])  # «Sie möchten …» states only what she wants
+        self.assertNotIn("Herabsetzung des Mietzinses, soweit", case.text)
+        asked = Case(changed(replied(), facts=misread, questions=[("Kann ich eine Herabsetzung der Miete verlangen?", ["reduktion"])]), DECKUNG).question(0)
+        self.assertEqual((asked["state"], asked["row"]), ("pruefen", 7))  # the rule rests on a contradicted reading: the handler decides
+        # the same holds when the question itself rejects the wish the reading recorded
+        rejected = Case(changed(replied(), facts={"will_reduktion": {"value": True, "status": "established", "quote": "Ich habe Schimmel."}},
+                                questions=[("Ich will keine Reduktion. Muss ich die volle Miete weiter bezahlen?", ["hinterlegung"])]), DECKUNG)
+        self.assertEqual(rejected.brief["contradicted"], {"will_reduktion": "Ich will keine Reduktion. Muss ich die volle Miete weiter bezahlen?"})
+        self.assertNotIn("reduktion", rejected.brief["proposal"])
+
+    def test_a_question_negating_what_triggers_an_option_does_not_trigger_it(self):
+        asking = Case(changed(replied(), questions=[("Darf ich die Miete hinterlegen?", ["hinterlegung"])]), DECKUNG)
+        self.assertEqual(asking.option("frist_androhung")["state"], "holds")  # asked for: selectable under «ändern»
+        negating = Case(changed(replied(), questions=[("Ich möchte keine Hinterlegung, nur eine Herabsetzung. Wie gehe ich vor?", ["hinterlegung"])]),
+                        DECKUNG)
+        self.assertEqual(negating.question(0)["intent"], "hinterlegen")  # the keyword matches …
+        self.assertEqual(negating.option("frist_androhung")["state"], "fails")  # … but she wants the opposite: never offered
+        self.assertNotIn("frist_androhung", [o["id"] for o in (negating.decision or {}).get("options") or ()])
+        self.assertEqual(negating.question(0)["state"], "pruefen")
+
+    def test_an_option_on_a_presumed_fact_is_proposed_only_unter_vorbehalt_with_the_condition_named(self):
+        case = Case(changed(replied(), facts={"mangel_besteht": {"value": True, "status": "presumed"}}), DECKUNG)
+        option = case.option("frist_beseitigung")
+        self.assertEqual((option["state"], option["proposed"]), ("holds", True))
+        self.assertEqual(option["reserve"], [{"fact": "mangel_besteht", "question": "Besteht der Mangel aktuell noch?",
+                                              "condition": "Besteht der Mangel aktuell noch?", "state": "vermutet"}])
+        self.assertEqual(case.decision["reserve"], ["Besteht der Mangel aktuell noch?"])
+        self.assertIn("unter Vorbehalt: Besteht der Mangel aktuell noch?", case.decision["detail"])
+        self.assertIn("Wir empfehlen Ihnen, sofern der Mangel weiterhin besteht, der Vermieterschaft schriftlich", case.text)
+
+    def test_an_option_on_a_contradicted_or_corrected_fact_is_not_proposed(self):
+        conflicting = Case(changed(replied(), facts={"reaktion_vermieter": {"value": "Abgelehnt / offene Punkte", "status": "conflicting"}}), DECKUNG)
+        self.assertEqual(conflicting.option("frist_beseitigung")["state"], "open")  # a value read two ways is never relied on
+        self.assertNotIn("frist_beseitigung", conflicting.brief["proposal"])
+        corrected = Case(replied(), DECKUNG + ep.decided(("mangel_besteht", "nein")))  # P-contra: the handler corrected it
+        self.assertEqual(corrected.option("frist_beseitigung")["state"], "fails")
+        self.assertNotIn("Frist zur Beseitigung", corrected.brief["letter"]["empfehlung"])
+
+
+# -- why evidence was asked, and what a later arrival settles ---------------------------------------------------------------------
+
+def arrival(prior_result, new_files, entries=(), facts=(), claims=(), summary="Neue Unterlagen."):
+    """An update of the replied case with ``new_files`` read by the scripted reader: (result, files)."""
+    prior = {"id": "run_b", "workflow_id": WID, "workflow_version": _PREPARED_version(), "routing": None, "result": prior_result}
+    files = FILES + list(new_files)
+    outcome, _ = ep.updated(prior, files, ep.update_turns(list(entries), list(facts), summary, claims=list(claims)), NS)
+    assert outcome["status"] == "completed", outcome.get("error")
+    return outcome["result"], files
+
+
+CARPET = ep.text_file("fu", "Quittung Teppichreinigung.txt", "Reinigung Muster GmbH\nTeppichreinigung Wohnzimmer am 02.09.2026\n"
+                                                                "Total CHF 85.00\nBar bezahlt\n".encode())
+PHOTOS = ep.text_file("fp", "Fotos Schimmel.txt", "Foto 1: Ecke über dem Fenster, Schimmel unverändert.\nFoto 2: Bad, Decke.\n".encode())
+QUOTE = "Die Stromkosten für den Bautrockner von rund CHF 85 möchte ich ersetzt haben."
+
+
+def comparable(brief):
+    return {"questions": [(q["item_id"], q["state"], q["row"], q["answer"]) for q in brief["questions"]],
+            "options": [(o["id"], o["state"], [c["state"] for c in o["conditions"]]) for o in brief["options"]],
+            "proposal": brief["proposal"], "residual": [(r["key"], r["line"], r["blocks"]) for r in brief["residual"]],
+            "asks": [(a["key"], a.get("blocks")) for a in brief["asks"]], "letter": brief["letter"]}
+
+
+class BlocksTests(unittest.TestCase):
+    """Steering, point 4: CasePath remembers why evidence was requested. Every residual line and ask names the judgment it
+    would settle (``blocks``: question, option, condition); a later arrival that establishes it re-evaluates the
+    assessment and shows the consequence; an unrelated arrival changes nothing."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.before = Case(replied(), DECKUNG)
+
+    def test_every_residual_line_and_ask_names_the_judgment_it_blocks(self):
+        for row in self.before.brief["residual"] + self.before.brief["asks"]:
+            self.assertEqual(sorted(row["blocks"]), ["condition", "option", "question"])
+        self.assertEqual(self.before.brief["residual"][0]["blocks"],
+                         {"question": "customer_question:2", "option": "schadenersatz", "condition": "Kosten mit Belegen nachgewiesen"})
+        gaps = Case(changed(replied(), facts={"mangel_besteht": None}), DECKUNG)
+        ask = next(a for a in gaps.brief["asks"] if a["key"] == "fact:mangel_besteht")
+        self.assertEqual(ask["blocks"], {"question": "customer_question:0", "option": "frist_beseitigung", "condition": "Besteht der Mangel aktuell noch?"})
+        self.assertEqual(ask["what"], "Besteht der Mangel heute noch?")
+
+    def test_the_receipt_asked_for_settles_the_judgment_it_was_asked_for(self):
+        receipts = NS.branches["B-receipts"]
+        result, files = arrival(replied(), receipts.core_files(), claims=[], summary="x")  # read without the claim: nothing settled
+        unread = Case(result, DECKUNG, files=files)
+        self.assertEqual(comparable(unread.brief)["residual"], comparable(self.before.brief)["residual"])
+        prior = {"id": "run_b", "workflow_id": WID, "workflow_version": _PREPARED_version(), "routing": None, "result": replied()}
+        outcome, _ = ep.updated(prior, FILES + receipts.core_files(), receipts.turns(16, 17), NS)  # the bill read for the claimed cost
+        files = FILES + receipts.core_files()
+        after = Case(outcome["result"], DECKUNG, files=files, day=NS.a5_day + ep.timedelta(days=ep.RECEIPTS_DAYS))
+        claim_ = outcome["result"]["brief"]["claims"][0]
+        self.assertEqual((claim_["documented"], claim_["receipt"][0]["file"], claim_["agree"]["expense"], claim_["agree"]["amount"]), (True, "ft", True, True))
+        self.assertEqual([r for r in after.brief["residual"] if r["kind"] == "claim"], [])  # nothing asked again
+        q = after.question(2)
+        self.assertEqual((q["state"], q["row"], q["reason"]), ("beantwortet", 10, "Belege liegen vor"))  # the answer it waited for
+        self.assertIn("Die Belege zu Ihren Kosten liegen uns vor.", q["answer"])
+        self.assertNotIn("steht unten", q["answer"])
+        condition = next(c for c in after.rule("259e")["conditions"] if c["text"] == "Kosten mit Belegen nachgewiesen")
+        self.assertEqual((condition["state"], condition["evidence"][0]["quote"]), ("erfüllt", "Betrag: CHF 85.40"))
+        self.assertEqual(after.option("schadenersatz")["state"], "holds")
+        self.assertIn({"key": "residual:claim.0", "line": "Belege zu: Stromkosten für den Bautrockner",
+                       "by": [{"file": "ft", "page": claim_["receipt"][0]["page"], "start": claim_["receipt"][0]["start"],
+                               "end": claim_["receipt"][0]["end"], "quote": "Betrag: CHF 85.40"}],
+                       "blocks": {"question": "customer_question:2", "option": "schadenersatz", "condition": "Kosten mit Belegen nachgewiesen"},
+                       "now": {"option": "holds", "condition": "erfüllt", "question": "beantwortet"}}, after.brief["resolved"])
+
+    def test_a_fact_arriving_later_answers_the_question_that_waited_for_it(self):
+        waiting = Case(changed(replied(), facts={"mangel_besteht": None}), DECKUNG)
+        q = waiting.question(0)
+        self.assertEqual((q["state"], q["row"], q["reason"]), ("bedingt", 8, "Besteht der Mangel heute noch?"))
+        self.assertNotIn("frist_beseitigung", waiting.brief["proposal"])
+        settled = Case(replied(), DECKUNG)  # the reply says it: «Der Schimmel ist immer noch da.»
+        self.assertEqual((settled.question(0)["state"], settled.option("frist_beseitigung")["state"]), ("beantwortet", "holds"))
+        row = next(r for r in settled.brief["resolved"] if r["key"] == "fact:mangel_besteht")
+        self.assertEqual((row["blocks"]["question"], row["blocks"]["option"], row["now"]),
+                         ("customer_question:0", "frist_beseitigung", {"question": "beantwortet", "option": "holds", "condition": "erfüllt"}))
+        self.assertEqual(row["by"][0]["quote"], "Der Schimmel ist immer noch da.")
+
+    def test_an_unrelated_arrival_changes_nothing(self):
+        for name, new, entries, claims in (
+                ("photos", [PHOTOS], [ep.entry(16, "fp", None, None, "kunde", "versicherer", "unterlagen", "Fotos des Schimmels", "Foto 1: Ecke über dem Fenster")], []),
+                ("a same-amount receipt of another expense", [CARPET], [ep.entry(16, "fu", None, None, "andere", "kunde", "andere", "Quittung Teppichreinigung", "Total CHF 85.00")],
+                 [claim("Stromkosten für den Bautrockner", "Total CHF 85.00", file="fu", kind="Energie",
+                        receipt={"file": "fu", "quote": "Total CHF 85.00", "expense": "Teppichreinigung Wohnzimmer", "kind": "Reinigung",
+                                 "party": "Reinigung Muster GmbH", "period": {"from": "2026-09-02", "to": "2026-09-02"},
+                                 "amount": "CHF 85.00", "role": "paid"})])):
+            with self.subTest(name):
+                result, files = arrival(replied(), new, entries=entries, claims=claims)
+                after = Case(result, DECKUNG, files=files)
+                self.assertEqual(comparable(after.brief), comparable(self.before.brief))
+                self.assertFalse(any(r["key"].startswith("residual:") for r in after.brief["resolved"]))
+
+
+# -- claims and receipts: a shared word or amount is a candidate, not proof ---------------------------------------------------
+
+class ReceiptTests(unittest.TestCase):
+    """Steering, point 5: the reader records what a claim and its receipt are about (expense, party, period, transaction,
+    the amount's role); «documented» needs them to agree. Deterministic, no model call per field."""
+
+    def located(self, *claims_, extra=()):
+        work = team.CaseWork(case=ep.case_row(), files=core.case_files(FILES + NS.branches["B-receipts"].core_files() + list(extra)),
+                             base_workflow=area.workflow(WID))
+        return team._located_brief(work, {"summary": "x", "questions": [], "claims": list(claims_)})["claims"]
+
+    def test_a_same_amount_receipt_for_another_expense_is_rejected_and_a_paraphrase_is_accepted(self):
+        carpet = {"file": "fu", "quote": "Total CHF 85.00", "expense": "Teppichreinigung Wohnzimmer", "kind": "Reinigung", "party": "Reinigung Muster GmbH",
+                  "period": {"from": "2026-09-02", "to": "2026-09-02"}, "amount": "CHF 85.00", "role": "paid"}
+        paraphrase = {"file": "ft", "quote": "Zusatzabrechnung Zähler 08-4411", "expense": "Zusatzabrechnung Zähler", "kind": "Energie",
+                      "party": "Energie Beispiel AG", "period": {"from": "2026-08-07", "to": "2026-09-04"}, "transaction": "08-4411",
+                      "amount": "CHF 85.40", "role": "requested"}
+        wrong, right = self.located(claim("Stromkosten für den Bautrockner", QUOTE, amount="CHF 85", receipt=carpet, file="fc", kind="Energie"),
+                                    claim("Stromkosten für den Bautrockner", QUOTE, amount="CHF 85", receipt=paraphrase, file="fc", kind="Energie"),
+                                    extra=[CARPET])
+        # the same amount (a candidate) and no word of the claim in the bill: neither decides
+        self.assertIn(85.0, options.amounts(carpet["quote"]))
+        self.assertFalse({"stromkosten", "bautrockner"} & set(paraphrase["quote"].lower().split()))
+        self.assertEqual((wrong["documented"], wrong["receipt"], wrong["rejected"][0]["agree"]["expense"], wrong["rejected"][0]["agree"]["amount"]),
+                         (False, [], False, True))
+        self.assertEqual((right["documented"], right["receipt"][0]["file"], right["agree"]["expense"], right["agree"]["amount"]), (True, "ft", True, True))
+        # accepted without the handler entering anything: the claim line goes, the question it blocked is answered
+        accepted = Case(changed(replied(), claims=[right]), DECKUNG, files=FILES + NS.branches["B-receipts"].core_files())
+        self.assertEqual(([r["key"] for r in accepted.brief["residual"]], accepted.question(2)["state"]), ([], "beantwortet"))
+        refused = Case(changed(replied(), claims=[wrong]), DECKUNG, files=FILES + [CARPET])
+        line = refused.brief["residual"][0]
+        self.assertEqual((line["key"], line["rejected"][0]["differs"], line["rejected"][0]["expense"], line["rejected"][0]["kind"]),
+                         ("residual:claim.0", "Ausgabe", "Teppichreinigung Wohnzimmer", "Reinigung"))  # why it was set aside, beside the line
+        self.assertEqual(refused.question(2)["state"], "bedingt")
+
+    def test_the_amounts_role_period_and_party_must_agree(self):
+        claim_ = {"expense_kind": "Energie", "party": None, "period": None, "transaction": None, "amount": "CHF 85",
+                  "citations": [{"quote": QUOTE}]}  # «von rund CHF 85»: within its rounding
+        bill = {"expense_kind": "Energie", "party": "Energie Beispiel AG", "payer": "kunde", "period": {"from": "2026-08-07", "to": "2026-09-04"},
+                "transaction": "08-4411", "amount": "CHF 85.40", "role": "requested"}
+        self.assertTrue(options.agreement(claim_, bill)["documented"])
+        for field, value in (("role", "refunded"), ("role", "promised"), ("role", "disputed"), ("payer", "gegenpartei"), ("expense_kind", "Reinigung"),
+                             ("amount", "CHF 120.00"), ("expense_kind", "andere")):
+            with self.subTest(f"{field}={value}"):
+                self.assertFalse(options.agreement(claim_, {**bill, field: value})["documented"])
+        exact = options.agreement({**claim_, "citations": [{"quote": "Die Stromkosten von CHF 85 möchte ich ersetzt haben."}]}, {**bill, "amount": "CHF 88.40"})
+        self.assertEqual(exact["amount"], False)  # not «rund»: the amount must be the one written
+        last_year = options.agreement({**claim_, "period": {"from": "2026-08-01", "to": "2026-08-31"}},
+                                      {**bill, "period": {"from": "2025-01-01", "to": "2025-03-31"}})
+        self.assertEqual((last_year["period"], last_year["documented"]), (False, False))
+        other_issuer = options.agreement({**claim_, "party": "Energie Beispiel AG"}, {**bill, "party": "Teppich Muster GmbH"})
+        self.assertEqual((other_issuer["party"], other_issuer["documented"]), (False, False))
+        nothing_but_the_kind = options.agreement({"expense_kind": "Energie"}, {"expense_kind": "Energie", "role": "paid"})
+        self.assertFalse(nothing_but_the_kind["documented"])  # the same kind of expense alone documents nothing
+        self.assertEqual(options.period_of("Verbrauch 07.08.2026 bis 04.09.2026"), (ep.date(2026, 8, 7), ep.date(2026, 9, 4)))
+        self.assertEqual(options.period_of("im August 2026"), (ep.date(2026, 8, 1), ep.date(2026, 8, 31)))
+
+    def test_a_claim_paid_back_is_not_named(self):
+        refunded = self.located(claim("Stromkosten für den Bautrockner", QUOTE, amount="CHF 85", file="fc", kind="Energie", role="refunded"))[0]
+        self.assertFalse(refunded["checked"])
 
 
 # -- the routes ---------------------------------------------------------------------------------------------------------------------
@@ -830,14 +1140,22 @@ class RouteTests(unittest.TestCase):
         self.assertEqual((wrong.status_code, wrong.json()["detail"]), (422, "«Mietzins hinterlegen» trifft nach der Akte nicht zu."))
         stale = self.client.post(f"/api/cases/{self.case_id}/recommendation", json={"chosen": proposal, "proposal": ["frist_beseitigung"]})
         self.assertEqual(stale.status_code, 422)
+        two = self.client.post(f"/api/cases/{self.case_id}/recommendation", json={"chosen": ["frist_beseitigung", "frist_androhung"], "proposal": proposal})
+        self.assertEqual((two.status_code, two.json()["detail"]), (422, "Je Wunsch der Kundschaft ein Weg."))
         done = self.client.post(f"/api/cases/{self.case_id}/recommendation", json={"chosen": proposal, "proposal": proposal})
         self.assertEqual(done.status_code, 201, done.text)
-        self.assertEqual(done.json()["edit"]["args"], {"fact": "aussichten", "value": "genügend"})
-        self.assertEqual(done.json()["edit"]["reason"], "mit der Empfehlung übernommen")
+        self.assertEqual(sorted(done.json()), ["event"])  # adopting the way judges nothing about the prospects
         view = self.view()
-        self.assertEqual((view["assessment"]["chosen"], view["assessment"]["blocking"], view["screen"]["decision"]), (proposal, [], None))
+        self.assertEqual((view["assessment"]["chosen"], [b["key"] for b in view["assessment"]["blocking"]], view["screen"]["decision"]["key"]),
+                         (proposal, ["aussichten"], "aussichten"))
+        prospects = self.client.post(f"/api/cases/{self.case_id}/edits", json={"op": "set_fact", "args": {"fact": "aussichten", "value": "genügend"},
+                                                                              "reason": "", "reason_code": "none", "recheck": False})
+        self.assertEqual(prospects.status_code, 201, prospects.text)
+        view = self.view()
+        self.assertEqual((view["assessment"]["blocking"], view["screen"]["decision"]), ([], None))
         self.assertNotIn("[bitte ergänzen", view["draft"]["text"])
         events = self.client.get(f"/api/cases/{self.case_id}/events").json()["events"]
+        # two decisions, each recorded by itself: the way adopted, then the prospects judged through the edit
         self.assertEqual([e["item_id"] for e in events if e["kind"] == "item.corrected"][-2:], ["point:empfehlung", "fact:aussichten"])
         # «übernehmen» on a question's drafted answer
         taken_ = self.client.post(f"/api/cases/{self.case_id}/answer", json={"item_id": "customer_question:1", "point": "hinterlegung", "intent": "hinterlegen"})

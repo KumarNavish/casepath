@@ -92,8 +92,13 @@ the sentence that asks it; not the request itself and not a question of the insu
 points (process view, key_points) whose rule the question asks about. Judge by meaning, not words: a question that rejects
 a remedy is not about that remedy. If none applies, give [].
 In claims, list each cost or loss the customer asks to have compensated: what (a few words from the customer's own
-sentence), amount as written if any, and that sentence. In receipt, give the words of the receipt or invoice in the files
-that documents that very cost, or nothing.
+sentence), amount as written if any, role (requested; refunded if the customer says it was already paid back), expense
+(what the cost is for, in the customer's words) and expense_kind, party (who billed it, if written), period (from, to as
+YYYY-MM-DD, only as written) and transaction (an invoice, receipt or meter number, as written), and that sentence. In
+receipt, give the receipt or invoice in the files that documents that very cost, with what it documents: its words, what
+it is for and its kind, who issued it (party), whom it bills (payer), its period and number, the amount as written and the
+amount's role (paid; requested, for an invoice; promised; disputed; refunded); else nothing. Judge by meaning: a receipt for
+another expense, period or party documents nothing, even with the same amount or a shared word.
 Read the customer's claim report and the insurer's claim form first and settle from them every fact that gates a
 document or a step; then the other files. Work in few turns: call record_fact for up to eight facts in the same turn,
 rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a dispute
@@ -905,13 +910,18 @@ def _report_schema(work, agent):
     if agent == "claim_reader":
         points = [p["id"] for p in work.graph.get("key_points") or ()]  # a tag names a key point of the case's area, or none
         about = arr(choice(points), maxItems=2) if points else arr(text(40), maxItems=0)
+        from ..process import options  # what a claim and its receipt are about, compared by code (options.agreement)
+        about_cost = dict(expense=text(80), expense_kind=choice(list(options.EXPENSES)), party=text(80),
+                          period=obj(**{"from": text(10), "to": text(10)}), transaction=text(40))
+        receipt = obj(citations=_citations(files, 1), payer=choice(list(options.PAYERS)), amount=text(40), role=choice(list(options.ROLES)),
+                      **about_cost)
         return obj(summary=text(800, minLength=1), request=text(500),
                    parties=arr(obj(role=text(80), name=text(120)), maxItems=10),
                    timeline=arr(obj(date=text(40), event=text(300), citations=_citations(files, 2)), maxItems=20),
                    not_enclosed=arr(obj(title=text(160, minLength=1), mentioned=text(120), citations=_citations(files, 1)), maxItems=8),
                    questions=arr(obj(question=text(200, minLength=1), citations=_citations(files, 1), about=about), maxItems=5),
-                   claims=arr(obj(what=text(120, minLength=1), amount=text(40), citations=_citations(files, 1),
-                                  receipt=_citations(files, 1)), maxItems=5))
+                   claims=arr(obj(what=text(120, minLength=1), amount=text(40), role=choice(list(options.ROLES)), citations=_citations(files, 1),
+                                  receipt=arr(receipt, maxItems=1), **about_cost), maxItems=5))
     if agent == "process_builder":
         return obj(summary=text(800, minLength=1),
                    questions=arr(obj(fact=choice(facts) if facts else text(80), plain=text(300, minLength=1)), maxItems=40))
@@ -1265,7 +1275,9 @@ UPDATE_READ = ("New files came into this case after it was prepared: {files}. Re
                "new documents do not speak to keeps its value: do not record it, not even as unknown. What came in (eingang_…) "
                "is recorded in its plain fact: code moves the earlier items down. Then report: summary, one sentence on what "
                "the new documents add; timeline, only their dated events; questions and claims, only those the new documents "
-               "state, with about; request and parties empty.")
+               "state, with about; a receipt or invoice among the new documents that documents a cost claimed before (an open "
+               "request «Belege zu: …»): that cost under claims again, in the request's words, with the receipt; request and "
+               "parties empty.")
 UPDATE_FIND = ("New files came into this case: {files}. Check only these new files. Still missing: {missing}; record each one a "
                "new file meets, or one a new file of that kind cannot serve as unusable.{present} Record nothing else, and no "
                "need as absent.")
@@ -1543,13 +1555,16 @@ def _located_brief(work, report):
         amount = str(entry.get("amount") or "").strip() or None
         if amount and options.amount_of(amount) not in options.amounts(located[0]["quote"]):
             amount, dropped_amounts = None, dropped_amounts + 1  # an amount its sentence does not write is not the customer's
-        receipt, _ = work.located(entry.get("receipt") or [])
-        held = receipt[0]["quote"] if receipt else ""
-        claims.append({"what": what, "amount": amount, "citations": located, "receipt": receipt,
-                       # named only when its own words are in its sentence; documented only by a receipt that names it
-                       "checked": any(w in quote for w in words),
-                       "documented": bool(receipt) and (any(w in held.casefold() for w in words)
-                                                        or bool(amount and options.amount_of(amount) in options.amounts(held)))})
+        role = entry.get("role") or "requested"
+        claim = {"what": what, "amount": amount, "role": role, **cost_fields(entry),
+                 "citations": located, "receipt": [], "documents": None, "agree": None, "documented": False, "rejected": [],
+                 # named only when its own words are in its sentence and it is still asked (not paid back already)
+                 "checked": any(w in quote for w in words) and role != "refunded"}
+        for cites, documents in _receipts_of(entry):
+            held, _ = work.located(cites)
+            if held:  # a receipt located in a file of the case; it documents the claim only when what it is about agrees
+                claim = judged(claim, held, documents)
+        claims.append(claim)
     return {"request": report.get("request"), "parties": report.get("parties", []), "timeline": timeline,
             "summary": report.get("summary"), "not_enclosed": missing, "questions": asked, "claims": claims,
             "dropped_tags": dropped, "dropped_amounts": dropped_amounts}
@@ -1659,6 +1674,75 @@ def _update_record(work, prior, report, files, new):
     return record, update
 
 
+COST_FIELDS = ("expense", "expense_kind", "party", "period", "transaction")  # what a claim and its receipt are about (NEEDS_C §1)
+
+
+def cost_fields(entry, more=()):
+    """What the reader recorded a claim or a receipt to be about: the texts as written (None when empty) and the period
+    as {from, to} ISO days, or None."""
+    out = {}
+    for k in COST_FIELDS + tuple(more):
+        value = entry.get(k)
+        if k == "period":
+            days = {e: str((value or {}).get(e) or "").strip() or None for e in ("from", "to")} if isinstance(value, dict) else {}
+            out[k] = days if any(days.values()) else None
+        else:
+            out[k] = str(value or "").strip() or None
+    return out
+
+
+def _receipts_of(entry):
+    """The receipt a claim names, as the reader gives it: [(citations, what it documents)]. A receipt given as a bare
+    citation (a reading before the fields) documents nothing it does not say."""
+    out = []
+    for r in entry.get("receipt") or ():
+        if isinstance(r, dict) and "citations" in r:
+            out.append((r.get("citations") or [], cost_fields(r, ("payer", "amount", "role"))))
+        elif isinstance(r, dict) and r.get("file"):
+            out.append(([r], {}))
+    return out
+
+
+def judged(claim, citations, documents):
+    """A claim with one more receipt the reading located: it documents the claim when what it is about agrees with it
+    (options.agreement: the same kind of expense, a cost borne, nothing different, and the amount, transaction or period
+    the same); otherwise it is kept as rejected, with what differs. A shared word or the same amount is never enough."""
+    agree = options_agreement(claim, documents)
+    if claim.get("documented"):
+        return claim
+    if agree["documented"]:
+        return {**claim, "receipt": list(citations), "documents": documents, "agree": agree, "documented": True}
+    return {**claim, "rejected": list(claim.get("rejected") or []) + [{"citations": list(citations), "documents": documents, "agree": agree}]}
+
+
+def options_agreement(claim, documents):
+    from ..process import options
+    return options.agreement({k: claim.get(k) for k in COST_FIELDS + ("amount", "citations")}, documents)
+
+
+def _claim_words(what):
+    return {w for w in re.findall(r"\w{5,}", str(what or "").casefold())}
+
+
+def merged_claims(claims, found):
+    """The brief's claims after an update: a cost the new documents state joins them; one they state again (the same words,
+    as a request «Belege zu: …» names it) is the same claim, and the receipt they bring is judged against it."""
+    out = [dict(c) for c in claims]
+    for c in found:
+        words = _claim_words(c["what"])
+        same = next((k for k in out if k["what"].casefold() == c["what"].casefold()
+                     or (words and _claim_words(k["what"]) and (words <= _claim_words(k["what"]) or _claim_words(k["what"]) <= words)
+                         and len(words & _claim_words(k["what"])) >= 2)), None)
+        if same is None:
+            out.append(c)
+            continue
+        candidates = ([(c["receipt"], c["documents"])] if c.get("documented") else []) + [(r["citations"], r["documents"]) for r in c.get("rejected") or ()]
+        at = out.index(same)
+        for cites, documents in candidates:
+            out[at] = judged(out[at], cites, documents)
+    return out
+
+
 def _merge_brief(work, report):
     """The brief after an update: the new documents' dated events, the customer's new questions and what they mention but
     do not enclose join it (a question once); the rest stays as it was."""
@@ -1669,8 +1753,7 @@ def _merge_brief(work, report):
         asked = {q["question"] for q in brief.get("questions") or []}
         brief["questions"] = list(brief.get("questions") or []) + [q for q in found["questions"] if q["question"] not in asked]
         brief["not_enclosed"] = list(brief.get("not_enclosed") or []) + found["not_enclosed"]
-        claimed = {c["what"] for c in brief.get("claims") or []}  # a cost once, by its words
-        brief["claims"] = list(brief.get("claims") or []) + [c for c in found["claims"] if c["what"] not in claimed]
+        brief["claims"] = merged_claims(brief.get("claims") or [], found["claims"])
         for key in ("dropped_tags", "dropped_amounts"):
             brief[key] = (brief.get(key) or 0) + found[key]
     return brief

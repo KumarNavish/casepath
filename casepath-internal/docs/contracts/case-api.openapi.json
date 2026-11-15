@@ -638,19 +638,13 @@
     "additionalProperties": false,
     "properties": {
      "chosen": {
-      "anyOf": [
-       {
-        "items": {
-         "type": "string"
-        },
-        "type": "array"
-       },
-       {
-        "const": "aussichten_nicht_genuegend",
-        "type": "string"
-       }
-      ],
-      "title": "Chosen"
+      "items": {
+       "type": "string"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Chosen",
+      "type": "array"
      },
      "proposal": {
       "items": {
@@ -1745,7 +1739,7 @@
   },
   "/api/cases/{case_id}/recommendation": {
    "post": {
-    "description": "«Empfehlung»: the handler adopts the proposed ways («übernehmen · Aussichten genügend»), picks among the ways\nthat hold («ändern»), or judges the prospects insufficient («Aussichten nicht genügend»: the refusal for lack of\nprospects is prepared instead). The adoption names the proposal it was made on; it lapses when a chosen way no\nlonger holds or the proposal changes. With the adoption the prospects count as sufficient unless already judged.",
+    "description": "«Empfehlung»: the handler adopts the proposed ways («übernehmen») or picks among the ways that hold, one per\nwish («ändern»). The adoption names the proposal it was made on; it lapses when a chosen way no longer holds or the\nproposal changes. The prospects of success are judged on their own (set_fact aussichten, Art. 169 AVO): adopting a\nway judges nothing about them.",
     "operationId": "adopt_recommendation_api_cases__case_id__recommendation_post",
     "parameters": [
      {

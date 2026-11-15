@@ -70,12 +70,28 @@ def question(text, quote, about=(), file="f1"):
     return {"question": text, "citations": [{"file": file, "quote": quote}], "about": list(about)}
 
 
-def claim(what, quote, amount=None, receipt=None, file="f1"):
+def period(first="", last=""):
+    """A period as the reader records it: {from, to} as YYYY-MM-DD, empty where not written."""
+    return {"from": first, "to": last}
+
+
+def claim(what, quote, amount=None, receipt=None, file="f1", role="requested", expense="", kind="andere", party="", when=None, transaction=""):
     """A cost the customer asks to have compensated, as the reader lists it: a few words of the customer's sentence, the
-    amount as written, that sentence, and the words of a receipt that documents it (a quote of ``file``, or a citation)."""
+    amount as written, its role, what it is about (``expense`` in words and its ``kind``, who billed it, the period
+    ``when``, the transaction), that sentence, and the receipt that would document it: its words (a quote of ``file``, or
+    {file, quote, …}) with what the reader says it documents (expense, kind, party, payer, period, transaction, amount,
+    role; a receipt bills the customer and names «paid» unless it says otherwise)."""
     if isinstance(receipt, str):
-        receipt = {"file": file, "quote": receipt}
-    return {"what": what, "amount": amount or "", "citations": [{"file": file, "quote": quote}], "receipt": [receipt] if receipt else []}
+        receipt = {"quote": receipt}
+    rows = []
+    if receipt:
+        r = dict(receipt)
+        cite = {"file": r.pop("file", file), "quote": r.pop("quote")}
+        rows = [{"citations": [cite], "expense": r.get("expense", ""), "expense_kind": r.get("kind", "andere"), "party": r.get("party", ""),
+                 "payer": r.get("payer", "kunde"), "period": r.get("period") or period(), "transaction": r.get("transaction", ""),
+                 "amount": r.get("amount", ""), "role": r.get("role", "paid")}]
+    return {"what": what, "amount": amount or "", "role": role, "expense": expense or what, "expense_kind": kind, "party": party,
+            "period": when or period(), "transaction": transaction, "citations": [{"file": file, "quote": quote}], "receipt": rows}
 
 
 def learn(**fields):
