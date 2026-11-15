@@ -1,17 +1,22 @@
 # The one cell of the "casepath diagnose" notebook: the one diagnostic run of the D11 episode on the pilot (MEASURE §3), an
-# act task that needs Navish's typed approval. Standard library only; it calls the deployed app's API as the benchmark
-# does (quality/evaluate.py, RemoteApi), never a model itself. It reads one notebook parameter, "confirm" (made with
-# Edit > Add parameter):
-#   hashes D11                                 read only: prints the running build's hash and the hash of D11's labels
-#   diagnose D11 <tree hash> <labels sha256>   the run, on exactly that build and those labels (12 hex digits each)
-#   diagnose D11 <tree hash> <labels sha256> keep    the same, keeping the base case for the inside review
+# act task. Standard library only; it calls the deployed app's API as the benchmark does (quality/evaluate.py, RemoteApi),
+# never a model itself. It reads one notebook parameter, "confirm" (made with Edit > Add parameter):
+#   hashes D11                                         read only: prints the plan and the phrase that approves exactly it
+#   diagnose D11 <tree hash> <labels sha256> <plan>    the run, on exactly that build, those labels and that cut (12 hex each)
+#   diagnose D11 <tree hash> <labels sha256> <plan> keep    the same, keeping the base case for the inside review
 # Anything else: nothing happens, no request is made. <tree hash> is the start of /api/manifest's source_tree_sha256;
-# <labels sha256> the start of the sha256 of D11's labels as stored (sorted keys, compact JSON).
+# <labels sha256> the start of the sha256 of D11's labels as stored (sorted keys, compact JSON); <plan> the start of the
+# sha256 of the cut the plan prints. The plan is D11's earlier state and its two arrivals as the labels template lists the
+# file's documents: every page of the file in exactly one of the earlier state, the arrival (the two documents not the
+# insurer's dated between the question back and the assessment: D11's two customer e-mails of one day) and what is left out
+# (from the replies' day on). It reads the template as the stored reading gives it, with or without account entries.
+# The confirm phrase is the approval of this run's steps only. The run also needs Navish's separate typed approval of the
+# deployment of the build to the pilot and of the run's tokens; the plan says so, and this cell checks neither.
 # The run, in this order, each step only if the one before succeeded; no retry, no second run (its receipt on the volume
 # marks it done or stopped; a new run needs that file removed and a new approval):
-#   1 cut D11 to the pages known before the customer's replies, looked at on the assessment's day (label n3);
+#   1 cut D11 to the pages of the earlier state, looked at on the assessment's day (label n3);
 #   2 prepare that base case once (a full preparation);
-#   3 stop if it failed or used more than 200,000 non-cached input tokens;
+#   3 stop if it failed, or if its non-cached input passed 200,000 tokens: a stop, never a budget or an allowance;
 #   4 the replies' pages, fetched from the original file, uploaded to the base case as one import (the update starts by
 #     itself where auto-update is on, else one POST /update); one of them uploaded again: refused (409) or the run stops;
 #   5 the handler's decisions in force on n3 (Deckung bestätigt) as set_fact edits;
@@ -39,8 +44,10 @@ APP = "FILL-IN: https://<the app's address>"
 VOLUME = "FILL-IN: /Volumes/<catalog>/<schema>/<volume>"
 FORMAT = "casepath.diagnose/1"
 DOSSIER = "D11"
-PREPARE_CAP = 200_000  # the full preparation's non-cached input tokens, checked between steps (the soft cap)
+STOP_AFTER_PREPARE = 200_000  # non-cached input of the full preparation past which the run stops: a stop, never a budget
 ARRIVAL_PAGES = 20  # as CASEPATH_AUTO_UPDATE_MAX_PAGES: an arrival larger than this is not this run
+ARRIVALS = 2  # D11's arrival: the customer's two e-mails of one day (the bridge's outline)
+ESTIMATE = "about 100-155k non-cached input and 23-33k output tokens, plus the page readings if any, as MEASURE §3 estimates"
 SAFE = re.compile(r"^(?:[a-z0-9][a-z0-9_.:-]{0,79}|h_[0-9a-f]{12})$")  # as quality/scorecard.py
 DATE = re.compile(r"\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.\d{2,4}")
 GAP = "[bitte ergänzen: "
@@ -116,13 +123,13 @@ def labels_sha256(labels):
 
 
 def parse(phrase):
-    """("hashes", None, None, False) or ("diagnose", tree, labels, keep); AssertionError for anything else."""
+    """("hashes", None, None, None, False) or ("diagnose", tree, labels, plan, keep); AssertionError for anything else."""
     phrase = (phrase or "").strip()
     if phrase == f"hashes {DOSSIER}":
-        return "hashes", None, None, False
-    match = re.fullmatch(rf"diagnose {DOSSIER} ([0-9a-f]{{12}}) ([0-9a-f]{{12,64}})( keep)?", phrase)
-    assert match, f"confirm must read: diagnose {DOSSIER} <tree hash> <labels sha256> [keep], or hashes {DOSSIER}"
-    return "diagnose", match.group(1), match.group(2), bool(match.group(3))
+        return "hashes", None, None, None, False
+    match = re.fullmatch(rf"diagnose {DOSSIER} ([0-9a-f]{{12}}) ([0-9a-f]{{12,64}}) ([0-9a-f]{{12}})( keep)?", phrase)
+    assert match, f"confirm must read: diagnose {DOSSIER} <tree hash> <labels sha256> <plan> [keep], or hashes {DOSSIER}"
+    return "diagnose", match.group(1), match.group(2), match.group(3), bool(match.group(4))
 
 
 def find(api):
@@ -134,24 +141,38 @@ def find(api):
 
 
 def documents(rows, pages):
-    """The PDF's documents in page order, from the labels template's rows (each with its first page): an account entry starts
-    a document, and so does a later-dated document the reader gave no entry; an undated or older one (an enclosure, a lease
-    sent along) belongs to the document before it, as quality/asof.py dates pages. Each runs to the next one's first page."""
+    """The PDF's documents in page order, from the labels template's rows (each with its first page: an account entry, or
+    a segment of the reading the entries do not cover; a reading without entries gives segments only). An entry or a dated
+    segment starts a document, a second one of the same day too (D11's two e-mails of one day); an undated segment (a
+    photo, a receipt) and anything dated before the document it follows (a lease or an older letter sent along) belong to
+    that document, as an enclosure no later than its letter does in quality/points.py. Each runs to the next one's first
+    page and counts the template rows it holds; an undated document takes the later of the days around it, as
+    quality/asof.py bounds an undated page."""
     docs = []
     for r in sorted((r for r in rows if isinstance(r.get("page"), int)), key=lambda r: (r["page"], r.get("n") is None)):
-        entry = r.get("n") is not None
-        if not docs or entry or (r.get("date") and (not docs[-1]["date"] or r["date"] > docs[-1]["date"])):
-            if docs and docs[-1]["first"] == r["page"]:
-                continue  # a second document on the same first page: the page's first governs
-            docs.append({"date": r.get("date"), "from": r.get("from"), "first": r["page"]})
+        dated, older = bool(r.get("date")), bool(r.get("date") and docs and docs[-1]["date"] and r["date"] < docs[-1]["date"])
+        if not docs or ((r.get("n") is not None or dated) and not older):
+            if not docs or docs[-1]["first"] != r["page"]:  # a second document on the same first page: the page's first governs
+                docs.append({"date": r.get("date"), "insurer": bool(r.get("insurer")) or r.get("from") == "versicherer",
+                             "first": r["page"], "n": r.get("n"), "rows": 0})
+        docs[-1]["rows"] += 1
     for doc, nxt in zip(docs, docs[1:] + [{"first": pages + 1}]):
         doc["pages"] = list(range(doc["first"], nxt["first"]))
+    days = [d["date"] for d in docs]
+    for i, doc in enumerate(docs):
+        around = [x for x in days[:i] if x][-1:] + [x for x in days[i + 1:] if x][:1]
+        if not doc["date"] and around:
+            doc["date"] = max(around)
     return docs
 
 
 def plan(labels, template, pdf):
-    """From the labels and the labels template: the assessment's point (n3), the pages known before the customer's replies
-    (those after the insurer's last action before n3 and before n3), and each reply's pages."""
+    """The cut, from the labels and the labels template: the assessment's point (n3); the arrival, the documents not the
+    insurer's dated after its last action before n3 and before n3 (D11: the customer's two e-mails of one day); what is left
+    out, the documents from the replies' day on, of which only the insurer's own may be dated on n3's day or before it (a
+    document of another known on that day would be missing from the base case); the earlier state, every other document.
+    Each part is made of whole documents of the template, and every page of the file lies in exactly one part; anything
+    else stops the run before it does anything."""
     points = sorted(labels["points"], key=lambda p: (p["date"], p["n"]))
     n3 = next((p for p in points if p["kind"] == "A5"), None)
     if n3 is None:
@@ -160,15 +181,42 @@ def plan(labels, template, pdf):
     since = before[-1]["date"] if before else "0000-00-00"  # the insurer's last action before the assessment (the question back)
     pages = int((pdf.get("extraction") or {}).get("pages") or 0)
     docs = documents([r for r in template.get("documents") or () if r.get("file") in (None, pdf.get("name"))], pages)
-    replies = [d for d in docs if d["from"] == "kunde" and d["date"] and since < d["date"] < n3["date"]]
-    if not replies:
-        raise Stop("cut", "no_reply_found")
-    later = {p for d in docs if d["date"] and d["date"] >= min(r["date"] for r in replies) for p in d["pages"]}
-    base = [p for p in range(1, pages + 1) if p not in later]
-    arriving = sum(len(r["pages"]) for r in replies)
-    if not base or not 0 < arriving <= ARRIVAL_PAGES:
+    replies = [d for d in docs if not d["insurer"] and d["date"] and since < d["date"] < n3["date"]]
+    if len(replies) != ARRIVALS:
+        raise Stop("cut", "no_reply_found" if not replies else "arrival_not_as_in_the_outline")
+    first = min(r["date"] for r in replies)
+    later = [d for d in docs if d not in replies and d["date"] and d["date"] >= first]
+    if any(d["date"] < n3["date"] or (d["date"] == n3["date"] and not d["insurer"]) for d in later):
+        raise Stop("cut", "another_document_before_the_assessment")
+    earlier = [d for d in docs if d not in replies and d not in later]
+    cut = {"n3": n3, "base": sorted(p for d in earlier for p in d["pages"]), "arrival": [d["pages"] for d in replies],
+           "later": sorted(p for d in later for p in d["pages"]), "entries": [d["n"] for d in replies],
+           "rows": {"base": sum(d["rows"] for d in earlier), "arrival": sum(d["rows"] for d in replies), "later": sum(d["rows"] for d in later)}}
+    if sorted(cut["base"] + cut["later"] + [p for a in cut["arrival"] for p in a]) != list(range(1, pages + 1)):
+        raise Stop("cut", "pages_not_in_exactly_one_part")
+    if not cut["base"] or not 0 < sum(map(len, cut["arrival"])) <= ARRIVAL_PAGES:
         raise Stop("cut", "pages_out_of_bounds")
-    return n3, base, [r["pages"] for r in replies]
+    return cut
+
+
+def sealed(cut):
+    """The start of the sha256 of the cut: the approval names exactly this plan."""
+    body = {"point": cut["n3"]["n"], "as_of": cut["n3"]["date"], "base": cut["base"], "arrival": cut["arrival"], "later": cut["later"]}
+    return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()[:12]
+
+
+def plan_lines(cut, tree, labels):
+    """The plan as the notebook prints it before the run does anything: pages and counts, no content."""
+    return [f"The D11 diagnostic, its plan (nothing done but reading): build {tree} · labels {labels} · plan {sealed(cut)}",
+            f"  the earlier state: pages {spans(cut['base'])} ({cut['rows']['base']} rows of the labels template), looked at on the day of point {cut['n3']['n']}",
+            f"  one full preparation of it; the run stops if it failed or its non-cached input passed {STOP_AFTER_PREPARE:,} tokens:"
+            " a stop, never a budget or an allowance",
+            f"  the arrival, as the labels template lists it: {len(cut['arrival'])} documents not the insurer's, pages "
+            f"{', '.join(spans(a) for a in cut['arrival'])} ({sum(map(len, cut['arrival']))} pages) as one import, then one of them again",
+            f"  left out: pages {spans(cut['later']) or 'none'} ({cut['rows']['later']} rows of the labels template, from the replies' day on)",
+            "  the deployment's own caps hold throughout: CASEPATH_RUN_TOKEN_BUDGET per run, CASEPATH_UPDATE_TOKEN_BUDGET per update",
+            f"  needs, besides the confirm phrase, Navish's separate typed approval of the deployment of build {tree} to the pilot"
+            f" and of this run's tokens: {ESTIMATE}"]
 
 
 def spans(pages):
@@ -291,15 +339,31 @@ def replay_of(row):
                        "authority": pick(accept.get("authority"), ("missing", "ok"))}}
 
 
-def diagnose(api, volume, tree, wanted, keep, poll=10, prepare_timeout=2700, update_timeout=1800):
-    """The run (steps 1 to 7); the receipt, also when it stops."""
+def located(api):
+    """Read only: D11's case id and labels; AssertionError, nothing done, unless the replay's table names exactly one case."""
+    try:
+        return find(api)
+    except Stop as stop:
+        raise AssertionError(f"{stop.args[1]}: nothing done") from None
+
+
+def cut_of(api, case_id, labels):
+    """Read only: D11's one PDF and the cut its labels template gives; AssertionError, nothing done, where it gives none."""
+    try:
+        files = [f for f in api.call("GET", f"/api/cases/{case_id}").get("files") or () if f.get("kind") == "pdf"]
+        if len(files) != 1:
+            raise Stop("cut", "not_one_pdf")
+        return files[0], plan(labels, api.call("GET", f"/api/cases/{case_id}/labels-template"), files[0])
+    except Stop as stop:
+        raise AssertionError(f"{stop.args[1]}: nothing done") from None
+
+
+def diagnose(api, volume, tree, wanted, approved_plan, keep, poll=10, prepare_timeout=2700, update_timeout=1800):
+    """The run (steps 1 to 7) on exactly the approved build, labels and cut; the receipt, also when it stops."""
     manifest = api.call("GET", "/api/manifest")
     if not str(manifest.get("source_tree_sha256") or "").startswith(tree):
         raise AssertionError("the running build is not the one approved: nothing done")
-    try:
-        case_id, labels = find(api)
-    except Stop as stop:
-        raise AssertionError(f"{stop.args[1]}: nothing done") from None
+    case_id, labels = located(api)
     signed = labels_sha256(labels)
     if not signed.startswith(wanted):
         raise AssertionError("D11's labels are not the ones approved: nothing done")
@@ -308,7 +372,11 @@ def diagnose(api, volume, tree, wanted, keep, poll=10, prepare_timeout=2700, upd
         print(f"already run: {path} holds its receipt; nothing done")
         with open(path, encoding="utf-8") as handle:
             return json.load(handle)
-    receipt = {"format": FORMAT, "dossier": DOSSIER.lower(), "build": tree, "labels": signed[:12], "status": "started", "stopped": None, "base": None,
+    pdf, cut = cut_of(api, case_id, labels)
+    print("\n".join(plan_lines(cut, tree, signed[:12])))
+    if sealed(cut) != approved_plan:
+        raise AssertionError("the cut is not the approved plan: nothing done")
+    receipt = {"format": FORMAT, "dossier": DOSSIER.lower(), "build": tree, "labels": signed[:12], "plan": approved_plan, "status": "started", "stopped": None, "base": None,
                "kept": keep, "cut": None, "arrival": None, "runs": [], "auto": None, "duplicate_refused": None, "decisions": [], "case": None,
                "n3": None, "missing": [], "model_calls_here": 0}
 
@@ -321,13 +389,9 @@ def diagnose(api, volume, tree, wanted, keep, poll=10, prepare_timeout=2700, upd
     save()  # from here on, the run counts as made: no second one without a new approval
     try:
         try:
-            # 1 the cut: the pages known before the replies, looked at on the assessment's day
-            files = [f for f in api.call("GET", f"/api/cases/{case_id}").get("files") or () if f.get("kind") == "pdf"]
-            if len(files) != 1:
-                raise Stop("cut", "not_one_pdf")
-            pdf = files[0]
-            n3, base_pages, replies = plan(labels, api.call("GET", f"/api/cases/{case_id}/labels-template"), pdf)
-            receipt["cut"] = {"point": n3["n"], "pages": len(base_pages)}
+            # 1 the cut: the earlier state of the approved plan, looked at on the assessment's day
+            n3, base_pages, replies = cut["n3"], cut["base"], cut["arrival"]
+            receipt["cut"] = {"point": n3["n"], "pages": len(base_pages), "left_out": len(cut["later"])}
             receipt["arrival"] = {"files": len(replies), "pages": sum(map(len, replies))}
             try:
                 base = api.call("POST", f"/api/cases/{case_id}/cut", {"pages": spans(base_pages), "as_of": n3["date"], "file": pdf["id"]})["id"]
@@ -335,14 +399,14 @@ def diagnose(api, volume, tree, wanted, keep, poll=10, prepare_timeout=2700, upd
                 raise Stop("cut", "refused") from None
             receipt["base"] = base
             save()
-            # 2, 3 one full preparation, stopped on failure or past the soft cap
+            # 2, 3 one full preparation, stopped on failure or past the stop threshold (a stop, never a budget)
             full = wait(api, api.call("POST", f"/api/cases/{base}/runs")["id"], prepare_timeout, poll)
             receipt["runs"].append(run_row(full))
             save()
             if full.get("status") != "completed":
                 raise Stop("prepare", "failed" if full.get("status") in ("failed", "interrupted", "discarded") else "not_finished")
-            if receipt["runs"][-1]["non_cached"] > PREPARE_CAP:
-                raise Stop("prepare", "over_soft_cap")
+            if receipt["runs"][-1]["non_cached"] > STOP_AFTER_PREPARE:  # a stop, never a budget
+                raise Stop("prepare", "past_the_stop_threshold")
             # 4 the arrival: the replies' pages as one import, then one of them again
             uploads = [(f"Antwort-{i}.pdf", api.raw(f"/api/files/{pdf['id']}/original?pages={spans(pages)}")) for i, pages in enumerate(replies, 1)]
             status, answer = api.upload(base, uploads)
@@ -390,27 +454,25 @@ def diagnose(api, volume, tree, wanted, keep, poll=10, prepare_timeout=2700, upd
 
 
 def hashes(api):
-    """Read only: the running build's hash and the hash of D11's labels, to name in the approval."""
+    """Read only: the plan and the phrase that approves exactly it (the running build, D11's labels, the cut)."""
     tree = str(api.call("GET", "/api/manifest").get("source_tree_sha256") or "")[:12]
-    try:
-        case_id, labels = find(api)
-    except Stop as stop:
-        raise AssertionError(f"{stop.args[1]}: nothing done") from None
-    out = {"build": tree, "labels": labels_sha256(labels)[:12], "case": case_id}
-    print(f"approval reads: diagnose {DOSSIER} {out['build']} {out['labels']}")
+    case_id, labels = located(api)
+    _, cut = cut_of(api, case_id, labels)
+    out = {"build": tree, "labels": labels_sha256(labels)[:12], "plan": sealed(cut), "case": case_id}
+    print("\n".join(plan_lines(cut, tree, out["labels"]) + [f"approval reads: diagnose {DOSSIER} {out['build']} {out['labels']} {out['plan']}"]))
     return out
 
 
 def main(phrase, app, volume, environ):
     """The cell: refuses before any request unless the phrase is one of the two; the identity comes from ``environ``."""
-    mode, tree, wanted, keep = parse(phrase)
+    mode, tree, wanted, approved_plan, keep = parse(phrase)
     assert not app.startswith("FILL-IN") and not volume.startswith("FILL-IN"), "fill in APP and VOLUME in this cell first"
     header, identity = environ.get("CASEPATH_EVAL_IDENTITY_HEADER"), environ.get("CASEPATH_EVAL_IDENTITY")
     assert header and identity, "the identity the app expects: CASEPATH_EVAL_IDENTITY_HEADER and CASEPATH_EVAL_IDENTITY in the environment"
     api = Api(app, {header: identity})
     if mode == "hashes":
         return hashes(api)
-    receipt = diagnose(api, volume, tree, wanted, keep)
+    receipt = diagnose(api, volume, tree, wanted, approved_plan, keep)
     print(json.dumps(receipt, sort_keys=True))
     return receipt
 

@@ -19,7 +19,9 @@ MODE=selftest (skipped without node).
 
 ``casepath.diagnose/1`` is what the diagnostic run writes (MEASURE §3). Its script is run here against a stand-in for the
 app's API that answers as the episode's interfaces are designed (DESIGN §6, SLICE_A A8, SLICE_C C7), on synthetic data:
-no request leaves, no model is called."""
+no request leaves, no model is called. Its cut, D11's earlier state and its two arrivals, is made of whole documents of the
+labels template (with or without account entries), every page in exactly one part, and sealed into the confirm phrase; the plan it prints names the separate
+approvals the run needs and its stop threshold, which is never a budget."""
 import copy
 import io
 import json
@@ -248,7 +250,20 @@ ROWS = [(1, 1, "2026-08-01", "kunde"), (2, None, None, "kunde"), (6, 2, "2026-08
         (8, None, "2026-07-20", "kunde"), (12, None, None, "gegenpartei"), (13, None, None, "andere"), (15, None, "2019-04-01", "gegenpartei"),
         (20, 4, "2026-08-17", "versicherer"), (21, 5, "2026-09-05", "kunde"), (23, None, None, "kunde"), (24, 6, "2026-09-05", "kunde"),
         (26, 7, "2026-09-08", "versicherer"), (28, 8, "2026-12-29", "versicherer")]
-TEMPLATE = {"documents": [{"n": n, "date": d, "from": f, "page": p, "file": "Akte.pdf", **({} if n else {"entry": False})} for p, n, d, f in ROWS]}
+TEMPLATE = {"documents": [{"n": n, "date": d, "from": f, "page": p, "file": "Akte.pdf", "insurer": f == "versicherer", **({} if n else {"entry": False})}
+                          for p, n, d, f in ROWS]}
+# D11's stored reading has no account entries (the bridge's outline): its template lists the reader's segments only, each
+# sender as written. Synthetic and shaped as the outline: 15 segments on 30 pages, a lease long before, undated photos, a
+# receipt and a screenshot, the insurer's first answer not recognised as the insurer's, two customer e-mails of one day.
+SEGMENTS = [(1, "2019-04-01", "Immo Muster AG"), (6, "2026-07-31", "Lea Exempel"), (7, "2026-08-01", "Schadenteam"),
+            (8, "2026-08-13", "Lea Exempel"), (16, None, "Immo Muster AG"), (17, None, "Baumarkt Beispiel"), (18, None, "Lea Exempel"),
+            (19, None, "Lea Exempel"), (20, None, "Lea Exempel"), (21, None, None), (22, "2026-08-16", "Protekta Rechtsschutz"),
+            (23, "2026-09-04", "Lea Exempel"), (26, "2026-09-04", "Lea Exempel"), (28, "2026-09-07", "Protekta Rechtsschutz"),
+            (30, "2026-12-28", "Protekta Rechtsschutz")]
+SEGMENT_TEMPLATE = {"documents": [{"n": None, "date": d, "from": f, "page": p, "file": "Akte.pdf", "insurer": f == "Protekta Rechtsschutz",
+                                   "entry": False} for p, d, f in SEGMENTS]}
+SEGMENT_LABELS = {**LABELS, "points": [{**point, "date": day} for point, day in
+                                       zip(LABELS["points"], ("2026-08-01", "2026-08-16", "2026-09-07", "2026-12-28"))]}
 
 
 def labels_hash(labels):
@@ -259,9 +274,9 @@ def labels_hash(labels):
 class FakeApp:
     """The pilot's API as the episode's interfaces design it, on synthetic data; every request is recorded."""
 
-    def __init__(self, full_usage=60_000, duplicate=409, auto="aus", tree=TREE):
+    def __init__(self, full_usage=60_000, duplicate=409, auto="aus", tree=TREE, template=None):
         self.calls, self.full_usage, self.duplicate, self.auto, self.tree = [], full_usage, duplicate, auto, tree
-        self.uploads = []
+        self.uploads, self.template = [], template or TEMPLATE
 
     def run(self, run_id, kind, usage):
         return {"id": run_id, "kind": kind, "status": "completed", "created_at": "2026-11-15T10:00:00+00:00", "finished_at": "2026-11-15T10:03:05+00:00",
@@ -284,7 +299,7 @@ class FakeApp:
         if path == "/api/cases/case_d11":
             return {"files": [{"id": "file_1", "name": "Akte.pdf", "kind": "pdf", "extraction": {"pages": 28}}]}
         if path == "/api/cases/case_d11/labels-template":
-            return copy.deepcopy(TEMPLATE)
+            return copy.deepcopy(self.template)
         if path == "/api/cases/case_d11/cut":
             self.cut = body
             return {"id": "case_base"}
@@ -344,16 +359,22 @@ class DiagnoseRunTests(unittest.TestCase):
     def setUp(self):
         self.volume = tempfile.TemporaryDirectory()
         self.addCleanup(self.volume.cleanup)
-        self.phrase = f"diagnose D11 {TREE} {labels_hash(LABELS)[:12]}"
+        self.cut = self.cell["plan"](LABELS, TEMPLATE, {"name": "Akte.pdf", "extraction": {"pages": 28}})
+        self.phrase = f"diagnose D11 {TREE} {labels_hash(LABELS)[:12]} {self.cell['sealed'](self.cut)}"
 
     def diagnose(self, app, **kw):
-        return self.cell["diagnose"](app, self.volume.name, TREE, labels_hash(LABELS)[:12], kw.pop("keep", False), poll=0, **kw)
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as printed:
+            out = self.cell["diagnose"](app, self.volume.name, TREE, labels_hash(LABELS)[:12], kw.pop("plan", self.cell["sealed"](self.cut)),
+                                        kw.pop("keep", False), poll=0, **kw)
+        self.printed = printed.getvalue()
+        return out
 
     def test_a_without_its_confirm_phrase_it_makes_no_request(self):
         env = {"CASEPATH_EVAL_IDENTITY_HEADER": "Authorization", "CASEPATH_EVAL_IDENTITY": "Bearer x"}
         with mock.patch("urllib.request.urlopen", side_effect=AssertionError("a request was made")) as urlopen:
-            for phrase in ("", "diagnose D11", f"diagnose D11 {TREE}", f"diagnose D12 {TREE} {'0' * 12}", f"deploy abc1234 3 {TREE}",
-                           f"diagnose D11 {TREE.upper()} {'0' * 12}", f"diagnose D11 {TREE} {'0' * 12} now"):
+            for phrase in ("", "diagnose D11", f"diagnose D11 {TREE}", f"diagnose D12 {TREE} {'0' * 12} {'0' * 12}", f"deploy abc1234 3 {TREE}",
+                           f"diagnose D11 {TREE.upper()} {'0' * 12} {'0' * 12}", f"diagnose D11 {TREE} {'0' * 12} {'0' * 12} now",
+                           f"diagnose D11 {TREE} {'0' * 12}"):  # the last: the cut unnamed, as the phrase read before the plan was sealed
                 with self.assertRaisesRegex(AssertionError, "confirm must read", msg=phrase):
                     self.cell["main"](phrase, "https://app.example", self.volume.name, env)
             with self.assertRaisesRegex(AssertionError, "fill in APP and VOLUME"):
@@ -375,7 +396,11 @@ class DiagnoseRunTests(unittest.TestCase):
             self.diagnose(app)
         self.assertEqual(app.calls, [("GET", "/api/manifest")])
         with self.assertRaisesRegex(AssertionError, "labels are not the ones approved"):
-            self.cell["diagnose"](FakeApp(), self.volume.name, TREE, "0" * 12, False, poll=0)
+            self.cell["diagnose"](FakeApp(), self.volume.name, TREE, "0" * 12, self.cell["sealed"](self.cut), False, poll=0)
+        other = FakeApp()
+        with self.assertRaisesRegex(AssertionError, "the cut is not the approved plan: nothing done"):
+            self.diagnose(other, plan="0" * 12)
+        self.assertFalse([path for _, path in other.calls if path.endswith("/cut")])
         self.assertEqual(os.listdir(self.volume.name), [])
 
     def test_c_the_run_takes_its_steps_in_order_and_its_receipt_is_content_free(self):
@@ -383,6 +408,9 @@ class DiagnoseRunTests(unittest.TestCase):
         receipt = self.diagnose(app)
         self.assertEqual((receipt["status"], receipt["stopped"], receipt["base"], receipt["duplicate_refused"]), ("done", None, "case_base", True))
         self.assertEqual(app.cut, {"pages": "1-20", "as_of": "2026-09-08", "file": "file_1"})  # the pages known before the replies
+        self.assertEqual((receipt["plan"], receipt["cut"]), (self.cell["sealed"](self.cut), {"point": 3, "pages": 20, "left_out": 3}))
+        self.assertIn("a stop, never a budget or an allowance", self.printed)
+        self.assertIn(f"Navish's separate typed approval of the deployment of build {TREE} to the pilot and of this run's tokens", self.printed)
         self.assertEqual(app.uploads, [["Antwort-1.pdf", "Antwort-2.pdf"], ["Antwort-1.pdf"]])  # one import, then one again
         self.assertIn(("GET", "/api/files/file_1/original?pages=21-23"), app.calls)
         self.assertIn(("GET", "/api/files/file_1/original?pages=24-25"), app.calls)
@@ -412,15 +440,14 @@ class DiagnoseRunTests(unittest.TestCase):
         stored = json.loads((Path(self.volume.name) / "diagnose" / f"D11-{labels_hash(LABELS)[:12]}.json").read_text())
         self.assertEqual(stored, receipt)
         again = FakeApp()
-        with mock.patch("sys.stdout", new_callable=io.StringIO) as printed:
-            self.assertEqual(self.diagnose(again), receipt)  # no second run
-        self.assertIn("already run", printed.getvalue())
+        self.assertEqual(self.diagnose(again), receipt)  # no second run
+        self.assertIn("already run", self.printed)
         self.assertEqual(again.calls, [("GET", "/api/manifest"), ("GET", "/api/replay-points"), ("GET", "/api/cases/case_d11/labels")])
 
     def test_d_a_preparation_over_its_cap_stops_the_run_before_the_arrival(self):
         app = FakeApp(full_usage=230_000)
         receipt = self.diagnose(app)
-        self.assertEqual((receipt["status"], receipt["stopped"]), ("stopped", {"step": "prepare", "reason": "over_soft_cap"}))
+        self.assertEqual((receipt["status"], receipt["stopped"]), ("stopped", {"step": "prepare", "reason": "past_the_stop_threshold"}))
         self.assertEqual((app.uploads, receipt["case"]), ([], None))
         self.assertNotIn(("POST", "/api/cases/case_base/update"), app.calls)
         self.assertEqual(app.calls[-1], ("DELETE", "/api/cases/case_base"))
@@ -463,22 +490,67 @@ class DiagnoseRunTests(unittest.TestCase):
         self.assertTrue(request.get_header("Content-type").startswith("multipart/form-data; boundary="))
         self.assertEqual(request.data.count(b'name="files"'), 2)
 
-    def test_h_the_read_only_mode_names_the_hashes_for_the_approval(self):
+    def test_h_the_read_only_mode_prints_the_plan_and_the_phrase_that_approves_exactly_it(self):
         app = FakeApp()
         with mock.patch("sys.stdout", new_callable=io.StringIO) as printed:
             out = self.cell["hashes"](app)
-        self.assertEqual(printed.getvalue().strip(), f"approval reads: {self.phrase}")
-        self.assertEqual((out["build"], out["case"]), (TREE, "case_d11"))
-        self.assertEqual([m for m, _ in app.calls], ["GET", "GET", "GET"])  # it only reads
+        lines = printed.getvalue().strip().splitlines()
+        self.assertEqual(lines[-1], f"approval reads: {self.phrase}")
+        self.assertEqual(lines[1], "  the earlier state: pages 1-20 (9 rows of the labels template), looked at on the day of point 3")
+        self.assertIn("  the arrival, as the labels template lists it: 2 documents not the insurer's, pages 21-23, 24-25 (5 pages) as one import, "
+                      "then one of them again", lines)
+        self.assertIn("  left out: pages 26-28 (2 rows of the labels template, from the replies' day on)", lines)
+        self.assertTrue(any("stops if it failed or its non-cached input passed 200,000 tokens: a stop, never a budget or an allowance" in x for x in lines))
+        self.assertTrue(any("Navish's separate typed approval of the deployment of build" in x and "and of this run's tokens" in x for x in lines))
+        self.assertEqual((out["build"], out["case"], out["plan"]), (TREE, "case_d11", self.cell["sealed"](self.cut)))
+        self.assertEqual({m for m, _ in app.calls}, {"GET"})  # it only reads
 
-    def test_g_the_pages_come_from_the_labels_template(self):
-        n3, base, replies = self.cell["plan"](LABELS, TEMPLATE, {"name": "Akte.pdf", "extraction": {"pages": 28}})
-        self.assertEqual((n3["n"], base, replies), (3, list(range(1, 21)), [[21, 22, 23], [24, 25]]))  # the old lease rides with its e-mail
+    def test_g_the_cut_is_made_of_whole_documents_of_the_labels_template(self):
+        """The earlier state and the two arrivals of D11, each page of the file in exactly one part; a template that does not
+        give that cut stops the run before it does anything."""
+        pdf = {"name": "Akte.pdf", "extraction": {"pages": 28}}
+        cut = self.cell["plan"](LABELS, TEMPLATE, pdf)
+        self.assertEqual((cut["n3"]["n"], cut["base"], cut["arrival"], cut["later"]), (3, list(range(1, 21)), [[21, 22, 23], [24, 25]], [26, 27, 28]))
+        self.assertEqual((cut["entries"], cut["rows"]), ([5, 6], {"base": 9, "arrival": 3, "later": 2}))  # the reply's photo rides with it
+        self.assertEqual(sorted(cut["base"] + cut["later"] + [p for a in cut["arrival"] for p in a]), list(range(1, 29)))
         self.assertEqual(self.cell["spans"]([1, 2, 3, 7, 9, 10]), "1-3,7,9-10")
-        no_reply = copy.deepcopy(TEMPLATE)
-        no_reply["documents"] = [r for r in no_reply["documents"] if r["page"] < 21 or r["page"] > 25]
-        with self.assertRaises(self.cell["Stop"]):
-            self.cell["plan"](LABELS, no_reply, {"name": "Akte.pdf", "extraction": {"pages": 28}})
+        cases = {"no_reply_found": [r for r in TEMPLATE["documents"] if not 21 <= r["page"] <= 25],
+                 "arrival_not_as_in_the_outline": [r for r in TEMPLATE["documents"] if r["page"] != 24],  # one reply where D11 has two
+                 "pages_not_in_exactly_one_part": [r for r in TEMPLATE["documents"] if r["page"] != 1]}  # a first page in no document
+        for reason, rows in cases.items():
+            with self.assertRaises(self.cell["Stop"]) as stop:
+                self.cell["plan"](LABELS, {"documents": rows}, pdf)
+            self.assertEqual(stop.exception.args, ("cut", reason))
+        with self.assertRaisesRegex(AssertionError, "arrival_not_as_in_the_outline: nothing done"):
+            self.cell["hashes"](FakeApp(template={"documents": cases["arrival_not_as_in_the_outline"]}))
+        moved = copy.deepcopy(TEMPLATE)
+        moved["documents"][11]["page"] = 25  # the second reply starts a page later: another cut, another seal
+        self.assertEqual(self.cell["plan"](LABELS, moved, pdf)["arrival"], [[21, 22, 23, 24], [25]])
+        self.assertNotEqual(self.cell["sealed"](self.cell["plan"](LABELS, moved, pdf)), self.cell["sealed"](cut))
+        inside = copy.deepcopy(TEMPLATE)
+        inside["documents"][4]["page"] = 9  # an enclosure moved inside the earlier state: the same cut, the same seal
+        self.assertEqual(self.cell["sealed"](self.cell["plan"](LABELS, inside, pdf)), self.cell["sealed"](cut))
+
+    def test_i_a_template_of_segments_only_gives_the_same_cut(self):
+        """D11's stored reading has no account entries: the template is the reader's segments, senders as written. The two
+        e-mails of one day are two documents, undated photos and a receipt ride with the letter before them, and a document
+        of another left out although known on the assessment's day stops the run."""
+        pdf = {"name": "Akte.pdf", "extraction": {"pages": 30}}
+        cut = self.cell["plan"](SEGMENT_LABELS, SEGMENT_TEMPLATE, pdf)
+        self.assertEqual((cut["base"], cut["arrival"], cut["later"]), (list(range(1, 23)), [[23, 24, 25], [26, 27]], [28, 29, 30]))
+        self.assertEqual((cut["entries"], cut["rows"]), ([None, None], {"base": 11, "arrival": 2, "later": 2}))
+        rows = SEGMENT_TEMPLATE["documents"]
+        undated = copy.deepcopy(rows)
+        undated[12]["date"] = None  # the second e-mail's day not read: it joins the first, one reply where D11 has two
+        landlord = copy.deepcopy(rows)
+        landlord[14].update(date="2026-09-07", insurer=False, **{"from": "Immo Muster AG"})  # known on the assessment's day, left out
+        reminder = copy.deepcopy(rows)
+        reminder[13]["date"] = "2026-09-05"  # the insurer wrote again before the assessment: not the episode's outline
+        for reason, changed in (("arrival_not_as_in_the_outline", undated), ("another_document_before_the_assessment", landlord),
+                                ("another_document_before_the_assessment", reminder)):
+            with self.assertRaises(self.cell["Stop"]) as stop:
+                self.cell["plan"](SEGMENT_LABELS, {"documents": changed}, pdf)
+            self.assertEqual(stop.exception.args, ("cut", reason))
 
 
 if __name__ == "__main__":
