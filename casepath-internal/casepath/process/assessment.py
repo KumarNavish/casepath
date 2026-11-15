@@ -172,22 +172,49 @@ def ticked(events):
 
 # Claims and the residual ------------------------------------------------------------------------------------------------
 
-def claims_of(result, files=None, acc=None):
-    """The costs the customer asks to have compensated, as the reading located them: [{i, what, amount, checked,
-    documented, citations, receipt, documents, agree, rejected}] in the brief's order (``i`` its place there). A claim the
-    reading's own receipt does not document may still be documented by a receipt among the case's files whose recorded
-    details agree with it (account.documented, Slice C, where the account has it; never a receipt the reading set aside
-    for this claim): ``held`` names it."""
-    claims = [{**c, "i": i} for i, c in enumerate(((result or {}).get("brief") or {}).get("claims") or ())]
+def documented_by(claim, files, entries, why=None):
+    """The receipt that documents a claim, decided by one rule: Slice C's ``account.documented`` (C10c: a receipt record of
+    an entry in the case's files agrees with the claim in what it is for, who issued it, whom it bills, the period, the
+    number and the role of its amount; a shared word or amount is a candidate, never proof), where the account has it.
+    Until that rule is merged, the same comparison over the entries' located receipt records stands in
+    (options.agreement). {file, how, n, basis} or None; ``why`` collects each candidate set aside ({file, n, expense, why})."""
     check = getattr(account, "documented", None)
-    if check is None or files is None:
-        return claims
-    for c in claims:
-        if c.get("checked") and not c.get("documented"):
-            set_aside = {x.get("file") for r in c.get("rejected") or () for x in r.get("citations") or ()}
-            hit = check(c, files, (acc or {}).get("entries"))
-            if hit and hit.get("file") not in set_aside:
-                c.update(documented=True, held=hit)
+    if check is not None:
+        return check(claim, files, entries, why=why)
+    ids = {f["id"] for f in files or ()}
+    for e in entries or ():
+        rec = e.get("receipt") if isinstance(e.get("receipt"), dict) else None
+        if not rec or (ids and e.get("file") not in ids):
+            continue
+        agree = options.agreement(claim, rec)
+        if agree["documented"]:
+            return {"file": e.get("file"), "how": "receipt", "n": e.get("n"), "basis": {"expense": rec.get("expense"), "amount": rec.get("amount"),
+                                                                                        "role": rec.get("role"), "period": rec.get("period")}}
+        if why is not None and (agree["amount"] or agree["expense"]):  # it shares the amount or the kind: a candidate, set aside
+            why.append({"file": e.get("file"), "n": e.get("n"), "expense": rec.get("expense"), "why": [f"weicht ab: {options.disagreement(agree)}"]})
+    return None
+
+
+def receipt_evidence(hit, entries):
+    """Where the receipt that documents a claim stands: its record's words (its amount), else its entry's quote."""
+    entry = next((e for e in entries or () if hit and e.get("n") == hit.get("n") and e.get("file") == hit.get("file")), None) or {}
+    return _evidence(((entry.get("receipt") or {}).get("citations") or entry.get("citations") or [])[:1]) or (
+        [{"file": hit.get("file")}] if hit and hit.get("file") else [])
+
+
+def claims_of(result, files=None, acc=None):
+    """The costs the customer asks to have compensated, as the reading located them, each with whether a receipt in the
+    case's files documents it (documented_by: one rule): [{i, what, amount, checked, documented, held, set_aside, receipt,
+    citations, …}] in the brief's order (``i`` its place there). ``receipt``: where the documenting receipt stands."""
+    entries = (acc or {}).get("entries") or (((result or {}).get("record") or {}).get("entries") or [])
+    claims = []
+    for i, c in enumerate(((result or {}).get("brief") or {}).get("claims") or ()):
+        row = {**c, "i": i, "documented": False, "held": None, "set_aside": [], "receipt": []}
+        if c.get("checked") and files is not None:
+            why = []
+            hit = documented_by(c, files, entries, why)
+            row.update(documented=bool(hit), held=hit, set_aside=why, receipt=receipt_evidence(hit, entries) if hit else [])
+        claims.append(row)
     return claims
 
 
@@ -218,7 +245,7 @@ def need_lines(data, option_id, claims, items, events=None):
                         lines.append({"key": f"residual:claim.{c['i']}", "line": data["wording"]["claim_line"].replace("{posten}", c["what"]),
                                       "kind": "claim", "ref": c["i"], "evidence": _evidence(c.get("citations")), "wording": "claim_line",
                                       "blocks": {"question": None, "option": option_id, "condition": evidence_condition(data, option_id)},
-                                      **({"rejected": [_rejected(r) for r in c["rejected"]]} if c.get("rejected") else {})})
+                                      **({"set_aside": [_set_aside(x, items) for x in c["set_aside"]]} if c.get("set_aside") else {})})
                 continue
         if not present and doc is not None:
             lines.append({"key": f"residual:document.{need['document']}", "line": (doc.get("label") or {}).get("de") or need["document"],
@@ -227,12 +254,10 @@ def need_lines(data, option_id, claims, items, events=None):
     return lines
 
 
-def _rejected(receipt):
-    """A receipt the reading named for a claim that does not document it, as the brief shows it: its words, what it is
-    about and what differs."""
-    docs = receipt.get("documents") or {}
-    return {"evidence": _evidence(receipt.get("citations")), "expense": docs.get("expense"), "kind": docs.get("expense_kind"), "amount": docs.get("amount"),
-            "role": options.ROLE_WORDS.get(docs.get("role"), docs.get("role")), "differs": options.disagreement(receipt.get("agree"))}
+def _set_aside(row, items):
+    """A receipt the rule set aside for a claim, as the brief shows it beside the claim's line: its words, why it is not
+    that cost's receipt, and its document («Quittung … · andere Ausgabe: …»)."""
+    return {"file": row.get("file"), "n": row.get("n"), "expense": row.get("expense"), "why": list(row.get("why") or ())}
 
 
 def documented_all(data, option_id, claims):
@@ -431,7 +456,7 @@ def evaluate_questions(state, result, items, events, marks=None, files=None):
                     if documented and not residual and st["row"] == 9:
                         # the receipts the answer waited for are in: the question is answered, the evidence beside it
                         row.update(state="beantwortet", row=10, reason=DOCUMENTED, next=None,
-                                   evidence_in=[e for c in claims if c.get("checked") for e in _evidence((c.get("receipt") or [])[:1])])
+                                   evidence_in=[e for c in claims if c.get("checked") for e in (c.get("receipt") or [])[:1]])
                 state_now = row["state"]
                 row.update(answer=answer, answered_by=st["points"][0] if state_now == "beantwortet" else None)
         else:
@@ -720,7 +745,7 @@ def build(state, result, items, files, events, marks):
                 continue
             fact = c["fact"]
             if c.get("settled_by") == "claims":  # the receipts of the claimed costs: their quotes, the receipt's once it documents them
-                evidence = [x for k in claims if k.get("checked") for x in _evidence((k.get("receipt") or [])[:1] if k.get("documented") else k.get("citations"))][:3]
+                evidence = [x for k in claims if k.get("checked") for x in ((k.get("receipt") or [])[:1] if k.get("documented") else _evidence(k.get("citations")))][:3]
             else:
                 evidence = fact_evidence(fact, result, state, data) if fact else []
             rule["conditions"].append({"text": c["text"], "kind": c["kind"], "fact": fact, "question": question_of(graph, fact) if fact else None,
@@ -798,7 +823,7 @@ def build(state, result, items, files, events, marks):
     # handler checks instead of the whole file (new from the latest arrival, set by the handler, or read once)
     newly = set(((result or {}).get("update") or {}).get("facts") or ())
     deciding, shown_facts = [], set()
-    for fact in dict.fromkeys(f for f in premise_facts if f not in ("deckung", "aussichten")):
+    for fact in dict.fromkeys(f for f in premise_facts if f not in ("deckung", "aussichten") and a5):
         source = _source_fact(fact, case_facts, data)
         if source in shown_facts or (facts.get(fact) is None and fact not in weak):
             continue
@@ -819,7 +844,7 @@ def build(state, result, items, files, events, marks):
             now = {"option": (by_option.get(option_id) or {}).get("state"), "condition": "erfüllt",
                    "question": next((q["state"] for q in out_questions if q["item_id"] == pointing.get(option_id)), None)}
             resolved.append({"key": f"residual:claim.{c['i']}", "line": data["wording"]["claim_line"].replace("{posten}", c["what"]),
-                             "by": _evidence((c.get("receipt") or [])[:1]) or ([{"file": c["held"].get("file")}] if c.get("held") else []),
+                             "by": list((c.get("receipt") or [])[:1]),
                              "blocks": {"question": pointing.get(option_id), "option": option_id, "condition": evidence_condition(data, option_id)},
                              "now": now})
         for d in deciding:

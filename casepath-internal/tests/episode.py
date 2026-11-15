@@ -34,7 +34,7 @@ from casepath.agents.azure_model import ModelError
 from casepath.process import area
 from casepath.process.items import build_items, items_sha256
 from casepath.read.extract import extract
-from tests.scripted import ScriptedModel, claim, report
+from tests.scripted import ScriptedModel, claim, receipt, report
 
 WID = "mietmangel-handler"
 D0 = date(2026, 8, 1)  # the claim; the A1 on d+1, the reply on d+13, the A4 on d+16, the two replies on d+35 (05.09.2026)
@@ -462,14 +462,12 @@ def branches(ns):
             entry(first + 1, "fs", None, a5_day, "versicherer", "kunde", "einschaetzung", "Rechtliche Einschätzung (zitiert)",
                   f"Betreff: Rechtliche Einschätzung {ref}",
                   asks=[ask("Belege zu: Stromkosten für den Bautrockner", "kunde", "> – Belege zu: Stromkosten für den Bautrockner")]),
-            entry(first + 2, "ft", None, None, "andere", "kunde", "andere", "Stromabrechnung Bautrockner CHF 85.40", "Betrag: CHF 85.40")],
-            [], "Die Kundschaft reicht die Stromabrechnung für den Bautrockner ein.",
-            # the cost claimed before, in the words of the request that asked its receipts, with the bill and what it documents
-            claims=[claim("Stromkosten für den Bautrockner", "Stromabrechnung anbei.", file="fs", kind="Energie",
-                          receipt={"file": "ft", "quote": "Betrag: CHF 85.40", "expense": "Verbrauch Bautrockner", "kind": "Energie",
-                                   "party": "Energie Beispiel AG", "payer": "kunde", "transaction": "08-4411",
-                                   "period": {"from": ns.day(6).isoformat(), "to": ns.day(34).isoformat()},
-                                   "amount": "CHF 85.40", "role": "requested"})])
+            # the bill, and what the reader records it to be (its own entry's receipt record, NEEDS_C §1)
+            entry(first + 2, "ft", None, None, "andere", "kunde", "andere", "Stromabrechnung Bautrockner CHF 85.40", "Betrag: CHF 85.40",
+                  receipt=receipt("Betrag: CHF 85.40", "Energieverbrauch des Bautrockners", "Energie", amount="CHF 85.40", role="requested",
+                                  party="Energie Beispiel AG", transaction="08-4411",
+                                  when={"from": ns.day(6).isoformat(), "to": ns.day(34).isoformat()}))],
+            [], "Die Kundschaft reicht die Stromabrechnung für den Bautrockner ein.")
 
     return {
         "B-silence": SimpleNamespace(label="B-silence", what="nothing from the customer: the case looked at A5 + 91 days", days=SILENCE_DAYS,

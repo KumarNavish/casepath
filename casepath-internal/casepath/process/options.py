@@ -57,7 +57,6 @@ EVIDENCE = ("claims",)  # a condition the case's evidence settles rather than a 
 EXPENSES = ("Energie", "Reinigung", "Reparatur", "Ersatzanschaffung", "Miete und Nebenkosten", "Unterkunft", "Transport", "Honorar",
             "Gutachten", "Gebühren", "Lohn", "Gesundheit", "andere")
 ROLES = ("requested", "promised", "disputed", "paid", "refunded")
-PAYERS = ("kunde", "versicherer", "kanzlei", "gegenpartei", "behoerde", "andere", "unbekannt")  # whom a receipt bills (account.PARTIES)
 
 
 # Loading ------------------------------------------------------------------------------------------------------------
@@ -459,12 +458,13 @@ def amount_of(text):
 
 
 # Claims and receipts: what a receipt documents ----------------------------------------------------------------------------
-# The reader records, in the same call that reads the claim, what the claim and the receipt it names are about (the field
-# names Slice C reads too, NEEDS_C §1): what the cost is for (``expense``, in the document's words, and its kind,
-# ``expense_kind``), who billed it (``party``), the period ({from, to}, as written), the transaction (an invoice, meter or
-# booking number), and for the receipt whom it bills (``payer``) and the role of its amount (requested, promised, disputed,
-# paid, refunded). A receipt documents a claim only when these agree; a shared word or the same amount is a candidate,
-# never proof. Model-free: the reading gives the fields once, code compares them here.
+# The reader records, in the same call, what a claim is about and what each receipt, bill or credit note in the files records
+# (on its own entry), under the field names Slice C's rule reads (NEEDS_C §1): what the cost is for (``expense``, in the
+# document's words, and its kind, ``expense_kind``), who billed it (``party``), the period ({from, to}, as written), the
+# number (``transaction``), and for the receipt whom it bills (``payer``) and the role of its amount (requested, promised,
+# disputed, paid, refunded). A receipt documents a claim only when these agree; a shared word or the same amount is a
+# candidate, never proof. One rule decides (assessment.documented_by): Slice C's account.documented; ``agreement`` below
+# is the same comparison standing in for it until that rule is merged. Model-free.
 
 DATE_RE = re.compile(r"\b(\d{1,2})\.(\d{1,2})\.(\d{4})\b")
 MONTH_RE = re.compile(r"\b(" + "|".join(m.lower() for m in MONTHS) + r")\s+(\d{4})\b")
@@ -525,7 +525,7 @@ def agreement(claim, receipt):
     ck, rk = c.get("expense_kind") or None, r.get("expense_kind") or None
     out["expense"] = None if not ck or not rk else (ck == rk and ck != "andere")
     payer = r.get("payer")
-    out["payer"] = None if payer in (None, "", "unbekannt") else payer in CUSTOMER_SIDE
+    out["payer"] = None if not payer else payer in CUSTOMER_SIDE
     cn, rn = _names(c.get("party")), _names(r.get("party"))
     out["party"] = None if not cn or not rn else bool(cn & rn)
     cp, rp = period_of(c.get("period")), period_of(r.get("period"))

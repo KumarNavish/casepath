@@ -23,7 +23,7 @@ from casepath.process.items import build_items
 from casepath.process.workflows import CatalogueError
 from casepath.web.app import create_app
 from tests import episode as ep
-from tests.scripted import ScriptedModel, claim, report
+from tests.scripted import ScriptedModel, claim, receipt, report
 
 WID = ep.WID
 NS = ep.EPISODE
@@ -554,19 +554,16 @@ class InCaseTests(unittest.TestCase):
         self.assertEqual(line, "Sie machen folgende Kosten geltend: Stromkosten für den Bautrockner.")
 
     def test_an_unrelated_receipt_does_not_document_a_claim(self):
-        receipts = NS.branches["B-receipts"].core_files()
-        work = team.CaseWork(case=ep.case_row(), files=core.case_files(FILES + receipts), base_workflow=area.workflow(WID))
-        quote = "Die Stromkosten für den Bautrockner von rund CHF 85 möchte ich ersetzt haben."
-        shop = {"file": "fa", "quote": "1 Schimmelentferner Spray 500 ml  CHF 18.90", "kind": "Ersatzanschaffung", "amount": "CHF 18.90"}  # d+13
-        bill = {"file": "ft", "quote": "Verbrauch Bautrockner", "kind": "Energie", "amount": "CHF 85.40", "role": "requested"}
-        brief = team._located_brief(work, {"summary": "x", "questions": [], "claims": [
-            claim("Stromkosten für den Bautrockner", quote, amount="CHF 85", receipt=shop, file="fc", kind="Energie"),
-            claim("Stromkosten für den Bautrockner", quote, amount="CHF 85", receipt=bill, file="fc", kind="Energie")]})
-        self.assertEqual([c["documented"] for c in brief["claims"]], [False, True])  # only the bill documents the cost
-        self.assertEqual([len(c["rejected"]) for c in brief["claims"]], [1, 0])  # the shop's receipt located, kept as rejected
-        self.assertEqual(brief["claims"][0]["receipt"], [])  # what account.held reads: only a receipt that documents the claim
-        documented = Case(changed(replied(), claims=brief["claims"][1:]), DECKUNG)
-        self.assertEqual([r for r in documented.brief["residual"] if r["kind"] == "claim"], [])
+        # a shop's receipt, recorded on its entry: a receipt of the case, for another expense and amount
+        shop = receipt("Total CHF 25.40", "Schimmelentferner und Fugenbürste", "Ersatzanschaffung", amount="CHF 25.40", party="Drogerie Exempel",
+                       transaction="4711")
+        result, files = arrival(replied(), [SHOP], entries=[ep.entry(16, "fq", None, None, "andere", "kunde", "andere", "Quittung der Drogerie",
+                                                                     "Total CHF 25.40", receipt=shop)])
+        self.assertEqual(next(e for e in result["record"]["entries"] if e["n"] == 16)["receipt"]["expense"], "Schimmelentferner und Fugenbürste")
+        state = core.evaluate(area.workflow(WID), [], DECKUNG, result, "c")
+        claims = assessment.claims_of(result, ep.looked_at(files, NS.a5_day), state["account"])
+        self.assertEqual((claims[0]["documented"], claims[0]["receipt"]), (False, []))  # not the electricity cost's receipt
+        self.assertEqual([r["kind"] for r in Case(result, DECKUNG, files=files).brief["residual"]], ["claim"])
 
     def test_the_residual_names_the_claimed_cost_and_never_asks_what_the_file_holds(self):
         self.assertEqual([r["line"] for r in self.case.brief["residual"]], ["Belege zu: Stromkosten für den Bautrockner"])
@@ -722,12 +719,13 @@ class WithoutOptionsTests(unittest.TestCase):
         about = schema["properties"]["questions"]["items"]["properties"]["about"]
         self.assertEqual((about["items"]["enum"], about["maxItems"]), (["meldung", "reduktion", "hinterlegung", "schadenersatz", "kuendigung"], 2))
         claims = schema["properties"]["claims"]["items"]["properties"]
-        # what a claim and its receipt are about, so code can compare them (steering, point 5)
-        self.assertEqual(sorted(claims), ["amount", "citations", "expense", "expense_kind", "party", "period", "receipt", "role", "transaction", "what"])
-        self.assertEqual(sorted(claims["receipt"]["items"]["properties"]),
-                         ["amount", "citations", "expense", "expense_kind", "party", "payer", "period", "role", "transaction"])
-        self.assertEqual(sorted(claims["period"]["properties"]), ["from", "to"])  # as Slice C reads it (NEEDS_C §1)
-        self.assertEqual(claims["receipt"]["items"]["properties"]["role"]["enum"], ["requested", "promised", "disputed", "paid", "refunded"])
+        # what a claim is about, under the names Slice C's rule reads (NEEDS_C §1; steering, point 5)
+        self.assertEqual(sorted(claims), ["amount", "citations", "expense", "expense_kind", "party", "period", "role", "transaction", "what"])
+        self.assertEqual(sorted(claims["period"]["properties"]), ["from", "to"])
+        record = team.steps_entry(work)["properties"]["receipt"]  # and what a receipt records, on its own entry
+        self.assertEqual((record["type"], sorted(record["properties"])),
+                         (["object", "null"], ["amount", "expense", "expense_kind", "party", "payer", "period", "quote", "role", "transaction"]))
+        self.assertEqual(record["properties"]["role"]["enum"], ["requested", "promised", "disputed", "paid", "refunded"])
         from tests.test_team import FIXTURE as PLAIN, FILES as PLAIN_FILES
         bare = team.CaseWork(case={"title": "x"}, files=PLAIN_FILES, base_workflow=PLAIN)
         about = team._report_schema(bare, "claim_reader")["properties"]["questions"]["items"]["properties"]["about"]
@@ -739,8 +737,9 @@ class WithoutOptionsTests(unittest.TestCase):
         self.assertIn("questions and claims, only those the new documents state, with about", team.UPDATE_READ)
         result = replied()
         self.assertEqual([q["about"] for q in result["brief"]["questions"]], [["hinterlegung"], ["hinterlegung"], ["schadenersatz"]])
-        self.assertEqual([(c["what"], c["amount"], c["checked"], c["documented"]) for c in result["brief"]["claims"]],
-                         [("Stromkosten für den Bautrockner", "CHF 85", True, False)])
+        self.assertEqual([(c["what"], c["amount"], c["checked"], c["expense_kind"], c["role"]) for c in result["brief"]["claims"]],
+                         [("Stromkosten für den Bautrockner", "CHF 85", True, "Energie", "requested")])
+        self.assertNotIn("documented", result["brief"]["claims"][0])  # decided where the case is shown, by one rule (claims_of)
         work = team.CaseWork(case=ep.case_row(), files=core.case_files(FILES), base_workflow=area.workflow(WID))
         work.brief = copy.deepcopy(result["brief"])
         again = team._merge_brief(work, {"summary": "x", "questions": [], "claims": [
@@ -953,8 +952,18 @@ def arrival(prior_result, new_files, entries=(), facts=(), claims=(), summary="N
 
 CARPET = ep.text_file("fu", "Quittung Teppichreinigung.txt", "Reinigung Muster GmbH\nTeppichreinigung Wohnzimmer am 02.09.2026\n"
                                                                 "Total CHF 85.00\nBar bezahlt\n".encode())
+SHOP = ep.text_file("fq", "Quittung Drogerie.txt", "Drogerie Exempel, Marktgasse 9\nQuittung Nr. 4711\nSchimmelentferner, Fugenbürste\n"
+                                                   "Total CHF 25.40\nBar bezahlt\n".encode())
 PHOTOS = ep.text_file("fp", "Fotos Schimmel.txt", "Foto 1: Ecke über dem Fenster, Schimmel unverändert.\nFoto 2: Bad, Decke.\n".encode())
+BILL_WORDS = ep.text_file("fw", "Abrechnung Energie Beispiel.txt", "Energie Beispiel AG\nZusatzabrechnung Zähler 08-4411\n"
+                                                                    "Energieverbrauch 07.08.2026 bis 04.09.2026: 212 kWh\nBetrag: CHF 85.40\n".encode())
 QUOTE = "Die Stromkosten für den Bautrockner von rund CHF 85 möchte ich ersetzt haben."
+# what the reader records for each of them on its entry (NEEDS_C §1): same amount but another expense; another expense and
+# amount; the same cost in other words (no word of the claim: «Energieverbrauch», a meter, a bill)
+CARPET_RECORD = receipt("Total CHF 85.00", "Teppichreinigung Wohnzimmer", "Reinigung", amount="CHF 85.00", party="Reinigung Muster GmbH",
+                        when={"from": "2026-09-02", "to": "2026-09-02"})
+BILL_RECORD = receipt("Betrag: CHF 85.40", "Energieverbrauch des Bautrockners", "Energie", amount="CHF 85.40", role="requested",
+                      party="Energie Beispiel AG", transaction="08-4411", when={"from": "2026-08-07", "to": "2026-09-04"})
 
 
 def comparable(brief):
@@ -984,16 +993,14 @@ class BlocksTests(unittest.TestCase):
         self.assertEqual(ask["what"], "Besteht der Mangel heute noch?")
 
     def test_the_receipt_asked_for_settles_the_judgment_it_was_asked_for(self):
-        receipts = NS.branches["B-receipts"]
-        result, files = arrival(replied(), receipts.core_files(), claims=[], summary="x")  # read without the claim: nothing settled
-        unread = Case(result, DECKUNG, files=files)
-        self.assertEqual(comparable(unread.brief)["residual"], comparable(self.before.brief)["residual"])
+        receipts = NS.branches["B-receipts"]  # the customer's reply A5 + 20 days, the bill attached, read as its own entry
         prior = {"id": "run_b", "workflow_id": WID, "workflow_version": _PREPARED_version(), "routing": None, "result": replied()}
-        outcome, _ = ep.updated(prior, FILES + receipts.core_files(), receipts.turns(16, 17), NS)  # the bill read for the claimed cost
+        outcome, _ = ep.updated(prior, FILES + receipts.core_files(), receipts.turns(16, 17), NS)
+        self.assertEqual(outcome["status"], "completed", outcome.get("error"))
         files = FILES + receipts.core_files()
+        bill = next(e for e in outcome["result"]["record"]["entries"] if e["file"] == "ft")
+        self.assertEqual((bill["receipt"]["expense"], bill["receipt"]["citations"][0]["quote"]), ("Energieverbrauch des Bautrockners", "Betrag: CHF 85.40"))
         after = Case(outcome["result"], DECKUNG, files=files, day=NS.a5_day + ep.timedelta(days=ep.RECEIPTS_DAYS))
-        claim_ = outcome["result"]["brief"]["claims"][0]
-        self.assertEqual((claim_["documented"], claim_["receipt"][0]["file"], claim_["agree"]["expense"], claim_["agree"]["amount"]), (True, "ft", True, True))
         self.assertEqual([r for r in after.brief["residual"] if r["kind"] == "claim"], [])  # nothing asked again
         q = after.question(2)
         self.assertEqual((q["state"], q["row"], q["reason"]), ("beantwortet", 10, "Belege liegen vor"))  # the answer it waited for
@@ -1002,11 +1009,12 @@ class BlocksTests(unittest.TestCase):
         condition = next(c for c in after.rule("259e")["conditions"] if c["text"] == "Kosten mit Belegen nachgewiesen")
         self.assertEqual((condition["state"], condition["evidence"][0]["quote"]), ("erfüllt", "Betrag: CHF 85.40"))
         self.assertEqual(after.option("schadenersatz")["state"], "holds")
-        self.assertIn({"key": "residual:claim.0", "line": "Belege zu: Stromkosten für den Bautrockner",
-                       "by": [{"file": "ft", "page": claim_["receipt"][0]["page"], "start": claim_["receipt"][0]["start"],
-                               "end": claim_["receipt"][0]["end"], "quote": "Betrag: CHF 85.40"}],
-                       "blocks": {"question": "customer_question:2", "option": "schadenersatz", "condition": "Kosten mit Belegen nachgewiesen"},
-                       "now": {"option": "holds", "condition": "erfüllt", "question": "beantwortet"}}, after.brief["resolved"])
+        settled = next(r for r in after.brief["resolved"] if r["key"] == "residual:claim.0")
+        self.assertEqual((settled["line"], settled["by"][0]["file"], settled["by"][0]["quote"], settled["blocks"], settled["now"]),
+                         ("Belege zu: Stromkosten für den Bautrockner", "ft", "Betrag: CHF 85.40",
+                          {"question": "customer_question:2", "option": "schadenersatz", "condition": "Kosten mit Belegen nachgewiesen"},
+                          {"option": "holds", "condition": "erfüllt", "question": "beantwortet"}))
+        self.assertNotIn("Bitte reichen Sie uns noch nach", after.text)
 
     def test_a_fact_arriving_later_answers_the_question_that_waited_for_it(self):
         waiting = Case(changed(replied(), facts={"mangel_besteht": None}), DECKUNG)
@@ -1021,15 +1029,12 @@ class BlocksTests(unittest.TestCase):
         self.assertEqual(row["by"][0]["quote"], "Der Schimmel ist immer noch da.")
 
     def test_an_unrelated_arrival_changes_nothing(self):
-        for name, new, entries, claims in (
-                ("photos", [PHOTOS], [ep.entry(16, "fp", None, None, "kunde", "versicherer", "unterlagen", "Fotos des Schimmels", "Foto 1: Ecke über dem Fenster")], []),
-                ("a same-amount receipt of another expense", [CARPET], [ep.entry(16, "fu", None, None, "andere", "kunde", "andere", "Quittung Teppichreinigung", "Total CHF 85.00")],
-                 [claim("Stromkosten für den Bautrockner", "Total CHF 85.00", file="fu", kind="Energie",
-                        receipt={"file": "fu", "quote": "Total CHF 85.00", "expense": "Teppichreinigung Wohnzimmer", "kind": "Reinigung",
-                                 "party": "Reinigung Muster GmbH", "period": {"from": "2026-09-02", "to": "2026-09-02"},
-                                 "amount": "CHF 85.00", "role": "paid"})])):
+        for name, new, entry in (
+                ("photos", [PHOTOS], ep.entry(16, "fp", None, None, "kunde", "versicherer", "unterlagen", "Fotos des Schimmels", "Foto 1: Ecke über dem Fenster")),
+                ("a same-amount receipt of another expense", [CARPET],
+                 ep.entry(16, "fu", None, None, "andere", "kunde", "andere", "Quittung Teppichreinigung", "Total CHF 85.00", receipt=CARPET_RECORD))):
             with self.subTest(name):
-                result, files = arrival(replied(), new, entries=entries, claims=claims)
+                result, files = arrival(replied(), new, entries=[entry])
                 after = Case(result, DECKUNG, files=files)
                 self.assertEqual(comparable(after.brief), comparable(self.before.brief))
                 self.assertFalse(any(r["key"].startswith("residual:") for r in after.brief["resolved"]))
@@ -1038,43 +1043,50 @@ class BlocksTests(unittest.TestCase):
 # -- claims and receipts: a shared word or amount is a candidate, not proof ---------------------------------------------------
 
 class ReceiptTests(unittest.TestCase):
-    """Steering, point 5: the reader records what a claim and its receipt are about (expense, party, period, transaction,
-    the amount's role); «documented» needs them to agree. Deterministic, no model call per field."""
+    """Steering, point 5: the reader records what a claim is about and, on a receipt's own entry, what the receipt records
+    (expense, party, period, transaction, the amount's role); «documented» needs them to agree, decided by one rule
+    (assessment.documented_by: Slice C's account.documented once merged, the same comparison standing in until then).
+    Deterministic, no model call per field."""
 
-    def located(self, *claims_, extra=()):
-        work = team.CaseWork(case=ep.case_row(), files=core.case_files(FILES + NS.branches["B-receipts"].core_files() + list(extra)),
-                             base_workflow=area.workflow(WID))
-        return team._located_brief(work, {"summary": "x", "questions": [], "claims": list(claims_)})["claims"]
+    def arrived(self, new_file, record):
+        result, files = arrival(replied(), [new_file], entries=[ep.entry(16, new_file["id"], None, None, "andere", "kunde", "andere",
+                                                                         new_file["name"], record["quote"], receipt=record)])
+        return result, files, Case(result, DECKUNG, files=files)
 
     def test_a_same_amount_receipt_for_another_expense_is_rejected_and_a_paraphrase_is_accepted(self):
-        carpet = {"file": "fu", "quote": "Total CHF 85.00", "expense": "Teppichreinigung Wohnzimmer", "kind": "Reinigung", "party": "Reinigung Muster GmbH",
-                  "period": {"from": "2026-09-02", "to": "2026-09-02"}, "amount": "CHF 85.00", "role": "paid"}
-        paraphrase = {"file": "ft", "quote": "Zusatzabrechnung Zähler 08-4411", "expense": "Zusatzabrechnung Zähler", "kind": "Energie",
-                      "party": "Energie Beispiel AG", "period": {"from": "2026-08-07", "to": "2026-09-04"}, "transaction": "08-4411",
-                      "amount": "CHF 85.40", "role": "requested"}
-        wrong, right = self.located(claim("Stromkosten für den Bautrockner", QUOTE, amount="CHF 85", receipt=carpet, file="fc", kind="Energie"),
-                                    claim("Stromkosten für den Bautrockner", QUOTE, amount="CHF 85", receipt=paraphrase, file="fc", kind="Energie"),
-                                    extra=[CARPET])
-        # the same amount (a candidate) and no word of the claim in the bill: neither decides
-        self.assertIn(85.0, options.amounts(carpet["quote"]))
-        self.assertFalse({"stromkosten", "bautrockner"} & set(paraphrase["quote"].lower().split()))
-        self.assertEqual((wrong["documented"], wrong["receipt"], wrong["rejected"][0]["agree"]["expense"], wrong["rejected"][0]["agree"]["amount"]),
-                         (False, [], False, True))
-        self.assertEqual((right["documented"], right["receipt"][0]["file"], right["agree"]["expense"], right["agree"]["amount"]), (True, "ft", True, True))
-        # accepted without the handler entering anything: the claim line goes, the question it blocked is answered
-        accepted = Case(changed(replied(), claims=[right]), DECKUNG, files=FILES + NS.branches["B-receipts"].core_files())
-        self.assertEqual(([r["key"] for r in accepted.brief["residual"]], accepted.question(2)["state"]), ([], "beantwortet"))
-        refused = Case(changed(replied(), claims=[wrong]), DECKUNG, files=FILES + [CARPET])
+        self.assertIn(85.0, options.amounts(CARPET_RECORD["quote"]))  # the same amount: a candidate …
+        self.assertFalse({"stromkosten", "bautrockner"} & set(BILL_WORDS["extraction"]["text"].lower().split()))  # … no word of the claim
+        _, _, refused = self.arrived(CARPET, CARPET_RECORD)
         line = refused.brief["residual"][0]
-        self.assertEqual((line["key"], line["rejected"][0]["differs"], line["rejected"][0]["expense"], line["rejected"][0]["kind"]),
-                         ("residual:claim.0", "Ausgabe", "Teppichreinigung Wohnzimmer", "Reinigung"))  # why it was set aside, beside the line
-        self.assertEqual(refused.question(2)["state"], "bedingt")
+        self.assertEqual((line["key"], line["set_aside"][0]["expense"], line["set_aside"][0]["why"]),
+                         ("residual:claim.0", "Teppichreinigung Wohnzimmer", ["weicht ab: Ausgabe"]))  # why, beside the line
+        self.assertEqual((refused.question(2)["state"], [r["key"] for r in refused.brief["asks"]]), ("bedingt", ["residual:claim.0"]))
+        _, _, accepted = self.arrived(BILL_WORDS, {**BILL_RECORD, "expense": "Zusatzabrechnung Zähler 08-4411, Energieverbrauch"})
+        # accepted without the handler entering anything: the claim line goes, the question it blocked is answered
+        self.assertEqual(([r["key"] for r in accepted.brief["residual"]], accepted.question(2)["state"]), ([], "beantwortet"))
+        self.assertEqual(accepted.brief["resolved"][0]["by"][0]["file"], "fw")
+
+    def test_one_rule_decides_whether_a_receipt_documents_a_claim(self):
+        result, files, _ = self.arrived(BILL_WORDS, BILL_RECORD)
+        state = core.evaluate(area.workflow(WID), [], DECKUNG, result, "c")
+        looked = ep.looked_at(files, NS.a5_day)
+        self.assertTrue(assessment.claims_of(result, looked, state["account"])[0]["documented"])  # the stand-in agrees
+        # once Slice C's account.documented is there, it alone decides: its «no» is the residual's «no»
+        seen = []
+        with mock.patch.object(assessment.account, "documented", create=True,
+                               side_effect=lambda claim, files, entries, why=None: seen.append(claim["what"]) or None):
+            claims = assessment.claims_of(result, looked, state["account"])
+            case = Case(result, DECKUNG, files=files)
+        self.assertEqual((claims[0]["documented"], seen[0]), (False, "Stromkosten für den Bautrockner"))
+        self.assertEqual([r["kind"] for r in case.brief["residual"]], ["claim"])
+        with mock.patch.object(assessment.account, "documented", create=True,
+                               side_effect=lambda claim, files, entries, why=None: {"file": "fw", "how": "receipt", "n": 16, "basis": {}}):
+            self.assertEqual(Case(result, DECKUNG, files=files).question(2)["state"], "beantwortet")
 
     def test_the_amounts_role_period_and_party_must_agree(self):
         claim_ = {"expense_kind": "Energie", "party": None, "period": None, "transaction": None, "amount": "CHF 85",
                   "citations": [{"quote": QUOTE}]}  # «von rund CHF 85»: within its rounding
-        bill = {"expense_kind": "Energie", "party": "Energie Beispiel AG", "payer": "kunde", "period": {"from": "2026-08-07", "to": "2026-09-04"},
-                "transaction": "08-4411", "amount": "CHF 85.40", "role": "requested"}
+        bill = {**BILL_RECORD, "payer": "kunde"}
         self.assertTrue(options.agreement(claim_, bill)["documented"])
         for field, value in (("role", "refunded"), ("role", "promised"), ("role", "disputed"), ("payer", "gegenpartei"), ("expense_kind", "Reinigung"),
                              ("amount", "CHF 120.00"), ("expense_kind", "andere")):
@@ -1093,7 +1105,9 @@ class ReceiptTests(unittest.TestCase):
         self.assertEqual(options.period_of("im August 2026"), (ep.date(2026, 8, 1), ep.date(2026, 8, 31)))
 
     def test_a_claim_paid_back_is_not_named(self):
-        refunded = self.located(claim("Stromkosten für den Bautrockner", QUOTE, amount="CHF 85", file="fc", kind="Energie", role="refunded"))[0]
+        work = team.CaseWork(case=ep.case_row(), files=core.case_files(FILES), base_workflow=area.workflow(WID))
+        refunded = team._located_brief(work, {"summary": "x", "questions": [], "claims": [
+            claim("Stromkosten für den Bautrockner", QUOTE, amount="CHF 85", file="fc", kind="Energie", role="refunded")]})["claims"][0]
         self.assertFalse(refunded["checked"])
 
 
