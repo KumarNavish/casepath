@@ -23,14 +23,17 @@ def case_files(store, case_id):
     return core.case_files(store.list_files(case_id, with_text=True))
 
 
-def case_state(store, catalogue, case_id, knowledge=None):
+def case_state(store, catalogue, case_id, knowledge=None, study=None):
     """The case's current process and evaluation, from the latest completed run plus later edits.
 
-    knowledge: a Knowledge version to apply instead of the store's active items (for a model-free replay)."""
+    knowledge: a Knowledge version to apply instead of the store's active items (for a model-free replay).
+    study: evaluate by the account rules of the frozen expert study (core.evaluate); None: as the case is, a study copy
+    by them, any other case by the current ones. The frozen-run checks pass True, so a source case is frozen and compared
+    on the rules its copies are evaluated by."""
     case = store.get_case(case_id)
-    study = (case.get("intake") or {}).get("study")  # a study copy shows its source's frozen run, never one of its own
-    if study:
-        run = store.get_run(study["frozen_run_id"])
+    study_copy = (case.get("intake") or {}).get("study")  # a study copy shows its source's frozen run, never one of its own
+    if study_copy:
+        run = store.get_run(study_copy["frozen_run_id"])
     else:  # a run stopped by a person shows what it established until a later run completes
         done, paused = store.latest_run(case_id, "completed"), store.latest_run(case_id, "paused")
         run = paused if paused and (not done or paused["created_at"] > done["created_at"]) else done
@@ -47,7 +50,8 @@ def case_state(store, catalogue, case_id, knowledge=None):
         knowledge = store.list_knowledge(workflow["id"], {"active"})  # only what a person has activated shapes a case
     else:
         knowledge = [k for k in knowledge if workflow["id"] in (k["family"] if isinstance(k["family"], list) else [k["family"]])]
-    state = core.evaluate(workflow, knowledge, store.list_edits(case_id), result, case_id, files=store.list_files(case_id))
+    state = core.evaluate(workflow, knowledge, store.list_edits(case_id), result, case_id, files=store.list_files(case_id),
+                          study=bool(study_copy) if study is None else bool(study))
     ran = (run or {}).get("workflow_version")
     versions = {"run_version": ran, "governing_version": workflow["version"]} if ran and ran != workflow["version"] else {}
     return {"case": case, "workflow": workflows.ref(workflow), **state, "run": run, "knowledge": knowledge, **versions}

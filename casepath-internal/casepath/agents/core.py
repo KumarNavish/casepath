@@ -483,8 +483,10 @@ def update(job, prior, model, blobs, on_event=lambda e: None, on_extraction=None
         return _outcome(status="failed", error=f"internal: {type(error).__name__}: {error}", extractions=storage.extractions)
 
 
-def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None):
-    """The case's process (workflow, active Knowledge, edits) and where the case stands, from a run's accepted findings."""
+def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None, study=False):
+    """The case's process (workflow, active Knowledge, edits) and where the case stands, from a run's accepted findings.
+    ``study``: a frozen expert-study copy, whose account is built by the rules it was frozen with (account.from_result,
+    ``checked`` False), so its item list keeps the hash it was frozen with."""
     result = result or {}
     edits = list(edits) + [e for e in result.get("agent_edits", []) if e.get("status", "active") == "active"]
     graph, provenance = casegraph.build(workflow, knowledge=knowledge, edits=edits, case_id=case_id)
@@ -500,8 +502,10 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     # The running account, when the run recorded one: the insurer's actions taken and the agreement come from its entries,
     # the handler's own entries (phone calls, notes) among them. A run made before the account has none, and nothing
     # changes: the handler's entries are listed and count once a full preparation has read the account.
-    ledger = account.from_result(result, graph, edits)
+    ledger = account.from_result(result, graph, edits, checked=not study)
     facts = account.merge(facts, ledger, graph)
+    if ledger is None and not study:  # a run prepared before the account: the letters dispatched since move its clock
+        facts.update(account.dispatch_facts(edits, graph))
     overrides = casegraph.fact_overrides(graph, edits)  # a case worker's value governs
     facts.update({k: v for k, (v, _) in overrides.items()})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}

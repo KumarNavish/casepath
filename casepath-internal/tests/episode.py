@@ -642,7 +642,7 @@ def seed_frozen_copy(store, runs, user=USER, expert="P1"):
     from casepath.agents.runner import case_state
     ns = analog(names={**VARIANT_A, "title": "D11-Analogon C (synthetisch)", "reference": "4321.6011.0003"}, dated_request=True)
     source = seed_phase_a(store, runs, ns, title=f"D11-Analogon C, eingefroren (synthetisch) {ns.reference}", user=user)
-    current = case_state(store, runs.catalogue, source["id"])
+    current = case_state(store, runs.catalogue, source["id"], study=True)  # as web/app.py's freeze: by the frozen account rules
     listed = build_items(current, current["run"].get("result"), store.list_files(source["id"]))
     frozen = {"frozen_run_id": current["run"]["id"], "items_sha256": items_sha256(listed),
               "workflow_version": (current.get("workflow") or {}).get("version"), "speed_trials": sorted(runs.speed_trials)}

@@ -317,9 +317,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                             "source_case": None, "frozen_run_id": (completed or {}).get("id"), "kind": kind,
                                             "parity_sha": parity_sha, "item_id": item_id, **fields})
 
-    def state(case_id):
+    def state(case_id, study=None):
+        """The case's state (runner.case_state); ``study`` True: by the account rules of the frozen expert study."""
         found(store.get_case, case_id)
-        return case_state(store, catalogue, case_id)
+        return case_state(store, catalogue, case_id, study=study)
 
     # The jurists' review of the legal content (process/review.py): the elements are built once from the data files the
     # catalogue composed, the marks are read from the store on each request
@@ -703,8 +704,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return next((e for e in reversed(store.list_case_events(case_id)) if e["kind"] == "study.frozen"), None)
 
     def study_mismatch(case_id, expected):
-        """Why a study copy must not start, or None: its item list or workflow version differs from the frozen run's."""
-        current = state(case_id)
+        """Why a study copy must not start, or None: its item list or workflow version differs from the frozen run's. The
+        item list is built by the study's frozen account rules, for a copy and for the case it was copied from alike."""
+        current = state(case_id, study=True)
         if not current["run"] or current["run"]["id"] != expected["frozen_run_id"]:
             return "Der eingefrorene Lauf fehlt."
         if (current.get("workflow") or {}).get("version") != expected["workflow_version"]:
@@ -718,7 +720,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     @app.post("/api/cases/{case_id}/freeze", status_code=201)
     def freeze(case_id: str, who=Depends(user)):
         """Fix the case's latest completed run for a study: every expert's copy will show exactly this run."""
-        current = state(case_id)
+        current = state(case_id, study=True)  # its item list by the study's frozen account rules, as the copies build theirs
         if not current["run"] or (current["case"].get("intake") or {}).get("study"):
             raise HTTPException(409, "Nur ein vorbereiteter Fall (keine Studienkopie) kann eingefroren werden.")
         listed = build_items(current, current["run"].get("result"), store.list_files(case_id))

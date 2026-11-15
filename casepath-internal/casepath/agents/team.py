@@ -1234,7 +1234,8 @@ def _clipped(text, n):
 def case_so_far(work):
     """The case as an update's reader needs it, one line per item: the record's entries (number, date, from → to, kind, a
     few words; the handler's own marked), the deciding facts the files settle with their values and status, the open
-    requests, and the handler's decisions. Nothing of the earlier files' text."""
+    requests, the handler's decisions, and the area's key points (id and statement), so a new question can name the point
+    it asks about. Nothing of the earlier files' text."""
     acc = work.account() or {}
     entries = [f"{e['n']} · {e.get('date') or 'ohne Datum'} · {e['from']} → {e['to']} · {e.get('kind')}"
                + (" · Telefon" if e.get("phone") else "") + (" · Fallbearbeitung" if e.get("handler") else "")
@@ -1251,7 +1252,8 @@ def case_so_far(work):
                 + f" · Nr. {', '.join(str(n) for n in r['entries'])}" for r in acc.get("requests") or () if r["answered"] is None]
     decided = {f["id"]: v for f in work.graph["facts"] if f.get("handler_only")
                and (v := casegraph.fact_overrides(work.graph, work.employee_edits).get(f["id"], (None,))[0]) is not None}
-    return {"entries": entries, "facts": facts, "open_requests": requests, "decisions": decided}
+    points = [{"id": p["id"], "statement": p["statement"]} for p in work.graph.get("key_points") or ()]
+    return {"entries": entries, "facts": facts, "open_requests": requests, "decisions": decided, "key_points": points}
 
 
 def update_finder_instruction(work, names):

@@ -271,12 +271,13 @@ class DateTests(unittest.TestCase):
         _, items, by_id, _ = mandate_view()
         rows = sorted((i["key"], i["value"], i["what"], i["by"], i["for"], i["source"], i["stated_as"]) for i in items
                       if i["kind"] == "deadline" and i.get("account"))
+        # a request's id is stable: the entry that first asks it (3) and the ask's place in it (0, 1), not its place in time order
         self.assertEqual(rows, [
-            ("konto-r1", "2025-03-15", "Belege der Reparaturkosten", "Kanzlei", "Kundschaft", "Schreiben vom 01.03.2025", "computed"),
-            ("konto-r2", "2025-03-15", "Mängelrüge an die Vermieterin", "Kanzlei", "Kundschaft", "Schreiben vom 01.03.2025", "computed"),
+            ("konto-r3.0", "2025-03-15", "Belege der Reparaturkosten", "Kanzlei", "Kundschaft", "Schreiben vom 01.03.2025", "computed"),
+            ("konto-r3.1", "2025-03-15", "Mängelrüge an die Vermieterin", "Kanzlei", "Kundschaft", "Schreiben vom 01.03.2025", "computed"),
             ("konto-t5", "2025-04-30", "Antwort auf das Angebot: Gegenpartei zahlt CHF 2'000 (Vergleich per Saldo)", "Gegenpartei", "Protekta",
              "Schreiben vom 05.04.2025", "established")])
-        self.assertEqual(by_id["deadline:konto-r1"]["rule"], "innert 14 Tagen ab Schreiben vom 01.03.2025, nach Kalendertagen berechnet")
+        self.assertEqual(by_id["deadline:konto-r3.0"]["rule"], "innert 14 Tagen ab Schreiben vom 01.03.2025, nach Kalendertagen berechnet")
         self.assertEqual(by_id["deadline:konto-t5"]["party"], "versicherer")  # the insurer's to meet: it can lead the card
         self.assertIsNone(letters.set_date_line(by_id["deadline:konto-t5"]))  # stays on the screen, not in a letter
 
@@ -287,12 +288,12 @@ class DateTests(unittest.TestCase):
                   "set_by_others": True, "origin": "workflow"}]
         from casepath.process.items import account_dates
         account_dates(items, acc)
-        self.assertEqual(sorted(i["key"] for i in items), ["frist", "konto-r1", "konto-r2"])
+        self.assertEqual(sorted(i["key"] for i in items), ["frist", "konto-r3.0", "konto-r3.1"])  # the stable request ids (r<n>.<i>)
         answered = MANDATE_ENTRIES + [entry(6, 5, "2025-03-10", "kunde", "kanzlei", "unterlagen", "Belege", "Bern, 5. April 2025",
                                             answers=[{"what": "Belege der Reparaturkosten", "answers": 3, "quote": "Wir schlagen zur Erledigung"}])]
         acc = account.build([account.check(e, lambda q: {"file": "f1", "page": e["page"], "quote": q}, area.workflow(WID)["record"]["kinds"])[0]
                              for e in answered], area.workflow(WID))
-        self.assertEqual([d["key"] for d in account.open_dates(acc)], ["konto-r2", "konto-t5"])
+        self.assertEqual([d["key"] for d in account.open_dates(acc)], ["konto-r3.1", "konto-t5"])  # the stable request ids (r<n>.<i>)
 
 
 class StandTests(unittest.TestCase):
