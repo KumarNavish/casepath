@@ -298,7 +298,7 @@ function moreMenu() {
   const options = (S.workflows || []).map((w) => `<option value="${esc(w.id)}" ${d.case.workflow_id === w.id ? "selected" : ""}>${esc(w.short_title || w.title)}</option>`).join("");
   return `<details class="cp-more" ${S.moreOpen ? "open" : ""}><summary class="cp-link">${T("More", "Mehr")}</summary><div class="cp-menu">
     <label>${T("Process", "Prozess")}<select id="workflow"><option value="">${T("from the files", "aus den Akten bestimmen")}</option>${options}</select></label>
-    ${running() || !(d.files || []).length ? "" : `<button class="cp-link" id="run">${icon("nodes")}${run ? T("Prepare again", "erneut vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>`}
+    ${running() || !(d.files || []).length ? "" : `<button class="cp-link" id="run">${icon("nodes")}${run ? T("Prepare anew", "Ganz neu vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>`}
     ${S.file ? `<a class="cp-link" href="/api/files/${esc(S.file)}/original" target="_blank" rel="noopener">${icon("external")}${T("Open original", "Original öffnen")}</a>` : ""}
     ${done ? `<a class="cp-link" href="/api/cases/${esc(d.case.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report (.docx)", "Fallbericht (.docx)")}</a>` : ""}
     <button class="cp-link" id="historic-toggle" data-historic="${d.historic ? "false" : "true"}">${d.historic ? T("Treat as a live case", "Als laufenden Fall führen") : T("Treat as a historic file", "Als historische Akte führen")}</button>
@@ -388,6 +388,11 @@ function bindRail() {
     stopRun.disabled = true; S.stopping = S.data.run.id;
     await api(`/api/runs/${S.data.run.id}/stop`, { method: "POST" }).catch(() => {});
   });
+  const updateRun = $("#update-run");  // «Aktualisieren»: only what came in is read; a person asks, it spends tokens
+  if (updateRun) updateRun.addEventListener("click", async () => {
+    updateRun.disabled = true;
+    await api(`/api/cases/${S.route.id}/update`, { method: "POST" }).then(() => { S.events = []; S.follow = true; return loadCase(); }).catch((error) => { S.message = error.message; renderCase(); });
+  });
   const prepareNew = $("#prepare-new");  // a person asks: the run is not started automatically (it spends tokens)
   if (prepareNew) prepareNew.addEventListener("click", async () => {
     prepareNew.disabled = true;
@@ -406,7 +411,10 @@ function bindRail() {
 
 async function uploadFiles(list) {
   S.message = "";
-  for (const file of list) {
+  const files = [...list];  // the picker is emptied at once: its value is never carried into the next page
+  const picker = $("#upload");
+  if (picker) picker.value = "";
+  for (const file of files) {
     const form = new FormData();
     form.append("file", file);
     try { await api(`/api/cases/${S.route.id}/files`, { method: "POST", body: form }); }
@@ -417,8 +425,8 @@ async function uploadFiles(list) {
 
 async function startRun(event) {
   // Preparing again calls the model again; a prepared case asks first.
-  if (event && event.currentTarget && event.currentTarget.id === "run" && S.data && S.data.lastCompleted && !window.confirm(T("This case is already prepared. Prepare it again? The files are read once more, which uses the model again.",
-      "Dieser Fall ist bereits vorbereitet. Nochmals vorbereiten? Die Dokumente werden erneut gelesen; das ruft das Modell nochmals auf."))) return;
+  if (event && event.currentTarget && event.currentTarget.id === "run" && S.data && S.data.lastCompleted && !window.confirm(T("This case is already prepared. Prepare it anew? Every file is read once more, which uses the model again; for new files “Update” is enough.",
+      "Dieser Fall ist bereits vorbereitet. Ganz neu vorbereiten? Alle Dokumente werden erneut gelesen; das ruft das Modell nochmals auf. Für neu eingegangene Dateien genügt «Aktualisieren»."))) return;
   try {
     await api(`/api/cases/${S.route.id}/runs`, { method: "POST" });
     S.follow = true; S.moreOpen = false;
@@ -443,7 +451,11 @@ function citationsFor(fileId) {
 }
 function liveCite() {
   if (!running()) return null;
-  for (let i = S.events.length - 1; i >= 0; i -= 1) if (S.events[i].cite) return { ...S.events[i].cite, key: `hit:${S.events[i].seq}` };
+  for (let i = S.events.length - 1; i >= 0; i -= 1) {
+    const e = S.events[i];
+    if (e.cite) return { ...e.cite, key: `hit:${e.seq}` };
+    if (e.kind === "tool" && e.tool === "read_file" && e.file) return { file: e.file, page: e.page || null, key: `read:${e.seq}` };
+  }
   return null;
 }
 // The same normalisation as the server's evidence module, keeping where each
@@ -568,6 +580,10 @@ function describe(e) {
     "learning.withheld": () => T("a learning proposal with personal details was withheld", "ein Lernvorschlag mit Personendaten wurde zurückgehalten"),
     "reading.photo": () => T(`describes the photo ${fileName(e.file)}`, `beschreibt das Foto ${fileName(e.file)}`),
     "reading.unread": () => T(`${e.pages} page(s) of ${fileName(e.file)} could not be read`, `${e.pages} Seite(n) von ${fileName(e.file)} nicht lesbar`),
+    "update.started": () => T(`updates the case with ${(e.files || []).map(fileName).join(", ")}`, `aktualisiert den Fall mit ${(e.files || []).map(fileName).join(", ")}`),
+    "record.recorded": () => T(`${e.entries} entr${e.entries === 1 ? "y" : "ies"} of the course of the case recorded`, `${e.entries} Eintr${e.entries === 1 ? "ag" : "äge"} im Verlauf festgehalten`),
+    "agent.skipped": () => e.skipped === "result_checker" ? T("the result checker does not run in an update", "der Ergebnisprüfer läuft in einer Aktualisierung nicht")
+      : T(`${AGENT_TITLE[e.skipped] || e.skipped} not needed`, `${AGENT_TITLE[e.skipped] || e.skipped} nicht nötig`),
     "tool": () => e.tool === "read_file" ? `${T("reads", "liest")} ${fileName(e.file)}` : e.tool === "search" ? `${T("searches", "sucht")} «${e.query}»`
       : e.tool === "record_fact" && e.target ? T(`records “${questionOf(e.target)}”`, `hält fest: «${questionOf(e.target)}»`)
       : e.tool === "record_document" && e.target ? T(`records ${needOf(e.target)}`, `hält fest: ${needOf(e.target)}`)
@@ -1169,6 +1185,13 @@ function practiceNote(knowledgeId) {
   return m ? T(`asked in ${m[1]} of ${m[2]} cases`, `in ${m[1]} von ${m[2]} Fällen verlangt`) : T("asked in practice", "in der Praxis verlangt");
 }
 
+// An update reads only what came in: no routing, no result checker; its expected time comes from earlier updates.
+const UPDATE_STAGES = [
+  { id: "lesen", de: "Lesen", en: "Reading", agents: ["reader"], expect: 10 },
+  { id: "fakten", de: "Neues", en: "What is new", agents: ["claim_reader"], expect: 25 },
+  { id: "unterlagen", de: "Unterlagen", en: "Documents", agents: ["document_finder"], expect: 15 },
+  { id: "pruefung", de: "Prüfung", en: "Check", agents: ["source_checker"], expect: 15 },
+];
 const RUN_STAGES = [
   { id: "lesen", de: "Lesen", en: "Reading", agents: ["reader"], expect: 20 },
   { id: "prozess", de: "Prozess", en: "Process", agents: ["router", "process_builder"], expect: 10 },
@@ -1187,12 +1210,13 @@ function stageLine() {
     return { start: at(mine[0]), open };
   };
   const learned = (S.runProfile || {}).median_seconds || {};
+  const kind = (S.data.run || {}).kind === "update" ? "update" : "full";
   const pages = (S.data.files || []).reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 1), 0);
-  if (!S.runProfile || S.runProfile.forCase !== S.data.case.id) {
-    S.runProfile = { forCase: S.data.case.id };
-    api(`/api/run-profile?pages=${pages}`).then((p) => { S.runProfile = { ...p, forCase: S.data.case.id }; }).catch(() => {});
+  if (!S.runProfile || S.runProfile.forCase !== S.data.case.id || S.runProfile.kind !== kind) {
+    S.runProfile = { forCase: S.data.case.id, kind };
+    api(`/api/run-profile?pages=${pages}&kind=${kind}`).then((p) => { S.runProfile = { ...p, forCase: S.data.case.id, kind }; }).catch(() => {});
   }
-  const rows = RUN_STAGES.map((stage) => ({ stage: { ...stage, expect: learned[stage.id] ?? stage.expect }, span: span(stage) }));
+  const rows = (kind === "update" ? UPDATE_STAGES : RUN_STAGES).map((stage) => ({ stage: { ...stage, expect: learned[stage.id] ?? stage.expect }, span: span(stage) }));
   let nowAt = rows.findIndex((x) => x.span && x.span.open);  // the stage at work, else the one after the last begun
   if (nowAt < 0) nowAt = rows.map((x) => Boolean(x.span)).lastIndexOf(true) + 1;
   const left = rows.filter((x) => !x.span || x.span.open).reduce((n, x) => n + Math.max(0, x.stage.expect - (x.span ? (now - x.span.start) / 1000 : 0)), 0);
@@ -1226,14 +1250,28 @@ function runLine(st) {
     return wrap(`<p class="cp-runnow"><b>${T("Not finished", "Nicht fertig")}</b>: ${esc(runError(run.error))}</p>`, `<button class="cp-button primary" id="start-run">${T("Try again", "Erneut versuchen")}</button>`);
   }
   if (st === "arrived") {
-    return wrap(`<p class="cp-runnow"><b>${T(`New: ${S.data.new_files.length} file(s)`, `Neu eingegangen: ${S.data.new_files.length} Datei(en)`)}</b> <span class="cp-muted">${esc(S.data.new_files.join(", "))}</span></p>`,
-      `<button class="cp-button primary" id="prepare-new">${T("Prepare again", "Neu vorbereiten")}</button>`);
+    const came = S.data.arrived || S.data.new_files.map((name) => ({ name })), u = S.data.update || {}, eta = updateEta();
+    const names = came.map((f) => `${esc(f.name)}${f.added ? ` <span class="cp-muted">(${dateText(f.added)})</span>` : ""}`).join(", ");
+    return wrap(`<p class="cp-runnow"><b>${T(`New: ${came.length} file(s)`, `Neu eingegangen: ${came.length} Datei(en)`)}</b> · ${names}
+        ${u.available ? "" : `<br><span class="cp-muted">${esc(u.text || "")}</span>`}</p>`,
+      u.available ? `<button class="cp-button primary" id="update-run">${T("Update", "Aktualisieren")}${eta ? `<span class="cp-eta"> · ${eta}</span>` : ""}</button>`
+        : `<button class="cp-button primary" id="prepare-new">${T("Prepare anew", "Ganz neu vorbereiten")}</button>`);
   }
   if (st === "unprepared") return wrap(`<p class="cp-runnow">${T("Not prepared yet", "Noch nicht vorbereitet")}</p>`, `<button class="cp-button primary" id="start-run">${T("Prepare case", "Fall vorbereiten")}</button>`);
   if (st === "empty") return `<div class="cp-drop" id="drop">${T("Drop the case files here, or add them on the left", "Dateien hierher ziehen oder links hinzufügen")}</div>`;
   return "";
 }
 
+// The time «Aktualisieren» takes, from this deployment's earlier updates (none yet: no time is promised).
+function updateEta() {
+  if (!S.updateProfile) {
+    S.updateProfile = { loading: true };
+    api("/api/run-profile?kind=update").then((p) => { S.updateProfile = p; if (S.route.view === "case" && caseState() === "arrived") renderCase(); }).catch(() => {});
+  }
+  const s = (S.updateProfile || {}).median_total;
+  if (!s) return "";
+  return s < 90 ? T(`about ${Math.max(5, Math.round(s / 5) * 5)} s`, `etwa ${Math.max(5, Math.round(s / 5) * 5)} s`) : T(`about ${Math.round(s / 60)} min`, `etwa ${Math.round(s / 60)} Min.`);
+}
 // A handler's decision asked as a plain question: "Ist die Versicherungsdeckung gegeben?" [Ja] [Nein]; "offen" is no answer.
 const plainQuestion = (text) => String(text || "").replace(/\s*\((Entscheid|CasePath)[^)]*\)?/g, "").trim();
 const answered = (key) => { const i = item("fact", key); return i && i.value !== null && i.value !== undefined && i.value !== "offen" ? i.value : null; };
@@ -1362,13 +1400,15 @@ function sourceChips(evidence) {
   return (evidence || []).filter((e) => e.file && !seen.has(`${e.file}:${e.page}`) && seen.add(`${e.file}:${e.page}`)).slice(0, 2)
     .map((e) => ` <button class="cp-source-chip" data-cite-file="${esc(e.file)}" data-page="${e.page || ""}" title="${esc(e.quote || "")}">${e.page ? `${T("p.", "S.")} ${e.page}` : T("source", "Quelle")}</button>`).join("");
 }
+// What rests on the handler's own entry has no quote: its source is the handler, said where the source chip would stand.
+const handlerTag = (h) => (h ? ` <span class="cp-entry-tag own" title="${esc(T("entered by the case handler", "von der Fallbearbeitung erfasst"))}${h.by ? ` · ${esc(h.by)}` : ""}">${T("case handling", "Fallbearbeitung")}</span>` : "");
 function standLines() {
   const lines = (S.data.items || []).filter((i) => i.kind === "stand");
   if (!lines.length) return "";
-  const line = (l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}</div>`
+  const line = (l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}${handlerTag(l.handler)}</div>`
     // one open item per line: what, since when, how often asked, «mit Androhung»; at most three, then «… n weitere»
     : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((r) =>
-        `<div class="cp-acct-item">${esc(r.text)}${sourceChips(r.evidence)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`;
+        `<div class="cp-acct-item">${esc(r.text)}${sourceChips(r.evidence)}${handlerTag(r.handler)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`;
   return `<div class="cp-acct">${lines.map(line).join("")}
     <a class="cp-link cp-quiet-link" href="#/case/${esc(S.route.id)}/history">${T("Course of the case", "Verlauf")}</a></div>`;
 }
@@ -1417,7 +1457,7 @@ function sideView(ev) {
   const own = decisions(ev).other.map((k) => `<dt>${T("Your decision", "Ihr Entscheid")}</dt><dd data-item="fact:${esc(k)}">${esc(plainQuestion((item("fact", k).label || {}).de))}${k === "aussichten" && prospects ? ` ${clauseTag("check:aussichten", prospects.law)}` : ""}<span class="cp-point-actions">${decisionButtons(k)}</span></dd>`).join("");
   const flagged = (S.data.files || []).filter((f) => ((f.extraction || {}).instruction_like || []).length);
   const unread = (S.data.files || []).filter((f) => Object.keys((f.extraction || {}).unread_reasons || {}).length);
-  const ch = S.data.changes || {}, any = (ch.added || []).length + (ch.changed || []).length + (ch.removed || []).length;
+  const ch = S.data.changes || {}, any = (ch.added || []).length + (ch.changed || []).length + (ch.removed || []).length + (ch.entries || []).length;
   const pts = blockers(ev);
   return `<aside class="cp-side">
     ${pts.length ? `<section class="cp-card cp-judgement"><h3>${T("To settle first", "Vorher zu klären")}</h3><ol class="cp-points">${pts.map(blockerRow).join("")}</ol></section>` : ""}
@@ -1436,18 +1476,69 @@ function sideView(ev) {
       </dl>
       <p class="cp-case-tools">${S.data.file_note ? `<button class="cp-button cp-small" id="copy-note">${S.noteCopied ? T("File note copied", "Aktennotiz kopiert") : T("Copy file note", "Aktennotiz kopieren")}</button>
         <button class="cp-link cp-quiet-link" id="show-note" aria-expanded="${Boolean(S.showNote)}">${S.showNote ? T("hide", "ausblenden") : T("show", "ansehen")}</button>` : ""}
-        <button class="cp-link cp-quiet-link" id="add-note">${T("Add note", "Notiz hinzufügen")}</button></p>
+        <button class="cp-link cp-quiet-link" id="add-note" aria-expanded="${Boolean(S.noting)}">${T("Add note", "Notiz hinzufügen")}</button></p>
       ${S.showNote && S.data.file_note ? `<p class="cp-note-text" id="file-note">${esc(S.data.file_note)}</p>` : ""}
-      ${S.noting ? `<form class="cp-note-form" id="note-form"><select name="kind" class="cp-button cp-small" aria-label="${T("Kind of note", "Art der Notiz")}">
-          <option value="note">${T("Note", "Anmerkung")}</option><option value="reached">${T("Phone call with the customer", "Telefon mit VN")}</option><option value="missed">${T("Phone call, not reached", "Telefon mit VN, nicht erreicht")}</option></select>
-        <textarea name="text" rows="3" maxlength="2000" aria-label="${T("Note", "Notiz")}"></textarea><span><button class="cp-button cp-small">${T("Save", "Speichern")}</button>
-        <button type="button" class="cp-link cp-quiet-link" id="note-cancel">${T("cancel", "abbrechen")}</button></span></form>` : ""}
+      ${S.noting && !S.entryEdit ? entryForm() : ""}
       ${S.lastEdit ? `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : ""}
       ${!running() && any ? `<details class="cp-mine"><summary class="cp-link">${T("What changed", "Was sich geändert hat")} · ${any}</summary>
         ${[["added", T("new", "neu")], ["changed", T("changed", "geändert")], ["removed", T("no longer", "nicht mehr")]].filter(([k]) => (ch[k] || []).length)
-          .map(([k, w]) => `<p><span class="cp-muted">${w}:</span> ${(ch[k] || []).map(esc).join(" · ")}</p>`).join("")}</details>` : ""}
-      ${myChanges()}
+          .map(([k, w]) => `<p><span class="cp-muted">${w}:</span> ${(ch[k] || []).map(esc).join(" · ")}</p>`).join("")}
+        ${(ch.entries || []).length ? `<p><span class="cp-muted">${T("new in the course of the case", "neu im Verlauf")}:</span></p><ul class="cp-new-entries">${ch.entries.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}</details>` : ""}
     </section></aside>`;
+}
+// ---------- the handler's own entry: a call, a conversation, a note, an e-mail outside the file ----------
+// One compact card: what kind, with whom (a name if wanted), the day (today), what was said; and, each behind one tap, one
+// row of what was agreed, what was asked and the next step. It is an entry of the account and counts at once.
+const PARTY_DE = { kunde: "Kundschaft", versicherer: "Protekta", kanzlei: "Kanzlei", gegenpartei: "Gegenpartei", behoerde: "Gericht/Behörde", andere: "Andere" };
+const ENTRY_KINDS = [["telefon", T("Phone", "Telefon")], ["gespraech", T("Conversation", "Gespräch")], ["notiz", T("Note", "Notiz")],
+  ["email", T("E-mail outside the file", "E-Mail ausserhalb der Akte")]];
+const ENTRY_PARTIES = [["kunde", T("customer", "Kundschaft")], ["gegenpartei", T("other side", "Gegenpartei")], ["kanzlei", T("law firm", "Kanzlei")],
+  ["behoerde", T("authority", "Behörde")], ["andere", T("other", "andere")]];
+const ENTRY_PARTS = { agreed: T("Agreed", "Vereinbart"), asked: T("Asked", "Verlangt"), next: T("Next step", "Nächster Schritt") };
+function entryForm() {
+  const d = S.entryDraft || {}, party = d.party || "kunde";
+  const part = (k) => d[k] || {};
+  const shown = (k) => Boolean((d.open || {})[k] || Object.values(part(k)).some(Boolean));
+  const options = (rows, now, blank) => (blank ? `<option value="">${esc(blank)}</option>` : "") + rows.map(([k, label]) => `<option value="${k}" ${k === now ? "selected" : ""}>${esc(label)}</option>`).join("");
+  const whom = (now, blank) => options(ENTRY_PARTIES.concat([["versicherer", T("us (Protekta)", "wir (Protekta)")]]), now, blank);
+  const input = (name, value, attrs) => `<input name="${name}" value="${esc(value || "")}" ${attrs}>`;
+  const row = (k, body) => `<div class="cp-entry-part" data-part="${k}" ${shown(k) ? "" : "hidden"}><span class="cp-entry-part-label">${ENTRY_PARTS[k]}</span>${body}</div>`;
+  return `<form class="cp-entry-form" id="note-form" ${S.entryEdit ? `data-edit="${esc(S.entryEdit)}"` : ""} novalidate>
+    <div class="cp-entry-kinds" role="radiogroup" aria-label="${T("Kind of entry", "Art des Eintrags")}">${ENTRY_KINDS.map(([k, label]) =>
+      `<label class="cp-entry-kind"><input type="radio" name="kind" value="${k}" ${k === (d.kind || "telefon") ? "checked" : ""}><span>${esc(label)}</span></label>`).join("")}</div>
+    <div class="cp-entry-row"><label>${T("with", "mit")} <select name="party">${options(ENTRY_PARTIES, party)}</select></label>
+      ${input("name", d.name, `maxlength="120" placeholder="${T("name (optional)", "Name (freiwillig)")}" aria-label="Name" class="cp-entry-name"`)}
+      <label>${T("on", "am")} <input type="date" name="date" value="${esc(d.date || isoToday())}" aria-label="${T("Date", "Datum")}"></label></div>
+    <textarea name="said" rows="3" maxlength="2000" placeholder="${T("What was said", "Was besprochen wurde")}" aria-label="${T("What was said", "Was besprochen wurde")}">${esc(d.said || "")}</textarea>
+    ${row("agreed", `${input("agreed_what", part("agreed").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("agreed: what", "vereinbart: was")}"`)}
+      ${input("agreed_amount", part("agreed").amount, `maxlength="40" placeholder="CHF" size="8" aria-label="${T("amount", "Betrag")}"`)}
+      <select name="agreed_payer" aria-label="${T("who pays", "wer zahlt")}">${options([["gegenpartei", T("other side pays", "Gegenpartei zahlt")], ["kunde", T("customer pays", "Kundschaft zahlt")],
+        ["versicherer", T("we pay", "Protekta zahlt")], ["kanzlei", T("firm pays", "Kanzlei zahlt")], ["andere", T("others pay", "andere zahlen")]], part("agreed").payer || (party === "gegenpartei" ? "gegenpartei" : ""), T("who pays", "wer zahlt"))}</select>
+      <label>${T("by", "bis")} <input type="date" name="agreed_by" value="${esc(part("agreed").by || "")}"></label>`)}
+    ${row("asked", `${input("asked_what", part("asked").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("asked: what", "verlangt: was")}"`)}
+      <select name="asked_of" aria-label="${T("of whom", "von wem")}">${options(ENTRY_PARTIES, part("asked").of || party)}</select>
+      <label>${T("by", "bis")} <input type="date" name="asked_by" value="${esc(part("asked").by || "")}"></label>`)}
+    ${row("next", `${input("next_what", part("next").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("next step: what", "nächster Schritt: was")}"`)}
+      <label>${T("by", "bis")} <input type="date" name="next_by" value="${esc(part("next").by || "")}"></label>
+      <select name="next_who" aria-label="${T("who", "wer")}">${whom(part("next").who || party)}</select>`)}
+    <p class="cp-entry-adds">${Object.keys(ENTRY_PARTS).filter((k) => !shown(k)).map((k) => `<button type="button" class="cp-link cp-quiet-link" data-entry-part="${k}">+ ${ENTRY_PARTS[k]}</button>`).join("")}</p>
+    ${S.entryError ? `<p class="cp-error">${esc(S.entryError)}</p>` : ""}
+    <span class="cp-entry-actions"><button class="cp-button cp-small">${S.entryEdit ? T("Save change", "Änderung speichern") : T("Save", "Speichern")}</button>
+      <button type="button" class="cp-link cp-quiet-link" id="note-cancel">${T("cancel", "abbrechen")}</button></span></form>`;
+}
+// What the form holds, as the draft (kept across a redraw) and as the entry it sends: a part counts only when filled.
+function entryDraftOf(form) {
+  const v = (n) => ((form.elements[n] || {}).value || "").trim();
+  const open = Object.fromEntries([...form.querySelectorAll("[data-part]")].map((el) => [el.dataset.part, !el.hidden]));
+  return { kind: (form.querySelector("input[name=kind]:checked") || {}).value || "telefon", party: v("party"), name: v("name"), date: v("date"), said: v("said"), open,
+           agreed: { what: v("agreed_what"), amount: v("agreed_amount"), payer: v("agreed_payer"), by: v("agreed_by") },
+           asked: { what: v("asked_what"), of: v("asked_of"), by: v("asked_by") }, next: { what: v("next_what"), by: v("next_by"), who: v("next_who") } };
+}
+function entryBody(d) {
+  const filled = (row, keys) => (keys.some((k) => row[k]) ? Object.fromEntries(Object.entries(row).filter(([, x]) => x)) : null);
+  return { kind: d.kind, party: d.party || "kunde", name: d.name || "", date: d.date || isoToday(), said: d.said || "",
+           agreed: d.open.agreed ? filled(d.agreed, ["what", "amount"]) : null, asked: d.open.asked ? filled(d.asked, ["what"]) : null,
+           next: d.open.next ? filled(d.next, ["what"]) : null };
 }
 const REASONS = { "1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3": "Hier nicht relevant", "4": "Gilt generell so",
   "5": "Weiss ich von ausserhalb der Akten", "6": "Formulierung", none: "ohne Angabe" };
@@ -1497,17 +1588,6 @@ function watchExposure(view) {
   for (const el of document.querySelectorAll("[data-item]")) EXPOSURE.observer.observe(el);
 }
 document.addEventListener("visibilitychange", () => { if (document.hidden) for (const key of Object.keys(EXPOSURE.since)) flushExposure(key); });
-function myChanges() {
-  // A person's changes to this case stay on the Übersicht after a reload: what, before → after, reason, when, undo.
-  const edits = (S.data.edits || []).filter((e) => e.status === "active" && ["set_fact", "remove_document", "add_document", "set_required_when"].includes(e.op));
-  if (!edits.length) return "";
-  const event = (id) => (S.data.caseEvents || []).find((e) => e.edit_id === id && e.kind !== "item.propagated") || {};
-  const what = (e) => e.op === "set_fact" ? questionOf(e.args.fact) : e.op === "remove_document" ? T(`not needed: ${titleOf(e.args.document)}`, `nicht nötig: ${titleOf(e.args.document)}`)
-    : e.op === "add_document" ? T(`added: ${e.args.title}`, `hinzugefügt: ${e.args.title}`) : titleOf(e.args.document);
-  const change = (e) => { const ev = event(e.id); return e.op === "set_fact" ? ` · ${esc(valueText(ev.before ?? "—"))} → <b>${esc(valueText(ev.after ?? e.args.value))}</b>` : ""; };
-  return `<details class="cp-mine" ${S.openMine ? "open" : ""}><summary class="cp-link">${T(`Your changes: ${edits.length}`, `Ihre Änderungen: ${edits.length}`)}</summary><ul>${edits.map((e) =>
-    `<li>${esc(clip(what(e), 90))}${change(e)} <span class="cp-muted">· ${esc(e.reason || "")} · ${esc(e.by)} · ${dateText(e.at)}</span> <button class="cp-link" data-undo-edit="${esc(e.id)}">${T("undo", "rückgängig")}</button></li>`).join("")}</ul></details>`;
-}
 function titleOf(documentId) { const d = (S.data.process.documents || []).find((x) => x.id === documentId); return d ? d.title : documentId; }
 // The letter's lines are its checklist: each requested document, question and hint has its tick where it stands in the
 // letter; unticking takes it out at once. Offered lines wait folded at the end of the list; the text around stays editable.
@@ -1626,7 +1706,8 @@ function alsoLines(draft, editable) {
 function preparedView(ev, st) {
   const act = item("next_action", "0"), draft = S.data.draft || {};
   const c = closed(), copied = (S.data.caseEvents || []).some((e) => e.kind === "letter.copied") || S.copied;
-  const editable = !c && st !== "running";
+  const stale = st === "arrived" && Boolean(S.data.draft_stale) && !c;  // new files not read yet: the draft may be out of date
+  const editable = !c && st !== "running" && !stale;
   const letter = draft.text || "";
   const missing = missingDocs().length;
   const claimFile = (S.data.files || [])[0];
@@ -1669,7 +1750,7 @@ function preparedView(ev, st) {
   const copyPrimary = st === "prepared" && letter && !copied, closePrimary = st === "prepared" && (copied || !letter);
   const bar = c ? `<span class="cp-closed">${icon("check")}<b>${c.form === "erledigt" ? T("Done", "Erledigt") : T("Done, with a reservation", "Erledigt, mit Vorbehalt")}</b>
         <span class="cp-muted">· ${dateText(c.at)} · ${esc(c.expert)}</span></span><span class="grow"></span><button class="cp-button primary" id="next-case">${T("Next case", "Nächster Fall")} ${icon("right")}</button>`
-    : `${letter ? `<button class="cp-button ${copyPrimary ? "primary" : ""}" id="copy-draft">${S.justCopied ? `${icon("tick")}${T("Copied", "Kopiert")}` : T("Copy letter", "Brief kopieren")}</button>` : ""}
+    : `${letter ? `<button class="cp-button ${copyPrimary ? "primary" : ""}" id="copy-draft" ${stale ? "disabled" : ""}>${S.justCopied ? `${icon("tick")}${T("Copied", "Kopiert")}` : T("Copy letter", "Brief kopieren")}</button>` : ""}
       ${due ? `<span class="cp-date ${daysTo(due) < 0 && !quiet() ? "late" : ""}">${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(due)}</button>
         <input type="date" id="followup-date" value="${esc(due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1">${f.capped ? ` <span class="cp-muted" title="${T("before the statutory deadline runs out", esc(f.capped.reason))}">· ${T("before the deadline", "vor Fristablauf")}</span>` : ""}</span>` : ""}
       <span class="grow"></span>
@@ -1684,43 +1765,86 @@ function preparedView(ev, st) {
     ${act && act.because && !c ? `<p class="cp-weil cp-because">${T("Because", "Weil")}: <b>${esc(act.because)}</b></p>` : ""}
     ${weil && !c ? (points && !S.weilOpen ? `<p class="cp-weil"><button class="cp-link" id="weil-open" aria-expanded="false">${act && act.because ? T("More on why", "Mehr zum Grund") : T("Why this step", "Warum dieser Schritt")}</button></p>`
       : `<p class="cp-weil">${act && act.because ? "" : `${T("Because", "Weil")}: `}${weil}</p>`) : ""}
-    <div class="cp-letter" data-item="letter:0">${letter ? letterView(letter, editable) : `<p class="cp-muted">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step.", "Für diesen Schritt kein Brief."))}</p>`}
+    ${stale && letter ? `<p class="cp-stale-note">${T("New files are not read yet: this draft may be out of date. “Update” reads them.", "Neue Dateien sind noch nicht gelesen: dieser Entwurf kann veraltet sein. «Aktualisieren» liest sie.")}
+      <button class="cp-link cp-quiet-link" id="use-anyway" type="button">${T("use anyway", "trotzdem verwenden")}</button></p>` : ""}
+    <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0">${letter ? letterView(letter, editable) : act && ["A2", "A9"].includes(act.action) && !c ? phoneNote(act, draft, ev)
+      : `<p class="cp-muted">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step.", "Für diesen Schritt kein Brief."))}</p>`}
       ${(draft.required || []).length ? `<p class="cp-required">${T("Required", "Pflichtteile")}: ${draft.required.map((r) => `${esc(r.title)} <span class="cp-muted">(${esc(r.basis)})</span>`).join(" · ")}</p>` : ""}
       ${alsoLines(draft, editable)}
       <p class="cp-draftline">${T("Draft · a person decides", "Entwurf · ein Mensch entscheidet")}</p></div>
     <footer class="cp-bar">${bar}</footer>
   </section>`;
 }
-// The account of the case in time order: one row per document of the file (phone notes included), what it asked, answered
-// or agreed; open requests and an agreed payment not made are marked. One filter: only what is open.
-function accountTable() {
-  const all = (S.data.items || []).filter((i) => i.kind === "entry");
-  if (!all.length) return "";
+// «Telefonnotiz erfassen» (A2): the note is the handler's own entry of the account, entered in the short form beside
+// the letter; preset to a call with the party the step concerns (the firm under a mandate, the other side when Protekta
+// conducts the case), a note for the firm's report. The answer to an offer (A9, no draft: often settled by phone) offers it too.
+function phoneNote(act, draft, ev) {
+  const stage = (ev && ev.current && ev.current.step) || "";
+  const party = act.action === "A9" || stage === "gegenpartei" || stage === "abwicklung" ? "gegenpartei" : draft.form === "A2_bericht" || stage === "mandat" ? "kanzlei" : "kunde";
+  const kind = draft.form === "A2_bericht" ? "notiz" : "telefon";
+  return `<p class="cp-muted">${act.action === "A2" ? T("The note is your entry in the course of the case; it counts at once.", "Die Notiz ist Ihr Eintrag im Verlauf; er zählt sofort.")
+    : esc(`${T("No draft", "Kein Entwurf")}: ${draft.none || ""}`)}</p>
+    <p><button class="cp-button" id="phone-note" type="button" data-kind="${kind}" data-party="${party}">${kind === "notiz" ? T("Enter a note", "Aktennotiz erfassen") : T("Enter a phone note", "Telefonnotiz erfassen")}</button></p>`;
+}
+// The Verlauf: one table of the case in time order (the server's verlauf.rows): the report as row 1, then every document
+// of the file, every entry the handler made and every gesture the handler made here, each where it happened. A handler's
+// entry is marked as theirs and can be changed or removed; a change that can be undone says so. One filter: only what is open.
+function historyView() {
+  const all = S.data.verlauf || [];
   const party = S.onlyOpen && S.openParty;  // «… n weitere» in «Stand»: that party's open items
   const rows = S.onlyOpen ? all.filter((r) => r.open && (!party || (r.open_of || []).includes(party))) : all;
   const gaps = (S.data.items || []).filter((i) => i.kind === "record_gap");
-  const open = all.filter((r) => r.open).length;
-  const note = (n) => `<div class="cp-entry-note ${n.open ? "open" : ""} ${n.kind}">${esc(n.text)}</div>`;
-  return `<section class="cp-card cp-account"><header class="cp-account-head"><h2 class="cp-section">${T("Course of the case", "Verlauf der Akte")}</h2>
-      <span class="cp-muted">${all.length} ${T("documents", "Dokumente")}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>
+  const docs = all.filter((r) => r.kind !== "gesture").length, done = all.length - docs, open = all.filter((r) => r.open).length;
+  const note = (n) => (n.text ? `<div class="cp-entry-note ${n.open ? "open" : ""} ${n.kind}">${esc(n.text)}</div>` : "");
+  const tag = (r) => r.kind === "report" ? `<span class="cp-entry-tag">${T("Report", "Meldung")}</span> ` : r.phone && r.title !== "Telefon" ? `<span class="cp-entry-tag">${T("Phone", "Telefon")}</span> ` : "";
+  const own = (r) => r.handler ? `<br><span class="cp-entry-tag own">${T("entered by", "erfasst von")} ${esc(r.handler.by || T("the case handler", "der Fallbearbeitung"))}</span>${r.waiting
+    ? ` <span class="cp-muted">${T("counts once the case is prepared anew", "zählt nach einer vollständigen Vorbereitung")}</span>` : ""}` : "";
+  const tools = (r) => r.handler ? `<div class="cp-entry-tools"><button class="cp-link cp-quiet-link" data-entry-edit="${esc(String(r.key).split(":")[1])}">${T("change", "ändern")}</button>
+      <button class="cp-link cp-quiet-link" data-entry-remove="${esc(String(r.key).split(":")[1])}">${T("remove", "entfernen")}</button></div>`
+    : r.undo ? `<div class="cp-entry-tools"><button class="cp-link cp-quiet-link" data-undo-edit="${esc(r.undo)}">${T("undo", "rückgängig")}</button></div>` : "";
+  const source = (r) => r.kind === "gesture" || r.handler ? "" : (r.evidence || []).some((e) => e.quote) ? sourceChips((r.evidence || []).slice(0, 1))
+    : (r.evidence || [])[0] ? ` <button class="cp-source-chip" data-cite-file="${esc(r.evidence[0].file)}" data-page="">${T("open", "öffnen")}</button>` : "";
+  const line = (r) => `<tr class="${r.open ? "open" : ""} cp-row-${esc(r.kind)}" ${String(r.key).startsWith("entry:") ? `data-item="${esc(r.key)}"` : ""}>
+      <td>${r.number ?? ""}</td><td class="cp-nowrap">${dateText(r.date)}</td><td class="cp-nowrap">${esc(r.who || "")}</td>
+      <td>${tag(r)}<span class="cp-muted">${esc(r.title || "")}</span><br>${esc(r.what || "")}${source(r)}${own(r)}</td>
+      <td>${(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;
+  return `${S.entryEdit ? `<section class="cp-card cp-case cp-entry-edit"><h3>${T("Change your entry", "Eigenen Eintrag ändern")}</h3>${entryForm()}</section>` : ""}
+    <section class="cp-card cp-account"><header class="cp-account-head"><h2 class="cp-section">${T("Course of the case", "Verlauf")}</h2>
+      <span class="cp-muted">${docs} ${T("documents and entries", "Dokumente und Einträge")} · ${done} ${T("steps done here", "Bearbeitungen")}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>
       <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${party ? esc(T(`only open with ${party}`, `nur Offenes ${({ kunde: "bei der Kundschaft", versicherer: "bei uns", kanzlei: "bei der Kanzlei", gegenpartei: "bei der Gegenpartei", behoerde: "bei Gericht/Behörde" })[party] || ""}`)) : T("only open", "nur Offenes")}</label></header>
+    ${S.data.governing_version ? `<p class="cp-muted">${T(`Process updated since the case was prepared (${S.data.run_version} → ${S.data.governing_version}).`, `Prozess seit der Vorbereitung aktualisiert (${S.data.run_version} → ${S.data.governing_version}).`)}</p>` : ""}
     ${gaps.length ? `<p class="cp-flag cp-account-gap">${gaps.map((g) => esc((g.label || {}).de || g.value)).join(" · ")}</p>` : ""}
     <table class="cp-table cp-account-table"><thead><tr><th>${T("No.", "Nr.")}</th><th>${T("Date", "Datum")}</th><th>${T("From → to", "Von → an")}</th><th>${T("What", "Was")}</th><th>${T("Asked, answered, agreed", "Verlangt, beantwortet, vereinbart")}</th></tr></thead>
-    <tbody>${rows.map((r) => `<tr class="${r.open ? "open" : ""}" data-item="${esc(r.item_id)}"><td>${esc(r.key)}</td><td class="cp-nowrap">${dateText(r.date)}</td>
-      <td class="cp-nowrap">${esc(r.from_title)} → ${esc(r.to_title)}</td>
-      <td>${r.phone ? `<span class="cp-entry-tag">${T("Phone", "Telefon")}</span> ` : ""}<span class="cp-muted">${esc((r.label || {}).de || "")}</span><br>${esc(r.value || "")}${sourceChips((r.evidence || []).slice(0, 1))}</td>
-      <td>${(r.notes || []).map(note).join("")}</td></tr>`).join("") || `<tr><td colspan="5" class="cp-muted">${T("Nothing open.", "Nichts offen.")}</td></tr>`}</tbody></table></section>`;
+    <tbody>${rows.map(line).join("") || `<tr><td colspan="5" class="cp-muted">${S.onlyOpen ? T("Nothing open.", "Nichts offen.") : T("Nothing in the file yet.", "Noch nichts in der Akte.")}</td></tr>`}</tbody></table></section>`;
 }
-function historyView() {
-  const words = { "item.corrected": T("corrected", "korrigiert"), "item.dismissed": T("not needed", "nicht nötig"), "item.added": T("added", "ergänzt"),
-    "correction.undone": T("undone", "rückgängig"), "note.added": T("note", "Anmerkung"), "letter.copied": T("letter copied", "Brief kopiert"),
-    "case.closed": T("closed", "erledigt"), "followup.set": T("follow-up set", "Wiedervorlage gesetzt"), "letter.line": T("letter changed", "Brief geändert"),
-    "source.opened": T("source opened", "Quelle geöffnet"), "reveal": T("own answer saved", "eigene Einschätzung gespeichert"), "point.settled": T("settled", "erledigt") };
-  const rows = (S.data.caseEvents || []).filter((e) => words[e.kind]).reverse();
-  return `${accountTable()}<section class="cp-card" style="padding:18px 22px;max-width:900px"><h2 class="cp-section" style="margin-top:0">${(S.data.items || []).some((i) => i.kind === "entry") ? T("Work in CasePath", "Bearbeitung in CasePath") : T("History", "Verlauf")}</h2>
-    ${S.data.governing_version ? `<p class="cp-muted">${T(`Process updated since the case was prepared (${S.data.run_version} → ${S.data.governing_version}).`, `Prozess seit der Vorbereitung aktualisiert (${S.data.run_version} → ${S.data.governing_version}).`)}</p>` : ""}
-    ${rows.length ? `<ul>${rows.map((e) => `<li>${dateText(e.at)} · ${esc(e.expert || "")} · <b>${esc(words[e.kind])}</b>${e.item_id ? ` <span class="cp-muted">${esc(e.item_id)}</span>` : ""}${e.text ? ` — ${esc(clip(e.text, 120))}` : ""}</li>`).join("")}</ul>`
-      : `<p class="cp-empty">${T("Nothing done on this case yet.", "Noch nichts an diesem Fall erledigt.")}</p>`}</section>`;
+// A fact as a short line names it: what came in by its kind's title, any other fact by its question's first clause.
+function shortFact(id) {
+  const kind = ((S.data.process || {}).incoming || []).find((k) => k.fact === id || (k.earlier || []).includes(id));
+  if (kind) return kind.title + (kind.fact === id ? "" : T(" (earlier)", " (davor)"));
+  return clip(plainQuestion(questionOf(id)).split(/(?<=\?)\s|:\s|,\s|\s\(/)[0], 80);
+}
+// While a run works, «Der Fall» fills in from its events: each document's entry as it is recorded, each fact with its
+// value as it is found (then its check), each document need as it is found; the viewer beside it shows what is read.
+function liveCase() {
+  const found = {}, rows = [], needs = {};
+  for (const e of S.events) {
+    if (e.kind === "fact.located" && e.status === "established" && e.value !== undefined) found[e.fact] = { value: e.value, verdict: null };
+    if (["fact.accepted", "fact.rejected", "fact.conflicting"].includes(e.kind) && found[e.fact]) found[e.fact].verdict = e.kind.split(".")[1];
+    if (e.kind === "record.recorded") for (const r of e.rows || []) { const at = rows.findIndex((x) => x.n === r.n); if (at >= 0) rows[at] = r; else rows.push(r); }
+    if (e.kind === "document.recorded") needs[e.document] = { status: e.status, verdict: null };
+    if (["document.accepted", "document.rejected"].includes(e.kind) && needs[e.document]) needs[e.document].verdict = e.kind.split(".")[1];
+  }
+  rows.sort((a, b) => String(a.date || "9999").localeCompare(String(b.date || "9999")) || a.n - b.n);
+  const mark = (v) => (v === "accepted" ? ` <span class="cp-live-ok">${icon("tick")}</span>` : v === "rejected" ? ` <span class="cp-muted">${T("(not confirmed)", "(nicht bestätigt)")}</span>` : v === "conflicting" ? ` <span class="cp-flag">${T("(readings differ)", "(Lesungen weichen ab)")}</span>` : "");
+  const update = (S.data.run || {}).kind === "update";
+  const entries = rows.map((r) => `<div class="cp-live-row${enter(`entry:${r.n}`)}"><span class="cp-muted">${dateText(r.date) || T("undated", "ohne Datum")} · ${esc(PARTY_DE[r.from] || r.from || "")} → ${esc(PARTY_DE[r.to] || r.to || "")}</span> ${esc(r.what || "")}</div>`).join("");
+  const facts_ = Object.entries(found).map(([id, f]) => `<div class="cp-live-row${enter(`fact:${id}`)}">${esc(shortFact(id))}: <b>${esc(valueText(f.value))}</b>${mark(f.verdict)}</div>`).join("");
+  const docs = Object.entries(needs).map(([id, d]) => `<div class="cp-live-row${enter(`need:${id}`)}">${esc(needOf(id))}: ${esc(word(d.status))}${mark(d.verdict)}</div>`).join("");
+  const waiting = `<span class="cp-muted">${T("being read …", "wird gelesen …")}</span>`;
+  const kept = !S.data.process || Boolean(S.data.process.record) || rows.length;  // a process without the running account records no entries
+  return `<section class="cp-card cp-case cp-live-case"><h3>${update ? T("New in this update", "Neu in dieser Aktualisierung") : T("The case", "Der Fall")}</h3>
+    <dl class="cp-casefacts">${kept ? `<dt>${T("Course", "Verlauf")}</dt><dd>${entries || waiting}</dd>` : ""}<dt>${T("Facts", "Fakten")}</dt><dd>${facts_ || waiting}</dd>
+      ${docs ? `<dt>${T("Documents", "Unterlagen")}</dt><dd>${docs}</dd>` : ""}</dl></section>`;
 }
 function closed() { return (S.data.caseEvents || []).filter((e) => e.kind === "case.closed").pop(); }
 function unaidedPending() {
@@ -1849,25 +1973,57 @@ function bindOverview() {
     S.noteCopied = true; renderCase(); setTimeout(() => { S.noteCopied = false; if (S.route.view === "case") renderCase(); }, 1800);
   });
   on("#show-note", "click", () => { S.showNote = !S.showNote; renderCase(); });
-  on("#add-note", "click", () => { S.noting = !S.noting; renderCase(); const t = $("#note-form textarea"); if (t) t.focus(); });
-  on("#note-cancel", "click", () => { S.noting = false; renderCase(); });
-  on("#note-form", "submit", async (form, event) => {  // one place for a remark and a phone note
-    event.preventDefault();
-    const kind = form.kind.value, text = form.text.value.trim();
-    if (kind === "note") {
-      if (!text) return;
-      await caseEvent("note.added", null, { text: text.slice(0, 2000), note_present: true });
-    } else {
-      const reached = kind === "reached", at = new Date(), stamp = `${at.toISOString().slice(0, 10)} ${at.toTimeString().slice(0, 5)}`;
-      const body = `Aktennotiz Telefon ${stamp}\n${reached ? "Telefon mit VN" : "Telefonversuch an VN – nicht erreicht"}\n${text}\nErfasst von ${S.me}`;
-      const file = new FormData();
-      file.append("file", new File([body], `Aktennotiz Telefon ${stamp.replace(":", "")}.txt`, { type: "text/plain" }));
-      await api(`/api/cases/${S.route.id}/files`, { method: "POST", body: file });
-      await caseEvent("note.added", null, { text: `phone: ${reached ? "reached" : "not reached"}`, phone: true, note_present: Boolean(text) });
+  // the handler's own entry: one tap opens the form, its draft survives a redraw, a part opens in place, saving counts at once
+  const openForm = (draft) => { S.noting = true; S.entryEdit = null; S.entryError = ""; S.entryDraft = draft || null; renderCase();
+    const form = $("#note-form"); if (form) { form.scrollIntoView({ block: "nearest" }); const t = form.querySelector("textarea"); if (t) t.focus(); } };
+  on("#add-note", "click", () => { if (S.noting && !S.entryEdit) { S.noting = false; renderCase(); } else openForm(); });
+  on("#phone-note", "click", (b) => openForm({ kind: b.dataset.kind, party: b.dataset.party, date: isoToday() }));
+  on("#note-cancel", "click", () => { S.noting = false; S.entryEdit = null; S.entryDraft = null; S.entryError = ""; renderCase(); });
+  on("#note-form select[name=party]", "change", (sel) => {  // who pays, of whom, who acts next follow «mit» until chosen by hand
+    const form = sel.closest("form");
+    for (const [name, fit] of [["agreed_payer", (p) => (p === "gegenpartei" ? p : "")], ["asked_of", (p) => p], ["next_who", (p) => p]]) {
+      const el = form.elements[name];
+      if (el && !el.dataset.touched) el.value = fit(sel.value);
     }
-    S.noting = false; S.message = T("Note saved.", "Notiz gespeichert."); S.messageOk = true;
+  });
+  on("#note-form select[name=agreed_payer], #note-form select[name=asked_of], #note-form select[name=next_who]", "change", (el) => { el.dataset.touched = "1"; });
+  on("#note-form", "input", (form) => { S.entryDraft = entryDraftOf(form); });
+  on("#note-form", "change", (form) => { S.entryDraft = entryDraftOf(form); });
+  on("[data-entry-part]", "click", (b) => {
+    const form = b.closest("form"), row = form.querySelector(`[data-part='${b.dataset.entryPart}']`);
+    if (row) { row.hidden = false; b.remove(); S.entryDraft = entryDraftOf(form); const first = row.querySelector("input"); if (first) first.focus(); }
+  });
+  on("#note-form", "submit", async (form, event) => {
+    event.preventDefault();
+    const draft = entryDraftOf(form), body = entryBody(draft), edit = form.dataset.edit;
+    if (!body.said && !body.agreed && !body.asked && !body.next) {
+      S.entryDraft = draft; S.entryError = T("Please note what was said.", "Bitte festhalten, was besprochen wurde."); renderCase(); return;
+    }
+    try {
+      await api(edit ? `/api/cases/${S.route.id}/entries/${edit}` : `/api/cases/${S.route.id}/entries`, { method: edit ? "PUT" : "POST", body: JSON.stringify(body) });
+    } catch (error) { S.entryDraft = draft; S.entryError = error.message; renderCase(); return; }
+    S.noting = false; S.entryEdit = null; S.entryDraft = null; S.entryError = "";
+    S.message = edit ? T("Entry changed.", "Eintrag geändert.") : T("Entry saved; the case is recomputed.", "Eintrag gespeichert; der Fall ist neu berechnet."); S.messageOk = true;
     await loadCase();
     setTimeout(() => { S.message = ""; if (S.route.view === "case") renderCase(); }, 2500);
+  });
+  on("[data-entry-edit]", "click", (b) => {  // a handler's entry, changed where it stands
+    const row = (S.data.verlauf || []).find((r) => r.key === `entry:${b.dataset.entryEdit}`) || {};
+    const f = (row.handler || {}).form || {};
+    const open = { agreed: Boolean(f.agreed), asked: Boolean(f.asked), next: Boolean(f.next) };
+    S.entryEdit = b.dataset.entryEdit; S.noting = false; S.entryError = "";
+    S.entryDraft = { ...f, open, agreed: f.agreed || {}, asked: f.asked || {}, next: f.next || {} };
+    renderCase();
+    const form = $("#note-form"); if (form) form.scrollIntoView({ block: "nearest" });
+  });
+  on("[data-entry-remove]", "click", async (b) => {
+    if (!window.confirm(T("Remove this entry? It no longer counts; the removal is kept in the course of the case.", "Diesen Eintrag entfernen? Er zählt nicht mehr; das Entfernen bleibt im Verlauf vermerkt."))) return;
+    await api(`/api/cases/${S.route.id}/entries/${b.dataset.entryRemove}`, { method: "DELETE" }).catch((error) => { S.message = error.message; });
+    await loadCase();
+  });
+  on("#use-anyway", "click", async () => {  // the handler uses the draft before the new files are read: allowed, and logged
+    await caseEvent("letter.unblocked", null, { files: (S.data.arrived || []).map((f) => f.name).slice(0, 20) }).catch(() => {});
+    await loadCase();
   });
   on("[data-close]", "click", async (b) => {
     const line = b.dataset.close === "erledigt_mit_vorbehalt" ? (($("#reservation") || {}).value || "") : "";
@@ -1922,7 +2078,7 @@ async function loadCase() {
   }
   S.data = data;
   try { S.data.caseEvents = (await api(`/api/cases/${id}/events`)).events; } catch (error) { S.data.caseEvents = []; }
-  if (data.run && data.run.status === "completed") S.data.lastCompleted = data.run;
+  S.data.lastCompleted = data.run && data.run.status === "completed" ? data.run : data.prepared_run || null;
   if (!S.file && data.files.length) S.file = data.files[0].id;
   if (running()) schedulePoll();
   await renderCase();
@@ -1952,8 +2108,8 @@ async function renderCase() {
   let main;
   const liveView = running();  // during a run every tab shows the work live; the working agent's tab pulses
   const live = liveView ? liveState() : null;
-  if (liveView && tab === "overview") {  // a run is the Übersicht filling in (section U): the run line on top, the case below
-    main = `${overviewView()}${hasPrepared() && item("next_action", "0") ? "" : `<div style="margin-top:18px;max-width:760px">${await sourceCard(S.file)}</div>`}`;
+  if (liveView && tab === "overview") {  // a run is the Übersicht filling in (section U): the run line on top, then what is read and the case
+    main = `${runLine(caseState())}<div class="cp-overview cp-live-overview"><div id="overview-source">${await sourceCard(S.file)}</div><aside class="cp-side">${liveCase()}</aside></div>`;
   } else if (liveView) {
     main = `${live ? liveSpine(live) : spine()}<div class="cp-live"><div>${await sourceCard(S.file)}${factCards()}</div>${livePanel(live)}</div>`;
   } else if (unaidedPending()) main = `${unaidedView()}<div style="margin-top:22px">${S.file ? `<iframe title="${T("Original file", "Originaldatei")}" src="/api/files/${esc(S.file)}/original" style="width:100%;height:78vh;border:1px solid var(--line)"></iframe>` : ""}</div>`;  // every tab: the original file only
@@ -1965,13 +2121,13 @@ async function renderCase() {
   else if (tab === "overview") main = `${overviewView()}${S.overviewSource || !hasPrepared() ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
   else main = processView();
   // What the handler is typing survives a re-render (a run's progress or a reload redraws the page).
-  const typing = [...document.querySelectorAll("#app input[id], #app textarea[id]")].filter((el) => el.value)
+  const typing = [...document.querySelectorAll("#app input[id], #app textarea[id]")].filter((el) => el.value && !["file", "checkbox", "radio"].includes(el.type))
     .map((el) => ({ id: el.id, value: el.value, focus: el === document.activeElement, start: el.selectionStart, end: el.selectionEnd }));
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
   for (const t of typing) {
     const el = document.getElementById(t.id);
-    if (!el || el.value) continue;
-    el.value = t.value;
+    if (!el || el.value || el.type === "file") continue;
+    try { el.value = t.value; } catch (e) { continue; }  // a value the field refuses never stops the page
     if (t.focus) { el.focus(); try { el.setSelectionRange(t.start, t.end); } catch (e) { /* not a text field */ } }
   }
   keepMotion($("#app"));
@@ -2009,11 +2165,15 @@ async function renderCase() {
   fitCard();
   watchExposure(tab);
   const hit = $("#live-hit"), body = hit && hit.closest(".cp-doc-body");
+  const reading = liveView && !hit ? liveCite() : null, readPage = reading && reading.page && $(`#page-${reading.page}`);
   if (body) {  // centre the quote inside its card at once, so the pointer lands where the quote stays
     const a = hit.getBoundingClientRect(), b = body.getBoundingClientRect();
     body.scrollTop += a.top - b.top - body.clientHeight / 2 + a.height / 2;
   } else if (hit) hit.scrollIntoView({ block: "center" });
-  else if (S.page && $(`#page-${S.page}`)) $(`#page-${S.page}`).scrollIntoView({ block: "start" });
+  else if (readPage && readPage.closest(".cp-doc-body")) {  // the page an agent reads, inside the viewer; the window stays where it is
+    const box = readPage.closest(".cp-doc-body");
+    box.scrollTop += readPage.getBoundingClientRect().top - box.getBoundingClientRect().top;
+  } else if (S.page && $(`#page-${S.page}`)) $(`#page-${S.page}`).scrollIntoView({ block: "start" });
   placeAttention(liveView && tab !== "overview", live);
 }
 
