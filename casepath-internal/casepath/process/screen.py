@@ -77,13 +77,16 @@ def frist_row(item, look):
             "source": next((e for e in item.get("evidence") or () if e.get("file")), None)}
 
 
-def fristen(items, look, skip=(), stated_days=()):
-    """«Fristen» in «Der Fall»: every deadline once, by date (the undated after), without what the card head states."""
+def fristen(items, look, skip=(), stated_days=(), stage=None):
+    """«Fristen» in «Der Fall»: every deadline once, by date (the undated after), without what the card head states. Once
+    the case is past the way to proceed, a statutory deadline that passed is listed as such, not marked as late."""
     rows = [i for i in items if i["kind"] == "deadline" and not i.get("concerns") and i["item_id"] not in skip
             and not (urgent.dated(i) and day(i["value"]) in stated_days)]
     rows.sort(key=lambda i: (0, i["value"], bool(urgent.condition_text(i))) if urgent.dated(i) else (1, label(i)))
     out = []
-    for row in (frist_row(i, look) for i in rows):  # deadlines ending the same day are one row: the date once
+    for i, row in ((i, frist_row(i, look)) for i in rows):  # deadlines ending the same day are one row: the date once
+        if stage in LATE_STAGES and i.get("origin") == "law":
+            row["late"] = False
         same = next((o for o in out if row["date"] and (o["date"], o["state"]) == (row["date"], row["state"])), None)
         if same:  # each deadline keeps its own title and condition in «parts»; the row says them after the one date
             same.setdefault("parts", [{k: same[k] for k in ("item_id", "title", "condition")}]).append({k: row[k] for k in ("item_id", "title", "condition")})
@@ -298,14 +301,14 @@ def build(items, draft, events, look, rule, stage=None, via=None, routing=None, 
     # check's lines belong to the fee note's decision
     lines = [{k: i.get(k) for k in ("item_id", "value", "evidence")} for i in items if i["kind"] == "stage_line" and i.get("shown")
              and not str(i["key"]).startswith("kg-") and not any(d in str(i.get("value") or "") for d in stated)]
-    rows = fristen(items, look, skip | carried, stated)
+    rows = fristen(items, look, skip | carried, stated, stage)
     letter = (draft or {}).get("text") or ""
     lines_in_letter = sum(1 for i in missing(items, events) if f"– {label(i)}" in letter)
     gone = missing(items, events)
     return {"title": (act.get("label") or {}).get("de") or act.get("value"), "weil": reason,
             "danach": [t.get("action") or t.get("title") for t in act.get("then") or () if t.get("action") or t.get("title")],
             "lead": head_lead, "decision": decision(items, draft, stage, routing), "progress": progress(items),
-            "documents": documents(draft, events, since), "fristen": rows,
+            "documents": documents(draft, events, since), "fristen": rows, "fristen_elsewhere": bool(head_lead or carried),
             "stand": stand, "lines": lines, "points": key_points(items, letter),
             "cover": cover_line(items, stage, decided_by),
             "missing": len(gone), "missing_ids": [i["item_id"] for i in gone], "missing_in_letter": lines_in_letter == len(gone) and bool(gone),

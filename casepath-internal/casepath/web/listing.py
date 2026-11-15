@@ -182,6 +182,20 @@ def waiting_for(action):
     return "Gegenpartei" if kind in {"A8", "A9"} else "Kanzlei" if kind in {"A10"} else "Kundschaft"
 
 
+def step_copied(action, events, completed_at):
+    """Whether the letter of the step now prepared went out since the case was prepared: a copy of its own form (a template
+    copied alone, or the letter of a step done before, such as «Frist wahren» before the first request, is not it); a copy
+    that names no form counts."""
+    action = action or {}
+    form = "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")
+    for e in events or ():
+        if e.get("kind") != "letter.copied" or str(e.get("at") or "") <= str(completed_at or "") or e.get("also"):
+            continue
+        if not e.get("form") or not action or e["form"] in {form, action.get("action")}:
+            return True
+    return False
+
+
 def stand(*, closed, run_status, new_files, items, follow_up, events, completed_at, files, today=None, historic=None):
     """Where a case stands, in the handler's words, with the rank by which the list orders it (what needs the handler
     first) and the date that goes with it: {kind, text, rank, date}. A historic file (``historic``: clock.historic) is
@@ -198,7 +212,7 @@ def stand(*, closed, run_status, new_files, items, follow_up, events, completed_
         return row("arrived", "neue Unterlagen", 0)
     action = next((i for i in items if i["kind"] == "next_action"), None)
     due = parse_date(follow_up) if follow_up else None
-    copied = any(e.get("kind") == "letter.copied" and str(e.get("at") or "") > str(completed_at or "") for e in events or ())
+    copied = step_copied(action, events, completed_at)
     if closed or copied:
         if (action or {}).get("action") in {"A12", "close"} and closed:
             return row("closed", "erledigt", 9)

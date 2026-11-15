@@ -344,7 +344,17 @@ class ScreenTests(unittest.TestCase):
         rule = state["process"]["urgent"]
         self.assertEqual(screen.lead(items, date(2026, 11, 14), rule, "klaeren")["word"], "abgelaufen")  # at intake: it may be lost
         self.assertIsNone(screen.lead(items, date(2026, 11, 14), rule, "mandat"))  # behind the process; still listed under «Fristen»
-        self.assertIn("abgelaufen", [r["state"] for r in screen.fristen(items, date(2026, 11, 14))])
+        passed = lambda stage: next(r for r in screen.fristen(items, date(2026, 11, 14), stage=stage) if r["state"] == "abgelaufen")
+        self.assertEqual((passed("klaeren")["late"], passed("mandat")["late"]), (True, False))  # listed, not marked late, once past it
+
+    def test_a_date_set_in_a_summons_is_said_in_good_german(self):
+        from casepath.process.items import pair_set_dates
+        law = {"item_id": "deadline:anfechtung", "kind": "deadline", "origin": "law", "value": "2026-11-02", "stated": "2026-10-03",
+               "label": {"de": "Anfechtung der Kündigung"}}
+        given = {"item_id": "deadline:frist", "kind": "deadline", "origin": "claim_reader", "value": "2026-12-10",
+                 "what": "Anfechtung der Kündigung", "source": "Vorladung zur Schlichtungsverhandlung"}
+        pair_set_dates([law, given])
+        self.assertEqual(law["set_date"]["lines"], ["gesetzlich: 02.11.2026", "in der Vorladung zur Schlichtungsverhandlung gesetzt: 10.12.2026", "prüfen, welche gilt"])
 
     def test_the_reason_leaves_its_date_to_the_deadline_line(self):
         reason = "Angebot der Gegenpartei vom 05.11.2026 eingegangen, noch offen – Muster AG: Mietzinsreduktion CHF 2'000, zahlbar bis 30.11.2026"
@@ -370,6 +380,15 @@ class ScreenTests(unittest.TestCase):
                  "follows": "Der Strafbefehl wird rechtskräftig", "label": {"de": "Einsprache erhoben?"}}
         self.assertEqual(screen.key_points([point], "Ohne Einsprache wird er zum Urteil (Art. 354 Abs. 3 StPO)."), [])
         self.assertEqual(len(screen.key_points([point], "Guten Tag")), 1)
+
+    def test_the_status_counts_the_copy_of_the_step_now_prepared(self):
+        since = "2026-11-15T09:00:00"
+        done = [{"kind": "letter.copied", "form": "A13", "at": "2026-11-15T10:00:00"}, {"kind": "letter.copied", "also": "vorlage:einsprache", "at": "2026-11-15T10:01:00"}]
+        self.assertTrue(listing.step_copied({"kind": "next_action", "action": "A13", "form": "A13"}, done, since))
+        first = {"kind": "next_action", "action": "A1"}  # «Frist wahren» went out; the first request now prepared has not
+        self.assertFalse(listing.step_copied(first, done, since))
+        self.assertTrue(listing.step_copied(first, done + [{"kind": "letter.copied", "form": "A1", "at": "2026-11-15T10:02:00"}], since))
+        self.assertFalse(listing.step_copied(first, [{"kind": "letter.copied", "form": "A1", "at": "2026-11-14T10:00:00"}], since))  # before it was prepared
 
     def test_the_case_is_named_by_what_it_is_about_and_the_newest_comes_first(self):
         request = "Rita Exempel hat die Kündigung seiner Wohnung angefochten und ist zur Schlichtungsverhandlung am 10. Dezember 2026 vorgeladen."

@@ -970,15 +970,20 @@ function processView() {
     const mark = { done: "✓", now: "●", next: "○" }[state];
     const name = S.editing ? `<button class="cp-link cp-step-pick" data-step="${esc(n.step.id)}" aria-pressed="${S.step === n.step.id}">${esc(shortTitle(n.step.title))}</button>` : `<b>${esc(shortTitle(n.step.title))}</b>`;
     const facts = state === "done" ? decided(i).map(factLine).join("") : "";
-    const history = i === 0 && n.via === "Stand gemäss Akten" ? ` <span class="cp-muted">· ${T("as the file shows", "laut Akte")}</span>` : "";
     const asked = new Set(["deckung", ...((S.data.draft || {}).needs || [])]);  // a decision asked below is not also «offen»
     const waiting = state === "now" ? (ev.waiting_for || []).filter((w) => !asked.has(w.fact)).map((w) => `<li class="cp-step-open" data-item="fact:${esc(w.fact)}"><span class="cp-muted">${T("open", "offen")}:</span> ${esc(shortFact(w.fact))}</li>`).join("") : "";
     const here = state === "now" && !ev.outcome ? `${sc.title ? `<li class="cp-step-action">${T("Next", "Als Nächstes")}: ${esc(sc.title)}</li>` : ""}${stepDecisions(n.step.id)}
         ${sc.missing !== undefined ? `<li class="cp-step-docs"><a class="cp-link cp-quiet-link" href="#/case/${esc(S.route.id)}/document_finder" data-missing="${sc.missing}">${T("Documents", "Unterlagen")} · ${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></li>` : ""}` : "";
-    return `<li class="cp-step ${state}" data-item="step:${esc(n.step.id)}"><span class="cp-step-mark">${mark}</span><div class="cp-step-body">${name}${state === "now" ? ` <span class="cp-muted">· ${T("now", "jetzt")}</span>` : ""}${history}${originLabel(n.step)}
+    return `<li class="cp-step ${state}" data-item="step:${esc(n.step.id)}"><span class="cp-step-mark">${mark}</span><div class="cp-step-body">${name}${state === "now" ? ` <span class="cp-muted">· ${T("now", "jetzt")}</span>` : ""}${originLabel(n.step)}
       ${facts || waiting || here ? `<ul class="cp-step-facts">${facts}${waiting}${here}</ul>` : ""}</div></li>`;
   }).join("");
   const end = ev.outcome ? `<li class="cp-step done"><span class="cp-step-mark">✓</span><div class="cp-step-body"><b>${T("End", "Abschluss")}: ${esc(ev.outcome.title)}</b></div></li>` : "";
+  // a case the file shows further along starts at its stage: the stages before it, passed as the file shows
+  const onPath = new Set(model.path.map((p) => p.step.id)), first = (model.path[0] || {}).step;
+  const order = (S.data.process.steps || []).map((x) => x.id);
+  const behind = first ? (ev.reached || []).filter((id) => !onPath.has(id) && model.steps[id] && order.indexOf(id) < order.indexOf(first.id))
+    .sort((a, b) => order.indexOf(a) - order.indexOf(b)) : [];
+  const before = behind.map((id) => `<li class="cp-step done" data-item="step:${esc(id)}"><span class="cp-step-mark">✓</span><div class="cp-step-body"><b>${esc(shortTitle(model.steps[id].title))}</b> <span class="cp-muted">· ${T("as the file shows", "laut Akte")}</span></div></li>`).join("");
   // what may follow the current step: its branches, one line, never a sequence the case has not taken
   const after = ev.outcome ? [] : [...new Set((current.step.next || []).map((e) => (model.steps[e.to] || {}).title).filter(Boolean))];
   const ahead = after.length ? `<li class="cp-step next"><span class="cp-step-mark">○</span><div class="cp-step-body"><span class="cp-muted">${T("then, depending on the case", "danach, je nach Fall")}</span>
@@ -987,7 +992,7 @@ function processView() {
   return `<section class="cp-card cp-process"><header class="cp-process-head"><h1 class="cp-title">${T("Process", "Prozess")}${S.data.process.short_title ? ` <span class="cp-muted">· ${esc(S.data.process.short_title)}</span>` : ""}</h1>
       <button class="cp-link cp-quiet-link" id="edit-open" aria-expanded="${Boolean(S.editing)}">${T("Change for this case", "Für diesen Fall ändern")}</button></header>
     ${change}${S.editing ? editForm(model.steps[S.step]) : ""}
-    <ol class="cp-steps">${rows}${end}${ahead}</ol></section>`;
+    <ol class="cp-steps">${before}${rows}${end}${ahead}</ol></section>`;
 }
 
 // What an applied Knowledge item is called: its document need, question or note, from the Knowledge base when loaded.
@@ -1446,7 +1451,10 @@ function documentsOut() {
     ...(draft.also || []).filter((a) => a.text).map((a) => ({ kind: a.kind, main: false, title: a.title, copied: false, template: Boolean(a.template) }))];
   const fee = (sc.decision || {}).key === "kostennote";
   const rows = all.filter((d) => (fee ? !d.main && d.kind === S.feeAnswer : !FEE_LETTERS.includes(d.kind)) && (d.main ? draft.text : true));
-  if (!rows.some((d) => d.kind === S.docTab)) S.docTab = (rows.find((d) => !d.copied) || rows[0] || {}).kind || null;
+  const step = `${(item("next_action", "0") || {}).action || ""}:${draft.form || ""}`;
+  if (S.docFor !== step) { S.docFor = step; S.docTab = null; S.docPicked = false; }  // another step: its first document
+  const active = rows.find((d) => d.kind === S.docTab);
+  if (!active || (active.copied && !S.docPicked)) S.docTab = (rows.find((d) => !d.copied) || active || rows[0] || {}).kind || null;
   return { rows, active: rows.find((d) => d.kind === S.docTab) || null };
 }
 function docText(doc) {
@@ -1695,7 +1703,7 @@ function sideView() {
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${partiesHtml() || "—"}</dd>
         ${next ? `<dt>${T("Next", "Als Nächstes")}</dt><dd><div class="cp-acct">${next}</div></dd>` : ""}
         ${docs}
-        ${S.data.screen ? `<dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen || `<span class="cp-muted">${T("none in the file", "keine in der Akte")}</span>`}</dd>` : ""}
+        ${S.data.screen && (fristen || !sc.fristen_elsewhere) ? `<dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen || `<span class="cp-muted">${T("none in the file", "keine in der Akte")}</span>`}</dd>` : ""}
         ${cover ? `<dt>${T("Cover", "Deckung")}</dt><dd data-item="cover:summary" class="cp-cover-state ${esc(cover.state)}">${esc(cover.text)}</dd>` : ""}
         ${points ? `<dt>${T("Law", "Rechtliches")}</dt><dd>${points}</dd>` : ""}
         ${flagged.length ? `<dt>${T("Note", "Achtung")}</dt><dd>${flagged.map((f) => esc(f.name)).join(", ")} ${T("contains text addressed to an AI; not followed", "enthält Text an die KI; nicht befolgt")}</dd>` : ""}
@@ -1838,7 +1846,7 @@ function historyView() {
       <td>${(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;
   return `${S.entryEdit ? `<section class="cp-card cp-case cp-entry-edit"><h3>${T("Change your entry", "Eigenen Eintrag ändern")}</h3>${entryForm()}</section>` : ""}
     <section class="cp-card cp-account"><header class="cp-account-head"><h2 class="cp-section">${T("Course of the case", "Verlauf")}</h2>
-      <span class="cp-muted">${docs} ${T("documents and entries", "Dokumente und Einträge")} · ${done} ${T("steps done here", "Bearbeitungen")}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>
+      <span class="cp-muted">${docs} ${docs === 1 ? T("document", "Dokument") : T("documents and entries", "Dokumente und Einträge")}${done ? ` · ${done} ${done === 1 ? T("step done here", "Bearbeitung") : T("steps done here", "Bearbeitungen")}` : ""}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>
       <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${party ? esc(T(`only open with ${party}`, `nur Offenes ${({ kunde: "bei der Kundschaft", versicherer: "bei uns", kanzlei: "bei der Kanzlei", gegenpartei: "bei der Gegenpartei", behoerde: "bei Gericht/Behörde" })[party] || ""}`)) : T("only open", "nur Offenes")}</label></header>
     ${S.data.governing_version ? `<p class="cp-muted" title="${esc(`${S.data.run_version} → ${S.data.governing_version}`)}">${T("Process updated since the case was prepared", "Prozess seit der Vorbereitung aktualisiert")}</p>` : ""}
     ${gaps.length ? `<p class="cp-flag cp-account-gap">${gaps.map((g) => esc((g.label || {}).de || g.value)).join(" · ")}</p>` : ""}
@@ -1926,6 +1934,7 @@ function goToGap() {
 }
 // After a copy, the next document not yet copied is shown, so the one primary button is always the next thing to do.
 function nextTab(kind) {
+  S.docPicked = false;
   const rows = documentsOut().rows;
   const after = rows.slice(rows.findIndex((d) => d.kind === kind) + 1).concat(rows).find((d) => d.kind !== kind && !d.copied);
   if (after) S.docTab = after.kind;
@@ -1963,7 +1972,7 @@ function bindOverview() {
     caseEvent("letter.copied", null, { also: kind, template: Boolean(also.template), edited: (also.text || "").trim() !== text.trim(), ...(act.deadline ? { deadline: act.deadline } : {}) })
       .then(loadCase).catch(() => {});
   });
-  on("[data-doc-tab]", "click", (b) => { S.docTab = b.dataset.docTab; renderCase(); });
+  on("[data-doc-tab]", "click", (b) => { S.docTab = b.dataset.docTab; S.docPicked = true; renderCase(); });
   on("[data-item='letter:0'] [data-editable]", "mousedown", (el) => editable(el));
   on("[data-item='letter:0'] [data-editable]", "focus", (el) => editable(el));
   on("[data-item='letter:0'] [data-seg='text'][data-editable]", "input", (el) => { (S.blockEdits = S.blockEdits || {})[el.dataset.orig] = el.innerText; updateGaps(); });
@@ -2148,7 +2157,7 @@ function bindOverview() {
 async function loadCase() {
   const id = S.route.id;
   if (S.loadedCase !== id) {  // an opened source, a tab, an opened reason and an unsent edit belong to their case
-    Object.assign(S, { overviewSource: false, loadedCase: id, docTab: null, feeAnswer: null, weilOpen: false, leadOpen: false, decideOpen: false, why: null,
+    Object.assign(S, { overviewSource: false, loadedCase: id, docTab: null, docFor: null, docPicked: false, feeAnswer: null, weilOpen: false, leadOpen: false, decideOpen: false, why: null,
                        anliegenOpen: false, keyPoint: null, coverOpen: false, coverDecline: false, blockEdits: {}, alsoEdits: {}, askWhy: null, openOffers: false, changing: false, pickAction: null });
   }
   const [data, workflows, knowledge] = await Promise.all([api(`/api/cases/${id}`), S.workflows ? null : api("/api/workflows"), api("/api/knowledge")]);

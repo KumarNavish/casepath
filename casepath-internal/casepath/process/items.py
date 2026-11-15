@@ -242,7 +242,8 @@ def pair_set_dates(items):
             if s.get("concerns") or not (account.overlap(s["what"], (law.get("label") or {}).get("de")) >= 0.5 or in_letter):
                 continue
             later = parse_date(s["value"]) > parse_date(law["value"])
-            where = f"im {s['source']} gesetzt" if s.get("source") else f"gesetzt von {s['by']}" if s.get("by") else "in der Akte gesetzt"
+            article = "in der" if re.search(r"(ung|E-Mail|Nachricht)$", str(s.get("source") or "").split(" ")[0]) else "im"  # «in der Vorladung», «im Schreiben vom …»
+            where = f"{article} {s['source']} gesetzt" if s.get("source") else f"gesetzt von {s['by']}" if s.get("by") else "in der Akte gesetzt"
             law["set_date"] = {"item": s["item_id"], "date": s["value"], "later": later,
                                "lines": [f"gesetzlich: {_day(law['value'])}", f"{where}: {_day(s['value'])}"] + (["prüfen, welche gilt"] if later else [])}
             s["concerns"] = law["item_id"]
