@@ -213,8 +213,9 @@ def with_handler(entries, edits):
 def dispatch_entries(edits):
     """The letters the handler confirmed as dispatched, one entry per active «add_dispatch» edit (one per recipient):
     from Protekta to that recipient on the dispatch day, the record kind and the code of its form (completion.FORM_RECORD:
-    its own code or none, never its kind's), its title, what it asked and the customer's questions it answered (each
-    naming the customer's entry, so build closes exactly those). No quote: its source is the attributed confirmation."""
+    its own code or none, never its kind's), its title, what it asked (each ask with the judgment it was asked for,
+    ``blocks``) and the customer's questions it answered (each naming the customer's entry, so build closes exactly
+    those). No quote: its source is the attributed confirmation."""
     out = []
     for e in edits or ():
         if e.get("op") != "add_dispatch" or e.get("status", "active") != "active":
@@ -225,7 +226,7 @@ def dispatch_entries(edits):
             continue
         to = a.get("to") if a.get("to") in PARTIES and a.get("to") != INSURER else "andere"
         asks = [{"what": _clip(x.get("what"), 120), "of": x.get("of") if x.get("of") in PARTIES else to, "by": _iso(x.get("by")),
-                 "repeats": None, "warns": bool(x.get("warns")), "citations": [], **{k: x[k] for k in ("kind", "key", "ref") if x.get(k) is not None}}
+                 "repeats": None, "warns": bool(x.get("warns")), "citations": [], **{k: x[k] for k in ("kind", "key", "ref", "blocks") if x.get(k) is not None}}
                 for x in a.get("asks") or () if isinstance(x, dict) and str(x.get("what") or "").strip()]
         answers = [{"what": _clip(x.get("what"), 120), "answers": x["answers"] if isinstance(x.get("answers"), int) else None, "citations": []}
                    for x in a.get("answers") or () if isinstance(x, dict) and str(x.get("what") or "").strip()]

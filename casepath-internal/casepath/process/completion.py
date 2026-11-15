@@ -51,8 +51,10 @@ TO_WORDS = {"kunde": "die Kundschaft", "gegenpartei": "die Gegenpartei", "kanzle
 DECISION_WORDS = {"deckung": "Deckung", "empfehlung": "Empfehlung", "aussichten": "Erfolgsaussichten", "vorgehen": "Vorgehen"}
 DECISION_FACTS = {"deckung", "aussichten", "vorgehen", "leistungen_einstellen", "vergleich_bestaetigt"}  # the handler's own decisions
 # the reasons an approval no longer holds, the cause before its consequences
-REASONS = ("Entscheid geändert", "Voraussetzung geändert", "Neue Unterlagen", "Pflichtteil fehlt", "Schritt geändert", "Empfänger geändert",
-           "Beilagen geändert", "Datum", "Text geändert")
+REASONS = ("Entscheid geändert", "Voraussetzung geändert", "Grundlage in Prüfung", "Neue Unterlagen", "Pflichtteil fehlt", "Schritt geändert",
+           "Empfänger geändert", "Beilagen geändert", "Datum", "Text geändert")
+HELD_MARKS = {"aenderung": "Änderung nötig", "frage": "Frage"}  # a jurist's mark that holds an element the letter rests on
+COVER, BACKBONE = "cover", "backbone"  # the review's files besides the area modules (process/review.py)
 REPLY = "Rückmeldung"
 SHA_EMPTY = hashlib.sha256(b"").hexdigest()
 
@@ -274,6 +276,89 @@ def changed_premise(stored, facts):
     return [k for k, v in (stored or {}).items() if _norm(v) != _norm((facts or {}).get(k))]
 
 
+def relied_elements(draft, assessment=None, process=None, listed=(), events=()):
+    """The reviewed legal content the letter rests on, as the jurists' review names it («<file>:<element>»,
+    process/review.py): the assessment frame its form uses (rahmen.<key>), the documents and questions it asks
+    (unterlage.<id>, frage.<fact>), the templates it encloses (vorlage.<id>), the required parts it carries
+    (cover:schreiben.<form>.<part>), and for an assessment the options adopted, the answers given, the case lines and the
+    connecting wording it states (empfehlung.<id>, antwort.<point>.<intent>, fall.<id>, wortlaut.<key>). The assessment's
+    own list (``assessment['elements']``) is taken as it is where it gives one. A mark «Änderung nötig» or «Frage» on one
+    of them after the approval makes the approval stale, even when the letter's bytes stay the same."""
+    if not draft or not draft.get("text"):
+        return []
+    wid = (process or {}).get("id")
+    a = assessment or {}
+    out = []
+
+    def own(element):
+        if wid and element:
+            out.append(f"{wid}:{element}")
+    form = draft.get("form") or draft.get("kind")
+    for part in _frame_parts(form):  # the area's assessment frame the backbone's form takes («@rights»), as composed into it
+        own(f"rahmen.{part}")
+    for r in draft.get("required") or ():
+        out.append(f"{COVER}:schreiben.{form}.{r.get('id')}")
+    for x in draft.get("also") or ():
+        if not x.get("text"):
+            continue
+        if x.get("template"):
+            own(f"vorlage.{str(x['kind']).split(':', 1)[-1]}")
+        for r in x.get("required") or ():
+            out.append(f"{COVER}:schreiben.{x['kind']}.{r.get('id')}")
+    if form in ("A11_teilablehnung", "A12_mitwirkung_kanzlei"):
+        out.append(f"{BACKBONE}:schreiben.{form}")
+    for ask in asks(form, draft.get("kind"), listed, events, assessment):
+        if ask.get("kind") == "document" and ask.get("ref"):
+            own(f"unterlage.{ask['ref']}")
+        elif ask.get("kind") == "fact" and ask.get("ref"):
+            own(f"frage.{ask['ref']}")
+        elif ask.get("kind") == "claim":
+            own("wortlaut.claim_line")
+    if a.get("elements"):
+        out += [str(e) for e in a["elements"]]
+    else:
+        for option in a.get("chosen") or () if isinstance(a.get("chosen"), list) else ():
+            own(f"empfehlung.{option}")
+        if isinstance(a.get("chosen"), list) and len(a["chosen"]) > 1:
+            own("wortlaut.join")
+        for q in a.get("questions") or ():
+            if q.get("state") in ("beantwortet", "bedingt") and q.get("intent"):
+                for point in q.get("points") or ():
+                    own(f"antwort.{point}.{q['intent']}")
+        for line in a.get("in_case") or ():
+            key = str(line.get("key") or "")
+            if key.startswith("fall."):
+                own(key)
+            elif key in ("wish", "claims"):
+                own(f"wortlaut.{key}")
+    return sorted(set(out))
+
+
+def _frame_parts(form):
+    """The area frame parts («@<key>») the backbone's form of ``form`` takes: [key]."""
+    from . import area
+    parts = (((area._shipped()[0] or {}).get("forms") or {}).get(form) or {}).get("parts") or ()
+    return [p[1:] for p in parts if isinstance(p, str) and p.startswith("@")]
+
+
+def marks_of(relies, marks):
+    """The jurists' marks on the elements a letter rests on, as they stand when it is approved or checked: {key: mark id}."""
+    return {k: (marks or {})[k].get("id") for k in relies or () if ((marks or {}).get(k) or {}).get("id")}
+
+
+def held_marks(relies, marks, seen=None, titles=None):
+    """The elements the letter rests on that a jurist marked «Änderung nötig» or «Frage» since it was approved or checked
+    (``seen``: marks_of then; a mark is new when its id is not the one seen): [{key, mark, title, reviewer, at}];
+    ``marks``: the marks that hold for the content as it is now (review.Model.current); ``titles``: {key: its title}."""
+    out = []
+    for key in relies or ():
+        m = (marks or {}).get(key) or {}
+        if m.get("mark") in HELD_MARKS and m.get("id") != (seen or {}).get(key):
+            out.append({"key": key, "mark": HELD_MARKS[m["mark"]], "title": (titles or {}).get(key) or key.split(":", 1)[-1],
+                        "reviewer": m.get("reviewer"), "at": m.get("at")})
+    return out
+
+
 # -- the log: approvals, packages, dispatches, copies -----------------------------------------------------------------------
 
 def approvals(events):
@@ -306,7 +391,7 @@ def sent_letters(events, edits=None):
         first = (row.get("forms") or [a.get("form")])[0]
         out.append({**d, "form": a.get("form"), "title": (row.get("titles") or {}).get(first) or a.get("title"),
                     "forms": row.get("forms") or [a.get("form")], "also": [x.get("kind") for x in a.get("also") or ()],
-                    "deadline": a.get("deadline"), "respond_by": a.get("respond_by")})
+                    "deadline": a.get("deadline"), "respond_by": a.get("respond_by"), "action_kind": a.get("action_kind")})
     return out
 
 
@@ -349,17 +434,52 @@ def frozen_respond_by(events, form, today=None, edits=None):
 
 # -- what a dispatch asks and answers ---------------------------------------------------------------------------------------
 
+def blocks_of(ask, assessment=None):
+    """Why an assessment asks this (SLICE_A: ``blocks`` on each ask, {question, option, condition}): the customer's
+    question whose answer waits for it, the option whose claim or condition it bears on and the condition itself. Where
+    the assessment does not say, it is read from the brief: a claim line from the conditional answer that points to the
+    residual and the option needing it; a missing fact from the conditional answer that asks it and the option
+    conditions that name it; a document from the adopted option needing it. None for a request carried over (it waits
+    for itself)."""
+    if ask.get("blocks"):
+        return ask["blocks"]
+    a = assessment or {}
+    kind, ref = ask.get("kind"), ask.get("ref")
+    waiting = [q for q in a.get("questions") or () if q.get("state") == "bedingt"]
+    chosen = [o for o in a.get("options") or () if o.get("chosen") or o.get("id") in (a.get("chosen") or [] if isinstance(a.get("chosen"), list) else [])]
+    unchecked = lambda o: next((c.get("text") for c in o.get("conditions") or () if c.get("kind") == "anspruch" and c.get("state") == "nicht geprüft"), None)
+    if kind == "claim":
+        q = next((q for q in waiting if (q.get("next") or {}).get("kind") == "residual"), None)
+        option = next((o for o in a.get("options") or () if o.get("id") == ((q or {}).get("next") or {}).get("option")), None) \
+            or next((o for o in chosen if o.get("needs")), None)
+        return {"question": (q or {}).get("text"), "option": (option or {}).get("id"), "option_title": (option or {}).get("title"),
+                "condition": unchecked(option or {})}
+    if kind == "fact":
+        q = next((q for q in waiting if ((q.get("ask") or {}).get("fact")) == ref), None)
+        option, condition = next(((o, c.get("text")) for o in a.get("options") or () for c in o.get("conditions") or () if c.get("fact") == ref), (None, None))
+        return {"question": (q or {}).get("text"), "option": (option or {}).get("id"), "option_title": (option or {}).get("title"), "condition": condition}
+    if kind == "document":
+        option = next((o for o in chosen if ref in (o.get("needs") or ())), None)
+        return {"question": None, "option": (option or {}).get("id"), "option_title": (option or {}).get("title"), "condition": None} if option else None
+    return None
+
+
 def asks(form, kind, listed, events, assessment=None, respond_by=None, role="kunde"):
     """What the letter asks of its recipient, as the account's asks of the dispatch: an assessment the assessment's asks
-    (the residual lines ticked and the missing fact of each conditional answer); a first request or a question back the
-    letter's asked lines; a pending or status letter a reply by its date. Each {what, of, by, kind, ref, key, warns}."""
+    (the residual lines ticked and the missing fact of each conditional answer), each with the judgment it is asked for
+    (``blocks``: the question, option and condition); a first request or a question back the letter's asked lines; a
+    pending or status letter a reply by its date. Each {what, of, by, kind, ref, key, warns, blocks}."""
     form = str(form or "")
-    if kind == "A5" and form.startswith("A5") and form != "A5_aussichtslos":
-        return [{"what": a.get("what"), "of": role, "by": respond_by, "kind": a.get("kind"), "ref": a.get("ref"), "key": a.get("key")}
+    assessing = kind == "A5" and form.startswith("A5") and form != "A5_aussichtslos"
+    if assessing and (assessment or {}).get("letter"):  # the assessment writes the letter's residual: its asks are the letter's
+        return [{"what": a.get("what"), "of": role, "by": respond_by, "kind": a.get("kind"), "ref": a.get("ref"), "key": a.get("key"),
+                 **({"blocks": b} if (b := blocks_of(a, assessment)) else {})}
                 for a in (assessment or {}).get("asks") or () if a.get("what")]
-    if form in ("A1", "A4"):
+    if form in ("A1", "A4") or assessing:  # an assessment without one asks, like the first request, the documents still missing
         docs = [{"what": (i.get("label") or {}).get("de") or i.get("value"), "of": role, "by": respond_by, "kind": "document", "ref": i["key"]}
-                for i in letters.asked(listed, events, "document")] if form == "A1" else []
+                for i in letters.asked(listed, events, "document")] if form == "A1" or assessing else []
+        if assessing:
+            return [a for a in docs if a["what"]]
         lines = letters.line_state(events)
         questions = [{"what": i.get("value"), "of": role, "by": respond_by, "kind": "fact", "ref": i["key"]} for i in listed or ()
                      if i.get("kind") == "letter_question" and lines.get(i["item_id"], i.get("ask") != "proposed")]
@@ -392,11 +512,12 @@ def _entry_files(entry, files):
 
 def fulfilment(entry, acc, files, result=None, process=None, held=None):
     """How a dispatch (its account entry) stands after it, from evidence only: {acknowledged, replies, met, open, unbelegt,
-    fulfilled, partial}. Per ask, against the entries of its addressee dated after it: a claim line is met when the
-    claim is documented by a receipt located in a file of such an entry; a document when account.held names such a file;
-    a fact when it is established with a quote from such a file; a request carried over when its row is closed and, for a
-    document, held as above; a reply by any such entry with its file. An ask whose row was closed by words alone is
-    «Antwort ohne Beleg – prüfen»; a refusal or a promise meets nothing."""
+    refused, promised, evidence, fulfilled, partial}. Per ask, against the entries of its addressee dated after it: a
+    claim line is met when the claim is documented by a receipt located in a file of such an entry; a document when
+    account.held names such a file; a fact when it is established with a quote from such a file; a request carried over
+    when its row is closed and, for a document, held as above; a reply by any such entry with its file. An ask whose row
+    was closed by words alone is «Antwort ohne Beleg – prüfen»; a refusal (the row's ``refused``, slice C) or a promise
+    (``promised``) meets nothing; ``evidence``: {ask key: the file that meets it}."""
     from . import account
     held = held or account.held
     result = result or {}
@@ -407,38 +528,103 @@ def fulfilment(entry, acc, files, result=None, process=None, held=None):
     rows = {r["id"]: r for r in (acc or {}).get("requests") or ()}
     claims = ((result.get("brief") or {}).get("claims")) or []
     needs = {d["id"]: d for d in (process or {}).get("documents") or ()}
-    met, open_, unbelegt = [], [], []
+    met, open_, unbelegt, refused, promised, evidence = [], [], [], [], [], {}
     for i, ask in enumerate(entry.get("asks") or ()):
-        kind, ref, ok = ask.get("kind"), ask.get("ref"), False
+        kind, ref, ok, where = ask.get("kind"), ask.get("ref"), False, None
         if kind == "claim":
             claim = claims[ref] if isinstance(ref, int) and 0 <= ref < len(claims) else None
             receipt = ((claim or {}).get("receipt") or [None])
             receipt = receipt[0] if isinstance(receipt, list) else receipt
             ok = bool(claim and claim.get("documented") and (receipt or {}).get("file") in reply_files)
+            where = (receipt or {}).get("file") if ok else None
         elif kind == "document":
             found = held({"what": ask.get("what"), "need": ref, "title": (needs.get(ref) or {}).get("title")}, [f for f in files or () if f.get("id") in reply_files])
             ok = bool(found and found.get("file") in reply_files)
+            where = (found or {}).get("file") if ok else None
         elif kind == "fact":
-            ok = any(f.get("fact") == ref and f.get("status") == "established" and f.get("verdict") == "accepted"
-                     and any(c.get("file") in reply_files for c in f.get("citations") or ()) for f in result.get("facts") or ())
+            row = next((f for f in result.get("facts") or () if f.get("fact") == ref and f.get("status") == "established" and f.get("verdict") == "accepted"
+                        and any(c.get("file") in reply_files for c in f.get("citations") or ())), None)
+            ok = row is not None
+            where = next((c.get("file") for c in (row or {}).get("citations") or () if c.get("file") in reply_files), None)
         elif kind == "request":
             row = rows.get(ref) or {}
             closed = bool(row.get("answered"))
             doc = any(_head(d.get("title")) and _head(d.get("title")) == _head(row.get("what")) for d in needs.values())
             found = held({"what": row.get("what"), "request": ref}, [f for f in files or () if f.get("id") in reply_files]) if doc else None
             ok = closed and (not doc or bool(found and found.get("file") in reply_files))
+            where = (found or {}).get("file") if ok and found else None
         elif kind == "reply":
             ok = bool(later and reply_files)
+            where = sorted(reply_files)[0] if ok else None
         own = rows.get(f"r{entry['n']}.{i}") or {}
         if ok:
             met.append(ask)
+            evidence[ask.get("key") or ask.get("what")] = where
+        elif own.get("refused") and (own["refused"].get("n") in later_n or not own["refused"].get("n")):
+            refused.append({**ask, "refused": own["refused"]})  # the addressee said no («keine Belege»): nothing is met
+        elif own.get("promised") and own["promised"].get("n") in later_n:
+            promised.append({**ask, "promised": own["promised"]})  # promised, not delivered: the wait goes on to its day
         elif (own.get("answered") or {}).get("n") in later_n:
             unbelegt.append(ask)  # closed by words, nothing in a file: an answer without evidence
         else:
             open_.append(ask)
     total = len(entry.get("asks") or ())
-    return {"acknowledged": bool(later), "replies": sorted(later_n), "met": met, "open": open_, "unbelegt": unbelegt,
-            "fulfilled": bool(later) and total > 0 and len(met) == total, "partial": 0 < len(met) < total}
+    return {"acknowledged": bool(later), "replies": sorted(later_n), "met": met, "open": open_, "unbelegt": unbelegt, "refused": refused,
+            "promised": promised, "evidence": evidence, "fulfilled": bool(later) and total > 0 and len(met) == total,
+            "partial": 0 < len(met) < total}
+
+
+def _judgment(ask):
+    """The judgment an ask was made for, in the handler's words: «Frage «…»», else the option and its condition."""
+    b = ask.get("blocks") or {}
+    if b.get("question"):
+        return f"«{b['question']}»"
+    if b.get("option_title") or b.get("option"):
+        return str(b.get("option_title") or b.get("option")) + (f" ({b['condition']})" if b.get("condition") else "")
+    return None
+
+
+def consequence(how, entry=None, changed=(), held=()):
+    """What a reply to a dispatched letter means for the work, from evidence only (``how``: fulfilment), as one of:
+
+    - ``resolved``: every ask is met and at least one was asked for a judgment (``blocks``): that judgment can be made
+      now, and the resulting assessment or action is what comes next; waiting for the follow-up date has no reason left;
+    - ``contradiction``: a fact the letter rests on changed after it went out (``changed``) or a jurist since holds an
+      element it rests on (``held``): the judgment is reopened («versandt mit früherem Stand – prüfen»);
+    - ``refused``: the addressee refused an ask: there is nothing left to wait for, the judgment is made without it;
+    - ``unbelegt``: an ask answered by words without evidence («Antwort ohne Beleg – prüfen»);
+    - ``partial``: some asks met, the rest still owed: the remainder is all that is asked, the wait goes on for it;
+    - ``fulfilled``: every ask met, none blocked a judgment (a reply, a status answer): the next step decides;
+    - ``unrelated``: the addressee wrote after it, but nothing meets, answers, refuses or promises an ask: the wait stays
+      as it was, quiet;
+    - ``waiting``: nothing came since: the wait stays.
+
+    Returns {kind, judgments [{ask, judgment, blocks, file}], remainder [ask], refused [ask], reason_to_wait (bool),
+    text}."""
+    how = how or {}
+    met = list(how.get("met") or ())
+    judgments = [{"ask": a.get("what"), "judgment": _judgment(a), "blocks": a.get("blocks"),
+                  "file": (how.get("evidence") or {}).get(a.get("key") or a.get("what"))} for a in met if a.get("blocks")]
+    remainder = list(how.get("open") or ()) + list(how.get("promised") or ())
+    out = {"judgments": judgments, "remainder": remainder, "refused": list(how.get("refused") or ()), "reason_to_wait": bool(remainder)}
+    if changed or held:
+        what = list(changed) + [f"{h['title']} ({h['mark']})" for h in held]
+        return {**out, "kind": "contradiction", "reason_to_wait": False, "text": f"versandt mit früherem Stand – prüfen: {', '.join(what)}"}
+    if not how.get("acknowledged"):
+        return {**out, "kind": "waiting", "text": None}
+    if how.get("refused"):
+        return {**out, "kind": "refused", "reason_to_wait": bool(remainder),
+                "text": "abgelehnt: " + ", ".join(a.get("what") or "" for a in how["refused"])}
+    if how.get("unbelegt"):
+        return {**out, "kind": "unbelegt", "text": "Antwort ohne Beleg – prüfen"}
+    if how.get("fulfilled") and judgments:
+        said = ", ".join(dict.fromkeys(j["judgment"] for j in judgments if j["judgment"])) or "die Einschätzung"
+        return {**out, "kind": "resolved", "reason_to_wait": False, "text": f"erfüllt: jetzt zu beurteilen {said}"}
+    if how.get("fulfilled"):
+        return {**out, "kind": "fulfilled", "reason_to_wait": False, "text": "erfüllt"}
+    if met:
+        return {**out, "kind": "partial", "text": "teilweise erfüllt: offen " + ", ".join(a.get("what") or "" for a in remainder)}
+    return {**out, "kind": "unrelated", "text": None}
 
 
 # -- the state --------------------------------------------------------------------------------------------------------------
@@ -448,8 +634,20 @@ def _day(value):
     return d.strftime("%d.%m.%Y") if d else ""
 
 
-def _bundle(events, version):
-    return next((e for e in reversed(events or ()) if e.get("kind") == "bundle.saved" and e.get("version") == version), None)
+def _bundle(events, approval):
+    """The Versandpaket stored with an approval («bundle.saved» naming it), or, for a version, the latest one stored."""
+    if isinstance(approval, dict):
+        own = next((e for e in reversed(events or ()) if e.get("kind") == "bundle.saved" and approval.get("event_id")
+                    and e.get("approval") == approval.get("event_id")), None)
+        return own or next((e for e in reversed(events or ()) if e.get("kind") == "bundle.saved" and not e.get("approval")
+                            and e.get("version") == approval.get("version") and str(e.get("at") or "") >= str(approval.get("at") or "")), None)
+    return next((e for e in reversed(events or ()) if e.get("kind") == "bundle.saved" and e.get("version") == approval), None)
+
+
+def reconciled(events, version):
+    """The latest «Abgleich erledigt» of a dispatched version: the premise and the marks the handler checked it against
+    (``action.reconciled``), or None."""
+    return next((e for e in reversed(events or ()) if e.get("kind") == "action.reconciled" and e.get("version") == version), None)
 
 
 def default_channel(files):
@@ -470,11 +668,28 @@ def earliest(approval, events, form):
     return min(d for d in days if d) if any(days) else None
 
 
-def validity(approval, draft, facts, assessment=None, process=None, unread=(), files=(), events=(), today=None):
+def arrived_after(approval, files, events=()):
+    """The files that came into the case after an approval was given (not among the files it was given on, ``file_ids``;
+    for an older record, created after it), while the handler has not said since that they do not change it («trotzdem
+    verwenden», ``letter.unblocked``, after the newest of them): [file]. Read or not: what came between the review and
+    the sending is not what was reviewed, until the letter is approved again."""
+    approval = approval or {}
+    known = approval.get("file_ids")
+    at = str(approval.get("at") or "")
+    came = [f for f in files or () if (f.get("id") not in known if known is not None else str(f.get("created_at") or "") > at)]
+    newest = max((str(f.get("created_at") or "") for f in came), default="")
+    if came and any(e.get("kind") == "letter.unblocked" and str(e.get("at") or "") >= newest for e in events or ()):
+        return []
+    return came
+
+
+def validity(approval, draft, facts, assessment=None, process=None, unread=(), files=(), events=(), today=None, marks=None):
     """Why an approval no longer holds, recomputed now: [reasons] (empty: it holds). It holds only while its version is
     the current one, its form the prepared one, its premise as stored, no decision is open, every required part is in
-    the letter, no file arrived unread after it (a later «trotzdem verwenden» counts) and enough time is left before the
-    reply date it froze (the form's period less three days)."""
+    the letter, nothing the letter rests on was marked by a jurist since («Änderung nötig» or «Frage»: ``marks``, the
+    marks that hold now), no file came into the case after it (``arrived_after``; a later «trotzdem verwenden» counts)
+    and enough time is left before the reply date it froze (the form's period less three days). ``unread`` is kept for
+    the callers; any file after the approval counts, read or not."""
     out = []
     if not draft or approval.get("form") != (draft.get("form") or draft.get("kind")):
         out.append("Schritt geändert")
@@ -495,8 +710,9 @@ def validity(approval, draft, facts, assessment=None, process=None, unread=(), f
         out.append("Text geändert")
     if draft and missing_required(draft):
         out.append("Pflichtteil fehlt")
-    arrived = [str(f.get("created_at") or "") for f in files or () if f.get("id") in set(unread or ()) and str(f.get("created_at") or "") > str(approval.get("at") or "")]
-    if arrived and not any(e.get("kind") == "letter.unblocked" and str(e.get("at") or "") >= max(arrived) for e in events or ()):
+    if held_marks(approval.get("relies"), marks, approval.get("relies_marks")):
+        out.append("Grundlage in Prüfung")
+    if arrived_after(approval, files, events):
         out.append("Neue Unterlagen")
     if not enough_time(approval.get("respond_by"), approval.get("at"), today):
         out.append("Datum")
@@ -504,13 +720,14 @@ def validity(approval, draft, facts, assessment=None, process=None, unread=(), f
 
 
 def state(case, listed, draft, events, edits, account=None, assessment=None, files=(), today=None, facts=None, process=None, unread=(),
-          result=None, prepared_at=None, follow_up=None, held=None):
+          result=None, prepared_at=None, follow_up=None, held=None, marks=None, titles=None, saves=0):
     """Where the prepared letter stands after the decision, recomputed on every read: {state (entwurf | freigegeben |
     versandt), version, form, approved {by, at, version, form, respond_by, bundle}, dispatched [{recipient, date, channel,
-    by}], pending, valid, stale [reasons], premise_changed [questions], last (the last letter dispatched: {form, title,
-    dispatched, acknowledged, fulfilled, partial, open, unbelegt}), acknowledged, fulfilled, partial, waiting_until,
-    legacy_copy, decision, bucket, status, date, bar}. ``bucket``/``status`` are set only where the letter decides the
-    case list's row (listing.stand decides the rest)."""
+    by}], pending, valid, stale [reasons], held [elements a jurist holds], premise_changed [questions], last (the last
+    letter dispatched: {form, title, dispatched, asks, acknowledged, fulfilled, partial, open, unbelegt, refused, met,
+    stale, consequence}), acknowledged, fulfilled, partial, waiting_until, legacy_copy, decision, bucket, status, date,
+    effort, bar}. ``bucket``/``status`` are set only where the letter decides the case list's row (listing.stand decides
+    the rest). ``marks``: the jurists' marks that hold now (review.Model.current), ``titles`` their elements' titles."""
     today = today or date.today()
     facts = facts or {}
     edits = edits or []
@@ -525,45 +742,57 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
     if approval and not same and not ({r.get("to") for r in approval.get("recipients") or ()} - done_for(approval)):
         approval = None  # the latest approval went out to every recipient: the letter prepared now is a new one
     out = {"state": "entwurf", "version": version, "form": form, "approved": None, "dispatched": [], "pending": [], "valid": False, "stale": [],
-           "premise_changed": [], "last": None, "acknowledged": False, "fulfilled": False, "partial": False, "waiting_until": None,
+           "held": [], "premise_changed": [], "last": None, "acknowledged": False, "fulfilled": False, "partial": False, "waiting_until": None,
            "legacy_copy": None, "decision": None, "bucket": None, "status": None, "date": None, "recipients": draft.get("recipients") or []}
     needed = open_decisions(draft, facts, assessment, process) if draft.get("text") else []
     out["decision"] = needed[0] if needed else None
     questions = {i["key"]: (i.get("label") or {}).get("de") or i["key"] for i in listed or () if i.get("kind") == "fact"}
     if approval:
         mine = [d for d in sent if d["version"] == approval.get("version")]
-        bundle = _bundle(events, approval.get("version"))
+        bundle = _bundle(events, approval)
         out["approved"] = {"by": approval.get("expert"), "at": approval.get("at"), "version": approval.get("version"), "form": approval.get("form"),
-                           "title": approval.get("title"), "respond_by": approval.get("respond_by"),
+                           "title": approval.get("title"), "respond_by": approval.get("respond_by"), "event": approval.get("event_id"),
+                           "text_sha256": approval.get("text_sha256"),
                            "bundle": {"sha256": bundle.get("sha256"), "bytes": bundle.get("bytes")} if bundle else None}
         out["dispatched"] = [{"recipient": d["recipient"], "date": d["date"], "channel": d["channel"], "by": d["by"], "edit": d["edit"]} for d in mine]
         out["pending"] = [r for r in approval.get("recipients") or () if r.get("to") not in {d["recipient"] for d in mine}]
         out["state"] = "freigegeben" if out["pending"] else "versandt"
-        out["stale"] = validity(approval, draft, facts, assessment, process, unread, files, events, today)
+        out["stale"] = validity(approval, draft, facts, assessment, process, unread, files, events, today, marks)
+        out["held"] = held_marks(approval.get("relies"), marks, approval.get("relies_marks"), titles)
+        out["arrived"] = [f.get("name") for f in arrived_after(approval, files, events)]
         out["valid"] = not out["stale"]
-    # the last letter that went out: what it asked, whether the addressee answered, what is met by evidence
+    # the last letter that went out: what it asked, whether the addressee answered, what is met by evidence, what it means
     went = [a for a in every if any(d["version"] == a.get("version") for d in sent)]
     last = went[-1] if went else None
     if last:
         entry = next((e for e in (account or {}).get("entries") or () if (e.get("dispatch") or {}).get("version") == last.get("version")), None)
         how = fulfilment(entry, account, files, result, process, held) if entry and account else {}
         mine = [d for d in sent if d["version"] == last.get("version")]
-        changed = changed_premise(last.get("premise"), facts)
+        checked = reconciled(events, last.get("version"))  # «Abgleich erledigt»: what the handler checked the sent letter against
+        changed = changed_premise((checked or {}).get("premise") if checked else last.get("premise"), facts)
+        holding = held_marks(last.get("relies"), marks, (checked or {}).get("relies_marks") if checked else last.get("relies_marks"), titles)
+        meaning = consequence(how, entry, [questions.get(k, k) for k in changed], holding)
         out["last"] = {"form": last.get("form"), "title": last.get("title"), "version": last.get("version"), "respond_by": last.get("respond_by"),
+                       "action_kind": last.get("action_kind"),
                        "dispatched": [{"recipient": d["recipient"], "date": d["date"], "channel": d["channel"], "by": d["by"]} for d in mine],
                        "asks": [a.get("what") for a in (entry or {}).get("asks") or ()], **{k: how.get(k) for k in ("acknowledged", "fulfilled", "partial")},
                        "open": [a.get("what") for a in how.get("open") or ()], "unbelegt": [a.get("what") for a in how.get("unbelegt") or ()],
-                       "met": [a.get("what") for a in how.get("met") or ()]}
+                       "refused": [a.get("what") for a in how.get("refused") or ()], "promised": [a.get("what") for a in how.get("promised") or ()],
+                       "met": [a.get("what") for a in how.get("met") or ()], "held": holding, "consequence": meaning,
+                       "reconciled": {"by": checked.get("expert"), "at": checked.get("at")} if checked else None}
         out["premise_changed"] = [questions.get(k, k) for k in changed]
         gone = _undone(events)
         out["last"]["stale"] = sorted({r for e in events or () if e.get("kind") == "action.dispatched" and e.get("version") == last.get("version")
-                                       and e.get("edit_id") not in gone for r in e.get("stale") or ()}, key=lambda r: REASONS.index(r) if r in REASONS else 99)
+                                       and e.get("edit_id") not in gone and not checked for r in e.get("stale") or ()},
+                                      key=lambda r: REASONS.index(r) if r in REASONS else 99)
         out.update(acknowledged=bool(how.get("acknowledged")), fulfilled=bool(how.get("fulfilled")), partial=bool(how.get("partial")))
-        if not how.get("acknowledged"):
+        if meaning["reason_to_wait"] or meaning["kind"] in ("waiting", "unrelated"):
             out["waiting_until"] = last.get("respond_by") or (follow_up or {}).get("due")
     out["legacy_copy"] = legacy_copy(events, form, prepared_at) if draft.get("text") and not out["approved"] else None
     # the case list's row, where the letter decides it; what the last letter sent says, only while nothing newer is approved
     current_last = last is not None and (approval is None or approval is last)
+    meaning = (out["last"] or {}).get("consequence") or {}
+    act = next((i for i in listed or () if i.get("kind") == "next_action"), None) or {}
     if approval and not out["approved"]["bundle"] and out["state"] == "freigegeben":
         out.update(bucket="fehlgeschlagen", status="Versandpaket fehlt")
     elif out["state"] == "freigegeben" and out["stale"]:
@@ -572,18 +801,53 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
         out.update(bucket="versandbereit", status="freigegeben, Versand offen", date=str(approval.get("at") or "")[:10])
     elif out["legacy_copy"]:
         out.update(bucket="versandbereit", status="kopiert, Versand nicht bestätigt", date=str(out["legacy_copy"]["at"] or "")[:10])
-    elif current_last and (out["premise_changed"] or out["last"]["stale"]):
-        what = out["premise_changed"] or out["last"]["stale"]
-        out.update(bucket="urteil", status=f"versandt mit früherem Stand – prüfen: {', '.join(what)}")
-    elif current_last and out["acknowledged"] and out["last"]["asks"]:
-        if out["partial"]:
-            out.update(bucket="urteil", status="teilweise erfüllt")
-        elif out["last"]["unbelegt"] and not out["fulfilled"]:
-            out.update(bucket="urteil", status="Antwort ohne Beleg – prüfen")
-        elif not out["fulfilled"]:
-            out.update(bucket="urteil", status="Antwort eingegangen")
+    elif current_last and out["last"]["stale"] and meaning.get("kind") != "contradiction":
+        out.update(bucket="urteil", status=f"versandt mit früherem Stand – prüfen: {', '.join(out['last']['stale'])}")
+    elif current_last and meaning.get("kind") == "contradiction":
+        out.update(bucket="urteil", status=meaning["text"])
+    elif current_last and meaning.get("kind") == "resolved":
+        # the evidence asked for came: the judgment it was asked for is next, prepared where the plan already turned to it
+        ready = act.get("action") and (act.get("consequence") or act.get("action") == last.get("action_kind"))
+        out.update(bucket="urteil", status="erfüllt: " + ("Einschätzung vorbereitet" if ready and act.get("action") == "A5"
+                                                         else f"{(act.get('label') or {}).get('de') or act.get('action')} vorbereitet" if ready
+                                                         else "Einschätzung ergänzen" if last.get("action_kind") == "A5" else "nächsten Schritt vorbereiten"))
+    elif current_last and meaning.get("kind") in ("refused", "unbelegt"):
+        out.update(bucket="urteil", status=meaning["text"])
+    elif current_last and meaning.get("kind") == "partial" and meaning.get("judgments"):
+        out.update(bucket="urteil", status=meaning["text"])
+    elif current_last and meaning.get("kind") == "partial":
+        out.update(status=meaning["text"])  # the remainder is still owed: the wait goes on, quietly (listing.stand: «Wartet»)
+    out["effort"] = effort(out, draft, approval, events, edits, prepared_at, saves)
     out["bar"] = bar(out, draft, approval, events, files, today)
     return out
+
+
+def effort(st, draft, approval, events, edits, since=None, saves=0):
+    """What the handler still does and did for this letter, so it is counted as effort, never hidden: ``external``, the
+    steps outside CasePath (sending to each recipient with its enclosures, filing the file note in the claims system,
+    entering the follow-up in the diary), each with what CasePath knows of it («bestätigt» from «Versandt am», «kopiert»
+    from a copy of the file note, else «offen»: CasePath cannot see the claims system); ``confirmations`` (approvals,
+    dispatches, «trotzdem verwenden», reconciliations) and ``corrections`` (edits of the letter's text: ``saves``, the
+    handler's saves of it; lines unticked or added, facts and answers corrected, undos) since the case was last prepared."""
+    since = str(since or "")
+    later = [e for e in events or () if str(e.get("at") or "") > since]
+    external = []
+    if approval:
+        for r in approval.get("recipients") or ():
+            done = next((d for d in st.get("dispatched") or () if d["recipient"] == r.get("to")), None)
+            forms = r.get("forms") or []
+            external.append({"step": "senden", "what": f"Brief an {TO_WORDS.get(r.get('to'), r.get('to'))}"
+                             + (f" mit {len(forms) - 1} Beilage{'' if len(forms) == 2 else 'n'}" if len(forms) > 1 else ""),
+                             "state": f"bestätigt am {_day(done['date'])}" if done else "offen"})
+        filed = [e for e in events or () if e.get("kind") == "filenote.copied" and str(e.get("at") or "") >= str(approval.get("at") or "")]
+        external.append({"step": "ablegen", "what": "Aktennotiz im Schadensystem", "state": "kopiert" if filed else "offen"})
+        external.append({"step": "eintragen", "what": "Wiedervorlage im Schadensystem", "state": "offen"})
+    kinds = lambda *ks: sum(1 for e in later if e.get("kind") in ks)
+    return {"external": external, "external_open": sum(1 for x in external if x["state"] == "offen"),
+            "confirmations": kinds("action.approved", "action.dispatched", "letter.unblocked", "action.reconciled"),
+            "corrections": kinds("item.corrected", "item.dismissed", "item.added", "letter.line", "correction.undone", "entry.added",
+                                 "entry.changed", "entry.removed", "followup.set") + int(saves or 0),
+            "copies": kinds("letter.copied", "filenote.copied")}
 
 
 def tab_states(st, events):
@@ -605,11 +869,17 @@ def tab_states(st, events):
 def bar(st, draft, approval, events, files, today):
     """The card's action bar: before approval «Freigeben»; after it «Brief kopieren» first, then «Versandt am» per
     recipient (today and the channel of the customer's last message preset, the first day allowed), the package and the
-    file note; a stale approval «Erneut freigeben»; after the dispatch «versandt am …» per recipient."""
+    file note; a stale approval «Erneut freigeben»; after the dispatch «versandt am …» per recipient. Whatever is
+    prepared, a letter that went out and rests on something changed since carries «Abgleich erledigt» (``reconcile``)."""
     channel = default_channel(files)
     day = today.isoformat()
+    last = st.get("last") or {}
+    meaning = last.get("consequence") or {}
+    extra = {"reconcile": last.get("version"), "changed": meaning.get("text") if meaning.get("kind") == "contradiction"
+             else f"versandt mit früherem Stand – prüfen: {', '.join(last['stale'])}"} \
+        if last and (meaning.get("kind") == "contradiction" or last.get("stale")) else {}
     if not draft.get("text"):
-        return {"kind": "none"}
+        return {"kind": "none", **extra}
     rows = []
     shown = approval if st["approved"] else None
     for r in (shown.get("recipients") if shown else st["recipients"]) or ():
@@ -619,15 +889,15 @@ def bar(st, draft, approval, events, files, today):
     first = earliest(shown, events, st["form"]) if shown else (str(st["legacy_copy"]["at"])[:10] if st["legacy_copy"] else None)
     if st["state"] == "entwurf":
         return {"kind": "approve", "label": "Freigeben", "recipients": rows, "earliest": first, "legacy": st["legacy_copy"], "channel": channel,
-                "decision": st["decision"], "conflicts": len(all_conflicts(draft)), "gaps": gaps(draft)}
+                "decision": st["decision"], "conflicts": len(all_conflicts(draft)), "gaps": gaps(draft), **extra}
     if st["state"] == "freigegeben" and st["stale"]:
         return {"kind": "stale", "label": "Erneut freigeben", "stale": f"Freigabe veraltet: {st['stale'][0]}", "reasons": st["stale"],
-                "recipients": rows, "earliest": first, "version": shown.get("version"), "channel": channel}
+                "recipients": rows, "earliest": first, "version": shown.get("version"), "channel": channel, **extra}
     if st["state"] == "freigegeben":
         return {"kind": "dispatch", "label": "Brief kopieren", "recipients": rows, "earliest": first, "version": shown.get("version"),
-                "channel": channel, "bundle": bool(st["approved"]["bundle"])}
+                "channel": channel, "bundle": bool(st["approved"]["bundle"]), **extra}
     return {"kind": "dispatched", "recipients": rows, "version": shown.get("version") if shown else None,
-            "line": " · ".join(f"versandt am {_day(r['dispatched']['date'])}" for r in rows if r["dispatched"])}
+            "line": " · ".join(f"versandt am {_day(r['dispatched']['date'])}" for r in rows if r["dispatched"]), **extra}
 
 
 # -- the approval's record ---------------------------------------------------------------------------------------------------
@@ -654,16 +924,26 @@ def refusal(case, draft, version, decisions=(), draft_stale=False):
     return None
 
 
-def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=None, op_id=None, deadline=None):
-    """The fields of «action.approved»: the version and what it consists of, the premise (``premise_``: premise() now)
-    and the options chosen."""
+def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=None, op_id=None, deadline=None, relies=(), marks=None,
+                    file_ids=None):
+    """The fields of «action.approved»: the version and what it consists of, the premise (``premise_``: premise() now),
+    the options chosen, the reviewed legal content it rests on (``relies``: relied_elements) with the jurists' marks on it
+    as they stand (``marks``: the marks that hold now), and the files of the case it was given on (``file_ids``)."""
     return {"version": draft["version"], "form": draft.get("form") or draft.get("kind"), "action_kind": draft.get("kind"), "title": draft.get("title"),
             "recipients": [{k: r[k] for k in ("to", "recipient", "title", "forms", "titles")} for r in draft.get("recipients") or ()],
             "respond_by": draft.get("respond_by"), "premise": premise_,
             "chosen": (assessment or {}).get("chosen"), "options_sha256": (assessment or {}).get("options_sha256"),
             "text_sha256": sha(draft.get("text")), "also": [{"kind": a["kind"], "sha256": sha(a["text"])} for a in draft.get("also") or () if a.get("text")],
             "parts": [[p["part"], sha(p["text"])] for p in draft.get("parts") or ()], "run_id": run_id, "files_digest": files_digest, "op_id": op_id,
+            "relies": list(relies or ()), "relies_marks": marks_of(relies, marks), **({"file_ids": list(file_ids)} if file_ids is not None else {}),
             **({"deadline": deadline} if deadline else {})}
+
+
+def look_days(process, form, stage):
+    """The days after the letter's dispatch the clock looks at the case again (its code's rule at this stage), or None."""
+    code = record_of(form)[2]
+    rule = next((r for r in (process or {}).get("clock") or () if code and code in r.get("after", ()) and (r.get("stages") is None or stage in r["stages"])), None)
+    return int(rule["days"]) if rule else None
 
 
 def next_look(process, form, stage, day, respond_by=None):
@@ -671,10 +951,8 @@ def next_look(process, form, stage, day, respond_by=None):
     follow-up of its code at this stage (an assessment: 90 days), else None."""
     if respond_by:
         return respond_by
-    code = record_of(form)[2]
-    rule = next((r for r in (process or {}).get("clock") or () if code and code in r.get("after", ()) and (r.get("stages") is None or stage in r["stages"])), None)
-    d = parse_date(day)
-    return (d + timedelta(days=int(rule["days"]))).isoformat() if rule and d else None
+    days, d = look_days(process, form, stage), parse_date(day)
+    return (d + timedelta(days=days)).isoformat() if days and d else None
 
 
 def dispatch_args(approval, recipient, date_, channel, listed, events, assessment=None):
@@ -706,3 +984,34 @@ def note_lines(events, edits=None, titles=None):
         out.append(f"Versandt: {d['title'] or 'Schreiben'} an {TO_WORDS.get(d['recipient'], d['recipient'])} am {_day(d['date'])} "
                    f"({CHANNELS.get(d['channel'], d['channel'])}, {d['by']})")
     return out
+
+
+# -- what a reply prepares (the plan's hook, items.build_items: slice A calls it beside its premise assessment) -------------
+
+def consequence_action(graph, here, state, result, files, events):
+    """The action a reply prepares, for the plan, or None. When every ask of the last letter that went out is met by
+    evidence in a reply's file and one of them was asked for a judgment (``blocks``), the stage's own action is due again
+    (for an assessment: the assessment, now with that evidence), with the reason naming what came and what can now be
+    judged; the letter's follow-up date is then no reason to wait any more. Nothing for a reply that meets nothing, part
+    of the asks only (the wait goes on for the rest), or a refusal (the handler judges without it). ``here``: the stage
+    the plan is at; ``state``: the case's state (its account and facts). Model-free."""
+    acc = (state or {}).get("account")
+    sent = sorted(sent_letters(events), key=lambda d: (str(d.get("date") or ""), str(d.get("at") or "")))
+    planned = (here or {}).get("action") or {}
+    if not sent or acc is None or not planned:
+        return None
+    last = sent[-1]
+    if planned.get("kind") != last.get("action_kind"):
+        return None  # the case moved on to another stage: its own plan governs
+    entry = next((e for e in acc.get("entries") or () if (e.get("dispatch") or {}).get("version") == last.get("version")
+                  and (e.get("dispatch") or {}).get("recipient") == last.get("recipient")), None)
+    if entry is None:
+        return None
+    meaning = consequence(fulfilment(entry, acc, files, result, graph))
+    if meaning["kind"] != "resolved":
+        return None
+    came = ", ".join(dict.fromkeys(j["ask"] for j in meaning["judgments"] if j.get("ask")))
+    judged = ", ".join(dict.fromkeys(j["judgment"] for j in meaning["judgments"] if j.get("judgment")))
+    return {"kind": planned["kind"], "title": planned.get("title"), "next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
+            "skip_if": None, "reason": f"eingegangen: {came}" + (f"; jetzt zu beurteilen: {judged}" if judged else ""),
+            "consequence": {"version": last.get("version"), "judgments": meaning["judgments"]}}

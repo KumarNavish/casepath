@@ -776,6 +776,27 @@
     "title": "OwnAnswer",
     "type": "object"
    },
+   "Reconcile": {
+    "additionalProperties": false,
+    "properties": {
+     "op_id": {
+      "pattern": "^[A-Za-z0-9_.:-]{6,64}$",
+      "title": "Op Id",
+      "type": "string"
+     },
+     "version": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Version",
+      "type": "string"
+     }
+    },
+    "required": [
+     "version",
+     "op_id"
+    ],
+    "title": "Reconcile",
+    "type": "object"
+   },
    "ReviewMark": {
     "additionalProperties": false,
     "description": "A jurist's mark on one element of the legal content; «Änderung nötig» and «Frage» say why in a comment.",
@@ -1154,7 +1175,7 @@
   },
   "/api/cases/{case_id}/actions/approve": {
    "post": {
-    "description": "«Freigeben»: approve the prepared letter's current version and store its Versandpaket (the exact text, the\nenclosures, the file note and the follow-up, one folder per recipient) in the same request. Refused while the\nversion changed, new files are unread, a gap or a required part is open, a decision is open, or a part the handler\nedited changed meanwhile; the same version approved again returns its record.",
+    "description": "«Freigeben»: approve the prepared letter's current version and store its Versandpaket (the exact text, the\nenclosures, the file note and the follow-up, one folder per recipient) in the same request. Refused while the\nversion changed, new files are unread, a gap or a required part is open, a decision is open, or a part the handler\nedited changed meanwhile. The same request again, or the same version while its approval still holds, returns\nthat record; a version whose approval no longer holds (a file came, a jurist marked what it rests on) is approved\nanew, with its own package («Erneut freigeben»).",
     "operationId": "approve_api_cases__case_id__actions_approve_post",
     "parameters": [
      {
@@ -1246,6 +1267,54 @@
      }
     },
     "summary": "Dispatch"
+   }
+  },
+  "/api/cases/{case_id}/actions/reconcile": {
+   "post": {
+    "description": "«Abgleich erledigt»: a letter that went out rests on a fact that changed since, or on legal content a jurist\nmarked since; the handler checked it against the case as it stands and it stays as sent (a correction would be its\nown letter). Records the premise and the marks it was checked against; a later change flags it again. The letter\nthat went out keeps its version: nothing is unsent.",
+    "operationId": "reconcile_api_cases__case_id__actions_reconcile_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/Reconcile"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Reconcile"
    }
   },
   "/api/cases/{case_id}/actions/{version}/bundle": {

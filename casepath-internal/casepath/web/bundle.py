@@ -99,13 +99,22 @@ def build(draft, approval, note, awaited, follow_up=None, parity_sha=None):
     files["Beilagen.txt"] = "\n".join(beilagen) + "\n"
     files["Aktennotiz.txt"] = (note or "").strip() + "\n"
     respond_by = approval.get("respond_by")
-    when = f"Antwort erwartet bis {_day(respond_by)}" if respond_by else f"Wiedervorlage {_day(follow_up)}" if follow_up else "Wiedervorlage nach Versand"
+    if respond_by:  # the letter sets the date itself: it holds whenever the letter goes out
+        when = f"Antwort erwartet bis {_day(respond_by)}"
+    elif isinstance(follow_up, dict) and follow_up.get("days"):  # counted from the dispatch: the date for a dispatch on the approval day
+        when = (f"Wiedervorlage {follow_up['days']} Tage nach dem Versand: {_day(follow_up.get('due'))} bei Versand am {_day(follow_up.get('if_sent'))}"
+                if follow_up.get("due") else f"Wiedervorlage {follow_up['days']} Tage nach dem Versand")
+    else:
+        due = follow_up.get("due") if isinstance(follow_up, dict) else follow_up
+        when = f"Wiedervorlage {_day(due)}" if due else "Wiedervorlage nach Versand"
     files["Wiedervorlage.txt"] = f"{when}\nErwartet: {', '.join(awaited) if awaited else 'Rückmeldung'}\n"
     for p in parts:
         p["sha256"] = _sha(files[p["name"]])
     for name in ("Beilagen.txt", "Aktennotiz.txt", "Wiedervorlage.txt"):
         parts.append({"name": name, "kind": None, "title": name[:-4], "sha256": _sha(files[name])})
+    look = follow_up if isinstance(follow_up, dict) else {"due": follow_up} if follow_up else None
     manifest = {"format": FORMAT, "version": approval.get("version"), "form": approval.get("form"), "title": approval.get("title"),
+                "approval": approval.get("event_id"), "follow_up": look, "relies": approval.get("relies") or [],
                 "recipients": [{k: r.get(k) for k in ("to", "recipient", "forms")} for r in approval.get("recipients") or ()],
                 "approved_by": approval.get("expert"), "approved_at": approval.get("at"), "respond_by": respond_by,
                 "chosen": approval.get("chosen"), "options_sha256": approval.get("options_sha256"), "run_id": approval.get("run_id"),
@@ -122,6 +131,16 @@ def _sha(data):
 def manifest_of(blob):
     with zipfile.ZipFile(io.BytesIO(blob)) as archive:
         return json.loads(archive.read("manifest.json"))
+
+
+def text_of(docx_bytes):
+    """The text a Brief.docx of a Versandpaket holds, one line per paragraph (docx() wrote it so)."""
+    import html
+    xml = zipfile.ZipFile(io.BytesIO(docx_bytes)).read("word/document.xml").decode("utf-8")
+    lines = []
+    for para in re.findall(r"<w:p>(.*?)</w:p>", xml):
+        lines.append(html.unescape("".join(re.findall(r'<w:t xml:space="preserve">([^<]*)</w:t>', para))))
+    return "\n".join(lines)
 
 
 def member(blob, kind):

@@ -514,9 +514,14 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
         parts.append(f"Paket ({len(package)} Schreiben, je einzeln): {'; '.join(named)}.")
     parts += [f"{line}." for line in note_lines(events)]
     last = sent[-1] if sent else None
-    asked_then = next((e.get("asks") for e in reversed(events or ()) if e.get("kind") == "action.dispatched" and last
-                       and e.get("version") == last["version"] and e.get("asks")), None)
-    if last and asked_then:  # what the letter that went out asked, by its date or the follow-up
+    went = next((e for e in reversed(events or ()) if e.get("kind") == "action.dispatched" and last and e.get("version") == last["version"]
+                 and e.get("asks")), None)
+    asked_then = (went or {}).get("asks")
+    entry = next((i for i in items if i["kind"] == "entry" and went and went.get("n") is not None and i.get("key") == str(went["n"])), None)
+    if asked_then and entry is not None:  # what the account still shows open of it: a partial reply leaves only the rest awaited
+        still = [n.get("text") or "" for n in entry.get("notes") or () if n.get("kind") == "asked" and n.get("open")]
+        asked_then = [a for a in asked_then if any(a in text for text in still)]
+    if last and asked_then:  # what the letter that went out asked and is still awaited, by its date or the follow-up
         until = f" bis {_day(last['respond_by'])}" if last.get("respond_by") else f"; Wiedervorlage {due}" if due else ""
         parts.append(f"Erwartet: {', '.join(asked_then)}{until}.")
     elif not last and (docs or due):

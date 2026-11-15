@@ -529,6 +529,11 @@ class CaseStore:
             form["parts"][r["part"]] = {k: r[k] for k in ("id", "base_sha256", "base", "text", "by", "at")}
         return out
 
+    def draft_saves(self, case_id, since=None):
+        """How often the handler's text was saved since ``since`` (each save once, whatever parts it held): their effort."""
+        rows = self._all("select count(distinct id) as n from drafts where case_id=? and at>?", case_id, str(since or ""))
+        return int((rows[0] if rows else {}).get("n") or 0)
+
     def add_numbered_edit(self, case_id, op, args, user, reason):
         """An edit that carries the next number of the handler's entries and the dispatches (account.next_number), drawn
         and written under the store lock, so two writers never share a number. ``args``: the edit's arguments without
@@ -548,6 +553,6 @@ class CaseStore:
             if same:
                 return same, None
             edit = self.add_numbered_edit(case_id, "add_dispatch", dict(args), user, reason)
-            return edit, self.append_case_event(case_id, {**event, "edit_id": edit["id"]})
+            return edit, self.append_case_event(case_id, {**event, "edit_id": edit["id"], "n": edit["args"]["n"]})
 
     # -- arrival (Slice C): files by their content -----------------------------------------------------------------------

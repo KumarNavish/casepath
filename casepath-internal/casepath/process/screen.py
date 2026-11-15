@@ -319,16 +319,28 @@ def _one_line(lines, limit=CHANGED_CHARS):
 def head_block(changes, assessment, completion, draft=None):
     """The case head between «Weil» and the decision: what changed, what it means, and an approval that no longer holds;
     None when there is nothing to say. Shown while the prepared run is newer than the case's last approval or dispatch
-    (``completion['fresh']``), or while the approval is stale.
+    (``completion['fresh']``), while the approval is stale, or while a letter that went out rests on something that
+    changed since («versandt mit früherem Stand – prüfen»).
 
     - ``changed``: «Was sich geändert hat: …», one line of at most 90 characters, the account's ledger lines first
       (``changes['ledger']``), then the new entries and what the preparation changed; ``changed_all``: every line.
-    - ``meaning``: «Was das bedeutet: …», from the assessment's summary (questions answered, conditional, open), the
-      decision still open and the letter's state; ``meaning_all``: the details.
-    - ``stale``: «Freigabe veraltet: <Grund>»."""
+    - ``meaning``: «Was das bedeutet: …»: for a reply to a letter that went out, what its evidence means (completion's
+      ``consequence``: the judgment it allows now, the remainder still owed, a refusal, an answer without evidence, or
+      nothing to the asks, so the wait goes on); otherwise from the assessment's summary, the decision still open and the
+      letter's state; ``meaning_all``: the details.
+    - ``stale``: «Freigabe veraltet: <Grund>», with what lies behind it (``stale_all``: the files that came, the elements a
+      jurist marked); ``reconcile``: the version to check after it went out, with what changed."""
     done = completion or {}
+    last = done.get("last") or {}
+    after = last.get("consequence") or {}
     stale = f"Freigabe veraltet: {done['stale'][0]}" if done.get("stale") and done.get("state") == "freigegeben" else None
-    if not (done.get("fresh") or stale):
+    stale_all = [f"{h['title']}: {h['mark']}" + (f" ({h['reviewer']})" if h.get("reviewer") else "") for h in done.get("held") or ()] if stale else []
+    stale_all += [f"neu in der Akte: {name}" for name in done.get("arrived") or ()] if stale else []
+    recheck = after.get("text") if after.get("kind") == "contradiction" else (
+        f"versandt mit früherem Stand – prüfen: {', '.join(last['stale'])}" if last.get("stale") else None)
+    if done.get("state") == "freigegeben" and not done.get("stale"):
+        recheck = None  # a newer letter is approved and holds: what it says governs
+    if not (done.get("fresh") or stale or recheck):
         return None
     ch = changes or {}
     every = list(ch.get("ledger") or []) + list(ch.get("entries") or []) + [f"neu: {x}" for x in ch.get("added") or ()] \
@@ -338,7 +350,29 @@ def head_block(changes, assessment, completion, draft=None):
                                                 ("conditional", "bedingt"), ("open", "offen"), ("check", "zu prüfen")) if summary.get(k)]
     title = (draft or {}).get("title") or "Brief"
     title = "Einschätzung" if str((draft or {}).get("kind") or "") == "A5" else title
-    if done.get("waits"):
+    until = done.get("waiting_until")
+    until = f"{until[8:10]}.{until[5:7]}.{until[:4]}" if until and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(until)) else until
+    details = []
+    kind = after.get("kind") if done.get("state") != "freigegeben" else None
+    if recheck:
+        meaning = f"{recheck}; der Brief ging so hinaus, eine Korrektur wäre ein eigener Brief."
+        details = [f"Versandt: {last.get('title') or 'Brief'} am " + ", ".join(d.get("date") or "" for d in last.get("dispatched") or ())]
+    elif kind == "resolved":
+        came = ", ".join(dict.fromkeys(j["ask"] for j in after.get("judgments") or () if j.get("ask")))
+        judged = ", ".join(dict.fromkeys(j["judgment"] for j in after.get("judgments") or () if j.get("judgment")))
+        ready = str(done.get("status") or "").endswith("vorbereitet")
+        meaning = (f"Eingegangen: {came}; jetzt zu beurteilen: {judged}; " + (f"{title} vorbereitet." if ready else "die Einschätzung ist zu ergänzen.")
+                   if judged else f"Eingegangen: {came}; {title} vorbereitet.")
+        details = [f"Beleg in: {j['file']}" for j in after.get("judgments") or () if j.get("file")]
+    elif kind == "partial":
+        meaning = f"Teilweise erfüllt: offen {', '.join(a.get('what') or '' for a in after.get('remainder') or ())}" + (f"; Wiedervorlage {until}." if until else ".")
+    elif kind == "refused":
+        meaning = f"{after['text']}; nichts mehr abzuwarten, ohne Beleg zu beurteilen."
+    elif kind == "unbelegt":
+        meaning = f"Antwort ohne Beleg – prüfen: {', '.join(last.get('unbelegt') or [])}."
+    elif kind == "unrelated":
+        meaning = f"Nichts zum Verlangten ({', '.join(last.get('asks') or []) or 'Rückmeldung'}); wartet weiter" + (f" bis {until}." if until else ".")
+    elif done.get("waits"):
         meaning = f"{done['waits']}; {title} ist danach vorbereitet."
     elif done.get("state") == "freigegeben" and not stale:
         meaning = f"{title} freigegeben, Versand offen."
@@ -347,9 +381,10 @@ def head_block(changes, assessment, completion, draft=None):
         then = (f"kann nach {AFTER.get(done['decision'], 'dem Entscheid: ' + done['decision'])} freigegeben werden" if done.get("decision")
                 else f"noch {gaps} Lücke{'' if gaps == 1 else 'n'} zu füllen" if gaps else "kann freigegeben werden")
         meaning = f"{title} vorbereitet" + (f" ({', '.join(counts)})" if counts else "") + f"; {then}."
-    details = [f"Vorschlag: {' · '.join(summary['proposal'])}"] if summary.get("proposal") else []
+    details += [f"Vorschlag: {' · '.join(summary['proposal'])}"] if summary.get("proposal") else []
     details += [f"Noch nachzureichen: {summary['residual']}"] if summary.get("residual") else []
-    return {"changed": _one_line(every), "changed_all": every, "meaning": meaning, "meaning_all": details, "stale": stale}
+    return {"changed": _one_line(every), "changed_all": every, "meaning": meaning, "meaning_all": details, "stale": stale, "stale_all": stale_all,
+            "reconcile": last.get("version") if recheck else None}
 
 
 def build(items, draft, events, look, rule, stage=None, via=None, routing=None, since=None, decided_by=None, assessment=None, completion=None):

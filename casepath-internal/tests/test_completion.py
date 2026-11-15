@@ -477,7 +477,13 @@ class BundleTests(Service):
         self.assertIn("Kundschaft (Sehr geehrte Frau Exempel · Frau Sara Exempel): Rechtliche Einschätzung; Mängelrüge mit Frist zur Beseitigung",
                       archive.read("Beilagen.txt").decode())
         self.assertIn("Zum Versand freigegeben am", archive.read("Aktennotiz.txt").decode())
-        self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[0], f"Wiedervorlage {date.today() + timedelta(days=90):%d.%m.%Y}")
+        # the follow-up counts from the dispatch: its date for a dispatch on the day of the approval, and the rule
+        self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[0],
+                         f"Wiedervorlage 90 Tage nach dem Versand: {date.today() + timedelta(days=90):%d.%m.%Y} bei Versand am {date.today():%d.%m.%Y}")
+        # what the Wiedervorlage awaits is what the letter asks: the lines under «Bitte reichen Sie uns noch nach»
+        asked = draft["text"].split("Bitte reichen Sie uns noch nach:\n", 1)[1].split("\n\n", 1)[0].split("\n")
+        self.assertTrue(asked and all(line.startswith("– ") for line in asked), asked)
+        self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[1], "Erwartet: " + ", ".join(line[2:] for line in asked))
         manifest = json.loads(archive.read("manifest.json"))
         self.assertEqual((manifest["format"], manifest["version"], manifest["form"], manifest["approved_by"]),
                          ("casepath.versandpaket/1", draft["version"], "A5", USER))
@@ -581,7 +587,8 @@ class AnswersTests(unittest.TestCase):
                                     {"item_id": "customer_question:2", "text": "Werden mir die Stromkosten für den Bautrockner ersetzt?", "state": "bedingt",
                                      "entry": 15}],
                       "asks": [{"key": "residual:claim.0", "what": "Belege zu: Stromkosten für den Bautrockner", "kind": "claim", "ref": 0},
-                               {"key": "fact:mangel_besteht", "what": "Besteht der Mangel weiterhin?", "kind": "fact", "ref": "mangel_besteht"}]}
+                               {"key": "fact:mangel_besteht", "what": "Besteht der Mangel weiterhin?", "kind": "fact", "ref": "mangel_besteht"}],
+                      "letter": {"nachzureichen": "Bitte reichen Sie uns noch nach:\n– Belege zu: Stromkosten für den Bautrockner"}}
         approval = approved("A5", version="v5", title="Rechtliche Einschätzung")
         args = completion.dispatch_args(approval, "kunde", "2026-09-08", "email", [], [], assessment)
         self.assertEqual(args["answers"], [{"what": "Muss ich weiterhin die volle Miete bezahlen?", "answers": 13}])
@@ -935,6 +942,285 @@ class BarTests(unittest.TestCase):
         self.assertEqual((before["bar"]["kind"], before["bar"]["label"]), ("approve", "Freigeben"))
         after = completion.state({}, [], draft, events + [sent("v1")], [], today=date(2026, 11, 15), files=files, facts={"aussichten": "genügend"})
         self.assertEqual((after["state"], after["bar"]["kind"], after["bar"]["line"]), ("versandt", "dispatched", "versandt am 15.11.2026"))
+
+
+# -- the newer steering's constraints: current applicability, one artifact, the next arrival's consequence, effort ----------
+
+class ApplicabilityTests(Service):
+    """An unsent approval holds only while what it was given on holds: a file that comes between the review and the sending,
+    or a jurist's mark on what the letter rests on, makes it stale even with the same bytes; a letter that went out keeps
+    its version, a later change asks for a reconciliation, and undo never unsends."""
+
+    def arrive(self, name="Nachtrag.txt"):
+        """A file that comes into the case (synthetic: a short note of the customer that adds nothing)."""
+        r = self.client.post(f"/api/cases/{self.case}/files", files={"file": (name, "Noch eine Nachricht der Kundin, ohne Neues.".encode(), "text/plain")})
+        self.assertEqual(r.status_code, 201, r.text)
+
+    def update(self):
+        """An update of the case's unread files by a scripted reader that finds nothing new: the letter renders the same."""
+        runs = self.client.app.state.runs
+        turns = episode.update_turns([], [], "Nachtrag ohne neue Angaben.")
+        runs.model_factory = lambda token=None: episode.update_model(self.store, self.case, turns, {})
+        run = episode.wait(self.store, runs.update(self.case, USER)["id"])
+        self.assertEqual(run["status"], "completed", run.get("error"))
+        return run
+
+    def test_a_file_that_comes_after_the_approval_keeps_it_stale_until_it_is_approved_again(self):
+        draft = self.ready()
+        first = self.approve(draft)
+        self.arrive()
+        self.assertEqual(self.view()["completion"]["stale"], ["Neue Unterlagen"])
+        self.update()  # read, and the letter renders word for word the same
+        view = self.view()
+        self.assertFalse(view["draft_stale"])
+        self.assertEqual(view["draft"]["version"], draft["version"])
+        self.assertEqual(view["completion"]["stale"], ["Neue Unterlagen"])  # still not what was reviewed
+        self.assertEqual(view["completion"]["arrived"], ["Nachtrag.txt"])
+        self.assertEqual(view["screen"]["head"]["stale_all"], ["neu in der Akte: Nachtrag.txt"])
+        self.assertEqual((self.row()["stand"]["bucket"], self.row()["stand"]["text"]), ("urteil", "Freigabe veraltet: Neue Unterlagen"))
+        again = self.approve(view["draft"], op="op-approve-2")  # «Erneut freigeben»: a new approval with its own package
+        self.assertNotEqual(again["approval"]["event_id"], first["approval"]["event_id"])
+        self.assertEqual(again["bundle"]["approval"], again["approval"]["event_id"])
+        self.assertEqual(len(self.events("bundle.saved")), 2)
+        st = self.view()["completion"]
+        self.assertEqual((st["valid"], st["bucket"], st["approved"]["event"]), (True, "versandbereit", again["approval"]["event_id"]))
+        self.assertEqual(self.approve(view["draft"], op="op-approve-3")["approval"]["event_id"], again["approval"]["event_id"])  # holds: the same
+
+    def test_a_jurist_mark_on_what_the_letter_rests_on_makes_its_approval_stale_with_the_same_bytes(self):
+        draft = self.ready()
+        out = self.approve(draft)
+        self.assertIn("mietmangel-handler:rahmen.conditions", out["approval"]["relies"])  # the assessment's frame («@conditions»)
+        r = self.client.post("/api/review/mietmangel-handler/rahmen.conditions", json={"mark": "frage", "comment": "Belegpflicht so allgemein richtig?"})
+        self.assertEqual(r.status_code, 201, r.text)
+        view = self.view()
+        self.assertEqual(view["draft"]["version"], draft["version"])  # the letter's bytes are the same
+        st = view["completion"]
+        self.assertEqual((st["stale"], st["bucket"], st["status"]), (["Grundlage in Prüfung"], "urteil", "Freigabe veraltet: Grundlage in Prüfung"))
+        self.assertEqual((st["held"][0]["key"], st["held"][0]["mark"]), ("mietmangel-handler:rahmen.conditions", "Frage"))
+        self.assertEqual(view["screen"]["head"]["stale"], "Freigabe veraltet: Grundlage in Prüfung")
+        self.assertEqual(self.row()["stand"]["text"], "Freigabe veraltet: Grundlage in Prüfung")
+        self.assertEqual(st["bar"]["label"], "Erneut freigeben")
+        again = self.approve(view["draft"], op="op-approve-2")  # approved again knowing the question: it holds
+        self.assertNotEqual(again["approval"]["event_id"], out["approval"]["event_id"])
+        self.assertTrue(self.view()["completion"]["valid"])
+        r = self.client.post("/api/review/mietmangel-handler/rahmen.rights", json={"mark": "geprueft"})  # a «geprüft» never stales it
+        self.assertEqual(r.status_code, 201, r.text)
+        self.assertTrue(self.view()["completion"]["valid"])
+
+    def test_after_dispatch_a_later_change_asks_for_a_reconciliation_and_undo_never_unsends(self):
+        cover = self.decide("deckung", "bestätigt")
+        self.decide("aussichten", "genügend")
+        draft = self.fill()
+        self.approve(draft)
+        self.dispatch(draft["version"])
+        st = self.view()["completion"]
+        self.assertEqual((st["last"]["version"], [d["recipient"] for d in st["last"]["dispatched"]]), (draft["version"], ["kunde"]))
+        self.assertNotEqual(st["version"], draft["version"])  # what is prepared now is the next step
+        self.client.post(f"/api/edits/{cover['id']}/undo")  # the cover decision undone after the letter went out
+        view = self.view()
+        st = view["completion"]
+        self.assertEqual(len(completion.dispatches(self.events())), 1)  # undo never unsends: the dispatch and its version stay
+        self.assertEqual(st["last"]["version"], draft["version"])
+        self.assertTrue(st["status"].startswith("versandt mit früherem Stand – prüfen: "), st["status"])
+        self.assertEqual(st["bucket"], "urteil")
+        self.assertEqual(view["screen"]["head"]["reconcile"], draft["version"])
+        self.assertEqual(st["bar"]["reconcile"], draft["version"])
+        r = self.client.post(f"/api/cases/{self.case}/actions/reconcile", json={"version": draft["version"], "op_id": "op-reconcile-1"})
+        self.assertEqual(r.status_code, 200, r.text)
+        st = self.view()["completion"]
+        self.assertFalse(st["status"] and st["status"].startswith("versandt mit früherem Stand"), st["status"])
+        again = self.client.post(f"/api/cases/{self.case}/actions/reconcile", json={"version": draft["version"], "op_id": "op-reconcile-1"})
+        self.assertEqual(again.json()["reconciled"]["event_id"], r.json()["reconciled"]["event_id"])  # the same operation: its first result
+        self.assertEqual(self.client.post(f"/api/cases/{self.case}/actions/reconcile", json={"version": draft["version"], "op_id": "op-reconcile-2"}).status_code, 422)
+        self.decide("deckung", "abgelehnt")  # a later change flags it again
+        self.assertTrue(self.view()["completion"]["status"].startswith("versandt mit früherem Stand – prüfen"))
+        r = self.client.post("/api/review/mietmangel-handler/rahmen.rights", json={"mark": "aenderung", "comment": "Schadenersatz nur bei Verschulden."})
+        self.assertEqual(r.status_code, 201, r.text)
+        held = self.view()["completion"]["last"]["held"]
+        self.assertEqual([h["key"] for h in held], ["mietmangel-handler:rahmen.rights"])  # a rule marked after the dispatch
+        study = self.client.post(f"/api/cases/{self.study}/actions/reconcile", json={"version": draft["version"], "op_id": "op-reconcile-3"})
+        self.assertEqual(study.status_code, 409)
+
+
+class OneArtifactTests(Service):
+    """The letter reviewed is the letter saved, downloaded and in the Versandpaket, and its note, enclosures, recipients and
+    follow-up agree with it; after an update run every download still returns the approved bytes."""
+
+    def test_after_an_update_every_download_returns_the_approved_bytes(self):
+        from casepath.web import actions, bundle as versandpaket
+        draft = self.ready()
+        out = self.approve(draft)
+        blob = self.store.blob(out["bundle"]["sha256"])
+        archive = zipfile.ZipFile(io.BytesIO(blob))
+        letter = archive.read("Kundschaft/Brief.docx")
+        self.assertEqual(versandpaket.text_of(letter), "\n".join(line if line.strip() else "" for line in draft["text"].split("\n")))
+        manifest = json.loads(archive.read("manifest.json"))
+        self.assertEqual([(r["to"], r["recipient"]) for r in manifest["recipients"]], [(r["to"], r["recipient"]) for r in draft["recipients"]])
+        self.assertEqual(sorted(p["kind"] for p in manifest["parts"] if p["kind"]), sorted([draft["form"]] + [a["kind"] for a in draft["also"] if a.get("text")]))
+        self.assertIn(f"{draft['title']}", archive.read("Aktennotiz.txt").decode())
+        ApplicabilityTests.arrive(self)
+        ApplicabilityTests.update(self)  # an update run: incremental, it keeps the earlier run's result-checker fields
+        self.assertEqual(self.client.get(f"/api/cases/{self.case}/actions/{draft['version']}/bundle").content, blob)
+        self.assertEqual(self.client.get(f"/api/cases/{self.case}/actions/{draft['version']}/docx/A5").content, letter)
+        found = actions.approved_letter(self.store, self.case)  # the one place every export takes the approved letter from
+        self.assertEqual((found["version"], found["docx"], found["bundle"]), (draft["version"], letter, out["bundle"]["sha256"]))
+        self.assertEqual(found["text"], versandpaket.text_of(letter))
+
+    @unittest.expectedFailure  # slice C's export routes take the approved letter from actions.approved_letter (NEEDS_B.md 1); drop once they do
+    def test_the_report_and_the_draft_download_serve_the_approved_letter_after_an_update(self):
+        from casepath.web import actions
+        prior = self.store.latest_run(self.case, "completed")  # the full preparation's result checker wrote a reply (synthetic)
+        self.store.update_run(prior["id"], result={**prior["result"], "reply": {"needed": True, "subject": "Antwortentwurf der Vorbereitung",
+                                                                               "clauses": [{"text": "Früherer Antwortentwurf, vor den Antworten der Kundin."}]}})
+        draft = self.ready()
+        self.approve(draft)
+        ApplicabilityTests.arrive(self)
+        run = ApplicabilityTests.update(self)  # incremental: the update keeps the earlier reply
+        self.assertEqual(self.store.get_run(run["id"])["result"]["reply"]["clauses"][0]["text"], "Früherer Antwortentwurf, vor den Antworten der Kundin.")
+        approved = actions.approved_letter(self.store, self.case)
+        self.assertEqual(self.client.get(f"/api/runs/{run['id']}/draft.docx").content, approved["docx"])
+        report = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{self.case}/report.docx").content)).read("word/document.xml").decode()
+        self.assertNotIn("Früherer Antwortentwurf", report)  # never the stored reply of an earlier run
+        self.assertIn(approved["text"].split("\n")[-1], report)
+
+
+class ConsequenceTests(unittest.TestCase):
+    """The next arrival prepares its consequence: the evidence asked for a judgment makes that judgment (the resulting
+    assessment) what comes next, not the follow-up date; an unrelated attachment leaves the wait quiet; a partial reply
+    leaves only the remainder awaited; a refusal or a contradiction reopens the judgment. Synthetic, model-free."""
+    CLAIM = {"what": "Belege zu: Stromkosten für den Bautrockner", "of": "kunde", "kind": "claim", "ref": 0, "key": "residual:claim.0",
+             "blocks": {"question": "Werden mir die Stromkosten für den Bautrockner ersetzt?", "option": "schadenersatz",
+                        "option_title": "Kosten belegen und Ersatz verlangen", "condition": "Schaden durch den Mangel"}}
+    FACT = {"what": "Besteht der Mangel weiterhin?", "of": "kunde", "kind": "fact", "ref": "mangel_besteht", "key": "fact:mangel_besteht",
+            "blocks": {"question": "Darf ich die Miete hinterlegen?", "option": "frist_beseitigung", "condition": "Sie hat ihn nicht beseitigt"}}
+    FILES = [{"id": "fs", "name": "Belege Stromkosten.eml", "extraction": {}},
+             {"id": "ft", "name": episode.BILL, "extraction": {"attached_to": "Belege Stromkosten.eml"}},
+             {"id": "fq", "name": "Quittung Moebelhaus.txt", "extraction": {"attached_to": "Belege Stromkosten.eml"}},
+             {"id": "fa", "name": "Akte.txt", "extraction": {}}]
+    A7 = [{"kind": "next_action", "key": "0", "item_id": "next_action:0", "action": "A7", "since": "2026-09-08", "follow_up": "A12",
+           "label": {"de": "Statusanfrage mit Abschlussankündigung"}}]
+    A5 = [{"kind": "next_action", "key": "0", "item_id": "next_action:0", "action": "A5", "label": {"de": "Rechtliche Einschätzung"},
+           "consequence": {"version": "v1"}}]
+    EVENTS = [approved("A5", version="v1", title="Rechtliche Einschätzung", at="2026-09-08T09:00:00+00:00", premise={"mangel_besteht": True}),
+              saved("v1", at="2026-09-08T09:00:01+00:00"), sent("v1", day="2026-09-08", edit="d1", at="2026-09-08T10:00:00+00:00")]
+
+    def account_with(self, asks, answers=(), refused=None):
+        dispatch = {"n": 9001, "date": "2026-09-08", "from": "versicherer", "to": "kunde", "kind": "einschaetzung", "code": "5", "citations": [],
+                    "asks": [{**a, "by": None, "repeats": None, "warns": False, "citations": []} for a in asks], "answers": [], "terms": [], "paid": [],
+                    "next": [], "what": "Rechtliche Einschätzung", "dispatch": {"version": "v1", "recipient": "kunde"}}
+        reply = {"n": 16, "date": "2026-09-28", "from": "kunde", "to": "versicherer", "kind": "antwort", "file": "fs", "citations": [{"file": "fs"}],
+                 "asks": [], "answers": [{"what": w, "answers": 9001, "citations": [{"file": "fs"}]} for w in answers], "terms": [], "paid": [],
+                 "next": [], "what": "Antwort"}
+        acc = account.build([dispatch, reply], WF)
+        for r in acc["requests"]:  # slice C marks a refusal on its row (account C10b); simulated here
+            if refused and r["what"] == refused:
+                r.update(refused={"n": 16, "what": refused}, answered=None)
+        return next(e for e in acc["entries"] if e.get("dispatch")), acc
+
+    def result(self, documented=True, receipt="ft", fact=None):
+        claims = [{"what": "Stromkosten für den Bautrockner", "documented": documented, "receipt": [{"file": receipt, "quote": "Betrag: CHF 85.40"}]}]
+        facts = [{"fact": "mangel_besteht", "status": "established", "verdict": "accepted", "value": fact, "citations": [{"file": "fs", "quote": "Der Schimmel ist weg."}]}] \
+            if fact is not None else []
+        return {"brief": {"claims": claims}, "facts": facts}
+
+    def state_of(self, asks, answers=(), listed=None, facts=None, events=None, **result):
+        entry, acc = self.account_with(asks, answers, result.pop("refused", None))
+        draft = {"form": listed[0]["action"] if listed else "A7", "kind": "A7", "text": "Brief", "version": "v7", "recipients": [], "needs": []}
+        return completion.state({}, listed or self.A7, draft, events or self.EVENTS, [dispatch_edit(asks=asks)], account=acc, files=self.FILES,
+                                result=self.result(**result), facts=facts or {"mangel_besteht": True}, today=date(2026, 9, 30),
+                                follow_up={"due": "2026-12-07"})
+
+    def test_the_evidence_asked_for_a_judgment_prepares_it_and_ends_the_wait(self):
+        entry, acc = self.account_with([self.CLAIM], ["Stromabrechnung anbei."])
+        how = completion.fulfilment(entry, acc, self.FILES, self.result())
+        meaning = completion.consequence(how, entry)
+        self.assertEqual((meaning["kind"], meaning["reason_to_wait"]), ("resolved", False))
+        self.assertEqual(meaning["judgments"][0]["judgment"], "«Werden mir die Stromkosten für den Bautrockner ersetzt?»")
+        self.assertEqual(meaning["judgments"][0]["file"], "ft")  # the bill attached to the reply
+        st = self.state_of([self.CLAIM], ["Stromabrechnung anbei."])
+        self.assertEqual((st["bucket"], st["status"]), ("urteil", "erfüllt: Einschätzung ergänzen"))  # the plan still waits: say what comes
+        self.assertIsNone(st["waiting_until"])  # no reason to wait any more
+        row = stand_of(self.A7, "2026-12-07", self.EVENTS, st, today=date(2026, 9, 30))
+        self.assertEqual(row["bucket"], "urteil")  # never quietly «Wartet» until A5 + 90
+        prepared = self.state_of([self.CLAIM], ["Stromabrechnung anbei."], listed=self.A5)
+        self.assertEqual(prepared["status"], "erfüllt: Einschätzung vorbereitet")  # the plan took it (slice A's call of consequence_action)
+        head = screen.head_block({"ledger": ["beantwortet: Belege zu: Stromkosten (zu Nr. 9001)"]}, None, {**prepared, "fresh": True}, {"kind": "A5", "title": "Rechtliche Einschätzung"})
+        self.assertEqual(head["meaning"], "Eingegangen: Belege zu: Stromkosten für den Bautrockner; jetzt zu beurteilen: «Werden mir die Stromkosten für "
+                                          "den Bautrockner ersetzt?»; Einschätzung vorbereitet.")
+
+    def test_an_unrelated_attachment_leaves_the_wait_quiet(self):
+        # a receipt of the same amount for something else: the reading does not document the claim with it (slice A), so nothing is met
+        for result in ({"documented": False, "receipt": "fq"}, {"documented": True, "receipt": "fa"}):  # unrelated, or a receipt not in the reply
+            st = self.state_of([self.CLAIM], (), **result)
+            self.assertEqual(st["last"]["consequence"]["kind"], "unrelated", result)
+            self.assertIsNone(st["bucket"])
+            self.assertEqual(st["waiting_until"], "2026-12-07")
+            row = stand_of(self.A7, "2026-12-07", self.EVENTS, st, today=date(2026, 9, 30))
+            self.assertEqual((row["bucket"], row["text"]), ("wartet", "wartet auf Kundschaft bis 07.12.2026"))
+        head = screen.head_block({"entries": ["28.09.2026 · Kundschaft → Protekta · Antwort"]}, None, {**st, "fresh": True}, {"kind": "A7", "title": "Statusanfrage"})
+        self.assertEqual(head["meaning"], "Nichts zum Verlangten (Belege zu: Stromkosten für den Bautrockner); wartet weiter bis 07.12.2026.")
+
+    def test_a_partial_reply_leaves_only_the_remainder_awaited(self):
+        st = self.state_of([self.CLAIM, self.FACT], (), fact=True, documented=False, receipt="fq")  # the fact answered with its quote, no receipt
+        meaning = st["last"]["consequence"]
+        self.assertEqual((meaning["kind"], [a["what"] for a in meaning["remainder"]]), ("partial", [self.CLAIM["what"]]))
+        self.assertEqual(st["status"], "teilweise erfüllt: offen Belege zu: Stromkosten für den Bautrockner")
+        self.assertEqual(st["bucket"], "urteil")  # what came answers a judgment (the deposit question): that is for now
+        plain = dict(self.FACT, blocks=None)
+        st = self.state_of([self.CLAIM, plain], (), fact=True, documented=False, receipt="fq")
+        self.assertEqual((st["bucket"], st["waiting_until"]), (None, "2026-12-07"))  # nothing to judge yet: the wait goes on, quiet
+        # the file note awaits only the rest: the entry of the dispatch shows which of its asks are still open
+        entry_item = {"kind": "entry", "key": "9001", "notes": [{"kind": "asked", "text": f"verlangt von der Kundschaft: {self.CLAIM['what']}", "open": True},
+                                                               {"kind": "asked", "text": f"verlangt von der Kundschaft: {self.FACT['what']}", "open": False}]}
+        events = self.EVENTS[:2] + [{**self.EVENTS[2], "n": 9001, "asks": [self.CLAIM["what"], self.FACT["what"]]}]
+        note = letters.file_note({"title": "x"}, [entry_item], events, {"due": "2026-12-07"}, [])
+        self.assertIn(f"Erwartet: {self.CLAIM['what']}; Wiedervorlage 07.12.2026.", note)
+        self.assertNotIn(self.FACT["what"], note)
+
+    def test_a_refusal_or_a_contradiction_reopens_the_judgment(self):
+        st = self.state_of([self.CLAIM], ("Für die Stromkosten habe ich keine Belege.",), documented=False, refused=self.CLAIM["what"])
+        self.assertEqual((st["last"]["consequence"]["kind"], st["bucket"]), ("refused", "urteil"))
+        self.assertEqual(st["status"], "abgelehnt: Belege zu: Stromkosten für den Bautrockner")
+        changed = self.state_of([self.CLAIM], (), facts={"mangel_besteht": False}, documented=False, receipt="fq")
+        self.assertEqual((changed["bucket"], changed["last"]["consequence"]["kind"]), ("urteil", "contradiction"))
+        self.assertTrue(changed["status"].startswith("versandt mit früherem Stand – prüfen: "))
+        self.assertEqual(changed["bar"]["reconcile"], "v1")
+        checked = self.EVENTS + [{"kind": "action.reconciled", "version": "v1", "premise": {"mangel_besteht": False}, "at": "2026-09-29T08:00:00+00:00"}]
+        quiet = self.state_of([self.CLAIM], (), facts={"mangel_besteht": False}, events=checked, documented=False, receipt="fq")
+        self.assertEqual((quiet["bucket"], quiet["last"]["consequence"]["kind"]), (None, "unrelated"))  # reconciled: the wait as before
+
+    def test_the_plan_takes_the_assessment_again_when_its_evidence_came(self):
+        here = next(s for s in WF["steps"] if s["id"] == "beurteilen")
+        entry, acc = self.account_with([self.CLAIM], ["Stromabrechnung anbei."])
+        planned = completion.consequence_action(WF, here, {"account": acc}, self.result(), self.FILES, self.EVENTS)
+        self.assertEqual((planned["kind"], planned["skip_if"], planned["follow_up"]), ("A5", None, "A7"))
+        self.assertEqual(planned["reason"], "eingegangen: Belege zu: Stromkosten für den Bautrockner; jetzt zu beurteilen: "
+                                            "«Werden mir die Stromkosten für den Bautrockner ersetzt?»")
+        self.assertIsNone(completion.consequence_action(WF, here, {"account": acc}, self.result(documented=False), self.FILES, self.EVENTS))  # no letter for every upload
+        other = next(s for s in WF["steps"] if s["id"] == "gegenpartei")
+        self.assertIsNone(completion.consequence_action(WF, other, {"account": acc}, self.result(), self.FILES, self.EVENTS))  # the case moved on
+        _, partial = self.account_with([self.CLAIM, self.FACT], ["Stromabrechnung anbei."])
+        self.assertIsNone(completion.consequence_action(WF, here, {"account": partial}, self.result(), self.FILES, self.EVENTS))  # the rest still owed
+
+
+class EffortTests(unittest.TestCase):
+    def test_every_external_step_confirmation_and_correction_is_counted(self):
+        rows_ = [{"to": "kunde", "recipient": "Sehr geehrte Frau Exempel · Frau Sara Exempel", "title": "Kundschaft"}]
+        draft = {"form": "A5", "kind": "A5", "text": "Brief", "version": "v1", "needs": [], "recipients": rows_}
+        approval = approved("A5", version="v1", text="Brief", also=("vorlage:maengelruege",))
+        approval["recipients"][0]["forms"] = ["A5", "vorlage:maengelruege"]
+        events = [{"kind": "letter.line", "at": "2026-11-15T08:00:00+00:00"}, approval, saved("v1")]
+        st = completion.state({}, [], draft, events, [], today=date(2026, 11, 15), facts={"aussichten": "genügend"}, prepared_at="2026-11-14T08:00:00", saves=2)
+        effort = st["effort"]
+        self.assertEqual([(x["step"], x["what"], x["state"]) for x in effort["external"]],
+                         [("senden", "Brief an die Kundschaft mit 1 Beilage", "offen"), ("ablegen", "Aktennotiz im Schadensystem", "offen"),
+                          ("eintragen", "Wiedervorlage im Schadensystem", "offen")])
+        self.assertEqual((effort["external_open"], effort["confirmations"], effort["corrections"]), (3, 1, 3))  # Freigeben; a line, two saves
+        later = events + [copied("A5", at="2026-11-15T10:00:00+00:00"), sent("v1", at="2026-11-15T10:05:00+00:00"),
+                          {"kind": "filenote.copied", "at": "2026-11-15T10:06:00+00:00"}]
+        effort = completion.state({}, [], draft, later, [], today=date(2026, 11, 15), facts={"aussichten": "genügend"}, prepared_at="2026-11-14T08:00:00")["effort"]
+        self.assertEqual([x["state"] for x in effort["external"]], ["bestätigt am 15.11.2026", "kopiert", "offen"])  # the diary stays the handler's
+        self.assertEqual((effort["confirmations"], effort["copies"]), (2, 2))  # Freigeben and Versandt am; a copy is counted, never as a sending
 
 
 if __name__ == "__main__":

@@ -7,10 +7,14 @@
   same request, or says why not.
 - ``POST /api/cases/{id}/actions/dispatch``: «Versandt am», the handler's attributed confirmation of the sending, per
   recipient, written into the account once.
+- ``POST /api/cases/{id}/actions/reconcile``: «Abgleich erledigt», the handler checked a letter that went out against
+  what changed since (a fact it rests on, a jurist's mark on its legal content) and it stands.
 - ``GET /api/cases/{id}/actions/{version}/bundle`` and ``…/docx/{kind}``: the stored Versandpaket and one document of it.
 
-Nothing is sent from here and nothing is paid: a dispatch is only an attributed record. A frozen study copy refuses all
-of them and records nothing.
+``approved_letter(store, case_id)`` is the one place every export takes the approved letter from once a letter is
+approved (the Versandpaket's own Brief.docx, never a run's stored reply or a fresh rendering): the report and the draft
+download call it (slice C's routes, NEEDS_B.md). Nothing is sent from here and nothing is paid: a dispatch is only an
+attributed record. A frozen study copy refuses all of them and records nothing.
 """
 from datetime import date
 import threading
@@ -57,6 +61,12 @@ class Approve(BaseModel):
     op_id: str = Field(pattern=OP)
 
 
+class Reconcile(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    version: str = Field(pattern=VERSION)
+    op_id: str = Field(pattern=OP)
+
+
 class Dispatch(BaseModel):
     model_config = ConfigDict(extra="forbid")
     version: str = Field(pattern=VERSION)
@@ -66,10 +76,14 @@ class Dispatch(BaseModel):
     op_id: str = Field(pattern=OP)
 
 
-def register(app, store, catalogue, mirror, record, state, user, case_view=None, parity_sha=None):
+def register(app, store, catalogue, mirror, record, state, user, case_view=None, parity_sha=None, marks=None):
     """The routes above, on ``app``. ``case_view``: the case view (web/app.py get_case), so the draft, its version and its
-    state are exactly what the handler sees; ``record``: one event in the case's log, as every route writes it."""
+    state are exactly what the handler sees; ``record``: one event in the case's log, as every route writes it;
+    ``marks``: the jurists' marks that hold now (web/app.py review_marks)."""
     approving = threading.Lock()  # one approval per version, also when two handlers press «Freigeben» at once
+
+    def marks_now():
+        return (marks() or {}) if marks else {}
 
     def case(case_id):
         try:
@@ -141,27 +155,34 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         """«Freigeben»: approve the prepared letter's current version and store its Versandpaket (the exact text, the
         enclosures, the file note and the follow-up, one folder per recipient) in the same request. Refused while the
         version changed, new files are unread, a gap or a required part is open, a decision is open, or a part the handler
-        edited changed meanwhile; the same version approved again returns its record."""
+        edited changed meanwhile. The same request again, or the same version while its approval still holds, returns
+        that record; a version whose approval no longer holds (a file came, a jurist marked what it rests on) is approved
+        anew, with its own package («Erneut freigeben»)."""
         row = case(case_id)
         refuse_study(row, "Eine Studienkopie wird nicht freigegeben.")
         with approving:
             events = store.list_case_events(case_id)
-            existing = next((e for e in reversed(completion.approvals(events)) if e.get("op_id") == body.op_id or e.get("version") == body.version), None)
             view = case_view(case_id, who=who)
             draft = view.get("draft") or {}
+            done = view.get("completion") or {}
+            existing = next((e for e in reversed(completion.approvals(events)) if e.get("op_id") == body.op_id), None)
+            holding = (done.get("approved") or {}).get("version") == body.version and done.get("valid") and done.get("state") == "freigegeben"
+            if existing is None and holding:
+                existing = next((e for e in reversed(completion.approvals(events)) if e.get("event_id") == done["approved"].get("event")), None)
             if existing is None:
                 if (draft.get("form") or draft.get("kind")) != body.form:
                     raise HTTPException(409, "Der Entwurf hat sich seit dem Laden geändert; bitte neu laden.")
-                done = view.get("completion") or {}
                 why = completion.refusal(row, draft, body.version, done.get("decisions") or [], bool(view.get("draft_stale")))
                 if why:
                     raise HTTPException(*why)
                 act = next((i for i in view.get("items") or () if i["kind"] == "next_action"), None) or {}
                 prepared = store.latest_run(case_id, "completed")
+                relies = completion.relied_elements(draft, view.get("assessment"), view.get("process"), view.get("items") or [], events)
                 fields = completion.approval_record(draft, done.get("premise_now") or {}, view.get("assessment"), run_id=(prepared or {}).get("id"),
-                                                    files_digest=store.files_digest(case_id), op_id=body.op_id, deadline=act.get("deadline"))
+                                                    files_digest=store.files_digest(case_id), op_id=body.op_id, deadline=act.get("deadline"),
+                                                    relies=relies, marks=marks_now(), file_ids=[f["id"] for f in store.list_files(case_id)])
                 existing = record(case_id, who, "action.approved", **fields)
-            saved = completion._bundle(store.list_case_events(case_id), existing["version"])
+            saved = completion._bundle(store.list_case_events(case_id), existing)
             if saved is None:  # the Versandpaket, from the same state: the exact text, enclosures, note and next date
                 saved = store_bundle(case_id, existing, view, who)
         sync()
@@ -177,11 +198,16 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         awaited = [a["what"] for a in completion.asks(approval.get("form"), approval.get("action_kind"), view.get("items") or [], events, view.get("assessment"),
                                                       approval.get("respond_by"))]
         stage = (((view.get("evaluation") or {}).get("current")) or {}).get("step")
-        look = completion.next_look(view.get("process"), approval.get("form"), stage, str(approval.get("at") or "")[:10], approval.get("respond_by")) \
-            or (view.get("follow_up") or {}).get("due")  # once sent today: its reply date, else the clock's follow-up of its code
-        blob, _ = versandpaket.build(draft, approval, note, awaited, follow_up=look, parity_sha=parity_sha)
+        day = str(approval.get("at") or "")[:10]
+        look = completion.next_look(view.get("process"), approval.get("form"), stage, day, approval.get("respond_by"))
+        days = completion.look_days(view.get("process"), approval.get("form"), stage)
+        # the follow-up as the case will count it: the reply date the letter sets; else the clock's days from the dispatch
+        # (for a dispatch on the day of the approval: that date); else the case's follow-up
+        follow = {"due": look, "days": days, "if_sent": day} if look and not approval.get("respond_by") and days else look \
+            or (view.get("follow_up") or {}).get("due")
+        blob, _ = versandpaket.build(draft, approval, note, awaited, follow_up=follow, parity_sha=parity_sha)
         digest = store.put_blob(blob)
-        return record(case_id, who, "bundle.saved", version=approval["version"], sha256=digest, bytes=len(blob))
+        return record(case_id, who, "bundle.saved", version=approval["version"], approval=approval.get("event_id"), sha256=digest, bytes=len(blob))
 
     @app.post("/api/cases/{case_id}/actions/dispatch")
     def dispatch(case_id: str, body: Dispatch, who=Depends(user)):
@@ -227,10 +253,37 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         sync()
         return {"dispatched": written}
 
+    @app.post("/api/cases/{case_id}/actions/reconcile")
+    def reconcile(case_id: str, body: Reconcile, who=Depends(user)):
+        """«Abgleich erledigt»: a letter that went out rests on a fact that changed since, or on legal content a jurist
+        marked since; the handler checked it against the case as it stands and it stays as sent (a correction would be its
+        own letter). Records the premise and the marks it was checked against; a later change flags it again. The letter
+        that went out keeps its version: nothing is unsent."""
+        row = case(case_id)
+        refuse_study(row, "Eine Studienkopie wird nicht bearbeitet.")
+        events = store.list_case_events(case_id)
+        repeated = next((e for e in events if e.get("kind") == "action.reconciled" and e.get("op_id") == body.op_id), None)
+        if repeated:
+            return {"reconciled": repeated}
+        approval = next((a for a in reversed(completion.approvals(events)) if a.get("version") == body.version), None)
+        if approval is None or not any(d["version"] == body.version for d in completion.dispatches(events, store.list_edits(case_id, active_only=False))):
+            raise HTTPException(422, "Diese Fassung ist nicht versandt.")
+        view = case_view(case_id, who=who)
+        last = (view.get("completion") or {}).get("last") or {}
+        meaning = last.get("consequence") or {}
+        if last.get("version") != body.version or not (meaning.get("kind") == "contradiction" or last.get("stale")):
+            raise HTTPException(422, "Für diese Fassung ist nichts abzugleichen.")
+        facts = {i["key"]: i.get("value") for i in view.get("items") or () if i.get("kind") == "fact"}
+        premise = {k: completion._norm(facts.get(k)) for k in (approval.get("premise") or {})}
+        logged = record(case_id, who, "action.reconciled", version=body.version, premise=premise, changed=meaning.get("text"),
+                        relies_marks=completion.marks_of(approval.get("relies"), marks_now()), op_id=body.op_id)
+        sync()
+        return {"reconciled": logged}
+
     def stored(case_id, version):
         events = store.list_case_events(case_id)
         approval = next((a for a in reversed(completion.approvals(events)) if a.get("version") == version), None)
-        saved = completion._bundle(events, version)
+        saved = completion._bundle(events, approval) if approval else None
         if approval is None or saved is None:
             raise HTTPException(404, "Für diese Fassung ist kein Versandpaket gespeichert.")
         return approval, store.blob(saved["sha256"])
@@ -258,6 +311,26 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
                                                                      "Cache-Control": "private, no-store"})
 
     return app
+
+
+def approved_letter(store, case_id):
+    """The letter as approved, for every export once a letter is approved: {version, form, title, approved_at,
+    approved_by, name, docx (the Versandpaket's own Brief.docx bytes), text (its paragraphs), bundle (sha256)} of the
+    latest approval whose Versandpaket is stored, or None before any approval. The report and the draft download serve
+    this, never a run's stored reply or a fresh rendering (slice C's routes; NEEDS_B.md)."""
+    events = store.list_case_events(case_id)
+    for approval in reversed(completion.approvals(events)):
+        saved = completion._bundle(events, approval)
+        if saved is None:
+            continue
+        blob = store.blob(saved["sha256"])
+        found = versandpaket.member(blob, approval.get("form"))
+        if found is None:
+            continue
+        name, data = found
+        return {"version": approval.get("version"), "form": approval.get("form"), "title": approval.get("title"), "approved_at": approval.get("at"),
+                "approved_by": approval.get("expert"), "name": name, "docx": data, "text": versandpaket.text_of(data), "bundle": saved.get("sha256")}
+    return None
 
 
 def _quietly(call):

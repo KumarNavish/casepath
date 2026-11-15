@@ -91,7 +91,7 @@ class OwnAnswer(BaseModel):
 SERVER_KINDS = {"run.discarded", "study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
                 "item.confirmed", "correction.undone", "point.settled", "case.renamed", "case.historic",
                 "entry.added", "entry.changed", "entry.removed",
-                "action.approved", "bundle.saved", "action.dispatched"}  # written by the server only (the approval, its package, a dispatch)
+                "action.approved", "bundle.saved", "action.dispatched", "action.reconciled"}  # written by the server only (the approval, its package, a dispatch, a reconciliation)
 
 
 class EventRequest(BaseModel):
@@ -530,9 +530,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         prepared = store.latest_run(case_id, "completed")
         look = as_of(files)
         unread = core.unread(files, prepared) if prepared and not study else []
+        marks = {} if study else review_marks()[0]  # the jurists' marks that hold now: what the approval rests on may have been marked since
+        held_keys = [k for k, m in marks.items() if m.get("mark") in completion.HELD_MARKS]
+        titles = {k: (review_model().elements.get(k) or {}).get("title") for k in held_keys} if held_keys else {}
         st = completion.state(current["case"], listed, draft, events, store.list_edits(case_id, active_only=False), account=current.get("account"),
                               assessment=assessment, files=files, today=look, facts=current.get("facts"), process=current.get("process"), unread=unread,
-                              result=(current.get("run") or {}).get("result"), prepared_at=(prepared or {}).get("created_at"), follow_up=clock)
+                              result=(current.get("run") or {}).get("result"), prepared_at=(prepared or {}).get("created_at"), follow_up=clock,
+                              marks=marks, titles=titles, saves=0 if study else store.draft_saves(case_id, (prepared or {}).get("created_at")))
         due = parse_day((clock or {}).get("due"))
         st["waits"] = (f"wartet auf {listing.waiting_for(action)} bis {due.strftime('%d.%m.%Y')}"
                        if action and due and due > look and listing.waits(action) and st["state"] == "entwurf" else None)
@@ -552,9 +556,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         view computes it); None for a row without a prepared action."""
         if current is None or not any(i["kind"] == "next_action" for i in listed):
             return None
-        try:
-            approved = any(e.get("kind") == "action.approved" for e in events)
-            assessment = _assessment_view(current, current.get("run"), listed, files, events, review_marks()[0]).get("assessment") if approved else None
+        try:  # the same inputs as the case view (the decision brief included), so the list and the case say the same
+            study = (current["case"].get("intake") or {}).get("study")
+            assessment = _assessment_view(current, current.get("run"), listed, files, events, {} if study else review_marks()[0]).get("assessment")
             return _carry(row["id"], current, listed, events, files, assessment)[0]
         except Exception:  # noqa: BLE001  a case whose letter cannot be prepared still lists, by its prepared step
             return None
@@ -1377,7 +1381,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     # The decision carried through: the handler's text per part, «Freigeben» with its Versandpaket, «Versandt am» (actions.py)
     from . import actions
-    actions.register(app, store, catalogue, mirror, record, state, user, case_view=get_case, parity_sha=parity_sha)
+    actions.register(app, store, catalogue, mirror, record, state, user, case_view=get_case, parity_sha=parity_sha, marks=lambda: review_marks()[0])
 
     if UI.is_dir():
         page = (UI / "index.html").read_text()
