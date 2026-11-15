@@ -1242,6 +1242,50 @@ class ConsequenceTests(unittest.TestCase):
         self.assertIsNone(completion.consequence_action(WF, here, {"account": partial}, self.result(), self.FILES, self.EVENTS))  # the rest still owed
 
 
+class ReceiptsEpisodeTests(unittest.TestCase):
+    """B-receipts on S-D11A (synthetic): the A5 went out asking the claim line for Q3; the customer's reply brings the bill
+    as an attachment, read by an update. What the evidence means decides the queue, not the follow-up date."""
+
+    def after_receipts(self, documented):
+        result, files = phase_b()
+        a5 = EP.a5_day
+        edits = episode.decided(("deckung", "bestätigt"), ("aussichten", "genügend")) + [dispatch_edit(day=a5.isoformat(), asks=[ConsequenceTests.CLAIM])]
+        receipts = episode.branches(EP)["B-receipts"]
+        outcome, _ = episode.updated({"id": "run_b", "workflow_id": episode.WID, "result": result}, files + receipts.core_files(a5),
+                                     receipts.turns(16, 9001, a5), edits=edits)
+        self.assertEqual(outcome["status"], "completed", outcome.get("error"))
+        res = outcome["result"]
+        # what slice A's reading records of the claim (scripted here): documented by the bill attached to the reply, or not
+        res["brief"]["claims"] = [{"what": "Stromkosten für den Bautrockner", "checked": True, "documented": documented,
+                                   "receipt": [{"file": "ft", "quote": "Betrag: CHF 85.40"}]}]
+        day = a5 + timedelta(days=episode.RECEIPTS_DAYS + 1)
+        seen = episode.looked_at(files + receipts.core_files(a5), day)
+        state = core.evaluate(WF, [], edits, res, "c", files=seen)
+        events = [approved("A5", version="v1", at=f"{a5}T09:00:00+00:00", title="Rechtliche Einschätzung"), saved("v1", at=f"{a5}T09:00:01+00:00"),
+                  sent("v1", day=a5.isoformat(), edit="d1", at=f"{a5}T10:00:00+00:00")]
+        listed = item_rules.build_items(state, res, seen, events)
+        act = next(i for i in listed if i["kind"] == "next_action")
+        draft = {"form": act["action"], "kind": act["action"], "text": "Brief", "version": "v9", "recipients": [], "needs": []}
+        st = completion.state({}, listed, draft, events, edits, account=state["account"], files=seen, result=res, facts=state["facts"], today=day,
+                              follow_up={"due": (a5 + timedelta(days=90)).isoformat()})
+        self.planned = completion.consequence_action(WF, next(x for x in WF["steps"] if x["id"] == "beurteilen"), state, res, seen, events)
+        return act, st, stand_of(listed, (a5 + timedelta(days=90)).isoformat(), events, st, files=seen, today=day)
+
+    def test_the_bill_in_the_reply_ends_the_wait_and_names_the_judgment(self):
+        act, st, row = self.after_receipts(documented=True)
+        self.assertEqual(st["last"]["consequence"]["kind"], "resolved")
+        self.assertEqual(st["last"]["consequence"]["judgments"][0]["file"], "ft")  # the bill, a file of its own attached to the reply
+        self.assertEqual((row["bucket"], row["text"]), ("urteil", "erfüllt: Einschätzung ergänzen"))  # B alone: the plan keeps the A7 (NEEDS_B 2)
+        self.assertEqual(act["action"], "A7")
+        self.assertEqual((self.planned["kind"], self.planned["consequence"]["version"]), ("A5", "v1"))  # what slice A's call then prepares
+
+    def test_a_reply_whose_attachment_documents_nothing_leaves_the_wait_quiet(self):
+        act, st, row = self.after_receipts(documented=False)
+        self.assertIsNone(self.planned)  # no letter for every upload
+        self.assertEqual((st["last"]["consequence"]["kind"], st["bucket"]), ("unrelated", None))
+        self.assertEqual((row["bucket"], row["text"]), ("wartet", f"wartet auf Kundschaft bis {EP.a5_day + timedelta(days=90):%d.%m.%Y}"))
+
+
 class EffortTests(unittest.TestCase):
     def test_every_external_step_confirmation_and_correction_is_counted(self):
         rows_ = [{"to": "kunde", "recipient": "Sehr geehrte Frau Exempel · Frau Sara Exempel", "title": "Kundschaft"}]
