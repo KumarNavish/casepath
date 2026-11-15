@@ -21,8 +21,10 @@ page lies in a dated segment or a range «nicht gegliedert». So the case as it 
   becomes unknown (``limits.undecided``). Presumptions are applied afresh to what is left, as a run applies them.
 - **Documents** the finder matched stay found only with a quote in a known page; otherwise they are missing, as the
   finder records a need it looked for and did not find.
-- **The brief** keeps its timeline, the documents the file mentions and the customer's questions where a quote is known;
-  the result checker's texts about the whole file (answer, open points, reply, summaries) are left out.
+- **The brief** keeps its timeline, the documents the file mentions, the customer's questions (each with the key points
+  it is about) and claims where a quote is known; the result checker's texts about the whole file (answer, open points,
+  reply, summaries) are left out. A party whose name is not on the pages known that day is dropped and counted
+  (``limits.brief.parties_named_later``).
 - **Files** are cut to the known pages as «Stand am» cuts a file (read/cut.py), with ``cut_of.as_of`` = t, so the clock,
   the follow-up date, the historic mark and silence count from t exactly as for a cut.
 - **The handler's decisions** in force on t (``from`` on or before t) are the case's only edits: edits made in the
@@ -33,16 +35,27 @@ file later changed when the whole-file reading quotes only the later document (t
 where a reading of the cut would have read the earlier value; named as ``later_only``); an incoming kind read into fewer
 slots than the file holds (only the latest report: the earlier ones are not rebuilt); the order of documents within one
 day (another party's document of day t counts as known); an undated page without dated neighbours (left out, counted);
-the brief's parties and request, which carry no quotes (kept as read from the whole file).
+the brief's request, which carries no quote (kept as read from the whole file), and the parties whose names the known
+pages hold (kept with the roles read from the whole file).
+
+What reaches day t from the whole file anyway is counted per point as exposure, not as an effect on any score
+(``limits.brief``): parties dropped because their name is on later pages only (``parties_named_later``), a request kept
+without a quote (``request_uncited``), a letter whose form renders text from the brief (``form_renders_brief``: the
+request, the summary, the customer's questions), Knowledge learned in this case or a cut of it (``knowledge_from_same_case``)
+and the agents' process edits from the whole-file run (``agent_edits_applied``).
 
 ``view`` evaluates a case through the product's own path, as GET /api/cases/{id} does: runner.case_state, build_items, the
-clock's follow_up and capped. ``AsOfStore`` shows that path the rebuilt case. Model-free.
+clock's follow_up (looked at on a date the party gave) and capped; ``letter`` renders the next action's letter as the case
+view drafts it. ``AsOfStore`` shows that path the rebuilt case. ``surface`` digests what the brief puts on the screen and in
+the letter, for the prefix check of tests/test_asof.py. Model-free.
 """
 from datetime import date
+from hashlib import sha256
+import json
 import re
 
 from ..agents.runner import case_state
-from ..process import account, incoming, workflows
+from ..process import account, incoming, letters, workflows
 from ..process.clock import GERMAN_MONTHS, capped, follow_up, parse_date
 from ..process.items import build_items
 from ..read.cut import cut_extraction
@@ -52,6 +65,9 @@ DATES = re.compile(r"\d{4}-\d{2}-\d{2}|\d{1,2}\.\s?\d{1,2}\.\s?\d{4}|\d{1,2}\.?\
 MONTHS = re.compile(r"(\d{4})-(\d{2})(?!-\d)|(\d{1,2})\.(\d{4})|([A-Za-zäÄ]+)\s+(\d{4})")
 WORD = re.compile(r"[A-Za-zÄÖÜäöüß0-9']{3,}")
 LETTER_LISTS = {"liste", "nachzureichen", "erwartet", "fragen_oder_offen"}  # a form's parts that list the documents asked
+BRIEF_PARTS = ("anliegen", "im_fall", "zu_fragen", "zusammenfassung")  # a form's parts written from the brief's request and questions
+SALUTATIONS = {"frau", "herr", "herrn", "familie", "dr", "prof"}
+SURFACE = ("parties", "summary", "questions", "anrede", "im_fall", "zu_fragen", "anliegen", "zusammenfassung", "cover_person", "customer")
 
 
 def day(value):
@@ -255,9 +271,13 @@ def rebuild(run, files, t, decisions=(), dating=None):
             documents.append({"document": row["document"], "status": "missing", "files": [], "citations": [], "note": "", "by": row.get("by"),
                               "shows": [], "verdict": "not_checked"})
     brief = dict(result.get("brief") or {})
-    for key in ("timeline", "not_enclosed", "questions"):
-        brief[key] = [x for x in brief.get(key) or () if any(known_page(c) for c in x.get("citations") or ())]
+    for key in ("timeline", "not_enclosed", "questions", "claims"):  # a question keeps the key points it is about
+        if key != "claims" or key in brief:
+            brief[key] = [x for x in brief.get(key) or () if any(known_page(c) for c in x.get("citations") or ())]
     brief.pop("summary", None)
+    limits["brief"] = {"parties_named_later": 0, "request_uncited": int(bool(str(brief.get("request") or "").strip())),
+                       "form_renders_brief": 0, "knowledge_from_same_case": 0,
+                       "agent_edits_applied": sum(1 for e in result.get("agent_edits") or () if e.get("status", "active") == "active")}
     record = result.get("record")
     rebuilt = {**{k: v for k, v in result.items() if k not in {"answer", "open_points", "reply", "summary", "case_summary", "learning", "events",
                                                                    "evaluation", "usage", "fitted"}},
@@ -280,8 +300,21 @@ def rebuild(run, files, t, decisions=(), dating=None):
     if not shown and files:  # nothing was in the file yet: the day still governs the clock
         shown.append({**files[0], "extraction": {"text": "", "pages": 0, "readable": False, "segments": [], "kept_pages": [], **{
             "cut_of": {"case": files[0].get("case_id"), "file": files[0]["id"], "as_of": t.isoformat(), "rebuilt": True}}}})
+    # the parties carry no quote: a name the known pages do not hold came from a later document, and is left out
+    words = {w.lower() for f in shown for w in WORD.findall(str((f.get("extraction") or {}).get("text") or ""))}
+    named = [p for p in brief.get("parties") or () if named_in(p, words)]
+    limits["brief"]["parties_named_later"] = len(brief.get("parties") or ()) - len(named)
+    if "parties" in brief:
+        brief["parties"] = named
     return {"run": {**run, "result": rebuilt}, "files": shown, "edits": decisions_on(decisions, t), "limits": limits, "dating": dating,
             "as_of": t}
+
+
+def named_in(party, words):
+    """Whether a party's name stands in text whose words are ``words``: each word of the name (salutations aside) of three
+    letters or more. A party named by role only has nothing to check."""
+    name = party.get("name") if isinstance(party, dict) else party
+    return all(w.lower() in words for w in WORD.findall(str(name or "")) if w.lower() not in SALUTATIONS)
 
 
 class AsOfStore:
@@ -313,8 +346,15 @@ class AsOfStore:
         return []
 
 
+def forms_of(catalogue, state):
+    """The forms the case view drafts from: its workflow's, else Protekta's (app.prepared_action)."""
+    workflow = catalogue.get((state.get("workflow") or {}).get("id") or "") or {}
+    return workflow.get("forms") or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS
+
+
 def view(store, catalogue, case_id):
-    """The case as GET /api/cases/{id} evaluates it: {state, items, action, follow_up, files}; None without a process."""
+    """The case as GET /api/cases/{id} evaluates it: {state, items, action, follow_up, files, texts, events, forms}; None
+    without a process."""
     current = case_state(store, catalogue, case_id)
     run = current.get("run")
     if not current.get("process") or not run:
@@ -325,18 +365,93 @@ def view(store, catalogue, case_id):
     texts = store.list_files(case_id, with_text=True) if stage in {"mandat", "abwicklung"} else None
     items = build_items(current, run.get("result"), texts or files, events)
     action = next((i for i in items if i["kind"] == "next_action"), None)
-    clock = follow_up(action.get("next_in_days") if action else None, files, events, since=(action or {}).get("since"))
+    # a date the party gave: looked at then, as the case view does (web/app.py, get_case)
+    clock = follow_up(action.get("next_in_days") if action else None, files, events, since=(action or {}).get("since"),
+                      until=(action or {}).get("until"))
     clock = capped(clock, items, (current.get("process") or {}).get("deadline_margin_days"), files)
-    return {"state": current, "items": items, "action": action, "follow_up": clock, "files": files}
+    return {"state": current, "items": items, "action": action, "follow_up": clock, "files": files, "texts": texts, "events": events,
+            "forms": forms_of(catalogue, current)}
+
+
+def form_of(action):
+    """The form the case view drafts for a next action (web/app.py, get_case): a request is the first request (A1), a
+    closing in silence has its own form (or none); None without an action."""
+    if not action:
+        return None
+    return "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")
+
+
+def letter(shown):
+    """The next action's letter on the day as the case view drafts it (web/app.py, get_case): {form, title, to, needs, parts,
+    text, none, context}; None without a next action. Its text is case content: only counts and ids of it leave."""
+    if not shown or not shown.get("action"):
+        return None
+    state, forms = shown["state"], shown.get("forms") or letters.SEED_FORMS
+    kind = form_of(shown["action"])
+    ctx = letters.context(state["case"], shown["items"], shown.get("events") or [], shown["follow_up"], shown.get("texts") or shown["files"],
+                          evaluation=state.get("evaluation"), process=state.get("process"))
+    text, none = letters.render(kind, forms, ctx)
+    form = forms.get(kind) or {}
+    return {"form": kind, "title": form.get("title"), "to": form.get("to"), "needs": list(form.get("needs") or []),
+            "parts": [p if isinstance(p, str) else str((p or {}).get("text") or "") for p in form.get("parts") or ()],
+            "text": text, "none": none, "context": ctx}
+
+
+def renders_brief(drafted):
+    """Whether the letter's form writes text from the brief (its request, summary or the customer's questions)."""
+    parts = " ".join((drafted or {}).get("parts") or ())
+    return bool(drafted and drafted.get("text")) and any("{" + p + "}" in parts for p in BRIEF_PARTS)
+
+
+def same_case_knowledge(store, state, case_id):
+    """How many Knowledge items applied to the case were learned in the case itself or in a cut of it (or it of theirs)."""
+    used = {k.get("item") for k in (state.get("provenance") or {}).get("knowledge") or () if k.get("applied")}
+    count = 0
+    for item in state.get("knowledge") or ():
+        origin = (item.get("origin") or {}).get("case_id")
+        if item.get("id") not in used or not origin:
+            continue
+        cut_from = lambda cid: {((f.get("extraction") or {}).get("cut_of") or {}).get("case") for f in store.list_files(cid)}
+        try:
+            count += origin == case_id or case_id in cut_from(origin) or origin in cut_from(case_id)
+        except KeyError:  # the case it came from is deleted
+            continue
+    return count
 
 
 def as_of_view(store, catalogue, case_id, t, decisions=(), run=None, files=None, dating=None):
-    """The case view on day t, rebuilt from the case's latest completed run: (view or None, rebuilt)."""
+    """The case view on day t, rebuilt from the case's latest completed run: (view or None, rebuilt). The rebuilt
+    ``limits.brief`` counts what reached the day from the whole file anyway (exposure, not effect)."""
     run = run or store.latest_run(case_id, "completed")
     if run is None:
         return None, None
     rebuilt = rebuild(run, files if files is not None else store.list_files(case_id, with_text=True), t, decisions, dating)
-    return view(AsOfStore(store, store.get_case(case_id), rebuilt), catalogue, case_id), rebuilt
+    shown = view(AsOfStore(store, store.get_case(case_id), rebuilt), catalogue, case_id)
+    if shown is not None:
+        rebuilt["limits"]["brief"]["form_renders_brief"] = int(renders_brief(letter(shown)))
+        rebuilt["limits"]["brief"]["knowledge_from_same_case"] = same_case_knowledge(store, shown["state"], case_id)
+    return shown, rebuilt
+
+
+def surface(shown, drafted=None):
+    """A content-free digest of what the brief puts before the handler and the customer on the day, one short hash per
+    output: the parties, the summary, the customer's questions, the letter's greeting, «In Ihrem Fall», the answers to the
+    questions, the request and the firm's summary as rendered, the cover check's hint on the insured person and the
+    customer's name; and the counts of parties and questions."""
+    items = (shown or {}).get("items") or []
+    ctx = (drafted or {}).get("context") or {}
+    parties = [i for i in items if i["kind"] == "party"]
+    label = lambda i: (i.get("label") or {}).get("de") if isinstance(i.get("label"), dict) else i.get("label")
+    customer = letters.customer(parties) or {}
+    values = {"parties": [(label(i), i.get("value")) for i in parties],
+              "summary": [i.get("value") for i in items if i["kind"] == "summary"],
+              "questions": [i.get("value") for i in items if i["kind"] == "customer_question"],
+              **{k: ctx.get(k) for k in ("anrede", "im_fall", "zu_fragen", "anliegen", "zusammenfassung")},
+              "cover_person": next((i.get("aid") for i in items if i["kind"] == "cover" and i["key"] == "person"), None),
+              "customer": customer.get("value") or customer.get("name")}
+    digest = lambda v: sha256(json.dumps(v, ensure_ascii=False, sort_keys=True, default=str).encode()).hexdigest()[:12]
+    return {**{k: digest(values[k]) for k in SURFACE},
+            "counts": {"parties": len(parties), "questions": len(values["questions"])}}
 
 
 def letter_lists(forms, kind):

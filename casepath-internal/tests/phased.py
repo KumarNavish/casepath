@@ -43,9 +43,25 @@ def entry(raw, file_id):
     return row
 
 
+def reader_brief(brief, file_id):
+    """What the reader reports of a brief, each question, claim and dated event with the sentence it comes from: questions
+    [text, quote, key points it is about?], claims [what, quote, amount?, receipt quote?], timeline [date, event, quote].
+    The team keeps of the report what its reader records (agents/team.py, _located_brief), each with its quote located."""
+    cite = lambda quote: [{"file": file_id, "quote": quote}] if quote else []
+    out = {"request": brief.get("request", ""), "parties": [{"role": r, "name": n} for r, n in brief.get("parties", [])],
+           "timeline": [{"date": d, "event": e, "citations": cite(q)} for d, e, q in brief.get("timeline", [])]}
+    if brief.get("questions"):
+        out["questions"] = [{"question": q[0], "citations": cite(q[1]), "about": list(q[2]) if len(q) > 2 else []} for q in brief["questions"]]
+    if brief.get("claims"):
+        out["claims"] = [{"what": c[0], "citations": cite(c[1]), "amount": c[2] if len(c) > 2 and c[2] else "",
+                          "receipt": cite(c[3]) if len(c) > 3 else []} for c in brief["claims"]]
+    return out
+
+
 def turns(case, reading, file_id, pages=None):
-    """The scripted team's turns: the reader records the entries of the pages given and the reading's facts; the finder
-    records each need found (with its quote) or absent; the result checker reports."""
+    """The scripted team's turns: the reader records the entries of the pages given and the reading's facts and reports
+    the reading's brief (the case's where the reading has none); the finder records each need found (with its quote) or
+    absent; the result checker reports."""
     keep = set(pages or range(1, len(case["pages"]) + 1))
     entries = [entry(e, file_id) for e in case["entries"] if e["page"] in keep]
     cite = lambda quotes: [{"file": file_id, "quote": q} for q in ([quotes] if isinstance(quotes, str) else quotes)]
@@ -53,11 +69,11 @@ def turns(case, reading, file_id, pages=None):
     found = [("record_document", {"document": d, "status": "present", "files": [file_id], "citations": cite(q), "note": ""})
              for d, q in reading.get("found", [])]
     absent = [("record_document", {"document": d, "status": "absent", "files": [], "citations": [], "note": ""}) for d in reading.get("absent", [])]
-    brief = case.get("brief") or {}
+    brief = reading.get("brief") or case.get("brief") or {}
     return [
         [("list_files", {})],
         [("record_steps", {"entries": entries[i:i + 10]}) for i in range(0, len(entries), 10)] + facts,
-        [report("claim_reader", request=brief.get("request", ""), parties=[{"role": r, "name": n} for r, n in brief.get("parties", [])])],
+        [report("claim_reader", **reader_brief(brief, file_id))],
         found + absent + [report("document_finder")] if found or absent else [report("document_finder")],
         *[[report("result_checker", answer="Vorbereitet.")]] * 3,
     ]
