@@ -602,14 +602,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             # parts the law or the conditions require (copying is refused while one is missing, cover.py), each «in Prüfung»
             # while a jurist marked it «Änderung nötig»
             required = lambda k: [{**r, **({"review": reviews.IN_REVIEW} if held.required(k, r["id"]) else {})} for r in cover.required_for(k, current.get("facts"))]
-            draft = {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none,
+            draft = {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "to": (forms.get(kind) or {}).get("to"), "text": text, "none": none,
                      "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
                      "required": required(kind),
                      # what goes out with it, each opened and copied on its own: the mandate package, the fee-note letters, and a
                      # template for the customer's own letter (marked as the customer's, never sent by the insurer)
                      "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": required(k),
                                **({"set": forms[k]["set"]} if forms[k].get("set") else {})} for k in letters.accompanying(kind, forms, listed)]
-                             + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "text": i["text"], "required": [], "template": True,
+                             + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "name": i.get("title"), "text": i["text"], "required": [], "template": True,
                                  **({"review": i["review"]} if i.get("review") else {})}
                                 for i in customer_letters.with_letter(listed, events, kind)]}
         # Arrival: the files the last preparation did not read (name and the day they came), whether «Aktualisieren» can read
@@ -652,10 +652,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         stage = ((current.get("evaluation") or {}).get("current") or {})
         cover_edit = next((e for e in reversed(store.list_edits(case_id)) if e.get("op") == "set_fact" and (e.get("args") or {}).get("fact") == "deckung"), None)
         model = screen.build(listed, draft, events, as_of(files), (current.get("process") or {}).get("urgent"), stage=stage.get("step"),
-                             stage_title=stage.get("title"), routing=(completed or {}).get("routing"), since=(prepared or {}).get("finished_at"),
+                             via=stage.get("via"), routing=(completed or {}).get("routing"), since=(prepared or {}).get("finished_at"),
                              decided_by=f"{(cover_edit.get('at') or '')[8:10]}.{(cover_edit.get('at') or '')[5:7]}.{(cover_edit.get('at') or '')[:4]} · {cover_edit.get('by')}"
                              if cover_edit and cover_edit.get("at") else None) if completed else None
         if model is not None:
+            model["title"] = listing.next_step(action) if action else model["title"]  # the same words as the case list's «Als Nächstes»
             model.update(status=status["text"], status_kind=status["kind"],
                          due=listing.due(listed, (clock or {}).get("due"), files, historic, closed=status["kind"] == "closed"))
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,

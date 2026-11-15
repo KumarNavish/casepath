@@ -70,24 +70,25 @@ A case runs for weeks or months, and most of the work is reacting to what comes 
 ## The screen, re-centred
 
 ```
-┌ Übersicht ─────────────────────────────────────────────────────────────┐
-│ Vorbereitet                                        Vorher zu klären · 2 │
-│ ┌────────────────────────────────────────────┐     ○ Vermieter informiert? [ja][nein]
-│ │ Eingangsbestätigung · Unterlagenanforderung │     ○ Prozess bestätigen: auch «…»
-│ │ Sehr geehrte …                              │
-│ │ … brauchen wir insbesondere noch:           │   Warum dieser Schritt
-│ │  ☑ Mietvertrag                    Art. 253  │     Stand: Sachverhalt klären
-│ │  ☑ Sämtliche Korrespondenz        6 von 7   │     weil: Mangel gemeldet (S. 3) …
-│ │  ☐ Fotos über die Dauer    liegen z. T. vor │
-│ │  + Unterlage hinzufügen                     │   Der Fall
-│ │ [Kopieren]  [Erledigt]  [mit Vorbehalt]     │     Anliegen · Parteien · Fristen
-│ └────────────────────────────────────────────┘     Nächste Wiedervorlage: …
-└────────────────────────────────────────────────────────────────────────┘
+┌ Übersicht ─────────────────────────────────────────────┬ Der Fall ─────────────────────┐
+│ Frist wahren                                    ändern │ Anliegen   (two lines, more)  │
+│ Weil: Ohne gültige Einsprache wird der Strafbefehl …   │ Fragen     «…»                │
+│ Frist 16.11.2026 · Einsprache gegen den … · noch 1 Tag │ Parteien   Name · Rolle       │
+│ [Deckung · 3 aus der Akte geklärt  (bestätigen)(ablehnen)] (only a decision that blocks)│
+│ Brief an die Kundschaft ✓ | Vorlage an die Staatsanw.  │ Als Nächstes  open with whom, │
+│ Guten Tag …                                            │               by when         │
+│  ☑ Mietvertrag                                         │ Fristen    each once, by date │
+│  + Weitere Vorschläge · 4   + Unterlage hinzufügen     │ Deckung    one line           │
+│ (Brief kopieren)  Wiedervorlage 06.12.  [Erledigt ▾]   │ Rechtliches (not in letter)   │
+└────────────────────────────────────────────────────────┴───────────────────────────────┘
 ```
 
-- **The document list in the letter is the checklist.** A tick is a request; unticking or adding is a correction with its reason in one tap; each line carries why it is there. The surrounding text stays editable as text.
-- **"Vorher zu klären" holds only what blocks this action.** When it is empty the draft is ready.
-- **"Warum dieser Schritt"** is the chain: step, the facts that led there with their sources, and what the step demands.
+- **The card head says four things, each once:** what this step is (the case list's «Als Nächstes» in the same words), why in one line («Weil: …», its source when opened), the one deadline that leads (the customer's or ours, open within 30 days, else the latest passed while the case has not gone past it; article, rule and source when opened), and the one open decision that blocks this step with its answers. Nothing else; what it states is not said again in «Der Fall». A payout shows its progress line instead of a decision. The server decides all of it once (`casepath/process/screen.py`), for every tab and the list.
+- **What goes out is tabs** (the letter by whom it goes to, a template for the customer's own letter, the mandate package, the fee note's chosen answer), each ticked once copied; after a copy the next one not copied is shown.
+- **The document list in the letter is the checklist.** A tick is a request; unticking or adding is a correction with its reason in one tap. A line shows no tag: its reason (why, how often practice asks, the article's passage, its source) opens from the line, by click or keyboard. Offered lines wait folded under «Weitere Vorschläge». The text around is the letter, editable on a click; a gap only the handler can fill is highlighted, and the card's one button is then «n Lücken füllen», which goes to the first.
+- **The action bar has one primary button** (the open decision's answer, else the document to copy, else Erledigt), the follow-up date (for «Frist wahren»: what follows), and Erledigt with «mit Vorbehalt».
+- **«Der Fall»** holds what the head does not: the request, the customer's questions, the parties by role, what is open with whom and by when (from the running account, only when it has something), the deadlines each once by date (a deadline depending on an open fact once, «nur bei …»; two ending the same day one row), the cover in one line once decided or settled by the stage, at most three legal points the letter does not state, «Aktennotiz kopieren» and «Notiz hinzufügen». No decision buttons.
+- **The Prozess tab** shows the steps in order, the current one, and for each step passed the facts that decided it with their sources; at the current step what is still open and the stage's decisions (the cover check with its points, a handler's own decision, what a prescribed letter rests on), answered there as on the card.
 - During a run this same screen fills in, as section U of the handler bar describes.
 
 ## What each handler gesture teaches

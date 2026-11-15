@@ -687,7 +687,7 @@ def build_items(state, result, files=None, events=None, review=None):
             add("stand", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
                 node=None, origin="account", chain=False, label=line["label"], open=line["open"], entries=line["entries"],
                 **({"detail": line["detail"]} if line.get("detail") else {}), **({"handler": line["handler"]} if line.get("handler") else {}),
-                **({"rows": [{"text": r["text"], "evidence": _evidence(r["citations"]), "entries": r["entries"],
+                **({"rows": [{"text": r["text"], "evidence": _evidence(r["citations"]), "entries": r["entries"], "request": r.get("request"),
                               **({"handler": r["handler"]} if r.get("handler") else {})} for r in line["rows"]],
                     "more": line["more"], "party": line["party"]} if line.get("rows") else {}))
         # a run made before the account: the handler's own entries are listed, and count once a full preparation read the account

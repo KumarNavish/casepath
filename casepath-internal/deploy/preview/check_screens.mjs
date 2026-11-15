@@ -3,14 +3,15 @@
 // For every case the preview seeds (every legal area, every stage) and every state, at 1440x900 (the Übersicht also at
 // 1280x720), it opens the Übersicht and the tabs Akte, Prozess, Unterlagen and Verlauf, and records per screen:
 //   clickable elements in view (whole page, and the main card); words in the main card above the letter body; repeats on
-//   the Übersicht (each date dd.mm.yyyy or dd.mm. and each deadline title shown more than once outside the letter text,
-//   the file list and the file viewer); internal words (the lexicon below); explanatory sentences (the heuristic of
+//   the Übersicht (each date and each deadline title shown more than once outside the letter text, the file list, the
+//   file viewer and the customer's own words quoted from the file); internal words (the lexicon below); explanatory sentences (the heuristic of
 //   check_simple.mjs); primary buttons in view (exactly one is right); whether the tabs agree on the missing documents and
 //   the case list's next step and status agree with the card; page errors and events the route refused. Then, for every
 //   letter and template a case can produce (its prepared action and every action it can be changed to), the lexicon and
 //   the placeholders on the customer-facing text. Last, case B is prepared live (running, then stopped).
 // It changes the preview (another action picked on each case, case B run): run it on a freshly started preview, and start
-// a fresh one before check_simple.mjs. Writes OUT/screens.json, OUT/screens.md and the screenshots.
+// a fresh one before check_simple.mjs. Writes OUT/screens.json, OUT/screens.md and the screenshots. An element counts as
+// in view when it is inside the window and not scrolled out of a box that clips it (a letter that scrolls on its own).
 import { createRequire } from "module";
 import fs from "fs";
 const { chromium } = createRequire(import.meta.url)("playwright");
@@ -49,20 +50,35 @@ const quotedTitle = (text, titles) => titles.filter((t) => t && String(text).inc
 async function screen(page, { titles }) {
   return page.evaluate(({ titles }) => {
     const H = innerHeight, W = innerWidth;
+    // folded: inside a closed <details> other than its summary (the browser lays such content out but does not show it)
+    const folded = (el) => { for (let d = el.closest("details:not([open])"); d; d = d.parentElement && d.parentElement.closest("details:not([open])")) {
+      const summary = d.querySelector(":scope > summary"); if (!(summary && summary.contains(el))) return true; } return false; };
     const vis = (el) => { const r = el.getBoundingClientRect(), s = getComputedStyle(el);
-      return r.width > 0 && r.height > 0 && s.visibility !== "hidden" && s.opacity !== "0" && !el.closest("[hidden]"); };
-    const inView = (el) => { const r = el.getBoundingClientRect(); return r.bottom > 0 && r.top < H && r.right > 0 && r.left < W; };
+      return r.width > 0 && r.height > 0 && s.visibility !== "hidden" && s.opacity !== "0" && !el.closest("[hidden]") && !folded(el); };
+    // in view: inside the window and not scrolled out of a box that clips it (a letter or a list that scrolls on its own)
+    const inView = (el) => {
+      let { top, bottom, left, right } = el.getBoundingClientRect();
+      top = Math.max(top, 0); bottom = Math.min(bottom, H); left = Math.max(left, 0); right = Math.min(right, W);
+      for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
+        const o = getComputedStyle(a);
+        if (!/(auto|scroll|hidden|clip)/.test(o.overflow + o.overflowX + o.overflowY)) continue;
+        const b = a.getBoundingClientRect();
+        top = Math.max(top, b.top); bottom = Math.min(bottom, b.bottom); left = Math.max(left, b.left); right = Math.min(right, b.right);
+      }
+      return bottom - top > 1 && right - left > 1;
+    };
     const CLICK = "a[href], button, input:not([type=hidden]), select, textarea, summary, [contenteditable=true], [contenteditable=plaintext-only], label:has(> input[type=file])";
     const clickable = [...document.querySelectorAll(CLICK)].filter((el) => vis(el) && inView(el) && !(el.tagName === "INPUT" && el.type === "date" && getComputedStyle(el).opacity === "0"));
     const card = document.querySelector(".cp-prepared");
-    const letterText = ".cp-letter [data-seg='text'], .cp-letter li[data-text] > label > span, .cp-also-text, .cp-letter pre, [data-doc-text]";
-    const skip = `${letterText}, .cp-doc-body, .cp-doc-head, .cp-doc-toolbar .name, .cp-source-label, .cp-segs, #overview-source`;
+    const letterText = ".cp-letter [data-seg], .cp-letter li[data-text] > label > span, .cp-also-text, .cp-letter pre, [data-doc-text]";
+    // the customer's own words quoted from the file (the request, the questions) are the file's, like the letter is the letter
+    const skip = `${letterText}, .cp-doc-body, .cp-doc-head, .cp-doc-toolbar .name, .cp-source-label, .cp-segs, #overview-source, [data-item="summary:0"], [data-item^="customer_question:"]`;
     const textOf = (root, exclude = skip) => {
       if (!root) return "";
       const out = [], walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
       while (walker.nextNode()) {
         const n = walker.currentNode, el = n.parentElement;
-        if (!n.textContent.trim() || !el || el.closest(exclude) || !el.getClientRects().length || getComputedStyle(el).visibility === "hidden") continue;
+        if (!n.textContent.trim() || !el || el.closest(exclude) || !el.getClientRects().length || getComputedStyle(el).visibility === "hidden" || folded(el)) continue;
         out.push(n.textContent);
       }
       return out.join(" ").replace(/\s+/g, " ");
@@ -75,7 +91,7 @@ async function screen(page, { titles }) {
       const words = [];
       while (walker.nextNode()) {
         const n = walker.currentNode, el = n.parentElement;
-        if (!n.textContent.trim() || !el || !el.getClientRects().length) continue;
+        if (!n.textContent.trim() || !el || !el.getClientRects().length || folded(el)) continue;
         if (letter && (letter.contains(el) || (letter.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING))) continue;
         if (bar && bar.contains(el)) continue;
         words.push(n.textContent);
@@ -83,26 +99,35 @@ async function screen(page, { titles }) {
       head = words.join(" ");
     }
     const countWords = (t) => String(t).split(/\s+/).filter((w) => /[\p{L}\p{N}]/u.test(w)).length;
-    // sentences a person would have to read to use the screen (the heuristic of check_simple.mjs)
-    const letterish = (el) => el.closest("[data-item], pre, .cp-checklist, .cp-letter");
+    // sentences a person would have to read to use the screen (the heuristic of check_simple.mjs): not the case's own
+    // content (an item, the letter, the file's text and its documents' list), and a sentence ends after a word, not an
+    // initial («N. Kumar», «S. 2»)
+    const letterish = (el) => el.closest("[data-item], pre, .cp-checklist, .cp-letter, .cp-doc-body, .cp-doc-head, .cp-contents, .cp-segs, .cp-source-label");
     const blocks = new Set(), w2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     while (w2.nextNode()) {
       const n = w2.currentNode;
-      if (!n.textContent.trim() || letterish(n.parentElement) || !n.parentElement.getClientRects().length) continue;
+      if (!n.textContent.trim() || letterish(n.parentElement) || !n.parentElement.getClientRects().length || folded(n.parentElement)) continue;
       let b = n.parentElement;
       while (b.parentElement && /^inline/.test(getComputedStyle(b).display)) b = b.parentElement;
       blocks.add(b);
     }
     const own = (b) => [...b.childNodes].map((c) => c.nodeType === 3 ? c.textContent : c.nodeType === 1 && /^inline/.test(getComputedStyle(c).display) && !letterish(c) ? c.innerText : "\n").join("");
-    const sentences = [...new Set([...blocks].flatMap((b) => own(b).split("\n")).map((t) => t.replace(/\s+/g, " ").trim()))].flatMap((t) => t.split(/(?<=[.:])\s+/))
-      .filter((t) => /[.:]$/.test(t) && t.split(/\s+/).length >= 4);
+    const sentences = [...new Set([...blocks].flatMap((b) => own(b).split("\n")).map((t) => t.replace(/\s+/g, " ").trim()))].flatMap((t) => t.split(/(?<=[\p{L}\p{N}]{2}[.:])\s+/u))
+      .filter((t) => /[\p{L}\p{N}]{2}[.:]$/u.test(t) && t.split(/\s+/).length >= 4);
     const primaries = [...document.querySelectorAll(".cp-button.primary")].filter((el) => vis(el) && inView(el)).map((el) => el.innerText.trim().replace(/\s+/g, " "));
     const main = document.querySelector("main");
     const all = textOf(document.body);
-    // repeats: each date (dd.mm.yyyy, or dd.mm. for the same day) and each deadline title shown more than once
-    const dates = {};
-    for (const m of all.matchAll(/(?<![\d.])(\d{2})\.(\d{2})\.(\d{4})?(?![\d])/g)) { const key = `${m[1]}.${m[2]}.`; dates[key] = (dates[key] || 0) + 1; }
-    const repeated = Object.entries(dates).filter(([, n]) => n > 1).map(([d, n]) => `${d} ×${n}`);
+    // repeats: each date shown more than once (dd.mm.yyyy; a short dd.mm. counts for the full dates of that day and month)
+    const full = {}, short = {};
+    for (const m of all.matchAll(/(?<![\d.])(\d{2})\.(\d{2})\.(\d{4})?(?![\d])/g)) {
+      const key = `${m[1]}.${m[2]}.`;
+      if (m[3]) full[`${key}${m[3]}`] = (full[`${key}${m[3]}`] || 0) + 1; else short[key] = (short[key] || 0) + 1;
+    }
+    for (const [key, n] of Object.entries(short)) {
+      const same = Object.keys(full).filter((k) => k.startsWith(key));
+      if (same.length) same.forEach((k) => { full[k] += n; }); else full[key] = n;
+    }
+    const repeated = Object.entries(full).filter(([, n]) => n > 1).map(([d, n]) => `${d} ×${n}`);
     for (const t of titles) { const n = t ? all.split(t).length - 1 : 0; if (n > 1) repeated.push(`«${t}» ×${n}`); }
     const number = (re, root) => { const m = re.exec(textOf(root || main, letterText)); return m ? Number(m[1]) : null; };
     const missingAttr = document.querySelector("[data-missing]");

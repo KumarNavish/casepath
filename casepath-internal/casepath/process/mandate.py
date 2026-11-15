@@ -23,9 +23,9 @@ from .clock import as_of, parse_date
 
 MAX_LINES = 46  # one page in the insurer's plain letter style
 NOT_IN_FILE = "nicht in der Akte"
-SECTIONS = ("Parteien", "Anliegen", "Sachverhalt", "Rechtliche Kernpunkte", "In der Akte", "Noch offen", "Fristen und Termine",
+SECTIONS = ("Parteien", "Anliegen", "Sachverhalt", "Rechtliche Punkte", "In der Akte", "Noch offen", "Fristen und Termine",
             "Ziel der Kundschaft")
-CAPS = {"Parteien": 5, "Sachverhalt": 10, "Rechtliche Kernpunkte": 4, "In der Akte": 8, "Noch offen": 6, "Fristen und Termine": 4,
+CAPS = {"Parteien": 5, "Sachverhalt": 10, "Rechtliche Punkte": 4, "In der Akte": 8, "Noch offen": 6, "Fristen und Termine": 4,
         "Ziel der Kundschaft": 4}
 PAGE = re.compile(r"\[page (\d+)\]")
 COURT = re.compile(r"gericht|schlichtung|klage|prozess|verhandlung|instanz|rechtsöffnung", re.I)
@@ -152,7 +152,7 @@ def summary(items, files, today=None):
     for p in by("key_point"):
         if p.get("value") == "applies":
             src = source(p.get("evidence"), files)
-            out["Rechtliche Kernpunkte"].append({"text": label(p), "source": "; ".join(x for x in (p.get("legal_basis"), src) if x)})
+            out["Rechtliche Punkte"].append({"text": label(p), "source": "; ".join(x for x in (p.get("legal_basis"), src) if x)})
 
     kinds = {}
     for f, s in _segments(files):

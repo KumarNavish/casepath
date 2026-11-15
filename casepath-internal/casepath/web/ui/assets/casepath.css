@@ -290,20 +290,25 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-prep-head h2{margin:0;font-size:17.5px;font-weight:700;flex:1}
 .cp-quiet-link{color:var(--ink-2);font-size:13.5px;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
 .cp-quiet-link:hover{color:var(--crimson)}
-.cp-weil{margin:2px 22px 6px;font-size:13.5px;color:var(--ink-2)}
+.cp-weil{margin:2px 22px 4px;font-size:13.5px;color:var(--ink-2);display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px}
 .cp-weil .cp-link{font-size:13.5px;color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px;padding:0}
 .cp-change-panel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 22px 8px}
 .cp-change-panel .cp-chip,.cp-pick .cp-chip{cursor:pointer;background:none;font:inherit;font-size:13px}
 .cp-change-panel .cp-chip:hover,.cp-pick .cp-chip:hover{border-color:var(--crimson);color:var(--crimson)}
 .cp-letter{flex:1;min-height:0;overflow:auto;padding:8px 22px 14px;font-size:15px;line-height:1.5;color:var(--ink-doc);border-top:1px solid var(--line)}
 .cp-text{white-space:pre-wrap;overflow-wrap:anywhere;border-radius:4px;padding:1px 4px;margin:0 -4px}
-.cp-text[contenteditable]:hover{background:#faf8f8}
-.cp-text[contenteditable]:focus{outline:1px solid var(--border);background:#fff}
+.cp-text[data-editable]{cursor:text}
+.cp-text[data-editable]:hover{background:#faf8f8}
+.cp-text[contenteditable="true"]:focus{outline:1px solid var(--border);background:#fff}
 .cp-checklist{list-style:none;margin:0;padding:0}
-.cp-line{display:flex;gap:10px;align-items:baseline;padding:2px 6px;margin:0 -6px;border-radius:4px}
+.cp-line{display:flex;flex-wrap:wrap;gap:0 9px;align-items:baseline;padding:2px 6px;margin:0 -6px;border-radius:4px}
 .cp-line:hover{background:#faf7f7}
-.cp-line label{flex:1;display:flex;gap:9px;align-items:baseline;cursor:pointer;min-width:0}
-.cp-line input{accent-color:var(--crimson);margin:0;flex:none;position:relative;top:2px}
+.cp-line input{accent-color:var(--crimson);margin:0;flex:none;position:relative;top:2px;cursor:pointer}
+.cp-line-text{flex:1;min-width:0;cursor:pointer}
+.cp-line.open .cp-line-text{text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.cp-why{display:none;flex-basis:100%;margin:2px 0 6px 22px;padding:6px 10px;border-left:2px solid var(--line);font-size:13px;color:var(--ink-2)}
+.cp-line.open>.cp-why,.cp-line:has(>input:focus-visible)>.cp-why{display:block}
+.cp-why .cp-passage{margin:4px 0 0;font-style:italic}
 .cp-tag{flex:none;font:inherit;font-size:12px;color:var(--ghost);border:0;background:none;padding:0;text-decoration:none;white-space:nowrap;cursor:pointer}
 .cp-tag:hover{color:var(--crimson);text-decoration:underline}
 .cp-offers{margin:6px 0 2px}
@@ -313,7 +318,7 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-offers details[open] summary::before{content:"– "}
 .cp-offers ul{list-style:none;margin:2px 0 4px;padding:0}
 .cp-offered{flex-wrap:wrap}
-.cp-offered label span{color:var(--ink-2)}
+.cp-offered .cp-line-text{color:var(--ink-2)}
 .cp-why-row{flex-basis:100%;display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 6px 24px;font-size:13px}
 .cp-add{display:flex;align-items:center;gap:8px;color:var(--ink-2);padding:3px 0;min-height:30px}
 .cp-add .cp-icon{width:16px;height:16px}
@@ -574,3 +579,85 @@ h2.cp-rv-group+.cp-rv-el{border-top:0}
 .cp-live-ok .cp-icon{width:14px;height:14px;color:var(--green-ink);vertical-align:-2px}
 @media (prefers-reduced-motion:no-preference){.cp-live-row.enter{animation:cp-arrive .5s ease-out}}
 @keyframes cp-arrive{from{background:var(--crimson-wash)}}
+
+/* The card head: the step, «Weil: …» on one line, the one deadline that leads, the one decision that blocks it */
+.cp-prepared.urgent{border-top:3px solid var(--crimson)}
+.cp-weil-text{display:block;max-width:100%;border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button.cp-weil-text{cursor:pointer}
+button.cp-weil-text:hover{color:var(--crimson)}
+.cp-weil.open .cp-weil-text{white-space:normal}
+.cp-lead-frist{margin:4px 22px 0}
+.cp-lead-text{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left}
+button.cp-lead-text{cursor:pointer}
+button.cp-lead-text:hover{text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.cp-lead-more{display:block;margin-top:4px;font-weight:400;font-size:13px;color:var(--ink-2)}
+.cp-decide{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:6px 22px 2px;padding:7px 10px;border-left:3px solid var(--crimson);background:var(--crimson-wash);border-radius:0 4px 4px 0;font-size:14px}
+.cp-decide-q{border:0;background:none;padding:0;font:inherit;font-weight:600;color:var(--ink);text-align:left}
+button.cp-decide-q{cursor:pointer;text-decoration:underline;text-decoration-color:var(--crimson-tint);text-underline-offset:3px}
+.cp-decide-q .cp-muted{font-weight:400}
+.cp-decide .cp-point-actions{margin-left:auto}
+.cp-decide-more{flex-basis:100%;max-height:260px;overflow:auto;background:var(--bg);border-radius:4px;padding:8px 10px;font-size:13.5px}
+.cp-decide-line+.cp-decide-line{margin-top:4px}
+.cp-decide .cp-cover-why{flex-basis:100%}
+.cp-progress{margin:6px 22px 2px;font-size:14px;color:var(--ink-2)}
+.cp-progress .done{color:var(--green-ink)}
+.cp-progress .now{color:var(--crimson);font-weight:600}
+.cp-doc-tabs{display:flex;flex-wrap:wrap;gap:0 2px;padding:6px 16px 0}
+.cp-doc-tab{border:0;border-bottom:2px solid transparent;background:none;padding:5px 8px;font-size:13.5px;color:var(--ink-2);white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
+.cp-doc-tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--crimson);font-weight:600}
+.cp-doc-tab .cp-icon{width:15px;height:15px;color:var(--green-ink);stroke-width:2}
+.cp-doc-tabs+.cp-letter,.cp-doc-tabs+.cp-stale-note+.cp-letter{border-top-color:var(--border)}
+mark.cp-gap{background:var(--yellow);color:inherit;border-radius:2px;padding:0 2px;outline:1px dashed #d9c85a}
+.cp-noletter{margin:10px 0}
+.cp-then{color:var(--ink-2)}
+/* «Der Fall»: scrolls within the card's height */
+.cp-overview>.cp-side{position:sticky;top:91px;overflow:auto}
+.cp-anliegen{border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;cursor:pointer;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cp-anliegen.open{display:block}
+.cp-point-line{font-size:13.5px;line-height:1.35}
+.cp-point-line+.cp-point-line{margin-top:5px}
+.cp-point-text{display:inline;padding:0;font-size:13.5px;text-align:left}
+.cp-point-line.open .cp-point-text{color:var(--ink-2)}
+.cp-cover-state.ok{color:var(--green-ink)}
+.cp-cover-state.flag{color:var(--crimson)}
+/* the case list and the rail: the case's parties under its name; the status chip as the list shows it */
+.cp-parties{display:block;font-weight:400;font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.cp-list-new{display:flex;align-items:center;gap:14px;font-size:13.5px}
+.cp-due-word{color:var(--ink-2);font-size:13px;font-weight:400}
+.cp-rail-chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.cp-rail-chips .cp-chip,.cp-rail-chips .cp-stand{white-space:normal;font-weight:400}
+.cp-caseline .cp-parties{margin:2px 0 0}
+/* Prozess: the steps in order, the facts that decided each */
+.cp-process{padding:18px 22px;max-width:980px}
+.cp-process-head{display:flex;align-items:baseline;gap:16px;margin-bottom:10px}
+.cp-process-head h1{flex:1;margin:0}
+.cp-steps{list-style:none;margin:0;padding:0}
+.cp-step{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:8px 0;border-top:1px solid var(--line)}
+.cp-step:first-child{border-top:0}
+.cp-step-mark{text-align:center;font-weight:700;color:var(--ghost)}
+.cp-step.done .cp-step-mark{color:var(--green-ink)}
+.cp-step.now .cp-step-mark{color:var(--crimson)}
+.cp-step.next{color:var(--ink-2)}
+.cp-step.next b{font-weight:400}
+.cp-step-facts{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:4px;font-size:13.5px}
+.cp-step-fact{color:var(--ink-2)}
+.cp-step-fact b{color:var(--ink);font-weight:600}
+.cp-step-decide{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;padding:6px 0;border-top:1px dashed var(--line)}
+.cp-step-decide>span:first-child{flex:1;min-width:240px}
+.cp-step-decide .cp-cover-open{flex-basis:100%}
+.cp-step-open{color:var(--crimson)}
+.cp-step-action{font-weight:600}
+.cp-step-pick{font-weight:600;padding:0}
+.cp-step-pick[aria-pressed="true"]{color:var(--crimson)}
+/* the Akte's brief and the Unterlagen table */
+.cp-brief{padding:16px 18px}
+.cp-brief h2.cp-section:first-child{margin-top:0}
+.cp-contents h2.cp-section{margin-top:0}
+.cp-docs-table{max-width:1180px}
+.cp-docs-table td:first-child{width:30%}
+.cp-step-then{list-style:none;margin:3px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:3px 18px}
+/* the action bar stays one line: what follows a «Frist wahren» shortens before the buttons move */
+.cp-bar{flex-wrap:nowrap}
+.cp-bar>.cp-button,.cp-bar>.cp-split{flex:none}
+.cp-bar>.cp-date{min-width:0;flex:0 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-bar>.cp-date.cp-then{flex:1 1 auto}

@@ -12,7 +12,8 @@
    settles is not asked; the cover decision never at intake; the fee note has three answers; the payout one progress line.
 And two faults found on a real file: a letter to the customer lists only what the insurer or the mandated firm asked (never
 the other side's claim against the customer), and a run stored before ``by_date`` shows its open dates from the words.
-Model-free."""
+The case screen says each thing once: an open request with its date in «Als Nächstes», not again under «Fristen»; a
+passed statutory deadline behind the process does not lead; what goes out is tabs named by whom it goes to. Model-free."""
 import json
 import re
 import unittest
@@ -168,9 +169,12 @@ class DeadlineTests(unittest.TestCase):
         row = listed["deadline:erstreckung"]
         self.assertEqual(row["condition"], "nur bei unbefristetem Mietverhältnis")
         rows = screen.fristen(items, date(2026, 11, 14))
-        shown = [r for r in rows if r["item_id"] == "deadline:erstreckung"]
+        shown = [p for r in rows for p in r.get("parts") or [r] if p["item_id"] == "deadline:erstreckung"]
         self.assertEqual(len(shown), 1)
         self.assertEqual(shown[0]["condition"], "nur bei unbefristetem Mietverhältnis")
+        same_day = next(r for r in rows if "deadline:erstreckung" in r.get("also", []))  # ending the day the contest ends: one row, the date once
+        self.assertEqual((same_day["item_id"], same_day["date"]), ("deadline:anfechtung", "03.12.2026"))
+        self.assertIn("nur bei unbefristetem Mietverhältnis: Erstreckungsbegehren bei einem unbefristeten Mietverhältnis", same_day["title"])
         lead = screen.lead(items, date(2026, 11, 14), state["process"]["urgent"])
         self.assertEqual(lead["item_id"], "deadline:anfechtung")  # never the conditional one
         text, _ = draft(state, items, files, "A1")
@@ -312,6 +316,70 @@ class WhoAsksWhomTests(unittest.TestCase):
         for key in ("vorenthalten", "verlangt", "androhung_anlass"):
             self.assertNotIn("Schadenersatz", ctx[key], key)
         self.assertIn("Belege der Reparaturkosten", ctx["vorenthalten"])
+
+
+class ScreenTests(unittest.TestCase):
+    """The case screen says each thing once (process/screen.py), in the case list's words."""
+
+    def test_an_open_request_carries_its_date_and_is_not_a_second_deadline_line(self):
+        rows = [{"text": "Mietvertrag · seit 03.11.2026 · 1× verlangt", "request": "r1", "evidence": []},
+                {"text": "Fotos · seit 04.11.2026 · 1× verlangt", "request": "r2", "evidence": []}]
+        items = [{"item_id": "stand:offen_kunde", "kind": "stand", "key": "offen_kunde", "label": {"de": "Offen bei der Kundschaft"}, "open": True,
+                  "party": "kunde", "more": 0, "evidence": [], "rows": rows},
+                 {"item_id": "deadline:konto-r1", "kind": "deadline", "key": "konto-r1", "account": True, "party": "kunde", "value": "2026-11-20",
+                  "label": {"de": "Mietvertrag"}, "set_by": "versicherer"},
+                 {"item_id": "deadline:konto-r2", "kind": "deadline", "key": "konto-r2", "account": True, "party": "kunde", "value": "2026-11-10",
+                  "label": {"de": "Fotos"}, "set_by": "versicherer"}]
+        lines, carried = screen.account_lines(items, date(2026, 11, 15), {}, set())
+        self.assertEqual([r["text"] for r in lines[0]["rows"]], ["Mietvertrag · seit 03.11.2026 · 1× verlangt · bis 20.11.2026",
+                                                                 "Fotos · seit 04.11.2026 · 1× verlangt · bis 10.11.2026 (abgelaufen)"])
+        self.assertEqual(carried, {"deadline:konto-r1", "deadline:konto-r2"})
+        self.assertEqual(screen.fristen(items, date(2026, 11, 15), carried), [])  # not a second line under «Fristen»
+        lines, _ = screen.account_lines(items, date(2026, 11, 15), {}, {"04.11.2026"}, lead_id="deadline:konto-r1")
+        self.assertEqual(lines, [])  # what the card head states (the deadline that leads, a date of its reason) is not said again
+
+    def test_a_passed_statutory_deadline_does_not_lead_once_the_case_is_past_the_way_to_proceed(self):
+        facts = [("rechtsgebiet", "Mietrecht / Kündigung"), ("kuendigung_erhalten", "2026-09-01"), ("befristet", False)]
+        state, items, _, _ = view("miete-kuendigung", facts, "2026-11-14")
+        rule = state["process"]["urgent"]
+        self.assertEqual(screen.lead(items, date(2026, 11, 14), rule, "klaeren")["word"], "abgelaufen")  # at intake: it may be lost
+        self.assertIsNone(screen.lead(items, date(2026, 11, 14), rule, "mandat"))  # behind the process; still listed under «Fristen»
+        self.assertIn("abgelaufen", [r["state"] for r in screen.fristen(items, date(2026, 11, 14))])
+
+    def test_the_reason_leaves_its_date_to_the_deadline_line(self):
+        reason = "Angebot der Gegenpartei vom 05.11.2026 eingegangen, noch offen – Muster AG: Mietzinsreduktion CHF 2'000, zahlbar bis 30.11.2026"
+        self.assertEqual(screen.without_date(reason, "30.11.2026"), "Angebot der Gegenpartei vom 05.11.2026 eingegangen, noch offen – Muster AG: Mietzinsreduktion CHF 2'000")
+        self.assertEqual(screen.without_date("Die Meldung ist eingegangen", "30.11.2026"), "Die Meldung ist eingegangen")
+
+    def test_what_goes_out_is_tabs_named_by_whom_it_goes_to_each_ticked_once_copied(self):
+        twin = "Vorlage für Ihr Schreiben an die Arbeitgeberin"
+        draft_ = {"form": "A1", "to": "Kundschaft", "title": "Unterlagen und Angaben anfordern", "text": "Brief",
+                  "also": [{"kind": "vorlage:einsprache", "title": twin, "name": "Einsprache gegen die Kündigung", "text": "a", "template": True},
+                           {"kind": "vorlage:begruendung", "title": twin, "name": "Begründung der Kündigung verlangen", "text": "b", "template": True}]}
+        events = [{"kind": "letter.copied", "form": "A1", "at": "2026-11-15T10:00:00"}, {"kind": "letter.copied", "also": "vorlage:einsprache", "at": "2026-11-14T10:00:00"}]
+        tabs = screen.documents(draft_, events, since="2026-11-15T09:00:00")
+        self.assertEqual([(t["title"], t["copied"]) for t in tabs], [("Brief an die Kundschaft", True), ("Vorlage: Einsprache gegen die Kündigung", False),
+                                                                      ("Vorlage: Begründung der Kündigung verlangen", False)])  # a copy before the preparation does not count
+        alone = screen.documents({**draft_, "to": "Anwaltskanzlei", "also": draft_["also"][:1]}, [])
+        self.assertEqual([t["title"] for t in alone], ["Brief an die Kanzlei", "Vorlage an die Arbeitgeberin"])
+
+    def test_the_screen_says_neither_the_holiday_note_nor_a_point_the_letter_already_cites(self):
+        self.assertEqual(screen.shown_rule({"rule": "am 02.01.2027; fällt auf ein Wochenende, prüfen; kantonale Feiertage nicht berücksichtigt"}),
+                         "am 02.01.2027; fällt auf ein Wochenende, prüfen")
+        point = {"item_id": "key_point:einsprache", "kind": "key_point", "value": "open", "shown": True, "legal_basis": "Art. 354 Abs. 3 StPO",
+                 "follows": "Der Strafbefehl wird rechtskräftig", "label": {"de": "Einsprache erhoben?"}}
+        self.assertEqual(screen.key_points([point], "Ohne Einsprache wird er zum Urteil (Art. 354 Abs. 3 StPO)."), [])
+        self.assertEqual(len(screen.key_points([point], "Guten Tag")), 1)
+
+    def test_the_case_is_named_by_what_it_is_about_and_the_newest_comes_first(self):
+        request = "Rita Exempel hat die Kündigung seiner Wohnung angefochten und ist zur Schlichtungsverhandlung am 10. Dezember 2026 vorgeladen."
+        self.assertEqual(listing.dispute_object(request, ["Rita Exempel", "Kündigung Miete"]), "Wohnung")  # not the hearing
+        import tempfile
+        from casepath.web.store import CaseStore
+        with tempfile.TemporaryDirectory() as d:
+            store = CaseStore(d)
+            first, second = store.create_case("eins", {}, "x"), store.create_case("zwei", {}, "x")
+            self.assertEqual([c["id"] for c in store.list_cases()], [second["id"], first["id"]])  # also within one second
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ import tempfile
 import unittest
 
 from casepath.agents import core
-from casepath.process import area, keypoints, letters
+from casepath.process import area, keypoints, letters, screen
 from casepath.process.clock import follow_up, historic
 from casepath.process.items import UNNAMED, SHOWN_KINDS, build_items, placeholder, plain
 from casepath.web import listing
@@ -378,8 +378,11 @@ class PassedDateTests(unittest.TestCase):
         unnamed = by_id(items_of("miete-kuendigung", [("rechtsgebiet", "Mietrecht / Kündigung")], deadlines=[bare])[1])["deadline:frist"]
         self.assertEqual((unnamed["label"]["de"], unnamed["unnamed"]), (UNNAMED, True))
         self.assertNotIn("?", unnamed["label"]["de"])
-        js = (Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets" / "casepath.js").read_text()
-        self.assertIn("(d.set_by_others || d.unnamed) && dated(d)", js)  # the Fristen line: date · what · laut source · abgelaufen, source chip
+        # the Fristen line «Der Fall» shows, decided once (screen.py): date · what · how close, its source; once passed, «abgelaufen»
+        row = screen.frist_row(named, date(2025, 4, 20))
+        self.assertEqual((row["date"], row["title"], row["state"]), ("23.04.2025", "Schlichtungsverhandlung", "noch 3 Tage"))
+        self.assertEqual(screen.frist_row(named, date(2025, 4, 24))["state"], "abgelaufen")
+        self.assertEqual(screen.frist_row(unnamed, date(2025, 4, 20))["title"], UNNAMED)
 
 
 if __name__ == "__main__":

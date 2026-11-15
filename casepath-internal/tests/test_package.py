@@ -104,7 +104,7 @@ class MandatePackageTests(unittest.TestCase):
         by = dict(rows)
         self.assertEqual([l["text"][:10] for l in by["Sachverhalt"]], ["01.04.2024", "10.03.2026", "12.03.2026"])  # in time order
         self.assertIn({"text": "Mieterin (VN): Lea Beispiel", "source": "S. 1"}, by["Parteien"])
-        self.assertTrue(any("Art. 259d OR" in l["source"] for l in by["Rechtliche Kernpunkte"]))
+        self.assertTrue(any("Art. 259d OR" in l["source"] for l in by["Rechtliche Punkte"]))
         self.assertTrue(any(l["text"].startswith("10.12.2026: Schlichtungsverhandlung") for l in by["Fristen und Termine"]))
         self.assertIn("Beseitigung des Mangels", " ".join(l["text"] for l in by["Ziel der Kundschaft"]))
         text = letters.render("A10_zusammenfassung", FORMS, context(self.items, self.files))[0]

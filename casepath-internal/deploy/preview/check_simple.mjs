@@ -3,7 +3,8 @@
 // It measures, as a handler meets them: the main path on case C (open it from the case list, untick one line, copy the
 // letter, Erledigt) in clicks and scrolls; the one primary button in each state (prepared, running, paused, closed, new
 // files); instruction sentences and interactive elements above the fold on the Übersicht; that every handler gesture
-// on case D still leaves its event; that a file added in the rail leaves every button working without a reload, that the
+// on case D still leaves its event (the cover decision on the Prozess tab, where the stage's decisions are); that a file
+// added in the rail leaves every button working without a reload, that the
 // draft waits while new files are unread, that the Verlauf is one table with the report first and every gesture, that
 // «Der Fall» fills in while a run works and the viewer shows what is read, and that no element's event is refused.
 // MODE=before runs only the measures that also apply to an older build.
@@ -144,10 +145,13 @@ if (!BEFORE) {
   await page.fill("#add-doc", "Wohnungsabnahmeprotokoll"); await page.keyboard.press("Enter"); await sleep(600); await click("[data-add-doc-reason='4']", "add");
   const inLetter = await page.evaluate(() => [...document.querySelectorAll("[data-item='letter:0'] li[data-text]")].some((li) => li.dataset.text.includes("Wohnungsabnahmeprotokoll")));
   checks.push(["add a document (and it is ticked in the letter: " + inLetter + ")", await last("item.added", (e) => e.reason === "4")]);
+  // the cover decision is not asked at intake on the card: the Prozess tab holds the stage's decisions
+  await page.evaluate((id) => { location.hash = `#/case/${id}/process_builder`; }, D); await sleep(1500);
   await click("[data-decide='deckung'][data-value='bestätigt']", "decide");
-  checks.push(["change a fact (Ihr Entscheid: Ja)", await last("item.corrected", (e) => e.op === "set_fact" && e.item_id === "fact:deckung")]);
+  checks.push(["change a fact (Deckung bestätigen, Prozess)", await last("item.corrected", (e) => e.op === "set_fact" && e.item_id === "fact:deckung")]);
   await click("#undo", "undo");
   checks.push(["undo", await last("correction.undone")]);
+  await page.evaluate((id) => { location.hash = `#/case/${id}/overview`; }, D); await sleep(1500);
   await page.click("[data-item='letter:0'] [data-seg='text']"); await page.keyboard.press("End"); await page.keyboard.type(" Mit freundlichem Gruss"); await sleep(300);
   await click("#copy-draft", "copy");
   checks.push(["reword the letter (copied as edited)", await last("letter.copied", (e) => e.edited === true)]);

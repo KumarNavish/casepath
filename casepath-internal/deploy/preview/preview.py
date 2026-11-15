@@ -510,10 +510,8 @@ def main():
                                  "brief": {"request": "Lea Brunner möchte Hilfe, weil im Badezimmer immer wieder Schimmel auftritt.",
                                            "parties": [{"role": "Mieterin (VN)", "name": "Frau Lea Brunner"}], "timeline": []}})
         return case
-    case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
-    case_d = handler_case("Schimmel im Bad, zweite Meldung (synthetisch)")
     factory_b = runs.model_factory
-    seed_areas(store, runs)  # after C and D, so the cases the browser checks use stay at the top of the list
+    seed_areas(store, runs)
     case_k = seed_cost_note(store, runs)
     keyed = seed_key_cases(store, runs)
     historic = seed_historic(store)
@@ -521,6 +519,9 @@ def main():
     case_update = seed_update(store, runs)
     case_offer = seed_offer(store, runs)
     stages = seed_stages(store, runs)
+    # case C and D last: the newest come first among cases that are equally due, so the case the main path opens is in view
+    case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
+    case_d = handler_case("Schimmel im Bad, zweite Meldung (synthetisch)")
     # «Aktualisieren» in the browser runs the update's script; every other run the one case B's live view plays
     asked = {}
     start_update = runs.update

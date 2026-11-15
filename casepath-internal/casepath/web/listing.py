@@ -53,8 +53,8 @@ PEOPLE_AND_TIME = {"firma", "partei", "vater", "mutter", "bruder", "schwester", 
                    "woche", "tagen", "uhr", "mal", "zeit", "mit"}
 # words that lead to the object or the place of a dispute: «einen Occasionswagen», «auf der Autobahn», «meinem Sturz»
 LEAD = {"der", "die", "das", "dem", "den", "des", "ein", "eine", "einen", "einem", "einer", "mein", "meine", "meinem", "meinen", "meiner",
-        "unser", "unsere", "unserem", "unseren", "unserer", "sein", "seine", "seinem", "seinen", "ihr", "ihre", "ihrem", "ihren",
-        "am", "im", "beim", "vom", "zum", "zur", "an", "in", "auf", "bei", "aus"}
+        "meines", "unser", "unsere", "unserem", "unseren", "unserer", "unseres", "sein", "seine", "seinem", "seinen", "seiner", "seines",
+        "ihr", "ihre", "ihrem", "ihren", "ihrer", "ihres", "am", "im", "beim", "vom", "zum", "zur", "an", "in", "auf", "bei", "aus"}
 AMOUNT = re.compile(r"CHF\s?\d[\d'’]*(?:\.\d{2})?")
 PLACE = {"im", "an", "in", "auf", "bei", "beim", "aus"}  # not «am»: mostly a day
 COMPANY_END = re.compile(r"^(AG|GmbH|SA|Sàrl|KG|Genossenschaft)$")
