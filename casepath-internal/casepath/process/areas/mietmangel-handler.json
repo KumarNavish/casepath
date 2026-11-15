@@ -77,7 +77,12 @@
  "deadlines": [],
  "notes": [],
  "summary": [],
- "open_questions": [],
+ "open_questions": [
+  {"text": "Ist die vorgeschlagene Frist von 30 Tagen zur Beseitigung des Mangels angemessen?", "about": "vorlage.maengelruege"},
+  {"text": "Soll eine wiederholte Mängelrüge auch die Hinterlegung des Mietzinses androhen?", "about": "vorlage.maengelruege"},
+  {"text": "Sollen Schreiben, welche die Kundschaft selbst sendet, überhaupt Gesetzesartikel nennen?", "about": "vorlage.maengelruege"},
+  {"text": "Die Praxislinien dieses Gebiets beruhen auf sieben abgeschlossenen Dossiers der Protekta: entsprechen sie der heutigen Praxis?", "about": "gebiet"}
+ ],
  "settled_when": {"fact": "reaktion_vermieter", "is": "Mangel behoben / Einigung"},
  "claims_open_when": {
   "any": [{"fact": "will_schadenersatz", "is": true}, {"fact": "streit_mietzins", "is": true}]

@@ -26,7 +26,7 @@ Shipped, by the routing value `rechtsgebiet` that selects each:
 | `betreibung-schuldner` | Schuldbetreibungs- und Konkursrecht / Zahlungsbefehl gegen die Kundschaft | law |
 | `allgemein` | Übriges Recht, or nothing established (fallback) | law |
 
-All are `draft`; those from the law alone are shown as «aus dem Gesetz abgeleitet, noch nicht freigegeben». Every area also carries the cover points, their facts and the prescribed letters of `areas/cover.json` (docs/COVER.md); `cover.json` names, per area, the date that stands for the cause of the case (`cause_from`) and the clauses of the conditions for its capacity, legal area and limits (`areas`).
+All are `draft`; those from the law alone are shown as «aus dem Gesetz abgeleitet, noch nicht freigegeben» until a jurist has checked every element of the area (Review by a jurist, below). Every area also carries the cover points, their facts and the prescribed letters of `areas/cover.json` (docs/COVER.md); `cover.json` names, per area, the date that stands for the cause of the case (`cause_from`) and the clauses of the conditions for its capacity, legal area and limits (`areas`).
 
 ## Add or change an area
 
@@ -185,6 +185,7 @@ Before a file's text goes to a model, text repeated across its documents is left
 - a key point without a condition on facts, an article with its passage, or a statement (and what follows, what to check and its question); a decision's `stages` that are not backbone stages;
 - a customer letter without a condition on facts, a legal statement (an article, «muss», «Anspruch» …) without an article and its passage, an instruction whose words the cited passage does not contain, prudence that says «muss», the insurer's name in its parts, or a placeholder that is neither a fact nor a gap;
 - a stage that yields neither an action kind nor a handler's decision, `without_action` on a stage without an action, an incoming kind whose own action does not answer it, more than three facts for one kind;
+- an open question about an element (`about`) its file does not have;
 - and, after composition, everything any workflow must satisfy (every rule names a listed source, conditions name known facts and values, every step reachable) and no dead end.
 
 ## Routing
@@ -192,6 +193,27 @@ Before a file's text goes to a model, text repeated across its documents is left
 The routing fact `rechtsgebiet` names area and concern («Mietrecht / Kündigung»), read from the files with a located quote. One value selects its area; nothing established, or «Übriges Recht», goes to `allgemein`, which names the other areas as candidates for a person to pick. A second topic the reader names that is another area's own (its short title or value) is offered beside the chosen area («Prozess bestätigen»).
 
 Every shipped area joins by default, also with no catalogue directory, so out of the box no case is unmapped. A catalogue directory opts out with a settings file, e.g. `catalogue.json` = `{"format": "casepath.catalogue/1", "shipped_areas": false}`. A workflow or area file in the directory with an area's id wins over the shipped area. An intake an area supersedes (`mietmangel-handler` → `osm-mold`, `vertrag-darlehen` → `osm-loan`, `allgemein` → `osm-fallback`) stays readable for stored runs but is no longer routed.
+
+## Review by a jurist
+
+The areas, the cover check and the letters with prescribed content were written from the law and checked word for word against the official texts; whether handlers may rely on them is a jurist's call. `casepath/process/review.py` lists every element a handler or customer relies on, each with an id derived from the data and the SHA-256 of its content (canonical JSON of the element's data and the passages it rests on):
+
+| File | Elements |
+|---|---|
+| each module | `frage.<fact>` (asked of the customer), `unterlage.<id>`, `hinweis.<id>`, `kernpunkt.<id>`, `frist.<id>`, `rahmen.<rights\|conditions\|demand>`, `vorlage.<id>` |
+| `backbone` | `zaehlung.<rule>` and `zaehlung.feiertage` (shown in every area whose deadlines use them), `schreiben.A11_teilablehnung`, `schreiben.A12_mitwirkung_kanzlei` |
+| `cover` | `punkt.<id>`, `zuordnung.<id>` (each legal area's capacity and clauses; the rows of `areas` carry an `id`), `ursache`, `frage.ursache_datum`, `regel.leistungseinstellung`, `regel.erstkontakt`, `schreiben.<form>.<required part>`, `schreiben.A12_mitwirkung` |
+
+Wissen → «Rechtsgebiete» (first for a reviewer) has one row per area, one for the cover check and one for the letters, with its state and counts (geprüft, offen, Änderung nötig, Fragen). A row opens one screen: each element in the words the handler or customer sees, the verbatim passages with the article and a link to the official text (the law table's fedlex address, the edition of the conditions, the public page), its open question, and three actions: «geprüft», «Änderung nötig …» (a comment, optionally the wording proposed), «Frage …» (a comment). «nur offene» hides what is checked; «Prüfpaket» is the same content as one plain page to print, with the sources listed once. A mark is a row of the store's `reviews` (file, element, content hash, mark, comment, wording, reviewer, time; never updated, the latest counts) and an event `review.marked` in the log of what happens outside a case. `CASEPATH_REVIEWERS` (comma-separated sign-in names, set in the deployment, never in Git) limits who may mark and who sees «Verwaltung» (Wissen, Auswertung); empty, every signed-in user may.
+
+What follows from the marks, the data files unchanged:
+
+- An area whose elements are all «geprüft» is released: the case's rail says «freigegeben am … · <reviewer>»; with any mark «in Prüfung (n von m geprüft)»; else the label above.
+- An element marked «Änderung nötig»: a hint, a key point's advice or a template for the customer's own letter is offered unticked with «in Prüfung» (a key point is not stated by itself in the assessment, a template not referred to by itself); a deadline is never hidden or unticked by a mark, it shows «in Prüfung», as do a document, a question, a cover point and a required part. A counting rule or the holiday list marked so marks every deadline counted by it.
+- Once an element's content changes in a release its hash changes: the mark lapses («geändert seit Prüfung»), counts as open and changes nothing in a case.
+- `GET /api/review/export` (JSON, `?format=md` Markdown) lists every mark «Änderung nötig» or «Frage» that holds, with element id, comment and wording, for the developers; no case content.
+
+An open question names the element it is about (`"about": "<id>"`, a list of ids, or `"gebiet"` for the area as a whole) and is shown beside it; the validator refuses one about an id its file does not have. The case's process carries only the open questions without `about`, as before.
 
 ## Stored runs
 

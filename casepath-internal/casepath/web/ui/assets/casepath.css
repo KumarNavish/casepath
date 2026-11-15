@@ -469,3 +469,61 @@ body.dragging .cp-drop{border-color:var(--crimson);color:var(--crimson)}
 .cp-entry-tag{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:0 6px;color:var(--ink-2)}
 .cp-nowrap{white-space:nowrap}
 .cp-older{color:var(--crimson)}
+
+/* Verwaltung: Wissen and Auswertung for the people who review, one quiet entry at the right of the header */
+.cp-admin{position:relative}
+.cp-admin>summary{list-style:none;cursor:pointer;color:var(--ink-2);font-size:13.5px;padding:4px 0}
+.cp-admin>summary::-webkit-details-marker{display:none}
+.cp-admin>summary:hover,.cp-admin.on>summary{color:var(--crimson)}
+.cp-admin-menu{position:absolute;right:0;top:calc(100% + 10px);min-width:170px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:6px 0;z-index:6;box-shadow:0 6px 18px rgba(20,21,22,.07)}
+.cp-admin-menu a{display:block;padding:7px 16px;text-decoration:none;font-size:14px}
+.cp-admin-menu a:hover,.cp-admin-menu a[aria-current="page"]{color:var(--crimson)}
+
+/* The jurist's review of the legal content (Wissen → Rechtsgebiete): dense content, quiet chrome */
+.cp-rv-intro{margin:-4px 0 10px;font-size:13.5px;color:var(--ink-2)}
+.cp-rv-table{max-width:1180px}
+.cp-rv-table th.num,.cp-rv-table td.num{text-align:right;font-variant-numeric:tabular-nums;width:118px}
+.cp-rv-table td.zero{color:var(--ghost)}.cp-rv-table td.flag{color:var(--crimson)}
+.cp-rv-table td{padding:9px 8px}.cp-rv-table a{text-decoration:none}.cp-rv-table a:hover b{color:var(--crimson)}
+.cp-rv-table tr.cp-rv-common:first-of-type td,.cp-rv-table tr:not(.cp-rv-common)+tr.cp-rv-common td{border-top:1px solid var(--border)}
+.cp-rv-state{font-size:13.5px;color:var(--ink-2)}.cp-rv-state.busy{color:var(--ink)}.cp-rv-state.released{color:var(--green-ink);font-weight:600}
+.cp-learned{margin-top:38px}
+.cp-review{max-width:1280px}
+.cp-rv-back{margin:0 0 4px}
+.cp-rv-sub{margin:0 0 6px;color:var(--ink-2);font-size:14px}
+.cp-rv-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;margin:0 0 6px;font-size:13.5px;color:var(--ink-2)}
+.cp-rv-filter{display:inline-flex;align-items:center;gap:6px;cursor:pointer;color:var(--ink)}
+.cp-rv-areaq{margin:12px 0 0;padding:8px 12px;background:var(--notice);border-radius:4px;font-size:13.5px;max-width:980px}
+.cp-rv-areaq p{margin:4px 0 0}
+h2.cp-rv-group{margin:30px 0 0;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.cp-rv-el{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:32px;padding:14px 0 16px;border-top:1px solid var(--line)}
+h2.cp-rv-group+.cp-rv-el{border-top:0}
+.cp-rv-el h3{margin:0 0 6px;font-size:15px;font-weight:700;line-height:1.35}
+.cp-rv-el h3 .cp-chip{font-weight:400;vertical-align:1px}
+.cp-rv-lines{display:grid;grid-template-columns:132px minmax(0,1fr);gap:3px 14px;margin:0;font-size:13.5px;line-height:1.45}
+.cp-rv-lines dt{color:var(--ink-2)}.cp-rv-lines dd{margin:0;overflow-wrap:anywhere}
+.cp-rv-lines dd.pre{white-space:pre-wrap;font-size:13px;color:var(--ink-doc);border-left:2px solid var(--line);padding-left:10px}
+.cp-rv-shared{margin:6px 0 0;font-size:12.5px;color:var(--ink-2)}
+.cp-rv-q{margin:8px 0 0;padding:6px 10px;background:var(--notice);border-radius:4px;font-size:13.5px}
+.cp-rv-q b{font-weight:600;margin-right:4px}
+.cp-rv-meta{margin:8px 0 0;font-size:13px;color:var(--ink-2)}
+.cp-rv-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.cp-rv-who{margin-left:8px;font-size:12.5px;color:var(--ink-2)}
+.cp-rv-actions .cp-button{padding:3px 10px;font-size:13px;color:var(--ink-2)}
+.cp-rv-actions .cp-button:hover{color:var(--crimson);border-color:var(--crimson)}
+.cp-rv-actions .cp-button[aria-pressed="true"]{color:var(--ink);border-color:var(--ink);font-weight:600}
+.cp-rv-form{display:grid;gap:8px;margin-top:10px;max-width:620px;font-size:13.5px;color:var(--ink-2)}
+.cp-rv-form textarea{display:block;width:100%;margin-top:3px;border:1px solid var(--border);border-radius:var(--radius);padding:6px 8px;color:var(--ink)}
+.cp-rv-form span{display:flex;gap:12px;align-items:center}
+.cp-rv-law{font-size:13.5px}
+.cp-rv-passage{margin:0 0 10px;padding:0 0 0 12px;border-left:2px solid var(--line)}
+.cp-rv-cite{margin:0;font-size:12.5px;color:var(--ink-2)}.cp-rv-cite b{font-weight:600;color:var(--ink);margin-right:6px}
+.cp-rv-cite a{color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
+.cp-rv-cite a:hover{color:var(--crimson)}
+.cp-rv-words{margin:2px 0 0;color:var(--ink-doc);line-height:1.5}
+.cp-rv-nolaw{margin:0;font-size:13px}
+@media (max-width:1000px){.cp-rv-el{grid-template-columns:minmax(0,1fr);gap:10px}}
+/* «in Prüfung» beside an element a jurist marked «Änderung nötig», wherever a case shows it; the area's line in the rail */
+.cp-review-mark{display:inline-block;margin-left:4px;padding:0 7px;border:1px dashed var(--ghost-ring);border-radius:999px;font-size:11.5px;font-weight:400;font-style:normal;color:var(--ink-2);white-space:nowrap;vertical-align:1px}
+.cp-caseline small.cp-area-review{margin-top:3px}
+.cp-caseline small.cp-area-review.released{color:var(--green-ink)}

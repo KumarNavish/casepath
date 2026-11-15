@@ -258,5 +258,6 @@ def with_letter(items, events, kind):
 
 
 def referrals(items, kind):
-    """The sentences for one of the insurer's letters (A1 or A5): one per template offered with it."""
-    return [referral(i) for i in items or () if i.get("kind") == "customer_letter" and kind in (i.get("offered_with") or ())]
+    """The sentences for one of the insurer's letters (A1 or A5): one per template offered with it. A template a jurist
+    marked «Änderung nötig» (``review``) stays to be copied on its own, but the letter does not refer to it by itself."""
+    return [referral(i) for i in items or () if i.get("kind") == "customer_letter" and kind in (i.get("offered_with") or ()) and not i.get("review")]

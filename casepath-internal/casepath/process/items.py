@@ -10,7 +10,7 @@ import hashlib
 import json
 import re
 
-from . import account, cover, customer_letters, incoming, keypoints, mandate, settlement
+from . import account, cover, customer_letters, incoming, keypoints, mandate, review as reviews, settlement
 from .area import compute_deadline, open_ended_title, period_text, set_date, statutory_period
 from .clock import as_of, historic as historic_file, parse_date, silence
 from .workflows import done_actions, evaluate_condition, stage_floor
@@ -273,10 +273,14 @@ def account_dates(items, ledger, graph=None):
                       **({"stated": d["text"], "rule": f"{d['text']} ab {d['source']}, nach Kalendertagen berechnet"} if d["computed"] else {})})
 
 
-def build_items(state, result, files=None, events=None):
+def build_items(state, result, files=None, events=None, review=None):
     """``events``: the case's log, for what a person did outside the facts (a letter copied, a case moved into or out of
-    the historic files)."""
+    the historic files). ``review``: the jurists' marks that hold for the legal content as it is now (review.Model.current):
+    an element marked «Änderung nötig» is offered unticked with «in Prüfung» (a hint, a key point's advice, a template);
+    a deadline is never hidden or unticked by a mark, and it, like a document, a question or a cover point, shows «in Prüfung»."""
     graph, ev, result = state.get("process"), state.get("evaluation"), result or {}
+    flagged = reviews.flags(graph, review)
+    marked = lambda held: {"review": reviews.IN_REVIEW} if held else {}
     case = state.get("case") or {}
     study = (case.get("intake") or {}).get("study")
     created = study.get("opened") if isinstance(study, dict) else case.get("created_at")  # a study copy counts as its source, as frozen
@@ -310,7 +314,7 @@ def build_items(state, result, files=None, events=None):
                 node=row.get("step"), origin=_origin(d), chain=True, label=requested_title(d, row, ask), status=row["status"],
                 legal_basis=d.get("legal_basis") or row.get("legal_basis"),
                 required=row["required"], ask=ask, part_of=part_of.get(row["document"]),
-                **({"practice": practice_tag(d)} if practice_tag(d) else {}),
+                **({"practice": practice_tag(d)} if practice_tag(d) else {}), **marked(flagged.document(row["document"])),
                 reason=("liegt teilweise vor" if row.get("partial") and d.get("when_partly_present") == "offer" else
                         f'{_in_file(files, d["offered_when_in_file"]["kinds"])} Fotos/Protokolle liegen vor'
                         if d.get("offered_when_in_file") and _in_file(files, d["offered_when_in_file"]["kinds"]) else
@@ -365,7 +369,7 @@ def build_items(state, result, files=None, events=None):
                     node=_fact_node(graph, d["trigger"]), origin="law", chain=True, label=d["title"], stated=str(trigger),
                     rule=computed[1], legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"),
                     party=d.get("party", "kunde"), **({"condition": d["when_text"]} if unsettled else {}),
-                    **({"due_text": f"{period_text(d)} am {_day(trigger)}"} if backwards else {}))
+                    **({"due_text": f"{period_text(d)} am {_day(trigger)}"} if backwards else {}), **marked(flagged.deadline(d["id"])))
             elif trigger is None and (doubt := unsettled_trigger(result, d["trigger"])):
                 # A trigger date that was read but not settled (the checker rejected it, or two readings differ) never makes
                 # its deadline disappear: it is shown as possible, with the date the reading gives, and the date is asked.
@@ -379,7 +383,8 @@ def build_items(state, result, files=None, events=None):
                     rule=f"Auslöser «{doubt['value']}» {doubt['why']}" + (f"; danach bis {_day(candidate)}" if candidate else "") + "; Datum prüfen",
                     legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
                     possible=True, **({"candidate": candidate} if candidate else {}),
-                    **({"condition": d["when_text"]} if d.get("when") and evaluate_condition(d["when"], state.get("facts") or {}) is None else {}))
+                    **({"condition": d["when_text"]} if d.get("when") and evaluate_condition(d["when"], state.get("facts") or {}) is None else {}),
+                    **marked(flagged.deadline(d["id"])))
             elif trigger is None:
                 # The file does not give the date that starts it: never left out while its condition holds or is open. It is
                 # shown as possible with «Datum fehlt», says what starts it, and its date is asked (the trigger question).
@@ -394,7 +399,7 @@ def build_items(state, result, files=None, events=None):
                     rule=f"{period_text(d)} {starts}; Datum fehlt" + (f" ({d['question']})" if d.get("question") else ""),
                     legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
                     possible=True, missing=True, starts=starts, trigger=d["trigger"], due_text="Datum fehlt",
-                    **({"condition": d["when_text"]} if holds is None and d.get("when_text") else {}))
+                    **({"condition": d["when_text"]} if holds is None and d.get("when_text") else {}), **marked(flagged.deadline(d["id"])))
         account_dates(items, state.get("account"), graph)  # a date the account holds for an ask, an offer or a next step, still open
         pair_set_dates(items)  # a date the file sets for the same obligation stands beside the computed one
         asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
@@ -520,7 +525,8 @@ def build_items(state, result, files=None, events=None):
             for fid in open_stage_facts(graph, state.get("facts") or {}, ev)[:1]:
                 f = next(x for x in graph["facts"] if x["id"] == fid)
                 add("letter_question", fid, value=f.get("customer_question") or f["question"], stated_as="put_to_handler", verdict=None,
-                    evidence=[], node=here.get("id"), origin="workflow", chain=True, label=f.get("customer_question") or f["question"], ask="now")
+                    evidence=[], node=here.get("id"), origin="workflow", chain=True, label=f.get("customer_question") or f["question"], ask="now",
+                    **marked(flagged.question(fid)))
         # In an area observed in practice (its lines carry counts), the first request's ticked lines are exactly those
         # practice supports: a line from another mechanism (a key point's advice, a template for the customer's letter, a
         # cover question) is offered unless the area's data cites practice for it, and an observed hint is never rewritten
@@ -538,21 +544,23 @@ def build_items(state, result, files=None, events=None):
                     add("letter_question", f["id"], value=asked, stated_as="put_to_handler", verdict=None, evidence=[],
                         node=here.get("id"), origin="workflow", chain=True, label=asked,
                         ask="proposed" if trigger == "offer" or f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers
-                        or practiced and not keypoints.observed(f) else "now")
+                        or practiced and not keypoints.observed(f) else "now", **marked(flagged.question(f["id"])))
             asked_ids = {i["key"] for i in items if i["kind"] == "letter_question"}
             for d in missing_triggers:  # a trigger date the area does not ask the customer by itself: offered with its deadline
                 if d["trigger"] not in asked_ids and d.get("question") and known.get(d["trigger"]) is None:
                     asked_ids.add(d["trigger"])
                     add("letter_question", d["trigger"], value=d["question"], stated_as="put_to_handler", verdict=None, evidence=[],
-                        node=here.get("id"), origin="law", chain=True, label=d["question"], ask="proposed")
+                        node=here.get("id"), origin="law", chain=True, label=d["question"], ask="proposed", **marked(flagged.question(d["trigger"])))
             # A key point that is advice the customer can act on now goes into the first request with its article: ticked when
             # its condition holds, offered while it depends on an open fact. Where it applies, it stands for the area's hint
             # that says the same (every article of the hint is one of the point's); where it is open and such a hint is in
             # the letter already, the hint says it. In an area observed in practice the observed hint always stays as it is,
             # an advice point that says the same is not added, and other advice is offered unless practice shows it.
             advice = [p for p in keypoints.evaluate(graph, known) if p.get("advice")]
+            # a point marked «Änderung nötig» never stands for a hint: the hint stays as itself
             replaced = set() if practiced else \
-                {h["id"] for p in advice if p["state"] == "applies" for h in graph.get("hints", []) if keypoints.covers(p, h)}
+                {h["id"] for p in advice if p["state"] == "applies" and not flagged.key_point(p["id"])
+                 for h in graph.get("hints", []) if keypoints.covers(p, h)}
             given = set()
             for hint in graph.get("hints", []):
                 if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True or hint["id"] in replaced:
@@ -560,24 +568,32 @@ def build_items(state, result, files=None, events=None):
                 if hint.get("trigger") in unsettled_triggers:
                     continue  # the possible deadline itself is in the letter, with its date to check
                 given.add(hint["id"])
-                add("hint", hint["id"], value=hint["text"], stated_as="established", verdict=None, evidence=[], node=here.get("id"),
-                    origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
+                held = flagged.hint(hint["id"])  # a hint marked «Änderung nötig» is offered, not ticked; a deadline's stays
+                add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler" if held == "untick" else "established", verdict=None,
+                    evidence=[], node=here.get("id"), origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"),
+                    **marked(held))
             for hint in graph.get("hints", []):  # a hint whose condition is still open is offered too: Protekta gives it early
                 if hint["when"] is not True and evaluate_condition(hint["when"], known) is None and hint["id"] not in replaced:
                     given.add(hint["id"])
                     add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
-                        origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
+                        origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"), **marked(flagged.hint(hint["id"])))
             for p in advice:
-                if (p["state"] == "open" or practiced) and any(keypoints.covers(p, h) for h in graph.get("hints", []) if h["id"] in given):
+                held = flagged.key_point(p["id"])
+                if (p["state"] == "open" or practiced or held) and any(keypoints.covers(p, h) for h in graph.get("hints", []) if h["id"] in given):
                     continue
                 line = keypoints.advice_line(p)
-                ticked = p["state"] == "applies" and (not practiced or p.get("observed"))
+                ticked = p["state"] == "applies" and (not practiced or p.get("observed")) and not held
                 add("hint", f"kp-{p['id']}", value=line, stated_as="established" if ticked else "put_to_handler", verdict=None,
-                    evidence=[], node=here.get("id"), origin="law", chain=True, label=line, key_point=p["id"], with_basis=True)
+                    evidence=[], node=here.get("id"), origin="law", chain=True, label=line, key_point=p["id"], with_basis=True, **marked(held))
         # the cover points, the checks a prescribed letter rests on, and the first contact (cover.py)
         # a historic file never shows a first contact, nor does a case whose letter went out (cover.first_contact)
-        items += cover.items(graph, known_facts, result, files, planned if action and planned and action[0] == planned.get("kind") else None, here.get("id"),
-                             created=created, historic=bool(old) or contacted, ledger=ledger)
+        covered = cover.items(graph, known_facts, result, files, planned if action and planned and action[0] == planned.get("kind") else None, here.get("id"),
+                              created=created, historic=bool(old) or contacted, ledger=ledger)
+        for i in covered:  # a cover point, a check or the first contact whose rule a jurist marked «Änderung nötig» says «in Prüfung»
+            if (i["kind"] == "cover" and i["key"] != "summary" and flagged.cover(i["key"], known_facts.get("rechtsgebiet"))) \
+                    or (i["kind"] == "check" and flagged.check(i["key"])) or (i["kind"] == "contact" and flagged.contact()):
+                i["review"] = reviews.IN_REVIEW
+        items += covered
         # The legal key points of the area: those that apply, and those whose condition the file leaves open (as questions);
         # the card shows those that help at the case's stage
         points = keypoints.evaluate(graph, known_facts, here.get("id"))
@@ -587,7 +603,7 @@ def build_items(state, result, files=None, events=None):
             add("key_point", p["id"], value=p["state"], stated_as="established" if p["state"] == "applies" else "put_to_handler", verdict=None,
                 evidence=_evidence(cited), node=here.get("id"), origin="law", chain=True, label=p["text"], legal_basis=p["cite"],
                 law=p["law"], follows=p["follows"], check=p["check"], facts=p["facts"], shown=p["id"] in on_card, stages=p["stages"],
-                **({"advice": keypoints.advice_line(p)} if p.get("advice") else {}))
+                **({"advice": keypoints.advice_line(p)} if p.get("advice") else {}), **marked(flagged.key_point(p["id"])))
         # At the mandate and handling stages: the short facts the file establishes there, each with its source
         dated = incoming.document_dates(graph, result.get("facts"), files)
         # A cost claim of the mandated firm is the open item: what the file shows about the guarantee, each line with its
@@ -638,20 +654,22 @@ def build_items(state, result, files=None, events=None):
         rows_by_id = {c["id"]: c for c in graph.get("customer_letters") or ()}
         for t in customer_letters.evaluate(graph, known_facts, deadlines, insured, known_facts.get("gegenpartei"), as_of(files)):
             offered_with = t["offered_with"]
-            if practiced and "A1" in offered_with and not keypoints.observed(rows_by_id.get(t["id"])):
-                # practice does not show this template in a first request: its sentence is offered there, the template
-                # goes with the letter only when the handler ticks that line
+            held = flagged.letter(t["id"])  # marked «Änderung nötig»: offered, never sent along by default
+            if (practiced and not keypoints.observed(rows_by_id.get(t["id"])) or held) and "A1" in offered_with:
+                # practice does not show this template in a first request (or a jurist asked for a change): its sentence is
+                # offered there, the template goes with the letter only when the handler ticks that line
                 offered_with = [k for k in offered_with if k != "A1"]
                 if first_request:
                     line = customer_letters.referral({"template_kind": t["kind"], "label": {"de": t["heading"]}, "to": t["to"],
                                                       "to_dative": t["to_dative"], "due": t["due"]})
                     add("hint", f"cl-{t['id']}", value=line, stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
-                        origin="template", chain=True, label=line, customer_letter=t["id"])
+                        origin="template", chain=True, label=line, customer_letter=t["id"], **marked(held))
             add("customer_letter", t["id"], value="applies", stated_as="established", verdict=None, evidence=[], node=here.get("id"),
                 origin="law", chain=False, label=t["heading"], legal_basis=", ".join(t["cites"]), title=t["title"], text=t["text"],
-                to=t["to"], to_dative=t["to_dative"], template_kind=t["kind"], short=t["short"], due=t["due"], offered_with=offered_with)
+                to=t["to"], to_dative=t["to_dative"], template_kind=t["kind"], short=t["short"], due=t["due"], offered_with=offered_with,
+                **marked(held))
     brief = result.get("brief") or {}
-    applying = keypoints.evaluate(graph, state.get("facts") or {}) if graph and ev else []
+    applying = [p for p in keypoints.evaluate(graph, state.get("facts") or {}) if not flagged.key_point(p["id"])] if graph and ev else []
     for i, q in enumerate(brief.get("questions") or []):  # the customer's own questions, answered by a key point where one matches
         point = keypoints.answer_for(q.get("question"), applying)
         add("customer_question", str(i), value=q.get("question"), stated_as="established", verdict=None, evidence=_evidence(q.get("citations")),

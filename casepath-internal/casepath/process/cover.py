@@ -88,6 +88,9 @@ def validate(data):
         for fact in [point.get("tick"), point.get("tick_unternehmen"), point.get("date")]:
             if fact and fact not in facts:
                 raise CatalogueError(f"cover: point {point['id']} names an unknown fact {fact!r}")
+    ids = [a.get("id") for a in data["areas"]]
+    if not all(isinstance(i, str) and re.fullmatch(r"[a-z][a-z0-9-]*", i) for i in ids) or len(ids) != len(set(ids)):
+        raise CatalogueError("cover: each area mapping needs its own id (lower case), the review names it")
     for area in data["areas"]:
         for part in ("eigenschaft", "rechtsgebiet", "grenzen"):
             for edition, shorts in (area.get(part) or {}).items():
@@ -97,6 +100,8 @@ def validate(data):
     if set(reasons) != seen | {"anderer Grund"}:
         raise CatalogueError("cover: deckung_grund must offer every point and «anderer Grund»")
     check_forms({k: flat_form(v) for k, v in data["forms"].items()}, data)
+    from . import review  # an open question attached to an element names one the jurist reviews
+    review.check_questions(data.get("open_questions"), review.cover_ids(data), "cover")
     return data
 
 

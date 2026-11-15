@@ -66,7 +66,7 @@ Splitting the agent core from the case service, as described above, comes after 
 The same application runs as a Databricks App. `deploy/databricks/package.sh <dir>` assembles the folder the app runs
 from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `requirements.txt`. In `app.yaml`:
 
-- **Sign-in:** Databricks signs people in and passes their e-mail in `X-Forwarded-Email`. `CASEPATH_ALLOWED_USERS` admits only the named pilot group. App permissions in Databricks should match that list.
+- **Sign-in:** Databricks signs people in and passes their e-mail in `X-Forwarded-Email`. `CASEPATH_ALLOWED_USERS` admits only the named pilot group. App permissions in Databricks should match that list. `CASEPATH_REVIEWERS` names the jurists who may mark the legal content and see «Verwaltung» (Wissen, Auswertung); empty, every member of the group may (docs/AREAS.md, Review by a jurist).
 - **Model:** `CASEPATH_MODEL_PROVIDER=databricks` calls a model in the workspace, such as one from its gateway, through its OpenAI-compatible chat API. The app signs in as its own service principal. `casepath/agents/chat_model.py` translates the agents' messages, tool calls, structured answers and page images, so nothing else changes.
 - **Storage:** the app's own disk does not survive a restart. With `CASEPATH_VOLUME` naming a Unity Catalog volume, the case store is restored from the volume at start and copied there every 30 seconds and at shutdown (`casepath/web/mirror.py`). One app instance writes a volume.
 - **Packages:** the app needs nothing beyond the platform's web packages.

@@ -17,6 +17,7 @@ const WORDS = {
   present: "vorhanden", missing: "fehlt", unusable: "unbrauchbar", unchecked: "nicht geprüft", contradicted: "widersprochen",
   not_found: "nicht gefunden", confirmed: "bestätigt", conflicting: "widersprüchlich", established: "belegt", presumed: "vermutet", unknown: "unbekannt", active: "aktiv", candidate: "Vorschlag", retired: "zurückgezogen",
   reviewed: "geprüft", draft: "Entwurf", document_need: "Dokument", question: "Frage", step: "Schritt", note: "Hinweis",
+  applied: "angewendet", absent: "fehlt",
 };
 const word = (value) => (LANG === "de" && WORDS[value]) || String(value ?? "").replace(/_/g, " ");
 const TOOL_DE = { list_files: "listet die Dateien", open_process: "öffnet den Prozess", view_knowledge: "sieht das Wissen durch", evaluate: "wertet den Prozess aus",
@@ -77,6 +78,7 @@ async function api(path, options = {}) {
 function parseRoute() {
   const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
   if (parts[0] === "case" && parts[1]) return { view: "case", id: parts[1], tab: parts[2] || "overview" };
+  if (parts[0] === "knowledge" && parts[1] === "gebiet" && parts[2]) return { view: "review", id: decodeURIComponent(parts[2]) };
   if (parts[0] === "knowledge") return { view: "knowledge" };
   if (parts[0] === "auswertung") return { view: "auswertung" };
   return { view: "cases" };
@@ -109,13 +111,21 @@ function renderTop() {
             ["document_finder", T("Documents", "Unterlagen"), "folder"], ["history", T("History", "Verlauf"), "memory"]].map(([id, title, ic]) => `<a class="cp-tab" href="#/case/${esc(route.id)}/${id}"
       ${route.tab === id ? 'aria-current="page"' : ""} data-tab="${id}">${icon(ic)}${title}</a>`).join("");
   } else {
-    tabs = [["cases", T("Cases", "Fälle"), "folder"], ["knowledge", T("Knowledge", "Wissen"), "memory"], ["auswertung", T("Evaluation", "Auswertung"), "nodes"]].map(([id, title, ic]) =>
-      `<a class="cp-tab" href="#/${id}" ${route.view === id ? 'aria-current="page"' : ""}>${icon(ic)}${title}</a>`).join("");
+    tabs = `<a class="cp-tab" href="#/cases" ${route.view === "cases" ? 'aria-current="page"' : ""}>${icon("folder")}${T("Cases", "Fälle")}</a>`;
   }
   const other = LANG === "de" ? "en" : "de";
   $("#top").innerHTML = `${wordmark}<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
-    <div class="cp-top-right">${route.view === "case" ? `<a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : ""}<span>${esc(S.me || "")}</span>
+    <div class="cp-top-right">${route.view === "case" ? `<a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
       <a class="cp-link" href="?lang=${other}${esc(location.hash)}" lang="${other}">${other.toUpperCase()}</a></div>`;
+}
+// Wissen and Auswertung are for the people named to review the legal content (CASEPATH_REVIEWERS; with none named, for
+// everyone): one quiet entry at the right of the header, never beside «Fälle».
+function adminMenu(route) {
+  if (!S.mayReview) return "";
+  const here = { knowledge: route.view === "knowledge" || route.view === "review", auswertung: route.view === "auswertung" };
+  return `<details class="cp-admin ${here.knowledge || here.auswertung ? "on" : ""}"><summary>${T("Administration", "Verwaltung")}</summary><div class="cp-admin-menu">
+    <a href="#/knowledge" ${here.knowledge ? 'aria-current="page"' : ""}>${T("Knowledge", "Wissen")}</a>
+    <a href="#/auswertung" ${here.auswertung ? 'aria-current="page"' : ""}>${T("Evaluation", "Auswertung")}</a></div></details>`;
 }
 
 // ---------- cases ----------
@@ -211,6 +221,38 @@ function standAm(d) {
   const day = h.as_of || h.newest;
   return ` <span class="cp-chip wait" title="${T("A historic file: its dates are not counted as overdue", "Eine historische Akte: ihre Daten gelten nicht als überfällig")}">${T("Historic file", "Historische Akte")}${day ? ` · ${h.as_of ? T("as of", "Stand am") : T("newest document", "neuestes Dokument")} ${dateText(day)}` : ""}</span>`;
 }
+// The legal area of the case and whether a jurist released its content: «aus dem Gesetz abgeleitet, noch nicht
+// freigegeben», «in Prüfung (n von m geprüft)» or «freigegeben am … · Name» (the server's review of the area).
+function areaLine(d) {
+  const a = d.area_review;
+  if (!a || !a.label) return "";
+  return `<small class="cp-area-review ${a.state === "freigegeben" ? "released" : ""}">${a.title ? `${esc(a.title)} · ` : ""}${esc(a.label)}</small>`;
+}
+// An element a jurist marked «Änderung nötig» shows «in Prüfung» beside it wherever the case's screens draw it: added after
+// drawing, from the items the server marked (review); a deadline stays as it is, only marked.
+function markInReview() {
+  const items = (S.data && S.data.items) || [];
+  const flagged = items.filter((i) => i.review);
+  const draft = (S.data && S.data.draft) || {};
+  const parts = (draft.required || []).filter((r) => r.review);
+  const templates = (draft.also || []).filter((a) => a.review);
+  if (!flagged.length && !parts.length && !templates.length) return;
+  const mark = (extra = "") => ` <span class="cp-review-mark" title="${T("A jurist asked for a change: offered until it is resolved, never ticked by itself", "Eine Juristin oder ein Jurist hat eine Änderung verlangt: bis dahin nur angeboten, nie von selbst angekreuzt")}">${T("under review", "in Prüfung")}${extra}</span>`;
+  const add = (el, extra) => { if (el && !el.querySelector(".cp-review-mark")) el.insertAdjacentHTML("beforeend", mark(extra)); };
+  const labels = items.filter((i) => i.kind === "deadline").map((i) => plainQuestion((i.label || {}).de || "")).filter(Boolean);
+  for (const i of flagged) {
+    const own = [...document.querySelectorAll(`[data-item="${CSS.escape(i.item_id)}"]`)].filter((el) => el.tagName !== "SECTION");
+    if (own.length) { own.forEach((el) => add(el)); continue; }
+    if (i.kind !== "deadline") continue;
+    const label = plainQuestion((i.label || {}).de || "");  // a deadline's rows, by its title (a longer title that holds it is another deadline)
+    for (const el of document.querySelectorAll(".cp-frist, .cp-lead-frist")) {
+      const text = el.textContent;
+      if (label && text.includes(label) && !labels.some((other) => other !== label && other.includes(label) && text.includes(other))) add(el);
+    }
+  }
+  if (parts.length) add($(".cp-required"), `: ${esc(parts.map((r) => r.title).join(", "))}`);
+  for (const a of templates) add($(`details.cp-also[data-also="${CSS.escape(a.kind)}"] > summary`));
+}
 
 // ---------- case data helpers ----------
 const result = () => (S.data && S.data.run && ["completed", "paused"].includes(S.data.run.status) ? S.data.run.result : null) || lastResult();
@@ -286,7 +328,7 @@ function renderRail() {
         : dateText(f.created_at)}${f.extraction && f.extraction.pages > 1 ? ` · ${(f.extraction.kept_pages || []).length || f.extraction.pages} ${T("pages", "Seiten")}` : ""}</small>
       ${(f.extraction && (f.extraction.instruction_like || []).length) ? `<span class="cp-warn">${T("Contains text addressed to an AI", "Enthält Text an die KI")}</span>` : ""}</span></button>${segmentRows(f)}`).join("");
   return `<aside class="cp-rail" aria-label="${T("Files", "Dateien")}">
-    <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(d.case.display_title || d.case.title)}</div>${standAm(d)}</div>
+    <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(d.case.display_title || d.case.title)}</div>${standAm(d)}${areaLine(d)}</div>
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
@@ -1975,6 +2017,7 @@ async function renderCase() {
     if (t.focus) { el.focus(); try { el.setSelectionRange(t.start, t.end); } catch (e) { /* not a text field */ } }
   }
   keepMotion($("#app"));
+  markInReview();
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; S.follow = !running(); renderCase(); } });
@@ -2044,14 +2087,46 @@ async function renderAuswertung() {
       <tbody>${rows || `<tr><td colspan="10" class="cp-muted">${T("No use recorded yet.", "Noch keine Nutzung erfasst.")}</td></tr>`}</tbody></table></main>`;
 }
 
+// What the Knowledge items and the areas are called where a handler meets them: never an internal id or an English word.
+const CHANGE_DE = { created: "erstellt", refined: "verfeinert", active: "freigegeben", retired: "zurückgezogen", candidate: "wieder Vorschlag" };
+const changeText = (c) => {
+  const m = String(c || "").match(/^(created|refined|active|retired|candidate)(?::\s*(.*))?$/);
+  if (!m || LANG !== "de") return String(c || "");
+  return m[2] ? `${CHANGE_DE[m[1]]}: ${m[2]}` : CHANGE_DE[m[1]];
+};
+const byWhom = (by) => (by === "build" ? T("shipped with the build", "mit der Version ausgeliefert") : by || "");
+// A process family as handlers call it: the area's own name, or the area that took over its intake («Mietmangel»).
+function familyName(family) {
+  const all = S.workflows || [];
+  const own = all.find((w) => w.id === family);
+  const over = all.find((w) => (w.supersedes || []).includes(family));
+  const w = (own && own.area) ? own : over || own;
+  if (w && w.example) return T("Example process (synthetic)", "Beispielprozess (synthetisch)");
+  return w ? (w.short_title || w.title) : T("another process", "anderer Prozess");
+}
+
 async function renderKnowledge() {
-  const [data, cases, workflows] = await Promise.all([api("/api/knowledge"), api("/api/cases"), api("/api/workflows")]);
+  const [data, cases, workflows, review] = await Promise.all([api("/api/knowledge"), api("/api/cases"), api("/api/workflows"),
+    S.mayReview ? api("/api/review").catch(() => null) : Promise.resolve(null)]);
   S.workflows = workflows.workflows;
   const titles = Object.fromEntries(cases.cases.map((c) => [c.id, c.title]));
+  const caseName = (id) => titles[id] || T("a deleted case", "ein gelöschter Fall");
   const byItem = {};
   for (const use of data.uses) (byItem[use.knowledge_id] = byItem[use.knowledge_id] || []).push(use);
-  const families = {};
-  for (const item of data.knowledge) (families[item.family] = families[item.family] || []).push(item);
+  // One entry per item as handlers know it: the same item seeded for an area and the intake it replaced is one entry.
+  const groups = {};
+  for (const item of data.knowledge) {
+    const name = familyName(item.family);
+    const key = `${item.kind}|${item.content.title || item.content.question || item.content.text}`;
+    const group = (groups[name] = groups[name] || {});
+    const entry = group[key];
+    if (!entry) group[key] = { ...item, ids: [item.id], uses: [...(byItem[item.id] || [])], stats: { ...item.stats } };
+    else {
+      entry.ids.push(item.id);
+      entry.uses.push(...(byItem[item.id] || []));
+      for (const k of ["uses", "confirmed", "not_found", "contradicted"]) entry.stats[k] += item.stats[k] || 0;
+    }
+  }
   const card = (k) => `<article class="cp-card" style="padding:16px 18px;display:grid;gap:8px;align-content:start">
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="cp-chip ${k.status === "active" ? "good" : k.status === "retired" ? "" : "wait"}">${esc(word(k.status))}</span>
         <span class="cp-chip">${esc(word(k.kind))}</span>${k.refines ? "" : `<span class="cp-chip">v${k.version}</span>`}${k.refines ? `<span class="cp-chip wait">${(() => { const t = data.knowledge.find((x) => x.id === k.refines); return t ? T(`refines v${t.version} → v${t.version + 1}`, `verfeinert v${t.version} → v${t.version + 1}`) : T("refinement", "Verfeinerung"); })()}</span>` : ""}
@@ -2060,25 +2135,129 @@ async function renderKnowledge() {
       ${k.applies_when_text ? `<span class="cp-muted">${T("Applies when", "Gilt, wenn")}: ${esc(k.applies_when_text)}</span>` : ""}
       <span>${T(`Used ${k.stats.uses} · confirmed ${k.stats.confirmed} · not found ${k.stats.not_found} · contradicted ${k.stats.contradicted}`,
                 `${k.stats.uses}× verwendet · ${k.stats.confirmed}× bestätigt · ${k.stats.not_found}× nicht gefunden · ${k.stats.contradicted}× widersprochen`)}</span>
-      ${(k.evidence || []).filter((e) => e.quote).slice(0, 2).map((e) => `<span class="cp-muted">“${esc(e.quote)}” — <a href="#/case/${esc(e.case_id)}/claim_reader">${esc(titles[e.case_id] || T("case", "Fall"))}</a></span>`).join("")}
-      ${seededNote(k) ? `<span class="cp-muted">${esc(seededNote(k))}</span>` : `<span class="cp-muted">${k.origin.kind === "case_edit" ? T("Learned from a case worker’s change in", "Gelernt aus einer Änderung in der Fallbearbeitung, im Fall") : T("Learned by the result checker in", "Gelernt vom Ergebnisprüfer im Fall")} <a href="#/case/${esc(k.origin.case_id)}/process_builder">${esc(titles[k.origin.case_id] || T("a case", "–"))}</a></span>`}
-      ${(byItem[k.id] || []).length ? `<span>${T("Cases", "Fälle")}: ${(byItem[k.id] || []).map((u) => `<a href="#/case/${esc(u.case_id)}/document_finder">${esc(titles[u.case_id] || u.case_id)}</a> <span class="cp-chip ${u.outcome === "present" ? "good" : u.outcome === "contradicted" ? "bad" : ""}">${esc(word(u.outcome))}</span>`).join(" ")}</span>` : ""}
-      <details><summary class="cp-link">${T("History", "Verlauf")}</summary><ul class="cp-log">${k.history.map((h) => `<li><b>v${h.version}</b><span>${esc(h.change)} · ${esc(h.by || "")} · ${dateText(h.at)}</span></li>`).join("")}</ul></details>
-      <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? `<button class="cp-button primary" data-activate="${esc(k.id)}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>` : ""}
-        ${k.status !== "retired" ? `<button class="cp-button" data-retire="${esc(k.id)}">${T("Retire", "Zurückziehen")}</button>` : ""}</div></article>`;
-  const sections = Object.entries(families).map(([family, items]) => `<h2 class="cp-section">${esc(family)} <span class="cp-muted">· ${T(`${items.length} items · ${items.reduce((n, k) => n + k.stats.uses, 0)} uses`, `${items.length} Eintr${items.length === 1 ? "ag" : "äge"} · ${items.reduce((n, k) => n + k.stats.uses, 0)} Verwendung${items.reduce((n, k) => n + k.stats.uses, 0) === 1 ? "" : "en"}`)}</span></h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;align-items:start">${items.map(card).join("")}</div>`).join("");
-  $("#app").innerHTML = `<main class="cp-main"><h1 class="cp-title">${T("Knowledge", "Wissen")}</h1><p class="cp-muted">${T("What CasePath learned from earlier cases and case workers’ changes. Active items shape new cases; candidates are checked as suggestions until a person activates them.",
+      ${(k.evidence || []).filter((e) => e.quote).slice(0, 2).map((e) => `<span class="cp-muted">“${esc(e.quote)}” — <a href="#/case/${esc(e.case_id)}/claim_reader">${esc(caseName(e.case_id))}</a></span>`).join("")}
+      ${seededNote(k) ? `<span class="cp-muted">${esc(seededNote(k))}</span>` : `<span class="cp-muted">${k.origin.kind === "case_edit" ? T("Learned from a case worker’s change in", "Gelernt aus einer Änderung in der Fallbearbeitung, im Fall") : T("Learned by the result checker in", "Gelernt vom Ergebnisprüfer im Fall")} <a href="#/case/${esc(k.origin.case_id)}/process_builder">${esc(caseName(k.origin.case_id))}</a></span>`}
+      ${k.uses.length ? `<span>${T("Cases", "Fälle")}: ${k.uses.map((u) => `<a href="#/case/${esc(u.case_id)}/document_finder">${esc(caseName(u.case_id))}</a> <span class="cp-chip ${u.outcome === "present" ? "good" : u.outcome === "contradicted" ? "bad" : ""}">${esc(word(u.outcome))}</span>`).join(" ")}</span>` : ""}
+      <details><summary class="cp-link">${T("History", "Verlauf")}</summary><ul class="cp-log">${k.history.map((h) => `<li><b>v${h.version}</b><span>${esc(changeText(h.change))}${h.by ? ` · ${esc(byWhom(h.by))}` : ""} · ${dateText(h.at)}</span></li>`).join("")}</ul></details>
+      <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? `<button class="cp-button primary" data-activate="${esc(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>` : ""}
+        ${k.status !== "retired" ? `<button class="cp-button" data-retire="${esc(k.ids.join(","))}">${T("Retire", "Zurückziehen")}</button>` : ""}</div></article>`;
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+  const sections = Object.entries(groups).sort(([a], [b]) => a.localeCompare(b, "de")).map(([name, entries]) => {
+    const items = Object.values(entries), uses = items.reduce((n, k) => n + k.stats.uses, 0);
+    return `<h2 class="cp-section">${esc(name)} <span class="cp-muted">· ${T(`${items.length} items · ${uses} uses`, `${plural(items.length, "Eintrag", "Einträge")} · ${plural(uses, "Verwendung", "Verwendungen")}`)}</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;align-items:start">${items.map(card).join("")}</div>`;
+  }).join("");
+  $("#app").innerHTML = `<main class="cp-main"><h1 class="cp-title">${T("Knowledge", "Wissen")}</h1>
+    ${review && review.may_review ? reviewTable(review) : ""}
+    ${review && review.may_review ? `<h2 class="cp-section cp-learned">${T("Learned from cases", "Aus Fällen gelernt")}</h2>` : ""}
+    <p class="cp-muted">${T("What CasePath learned from earlier cases and case workers’ changes. Active items shape new cases; candidates are checked as suggestions until a person activates them.",
       "Was CasePath aus früheren Fällen und aus Änderungen der Fallbearbeitung gelernt hat. Freigegebene Einträge prägen neue Fälle; Vorschläge werden nur als Vorschlag geprüft, bis ein Mensch sie freigibt.")}</p>
-    ${sections || `<p class="cp-empty">${T("Nothing learned yet. Knowledge appears after cases are prepared or a case worker saves a change for similar cases.", "Noch nichts gelernt. Wissen entsteht, wenn Fälle vorbereitet werden oder eine Änderung für ähnliche Fälle gespeichert wird.")}</p>`}
-    <h2 class="cp-section">${T("Processes", "Prozesse")}</h2>
-    ${S.workflows.length ? `<table class="cp-table"><thead><tr><th>${T("Process", "Prozess")}</th><th>Status</th><th>${T("Size", "Umfang")}</th><th>${T("Open questions", "Offene Fragen")}</th><th>${T("Sources", "Quellen")}</th></tr></thead><tbody>${S.workflows.map((w) =>
-      `<tr><td><b>${esc(w.short_title || w.title)}</b>${w.short_title && w.short_title !== w.title ? `<br><small class="cp-muted">${esc(w.title)}</small>` : ""}</td><td><span class="cp-chip ${w.status === "reviewed" ? "good" : "wait"}">${esc(word(w.status))}</span></td>
-      <td>${T(`${w.steps} steps · ${w.documents} document needs`, `${w.steps} Schritte · ${w.documents} Dokumente`)}</td><td>${w.open_questions || "—"}</td>
-      <td class="cp-muted">${w.sources.map((x) => esc(x.title)).join("; ")}</td></tr>`).join("")}</tbody></table>`
-      : `<p class="cp-empty">${T("No process is in the catalogue yet.", "Noch kein Prozess im Katalog.")}</p>`}</main>`;
-  for (const b of document.querySelectorAll("[data-activate]")) b.addEventListener("click", async () => { await api(`/api/knowledge/${b.dataset.activate}/activate`, { method: "POST", body: JSON.stringify({ reason: T("approved in Knowledge", "im Wissen freigegeben") }) }); renderKnowledge(); });
-  for (const b of document.querySelectorAll("[data-retire]")) b.addEventListener("click", async () => { await api(`/api/knowledge/${b.dataset.retire}/retire`, { method: "POST", body: JSON.stringify({ reason: T("retired in Knowledge", "im Wissen zurückgezogen") }) }); renderKnowledge(); });
+    ${sections || `<p class="cp-empty">${T("Nothing learned yet. Knowledge appears after cases are prepared or a case worker saves a change for similar cases.", "Noch nichts gelernt. Wissen entsteht, wenn Fälle vorbereitet werden oder eine Änderung für ähnliche Fälle gespeichert wird.")}</p>`}</main>`;
+  const each = (ids, path, reason) => Promise.all(ids.split(",").map((id) => api(`/api/knowledge/${id}/${path}`, { method: "POST", body: JSON.stringify({ reason }) })));
+  for (const b of document.querySelectorAll("[data-activate]")) b.addEventListener("click", async () => { await each(b.dataset.activate, "activate", T("approved in Knowledge", "im Wissen freigegeben")); renderKnowledge(); });
+  for (const b of document.querySelectorAll("[data-retire]")) b.addEventListener("click", async () => { await each(b.dataset.retire, "retire", T("retired in Knowledge", "im Wissen zurückgezogen")); renderKnowledge(); });
+}
+
+// ---------- review of the legal content (Wissen → Rechtsgebiete) ----------
+// A jurist opens one area, sees each element in the words the handler or customer will see beside the passage it rests on
+// and its official source, and marks it: geprüft, Änderung nötig …, Frage …. An area whose elements are all geprüft is
+// freigegeben; the handler's screen says so (process/review.py).
+const REVIEW_WORD = { geprueft: T("checked", "geprüft"), aenderung: T("change needed", "Änderung nötig"), frage: T("question", "Frage"),
+                      geaendert: T("changed since review", "geändert seit Prüfung"), offen: T("open", "offen") };
+const REVIEW_CHIP = { geprueft: "good", aenderung: "bad", frage: "wait", geaendert: "wait" };
+const reviewDay = (at) => dateText(at).slice(0, 10);
+function reviewState(status) {
+  const cls = status.state === "freigegeben" ? "released" : status.state === "in_pruefung" ? "busy" : "";
+  return `<span class="cp-rv-state ${cls}">${esc(status.state === "offen" ? T("not released", "noch nicht freigegeben") : status.label)}</span>`;
+}
+function reviewTable(review) {
+  const n = (v, cls = "") => `<td class="num ${v ? cls : "zero"}">${v}</td>`;
+  return `<h2 class="cp-section" id="rechtsgebiete">${T("Legal areas", "Rechtsgebiete")}</h2>
+    <p class="cp-rv-intro">${T("Export requested changes and questions", "Änderungen und Fragen exportieren")}: <a class="cp-link cp-quiet-link" href="/api/review/export?format=md">Markdown</a> · <a class="cp-link cp-quiet-link" href="/api/review/export?format=json">JSON</a></p>
+    <table class="cp-table cp-rv-table"><thead><tr><th>${T("Area", "Gebiet")}</th><th>${T("State", "Stand")}</th><th class="num">${T("checked", "geprüft")}</th><th class="num">${T("open", "offen")}</th>
+      <th class="num">${T("change needed", "Änderung nötig")}</th><th class="num">${T("questions", "Fragen")}</th></tr></thead><tbody>${review.rows.map((r) => `<tr class="${r.kind === "area" ? "" : "cp-rv-common"}">
+      <td><a href="#/knowledge/gebiet/${encodeURIComponent(r.id)}"><b>${esc(r.title)}</b></a><br><small class="cp-muted">${esc(r.subtitle || "")}</small></td><td>${reviewState(r.status)}</td>
+      ${n(r.status.counts.geprueft)}${n(r.status.counts.offen)}${n(r.status.counts.aenderung, "flag")}${n(r.status.counts.frage)}</tr>`).join("")}</tbody></table>`;
+}
+async function renderReview(id) {
+  S.reviewRow = await api(`/api/review/${encodeURIComponent(id)}`);
+  drawReview();
+}
+// A passage as a jurist reads it: the article first, then its words, the official text one click away.
+function lawRow(r, linked) {
+  const title = `${r.source || ""}${r.version ? `, ${r.version}` : ""}`;
+  const source = r.url && !linked ? `<a href="${esc(r.url)}" target="_blank" rel="noopener" title="${esc(title)}">${esc(r.link || r.source || "")}</a>` : "";
+  return `<div class="cp-rv-passage"><p class="cp-rv-cite"><b>${esc(r.cite)}</b>${source ? ` ${source}` : ""}${r.verified ? "" : ` <span class="cp-flag">${T("not checked against the official text", "nicht am amtlichen Text geprüft")}</span>`}</p>
+    <p class="cp-rv-words">«${esc(r.passage)}»</p></div>`;
+}
+function reviewElement(el, may) {
+  const m = el.mark, editing = S.reviewing && S.reviewing.key === el.key ? S.reviewing.mark : null;
+  const others = el.used_in.filter((t) => t !== S.reviewRow.title);
+  const who = m && el.state !== "offen" ? `<span class="cp-rv-who">${el.state === "geaendert" ? `${T("earlier", "früher")} ${esc(REVIEW_WORD[m.mark])}: ` : ""}${esc(m.reviewer)}, ${reviewDay(m.at)}</span>` : "";
+  const said = m && el.state !== "offen" && (m.comment || m.suggestion) ? `<p class="cp-rv-meta">${m.comment ? `«${esc(m.comment)}»` : ""}${m.suggestion ? `${m.comment ? " · " : ""}${T("Wording", "Vorschlag")}: «${esc(m.suggestion)}»` : ""}</p>` : "";
+  const form = editing ? `<form class="cp-rv-form" data-rv-form="${esc(el.key)}" data-mark="${editing}">
+      <label>${editing === "aenderung" ? T("What must change", "Was zu ändern ist") : T("Your question", "Ihre Frage")}<textarea name="comment" rows="2" maxlength="4000" required></textarea></label>
+      ${editing === "aenderung" ? `<label>${T("Proposed wording (optional)", "Vorschlag für den Wortlaut (freiwillig)")}<textarea name="suggestion" rows="2" maxlength="4000"></textarea></label>` : ""}
+      <span><button class="cp-button cp-small">${T("Save", "Speichern")}</button> <button type="button" class="cp-link cp-quiet-link" data-rv-cancel>${T("cancel", "abbrechen")}</button></span></form>` : "";
+  const actions = may ? `<div class="cp-rv-actions">
+      <button class="cp-button cp-small" data-rv-mark="${esc(el.key)}" aria-pressed="${el.state === "geprueft"}">${T("checked", "geprüft")}</button>
+      <button class="cp-button cp-small" data-rv-open="aenderung" data-key="${esc(el.key)}" aria-pressed="${el.state === "aenderung"}">${T("Change needed …", "Änderung nötig …")}</button>
+      <button class="cp-button cp-small" data-rv-open="frage" data-key="${esc(el.key)}" aria-pressed="${el.state === "frage"}">${T("Question …", "Frage …")}</button>${who}</div>${form}` : who ? `<p class="cp-rv-meta">${who}</p>` : "";
+  return `<article class="cp-rv-el ${el.state}" data-review="${esc(el.key)}">
+    <div class="cp-rv-main"><h3>${esc(el.title)}${el.state !== "offen" ? ` <span class="cp-chip ${REVIEW_CHIP[el.state] || ""}">${esc(REVIEW_WORD[el.state])}</span>` : ""}</h3>
+      ${el.lines.length ? `<dl class="cp-rv-lines">${el.lines.map((l) => `<dt>${esc(l.label)}</dt><dd${l.pre ? ' class="pre"' : ""}>${esc(l.text)}</dd>`).join("")}</dl>` : ""}
+      ${others.length ? `<p class="cp-rv-shared">${T("Also applies to", "Gilt auch für")}: ${esc(others.slice(0, 3).join(", "))}${others.length > 3 ? T(` and ${others.length - 3} more`, ` und ${others.length - 3} weitere`) : ""}</p>` : ""}
+      ${el.questions.map((q) => `<p class="cp-rv-q"><b>${T("Open question", "Offene Frage")}</b> ${esc(q)}</p>`).join("")}
+      ${said}${actions}</div>
+    <div class="cp-rv-law">${el.law.map((r, n) => lawRow(r, el.law.slice(0, n).some((x) => x.url === r.url))).join("")  /* each official text linked once */
+      || `<p class="cp-muted cp-rv-nolaw">${T("rests on no article", "ohne Gesetzesstelle")}</p>`}</div></article>`;
+}
+function drawReview() {
+  const d = S.reviewRow, c = d.status.counts, only = Boolean(S.reviewOnlyOpen);
+  const groups = d.groups.map((g) => ({ ...g, shown: g.elements.filter((el) => !only || el.state !== "geprueft") })).filter((g) => g.shown.length);
+  $("#app").innerHTML = `<main class="cp-main cp-review">
+    <p class="cp-rv-back"><a class="cp-link cp-quiet-link" href="#/knowledge">${T("Legal areas", "Rechtsgebiete")}</a></p>
+    <h1 class="cp-title">${esc(d.title)}</h1>
+    <p class="cp-rv-sub">${esc(d.subtitle || "")} · ${reviewState(d.status)}</p>
+    <p class="cp-rv-bar"><span>${T(`${c.total} elements · ${c.geprueft} checked · ${c.offen} open · ${c.aenderung} change needed · ${c.frage} questions`,
+      `${c.total} Elemente · ${c.geprueft} geprüft · ${c.offen} offen · ${c.aenderung} Änderung nötig · ${c.frage} ${c.frage === 1 ? "Frage" : "Fragen"}`)}</span>
+      <label class="cp-rv-filter"><input type="checkbox" id="rv-only-open" ${only ? "checked" : ""}> ${T("open only", "nur offene")}</label>
+      <a class="cp-link cp-quiet-link" href="/api/review/${encodeURIComponent(d.id)}/pruefpaket" target="_blank" rel="noopener">${T("Review pack (print)", "Prüfpaket")}</a></p>
+    ${d.may_review ? "" : `<p class="cp-muted">${T("View only: marks are set by the people named to review.", "Nur Ansicht: markieren dürfen die für die Prüfung bestimmten Personen.")}</p>`}
+    ${d.questions.length ? `<div class="cp-rv-areaq"><b>${T("Open questions on the area", "Offene Fragen zum Gebiet")}</b>${d.questions.map((q) => `<p>${esc(q)}</p>`).join("")}</div>` : ""}
+    ${groups.map((g) => `<h2 class="cp-section cp-rv-group">${esc(g.title)} <span class="cp-muted">· ${g.shown.length}${only && g.shown.length !== g.elements.length ? ` ${T("of", "von")} ${g.elements.length}` : ""}</span></h2>
+      ${g.shown.map((el) => reviewElement(el, d.may_review)).join("")}`).join("") || `<p class="cp-empty">${T("Every element is checked.", "Alle Elemente sind geprüft.")}</p>`}</main>`;
+  bindReview();
+}
+async function saveMark(key, mark, comment = "", suggestion = "") {
+  const el = S.reviewRow.groups.flatMap((g) => g.elements).find((x) => x.key === key);
+  const [file, ...rest] = key.split(":");
+  const y = window.scrollY;
+  try {
+    await api(`/api/review/${encodeURIComponent(file)}/${encodeURIComponent(rest.join(":"))}`, { method: "POST", body: JSON.stringify({ mark, comment, suggestion, sha256: el && el.sha256 }) });
+    S.reviewing = null;
+    S.reviewRow = await api(`/api/review/${encodeURIComponent(S.reviewRow.id)}`);
+    drawReview();
+    window.scrollTo(0, y);
+  } catch (error) { alert(error.message); }
+}
+function bindReview() {
+  const only = $("#rv-only-open");
+  if (only) only.addEventListener("change", () => { const y = window.scrollY; S.reviewOnlyOpen = only.checked; drawReview(); window.scrollTo(0, y); });
+  for (const b of document.querySelectorAll("[data-rv-mark]")) b.addEventListener("click", () => saveMark(b.dataset.rvMark, "geprueft"));
+  for (const b of document.querySelectorAll("[data-rv-open]")) b.addEventListener("click", () => {
+    const y = window.scrollY;
+    S.reviewing = { key: b.dataset.key, mark: b.dataset.rvOpen };
+    drawReview(); window.scrollTo(0, y);
+    const t = $(`[data-rv-form="${CSS.escape(b.dataset.key)}"] textarea`);
+    if (t) t.focus({ preventScroll: true });
+  });
+  for (const b of document.querySelectorAll("[data-rv-cancel]")) b.addEventListener("click", () => { const y = window.scrollY; S.reviewing = null; drawReview(); window.scrollTo(0, y); });
+  for (const f of document.querySelectorAll("[data-rv-form]")) f.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData(f);
+    saveMark(f.dataset.rvForm, f.dataset.mark, String(data.get("comment") || ""), String(data.get("suggestion") || ""));
+  });
 }
 
 // ---------- routing ----------
@@ -2091,6 +2270,7 @@ async function route() {
   try {
     if (next.view === "case") { if (S.data) await renderCase(); else await loadCase(); }
     else if (next.view === "knowledge") await renderKnowledge();
+    else if (next.view === "review") await renderReview(next.id);
     else if (next.view === "auswertung") await renderAuswertung();
     else await renderCases();
   } catch (error) {
@@ -2099,7 +2279,7 @@ async function route() {
 }
 
 (async () => {
-  try { S.me = (await api("/api/me")).user; } catch (error) { S.me = ""; }
+  try { const me = await api("/api/me"); S.me = me.user; S.mayReview = Boolean(me.may_review); } catch (error) { S.me = ""; S.mayReview = false; }
   try { S.canUpload = (await api("/api/health")).uploads !== false; } catch (error) { S.canUpload = true; }
   window.addEventListener("hashchange", route);
   route();

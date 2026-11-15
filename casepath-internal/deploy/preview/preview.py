@@ -80,12 +80,12 @@ def script(email, letter, knowledge_id=None):
                                   reply={"needed": True, "subject": "Ihre Meldung: Schimmel im Badezimmer", "clauses": [
                                       {"text": "Sie haben die Verwaltung am 3. Februar schriftlich informiert.", "kind": "statement", "basis": ["fact:landlord_notified"]},
                                       {"text": "Die Verwaltung hat den Eingang Ihrer Meldung bestätigt.", "kind": "statement", "basis": ["document:notice_letter"]}]},
-                                  learn=[learn(action="refine", target=knowledge_id, title="Dated ventilation record",
-                                               why="Mould returned again; only a record with dates shows when the flat was aired.", step="assess",
-                                               applies_when_text="Recurring mould where ventilation is disputed", reason="A second case needed the dates.",
+                                  learn=[learn(action="refine", target=knowledge_id, title="Lüftungsprotokoll mit Datum",
+                                               why="Der Schimmel kam wieder; erst ein Protokoll mit Daten zeigt, wann gelüftet wurde.", step="assess",
+                                               applies_when_text="Wiederkehrender Schimmel, wenn das Lüften strittig ist", reason="Ein zweiter Fall brauchte die Daten.",
                                                citations=[{"file": email, "quote": VENT}])] if knowledge_id else
-                                        [learn(title="Ventilation record", why="Mould returns despite ventilation; a record shows how the flat was aired.",
-                                               step="assess", applies_when_text="Recurring mould where ventilation is disputed",
+                                        [learn(title="Lüftungsprotokoll", why="Der Schimmel kehrt trotz Lüften zurück; ein Protokoll zeigt, wie die Wohnung gelüftet wurde.",
+                                               step="assess", applies_when_text="Wiederkehrender Schimmel, wenn das Lüften strittig ist",
                                                citations=[{"file": email, "quote": VENT}])])],
         [("complete", {"summary": "Prepared."})],
     ]
@@ -287,7 +287,7 @@ def main():
     while store.get_run(run["id"])["status"] in ("queued", "running"):
         time.sleep(0.1)
     for item in store.list_knowledge(statuses={"candidate"}):
-        store.save_knowledge(kb.set_status(item, "active", by="N. Kumar", reason="Seen in two defect cases"))
+        store.save_knowledge(kb.set_status(item, "active", by="N. Kumar", reason="In zwei Mietmangel-Fällen gesehen"))
     item = store.list_knowledge(statuses={"active"})[0]
     case_b, (email_b, letter_b, _) = seed("Schimmel im Badezimmer, Kramgasse 5 (zweiter Fall)")
     pause = float(sys.argv[2]) if len(sys.argv) > 2 else 1.5

@@ -1,4 +1,5 @@
-"""A fresh case store: cases, original files, runs, run progress, results, Knowledge, case workers' feedback.
+"""A fresh case store: cases, original files, runs, run progress, results, Knowledge, case workers' feedback, and a
+jurist's marks on the legal content (reviews), each also logged.
 
 SQLite and a content-addressed file folder serve the development workspace.
 The same operations are what an operated business service will expose; no
@@ -44,7 +45,14 @@ create table if not exists events(
 create index if not exists events_case on events(case_id, seq);
 create table if not exists deletions(
   case_id text primary key, deleted_at text not null, deleted_by text not null, reason text not null, removed text not null);
+create table if not exists reviews(
+  id text primary key, file text not null, element text not null, content_sha256 text not null, mark text not null,
+  comment text not null, suggestion text not null, reviewer text not null, at text not null);
+create index if not exists reviews_element on reviews(file, element);
+create table if not exists workspace_events(
+  event_id text primary key, seq integer not null, at text not null, data text not null);
 """
+REVIEW_MARKS = ("geprueft", "aenderung", "frage")
 ACTIVE = ("queued", "running")
 
 
@@ -360,6 +368,45 @@ class CaseStore:
 
     def list_case_events(self, case_id):
         return [json.loads(r["data"]) for r in self._all("select data from events where case_id=? order by seq", case_id)]
+
+    # The event log of what happens outside a case (a jurist's mark on an element of the legal content): append-only too
+    def append_workspace_event(self, record):
+        with self._lock:
+            seq = (self._one("select max(seq) as seq from workspace_events") or {}).get("seq") or 0
+            event = {**record, "event_id": new_id("ev"), "seq": seq + 1, "at": record.get("at") or now()}
+            self._db.execute("insert into workspace_events values(?,?,?,?)", (event["event_id"], event["seq"], event["at"],
+                                                                              json.dumps(event, ensure_ascii=False)))
+        return event
+
+    def list_workspace_events(self, kind=None):
+        rows = [json.loads(r["data"]) for r in self._all("select data from workspace_events order by seq")]
+        return [r for r in rows if kind is None or r.get("kind") == kind]
+
+    # A jurist's review of the legal content (process/review.py): one row per mark, never updated; the latest mark of an
+    # element is its mark, and it holds only for the content (hash) it was given on
+    def add_review(self, file, element, content_sha256, mark, comment, suggestion, reviewer):
+        if mark not in REVIEW_MARKS:
+            raise ValueError("unknown mark")
+        row = {"id": new_id("rv"), "file": file, "element": element, "content_sha256": content_sha256, "mark": mark,
+               "comment": comment or "", "suggestion": suggestion or "", "reviewer": reviewer, "at": now()}
+        with self._lock:
+            self._db.execute("insert into reviews values(:id,:file,:element,:content_sha256,:mark,:comment,:suggestion,:reviewer,:at)", row)
+            self.append_workspace_event({"schema": "casepath.review.event/1", "kind": "review.marked", "review_id": row["id"],
+                                         **{k: row[k] for k in ("file", "element", "content_sha256", "mark", "comment", "suggestion", "reviewer")},
+                                         "at": row["at"]})
+        return row
+
+    def list_reviews(self, file=None, element=None):
+        sql, args = "select * from reviews where 1=1", []
+        if file:
+            sql, args = sql + " and file=?", args + [file]
+        if element:
+            sql, args = sql + " and element=?", args + [element]
+        return self._all(sql + " order by rowid", *args)
+
+    def latest_reviews(self):
+        """{"<file>:<element>": its latest mark}."""
+        return {f"{r['file']}:{r['element']}": r for r in self.list_reviews()}
 
     # Edits to a case's process
     def add_edit(self, case_id, op, args, user, reason):

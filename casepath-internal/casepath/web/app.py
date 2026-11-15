@@ -29,7 +29,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import capped, follow_up, historic as historic_file, own_deadlines
 from ..agents import core
-from ..process import cover, customer_letters, letters
+from ..process import cover, customer_letters, letters, review as reviews
 from ..process.items import kind_title, build_items, item_changes, items_sha256
 from . import identity, listing
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
@@ -132,6 +132,15 @@ class EditRequest(BaseModel):
 
 class StatusChange(BaseModel):
     reason: str = ""
+
+
+class ReviewMark(BaseModel):
+    """A jurist's mark on one element of the legal content; «Änderung nötig» and «Frage» say why in a comment."""
+    model_config = ConfigDict(extra="forbid")
+    mark: Literal["geprueft", "aenderung", "frage"]
+    comment: str = Field("", max_length=4000)
+    suggestion: str = Field("", max_length=4000)  # the wording the jurist proposes (with «Änderung nötig»)
+    sha256: str | None = Field(None, pattern=r"^[0-9a-f]{64}$")  # the content the jurist saw: refused when it changed meanwhile
 
 
 class Feedback(BaseModel):
@@ -269,6 +278,33 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         found(store.get_case, case_id)
         return case_state(store, catalogue, case_id)
 
+    # The jurists' review of the legal content (process/review.py): the elements are built once from the data files the
+    # catalogue composed, the marks are read from the store on each request
+    review_cache = {}
+
+    def review_model():
+        if "model" not in review_cache:
+            review_cache["model"] = reviews.Model.load(catalogue, settings.catalogue_dir)
+        return review_cache["model"]
+
+    def review_marks():
+        """The marks that hold for the content as it is now, by element; empty (and nothing built) without any mark."""
+        latest = store.latest_reviews()
+        return (review_model().current(latest), latest) if latest else ({}, {})
+
+    def may_review(who):
+        return not settings.reviewers or str(who).lower() in settings.reviewers
+
+    def area_review(process, latest):
+        """The handler's line on the area's review: «aus dem Gesetz abgeleitet, noch nicht freigegeben», «in Prüfung
+        (n von m geprüft)» or «freigegeben am … · <reviewer>»."""
+        own = (process or {}).get("area")
+        if not own:
+            return None
+        status = review_model().area_label(process["id"], latest) if latest else None
+        return {"state": (status or {}).get("state", "offen"), "label": (status or {}).get("label") or own.get("label"),
+                "title": process.get("short_title") or own.get("short_title")}
+
     @app.get("/api/health")
     def health():
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
@@ -386,12 +422,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/me")
     def me(who=Depends(user)):
-        return {"user": who}
+        # may_review: the person may mark the legal content and sees «Verwaltung» (Wissen, Auswertung)
+        return {"user": who, "may_review": may_review(who)}
 
     @app.get("/api/workflows")
     def list_workflows(who=Depends(user)):
         return {"workflows": [{**workflows.ref(w), "short_title": w.get("short_title") or w["title"], "area": w.get("area"), "sources": w["sources"], "steps": len(w["steps"]),
-                               "documents": len(w["documents"]), "open_questions": len(w.get("open_questions", []))}
+                               "documents": len(w["documents"]), "open_questions": len(w.get("open_questions", [])),
+                               **({"supersedes": w["supersedes"]} if w.get("supersedes") else {}), **({"example": True} if w.get("example") else {})}
                               for w in catalogue.latest()]}
 
     @app.get("/api/workflows/{workflow_id}")
@@ -404,6 +442,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     @app.get("/api/cases")
     def list_cases(who=Depends(user)):
         rows = store.list_cases()
+        marks = review_marks()[0]  # the jurists' marks: what is only offered while «in Prüfung»
         for row in rows:  # the next date a case is to be looked at: the list sorts by it
             events = store.list_case_events(row["id"])
             row["closed"] = any(e["kind"] == "case.closed" for e in events)
@@ -418,7 +457,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             if row.get("run_status") == "completed":
                 try:
                     current = state(row["id"])
-                    listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events)
+                    listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events,
+                                         None if (row.get("intake") or {}).get("study") else marks)
                     action = next((i for i in listed if i["kind"] == "next_action"), None)
                     clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]), since=(action or {}).get("since"))
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
@@ -480,7 +520,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         # the cost check name the page they come from
         stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
         texts = store.list_files(case_id, with_text=True) if stage in {"mandat", "abwicklung"} else None
-        listed = build_items(current, (completed or {}).get("result"), texts or store.list_files(case_id), logged)  # everything the case's screens and exports assert
+        # the jurists' marks on the legal content (a study copy shows its frozen run as it was, without them)
+        marks, latest = ({}, {}) if study else review_marks()
+        listed = build_items(current, (completed or {}).get("result"), texts or store.list_files(case_id), logged, marks)  # everything the case's screens and exports assert
+        held = reviews.flags(current.get("process"), marks)
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
                  or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
@@ -499,15 +542,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             kind = "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")  # a closing in silence has its own (no) letter
             ctx = letters.context(current["case"], listed, events, clock, texts or files, evaluation=current["evaluation"], process=current["process"])
             text, none = letters.render(kind, forms, ctx)
+            # parts the law or the conditions require (copying is refused while one is missing, cover.py), each «in Prüfung»
+            # while a jurist marked it «Änderung nötig»
+            required = lambda k: [{**r, **({"review": reviews.IN_REVIEW} if held.required(k, r["id"]) else {})} for r in cover.required_for(k, current.get("facts"))]
             draft = {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "text": text, "none": none,
                      "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
-                     # parts the law or the conditions require: copying is refused while one is missing (cover.py)
-                     "required": cover.required_for(kind, current.get("facts")),
+                     "required": required(kind),
                      # what goes out with it, each opened and copied on its own: the mandate package, the fee-note letters, and a
                      # template for the customer's own letter (marked as the customer's, never sent by the insurer)
-                     "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": cover.required_for(k, current.get("facts")),
+                     "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": required(k),
                                **({"set": forms[k]["set"]} if forms[k].get("set") else {})} for k in letters.accompanying(kind, forms, listed)]
-                             + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "text": i["text"], "required": [], "template": True}
+                             + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "text": i["text"], "required": [], "template": True,
+                                 **({"review": i["review"]} if i.get("review") else {})}
                                 for i in customer_letters.with_letter(listed, events, kind)]}
         # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
         new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
@@ -516,7 +562,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if len(done) == 2 and current.get("workflow") and not (current["case"].get("intake") or {}).get("study"):
             workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
             before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id, files=files)
-            changes = item_changes(build_items(before_state, done[1].get("result"), files, logged), listed)
+            changes = item_changes(build_items(before_state, done[1].get("result"), files, logged, marks), listed)
         shown_case = {**current["case"], "display_title": listing.display_title(
             current["case"], listed if completed else [], area_title(current.get("process")),
             renamed=any(e["kind"] == "case.renamed" for e in events))}
@@ -528,6 +574,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
                 "case": shown_case, "files": store.list_files(case_id),
                 "run": completed if (current["case"].get("intake") or {}).get("study") else store.latest_run(case_id),
+                "area_review": area_review(current.get("process"), latest),  # whether a jurist released the area's legal content
                 "workflow": current["workflow"], "process": current["process"], "provenance": current.get("provenance"),
                 "evaluation": current["evaluation"], "edits": store.list_edits(case_id, active_only=False),
                 "feedback": store.list_feedback(completed["id"]) if completed else []}
@@ -1008,6 +1055,57 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def retire(knowledge_id: str, body: StatusChange, who=Depends(user)):
         item = found(store.get_knowledge, knowledge_id)
         return store.save_knowledge(kb.set_status(item, "retired", by=who, reason=body.reason))
+
+    # A jurist's review of the legal content: one row per area (and the cover check, the letters with prescribed content)
+    @app.get("/api/review")
+    def review_overview(who=Depends(user)):
+        """The rows of «Rechtsgebiete», each with its state and counts, and whether the signed-in person may mark."""
+        latest = store.latest_reviews()
+        return {"may_review": may_review(who), "reviewers_named": bool(settings.reviewers), "rows": review_model().overview(latest)}
+
+    @app.get("/api/review/export")
+    def review_export(format: Literal["json", "md"] = "json", who=Depends(user)):
+        """The requested changes and questions for the developers: element id, mark, comment, suggested wording. No case content."""
+        rows = review_model().changes(store.latest_reviews())
+        if format == "md":
+            return Response(reviews.changes_markdown(rows), media_type="text/markdown; charset=utf-8",
+                            headers={"Content-Disposition": "attachment; filename=pruefung-aenderungen.md", "Cache-Control": "no-store"})
+        return Response(json.dumps({"format": "casepath.review.changes/1", "exported_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+                                    "items": rows}, ensure_ascii=False, indent=1), media_type="application/json",
+                        headers={"Content-Disposition": "attachment; filename=pruefung-aenderungen.json", "Cache-Control": "no-store"})
+
+    @app.get("/api/review/{row_id}")
+    def review_row(row_id: str, who=Depends(user)):
+        """One area (or the cover check, the letters): every element with its content, passages, source and open question."""
+        detail = review_model().detail(row_id, store.latest_reviews())
+        if detail is None:
+            raise HTTPException(404, "Not found.")
+        return {**detail, "may_review": may_review(who)}
+
+    @app.get("/api/review/{row_id}/pruefpaket")
+    def review_pack(row_id: str, who=Depends(user)):
+        """The same content as one plain page, to print."""
+        detail = review_model().detail(row_id, store.latest_reviews())
+        if detail is None:
+            raise HTTPException(404, "Not found.")
+        return HTMLResponse(reviews.pruefpaket(detail), headers={"Cache-Control": "no-store"})
+
+    @app.post("/api/review/{file}/{element}", status_code=201)
+    def review_mark(file: str, element: str, body: ReviewMark, who=Depends(user)):
+        """«geprüft», «Änderung nötig» or «Frage» on one element, for the content as it is now; stored and logged."""
+        if not may_review(who):
+            raise HTTPException(403, "Markieren dürfen nur die für die Prüfung bestimmten Personen.")
+        model = review_model()
+        target = model.elements.get(f"{file}:{element}")
+        if target is None:
+            raise HTTPException(404, "Not found.")
+        if body.sha256 and body.sha256 != target["sha256"]:
+            raise HTTPException(409, "Das Element wurde seit dem Laden geändert; bitte neu laden.")
+        comment, suggestion = body.comment.strip(), body.suggestion.strip() if body.mark == "aenderung" else ""
+        if body.mark != "geprueft" and not comment:
+            raise HTTPException(422, "Bitte sagen Sie, was zu ändern oder zu klären ist.")
+        row = store.add_review(file, element, target["sha256"], body.mark, comment, suggestion, who)
+        return {"mark": row, "element": model.view(target["key"], store.latest_reviews())}
 
     if UI.is_dir():
         page = (UI / "index.html").read_text()

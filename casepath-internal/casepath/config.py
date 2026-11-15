@@ -81,6 +81,7 @@ class Settings:
     identity_roles_claim: str = "roles"
     required_role: str | None = None
     allowed_users: frozenset = frozenset()
+    reviewers: frozenset = frozenset()  # who may mark the legal content (CASEPATH_REVIEWERS); empty: every signed-in user
     volume: str | None = None
     speed_trials: tuple = ()  # named speed changes under trial (CASEPATH_SPEED_TRIALS); empty = today's behaviour
 
@@ -148,4 +149,5 @@ def load_settings(env=None):
         required_role=required_role,
         volume=env.get("CASEPATH_VOLUME") or None,
         allowed_users=frozenset(u.strip().lower() for u in env.get("CASEPATH_ALLOWED_USERS", "").split(",") if u.strip()),
+        reviewers=frozenset(u.strip().lower() for u in env.get("CASEPATH_REVIEWERS", "").split(",") if u.strip()),
     )

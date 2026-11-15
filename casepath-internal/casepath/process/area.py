@@ -153,8 +153,9 @@ def validate_backbone(backbone):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
     check_stage_work(backbone)
     keypoints.validate_lines(backbone, steps)
-    from . import account
+    from . import account, review
     account.validate(backbone)
+    review.check_questions(backbone.get("open_questions"), review.backbone_ids(backbone), "backbone")
     check_forms(backbone["forms"])
     return incoming.validate(backbone)
 
@@ -340,6 +341,8 @@ def validate_module(module, backbone):
             raise CatalogueError(f"{where}: deadline {d['id']} has an unknown period")
         if (period == "kantonal") != (counting == "kantonal") and period != "sofort":
             raise CatalogueError(f"{where}: deadline {d['id']}: a cantonal period is counted by the cantonal rule, and only it")
+    from . import review  # an open question attached to an element names one the jurist reviews
+    review.check_questions(module.get("open_questions"), review.module_ids(module), where, whole=True)
     return module
 
 
@@ -420,7 +423,10 @@ def compose(backbone, module):
                                **({"when_partly_present": "offer"} if not practice and "when_partly_present" not in d and open_ended_title(d["title"]) else {})}
                               for d in m["documents"]],
                 "outcomes": bb["outcomes"], "hints": hints,
-                **{k: m.get(k, []) for k in ("notes", "summary", "open_questions")},
+                **{k: m.get(k, []) for k in ("notes", "summary")},
+                # an open question about one element (``about``) is the jurist's, shown where the element is reviewed
+                # (review.py); the case's process carries the area's own
+                "open_questions": [q for q in m.get("open_questions", []) if "about" not in q],
                 "clock": bb["clock"], "forms": forms, "action_kinds": bb["action_kinds"], "cooperation": bb["cooperation"], "deadline_margin_days": bb.get("deadline_margin_days", 7),
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
@@ -588,6 +594,11 @@ def in_periods(day, specs):
 
 
 FEDERAL_HOLIDAYS = ("08-01",)  # Art. 110 Abs. 3 BV: a holiday in every canton
+# Days that are public holidays in many cantons, by date and by their distance from Easter Sunday. Not taken from a
+# verified text (cantonal law); a jurist reviews the list (review.py, «Fristberechnung»).
+CANTONAL_DAYS = {"01-01": "1. Januar", "01-02": "2. Januar", "05-01": "1. Mai", "08-15": "15. August", "11-01": "1. November",
+                 "12-08": "8. Dezember", "12-25": "25. Dezember", "12-26": "26. Dezember"}
+CANTONAL_EASTER = {-2: "Karfreitag", 1: "Ostermontag", 39: "Auffahrt", 50: "Pfingstmontag"}
 
 
 def maybe_cantonal_holiday(day):
@@ -595,8 +606,7 @@ def maybe_cantonal_holiday(day):
     Monday, 1 May, 15 August, 1 November, 8 December, Christmas, 26 December). The cantonal holidays are not in the
     verified texts: a deadline ending on such a day is not given a date, it says «prüfen»."""
     e = easter(day.year)
-    return day.strftime("%m-%d") in {"01-01", "01-02", "05-01", "08-15", "11-01", "12-08", "12-25", "12-26"} or \
-        day in {e - timedelta(days=2), e + timedelta(days=1), e + timedelta(days=39), e + timedelta(days=50)}
+    return day.strftime("%m-%d") in CANTONAL_DAYS or day in {e + timedelta(days=k) for k in CANTONAL_EASTER}
 
 
 def counting_rule(d):

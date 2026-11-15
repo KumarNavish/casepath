@@ -31,6 +31,15 @@ def _handling(events):
     return max(0, round(_seconds(opened, end) - idle))
 
 
+def _run_seconds(run):
+    """How long the run took; None when its times are missing or its finish lies before its start (a run stored with a
+    given finish time, such as a seeded or imported one): a negative duration is no duration."""
+    if not (run.get("created_at") and run.get("finished_at")):
+        return None
+    seconds = round(_seconds(run["created_at"], run["finished_at"]))
+    return seconds if seconds >= 0 else None
+
+
 def case_card(store, case, salt, corrected_before):
     events = store.list_case_events(case["id"])
     fixes = [e for e in events if e["kind"] in CORRECTIONS and e.get("item_id")]
@@ -49,7 +58,7 @@ def case_card(store, case, salt, corrected_before):
             "handling_seconds": _handling(events) if events else None,
             "sources_opened": sum(1 for e in events if e["kind"] == "source.opened"),
             "same_correction_again": same_again,
-            "run_seconds": round(_seconds(run["created_at"], run["finished_at"])) if run.get("created_at") and run.get("finished_at") else None,
+            "run_seconds": _run_seconds(run),
             "tokens_noncached": sum((u.get("input_tokens") or 0) - (u.get("cached_tokens") or 0) for u in usage) or None}
 
 

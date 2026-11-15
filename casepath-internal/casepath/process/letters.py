@@ -171,7 +171,8 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     hints += [{"value": x} for x in dates]
     hints += [{"value": x} for x in customer_letters.referrals(items, "A1")]  # a template for the customer's own letter goes with it
     listed = request_list(items, events, evaluation, process) if evaluation else [f"– {label(i)}" for i in docs]
-    points = [i for i in items if i["kind"] == "key_point" and i.get("value") == "applies"]
+    # a point a jurist marked «Änderung nötig» (review) is not stated by itself: the handler writes it in the gap if it holds
+    points = [i for i in items if i["kind"] == "key_point" and i.get("value") == "applies" and not i.get("review")]
     in_case = [f"{i['follows'].rstrip('.')} ({i['legal_basis']})." for i in points[:3]] + dates  # what applies, each with its article
     # what came in from others and is a fact of the case («Angebot der Gegenpartei vom … liegt vor: …»), and an open item
     # that waits behind the stage's own action; never a line that it was answered

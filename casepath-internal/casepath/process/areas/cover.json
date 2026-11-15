@@ -8,8 +8,8 @@
  ],
  "edition_fact": "avb_ausgabe",
  "editions": {
-  "privat": {"value": "Privat 01.2026", "title": "Rechtsschutzversicherung für Privatpersonen, Ausgabe 01.2026", "text": "avb-privat-01-2026.txt"},
-  "unternehmen": {"value": "Unternehmen 09.2025", "title": "Rechtsschutzversicherung für Unternehmen, Ausgabe 09.2025", "text": "avb-unternehmen-09-2025.txt"}
+  "privat": {"value": "Privat 01.2026", "title": "Rechtsschutzversicherung für Privatpersonen, Ausgabe 01.2026", "text": "avb-privat-01-2026.txt", "url": "https://oiv.protekta.ch/de/avb/RSP-01-2026/"},
+  "unternehmen": {"value": "Unternehmen 09.2025", "title": "Rechtsschutzversicherung für Unternehmen, Ausgabe 09.2025", "text": "avb-unternehmen-09-2025.txt", "url": "https://protekta.mobiliar.ch/media/72/download?inline=1"}
  },
  "other_edition": "andere Ausgabe",
  "default_edition": "privat",
@@ -144,30 +144,30 @@
                 "vertrag-darlehen": "aufforderung", "vertrag-kauf": "mangel_entdeckt", "allgemein": "ereignisdatum",
                 "schaden-unfall": "unfalldatum", "werkvertrag-bau": "mangel_entdeckt", "erbrecht": "todestag", "inkasso": "faelligkeit", "verkehr": "tatdatum", "sozialversicherung": "verfuegung_erhalten"},
  "areas": [
-  {"prefix": "Mietrecht", "label": "Miet- und Pachtrecht", "capacity": "als Mieterin oder Mieter", "capacity_check": "selbstbewohnt? prüfen",
+  {"id": "miete", "prefix": "Mietrecht", "label": "Miet- und Pachtrecht", "capacity": "als Mieterin oder Mieter", "capacity_check": "selbstbewohnt? prüfen",
    "eigenschaft": {"privat": ["C.3"]}, "rechtsgebiet": {"privat": ["D3.1"], "unternehmen": ["B4.15"]}},
-  {"prefix": "Arbeitsrecht", "label": "Arbeitsrecht", "capacity": "als Arbeitnehmerin oder Arbeitnehmer", "capacity_check": "Eigenschaft prüfen",
+  {"id": "arbeit", "prefix": "Arbeitsrecht", "label": "Arbeitsrecht", "capacity": "als Arbeitnehmerin oder Arbeitnehmer", "capacity_check": "Eigenschaft prüfen",
    "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D2.1"], "unternehmen": ["B4.13"]}, "grenzen": {"privat": ["D2.1-streitwert"]},
    "grenzen_text": "Streitwertgrenze gemäss Police (Art. D2 Ziff. 1)"},
-  {"prefix": "Vertragsrecht / Werkvertrag", "label": "Konsumenten- und Vertragsrecht", "label_unternehmen": "Vertragsrecht", "capacity": "als Privatperson; bei einem Bauvorhaben an einer Immobilie als Bauherrin oder Bauherr",
+  {"id": "werkvertrag", "prefix": "Vertragsrecht / Werkvertrag", "label": "Konsumenten- und Vertragsrecht", "label_unternehmen": "Vertragsrecht", "capacity": "als Privatperson; bei einem Bauvorhaben an einer Immobilie als Bauherrin oder Bauherr",
    "capacity_check": "Bauvorhaben? dann Bauherren-Rechtsschutz prüfen", "eigenschaft": {"privat": ["C.1", "C.4"]}, "rechtsgebiet": {"privat": ["D1.1", "D3.4"], "unternehmen": ["B4.7"]},
    "grenzen": {"privat": ["D3.4-kosten"]}, "grenzen_text": "bei einem Bauvorhaben: Kosten des gesamten Bauvorhabens höchstens wie in der Police genannt (Art. D3 Ziff. 4)"},
-  {"prefix": "Schadenersatzrecht", "label": "Schadenersatzrecht", "capacity": "als Privatperson", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D1.3"]}},
-  {"prefix": "Erbrecht", "label": "Erbrecht", "capacity": "als Privatperson (Erbin oder Erbe)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D1.9"]}},
-  {"prefix": "Nachbarrecht", "label": "Nachbarrecht", "capacity": "als Eigentümerin, Eigentümer, Mieterin oder Mieter des selbstbewohnten Grundstücks", "capacity_check": "Eigentum oder Miete und Selbstbewohnung prüfen",
+  {"id": "schadenersatz", "prefix": "Schadenersatzrecht", "label": "Schadenersatzrecht", "capacity": "als Privatperson", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D1.3"]}},
+  {"id": "erbrecht", "prefix": "Erbrecht", "label": "Erbrecht", "capacity": "als Privatperson (Erbin oder Erbe)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D1.9"]}},
+  {"id": "nachbarrecht", "prefix": "Nachbarrecht", "label": "Nachbarrecht", "capacity": "als Eigentümerin, Eigentümer, Mieterin oder Mieter des selbstbewohnten Grundstücks", "capacity_check": "Eigentum oder Miete und Selbstbewohnung prüfen",
    "eigenschaft": {"privat": ["C.3", "C.4"]}, "rechtsgebiet": {"privat": ["D3.2"]}},
-  {"prefix": "Inkasso-Rechtsschutz", "label": "Inkasso-Rechtsschutz", "capacity": "als Privatperson (Gläubigerin oder Gläubiger)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D1.6"]},
+  {"id": "inkasso", "prefix": "Inkasso-Rechtsschutz", "label": "Inkasso-Rechtsschutz", "capacity": "als Privatperson (Gläubigerin oder Gläubiger)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D1.6"]},
    "grenzen": {"privat": ["D1.6-voraussetzungen"]}, "grenzen_text": "mindestens CHF 500, unbestritten, schriftlich gemahnt, höchstens zwei Mal pro Kalenderjahr (Art. D1 Ziff. 6)"},
-  {"prefix": "Vertragsrecht", "label": "Konsumenten- und Vertragsrecht", "label_unternehmen": "Vertragsrecht", "capacity": "als Privatperson",
+  {"id": "vertrag", "prefix": "Vertragsrecht", "label": "Konsumenten- und Vertragsrecht", "label_unternehmen": "Vertragsrecht", "capacity": "als Privatperson",
    "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D1.1"], "unternehmen": ["B4.7"]}},
-  {"prefix": "Strafrecht", "label": "Strafrecht", "capacity": "als Lenkerin, Lenker, Halterin oder Halter eines Fahrzeugs (Verkehrs-Rechtsschutz) oder als Privatperson",
+  {"id": "strafrecht", "prefix": "Strafrecht", "label": "Strafrecht", "capacity": "als Lenkerin, Lenker, Halterin oder Halter eines Fahrzeugs (Verkehrs-Rechtsschutz) oder als Privatperson",
    "capacity_check": "Fahrzeug und Verkehrs-Rechtsschutz in der Police prüfen", "eigenschaft": {"privat": ["E.2", "C.1"]}, "rechtsgebiet": {"privat": ["F1.4", "F1.5", "D4.1"]},
    "grenzen": {"privat": ["G.1d", "J.p", "J.n", "A6.1"]}, "grenzen_text": "im Verkehr eingeschränkt: Geschwindigkeit (Art. G Ziff. 1 lit. d), Alkohol ab 1,6 ‰ (Art. J lit. p), Vorsatz (Art. J lit. n); Bussen sind nicht versichert (Art. A6 Ziff. 1)"},
-  {"prefix": "Sozialversicherungsrecht", "label": "Sozialversicherungsrecht", "capacity": "als Privatperson (versicherte Person)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D5.2"]}},
-  {"prefix": "Privatversicherungsrecht", "label": "Privatversicherungsrecht", "capacity": "als Privatperson (Versicherungsnehmerin, Versicherungsnehmer oder versicherte Person)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D5.3"]}},
-  {"prefix": "Schuldbetreibungs- und Konkursrecht", "label": null, "capacity": "als Privatperson (Schuldnerin oder Schuldner)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D"], "unternehmen": ["B4"]},
+  {"id": "sozialversicherung", "prefix": "Sozialversicherungsrecht", "label": "Sozialversicherungsrecht", "capacity": "als Privatperson (versicherte Person)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D5.2"]}},
+  {"id": "privatversicherung", "prefix": "Privatversicherungsrecht", "label": "Privatversicherungsrecht", "capacity": "als Privatperson (Versicherungsnehmerin, Versicherungsnehmer oder versicherte Person)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D5.3"]}},
+  {"id": "betreibung", "prefix": "Schuldbetreibungs- und Konkursrecht", "label": null, "capacity": "als Privatperson (Schuldnerin oder Schuldner)", "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D"], "unternehmen": ["B4"]},
    "grenzen": {"privat": ["J.u"]}, "grenzen_text": "Schuldbetreibungs- und Konkursrecht ist ausser dem Inkasso ausgeschlossen (Art. J lit. u): versichert sein kann der Streit über die Forderung in ihrem eigenen Rechtsgebiet"},
-  {"prefix": "", "label": null, "capacity": null, "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D"], "unternehmen": ["B4"]}}
+  {"id": "uebriges", "prefix": "", "label": null, "capacity": null, "eigenschaft": {"privat": ["C.1"]}, "rechtsgebiet": {"privat": ["D"], "unternehmen": ["B4"]}}
  ],
  "points": [
   {"id": "vertrag", "title": "Police in Kraft, Prämie bezahlt", "question": "Ist die Police in Kraft und keine Prämie trotz Mahnung ausstehend?",
@@ -264,5 +264,15 @@
  },
  "first_contact": {"working_days": 3, "public": "erstkontakt",
                    "contacts": ["1", "2", "4", "5", "6", "7", "8", "10"],
-                   "note": "Wochenenden übersprungen; Feiertage nicht berücksichtigt"}
+                   "note": "Wochenenden übersprungen; Feiertage nicht berücksichtigt"},
+ "open_questions": [
+  {"text": "Gilt der in der Praxis verwendete Schlusssatz («Ohne Ihre Rückmeldung bis … gehen wir davon aus, dass sich der Fall erledigt hat …») als schriftliche Aufforderung unter Androhung der Säumnisfolgen nach Art. 39 Abs. 2 Ziff. 2 VVG?", "about": "regel.leistungseinstellung"},
+  {"text": "Gilt Art. 39 VVG neben der Klausel der Bedingungen zur Verletzung von Melde- und Verhaltenspflichten (Privat M Ziff. 4, Unternehmen F Ziff. 4)?", "about": "regel.leistungseinstellung"},
+  {"text": "Genügt eine schriftliche Aufforderung mit Androhung durch die beauftragte Kanzlei?", "about": "regel.leistungseinstellung"},
+  {"text": "Die allgemeine Wartefrist von drei Monaten stammt von der öffentlichen Produktseite, nicht aus den Bedingungen: darf sie so als Hilfe dienen?", "about": "punkt.wartefrist"},
+  {"text": "Gelten die je Gebiet verwendeten Daten (z.B. «Mangel seit», «Kündigung erhalten») als Ursache im Sinne von A2 Ziff. 2 und 3 der Bedingungen?", "about": "ursache"},
+  {"text": "Ist die versicherte Eigenschaft bei Streitigkeiten aus dem Arbeitsverhältnis richtig C Ziff. 1 zugeordnet?", "about": "zuordnung.arbeit"},
+  {"text": "Das Datum der Meldung wird aus den Unterlagen erschlossen (Eingangsbestätigung, sonst Eröffnung des Falls, sonst erste Datei): trägt das?", "about": "regel.erstkontakt"},
+  {"text": "Genügt der Wortlaut der Pflichtteile der Ablehnung mangels Erfolgsaussichten Art. 169 Abs. 2 AVO und den Bedingungen (Privat M Ziff. 7 und 8)?", "about": ["schreiben.A5_aussichtslos.begruendung", "schreiben.A5_aussichtslos.loesung", "schreiben.A5_aussichtslos.eigene_kosten", "schreiben.A5_aussichtslos.verfahren"]}
+ ]
 }

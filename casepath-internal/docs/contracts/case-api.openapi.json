@@ -400,6 +400,50 @@
     "title": "OwnAnswer",
     "type": "object"
    },
+   "ReviewMark": {
+    "additionalProperties": false,
+    "description": "A jurist's mark on one element of the legal content; «Änderung nötig» and «Frage» say why in a comment.",
+    "properties": {
+     "comment": {
+      "default": "",
+      "maxLength": 4000,
+      "title": "Comment",
+      "type": "string"
+     },
+     "mark": {
+      "enum": [
+       "geprueft",
+       "aenderung",
+       "frage"
+      ],
+      "title": "Mark",
+      "type": "string"
+     },
+     "sha256": {
+      "anyOf": [
+       {
+        "pattern": "^[0-9a-f]{64}$",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Sha256"
+     },
+     "suggestion": {
+      "default": "",
+      "maxLength": 4000,
+      "title": "Suggestion",
+      "type": "string"
+     }
+    },
+    "required": [
+     "mark"
+    ],
+    "title": "ReviewMark",
+    "type": "object"
+   },
    "StatusChange": {
     "properties": {
      "reason": {
@@ -1810,6 +1854,199 @@
      }
     },
     "summary": "Me"
+   }
+  },
+  "/api/review": {
+   "get": {
+    "description": "The rows of «Rechtsgebiete», each with its state and counts, and whether the signed-in person may mark.",
+    "operationId": "review_overview_api_review_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Review Overview"
+   }
+  },
+  "/api/review/export": {
+   "get": {
+    "description": "The requested changes and questions for the developers: element id, mark, comment, suggested wording. No case content.",
+    "operationId": "review_export_api_review_export_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "format",
+      "required": false,
+      "schema": {
+       "default": "json",
+       "enum": [
+        "json",
+        "md"
+       ],
+       "title": "Format",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Review Export"
+   }
+  },
+  "/api/review/{file}/{element}": {
+   "post": {
+    "description": "«geprüft», «Änderung nötig» or «Frage» on one element, for the content as it is now; stored and logged.",
+    "operationId": "review_mark_api_review__file___element__post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "file",
+      "required": true,
+      "schema": {
+       "title": "File",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "element",
+      "required": true,
+      "schema": {
+       "title": "Element",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ReviewMark"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Review Mark"
+   }
+  },
+  "/api/review/{row_id}": {
+   "get": {
+    "description": "One area (or the cover check, the letters): every element with its content, passages, source and open question.",
+    "operationId": "review_row_api_review__row_id__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "row_id",
+      "required": true,
+      "schema": {
+       "title": "Row Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Review Row"
+   }
+  },
+  "/api/review/{row_id}/pruefpaket": {
+   "get": {
+    "description": "The same content as one plain page, to print.",
+    "operationId": "review_pack_api_review__row_id__pruefpaket_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "row_id",
+      "required": true,
+      "schema": {
+       "title": "Row Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Review Pack"
    }
   },
   "/api/run-profile": {
