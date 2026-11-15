@@ -19,7 +19,8 @@ from .workflows import CatalogueError, condition_facts, evaluate, evaluate_condi
 
 EXTRA_SOURCES = [{"id": "knowledge", "kind": "knowledge", "title": "CasePath Knowledge learned from earlier cases"},
                  {"id": "edit", "kind": "case_edit", "title": "Changes made to this case's process"}]
-EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_question", "add_step", "set_transition", "rename_step", "set_fact"}
+EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_question", "add_step", "set_transition", "rename_step", "set_fact",
+            "add_entry"}  # add_entry: the handler's own entry of the running account (account.handler_entry); the process is unchanged
 
 
 def fact_value(definition, value):
@@ -210,6 +211,12 @@ def apply_edit(graph, edit):
         step["next"][args["index"]] = {**step["next"][args["index"]], "to": args["to"],
                                        "when": args.get("when", step["next"][args["index"]].get("when", True))}
         step["source_refs"] = step["source_refs"] + [ref]
+    elif op == "add_entry":  # an entry of the case's running account, not a change to the process; see account.handler_entries
+        from .account import FormError, check_form
+        try:
+            check_form(args)
+        except FormError as error:
+            raise EditError(str(error)) from None
     elif op == "set_fact":  # changes the facts the case is evaluated with, not the process; see fact_overrides
         definition = next((f for f in graph["facts"] if f["id"] == args.get("fact")), None)
         if definition is None:

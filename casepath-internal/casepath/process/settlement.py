@@ -59,7 +59,9 @@ def from_account(ledger, facts=None):
     payment = (ledger or {}).get("payment")
     return {"amount": a.get("amount") or a.get("what"), "payer": name, "due": a.get("by"), "date": a.get("date"),
             "citations": a.get("citations") or [], "paid": payment is not None,
-            "paid_on": (payment or {}).get("date") or (payment or {}).get("entry_date")}
+            "paid_on": (payment or {}).get("date") or (payment or {}).get("entry_date"),
+            # the handler entered the agreement: it is recorded by the handler, the first step of the sequence is done
+            "by_handler": bool(a.get("handler"))}
 
 
 def agreement(facts, rows=None, account=None):
@@ -67,7 +69,8 @@ def agreement(facts, rows=None, account=None):
     ``account``: the running account of the case, where one is kept (another module); it wins over the incoming items."""
     if account and any(account.get(k) for k in ("amount", "payer", "due")):
         return {"amount": account.get("amount"), "payer": account.get("payer"), "due": account.get("due"), "fact": "account",
-                "citations": account.get("citations") or [], "paid": bool(account.get("paid")), "date": account.get("date")}
+                "citations": account.get("citations") or [], "paid": bool(account.get("paid")), "date": account.get("date"),
+                "by_handler": bool(account.get("by_handler"))}
     for fact in ("eingang_angebot", "eingang_angebot_2", "eingang_zahlung"):
         value = str((facts or {}).get(fact) or "")
         if not value or value.strip().lower() in {"keine", "nein", "-"}:
@@ -143,7 +146,7 @@ def state(facts, rows, files, events, customer_name=None, account=None):
     iban = customer_iban(files, customer_name)
     paid = bool(facts.get("eingang_zahlung")) or facts.get("zahlung_erhalten") is True or bool(terms.get("paid"))
     done = []
-    if facts.get("vergleich_bestaetigt") is True:
+    if facts.get("vergleich_bestaetigt") is True or terms.get("by_handler"):  # confirmed, or entered by the handler
         done.append("einigung")
     if (iban and iban["holder"]) or copied(events, "A11_iban"):
         done.append("iban")
@@ -178,7 +181,8 @@ def lines(st):
                  f"bis {_day(t['due'])}" if t["due"] else "Termin nicht in der Akte"]
         if t.get("paid"):
             parts.append("bezahlt")
-        out.append({"id": "vg-einigung", "text": ("Einigung laut Verlauf: " if t["fact"] == "account" else "Einigung laut Akte: ") + " · ".join(parts),
+        out.append({"id": "vg-einigung", "text": ("Einigung laut Eintrag der Fallbearbeitung: " if t.get("by_handler") else
+                                                  "Einigung laut Verlauf: " if t["fact"] == "account" else "Einigung laut Akte: ") + " · ".join(parts),
                     "citations": t["citations"][:1], "facts": [] if t["fact"] == "account" else [t["fact"]],
                     "amount": t["amount"], "payer": t["payer"], "due": t["due"], "date": t.get("date")})
     else:
