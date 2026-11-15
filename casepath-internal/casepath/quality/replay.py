@@ -26,7 +26,9 @@ def snapshot(store, catalogue, case_id, knowledge=None):
 
 
 def replay(store, catalogue, proposal=(), case_ids=None):
-    """[{case, title, before, after, changed}] for every case with a completed run (or the cases named)."""
+    """[{case, title, before, after, changed}] for every case with a completed run (or the cases named). A proposed item
+    with the id of an active item is that item's new version and replaces it (a refinement merged into the item it
+    refines, as its activation does), never a second item beside it."""
     rows = []
     for case in store.list_cases():
         if case_ids and case["id"] not in case_ids:
@@ -34,7 +36,8 @@ def replay(store, catalogue, proposal=(), case_ids=None):
         before = snapshot(store, catalogue, case["id"])
         if before is None:
             continue
-        active = store.list_knowledge(None, {"active"})
+        proposed = {k["id"] for k in proposal}
+        active = [k for k in store.list_knowledge(None, {"active"}) if k["id"] not in proposed]
         after = snapshot(store, catalogue, case["id"], active + [{**k, "status": "active"} for k in proposal])
         changed = {k: {"before": before[k], "after": after[k]} for k in before if before[k] != after[k]}
         rows.append({"case": case["id"], "title": case["title"], "before": before, "after": after, "changed": changed})

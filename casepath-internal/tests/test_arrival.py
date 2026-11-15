@@ -318,6 +318,72 @@ class RestartTests(Arrival):
         self.assertIn('T("Update interrupted", "Aktualisierung unterbrochen")', SCRIPT)
 
 
+class AdmissionTests(AutoOn):
+    """An update reads the inputs admitted when it was created; after a restart it is resumed with those only, and a file
+    that came later waits with «Aktualisieren» and its reason (the audit of 84115b9: a resume had been checked with the
+    page cap off, so two interrupted reply pages and a later 21-page file ran as 23 unread pages under a 20-page cap)."""
+
+    def large(self, case_id, pages=21):
+        """A file of ``pages`` pages that came after the update was admitted."""
+        text = "\n\n".join(f"[page {n}]\nGutachten der Fachperson, Seite {n}: Feuchtigkeit gemessen." for n in range(1, pages + 1))
+        row = {"media_type": "application/pdf", "kind": "pdf", "text": text, "pages": pages, "readable": True, "note": None, "segments": []}
+        return self.store.add_file(case_id, "Gutachten.pdf", "application/pdf", "pdf", text.encode(), row, "dev")["id"]
+
+    def restarted(self, case_id):
+        """The service started again on the same data (P-restart): a new app on the reopened store, whose run service marks
+        the unfinished update interrupted and starts what it may start again (its model waits until the app is up)."""
+        self.client.app.state.runs.shutdown()
+        self.client.app.state.store.close()
+        here = {}
+
+        def factory(token=None):
+            for _ in range(500):
+                if "store" in here:
+                    break
+                time.sleep(0.01)
+            model = recorded(episode.update_model(here["store"], case_id, NS.turns_b(), NS.reply_names))
+            self.models.append(model)
+            return model
+        self.client = TestClient(create_app(load_settings({"CASEPATH_DATA_DIR": self.data, "CASEPATH_DEV_USER": "dev", **self.env}),
+                                            model_factory=factory))
+        self.store, self.runs = self.client.app.state.store, self.client.app.state.runs
+        here["store"] = self.store
+        return here
+
+    def test_a_resumed_update_reads_only_what_it_admitted_and_a_later_large_file_waits(self):
+        case = self.seeded()
+        replies = episode.add_replies(self.store, case["id"])
+        with mock.patch.object(self.runs._pool, "submit"):  # created with its inputs admitted; the service stops before it runs
+            left = self.runs.update(case["id"], "dev", auto=True, max_pages=20)
+        admitted = next(e for e in self.store.get_run(left["id"])["events"] if e["kind"] == "update.admitted")
+        self.assertEqual((sorted(admitted["files"]), admitted["pages"]), (sorted(replies), 2))
+        big = self.large(case["id"])  # 21 pages more: 23 unread pages under a cap of 20
+        self.restarted(case["id"])
+        self.assertEqual(self.store.get_run(left["id"])["status"], "interrupted")
+        resumed, = self.runs.resumed
+        done = episode.wait(self.store, resumed)
+        self.assertEqual((done["status"], done["kind"]), ("completed", "update"), done.get("error"))
+        self.assertEqual(sorted(done["result"]["update"]["files"]), sorted(replies))  # the admitted inputs, nothing more
+        self.assertNotIn(big, done["result"]["read_files"])
+        again = next(e for e in done["events"] if e["kind"] == "update.admitted")
+        self.assertEqual((sorted(again["files"]), again["pages"]), (sorted(replies), 2))
+        self.assertNotIn("Gutachten der Fachperson", json.dumps(self.models[0].inputs, ensure_ascii=False))
+        time.sleep(0.3)
+        self.assertEqual([r["id"] for r in self.runs_of(case["id"], "update")], [left["id"], resumed])  # no update of the large file
+        view = self.view(case["id"])  # the large file waits for the handler, «Aktualisieren» with its reason
+        self.assertEqual(view["new_files"], ["Gutachten.pdf"])
+        self.assertEqual((view["update"]["available"], view["update"]["auto"], view["update"]["max_pages"]), (True, "zu_gross", 20))
+
+    def test_an_interrupted_update_without_its_admitted_inputs_is_resumed_only_within_the_cap(self):
+        case = self.seeded()
+        episode.add_replies(self.store, case["id"])
+        left = NS.perturbations["P-restart"].leave(self.store, case["id"])  # an update made before updates recorded their inputs
+        self.large(case["id"])
+        self.restarted(case["id"])
+        self.assertEqual((self.runs.resumed, self.store.get_run(left["id"])["status"]), ([], "interrupted"))
+        self.assertEqual(self.view(case["id"])["update"]["auto"], "zu_gross")
+
+
 class StoppedTests(Arrival):
     def test_a_stopped_update_shows_the_run_it_built_on_in_the_list_and_the_case(self):
         case = self.seeded()

@@ -2262,7 +2262,7 @@
   },
   "/api/knowledge/{knowledge_id}/activate": {
    "post": {
-    "description": "«Freigeben»: only an item whose replay is of its current version (a refinement: the refining item's own).",
+    "description": "«Freigeben»: only an item whose replay is of its current version and, for a refinement, of the version of the\nitem it refines as it is now; it then applies exactly the transformation the replay applied (activation).",
     "operationId": "activate_api_knowledge__knowledge_id__activate_post",
     "parameters": [
      {

@@ -46,7 +46,7 @@ from ..quality.auswertung import auswertung
 
 SERVED_WHOLE_BYTES = 15 * 1024 * 1024  # the Databricks Apps proxy fails on responses of about 18 MB (measured 2026-11-11)
 from ..read.extract import attachments, extract
-from ..agents.runner import RunService, auto_update_reason, case_state
+from ..agents.runner import RunService, TooLarge, auto_update_reason, case_state
 from .store import CaseStore, Conflict, Duplicate, NotFound
 
 UI = Path(__file__).parent / "ui"
@@ -934,10 +934,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if settings.auto_update:
             auto = auto_update_reason(store, case_id, settings.auto_update_max_pages) or "gestartet"
             if auto == "gestartet":
-                try:
-                    run = runs.update(case_id, who, model_token(request), auto=True, budget=settings.update_token_budget)
+                try:  # the files it reads are admitted now, within the cap: a file coming later waits for the next update
+                    run = runs.update(case_id, who, model_token(request), auto=True, budget=settings.update_token_budget,
+                                      max_pages=settings.auto_update_max_pages)
                 except HTTPException:  # the model is called as the person, who must sign in again: «Aktualisieren» stays
                     auto = "anmelden"
+                except TooLarge:  # another upload added pages a moment before
+                    auto = "zu_gross"
                 except Conflict:  # another upload started one a moment before
                     auto = "lauf_aktiv"
                 else:
@@ -1337,16 +1340,33 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def get_knowledge(knowledge_id: str, who=Depends(user)):
         return {"item": found(store.get_knowledge, knowledge_id), "uses": store.knowledge_uses(knowledge_id)}
 
+    def activation(item, who, reason=None):
+        """What «Freigeben» makes of an item, the one transformation both the replay and the activation apply: (the items
+        it saves, the item it refines as it is now, or None). A plain item becomes active; a refinement is merged into the
+        item it refines (a new version of it, keeping that item's status) and is itself retired."""
+        if not item.get("refines"):
+            return [kb.set_status(item, "active", by=who, reason=reason or "")], None
+        target = found(store.get_knowledge, item["refines"])
+        merged = kb.refine(target, content=item["content"], applies_when=item["applies_when"], applies_when_text=item["applies_when_text"],
+                           by=who, case_id=(item.get("origin") or {}).get("case_id"), reason=reason or "refined from a later case")
+        return [merged, kb.set_status(item, "retired", by=who, reason=f"merged into {target['id']} v{merged['version']}")], target
+
     def replayed(item, who, because=None):
-        """The item with the model-free replay of its current version on the stored cases (quality/replay.py): how many
-        cases were replayed and what it changes in each, kept on the item (``replay.version``) and logged
-        (``knowledge.replayed``). A refining item is replayed as itself: its replay is the one its activation needs."""
-        rows = replay(store, catalogue, [item])
-        changed = [{"case": r["case"], "title": r["title"], "changed": sorted(r["changed"])} for r in rows if r["changed"]]
+        """The item with the model-free replay of its current version on the stored cases (quality/replay.py): the active
+        Knowledge as its activation would leave it (activation: a refinement merged into the item it refines, which it
+        replaces), how many cases were replayed and what it changes in each (the changed outputs, before and after), kept on
+        the item (``replay.version``; for a refinement also the refined item and the version it was replayed on, so a
+        change of either makes the replay stale) and logged (``knowledge.replayed``)."""
+        saved, target = activation(item, who)
+        rows = replay(store, catalogue, [k for k in saved if k["status"] == "active"])
+        changed = [{"case": r["case"], "title": r["title"], "changed": sorted(r["changed"]), "after": {k: v["after"] for k, v in r["changed"].items()}}
+                   for r in rows if r["changed"]]
         item = {**item, "replay": {"version": item["version"], "cases": len(rows), "changed": changed, "by": who,
-                                   "at": datetime.now().astimezone().isoformat(timespec="seconds"), **({"because": because} if because else {})}}
+                                   "at": datetime.now().astimezone().isoformat(timespec="seconds"), **({"because": because} if because else {}),
+                                   **({"target": target["id"], "target_version": target["version"]} if target else {})}}
         store.append_workspace_event({"schema": "casepath.knowledge.event/1", "kind": "knowledge.replayed", "item": item["id"],
-                                      "version": item["version"], "cases": len(rows), "changed": len(changed), "by": who})
+                                      "version": item["version"], "cases": len(rows), "changed": len(changed), "by": who,
+                                      **({"target": target["id"], "target_version": target["version"]} if target else {})})
         return item
 
     @app.post("/api/knowledge/{knowledge_id}/replay")
@@ -1357,19 +1377,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.post("/api/knowledge/{knowledge_id}/activate")
     def activate(knowledge_id: str, body: StatusChange, who=Depends(user)):
-        """«Freigeben»: only an item whose replay is of its current version (a refinement: the refining item's own)."""
+        """«Freigeben»: only an item whose replay is of its current version and, for a refinement, of the version of the
+        item it refines as it is now; it then applies exactly the transformation the replay applied (activation)."""
         item = found(store.get_knowledge, knowledge_id)
-        if (item.get("replay") or {}).get("version") != item.get("version"):
+        played = item.get("replay") or {}
+        if played.get("version") != item.get("version"):
             raise HTTPException(409, "Zuerst nachspielen: die Wirkung dieser Fassung ist nicht bekannt")
-        if item.get("refines"):
-            target = found(store.get_knowledge, item["refines"])
-            merged = kb.refine(target, content=item["content"], applies_when=item["applies_when"],
-                               applies_when_text=item["applies_when_text"], by=who,
-                               case_id=item["origin"].get("case_id"), reason=body.reason or "refined from a later case")
-            store.save_knowledge(merged)
-            store.save_knowledge(kb.set_status(item, "retired", by=who, reason=f"merged into {target['id']} v{merged['version']}"))
-            return merged
-        return store.save_knowledge(kb.set_status(item, "active", by=who, reason=body.reason))
+        saved, target = activation(item, who, body.reason)
+        if target is not None and (played.get("target"), played.get("target_version")) != (target["id"], target["version"]):
+            raise HTTPException(409, "Zuerst nachspielen: der verfeinerte Eintrag hat sich seither geändert")
+        for row in saved:
+            store.save_knowledge(row)
+        return saved[0]
 
     @app.post("/api/knowledge/{knowledge_id}/retire")
     def retire(knowledge_id: str, body: StatusChange, who=Depends(user)):

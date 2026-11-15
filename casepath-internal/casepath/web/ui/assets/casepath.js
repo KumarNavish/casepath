@@ -2563,8 +2563,14 @@ function autoTitle(u) {
 // seeded for an area and the intake it replaced) has its own; «ändert n von m Fällen», the changes by case, then «Freigeben».
 const KNOWLEDGE_CHANGE = { needs: T("documents", "Unterlagen"), now: T("asked now", "jetzt verlangt"), offered: T("offered", "angeboten"),
                            later: T("asked later", "später verlangt"), questions: T("questions", "Fragen"), next_action: T("next step", "nächster Schritt") };
+// A replay counts for the version it played and, for a refinement, for the version of the item it refines it played on.
 function replayCurrent(k, all) {
-  return k.ids.every((id) => { const it = all.find((x) => x.id === id); return it && it.replay && it.replay.version === it.version; });
+  return k.ids.every((id) => {
+    const it = all.find((x) => x.id === id), r = it && it.replay;
+    if (!r || r.version !== it.version) return false;
+    const target = it.refines ? all.find((x) => x.id === it.refines) : null;
+    return !target || r.target_version === target.version;
+  });
 }
 function replayLine(k, all, caseName) {
   if (!replayCurrent(k, all)) return `<span class="cp-muted">${T("Its effect on the stored cases is not known yet.", "Die Wirkung auf die vorbereiteten Fälle ist noch nicht bekannt.")}</span>`;

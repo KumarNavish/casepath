@@ -17,6 +17,12 @@ followed by one more, once, when a file came in while it ran; and an update inte
 once, when the case still has unread files and nothing ran after it (``update.started`` {auto, run, resumed} in the
 case's log). A failed or capped update is never retried by itself. Nothing already read is read again: the new files'
 pages read before the interruption were saved with their reading.
+
+An update reads exactly the inputs admitted when it was created (``update.admitted`` among its events: the files the run
+it builds on did not read, and their pages, checked against the page cap when it starts by itself); a file that comes
+later waits for the next update, also when the update is started again after a restart: the resumed update reads only the
+inputs the interrupted one admitted, and a later arrival stays pending with «Aktualisieren» and its reason. An update
+interrupted before this record existed is started again only when the case's actual unread set is within the cap.
 """
 from concurrent.futures import ThreadPoolExecutor
 
@@ -26,12 +32,30 @@ from .azure_model import ModelError
 from ..web.store import ACTIVE, Conflict, now
 
 
+ADMITTED = "update.admitted"  # an update's own event: the inputs it reads ({files, pages}), recorded when it is created
+
+
+class TooLarge(Conflict):
+    """An update that would start by itself while the unread files have more pages than the deployment's cap."""
+
+
+def pages_of(files, ids=None):
+    """The pages of these files (all, or those of ``ids``); a file without pages counts as one."""
+    ids = None if ids is None else set(ids)
+    return sum(len((f.get("extraction") or {}).get("kept_pages") or ()) or int((f.get("extraction") or {}).get("pages") or 0) or 1
+               for f in files or () if ids is None or f["id"] in ids)
+
+
 def unread_pages(files, run):
     """The pages of the case's files a run did not read (a file without pages counts as one), for the cap of an update
     an upload starts by itself."""
-    new = set(core.unread(files, run))
-    return sum(len((f.get("extraction") or {}).get("kept_pages") or ()) or int((f.get("extraction") or {}).get("pages") or 0) or 1
-               for f in files or () if f["id"] in new)
+    return pages_of(files, core.unread(files, run))
+
+
+def admitted(run):
+    """The file ids an update admitted when it was created (its ``update.admitted`` event), or None for an update made
+    before updates recorded them."""
+    return next((list(e.get("files") or ()) for e in (run or {}).get("events") or () if e.get("kind") == ADMITTED), None)
 
 
 def auto_update_reason(store, case_id, max_pages):
@@ -112,25 +136,38 @@ class RunService:
         self._pool.submit(self._execute, run["id"], case_id, token)
         return run
 
-    def update(self, case_id, user, token=None, auto=False, budget=None, follow=None):
+    def update(self, case_id, user, token=None, auto=False, budget=None, follow=None, max_pages=0, only=None):
         """«Aktualisieren»: a run that reads only what came in since the latest completed run and builds on it. Conflict,
         with the reason in the handler's words, when it cannot (core.update_blocked). ``auto``: started by an upload (or by
         a restart), so one more update follows, once, when a file came in while it ran (``follow`` False for that one);
-        ``budget``: its token cap, else the deployment's update cap, never above the run's."""
+        ``budget``: its token cap, else the deployment's update cap, never above the run's. The files it reads are admitted
+        now and recorded with the run (``update.admitted``): the unread files (``only``: of these, as a resumed update
+        reads only what the interrupted one admitted), within ``max_pages`` pages when given (TooLarge otherwise); a file
+        that comes later waits for the next update."""
         base = self.store.latest_run(case_id, "completed")
-        blocked = core.update_blocked(self.store.get_case(case_id), self.store.list_files(case_id), base)
+        files = self.store.list_files(case_id)
+        blocked = core.update_blocked(self.store.get_case(case_id), files, base)
         if blocked:
             raise Conflict(blocked[1])
+        inputs = [f for f in core.unread(files, base) if only is None or f in set(only)]
+        if not inputs:
+            raise Conflict(core.NOTHING_NEW)
+        pages = pages_of(files, inputs)
+        if max_pages and pages > max_pages:
+            raise TooLarge("zu_gross")
         run = self.store.create_run(case_id, user, kind="update", builds_on=base["id"])
+        self.store.append_event(run["id"], {"agent": "runner", "kind": ADMITTED, "files": inputs, "pages": pages})
         limits = [x for x in (budget or self.update_token_budget, self.token_budget) if x]
         again = bool(auto) if follow is None else bool(follow)
-        self._pool.submit(self._update, run["id"], case_id, base["id"], token, min(limits) if limits else 0, again)
+        self._pool.submit(self._update, run["id"], case_id, base["id"], token, min(limits) if limits else 0, again, inputs)
         return run
 
-    def _update(self, run_id, case_id, base_id, token=None, budget=0, again=False):
+    def _update(self, run_id, case_id, base_id, token=None, budget=0, again=False, inputs=None):
         try:
             self.store.update_run(run_id, status="running")
-            outcome = core.update(self.job(case_id, budget), self.store.get_run(base_id), self._model(run_id, token), core.StoreBlobs(self.store),
+            prior = self.store.get_run(base_id)
+            outcome = core.update(self.job(case_id, budget, admitted=(prior, inputs) if inputs is not None else None), prior,
+                                  self._model(run_id, token), core.StoreBlobs(self.store),
                                   on_event=lambda e: self._event(run_id, e),
                                   on_extraction=lambda file_id, extraction: self.store.update_extraction(file_id, extraction),
                                   should_stop=lambda: run_id in self._stops, edits_now=lambda: self.store.list_edits(case_id))
@@ -151,7 +188,7 @@ class RunService:
             run = self.store.get_run(run_id)
             if run["status"] != "completed" or not self.auto_update or auto_update_reason(self.store, case_id, self.auto_update_max_pages):
                 return
-            later = self.update(case_id, run["created_by"], token, auto=True, budget=budget, follow=False)
+            later = self.update(case_id, run["created_by"], token, auto=True, budget=budget, follow=False, max_pages=self.auto_update_max_pages)
             self.log(case_id, run["created_by"], "update.started", auto=True, run=later["id"], follows=run_id)
         except Exception:  # noqa: BLE001  the case keeps its «Aktualisieren»: the arrival is shown, nothing is lost
             return
@@ -159,8 +196,10 @@ class RunService:
     def _resume(self, interrupted):
         """After a restart: each update the restart interrupted is started again, once, by itself, when the deployment
         starts updates by itself, the model is not called as a person, the case still has files its last preparation did
-        not read and nothing ran after the interrupted update. An update that was itself such a restart is not started
-        again. Returns the new runs' ids."""
+        not read and nothing ran after the interrupted update. It reads only the inputs the interrupted update admitted
+        (``update.admitted``); what came later stays pending with «Aktualisieren» and its reason. An interrupted update
+        without that record is started again only when the case's actual unread files are within the page cap. An update
+        that was itself such a restart is not started again. Returns the new runs' ids."""
         out = []
         if not self.auto_update or self.model_as_user:
             return out
@@ -173,9 +212,11 @@ class RunService:
                 logged = [e for e in self.store.list_case_events(case_id) if e.get("kind") == "update.started"]
                 if any(e.get("run") == run_id and e.get("resumed") for e in logged) or any(e.get("resumed") == run_id for e in logged):
                     continue  # a restart's own update, or one already started again: at most once
-                if auto_update_reason(self.store, case_id, 0):  # unread files and nothing blocking; the page cap was passed when it started
+                inputs = admitted(run)
+                # unread files and nothing blocking; without the admitted inputs, the actual unread set within the cap
+                if auto_update_reason(self.store, case_id, 0 if inputs is not None else self.auto_update_max_pages):
                     continue
-                again = self.update(case_id, run["created_by"], None, auto=True)
+                again = self.update(case_id, run["created_by"], None, auto=True, only=inputs)
                 self.log(case_id, run["created_by"], "update.started", auto=True, run=again["id"], resumed=run_id)
                 out.append(again["id"])
             except Exception:  # noqa: BLE001  the case shows «unterbrochen» with «Erneut aktualisieren»
@@ -219,9 +260,16 @@ class RunService:
     def shutdown(self):
         self._pool.shutdown(wait=False, cancel_futures=True)
 
-    def job(self, case_id, budget=None):
-        """The agent core's job for this case, from the store; ``budget``: this run's token cap instead of the run's."""
-        return {"format": core.JOB, "case": self.store.get_case(case_id), "files": self.store.list_files(case_id, with_text=True),
+    def job(self, case_id, budget=None, admitted=None):
+        """The agent core's job for this case, from the store; ``budget``: this run's token cap instead of the run's;
+        ``admitted``: (the run an update builds on, the file ids it admitted): the files that run read and these only, so a
+        file that came after the update was created is not among its new files."""
+        files = self.store.list_files(case_id, with_text=True)
+        if admitted is not None:
+            prior, inputs = admitted
+            unread, inputs = set(core.unread(files, prior)), set(inputs)
+            files = [f for f in files if f["id"] not in unread or f["id"] in inputs]
+        return {"format": core.JOB, "case": self.store.get_case(case_id), "files": files,
                 "workflows": list(self.catalogue.workflows), "knowledge": self.store.list_knowledge(None, {"active"}),
                 "edits": self.store.list_edits(case_id),
                 "options": {"effort": self.effort, "read_scans": self.read_scans, "reading_workers": self.reading_workers,

@@ -122,5 +122,52 @@ class GateTests(Gate):
         self.assertIn("replayCurrent(k, data.knowledge)", SCRIPT)
 
 
+class ExactPreviewTests(Gate):
+    """The replay previews exactly what activation then does (the audit of 84115b9: a refining candidate was replayed
+    beside the item it refines, while activation merges it into that item; nine requirements were previewed, eight came)."""
+
+    def needs(self, case_id):
+        return sorted(d["id"] for d in self.client.get(f"/api/cases/{case_id}").json()["process"]["documents"])
+
+    def test_preview_and_activation_agree_on_a_refining_candidate(self):
+        a, b = self.prepared("Fall A (synthetisch)"), self.prepared("Fall B (synthetisch)")
+        origin = {"kind": "case", "by": "result_checker", "case_id": a["id"]}
+        need = self.store.save_knowledge(kb.set_status(kb.new_item(WID, "document_need", {"title": "Wohnungsabnahmeprotokoll", "why": "Zeigt den Zustand."},
+                                                                   origin=origin), "active", by="dev", reason="Test"))
+        self.assertIn(f"k-{need['id']}", self.needs(b["id"]))  # in force for every case of the area
+        # the refinement narrows it to another area's cases: merged into the need, it no longer applies here
+        refining = kb.new_item(WID, "document_need", {"title": "Wohnungsabnahmeprotokoll", "why": "Nur bei Auszug."},
+                               applies_when={"fact": "rechtsgebiet", "is": "Mietrecht / Kündigung"}, origin=origin)
+        refining = self.store.save_knowledge({**refining, "refines": need["id"]})
+        played = self.client.post(f"/api/knowledge/{refining['id']}/replay").json()["replay"]
+        self.assertEqual((played["version"], played["target"], played["target_version"]), (1, need["id"], 1))
+        predicted = {row["case"]: row["after"]["needs"] for row in played["changed"]}
+        before = {c["id"]: self.needs(c["id"]) for c in (a, b)}
+        # case B loses the need, previewed as activation merges it (beside the active need, nothing would have changed);
+        # case A, where the need was learned, never had it
+        self.assertEqual(sorted(predicted), [b["id"]])
+        self.assertEqual(sorted(predicted[b["id"]]), [d for d in before[b["id"]] if d != f"k-{need['id']}"])
+        merged = self.client.post(f"/api/knowledge/{refining['id']}/activate", json={"reason": "Nachgespielt."})
+        self.assertEqual((merged.status_code, merged.json()["id"], merged.json()["version"]), (200, need["id"], 2))
+        for case in (a, b):  # what activation did is what the replay showed, case by case
+            self.assertEqual(self.needs(case["id"]), sorted(predicted.get(case["id"], before[case["id"]])))
+
+    def test_a_refinement_replayed_on_an_older_version_of_its_item_is_replayed_again(self):
+        a = self.prepared("Fall A (synthetisch)")
+        origin = {"kind": "case", "by": "result_checker", "case_id": a["id"]}
+        need = self.store.save_knowledge(kb.set_status(kb.new_item(WID, "document_need", {"title": "Wohnungsabnahmeprotokoll", "why": "Zeigt den Zustand."},
+                                                                   origin=origin), "active", by="dev", reason="Test"))
+        refining = self.store.save_knowledge({**kb.new_item(WID, "document_need", {"title": "Wohnungsabnahmeprotokoll", "why": "Mit Fotos."}, origin=origin),
+                                              "refines": need["id"]})
+        self.client.post(f"/api/knowledge/{refining['id']}/replay")
+        self.store.save_knowledge(kb.refine(self.store.get_knowledge(need["id"]), content={"why": "Zeigt den Zustand bei Mietbeginn."}, by="dev"))
+        stale = self.client.post(f"/api/knowledge/{refining['id']}/activate", json={})
+        self.assertEqual((stale.status_code, stale.json()["detail"]), (409, "Zuerst nachspielen: der verfeinerte Eintrag hat sich seither geändert"))
+        self.assertEqual(self.store.get_knowledge(need["id"])["version"], 2)  # nothing applied
+        self.assertEqual(self.client.post(f"/api/knowledge/{refining['id']}/replay").json()["replay"]["target_version"], 2)
+        self.assertEqual(self.client.post(f"/api/knowledge/{refining['id']}/activate", json={}).json()["version"], 3)
+        self.assertIn("r.target_version === target.version", SCRIPT)  # «Wissen» offers «Nachspielen» again in that case
+
+
 if __name__ == "__main__":
     unittest.main()
