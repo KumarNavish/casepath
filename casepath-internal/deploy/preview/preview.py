@@ -563,9 +563,9 @@ def main():
     asked = {}
     start_update = runs.update
 
-    def update(case_id, user, token=None):
+    def update(case_id, user, token=None, **options):  # options: an upload's auto and budget (agents/runner.py)
         asked["update"] = case_id
-        return start_update(case_id, user, token)
+        return start_update(case_id, user, token, **options)
     runs.update = update
 
     # The fault switch (C3, P-fail): while on, the next update fails as an unreachable model does, once.

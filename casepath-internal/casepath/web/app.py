@@ -46,8 +46,8 @@ from ..quality.auswertung import auswertung
 
 SERVED_WHOLE_BYTES = 15 * 1024 * 1024  # the Databricks Apps proxy fails on responses of about 18 MB (measured 2026-11-11)
 from ..read.extract import attachments, extract
-from ..agents.runner import RunService, case_state
-from .store import CaseStore, Conflict, NotFound
+from ..agents.runner import RunService, auto_update_reason, case_state
+from .store import CaseStore, Conflict, Duplicate, NotFound
 
 UI = Path(__file__).parent / "ui"
 CONTRACT = Path(__file__).parents[2] / "docs" / "contracts" / "case-api.openapi.json"
@@ -269,7 +269,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     runs = RunService(store, catalogue, model_factory or default_model_factory(settings), max_workers=settings.run_workers,
                       reading_workers=settings.reading_workers, page_image_side=settings.page_image_side,
                       token_budget=settings.run_token_budget, speed_trials=settings.speed_trials,
-                      voice={"organisation": settings.organisation, "writing": settings.writing_language})
+                      voice={"organisation": settings.organisation, "writing": settings.writing_language},
+                      auto_update=settings.auto_update, auto_update_max_pages=settings.auto_update_max_pages,
+                      update_token_budget=settings.update_token_budget, model_as_user=bool(settings.model and settings.model.auth == "user"))
 
     @asynccontextmanager
     async def lifespan(_):
@@ -359,8 +361,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
 
-    def add_with_attachments(case_id, name, declared, data, who):
-        """Add the file to the case; an e-mail's attachments become files of the case too, each noting its e-mail."""
+    def add_with_attachments(case_id, name, declared, data, who, skipped=None):
+        """Add the file to the case; an e-mail's attachments become files of the case too, each noting its e-mail. A file
+        whose bytes the case already holds is refused before it is read (Duplicate); an attachment the case already holds
+        is skipped before it is read, named in ``skipped`` and remembered on its e-mail (``extraction.same_as``: the files
+        that hold it), so the account counts that file as delivered with the e-mail."""
         import mimetypes
 
         def read(file_name, kind, payload):
@@ -369,16 +374,40 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 result["text"] = result["text"][:settings.max_text_chars]
                 result["note"] = ((result["note"] + " ") if result["note"] else "") + "Only the first part of the text is used."
             return result
+        same = store.file_by_sha(case_id, hashlib.sha256(data).hexdigest())
+        if same:
+            raise Duplicate(same["name"], same["created_at"], same["id"])
         result = read(name, declared, data)
-        row = store.add_file(case_id, name, result["media_type"], result["kind"], data, result, who)
-        added = []
+        row = store.add_file(case_id, name, result["media_type"], result["kind"], data, result, who, refuse_same=True)
+        added, same_as = [], []
         for attached_name, payload in (attachments(name, declared, data) if result["kind"] == "email" else []):
             if not payload or len(payload) > settings.max_upload_bytes:
                 continue
-            inner = read(attached_name, mimetypes.guess_type(attached_name)[0] or "application/octet-stream", payload)
-            inner["attached_to"] = name
-            added.append(store.add_file(case_id, attached_name, inner["media_type"], inner["kind"], payload, inner, who)["id"])
+            held = store.file_by_sha(case_id, hashlib.sha256(payload).hexdigest())
+            try:
+                if held:
+                    raise Duplicate(held["name"], held["created_at"], held["id"])
+                inner = read(attached_name, mimetypes.guess_type(attached_name)[0] or "application/octet-stream", payload)
+                inner["attached_to"] = name
+                added.append(store.add_file(case_id, attached_name, inner["media_type"], inner["kind"], payload, inner, who, refuse_same=True)["id"])
+            except Duplicate as kept:
+                same_as.append(kept.file_id)
+                if skipped is not None:
+                    skipped.append({"name": attached_name, "same_as": kept.file_id, "in_case": kept.name, "at": kept.created_at, "attachment": name})
+        if same_as:
+            row = store.update_extraction(row["id"], {**store.get_file(row["id"], True)["extraction"], "same_as": list(dict.fromkeys(same_as))})
         return {**row, "attachments": added} if added else row
+
+    def already(skipped):
+        """«Bereits in der Akte: «Antwort.eml» vom 05.09.2026»: a file the case holds, by the name it has there and the day it
+        came (Swiss time)."""
+        when = str(skipped.get("at") or "")
+        try:
+            from zoneinfo import ZoneInfo
+            when = datetime.fromisoformat(when).astimezone(ZoneInfo("Europe/Zurich")).date().isoformat()
+        except Exception:  # noqa: BLE001  without the time zone data: the stored day
+            when = when[:10]
+        return f"Bereits in der Akte: «{skipped.get('in_case') or skipped.get('name')}» vom {account.day(when) or when}"
     uploads_from_bytes = True  # loose PDFs are read by pypdf where installed, else by CasePath's own reader (pdfread)
 
     summaries = {}
@@ -461,8 +490,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             if workflow is None:
                 raise HTTPException(404, "No such workflow.")
             store.select_workflow(case["id"], workflow["id"], workflow["version"], who)
-        added = await run_in_threadpool(add_with_attachments, case["id"], name, mimetypes.guess_type(name)[0] or "application/octet-stream", data, who)
-        return {"case": store.get_case(case["id"]), "file": added}
+        skipped = []  # an attachment whose bytes the case already holds (the e-mail itself, an earlier attachment): skipped
+        try:
+            added = await run_in_threadpool(add_with_attachments, case["id"], name, mimetypes.guess_type(name)[0] or "application/octet-stream",
+                                            data, who, skipped)
+        except Duplicate as same:  # the target case holds these bytes: refused
+            raise HTTPException(409, already({"name": name, "in_case": same.name, "at": same.created_at})) from None
+        return {"case": store.get_case(case["id"]), "file": added, "skipped": skipped}
 
     @app.get("/api/me")
     def me(who=Depends(user)):
@@ -501,13 +535,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return action, options, forms
 
     def _list_run_inputs(row):
-        """A row of the case list and its runs: the run its items are built from (``run``, None when there is none to build
-        from), the case's files, the files that run did not read, and what the status reads of the case's runs
-        (``run_status``, ``run_kind``)."""
-        completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
+        """A row of the case list and its runs: the run its items are built from (``run``: the latest completed run, also
+        when a later run failed, was interrupted or runs, so the row keeps «Als Nächstes», «Fällig» and its new files;
+        None when there is none), the case's files, the files that run did not read, and the latest run that was not set
+        aside, whose status and kind the status reads (``run_status``, ``run_kind``: a failed or interrupted update is
+        «Fehlgeschlagen», a stopped full run «angehalten»)."""
+        completed = store.latest_run(row["id"], "completed")
+        latest = store.latest_run(row["id"], exclude="discarded")
         case_files = store.list_files(row["id"])
         return {"run": completed, "files": case_files, "new_files": len(core.unread(case_files, completed)) if completed else 0,
-                "run_status": row.get("run_status"), "run_kind": None}
+                "run_status": (latest or {}).get("status"), "run_kind": (latest or {}).get("kind")}
 
     def _list_completion(row, current, listed, events, files):
         """Where the prepared letter of a row stands after the decision, for its status (Slice B: completion.state(...));
@@ -607,6 +644,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         blocked = core.update_blocked(current["case"], files, prepared)
         update = {"available": blocked is None, "reason": blocked[0] if blocked else None, "text": blocked[1] if blocked else None,
                   "needs_full": bool(blocked) and blocked[0] == "full_needed" and bool(arrived)}
+        if arrived and not study:  # why the update did not start by itself, for «Aktualisieren»'s title (runner.auto_update_reason)
+            update.update(auto=auto_update_reason(store, case_id, settings.auto_update_max_pages) if settings.auto_update else "aus",
+                          max_pages=settings.auto_update_max_pages)
         newest = max((str(f["added"] or "") for f in arrived), default="")
         stale = bool(arrived) and not any(e["kind"] == "letter.unblocked" and str(e.get("at") or "") >= newest for e in logged or ())
         changes = None
@@ -623,7 +663,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 added = {str(n) for n in ((done[0].get("result") or {}).get("update") or {}).get("entries") or ()}
                 changes["entries"] = [f"{account.day(i.get('date')) or 'ohne Datum'} · {i.get('from_title')} → {i.get('to_title')} · "
                                       f"{(i.get('label') or {}).get('de')}: {i.get('value')}" for i in listed if i["kind"] == "entry" and i["key"] in added]
-        run_now = store.latest_run(case_id)  # the status the case list shows for it, from the same function and the same inputs
+        # the status the case list shows for it, from the same function and the same inputs: a run set aside (a stopped
+        # update, a discarded pause) does not count, so the case shows the run it built on, as the list does
+        run_now = store.latest_run(case_id, exclude="discarded")
         return {"new_files": new_files, "arrived": arrived, "update": update, "draft_stale": stale, "changes": changes}, run_now
 
     def _assessment_view(current, completed, listed, files, events, marks):
@@ -671,7 +713,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         status = listing.stand(closed=closed, run_status=(run_now or {}).get("status"), new_files=len(arrival["arrived"]) if prepared else 0,
                                items=listed if (run_now or {}).get("status") == "completed" else [], follow_up=(clock or {}).get("due"),
                                events=events, completed_at=(prepared or {}).get("created_at"), files=files, historic=historic,
-                               run_kind=None, completion=done.get("completion"))
+                               run_kind=(run_now or {}).get("kind"), completion=done.get("completion"))
         stage = ((current.get("evaluation") or {}).get("current") or {})
         cover_edit = next((e for e in reversed(store.list_edits(case_id)) if e.get("op") == "set_fact" and (e.get("args") or {}).get("fact") == "deckung"), None)
         model = screen.build(listed, draft, events, as_of(files), (current.get("process") or {}).get("urgent"), stage=stage.get("step"),
@@ -859,19 +901,53 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     uploads = bool(importlib.util.find_spec("python_multipart") or importlib.util.find_spec("multipart"))
 
-    async def upload(case_id: str, file: UploadFile = File(...), who=Depends(user)):
+    async def upload(case_id: str, request: Request, files: list[UploadFile] | None = File(None), file: UploadFile | None = File(None),
+                     who=Depends(user)):
+        """Files into a case as one deliberate import (``files``; ``file`` from older clients): each is stored, an e-mail's
+        attachments as files of their own. A file the case already holds is refused before it is read and named in
+        «skipped» (409 when every file is one), an attachment the case holds is skipped and remembered on its e-mail. Where
+        the deployment starts updates by itself (CASEPATH_AUTO_UPDATE), a prepared case then gets one bounded update of
+        what came in; «auto» says so («gestartet») or why not («aus», «zu_gross», «lauf_aktiv», or why «Aktualisieren» is
+        blocked). A file into a closed case reopens it. An older client's one ``file`` gets its row, these keys added."""
         found(store.get_case, case_id)
-        data = await file.read(settings.max_upload_bytes + 1)
-        if len(data) > settings.max_upload_bytes:
-            raise HTTPException(413, f"Files up to {settings.max_upload_bytes // (1024 * 1024)} MB are accepted.")
-        if not data:
+        received = []
+        for given in list(files or []) + ([file] if file is not None else []):
+            data = await given.read(settings.max_upload_bytes + 1)
+            if len(data) > settings.max_upload_bytes:
+                raise HTTPException(413, f"Files up to {settings.max_upload_bytes // (1024 * 1024)} MB are accepted.")
+            if data:
+                received.append((Path(given.filename or "file").name[:255], given.content_type, data))
+        if not received:
             raise HTTPException(422, "The file is empty.")
-        name = Path(file.filename or "file").name[:255]
-        return await run_in_threadpool(add_with_attachments, case_id, name, file.content_type, data, who)  # a large PDF must not block the server
+        rows, skipped = [], []
+        for name, declared, data in received:  # a large PDF must not block the server
+            try:
+                rows.append(await run_in_threadpool(add_with_attachments, case_id, name, declared, data, who, skipped))
+            except Duplicate as same:
+                skipped.append({"name": name, "same_as": same.file_id, "in_case": same.name, "at": same.created_at})
+        if not rows:
+            raise HTTPException(409, "; ".join(already(s) for s in skipped))
+        closing = next((e["kind"] for e in reversed(store.list_case_events(case_id)) if e["kind"] in ("case.closed", "case.reopened")), None)
+        if closing == "case.closed":  # what arrives after closing reopens the case (its letter, its date, its status follow)
+            record(case_id, who, "case.reopened", file=rows[0]["id"], files=[r["id"] for r in rows])
+        run, auto = None, "aus"
+        if settings.auto_update:
+            auto = auto_update_reason(store, case_id, settings.auto_update_max_pages) or "gestartet"
+            if auto == "gestartet":
+                try:
+                    run = runs.update(case_id, who, model_token(request), auto=True, budget=settings.update_token_budget)
+                except HTTPException:  # the model is called as the person, who must sign in again: «Aktualisieren» stays
+                    auto = "anmelden"
+                except Conflict:  # another upload started one a moment before
+                    auto = "lauf_aktiv"
+                else:
+                    record(case_id, who, "update.started", auto=True, run=run["id"])
+        out = {"files": rows, "skipped": skipped, "run": run, "auto": auto}
+        return {**rows[0], **out} if file is not None and not files else out
 
     async def create_from_files(request: Request, files: list[UploadFile] = File(...), who=Depends(user)):
         """A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,
-        and its preparation started at once."""
+        and its preparation started at once; a file given twice is kept once («skipped»)."""
         received = []
         for file in files:
             data = await file.read(settings.max_upload_bytes + 1)
@@ -882,7 +958,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if not received:
             raise HTTPException(422, "The files are empty.")
         case = store.create_case(Path(received[0][0]).stem[:300] or "Neuer Fall", {"source": "upload"}, who)
-        rows = [await run_in_threadpool(add_with_attachments, case["id"], name, declared, data, who) for name, declared, data in received]
+        rows, skipped = [], []
+        for name, declared, data in received:
+            try:
+                rows.append(await run_in_threadpool(add_with_attachments, case["id"], name, declared, data, who, skipped))
+            except Duplicate as same:
+                skipped.append({"name": name, "same_as": same.file_id, "in_case": same.name, "at": same.created_at})
         mails = [r for r in rows if r.get("kind") == "email"]
         subject = _headers(store.get_file(mails[0]["id"], True)["extraction"].get("text", "")).get("Subject", "").strip() if mails else ""
         if subject:
@@ -891,7 +972,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             run = runs.start(case["id"], who, model_token(request))
         except Conflict:
             run = None
-        return {"case": store.get_case(case["id"]), "files": rows, "run": run}
+        return {"case": store.get_case(case["id"]), "files": rows, "skipped": skipped, "run": run}
 
     if uploads:  # a runtime without the form parser serves prepared cases only (imported from the volume)
         app.post("/api/cases/{case_id}/files", status_code=201)(upload)

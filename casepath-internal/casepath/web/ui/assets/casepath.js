@@ -318,8 +318,11 @@ function runError(error) {
     schema_mismatch: T("the model gave an unusable answer; please try again", "Das Modell gab eine unbrauchbare Antwort; bitte erneut versuchen"),
     max_output_tokens: T("the page was too long for one answer", "die Seite war zu lang für eine Antwort"),
     "no image in the file": T("the file holds no image of this page", "die Datei enthält kein Bild dieser Seite"),
+    interrupted: T("the service was restarted before the run finished", "Der Dienst wurde neu gestartet"),
+    stopped: T("stopped; nothing was kept", "angehalten; nichts übernommen"),
   };
   if (known[reason]) return known[reason];
+  if (/^The service restarted/.test(String(error || ""))) return known.interrupted;  // a run interrupted before this release
   if (/^http_(429|5\d\d)$/.test(reason)) return T("the model service is busy; please try again shortly", "Der Modelldienst ist ausgelastet; bitte gleich erneut versuchen");
   if (/^http_4\d\d$/.test(reason)) return T(`the model service refused the request (${reason.slice(5)})`, `Der Modelldienst hat die Anfrage abgelehnt (${reason.slice(5)})`);
   return error;
@@ -440,13 +443,14 @@ function bindRail() {
     stopRun.disabled = true; S.stopping = S.data.run.id;
     await api(`/api/runs/${S.data.run.id}/stop`, { method: "POST" }).catch(() => {});
   });
-  const updateRun = $("#update-run");  // «Aktualisieren»: only what came in is read; a person asks, it spends tokens
-  if (updateRun) updateRun.addEventListener("click", async () => {
+  // «Aktualisieren» and «Erneut aktualisieren» (after a failed or interrupted update): only what came in is read
+  for (const updateRun of document.querySelectorAll("#update-run, #retry-update")) updateRun.addEventListener("click", async () => {
     updateRun.disabled = true;
     await api(`/api/cases/${S.route.id}/update`, { method: "POST" }).then(() => { S.events = []; S.follow = true; return loadCase(); }).catch((error) => { S.message = error.message; renderCase(); });
   });
   const prepareNew = $("#prepare-new");  // a person asks: the run is not started automatically (it spends tokens)
   if (prepareNew) prepareNew.addEventListener("click", async () => {
+    if (S.data && S.data.lastCompleted && !confirmAnew()) return;
     prepareNew.disabled = true;
     await api(`/api/cases/${S.route.id}/runs`, { method: "POST" }).then(() => { S.events = []; return loadCase(); }).catch((error) => { S.message = error.message; renderCase(); });
   });
@@ -461,24 +465,33 @@ function bindRail() {
   });
 }
 
+// One drop is one import: every file in one request. The server refuses a file the case already holds (named with the day
+// it came) and skips an attachment it holds; where updates start by themselves, the update of what came in is followed.
 async function uploadFiles(list) {
-  S.message = "";
+  S.message = ""; S.messageOk = false;
   const files = [...list];  // the picker is emptied at once: its value is never carried into the next page
   const picker = $("#upload");
   if (picker) picker.value = "";
-  for (const file of files) {
-    const form = new FormData();
-    form.append("file", file);
-    try { await api(`/api/cases/${S.route.id}/files`, { method: "POST", body: form }); }
-    catch (error) { S.message = `${file.name}: ${error.message}`; }
-  }
+  if (!files.length) return;
+  const form = new FormData();
+  for (const file of files) form.append("files", file);
+  try {
+    const answer = await api(`/api/cases/${S.route.id}/files`, { method: "POST", body: form });
+    const skipped = answer.skipped || [];
+    S.message = skipped.map((s) => s.attachment ? T(`Attachment already in the file: “${s.name}” (skipped)`, `Anhang bereits in der Akte: «${s.name}» (übersprungen)`)
+      : T(`Already in the file: “${s.in_case || s.name}” of ${dateText(s.at)}`, `Bereits in der Akte: «${s.in_case || s.name}» vom ${dateText(s.at)}`)).join(" · ");
+    S.messageOk = !skipped.some((s) => !s.attachment);
+    if (answer.run) { S.events = []; S.follow = true; }
+  } catch (error) { S.message = error.message; S.messageOk = false; }
   await loadCase();
 }
 
+// Preparing anew calls the model again for every file; a prepared case asks first.
+const confirmAnew = () => window.confirm(T("This case is already prepared. Prepare it anew? Every file is read once more, which uses the model again; for new files “Update” is enough.",
+  "Dieser Fall ist bereits vorbereitet. Ganz neu vorbereiten? Alle Dokumente werden erneut gelesen; das ruft das Modell nochmals auf. Für neu eingegangene Dateien genügt «Aktualisieren»."));
 async function startRun(event) {
-  // Preparing again calls the model again; a prepared case asks first.
-  if (event && event.currentTarget && event.currentTarget.id === "run" && S.data && S.data.lastCompleted && !window.confirm(T("This case is already prepared. Prepare it anew? Every file is read once more, which uses the model again; for new files “Update” is enough.",
-      "Dieser Fall ist bereits vorbereitet. Ganz neu vorbereiten? Alle Dokumente werden erneut gelesen; das ruft das Modell nochmals auf. Für neu eingegangene Dateien genügt «Aktualisieren»."))) return;
+  // «Ganz neu vorbereiten» (in «Mehr») and «Erneut versuchen» after a failed run ask first once a preparation completed
+  if (event && event.currentTarget && ["run", "start-run"].includes(event.currentTarget.id) && S.data && S.data.lastCompleted && !confirmAnew()) return;
   try {
     await api(`/api/cases/${S.route.id}/runs`, { method: "POST" });
     S.follow = true; S.moreOpen = false;
@@ -1273,11 +1286,13 @@ const item = (kind, key) => (S.data.items || []).find((i) => i.kind === kind && 
 // failed (again), new files (prepare again), closed (next case), not prepared (prepare).
 function caseState() {
   const run = S.data.run;
-  if (closed()) return "closed";
+  const arrived = S.data.lastCompleted && (S.data.new_files || []).length;
+  if (closed() && !arrived) return "closed";  // what arrives after closing reopens the case (the server logs case.reopened)
   if (running()) return "running";
   if (run && run.status === "paused") return "paused";
   if (run && ["failed", "interrupted"].includes(run.status)) return "failed";
-  if (S.data.lastCompleted && (S.data.new_files || []).length) return "arrived";
+  if (arrived) return "arrived";
+  if (closed()) return "closed";
   if (!hasPrepared()) return (S.data.files || []).length ? "unprepared" : "empty";
   return "prepared";
 }
@@ -1340,7 +1355,7 @@ function runLine(st) {
     const routed = S.events.find((e) => e.kind === "routing.decided");
     const others = (S.workflows || []).filter((w) => !routed || w.id !== routed.workflow);
     const stopping = S.stopping === run.id || S.switching;
-    return wrap(`<ol class="cp-stages">${cells}</ol><p class="cp-runnow">${stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …")
+    return wrap(`<ol class="cp-stages">${cells}</ol>${arrivalNow(run)}<p class="cp-runnow">${stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …")
         : `${T("Now", "Jetzt")}: ${doing} ${where}${left ? ` · ${T("about", "etwa")} ${left} s ${T("to go", "noch")}` : ""}`}</p>
       ${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${esc(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}`,
       `${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
@@ -1351,15 +1366,20 @@ function runLine(st) {
     return wrap(`<ol class="cp-stages paused">${cells}</ol><p class="cp-runnow"><b>${T("Stopped", "Angehalten")}</b></p>`,
       `<button class="cp-link cp-quiet-link" id="discard-run">${T("discard", "verwerfen")}</button><button class="cp-button primary" id="continue-run">${T("Continue", "Weiter")}</button>`);
   }
+  if (st === "failed" && run.kind === "update") {  // the update only is offered again; a full preparation stays behind «Mehr»
+    const interrupted = run.status === "interrupted";
+    return wrap(`<p class="cp-runnow cp-arrival-failed"><b>${interrupted ? T("Update interrupted", "Aktualisierung unterbrochen") : T("Update failed", "Aktualisierung fehlgeschlagen")}</b>: ${esc(runError(run.error))}</p>`,
+      `<button class="cp-button primary" id="retry-update">${T("Update again", "Erneut aktualisieren")}</button>`);
+  }
   if (st === "failed") {
     return wrap(`<p class="cp-runnow"><b>${T("Not finished", "Nicht fertig")}</b>: ${esc(runError(run.error))}</p>`, `<button class="cp-button primary" id="start-run">${T("Try again", "Erneut versuchen")}</button>`);
   }
   if (st === "arrived") {
     const came = S.data.arrived || S.data.new_files.map((name) => ({ name })), u = S.data.update || {}, eta = updateEta();
     const names = came.map((f) => `${esc(f.name)}${f.added ? ` <span class="cp-muted">(${dateText(f.added)})</span>` : ""}`).join(", ");
-    // why «Aktualisieren» cannot read them alone is the button's title, not a paragraph to read
+    // why «Aktualisieren» did not start by itself, or cannot read them alone, is the button's title, not a paragraph to read
     return wrap(`<p class="cp-runnow"><b>${T(`New: ${came.length} file(s)`, `Neu eingegangen: ${came.length} Datei(en)`)}</b> · ${names}</p>`,
-      u.available ? `<button class="cp-button primary" id="update-run">${T("Update", "Aktualisieren")}${eta ? `<span class="cp-eta"> · ${eta}</span>` : ""}</button>`
+      u.available ? `<button class="cp-button primary" id="update-run" title="${esc(autoTitle(u))}">${T("Update", "Aktualisieren")}${eta ? `<span class="cp-eta"> · ${eta}</span>` : ""}</button>`
         : `<button class="cp-button primary" id="prepare-new" title="${esc(u.text || "")}">${T("Prepare anew", "Ganz neu vorbereiten")}</button>`);
   }
   if (st === "unprepared") return wrap(`<p class="cp-runnow">${T("Not prepared yet", "Noch nicht vorbereitet")}</p>`, `<button class="cp-button primary" id="start-run">${T("Prepare case", "Fall vorbereiten")}</button>`);
@@ -1536,7 +1556,7 @@ function progressLine(steps) {
 function preparedView(st) {
   const act = item("next_action", "0"), sc = scr(), draft = S.data.draft || {};
   const c = closed();
-  const stale = st === "arrived" && Boolean(S.data.draft_stale) && !c;  // new files not read yet: the draft may be out of date
+  const stale = Boolean(S.data.draft_stale) && !c;  // new files not read yet (in every state: running, failed …): the draft may be out of date
   const editable = !c && st !== "running" && !stale;
   const { rows: docs, active } = documentsOut();
   const text = active ? docText(active) : "";
@@ -2523,3 +2543,22 @@ async function route() {
 // ---------- completion: approval, the Versandpaket, dispatch and the queue (Slice B) ----------
 
 // ---------- arrival: what came in, the update, corrections and the account's checks (Slice C) ----------
+// Why «Aktualisieren» did not start by itself after an upload (the server's reason, web/app.py _arrival_view): its title.
+function autoTitle(u) {
+  const reason = (u || {}).auto;
+  if (!reason) return "";
+  if (reason === "aus") return T("Automatic updating is switched off", "Automatische Aktualisierung ist ausgeschaltet");
+  if (reason === "zu_gross") return T(`Automatically only up to ${u.max_pages} pages: please start it yourself`, `Automatisch nur bis ${u.max_pages} Seiten: bitte selbst starten`);
+  if (reason === "lauf_aktiv") return T("A run is in progress", "Ein Lauf ist im Gang");
+  if (reason === "anmelden") return T("Sign in again to update", "Zum Aktualisieren erneut anmelden");
+  return u.text || "";
+}
+// An update at work says what it reads: «Neu eingegangen: 2 Datei(en) · wird aktualisiert»; one started again after a
+// restart says so («wird fortgesetzt»).
+function arrivalNow(run) {
+  if (!run || run.kind !== "update") return "";
+  const came = (S.data.arrived || []).length || (S.data.new_files || []).length;
+  const resumed = (S.data.caseEvents || []).some((e) => e.kind === "update.started" && e.run === run.id && e.resumed);
+  return `<p class="cp-runnow cp-arrival-now"><b>${resumed ? T("Update interrupted: the service was restarted", "Aktualisierung unterbrochen: Der Dienst wurde neu gestartet")
+    : T(`New: ${came} file(s)`, `Neu eingegangen: ${came} Datei(en)`)}</b> · ${resumed ? T("continues", "wird fortgesetzt") : T("updating", "wird aktualisiert")}</p>`;
+}

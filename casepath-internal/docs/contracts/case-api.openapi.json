@@ -130,14 +130,33 @@
    "Body_upload_api_cases__case_id__files_post": {
     "properties": {
      "file": {
-      "format": "binary",
-      "title": "File",
-      "type": "string"
+      "anyOf": [
+       {
+        "format": "binary",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "File"
+     },
+     "files": {
+      "anyOf": [
+       {
+        "items": {
+         "format": "binary",
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Files"
      }
     },
-    "required": [
-     "file"
-    ],
     "title": "Body_upload_api_cases__case_id__files_post",
     "type": "object"
    },
@@ -822,7 +841,7 @@
   },
   "/api/cases/from-files": {
    "post": {
-    "description": "A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,\nand its preparation started at once.",
+    "description": "A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,\nand its preparation started at once; a file given twice is kept once («skipped»).",
     "operationId": "create_from_files_api_cases_from_files_post",
     "requestBody": {
      "content": {
@@ -1307,6 +1326,7 @@
   },
   "/api/cases/{case_id}/files": {
    "post": {
+    "description": "Files into a case as one deliberate import (``files``; ``file`` from older clients): each is stored, an e-mail's\nattachments as files of their own. A file the case already holds is refused before it is read and named in\n«skipped» (409 when every file is one), an attachment the case holds is skipped and remembered on its e-mail. Where\nthe deployment starts updates by itself (CASEPATH_AUTO_UPDATE), a prepared case then gets one bounded update of\nwhat came in; «auto» says so («gestartet») or why not («aus», «zu_gross», «lauf_aktiv», or why «Aktualisieren» is\nblocked). A file into a closed case reopens it. An older client's one ``file`` gets its row, these keys added.",
     "operationId": "upload_api_cases__case_id__files_post",
     "parameters": [
      {
@@ -1326,8 +1346,7 @@
         "$ref": "#/components/schemas/Body_upload_api_cases__case_id__files_post"
        }
       }
-     },
-     "required": true
+     }
     },
     "responses": {
      "201": {
