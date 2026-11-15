@@ -52,7 +52,7 @@ class LabelsFormatTests(unittest.TestCase):
         bad = made_up()
         bad.update(format="casepath.labels/0", dossier="Nina Aebi", extra=1)
         bad["decisions"] += [{"fact": "mangel_seit", "value": "2024-10", "from": "2025-02-01"}, {"fact": "deckung", "value": "vielleicht", "from": "x"}]
-        bad["points"] += [{"n": 1, "date": "2025-04-01", "kind": "A13", "to": "nachbar", "documents": ["fotos", "fotos", "Other:Liste"],
+        bad["points"] += [{"n": 1, "date": "2025-04-01", "kind": "A14", "to": "nachbar", "documents": ["fotos", "fotos", "Other:Liste"],
                            "questions": -1, "date_set": "2025-03-01", "internal": "nein"},
                           {"n": 5, "date": "2025-04-02", "kind": "A2", "to": "kanzlei", "documents": ["k-unbekannt"], "questions": 0,
                            "date_set": "2025-03-01", "internal": False}]

@@ -4,7 +4,7 @@
     python -m casepath replay-points [--case ID …] [--labels FILE …] [--detail] [--json]
 
 A labels file (``casepath.labels/1``, docs/HANDLER_BAR.md) names, for one case file, the handler's own decisions with the
-day from which each held, and each of the insurer's actions in the file (a point): its day, its action kind (A0–A12),
+day from which each held, and each of the insurer's actions in the file (a point): its day, its action kind (A0–A13),
 to whom, the documents it asked (the workflow's need ids, Knowledge needs by their ids, ``other:<word>`` for anything
 else), how many questions, the date it set, and whether it was internal (a phone note, A2). Labels are written by the
 insurer's side and kept in the case store; real labels never go into Git.
@@ -36,7 +36,7 @@ from ..process.workflows import condition_facts, evaluate_condition
 from . import asof
 
 FORMAT = "casepath.labels/1"
-ACTION = re.compile(r"^A(?:[0-9]|1[0-2])$")
+ACTION = re.compile(r"^A(?:[0-9]|1[0-3])$")
 OTHER = re.compile(r"^other:[a-z0-9äöüß_-]{1,40}$")
 DOSSIER = re.compile(r"^[A-Za-z0-9_-]{1,20}$")
 CASE_ID = re.compile(r"^[A-Za-z0-9_-]{1,80}$")
@@ -114,7 +114,7 @@ def check(labels, process=None, case_id=None):
         if not ISO.match(str(p["date"])) or asof.day(p["date"]) is None:
             problems.append(f"{where}.date: a date YYYY-MM-DD")
         if not ACTION.match(str(p["kind"])) or (kinds and p["kind"] not in kinds):
-            problems.append(f"{where}.kind: an action kind A0–A12")
+            problems.append(f"{where}.kind: an action kind A0–A13")
         if p["to"] not in account.PARTIES:
             problems.append(f"{where}.to: one of {', '.join(account.PARTIES)}")
         if not isinstance(p["documents"], list) or len(set(map(str, p["documents"]))) != len(p["documents"]):
