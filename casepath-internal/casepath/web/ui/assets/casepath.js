@@ -1383,10 +1383,12 @@ function sideView(ev) {
   // Deadlines: those stated in the file and the area's statutory ones (date, title, article); "prüfen" where the law gives
   // no date; "Frist möglich … Datum fehlt" while the date that starts one is not in the file.
   const dated = (i) => /^\d{4}-\d{2}-\d{2}/.test(String(i.value || ""));
-  const deadlines = (S.data.items || []).filter((i) => i.kind === "deadline").sort((a, b) => (dated(b) - dated(a)) || String(a.value).localeCompare(String(b.value)));
+  // a date the file set for the same obligation stands in the computed deadline's row: «gesetzlich: …» and «im Schreiben vom … gesetzt: …»
+  const deadlines = (S.data.items || []).filter((i) => i.kind === "deadline" && !i.concerns).sort((a, b) => (dated(b) - dated(a)) || String(a.value).localeCompare(String(b.value)));
   const fristRow = (d) => {
     const title = esc(plainQuestion((d.label || {}).de || d.key)), basis = d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "";
     const cond = d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : "";
+    if (d.set_date) return `<div class="cp-frist ${d.set_date.later ? "check" : ""}" title="${esc(d.rule || "")}">${cond}${d.set_date.lines.map((l, n) => n ? `<br><span class="cp-muted">${esc(l)}</span>` : `<b>${esc(l)}</b>`).join("")}<br>${title}${basis}</div>`;
     if (d.party === "gegenpartei") return `<div class="cp-frist other" title="${esc(d.rule || "")}">${cond}<b>${dated(d) ? dateText(d.value) : T("check", "prüfen")}</b> <span class="cp-muted">· ${T("date of the other side", "Termin der Gegenpartei")}${dated(d) && daysTo(d.value) < 0 ? ` · ${T("passed", "abgelaufen")}` : ""}</span><br>${title}${basis}</div>`;
     if ((d.set_by_others || d.unnamed) && dated(d)) {  // a date a court, an authority or the other side set, or one the file gives without what it was for
       const n = daysTo(d.value), src = (d.evidence || []).find((e) => e.file);
@@ -1650,6 +1652,8 @@ function preparedView(ev, st) {
         leadDays < 0 ? T("passed", "abgelaufen") : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}${leadSrc ? ` <button class="cp-source-chip" data-cite-file="${esc(leadSrc.file)}" data-page="${leadSrc.page || ""}" title="${esc(leadSrc.quote || "")}">${leadSrc.page ? `${T("p.", "S.")} ${leadSrc.page}` : T("source", "Quelle")}</button>` : ""}</p>`
     : `<p class="cp-lead-frist ${quiet() ? "" : leadDays < 0 ? "late" : leadDays <= 14 ? "soon" : ""}">${T("Deadline", "Frist")} <b>${dateText(lead.value)}</b> · ${esc((lead.label || {}).de || lead.key)}${lead.condition ? ` (${esc(lead.condition)})` : ""} · ${esc(lead.legal_basis || "")} · ${
     leadDays < 0 ? T(`passed ${-leadDays} days ago`, `seit ${-leadDays} Tagen abgelaufen`) : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}</p>`) : "";
+  const pairOf = lead && (lead.set_date || ((S.data.items || []).find((i) => i.item_id === lead.concerns) || {}).set_date);
+  const pairLine = pairOf && !c ? `<p class="cp-lead-frist ${pairOf.later ? "soon" : ""}">${pairOf.lines.map(esc).join(" · ")}</p>` : "";
   const points = c ? "" : keyPointLines();
   // One action bar on the letter card, always in view: copy · follow-up · done. After copying, Erledigt is the primary.
   const copyPrimary = st === "prepared" && letter && !copied, closePrimary = st === "prepared" && (copied || !letter);
@@ -1666,7 +1670,7 @@ function preparedView(ev, st) {
     <header class="cp-prep-head"><h2>${esc(title)}</h2>${!c && editable && options.length ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because:`, `Stattdessen: ${esc(S.pickAction.title)}, weil:`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
       : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
-    ${leadLine}${points}${contactLine(c)}
+    ${leadLine}${pairLine}${points}${contactLine(c)}
     ${weil && !c ? (points && !S.weilOpen ? `<p class="cp-weil"><button class="cp-link" id="weil-open" aria-expanded="false">${T("Why this step", "Warum dieser Schritt")}</button></p>`
       : `<p class="cp-weil">${T("Because", "Weil")}: ${weil}</p>`) : ""}
     <div class="cp-letter" data-item="letter:0">${letter ? letterView(letter, editable) : `<p class="cp-muted">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step.", "Für diesen Schritt kein Brief."))}</p>`}

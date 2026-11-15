@@ -165,7 +165,7 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     questions = [i for i in items if i["kind"] == "letter_question" and lines.get(i["item_id"], i.get("ask") != "proposed")]
     hints = [i for i in items if i["kind"] == "hint" and lines.get(i["item_id"], i.get("stated_as") != "put_to_handler")]
     hints += [{"value": statutory(i), "legal_basis": i.get("legal_basis")} for i in items  # a statutory deadline of the area
-              if i["kind"] == "deadline" and i.get("origin") == "law" and lines.get(i["item_id"], True)]
+              if i["kind"] == "deadline" and i.get("origin") == "law" and not i.get("missing") and lines.get(i["item_id"], True)]  # a missing date: the area's hint says it
     day = today or as_of(files)
     dates = [x for x in (set_date_line(i, day) for i in items if i["kind"] == "deadline") if x]  # an open date others set
     hints += [{"value": x} for x in dates]

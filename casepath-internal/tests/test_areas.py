@@ -380,13 +380,58 @@ class DeadlineTests(unittest.TestCase):
         listed = {i["item_id"]: i for i in build_items(core.evaluate(wf, [], [], open_, "c"), open_)}
         self.assertEqual(listed["letter_question:kuendigung_erhalten"]["value"], "Wann haben Sie die Kündigung erhalten?")
         self.assertIn("Möglicherweise läuft eine gesetzliche Frist", listed["hint:frist-anfechtung"]["value"])
-        self.assertNotIn("deadline:anfechtung", listed)
+        row = listed["deadline:anfechtung"]  # never absent while its date is unknown: possible, «Datum fehlt», what starts it
+        self.assertEqual((row["value"], row["stated_as"], row["missing"], row["due_text"]), ("Datum fehlt", "possible", True, "Datum fehlt"))
+        self.assertIn("Datum fehlt", row["rule"])
         known = {"facts": open_["facts"] + [fact("kuendigung_erhalten", "2026-11-03")], "documents": []}
         listed = {i["item_id"]: i for i in build_items(core.evaluate(wf, [], [], known, "c"), known)}
         row = listed["deadline:anfechtung"]
         self.assertEqual((row["value"], row["stated_as"], row["legal_basis"], row["stated"]), ("2026-12-03", "computed", "Art. 273 Abs. 1 OR", "2026-11-03"))
         self.assertNotIn("hint:frist-anfechtung", listed)
         self.assertNotIn("letter_question:kuendigung_erhalten", listed)
+
+    def test_with_nothing_known_every_areas_deadlines_appear_as_possible_or_conditional_and_only_a_failed_condition_hides_one(self):
+        from casepath.process.workflows import evaluate_condition
+        for wf in area.shipped():
+            known = {"facts": [fact("rechtsgebiet", wf["applies_when"]["is"])], "documents": []}
+            state = core.evaluate(wf, [], [], known, "c")
+            listed = {i["item_id"]: i for i in build_items(state, known)}
+            for d in wf["deadlines"]:
+                holds = evaluate_condition(d["when"], state["facts"]) if d.get("when") else True
+                row = listed.get(f"deadline:{d['id']}")
+                if holds is False:
+                    self.assertIsNone(row, (wf["id"], d["id"]))
+                    continue
+                self.assertIsNotNone(row, (wf["id"], d["id"]))
+                self.assertEqual((row["value"], row["stated_as"], row["trigger"]), ("Datum fehlt", "possible", d["trigger"]), (wf["id"], d["id"]))
+                self.assertTrue(row["starts"])
+                self.assertEqual(row.get("condition"), d.get("when_text") if holds is None else None, (wf["id"], d["id"]))
+        loan = area.workflow("vertrag-darlehen")
+        known = {"facts": [fact("rechtsgebiet", loan["applies_when"]["is"])], "documents": []}
+        listed = {i["item_id"]: i for i in build_items(core.evaluate(loan, [], [], known, "c"), known)}
+        self.assertEqual(listed["deadline:rueckzahlung"]["condition"], "nur wenn kein Rückzahlungstermin vereinbart ist")
+        self.assertIn("letter_question:aufforderung", listed)  # its date is asked
+        known["facts"].append(fact("termin_vereinbart", True))  # established as not met: absent
+        self.assertNotIn("deadline:rueckzahlung", {i["item_id"] for i in build_items(core.evaluate(loan, [], [], known, "c"), known)})
+
+
+    def test_a_date_the_file_sets_for_the_same_obligation_stands_beside_the_computed_deadline(self):
+        loan = area.workflow("vertrag-darlehen")
+        base = [fact("rechtsgebiet", loan["applies_when"]["is"]), fact("termin_vereinbart", False), fact("aufforderung", "2026-03-02")]
+
+        def listed(value):
+            known = {"facts": base + [fact("frist", value)], "documents": [], "deadlines": [{"fact": "frist", "date": value[:10]}]}
+            return {i["item_id"]: i for i in build_items(core.evaluate(loan, [], [], known, "c"), known)}
+        rows = listed("2026-04-30 · Rückzahlung des Darlehens · Kundschaft · Schreiben vom 02.03.2026")
+        law, own = rows["deadline:rueckzahlung"], rows["deadline:frist"]
+        self.assertEqual(law["value"], "2026-04-13")  # six weeks from the first demand (Art. 318 OR)
+        self.assertEqual(law["set_date"]["lines"], ["gesetzlich: 13.04.2026", "im Schreiben vom 02.03.2026 gesetzt: 30.04.2026", "prüfen, welche gilt"])
+        self.assertEqual((own["value"], own["concerns"]), ("2026-04-30", "deadline:rueckzahlung"))  # both stand; neither hides the other
+        earlier = listed("2026-03-31 · Zahlung · Kundschaft · Schreiben vom 02.03.2026")["deadline:rueckzahlung"]  # set in the demand itself
+        self.assertEqual(earlier["set_date"]["lines"], ["gesetzlich: 13.04.2026", "im Schreiben vom 02.03.2026 gesetzt: 31.03.2026"])
+        other = listed("2026-05-20 · Schlichtungsverhandlung · Schlichtungsbehörde Bern · Vorladung vom 01.04.2026")
+        self.assertNotIn("set_date", other["deadline:rueckzahlung"])  # another obligation: no pair
+        self.assertNotIn("concerns", other["deadline:frist"])
 
 
 class RoutingTests(unittest.TestCase):

@@ -83,6 +83,42 @@ class KeyPointDataTests(unittest.TestCase):
         self.assertEqual([p["id"] for p in shown], ["begruendung", "einsprache"])  # what applies first, at most two
 
 
+class NextStepTests(unittest.TestCase):
+    """After a demand went unanswered, what comes next: debt enforcement or the conciliation request, from the verified
+    text of the debt enforcement act and the civil procedure code, as advice the customer can act on."""
+
+    def test_a_loan_not_repaid_after_the_period_leads_to_enforcement_or_the_conciliation_request_and_answers_what_now(self):
+        wf = area.workflow("vertrag-darlehen")
+        facts = {"rechtsgebiet": wf["applies_when"]["is"], "termin_vereinbart": False, "aufforderung": "2026-03-02", "zahlung_ausgeblieben": True}
+        points = {p["id"]: p for p in keypoints.evaluate(wf, facts)}
+        self.assertEqual((points["betreibung"]["state"], points["schlichtung"]["state"]), ("applies", "applies"))
+        self.assertEqual([r["cite"] for r in points["betreibung"]["law"]], ["Art. 38 Abs. 1 SchKG", "Art. 67 Abs. 1 SchKG"])
+        self.assertEqual([r["cite"] for r in points["schlichtung"]["law"]], ["Art. 197 ZPO", "Art. 202 Abs. 1 ZPO"])
+        self.assertTrue(all(r["verified"] for p in ("betreibung", "schlichtung") for r in points[p]["law"]))  # checked against the official text
+        self.assertIn("Das Betreibungsbegehren ist schriftlich oder mündlich an das Betreibungsamt zu richten.", points["betreibung"]["law"][1]["passage"])
+        self.assertEqual(keypoints.advice_line(points["betreibung"]),
+                         "Bezahlt der Borger nicht, können Sie beim Betreibungsamt schriftlich oder mündlich ein Betreibungsbegehren stellen (Art. 38 Abs. 1 SchKG).")
+        for question in ("Was kann ich jetzt machen?", "Wie geht es weiter, er zahlt nicht?"):
+            self.assertEqual(keypoints.answer_for(question, list(points.values()))["id"], "betreibung")
+        self.assertEqual(keypoints.answer_for("Muss ich vor Gericht klagen?", list(points.values()))["id"], "schlichtung")
+        open_ = {p["id"]: p["state"] for p in keypoints.evaluate(wf, {k: v for k, v in facts.items() if k != "zahlung_ausgeblieben"})}
+        self.assertEqual((open_["betreibung"], open_["schlichtung"]), ("open", "open"))  # asked, never asserted
+        paid = {p["id"] for p in keypoints.evaluate(wf, {**facts, "zahlung_ausgeblieben": False})}
+        self.assertFalse({"betreibung", "schlichtung"} & paid)
+        question = next(f for f in wf["facts"] if f["id"] == "zahlung_ausgeblieben")
+        self.assertEqual(question["ask_customer"], "offered")
+
+    def test_other_areas_name_the_next_step_their_demands_lead_to(self):
+        cases = {"inkasso": ({"gemahnt": True}, "betreibung"), "arbeit-lohn": ({"lohn_faellig_seit": "2026-08-25"}, "schlichtung"),
+                 "privatversicherung": ({"ablehnung": "Leistung abgelehnt am 2026-09-01"}, "schlichtung")}
+        for wid, (facts, point) in cases.items():
+            wf = area.workflow(wid)
+            got = {p["id"]: p for p in keypoints.evaluate(wf, {"rechtsgebiet": wf["applies_when"]["is"], **facts})}
+            self.assertEqual(got[point]["state"], "applies", wid)
+            self.assertTrue(got[point]["advice"] and all(r["verified"] for r in got[point]["law"]), wid)
+            self.assertEqual(keypoints.answer_for("Was kann ich jetzt machen?", [got[point]])["id"], point)
+
+
 class DismissalTests(unittest.TestCase):
     """Sick leave from before the notice: the card's key point, the customer's questions, the assessment."""
 

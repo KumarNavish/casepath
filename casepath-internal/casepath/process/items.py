@@ -232,6 +232,29 @@ def open_customer_questions(graph, facts):
             and trigger_question(graph, f["id"], facts) == "ask"]
 
 
+def pair_set_dates(items):
+    """A date the file sets for the obligation a computed statutory deadline concerns (by the customer, the other side or
+    an authority: the running-deadline fact read as «date · what · who · letter») is never hidden by the computed one:
+    both stand, one line each, named for what they are. The same obligation: what the set date is for shares the
+    deadline's words, or it was set in the letter whose date starts the deadline. Where the set date is later, the line
+    says «prüfen, welche gilt»: no verified passage of the area says which one governs."""
+    computed = [i for i in items if i["kind"] == "deadline" and i.get("origin") == "law" and parse_date(i.get("value"))
+                and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value")))]
+    given = [i for i in items if i["kind"] == "deadline" and i.get("origin") != "law" and i.get("what") and parse_date(i.get("value"))]
+    for law in computed:
+        start = parse_date(law.get("stated"))
+        for s in given:
+            in_letter = start is not None and parse_date(s.get("source")) == start
+            if s.get("concerns") or not (account.overlap(s["what"], (law.get("label") or {}).get("de")) >= 0.5 or in_letter):
+                continue
+            later = parse_date(s["value"]) > parse_date(law["value"])
+            where = f"im {s['source']} gesetzt" if s.get("source") else f"gesetzt von {s['by']}" if s.get("by") else "in der Akte gesetzt"
+            law["set_date"] = {"item": s["item_id"], "date": s["value"], "later": later,
+                               "lines": [f"gesetzlich: {_day(law['value'])}", f"{where}: {_day(s['value'])}"] + (["prüfen, welche gilt"] if later else [])}
+            s["concerns"] = law["item_id"]
+            break
+
+
 def build_items(state, result, files=None, events=None):
     """``events``: the case's log, for what a person did outside the facts (a letter copied, a case moved into or out of
     the historic files)."""
@@ -313,7 +336,7 @@ def build_items(state, result, files=None, events=None):
                 label=given.get("what") or UNNAMED, **({} if given.get("what") else {"unnamed": True}),
                 **({"set_by_others": True, **{k: given[k] for k in ("what", "by", "source") if given.get(k)}} if given.get("what") else {}),
                 **({"stated": d["stated"], "rule": d["rule"]} if d.get("computed") else {}))
-        unsettled_triggers = set()
+        unsettled_triggers, missing_triggers = set(), []
         for d in graph.get("deadlines", []):  # the area's statutory deadlines, from the trigger date the case establishes
             trigger = (state.get("facts") or {}).get(d["trigger"])
             computed = compute_deadline(d, trigger, state.get("facts") or {}) if trigger is not None else None
@@ -339,6 +362,22 @@ def build_items(state, result, files=None, events=None):
                     legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
                     possible=True, **({"candidate": candidate} if candidate else {}),
                     **({"condition": d["when_text"]} if d.get("when") and evaluate_condition(d["when"], state.get("facts") or {}) is None else {}))
+            elif trigger is None:
+                # The file does not give the date that starts it: never left out while its condition holds or is open. It is
+                # shown as possible with «Datum fehlt», says what starts it, and its date is asked (the trigger question).
+                # Only a deadline whose condition is established as not met is absent.
+                holds = evaluate_condition(d["when"], state.get("facts") or {}) if d.get("when") else True
+                if holds is False:
+                    continue
+                missing_triggers.append(d)
+                starts = d.get("from") or "ab dem auslösenden Ereignis"
+                add("deadline", d["id"], value="Datum fehlt", stated_as="possible", verdict=None, evidence=[],
+                    node=_fact_node(graph, d["trigger"]), origin="law", chain=True, label=d["title"], stated=None,
+                    rule=f"{period_text(d)} {starts}; Datum fehlt" + (f" ({d['question']})" if d.get("question") else ""),
+                    legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
+                    possible=True, missing=True, starts=starts, trigger=d["trigger"], due_text="Datum fehlt",
+                    **({"condition": d["when_text"]} if holds is None and d.get("when_text") else {}))
+        pair_set_dates(items)  # a date the file sets for the same obligation stands beside the computed one
         asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
         lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
         steps = {x["id"]: x for x in graph["steps"]}
@@ -472,6 +511,12 @@ def build_items(state, result, files=None, events=None):
                     add("letter_question", f["id"], value=asked, stated_as="put_to_handler", verdict=None, evidence=[],
                         node=here.get("id"), origin="workflow", chain=True, label=asked,
                         ask="proposed" if trigger == "offer" or f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers else "now")
+            asked_ids = {i["key"] for i in items if i["kind"] == "letter_question"}
+            for d in missing_triggers:  # a trigger date the area does not ask the customer by itself: offered with its deadline
+                if d["trigger"] not in asked_ids and d.get("question") and known.get(d["trigger"]) is None:
+                    asked_ids.add(d["trigger"])
+                    add("letter_question", d["trigger"], value=d["question"], stated_as="put_to_handler", verdict=None, evidence=[],
+                        node=here.get("id"), origin="law", chain=True, label=d["question"], ask="proposed")
             # A key point that is advice the customer can act on now goes into the first request with its article: ticked when
             # its condition holds, offered while it depends on an open fact. Where it applies, it stands for the area's hint
             # that says the same (every article of the hint is one of the point's); where it is open and such a hint is in
