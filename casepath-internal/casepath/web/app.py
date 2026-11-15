@@ -528,7 +528,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                   assessment=assessment)
         completion.prepare(draft, {} if study else store.latest_drafts(case_id), listed)
         prepared = store.latest_run(case_id, "completed")
-        look = as_of(files)
+        look = as_of(files, completion.swiss_today())  # a historic cut's own day, else the handler's day (Swiss time)
         unread = core.unread(files, prepared) if prepared and not study else []
         marks = {} if study else review_marks()[0]  # the jurists' marks that hold now: what the approval rests on may have been marked since
         held_keys = [k for k, m in marks.items() if m.get("mark") in completion.HELD_MARKS]

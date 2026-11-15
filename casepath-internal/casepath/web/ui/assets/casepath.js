@@ -2585,7 +2585,7 @@ function dispatchControl(bar, row, primary, named) {
   const day = row.date || isoToday();
   const name = T("Sent on", "Versandt am"), to = many ? ` ${T("to", "an")} ${row.title}` : "";
   return `<span class="cp-dispatch" data-dispatch-row="${esc(row.to)}">${many ? `<span class="cp-dispatch-to">${esc(row.title)}:</span>` : ""}<button class="cp-button ${primary ? "primary" : ""}" data-dispatch="${esc(row.to)}" data-dispatch-version="${esc(bar.version || "")}" aria-label="${esc(`${name} ${dateText(day)}${to}`)}">${esc(name)}</button>
-    <input type="date" class="cp-dispatch-date" data-dispatch-date="${esc(row.to)}" value="${esc(day)}" max="${esc(isoToday())}" ${bar.earliest ? `min="${esc(bar.earliest)}"` : ""} aria-label="${T("Day sent", "Versanddatum")}">
+    <input type="date" class="cp-dispatch-date" data-dispatch-date="${esc(row.to)}" value="${esc(day)}" max="${esc(row.date || isoToday())}" ${bar.earliest ? `min="${esc(bar.earliest)}"` : ""} aria-label="${T("Day sent", "Versanddatum")}">
     <select class="cp-dispatch-channel" data-dispatch-channel="${esc(row.to)}" aria-label="${T("Channel", "Kanal")}">${CHANNELS.map(([k, w]) => `<option value="${k}" ${k === (row.channel || bar.channel) ? "selected" : ""}>${esc(w)}</option>`).join("")}</select></span>`;
 }
 // The bar of a letter that can be approved and sent: before approval «Freigeben» (the gaps, an open decision or a clash
