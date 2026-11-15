@@ -741,11 +741,15 @@ def _record_steps(work, agent, args, fitted=()):
             firsts.setdefault(e["file"], set()).add(e["page"])
     kept = dropped = whole = elsewhere = 0
     issues, shown = [], []
+
+    def page_text(file_id, page):  # the text of a page of the file (the whole file without a page): the entry's day and sender are checked there
+        pages = (work.evidence.files.get(file_id) or {}).get("pages_raw") or ()
+        return "\n".join(str(t or "") for p, t in pages if page is None or p == page)
     for raw in rows:
         first, last = work.page_range(raw["file"], raw.get("page"), sorted(firsts.get(raw["file"], ())))
         before = len(issues)
         entry, lost = account.check(raw, lambda quote: work.evidence.locate(raw["file"], quote, first, last), kinds,
-                                    elsewhere=lambda quote: work.evidence.locate(raw["file"], quote), issues=issues)
+                                    elsewhere=lambda quote: work.evidence.locate(raw["file"], quote), issues=issues, page_text=page_text)
         elsewhere += sum(1 for x in issues[before:] if x["kept"])
         dropped += lost
         if entry is None:

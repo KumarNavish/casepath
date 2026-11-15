@@ -215,8 +215,9 @@ class WarningTests(unittest.TestCase):
         state, items, by_id, files = mandate_view()
         check = by_id["check:androhung"]
         self.assertEqual(check["value"], "andere")
-        self.assertEqual(check["lines"], ["Kanzlei, Schreiben vom 01.03.2025: Belege der Reparaturkosten bis 15.03.2025 · Aufforderung durch die "
-                                          "Kanzlei, nicht durch Protekta · ob das genügt: prüfen",
+        # Slice C (C10g): the first ask's quote stops before «innert 14 Tagen»: its date is to check, not stated
+        self.assertEqual(check["lines"], ["Kanzlei, Schreiben vom 01.03.2025: Belege der Reparaturkosten (Frist laut Akte, Datum prüfen) · "
+                                          "Aufforderung durch die Kanzlei, nicht durch Protekta · ob das genügt: prüfen",
                                           "Kanzlei, Schreiben vom 01.03.2025: Mängelrüge an die Vermieterin bis 15.03.2025 · Aufforderung durch "
                                           "die Kanzlei, nicht durch Protekta · ob das genügt: prüfen"])
         self.assertEqual(check["evidence"][0]["page"], 3)  # its source
@@ -272,18 +273,23 @@ class DateTests(unittest.TestCase):
         rows = sorted((i["key"], i["value"], i["what"], i["by"], i["for"], i["source"], i["stated_as"]) for i in items
                       if i["kind"] == "deadline" and i.get("account"))
         # a request's id is stable: the entry that first asks it (3) and the ask's place in it (0, 1), not its place in time order
+        # Slice C (C10g): a date is kept only where its own quote writes it (or the period it is counted from): the first ask's
+        # quote stops before «innert 14 Tagen», the offer's before «bis 30. April 2025»: both «Frist laut Akte, Datum prüfen»
         self.assertEqual(rows, [
-            ("konto-r3.0", "2025-03-15", "Belege der Reparaturkosten", "Kanzlei", "Kundschaft", "Schreiben vom 01.03.2025", "computed"),
+            ("konto-r3.0", "prüfen", "Belege der Reparaturkosten", "Kanzlei", "Kundschaft", "Schreiben vom 01.03.2025", "possible"),
             ("konto-r3.1", "2025-03-15", "Mängelrüge an die Vermieterin", "Kanzlei", "Kundschaft", "Schreiben vom 01.03.2025", "computed"),
-            ("konto-t5", "2025-04-30", "Antwort auf das Angebot: Gegenpartei zahlt CHF 2'000 (Vergleich per Saldo)", "Gegenpartei", "Protekta",
-             "Schreiben vom 05.04.2025", "established")])
-        self.assertEqual(by_id["deadline:konto-r3.0"]["rule"], "innert 14 Tagen ab Schreiben vom 01.03.2025, nach Kalendertagen berechnet")
+            ("konto-t5", "prüfen", "Antwort auf das Angebot: Gegenpartei zahlt CHF 2'000 (Vergleich per Saldo)", "Gegenpartei", "Protekta",
+             "Schreiben vom 05.04.2025", "possible")])
+        self.assertEqual(by_id["deadline:konto-r3.1"]["rule"], "innert 14 Tagen ab Schreiben vom 01.03.2025, nach Kalendertagen berechnet")
         self.assertEqual(by_id["deadline:konto-t5"]["party"], "versicherer")  # the insurer's to meet: it can lead the card
         self.assertIsNone(letters.set_date_line(by_id["deadline:konto-t5"]))  # stays on the screen, not in a letter
 
     def test_a_date_the_set_date_reading_already_gives_is_not_added_twice_and_an_answered_one_is_gone(self):
+        # Slice C (C10g): the offer's date counts only with its quote writing it, so this offer quotes the sentence with the date
+        offer = dict(MANDATE_ENTRIES[4], terms=[{**MANDATE_ENTRIES[4]["terms"][0],
+                                                 "quote": "Wir schlagen zur Erledigung CHF 2'000 per Saldo vor. Bitte teilen Sie uns bis 30. April 2025 mit"}])
         acc = account.build([account.check(e, lambda q: {"file": "f1", "page": e["page"], "quote": q}, area.workflow(WID)["record"]["kinds"])[0]
-                             for e in MANDATE_ENTRIES], area.workflow(WID))
+                             for e in MANDATE_ENTRIES[:4] + [offer]], area.workflow(WID))
         items = [{"item_id": "deadline:frist", "kind": "deadline", "key": "frist", "value": "2025-04-30", "what": "Antwort auf den Vergleichsvorschlag",
                   "set_by_others": True, "origin": "workflow"}]
         from casepath.process.items import account_dates

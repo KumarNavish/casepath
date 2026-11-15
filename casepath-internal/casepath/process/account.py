@@ -40,6 +40,8 @@ AT = {"kunde": "bei der Kundschaft", "versicherer": "bei uns", "kanzlei": "bei d
       "behoerde": "bei Gericht/Behörde", "andere": "bei Dritten"}
 WITH = {"kunde": "der Kundschaft", "versicherer": "Protekta", "kanzlei": "der Kanzlei", "gegenpartei": "der Gegenpartei",
         "behoerde": "Gericht/Behörde", "andere": "Dritten"}
+TO = {"kunde": "die Kundschaft", "versicherer": "Protekta", "kanzlei": "die Kanzlei", "gegenpartei": "die Gegenpartei",  # «an …» (accusative)
+      "behoerde": "Gericht/Behörde", "andere": "Dritte"}
 ELEMENTS = ("asks", "answers", "terms", "paid", "next")
 SHOWN_PER_PARTY = 3  # open items per party in «Stand»; the rest behind «… n weitere», which opens the Verlauf on them
 MAX_ENTRIES_PER_CALL = 10
@@ -349,14 +351,37 @@ def _clip(text, n):
     return text if len(text) <= n else text[:n - 1].rstrip() + "…"
 
 
-def check(raw, locate, kinds, elsewhere=None, issues=None):
+SENDER_LINE = re.compile(r"^\s*(?:Von|From|Absender)\s*:\s*(.+)$", re.M | re.I)
+TO_LINE = re.compile(r"^\s*(?:An|To)\s*:\s*(.+)$", re.M | re.I)
+
+
+def _on_its_pages(entry, page_text):
+    """C10g, read once: an entry's day is to check («Datum prüfen», date_check) only when it is written nowhere on the
+    pages its quotes are on, an e-mail's header lines included (a forwarded message keeps its own date); its sender (or
+    addressee) is to check («Absender prüfen», from_check / to_check) when every sender line there names a party and none
+    is the one the reader gave."""
+    pages = {c.get("page") for c in entry["citations"]} | {c.get("page") for k in ELEMENTS for x in entry.get(k) or () for c in x.get("citations") or ()}
+    text = "\n".join(page_text(entry.get("file"), p) or "" for p in sorted(pages, key=lambda p: (p is None, p or 0)))
+    if not text.strip():
+        return entry
+    if entry.get("date") and entry["date"] not in written_dates(text):
+        entry["date_check"] = True
+    for key, line in (("from", SENDER_LINE), ("to", TO_LINE)):
+        named = [party_of(m.split("<")[0]) for m in line.findall(text)]
+        if named and "andere" not in named and entry[key] not in named:
+            entry[f"{key}_check"] = True
+    return entry
+
+
+def check(raw, locate, kinds, elsewhere=None, issues=None, page_text=None):
     """One entry of the reader, as the account keeps it: (entry or None, elements dropped).
 
     ``locate(quote)`` returns the located citation within this entry's own document (its page range as code knows it),
     or None. The entry's own quote must be found there, or the entry is dropped (it counts as one). An element whose
     quote is not found there but ``elsewhere(quote)`` finds it in the same file is kept, marked with the page where it
     was found («andere Stelle»); one found nowhere is dropped and counted. ``issues`` collects, per element not found in
-    its document, its kind and the reason: «elsewhere» (kept) or «not_found» (dropped)."""
+    its document, its kind and the reason: «elsewhere» (kept) or «not_found» (dropped). ``page_text(file, page)``: the
+    text of a page of the file (the whole file for None), to check the entry's day and sender there (_on_its_pages)."""
     issues = [] if issues is None else issues
     n = raw.get("n")
     own = locate(raw.get("quote"))
@@ -400,9 +425,11 @@ def check(raw, locate, kinds, elsewhere=None, issues=None):
                 row.update(amount=_clip(element.get("amount"), 40) or None, payer=_party(element.get("payer")), date=_iso(element.get("date")))
             else:
                 row.update(what=_clip(element.get("what"), 120), who=_party(element.get("who")), **dated)
+            if key == "answers" and isinstance(element.get("request"), str) and re.fullmatch(r"r\d+\.\d+", element["request"]):
+                row["request"] = element["request"]  # the row it answers, by the id case_so_far gave it (C8)
             kept.append(row)
         entry[key] = kept
-    return entry, dropped
+    return (_on_its_pages(entry, page_text) if page_text else entry), dropped
 
 
 # -- coverage: pages of the file with no entry ------------------------------------------------------------------------
@@ -523,11 +550,435 @@ def promised(requests, e, x):
     return open_ if open_ and (len(open_) == 1 or words(x.get("what")) & GENERIC_DOCUMENTS) else []
 
 
+# -- the account's checks (Slice C, C10): a live case's account; a frozen study copy keeps the rules it was frozen with ---
+
+SPLIT = re.compile(r",\s+|;\s+|\s+und\s+|\s+sowie\s+")
+LEAD = {"die", "der", "das", "den", "dem", "des", "ein", "eine", "einen", "einem", "eines", "ihr", "ihre", "ihren", "ihrem", "ihres", "mein",
+        "meine", "meinen", "unser", "unsere", "alle", "allfällige", "sämtliche", "weitere", "kopie", "kopien", "noch", "auch", "zudem", "nur",
+        "ausserdem", "bitte"}
+NEGATION = re.compile(r"\b(?:kein|keine|keinen|keinem|keiner|keines|nicht|nie)\b", re.I)
+PROMISE_WORDS = re.compile(r"nachreich|\bwerde\b|\bfolgt\b|\bfolgen\b|\bsobald\b|später|\bdemnächst\b", re.I)
+DELIVERY_WORDS = re.compile(r"\banbei\b|\bim anhang\b|beilieg|beigelegt|\bsende ihnen\b|übermittl|zugestellt", re.I)
+DELIVERY_ASKED = re.compile(r"send|zustell|schick|einreich|nachreich|beileg|beifüg|übermittl|zukommen", re.I)
+COMPLETION_WORDS = re.compile(r"überwiesen|bezahlt|beglichen|gutgeschrieben|eingegangen|erhalten|\bvaluta\b", re.I)
+INSTRUCTION_WORDS = re.compile(r"\bbitte\b|zahlbar|\bwird\b|\bwerden\b|veranlass|ankündig", re.I)
+# words that say how something is asked or answered, never what: left out when an answer is scored against a request
+FUNCTION_WORDS = {"auf", "aus", "bei", "nach", "ich", "sie", "mir", "mich", "sich", "ihnen", "ist", "sind", "war", "hat", "haben", "habe", "wird",
+                  "werden", "kann", "können", "muss", "müssen", "soll", "darf", "wie", "was", "wer", "wann", "warum", "weil", "dass", "wenn", "nicht",
+                  "kein", "keine", "keinen", "letzte", "anbei", "beilie", "beigel", "folgen", "folgt", "nachre", "zugest", "sende", "senden", "erhalt",
+                  "bereit", "schon", "immer", "heute", "gerne", "dieser", "diese", "dieses", "nur", "auch", "zudem", "ausser", "möchte", "wurde", "wurden"}
+MONTH_NUMBERS = {"januar": 1, "februar": 2, "märz": 3, "maerz": 3, "april": 4, "mai": 5, "juni": 6, "juli": 7, "august": 8, "september": 9,
+                 "oktober": 10, "november": 11, "dezember": 12, "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7, "aug": 8,
+                 "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+WRITTEN_DATE = re.compile(r"\b(\d{4})-(\d{2})-(\d{2})\b|\b(\d{1,2})\.\s?(\d{1,2})\.\s?(\d{4})\b|\b(\d{1,2})\.?\s+([A-Za-zÄäÖöÜü]{3,9})\.?\s+(\d{4})\b")
+FLAGS = {"amount": "Betrag nicht im Zitat – prüfen", "date": CHECK_DATE, "consent": "Zustimmung der Kundschaft (nicht der Gegenpartei)",
+         "unspecified": "Antwort ohne Zuordnung – prüfen", "third": "Forderung Dritter – prüfen", "entry_date": "Datum prüfen",
+         "sender": "Absender prüfen"}
+COUNTERPARTY = "gegenpartei"
+CUSTOMER_SIDE = {"kunde", "versicherer", "kanzlei"}
+
+
+def written_dates(text):
+    """The days a text writes (05.09.2026, 5. September 2026, 2026-09-05, an e-mail's «Sat, 05 Sep 2026»), as ISO days."""
+    out = set()
+    for m in WRITTEN_DATE.finditer(str(text or "")):
+        try:
+            if m.group(1):
+                d = date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+            elif m.group(4):
+                d = date(int(m.group(6)), int(m.group(5)), int(m.group(4)))
+            else:
+                month = MONTH_NUMBERS.get(m.group(8).lower()) or MONTH_NUMBERS.get(m.group(8).lower()[:3])
+                if not month:
+                    continue
+                d = date(int(m.group(9)), month, int(m.group(7)))
+        except ValueError:
+            continue
+        out.add(d.isoformat())
+    return out
+
+
+def written_amounts(text):
+    """The amounts a text writes («CHF 3'000.–», «85.40», «1 200»), its days left out (a day is not an amount)."""
+    rest = WRITTEN_DATE.sub(" ", str(text or ""))
+    out = set()
+    for m in re.finditer(r"\d{1,3}(?:[’' ]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d{1,2})?", rest):
+        try:
+            out.add(float(re.sub(r"[’' ]", "", m.group(0)).replace(",", ".")))
+        except ValueError:
+            continue
+    return out
+
+
+def content(text):
+    """The words that say what is asked or answered (``words`` without the words of asking and answering)."""
+    return {w for w in words(text) if w not in FUNCTION_WORDS}
+
+
+def score(answer, request):
+    """How much of a request an answer names: |answer ∩ request| / |request|, over their content words; 0 without any."""
+    asked = content(request)
+    return len(content(answer) & asked) / len(asked) if asked else 0.0
+
+
+def _listed(part):
+    """A list item: it names something (its first word after an article or a quantifier is a noun) and keeps a content word."""
+    tokens = re.findall(r"[A-Za-zÄÖÜäöüß]+", part)
+    lead = next((t for t in tokens if t.lower() not in LEAD), None)
+    return bool(lead) and lead[0].isupper() and bool(content(part))
+
+
+def items_of(what, questions=False):
+    """A combined ask (or answer) split into its items on «, », «; », « und », « sowie », when every part is a list item
+    that keeps a content word; a question (``questions`` False) is one thing asked."""
+    text = str(what or "")
+    if "?" in text and not questions:
+        return [text]
+    parts = [p.strip(" .:;") for p in SPLIT.split(text)]
+    parts = [p for p in parts if p]
+    return parts if len(parts) > 1 and all(_listed(p) for p in parts) else [text]
+
+
+def _quote(element):
+    return " ".join(str(c.get("quote") or "") for c in element.get("citations") or ())
+
+
+def is_question(row):
+    """A question asked for information, which a «no» answers (not a document asked in the form of a question)."""
+    text = f"{row.get('what') or ''} {_quote(row)}"
+    return "?" in text and not DELIVERY_ASKED.search(text)
+
+
+def typed_parts(x):
+    """An answer element split into its parts, each typed alone (C10b): «refusal» (a negation), «promise» (a promise word
+    and no delivery word) or «answer»; each part with the words of the element's quote it rests on, and the day a promise
+    names. «Fotos anbei, Belege zu den Stromkosten folgen» is one delivery and one promise."""
+    quote = _quote(x)
+    quotes = items_of(quote, questions=True) if quote else []
+    out = []
+    for what in items_of(x.get("what"), questions=True):
+        pick = max(quotes, key=lambda q: len(content(q) & content(what))) if quotes else ""
+        if not pick or not content(pick) & content(what):
+            pick = quote
+        text = f"{what} {pick}"
+        kind = "refusal" if NEGATION.search(text) else "promise" if PROMISE_WORDS.search(text) and not DELIVERY_WORDS.search(text) else "answer"
+        days = sorted(written_dates(pick))
+        out.append({"what": what, "quote": pick, "type": kind, **({"by": days[-1]} if kind == "promise" and days else {})})
+    return out
+
+
+def _dated(element, entry):
+    """An element's day kept only where its quote writes it (or, counted from the entry, the period it states); otherwise
+    «Frist laut Akte, Datum prüfen» (by_check): a flagged element dates nothing."""
+    if not element.get("by") or element.get("by_check"):
+        return element
+    quote = _quote(element)
+    if element.get("by_computed"):
+        ok = not entry.get("date_check") and bool(PERIOD_WORDS.search(quote) or MONTH_END.search(quote))
+    else:
+        ok = element["by"] in written_dates(quote)
+    return element if ok else {**element, "by": None, "by_text": CHECK_DATE, "by_check": True, "by_computed": False, "by_dropped": element["by"]}
+
+
+def _amounted(element):
+    """An element's amount kept only where its quote writes it; otherwise «Betrag nicht im Zitat – prüfen»: a flagged
+    element agrees and pays nothing."""
+    number = amount(element.get("amount"))
+    if element.get("amount") and (number is None or number not in written_amounts(_quote(element))):
+        return {**element, "amount": None, "amount_check": element["amount"], "flag": FLAGS["amount"]}
+    return element
+
+
+PAYER_RECEIVES = {"gegenpartei": {"kunde", "versicherer", "kanzlei"}, "andere": {"kunde", "versicherer", "kanzlei"},
+                  "behoerde": {"kunde", "versicherer", "kanzlei"}, "kunde": {"gegenpartei", "andere", "versicherer"},
+                  "versicherer": {"kunde", "kanzlei", "gegenpartei"}, "kanzlei": {"kunde", "gegenpartei"}}
+
+
+def _payment(p, entry):
+    """A payment (C10i), not an instruction or an announcement: its amount written in its quote, a word that it is done and
+    none that it is asked or still to come, its payer named, and the entry from the payer or the one paid (a phone note of
+    ours: the party we spoke with)."""
+    quote = _quote(p)
+    speaker = entry["to"] if entry.get("phone") and entry["from"] == INSURER else entry["from"]
+    return (bool(p.get("amount")) and not p.get("amount_check") and bool(COMPLETION_WORDS.search(quote)) and not INSTRUCTION_WORDS.search(quote)
+            and p.get("payer") not in (None, "andere") and speaker in {p["payer"]} | PAYER_RECEIVES.get(p["payer"], set())
+            and not entry.get("flagged"))
+
+
+def _asker(a, entry):
+    """Who asks (C10j): the entry's sender, unless it is the one asked: then the party the quote names (a demand of the
+    other side reported by the customer), else a third party, never someone owed by us («Forderung Dritter – prüfen»)."""
+    if a.get("of") != entry["from"]:
+        return entry["from"], False
+    text = _quote(a).lower()
+    short = next((PARTY_SHORT[w] for w in re.findall(r"\w+", text) if w in PARTY_SHORT and PARTY_SHORT[w] != entry["from"]), None)
+    named = short or next((party for party, said in PARTY_WORDS if party != entry["from"] and any(w in text for w in said)), None)
+    return (named, False) if named else ("andere", True)
+
+
+def _valued(entry):
+    """An entry as the checked account reads it: its elements' values kept only where their quotes write them, payments
+    told from instructions (an instruction or announcement becomes a next step), the asker of a reported demand, and its
+    answers split into typed parts."""
+    e = dict(entry)
+    e["flagged"] = bool(e.get("from_check") or e.get("to_check"))
+    if e.get("handler") or e.get("dispatch"):  # entered by a person or recorded at dispatch: its source is that person, not a quote
+        return {**e, "asks": [{**a, "asker": e["from"]} for a in e.get("asks") or ()],
+                "answers": [{**x, "parts": typed_parts(x)} for x in e.get("answers") or ()]}
+    asks = []
+    for a in e.get("asks") or ():
+        a = _dated(dict(a), e)
+        asker, third = _asker(a, e)
+        asks.append({**a, "asker": asker, **({"third": True} if third else {})})
+    nxt = [_dated(dict(x), e) for x in e.get("next") or ()]
+    paid = []
+    for p in e.get("paid") or ():
+        p = _amounted(dict(p))
+        if _payment(p, e):
+            paid.append(p)
+            continue
+        day = p.get("date") if p.get("date") in written_dates(_quote(p)) else None
+        nxt.append({"what": " ".join(x for x in ("Zahlung", p.get("amount") or p.get("amount_check") or "", "angekündigt") if x), "who": p.get("payer") or e["from"],
+                    "by": day, "citations": p["citations"], "announced": True, **({"flag": p["flag"]} if p.get("flag") else {})})
+    e.update(asks=asks, next=nxt, paid=paid, terms=[_dated(_amounted(dict(t)), e) for t in e.get("terms") or ()],
+             answers=[{**x, "parts": typed_parts(x)} for x in e.get("answers") or ()])
+    return e
+
+
+def _same_documents(entries, kinds, phone_code):
+    """C10e: an entry with the same day, sender, addressee, kind and own quote as an earlier one is that document read
+    again (no row, no count); a reader's entry of ours with the addressee and the action of a dispatch in force, dated
+    within three days of it, is that dispatch as quoted in a later reply: its quote joins the dispatch's entry and nothing
+    of it counts again. Returns (entries, [{n, into, why}])."""
+    out, seen, merged = [], {}, []
+    dispatches = [e for e in entries if e.get("dispatch")]
+    for e in entries:
+        own = ((e.get("citations") or [{}])[0] or {}).get("quote")
+        key = (e.get("date"), e["from"], e["to"], e.get("kind"), own)
+        if own and not e.get("handler") and key in seen:
+            merged.append({"n": e["n"], "into": seen[key], "why": "same"})
+            continue
+        if own:
+            seen.setdefault(key, e["n"])
+        if e["from"] == INSURER and not e.get("handler") and not e.get("dispatch") and e.get("date"):
+            mine = set(code_of(e, kinds, False, phone_code)) - {phone_code}
+            day = parse_date(e["date"])
+            sent = next((d for d in dispatches if d["to"] == e["to"] and d.get("date") and mine
+                         and set([d["code"]] if d.get("code") else code_of(d, kinds, False, phone_code)) - {phone_code} == mine
+                         and abs((parse_date(d["date"]) - day).days) <= 3), None)
+            if sent is not None:
+                sent["citations"] = list(sent.get("citations") or []) + list(e.get("citations") or [])
+                sent.setdefault("quoted", []).append(e["n"])
+                merged.append({"n": e["n"], "into": sent["n"], "why": "dispatch"})
+                continue
+        out.append(e)
+    return out, merged
+
+
+def _side(party):
+    return "versicherer" if party in ("versicherer", "kanzlei") else party
+
+
+def _offer_of_the_other_side(x):
+    """Terms the other side offers: in its own letter, or reported by the firm or another (its payer the other side)."""
+    return x["from"] == COUNTERPARTY or (COUNTERPARTY not in (x["from"], x.get("to")) and x.get("payer") == COUNTERPARTY)
+
+
+def _agrees(t, terms):
+    """C10h: agreed terms are an agreement when both sides are on them: terms agreed by or with the other side (its
+    letter, a phone note of ours or the firm's with it), the handler's own entry of agreed terms, or an assent of the
+    customer's side to terms from or with the other side on the same amount. An assent passed only between the customer
+    and us on the other side's offer is «Zustimmung der Kundschaft»: the other side does not know it yet."""
+    if t.get("flag") or t.get("flagged"):
+        return False
+    if t.get("handler") or COUNTERPARTY in (t["from"], t.get("to")):
+        return True
+    same = [x for x in terms if x is not t and (x.get("date") or "") <= (t.get("date") or "") and x["n"] != t["n"]
+            and (x["n"] == t.get("accepts") or (amount(x.get("amount")) is not None and amount(x.get("amount")) == amount(t.get("amount"))))]
+    counter = [x for x in same if COUNTERPARTY in (x["from"], x.get("to")) or x.get("payer") == COUNTERPARTY]
+    if not counter:
+        return False
+    return not ({t["from"], t.get("to")} <= {"kunde", "versicherer"} and all(_offer_of_the_other_side(x) for x in counter))
+
+
+def _build_checked(entries, graph=None):
+    """The account of a live case, its consequential distinctions checked by code (C10): a combined ask split into its
+    items (partial and full), each answer's parts typed (a refusal or a promise closes nothing) and matched by how much of
+    the request they name, only rows asked by the answer's addressee unless it names the asking entry or row, a letter-
+    level answer over several rows unspecified, a repeat only from a later day, a document read twice or a quoted dispatch
+    counted once, values kept only where their quotes write them, an agreement only with both sides on it, a payment only
+    as such and summed per payer, the other side's demand never owed to us."""
+    entries = sorted([_stored_entry(e) for e in entries or () if e.get("n") is not None], key=_key)
+    if not entries:
+        return None
+    record = (graph or {}).get("record") or {}
+    kinds, phone_code = record.get("kinds") or {}, record.get("phone_code") or "2"
+    entries, merged = _same_documents(entries, kinds, phone_code)
+    entries = [_valued(e) for e in entries]
+    by_n = {e["n"]: e for e in entries}
+    requests, unspecified, refused = [], [], []
+    for e in entries:
+        i = 0
+        for a in e.get("asks") or ():
+            for what in items_of(a["what"]):
+                asker, prior = a["asker"], None
+                if a.get("repeats") in by_n:  # the reader names the entry it repeats
+                    same = [r for r in requests if a["repeats"] in r["entries"] and r["of"] == a["of"]]
+                    prior = _best(same, what)[2]
+                if prior is None:  # by code: the same asker, the same party asked, the same thing (or the one open thing, in a reminder)
+                    same = [r for r in requests if r["by"] == asker and r["of"] == a["of"] and r["answered"] is None]
+                    found, _, row = _best(same, what)
+                    if found >= 0.5 or (e.get("kind") == "mahnung" and len(same) == 1):
+                        prior = row
+                later = prior is not None and e.get("date") and prior["last"] and e["date"] > prior["last"]
+                if prior is not None and not later and e.get("date") and prior["last"]:  # C10e: a repeat only from a later day
+                    if content(what) != content(prior["what"]):
+                        prior = None  # another thing asked the same day: its own row
+                    else:
+                        prior["citations"] = prior["citations"] + a["citations"]  # the same ask again that day: one row, no count
+                        i += 1
+                        continue
+                if prior is not None:
+                    if a.get("by"):
+                        prior.update(due_n=e["n"], due_computed=bool(a.get("by_computed")))
+                    prior.update(times=prior["times"] + (1 if later else 0), last=e.get("date") or prior["last"], due=a.get("by") or prior["due"],
+                                 due_text=a.get("by_text") or prior.get("due_text"))
+                    prior["entries"].append(e["n"])
+                    prior["citations"] = prior["citations"] + a["citations"]
+                    prior["warned"] += int(bool(a.get("warns")))
+                    if prior["answered"] is not None and a.get("repeats") is not None:
+                        prior["answered"] = None  # asked again after an answer: the answer did not settle it
+                    i += 1
+                    continue
+                requests.append({"id": f"r{e['n']}.{i}", "by": asker, "of": a["of"], "what": what, "first": e.get("date"), "last": e.get("date"),
+                                 "due": a.get("by"), "times": 1, "warned": int(bool(a.get("warns"))), "entries": [e["n"]], "citations": list(a["citations"]),
+                                 "answered": None, "phone": bool(e.get("phone")), "due_n": e["n"] if a.get("by") else None, "due_text": a.get("by_text"),
+                                 "due_computed": bool(a.get("by_computed")), **({"third": True} if a.get("third") else {}),
+                                 **({"by_check": True} if a.get("by_check") else {})})
+                i += 1
+        for j, x in enumerate(e.get("answers") or ()):
+            open_ = [r for r in requests if r["of"] == e["from"] and r["answered"] is None and r["entries"][0] != e["n"]]
+            if x.get("request"):  # the answer names the row it answers (C8)
+                candidates, how = [r for r in open_ if r["id"] == x["request"]], "request"
+            elif x.get("answers") in by_n:  # the entry it answers
+                candidates, how = [r for r in open_ if x["answers"] in r["entries"]], "entry"
+            else:  # C10d: only rows asked by the party the answer is addressed to
+                candidates, how = [r for r in open_ if _side(r["by"]) == _side(e["to"])], "code"
+            for part in x["parts"]:
+                ranked = sorted(((score(part["what"], r["what"]), k, r) for k, r in enumerate(candidates) if r["answered"] is None), key=lambda s: (-s[0], s[1]))
+                found, _, row = ranked[0] if ranked else (0.0, 0, None)
+                named = how in ("request", "entry")
+                if row is None or (not named and found < 0.5):
+                    continue
+                if e.get("flagged") or (how == "entry" and len(ranked) >= 2 and found == 0):  # «Antwort ohne Zuordnung – prüfen»
+                    unspecified.append({"n": e["n"], "date": e.get("date"), "what": part["what"], "entry": x.get("answers"), "rows": [r["id"] for _, _, r in ranked],
+                                        "citations": x["citations"]})
+                    continue
+                kind = part["type"]
+                if kind == "refusal" and is_question(row):
+                    kind = "answer"  # «nein» answers a question asked for information; it delivers nothing asked
+                mark = {"n": e["n"], "date": e.get("date"), "what": part["what"], "citations": x["citations"]}
+                if kind == "refusal":
+                    row["refused"] = mark
+                    refused.append({**mark, "request": row["id"]})
+                elif kind == "promise":
+                    row.update(promised={**mark, "i": None, "by": part.get("by"), "phone": bool(e.get("phone")), "answer": j,
+                                         "handler": {"kind": e["handler"].get("kind")} if e.get("handler") else None})
+                    if part.get("by"):
+                        row.update(due=part["by"], due_n=e["n"], due_text=None, due_computed=False)
+                elif found >= 0.5 or (named and len(ranked) == 1):
+                    row["answered"] = {**mark, "how": how if found < 0.5 or named else "code", "file": e.get("file"), "from": e["from"],
+                                       **({"elsewhere": x["elsewhere"]} if x.get("elsewhere") else {}), "confirmed": found >= 0.5, "score": round(found, 2)}
+                    row.pop("partial", None)
+                elif found > 0:  # 0 < score < 0.5: part of what was asked; the rest stays open
+                    rest = [w for w in re.findall(r"[A-Za-zÄÖÜäöüß]{3,}", row["what"]) if w.lower()[:6] in content(row["what"]) - content(part["what"])]
+                    row["partial"] = {**mark, "rest": " ".join(dict.fromkeys(rest))}
+        for k, x in enumerate(e.get("next") or ()):  # the party asked says by when it delivers: the request's date is that one, not asked again
+            dated = []
+            for what in (items_of(x.get("what"), questions=True) if x.get("by") else ()):  # «VN schickt Mietvertrag und Mängelrüge»: each item's row
+                dated += [r for r in promised(requests, e, {**x, "what": what}) if r not in dated]
+            if not dated and not x.get("by") and x.get("who"):  # a promise without a day: on the row it names, «zugesagt, ohne Datum»
+                open_ = [r for r in requests if r["of"] == x["who"] and r["answered"] is None and r["entries"][0] != e["n"]]
+                found, _, row = _best(open_, x.get("what"))
+                if row is not None and score(x.get("what"), row["what"]) >= 0.5 and not row.get("promised"):
+                    row["promised"] = {"n": e["n"], "i": k, "date": e.get("date"), "by": None, "phone": bool(e.get("phone")),
+                                       "handler": {"kind": e["handler"].get("kind")} if e.get("handler") else None}
+                    row["citations"] = row["citations"] + x["citations"]
+            for r in dated:
+                r.update(due=x["by"], due_n=e["n"], due_text=x.get("by_text"), due_computed=bool(x.get("by_computed")),
+                         promised={"n": e["n"], "i": k, "date": e.get("date"), "by": x["by"], "phone": bool(e.get("phone")),
+                                   "handler": {"kind": e["handler"].get("kind")} if e.get("handler") else None})
+                r["citations"] = r["citations"] + x["citations"]
+    _settle(requests, entries, by_n)  # the handler's settlements (apply_corrections)
+    # terms offered and agreed, in time order; an acceptance without terms of its own accepts the latest terms of another party
+    terms = []
+    for e in entries:
+        own = e.get("terms") or []
+        if e.get("kind") == "annahme" and terms:
+            if not own:
+                last = terms[-1]
+                own = [{**{k: last[k] for k in ("what", "amount", "payer", "by")}, "agreed": True,
+                        "citations": e["citations"] + last["citations"], "accepts": last["n"]}]
+            else:
+                filled = []
+                for t in own:
+                    same = [x for x in terms if amount(x.get("amount")) == amount(t.get("amount"))] or ([terms[-1]] if amount(t.get("amount")) is None else [])
+                    if same:
+                        last = same[-1]
+                        t = {**t, "what": t.get("what") or last.get("what"), "amount": t.get("amount") or last.get("amount"),
+                             "payer": last.get("payer") if t.get("payer") in (None, "andere") else t["payer"], "by": t.get("by") or last.get("by"),
+                             "accepts": last["n"], "citations": t["citations"] + last["citations"][:1]}
+                    filled.append(t)
+                own = filled
+        for t in own:
+            terms.append({**t, "n": e["n"], "date": e.get("date"), "from": e["from"], "to": e["to"], "phone": bool(e.get("phone")), "kind": e.get("kind"),
+                          "agreed": bool(t.get("agreed")) or e.get("kind") == "annahme", **({"flagged": True} if e.get("flagged") else {}),
+                          **({"handler": {k: e["handler"].get(k) for k in ("by", "at", "kind")}} if e.get("handler") else {})})
+    agreed = [t for t in terms if t["agreed"] and _agrees(t, terms)]
+    consent = [t for t in terms if t["agreed"] and t not in agreed and not t.get("flag")]
+    agreement = agreed[-1] if agreed else None
+    paid = [{**p, "n": e["n"], "entry_date": e.get("date")} for e in entries for p in e.get("paid") or ()]
+    payment, partly = None, None
+    if agreement:
+        since, want = agreement.get("date") or "", amount(agreement.get("amount"))
+        payer = agreement.get("payer") if agreement.get("payer") not in (None, "andere") else None
+        made = [p for p in paid if (p.get("date") or p.get("entry_date") or "") >= since and (payer is None or p.get("payer") == payer)]
+        total = sum(amount(p.get("amount")) or 0 for p in made)
+        if made and (want is None or total >= want - 0.005):
+            payment = made[-1]
+        elif made:
+            partly = {"paid": total, "of": want, "payer": payer, "n": [p["n"] for p in made], "citations": [c for p in made for c in p["citations"][:1]]}
+    owes = {p: [] for p in PARTIES}
+    for r in requests:
+        if r["answered"] is None:
+            owes[r["of"]].append({"kind": "request", "request": r["id"], "what": r["what"], "since": r["first"], "times": r["times"],
+                                  "due": r["due"], "by": r["by"], "of": r["of"], "warned": r["warned"], "citations": r["citations"],
+                                  **({"promised": r["promised"]} if r.get("promised") else {}), **({"refused": r["refused"]} if r.get("refused") else {}),
+                                  **({"partial": r["partial"]} if r.get("partial") else {}), **({"third": True} if r.get("third") else {})})
+    if agreement and payment is None and agreement.get("payer") in owes:
+        owes[agreement["payer"]].append({"kind": "payment", "what": agreement.get("what"), "amount": agreement.get("amount"),
+                                         "due": agreement.get("by"), "citations": agreement["citations"], **({"partly": partly} if partly else {})})
+    actions, announced = [], False
+    for e in entries:
+        for code in code_of(e, kinds, announced, phone_code):
+            actions.append({"code": code, "date": e.get("date"), "n": e["n"]})
+        if e.get("from") == INSURER and e.get("kind") == "abschlussankuendigung":
+            announced = True
+    contacts = [e for e in entries if e.get("date") and e["from"] != e["to"]]
+    return {"entries": entries, "requests": requests, "terms": terms, "agreement": agreement, "superseded": [t for t in terms if t is not agreement],
+            "paid": paid, "payment": payment, "owes": owes, "actions": actions, "last_contact": contacts[-1] if contacts else None,
+            "checked": True, "merged": merged, "unspecified": unspecified, "refused": refused, "consent": consent, "partly_paid": partly}
+
+
 def build(entries, graph=None, checked=True):
     """The account from the located entries: {entries, requests, terms, agreement, paid, owes, actions, last_contact}.
     None without entries. A request's id is stable, «r<n>.<i>»: the entry that first asks it and the ask's place among
-    that entry's asks, so a later or back-dated entry never renumbers it. ``checked`` False: the rules a frozen study
-    copy was frozen with (ids by position in time order, «r1», «r2» …)."""
+    that entry's asks, so a later or back-dated entry never renumbers it. ``checked``: the consequential distinctions are
+    checked by code (_build_checked: promise and delivery, partial and full, offer and agreement, the other side's demand
+    and the customer's obligation, instruction and payment); False: the rules a frozen study copy was frozen with (ids by
+    position in time order, «r1», «r2» …, and none of these checks)."""
+    if checked:
+        return _build_checked(entries, graph)
     entries = sorted([_stored_entry(e) for e in entries or () if e.get("n") is not None], key=_key)
     if not entries:
         return None
@@ -641,7 +1092,8 @@ def from_result(result, graph=None, edits=(), checked=True):
     study copy's account, by the rules it was frozen with (build)."""
     if not kept(result):
         return None
-    return build(with_handler(entries_of(result), edits), graph, checked=checked)
+    entries = with_handler(entries_of(result), edits)
+    return build(apply_corrections(entries, edits) if checked else entries, graph, checked=checked)
 
 
 # -- the account in the process: action history, agreement facts, silence -------------------------------------------
@@ -723,6 +1175,8 @@ def derived(acc, kind, rules, look):
             last = parse_date(r["last"])
             if r["by"] != INSURER or r["of"] != "kunde" or r["answered"] is not None or not last or r["times"] < rules["min_requests"]:
                 continue
+            if acc.get("checked") and not r["due"]:  # C10f: only a request that set a date; a dateless question back (A4) never counts
+                continue
             due = parse_date(r["due"]) if r["due"] and parse_date(r["due"]) >= last else last + timedelta(days=days)
             if look > due and not _after(acc, last, "kunde"):
                 return True
@@ -734,6 +1188,13 @@ def awaited(acc, party, look):
     """The latest date a party said it delivers by, for what it still owes, not yet past: {date, what, n}; None."""
     rows = [r for r in (acc or {}).get("requests") or () if r.get("promised") and r["answered"] is None and r["of"] == party
             and parse_date(r["due"]) and parse_date(r["due"]) >= look]
+    if not rows and (acc or {}).get("checked"):  # C10b: a promised date passed with nothing come: «zugesagt bis …, nicht eingegangen»
+        late = [r for r in acc["requests"] if r.get("promised") and (r["promised"].get("by") or None) and r["answered"] is None
+                and r["of"] == party and parse_date(r["due"]) and parse_date(r["due"]) < look]
+        if late:
+            r = max(late, key=lambda r: r["due"])
+            return {"date": r["due"], "what": r["what"], "n": r["promised"]["n"], "overdue": True,
+                    "text": f"zugesagt bis {day(r['due'])}, nicht eingegangen: {r['what']}"}
     if not rows:
         return None
     r = max(rows, key=lambda r: r["due"])
@@ -753,6 +1214,12 @@ def payout_due(acc, look):
 def day(value):
     d = parse_date(value)
     return d.strftime("%d.%m.%Y") if d else None
+
+
+def _chf(value):
+    """3000.0 → «3'000», 85.4 → «85.40»."""
+    whole, cents = divmod(round(float(value or 0) * 100), 100)
+    return re.sub(r"(?<=\d)(?=(\d{3})+$)", "'", str(int(whole))) + (f".{int(cents):02d}" if cents else "")
 
 
 def _terms_text(t):
@@ -779,7 +1246,11 @@ def _request_text(r, with_by=False):
     asked = f"{r.get('times', 1)}× verlangt" + (f" von {WITH[r['by']]}" if with_by and r.get("by") else "")
     promise = r.get("promised")  # a date the party asked gave later («Unterlagen folgen bis …»)
     meta = [f"seit {day(first)}" if first else "", asked, "mit Androhung" if r.get("warned") else "",
-            f"zugesagt bis {day(promise['by'])} ({_source(promise)})" if promise and day(promise.get("by")) else ""]
+            f"zugesagt bis {day(promise['by'])} ({_source(promise)})" if promise and day(promise.get("by")) else "",
+            "zugesagt, ohne Datum" if promise and not promise.get("by") else "",  # C10b: a promise is not a delivery
+            f"abgelehnt: {r['refused']['what']}" if r.get("refused") else "",
+            f"teilweise: {r['partial']['what']} – offen: {r['partial']['rest']}" if r.get("partial") else "",
+            FLAGS["third"] if r.get("third") else ""]
     return " · ".join([r["what"]] + [x for x in meta if x])
 
 
@@ -797,7 +1268,9 @@ def stand(acc, look, graph=None):
     a = acc["agreement"]
     if a:
         due = parse_date(a.get("by"))
+        partly = acc.get("partly_paid")  # C10i: payments of the payer summed, the rest still owed
         state = (f"bezahlt am {day(acc['payment'].get('date') or acc['payment'].get('entry_date'))}" if acc["payment"]
+                 else f"teilweise bezahlt: CHF {_chf(partly['paid'])} von CHF {_chf(partly['of'])}" if partly and partly.get("of")
                  else "überfällig" if due and look > due else "offen")
         was = [t for t in acc["superseded"] if (t.get("date") or "") <= (a.get("date") or "") and amount(t.get("amount")) not in (None, amount(a.get("amount")))]
         before = f"; ersetzt {was[-1].get('amount')} ({_source(was[-1])})" if was else ""
@@ -806,13 +1279,16 @@ def stand(acc, look, graph=None):
         lines.append({"id": "vereinbart", "label": "Vereinbart", "text": short, "detail": f"{_terms_text(a)} · {state} · {_source(a)}{before}",
                       "open": acc["payment"] is None, "citations": a["citations"][:2] + ([c for c in was[-1]["citations"][:1]] if was else []),
                       "entries": [a["n"]] + ([was[-1]["n"]] if was else []), **({"handler": a["handler"]} if a.get("handler") else {})})
+    for t in acc.get("consent") or ():  # C10h: the customer's assent passed to us only: not yet an agreement
+        lines.append({"id": "zustimmung", "label": "Zustimmung", "text": f"{FLAGS['consent']}: {_terms_text(t)} ({_source(t)})", "open": True,
+                      "citations": t["citations"][:1], "entries": [t["n"]]})
     ledger = {r["id"]: r for r in acc["requests"]}
-    claimed = [o for o in acc["owes"]["kunde"] if o["kind"] == "request" and o["by"] == "gegenpartei"]
+    claimed = [o for o in acc["owes"]["kunde"] if o["kind"] == "request" and (o["by"] == "gegenpartei" or o.get("third"))]
     for party in ("kunde", "gegenpartei", "kanzlei", "behoerde", "versicherer", "forderung"):
         if party == "forderung":  # what the other side demands of the customer: the dispute, never something owed to us
             rows = claimed
         else:
-            rows = [o for o in acc["owes"][party] if o["kind"] == "request" and not (party == "kunde" and o["by"] == "gegenpartei")]
+            rows = [o for o in acc["owes"][party] if o["kind"] == "request" and not (party == "kunde" and (o["by"] == "gegenpartei" or o.get("third")))]
         if not rows:
             continue
         shown = [{"text": _request_text(o, with_by=party != "forderung" and o["by"] != INSURER),
@@ -833,7 +1309,7 @@ def stand(acc, look, graph=None):
         elif last.get("phone"):
             what = f"Telefon mit {WITH[last['to'] if last['from'] == INSURER else last['from']]}"
         elif last["from"] == INSURER:
-            what = f"{kinds_title(last.get('kind'), graph) or 'Schreiben'} an {WITH[last['to']]}"
+            what = f"{kinds_title(last.get('kind'), graph) or 'Schreiben'} an {TO[last['to']]}"
         else:
             what = f"{kinds_title(last.get('kind'), graph) or 'Schreiben'} von {WITH[last['from']]}"
         lines.append({"id": "kontakt", "label": "Letzter Kontakt", "text": f"{day(last['date'])} · {what}", "open": False,
@@ -893,7 +1369,24 @@ def rows(acc, graph=None):
             if r["answered"] and r["answered"]["n"] == e["n"]:
                 notes.append({"kind": "answered", "text": f"beantwortet: {r['what']}" + (f" (zu Nr. {nr(r['entries'][-1])})" if r["entries"] else "")
                               + _where(r["answered"]), "open": False})
+                if r["answered"].get("unheld"):  # C10c: answered, but no file of the reply holds it
+                    notes.append({"kind": "unheld", "text": r["answered"]["unheld"], "open": True})
+            for key, kind, text in (("refused", "refused", lambda m: f"abgelehnt: {m['what']}"),
+                                    ("partial", "partial", lambda m: f"teilweise: {m['what']} – offen: {m['rest']}")):
+                if (r.get(key) or {}).get("n") == e["n"] and r["answered"] is None:  # C10a, C10b: the row stays open
+                    notes.append({"kind": kind, "text": text(r[key]) + f" (zu Nr. {nr(r['entries'][0])})", "open": True})
+        for u in acc.get("unspecified") or ():
+            if u["n"] == e["n"]:
+                notes.append({"kind": "unspecified", "text": f"{FLAGS['unspecified']}: {u['what']}", "open": True})
+        if acc.get("checked"):  # what code found to check on this entry (a study copy shows none of it)
+            flags = [FLAGS["entry_date"] if e.get("date_check") else "", FLAGS["sender"] if e.get("from_check") or e.get("to_check") else ""]
+            flags += [f"{FLAGS['amount']}: {x['amount_check']}" for k in ("terms", "paid") for x in e.get(k) or () if x.get("amount_check")]
+            flags += [f"zitiert in Nr. {', '.join(str(nr(n)) for n in e['quoted'])}" if e.get("quoted") else ""]
+            notes += [{"kind": "check", "text": f, "open": False} for f in flags if f]
         for t in acc["terms"]:
+            if t["n"] == e["n"] and any(t is c for c in acc.get("consent") or ()):  # C10h: assent passed to us only
+                notes.append({"kind": "consent", "text": f"{FLAGS['consent']}: {_terms_text(t)}", "open": True})
+                continue
             if t["n"] == e["n"]:
                 current = t is acc["agreement"]
                 word = "vereinbart" if t["agreed"] else "angeboten"
@@ -910,7 +1403,8 @@ def rows(acc, graph=None):
                           "open": False})
         for r in acc["requests"]:  # a date the party asked gave here for what is still open
             if (r.get("promised") or {}).get("n") == e["n"] and r["answered"] is None:
-                notes.append({"kind": "promised", "text": f"zugesagt bis {day(r['due'])}: {r['what']} (zu Nr. {nr(r['entries'][0])})", "open": True})
+                when = f"zugesagt bis {day(r['due'])}" if acc.get("checked") is None or r["promised"].get("by") else "zugesagt, ohne Datum"
+                notes.append({"kind": "promised", "text": f"{when}: {r['what']} (zu Nr. {nr(r['entries'][0])})", "open": True})
         own = e.get("handler")
         out.append({"n": e["n"], "number": nr(e["n"]), "date": e.get("date"), "from": e["from"], "to": e["to"], "from_title": PARTY_TITLES[e["from"]],
                     "to_title": PARTY_TITLES[e["to"]], "kind": e.get("kind"),
@@ -957,16 +1451,81 @@ def _head(title):
     return next((w.lower()[:6] for w in WORD.findall(str(title or "")) if w.lower() not in STOP), None)
 
 
-def held(row, files, findings=None, claims=None):
-    """The file that holds what a row of the account asked (a need or a claim line), among the files of the entry that
-    answered it: {file, how}, or None. Nothing is held until Slice C reads it from the files (C10c)."""
+def _alike(a, b):
+    """Two words cut to six letters name the same thing («fotos» and «foto»)."""
+    return len(a) >= 4 and len(b) >= 4 and (a.startswith(b) or b.startswith(a))
+
+
+def answering_files(row, files, entries=None):
+    """The files of the entry that answered a row: its own file, the files attached to it (``extraction.attached_to``),
+    files of entries of the same day from the same sender, and the files its e-mail already held (``extraction.same_as``:
+    an attachment skipped as a duplicate). File ids, its own first."""
+    answer = (row or {}).get("answered") or {}
+    by_id = {f["id"]: f for f in files or ()}
+    own = answer.get("file") or next((c.get("file") for c in answer.get("citations") or () if c.get("file")), None)
+    if own not in by_id:
+        return []
+    mail = by_id[own]
+    ids = [own] + [f["id"] for f in by_id.values() if f["id"] != own and (f.get("extraction") or {}).get("attached_to") == mail.get("name")
+                   and (not f.get("created_at") or not mail.get("created_at") or abs((_seconds(f["created_at"]) or 0) - (_seconds(mail["created_at"]) or 0)) <= 120)]
+    if answer.get("date"):
+        ids += [e["file"] for e in entries or () if e.get("file") in by_id and e.get("date") == answer["date"] and e.get("from") == answer.get("from")]
+    ids += [i for i in (mail.get("extraction") or {}).get("same_as") or () if i in by_id]
+    return list(dict.fromkeys(ids))
+
+
+def _seconds(value):
+    from datetime import datetime
+    try:
+        return datetime.fromisoformat(str(value)).timestamp()
+    except ValueError:
+        return None
+
+
+def held(row, files, findings=None, claims=None, need=None, entries=None):
+    """C10c: the file that holds what a row of the account asked (a document need or a claim line), among the files of the
+    entry that answered it (answering_files): {file, how}, or None. A file holds a need when a document of it (its title or
+    kind) or its name names the need's first word («segment», «name»), or an accepted finding of the document finder for
+    that need cites it («finding»); it holds a claim line («Belege zu: …») when the claim's receipt is located in it
+    («receipt»). ``need``: the process's document need the row asks, else the row's own words name it. What the answer
+    says alone never delivers. Dispatch rows (Slice B) are rows like any other."""
+    files = list(files or ())
+    ids = answering_files(row, files, entries)
+    if not ids:
+        return None
+    by_id = {f["id"]: f for f in files}
+    for claim in claims or ():  # a claim line: the claim's own receipt, located in one of these files
+        receipt = claim.get("receipt")
+        cites = receipt if isinstance(receipt, list) else [receipt] if isinstance(receipt, dict) else []
+        if content(claim.get("what")) and content(claim.get("what")) <= content(row.get("what")):
+            hit = next((c.get("file") for c in cites if c and c.get("file") in ids), None)
+            if hit:
+                return {"file": hit, "how": "receipt"}
+    title = (need or {}).get("title") or row.get("what")
+    head = _head(re.sub(r"^\s*(?:Belege|Kopie|Kopien)\s+(?:zu|von|der|des)\s*:?\s*", "", str(title or ""), flags=re.I)) or _head(title)
+    found = findings.values() if isinstance(findings, dict) else findings or ()
+    for fid in ids:
+        f = by_id[fid]
+        named = [f.get("name")] + [x for s in (f.get("extraction") or {}).get("segments") or () for x in (s.get("title"), s.get("kind"))]
+        if head and any(_alike(head, w) for text in named for w in words(text)):
+            return {"file": fid, "how": "name" if any(_alike(head, w) for w in words(f.get("name"))) else "segment"}
+        for row_found in found:
+            if (need and row_found.get("document") != need.get("id")) or row_found.get("verdict") not in ("accepted", None) \
+                    or row_found.get("status") not in ("present", None) or row_found.get("account"):
+                continue
+            if fid in (row_found.get("files") or []) or any(c.get("file") == fid for c in row_found.get("citations") or ()):
+                return {"file": fid, "how": "finding"}
     return None
 
 
-def delivered(acc, needs):
+def delivered(acc, needs, files=None, findings=None, claims=None):
     """The document needs the account shows delivered: a request of the insurer or the mandated firm to the customer,
     answered by an entry whose words name the need (its first word), with that answer's quote. {need id: finding}, in the
-    shape of the document finder's accepted findings; an open-ended need («Sämtliche …») is never settled this way."""
+    shape of the document finder's accepted findings; an open-ended need («Sämtliche …») is never settled this way. A
+    checked account (C10c) delivers a need only when a file of the answering entry holds it (held): otherwise the need
+    stays missing, and the row says «laut Antwort vom … beigelegt, nicht in der Akte» (``answered.unheld``)."""
+    if (acc or {}).get("checked"):
+        return _delivered_held(acc, needs, files or (), findings, claims)
     out = {}
     for r in (acc or {}).get("requests") or ():
         if r["answered"] is None or r["of"] != "kunde" or r["by"] not in OWED_TO_US:
@@ -980,6 +1539,63 @@ def delivered(acc, needs):
             out[d["id"]] = {"document": d["id"], "status": "present", "verdict": "accepted", "files": [c.get("file") for c in cites if c.get("file")],
                             "citations": cites, "note": f"laut Verlauf zugestellt am {day(r['answered'].get('date')) or 'ohne Datum'}", "account": True}
     return out
+
+
+def _delivered_held(acc, needs, files, findings, claims):
+    out = {}
+    for r in acc["requests"]:
+        if r["answered"] is None or r["of"] != "kunde" or r["by"] not in OWED_TO_US or r["answered"].get("settled"):
+            continue
+        said = words(f"{r['answered'].get('what') or ''} {r['what']}")
+        for d in needs or ():
+            head = _head(d.get("title"))
+            if not head or d["id"] in out or re.match(r"\s*(sämtlich|alle|bisherig)", str(d.get("title") or ""), re.I) or head not in said:
+                continue
+            got = held(r, files, findings, claims, need=d, entries=acc["entries"])
+            if got is None:  # a word in the answer alone never delivers: the need stays missing
+                r["answered"]["unheld"] = f"laut Antwort vom {day(r['answered'].get('date')) or 'ohne Datum'} beigelegt, nicht in der Akte: {d.get('title')}"
+                continue
+            r["answered"]["held"] = got
+            cites = list(r["answered"].get("citations") or [])[:1]
+            out[d["id"]] = {"document": d["id"], "status": "present", "verdict": "accepted", "files": [got["file"]], "citations": cites,
+                            "note": f"laut Verlauf zugestellt am {day(r['answered'].get('date')) or 'ohne Datum'}", "account": True, "held": got}
+    return out
+
+
+SETTLE = {"erledigt": "erledigt", "nicht_mehr_noetig": "nicht mehr nötig", "beantwortet": "beantwortet"}
+
+
+def apply_corrections(entries, edits):
+    """The handler's settlements of open requests in force (edit op «settle_request» {request: «r<n>.<i>», how: erledigt |
+    nicht_mehr_noetig | beantwortet, entry?}), carried by the entry that first asked the row, for build to apply: the row
+    is closed by the handler («erledigt», «nicht mehr nötig», «beantwortet durch Nr. n»), unless it is asked again after
+    the settlement. Undone with the edit, like every correction."""
+    settled = {}
+    for e in edits or ():
+        if e.get("op") != "settle_request" or e.get("status", "active") != "active":
+            continue
+        args = e.get("args") or {}
+        m = re.fullmatch(r"r(\d+)\.(\d+)", str(args.get("request") or ""))
+        if not m or args.get("how") not in SETTLE:
+            continue
+        settled.setdefault(int(m.group(1)), []).append({"request": args["request"], "how": args["how"], "entry": args.get("entry"),
+                                                        "by": e.get("by"), "at": e.get("at"), "edit": e.get("id")})
+    return [{**x, "settled": settled[x["n"]]} if x.get("n") in settled else x for x in entries or ()]
+
+
+def _settle(requests, entries, by_n):
+    """Apply the handler's settlements (apply_corrections) to the rows they name, when the row is still open and was not
+    asked again after the settlement's day."""
+    rows = {r["id"]: r for r in requests}
+    for e in entries:
+        for s in e.get("settled") or ():
+            r = rows.get(s["request"])
+            if r is None or r["answered"] is not None or (r.get("last") and str(s.get("at") or "")[:10] < r["last"]):
+                continue
+            answer = by_n.get(s.get("entry")) if s["how"] == "beantwortet" else None
+            r["answered"] = {"n": answer["n"] if answer else None, "date": (answer or {}).get("date") or str(s.get("at") or "")[:10] or None,
+                             "how": s["how"], "what": SETTLE[s["how"]], "citations": [], "confirmed": False, "settled": True,
+                             "handler": {"by": s.get("by"), "at": s.get("at"), "edit": s.get("edit")}}
 
 
 def open_dates(acc):
