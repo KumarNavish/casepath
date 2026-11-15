@@ -1,4 +1,5 @@
 import json
+import socket
 import tempfile
 import threading
 import unittest
@@ -22,12 +23,15 @@ class BatchTests(unittest.TestCase):
             Path(folder, "8017.0001.0001_geschwaerzt.pdf").write_bytes(render_digital(document(), CASE))
             app = create_app(load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(FIXTURES), "CASEPATH_DEV_USER": "dev"}),
                              model_factory=lambda: None)
-            server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=8791, log_level="error"))
+            with socket.socket() as probe:  # a free port, so test runs side by side never collide
+                probe.bind(("127.0.0.1", 0))
+                port = probe.getsockname()[1]
+            server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=port, log_level="error"))
             thread = threading.Thread(target=server.run, daemon=True)
             thread.start()
             while not server.started:
                 pass
-            url = "http://127.0.0.1:8791"
+            url = f"http://127.0.0.1:{port}"
             with mock.patch("sys.stdout") as out:
                 batch.import_folder(url, folder)
                 batch.import_folder(url, folder)
