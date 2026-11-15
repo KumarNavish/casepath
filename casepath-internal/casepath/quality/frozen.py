@@ -13,8 +13,14 @@ Both are evaluated as study_mismatch evaluates them, by the study's frozen accou
 (case ids, enums and counts; ``casepath.frozen-check/1``). The deployment's speed trials, which study_mismatch also
 compares, are a setting of the deployment, not of the build, and are not checked here.
 
-Model-free and read-only: nothing is written to the store. deploy/databricks/frozen_check.py runs it in a notebook on a
-copy of the pilot's store with the package of the build about to be deployed.
+``preflight`` is the release check: on a copy of the store it first runs the candidate build's own startup, as a deploy
+starts the app (``create_app``: the store's schema, the Knowledge the build seeds, interrupted runs marked), with no
+network, no model and no volume, and only then recomputes the hashes. A Knowledge item the candidate seeds at startup
+changes a frozen case's item list after the deploy; without its startup the check would not see it.
+
+Model-free; nothing is written to the store but what the candidate's startup writes, and preflight runs on a copy.
+deploy/databricks/frozen_check.py runs it in a notebook on a copy of the pilot's store with the package of the build about
+to be deployed.
 """
 from ..agents.runner import case_state
 from ..process.items import build_items, items_sha256
@@ -71,14 +77,40 @@ def check(store, catalogue):
     return {case_id: "equal" if reason is None else "unequal" for case_id, _, reason in rows(store, catalogue)}
 
 
-def receipt(store, catalogue, build, source=None):
+def startup(store, catalogue, data_dir):
+    """The candidate build's own startup on the store, as a deploy starts the app (web/app.py create_app), without a network,
+    a model or a volume; its run service is shut down again. Returns how many Knowledge items the startup added or renewed."""
+    from ..config import load_settings
+    from ..web.app import create_app
+
+    known = lambda: {(k["id"], k.get("version")) for k in store.list_knowledge()}
+    before = known()
+    app = create_app(load_settings({"CASEPATH_DATA_DIR": str(data_dir), "CASEPATH_DEV_USER": "frozen-check"}), model_factory=lambda: None,
+                     store=store, catalogue=catalogue)
+    app.state.runs.shutdown()
+    return len(known() - before)
+
+
+def preflight(data_dir, catalogue, build, source=None):
+    """The release check on a copy of a store (``data_dir``): the candidate's startup, then the receipt."""
+    from ..web.store import CaseStore
+
+    store = CaseStore(data_dir)
+    try:
+        added = startup(store, catalogue, data_dir)
+        return receipt(store, catalogue, build, source, started={"ran": "create_app", "knowledge_added": added})
+    finally:
+        store.close()
+
+
+def receipt(store, catalogue, build, source=None, started=None):
     """The content-free receipt (``casepath.frozen-check/1``): the build checked (``build``: the tree hash package.sh
-    prints; ``source``: the start of the package's source tree hash, which /api/manifest shows once deployed), each
-    case's verdict, its kind and, when unequal, why; the counts. Raises scorecard.ScorecardLeak if anything but ids,
-    enums and counts got in."""
+    prints; ``source``: the start of the package's source tree hash, which /api/manifest shows once deployed), whether the
+    candidate's startup ran first (``startup``), each case's verdict, its kind and, when unequal, why; the counts. Raises
+    scorecard.ScorecardLeak if anything but ids, enums and counts got in."""
     found = rows(store, catalogue)
     return {"format": FORMAT, **guard({  # the format names itself with a slash, which the guard's identifiers never hold
-        "build": build, "source": source, "model_calls": 0,
+        "build": build, "source": source, "model_calls": 0, "startup": started or {"ran": "none", "knowledge_added": None},
         "cases": {case_id: "equal" if reason is None else "unequal" for case_id, _, reason in found},
         "kinds": {case_id: kind for case_id, kind, _ in found},
         "why": {case_id: reason for case_id, _, reason in found if reason},
@@ -90,8 +122,10 @@ def lines(out):
     """The receipt as the bridge reads it: one line per case, then the counts and the verdict."""
     rows_ = [f"{case_id} {out['kinds'][case_id]} {verdict}" + (f" ({out['why'][case_id]})" if case_id in out["why"] else "")
              for case_id, verdict in out["cases"].items()]
-    c = out["counts"]
+    c, started = out["counts"], out.get("startup") or {}
     verdict = ("deploy: no, fix the difference first" if c["unequal"] else "deploy: the frozen study is unchanged" if c["cases"]
                else "no frozen case and no study copy in this store")
+    ran = (f"after the candidate's startup ({started['knowledge_added']} Knowledge item(s) seeded or renewed)" if started.get("ran") == "create_app"
+           else "without the candidate's startup: not the release check")
     return rows_ + [f"build {out['build']}: {c['equal']} equal, {c['unequal']} unequal of {c['cases']} "
-                    f"({c['frozen']} frozen, {c['copies']} copies), no model", verdict]
+                    f"({c['frozen']} frozen, {c['copies']} copies), {ran}, no model", verdict]

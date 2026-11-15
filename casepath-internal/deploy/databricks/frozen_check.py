@@ -1,7 +1,9 @@
 # The one cell of the "casepath frozen check" notebook, a read task before a deploy: does every frozen study case keep its
 # item list under the build about to be deployed (casepath/quality/frozen.py)? Model-free and read only: the build's
-# package is imported from its folder on the volume (uploaded there for the deploy notebook), the case store is read from
-# a copy of the volume's database in a temporary folder, and nothing on the volume changes.
+# package is imported from its folder on the volume (uploaded there for the deploy notebook), the case store is copied
+# from the volume's database into a temporary folder, the candidate's own startup runs on that copy as a deploy would run
+# it (create_app: the Knowledge the build seeds, no network, no model, no volume), and only then are the hashes recomputed.
+# Nothing on the volume changes. The startup needs the app's own packages (fastapi) in this notebook.
 # It reads one notebook parameter, "check" (made with Edit > Add parameter), which must read
 # "frozen <build> <files> <tree hash>" for the build on the volume, as for the deploy notebook (package.sh prints the tree
 # hash). Empty or malformed: nothing happens. It prints the content-free receipt casepath.frozen-check/1: the build, each
@@ -58,17 +60,17 @@ def check(volume, phrase):
             sys.modules["httpx"], stub = types.ModuleType("httpx"), True
         import casepath
         assert os.path.realpath(casepath.__file__).startswith(os.path.realpath(build) + os.sep), "the package did not come from the build"
+        try:
+            import fastapi  # noqa: F401  (the candidate's startup is the app's own: create_app)
+        except ImportError:
+            raise AssertionError("the candidate's startup needs the app's packages in this notebook (fastapi): install them, "
+                                 "then run the cell again; nothing was checked") from None
         from casepath import parity
         from casepath.process.workflows import Catalogue
         from casepath.quality import frozen
-        from casepath.web.store import CaseStore
 
         catalogue = Catalogue.load(f"{build}/catalogue" if os.path.isdir(f"{build}/catalogue") else None)  # as the app loads it
-        store = CaseStore(scratch)
-        try:
-            out = frozen.receipt(store, catalogue, match.group(3), source=parity.source_tree()[0][:12])
-        finally:
-            store.close()
+        out = frozen.preflight(scratch, catalogue, match.group(3), source=parity.source_tree()[0][:12])
     finally:
         shutil.rmtree(scratch, ignore_errors=True)
         sys.dont_write_bytecode = bytecode

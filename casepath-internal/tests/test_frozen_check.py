@@ -24,9 +24,11 @@ from fastapi.testclient import TestClient
 
 from casepath import parity
 from casepath.config import load_settings
-from casepath.process import account
+from casepath.process import account, knowledge as kb
+from casepath.process.workflows import Catalogue
 from casepath.quality import frozen
 from casepath.web.app import create_app
+from casepath.web.store import CaseStore
 from tests import episode, phased
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -78,6 +80,56 @@ class SeededFrozenCopyTests(unittest.TestCase):
         self.assertEqual(live, ["konto-r10.0", "konto-r10.1"])
         self.assertEqual(frozen.check(self.store, self.runs.catalogue)[self.source["id"]], "equal")
         self.assertEqual(self.client.post(f"/api/cases/{self.source['id']}/study-copy", json={"expert": "P2"}).status_code, 201)
+
+
+class StartupTests(unittest.TestCase):
+    """The release check runs the candidate's own startup on the copied store before it recomputes the hashes: a Knowledge
+    item the candidate seeds at startup changes the frozen cases once the app starts, and the check has to see that before
+    the deploy, not after."""
+
+    def test_a_seed_the_candidate_starts_with_is_seen_before_the_deploy(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            live, copy, seeds = Path(tmp) / "live", Path(tmp) / "copy", Path(tmp) / "seeds"
+            app = create_app(load_settings({"CASEPATH_DATA_DIR": str(live), "CASEPATH_DEV_USER": "dev"}), model_factory=lambda: None)
+            source, study = episode.seed_frozen_copy(app.state.store, app.state.runs)
+            app.state.runs.shutdown()
+            app.state.store.close()
+            copy.mkdir()
+            shutil.copyfile(live / "casepath.db", copy / "casepath.db")  # as the notebook copies the volume's store
+            shutil.copytree(kb.SEED_DIR, seeds)  # the candidate's seeds: this build's, and one practice rule more (synthetic)
+            (seeds / "zz-candidate.json").write_text(json.dumps({"note": "synthetic: a rule a candidate build seeds at startup", "items": [
+                {"seed": "candidate-lueftung", "family": "mietmangel-handler", "kind": "document_need",
+                 "content": {"title": "Lüftungsprotokoll der letzten vier Wochen", "why": "Zeigt, wie gelüftet wurde.", "legal_basis": "Art. 257f OR"},
+                 "evidence": []}]}, ensure_ascii=False), encoding="utf-8")
+            seed = kb.seed
+            catalogue = Catalogue.load(None)
+            with mock.patch.object(kb, "seed", lambda store, families, directory=seeds: seed(store, families, directory)):
+                store = CaseStore(copy)
+                blind = frozen.check(store, catalogue)  # what a preflight without the startup sees
+                store.close()
+                out = frozen.preflight(copy, catalogue, "0123456789ab")
+                started = create_app(load_settings({"CASEPATH_DATA_DIR": str(copy), "CASEPATH_DEV_USER": "dev"}), model_factory=lambda: None)
+                with TestClient(started) as client:  # the deployed app on that store: a session would not start
+                    after = client.get(f"/api/cases/{study['id']}/study-check").json()
+        self.assertEqual(blind, {study["id"]: "equal", source["id"]: "equal"})
+        self.assertEqual(out["cases"], {study["id"]: "unequal", source["id"]: "unequal"})
+        self.assertEqual((out["why"], out["startup"]), ({study["id"]: "items_differ", source["id"]: "items_differ"},
+                                                        {"ran": "create_app", "knowledge_added": 1}))
+        self.assertIn("after the candidate's startup (1 Knowledge item(s) seeded or renewed)", frozen.lines(out)[-2])
+        self.assertEqual(frozen.lines(out)[-1], "deploy: no, fix the difference first")
+        self.assertFalse(after["ok"])
+
+    def test_without_a_new_seed_the_startup_changes_nothing(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            live, copy = Path(tmp) / "live", Path(tmp) / "copy"
+            app = create_app(load_settings({"CASEPATH_DATA_DIR": str(live), "CASEPATH_DEV_USER": "dev"}), model_factory=lambda: None)
+            source, study = episode.seed_frozen_copy(app.state.store, app.state.runs)
+            app.state.runs.shutdown()
+            app.state.store.close()
+            copy.mkdir()
+            shutil.copyfile(live / "casepath.db", copy / "casepath.db")
+            out = frozen.preflight(copy, Catalogue.load(None), "0123456789ab")
+        self.assertEqual((out["cases"], out["startup"]), ({study["id"]: "equal", source["id"]: "equal"}, {"ran": "create_app", "knowledge_added": 0}))
 
 
 class FrozenCheckTests(unittest.TestCase):
@@ -191,6 +243,7 @@ class FrozenCheckTests(unittest.TestCase):
         out = json.loads(printed[-2])
         self.assertEqual(out["cases"], {self.copy["id"]: "equal", self.case_id: "equal"})
         self.assertEqual((out["build"], out["source"]), (phrase.split()[-1], source_tree))
+        self.assertEqual(out["startup"], {"ran": "create_app", "knowledge_added": 0})  # the candidate's own startup ran on the copy
         self.assertIn(f"{self.case_id} frozen equal", printed)
         self.assertIn("deploy: the frozen study is unchanged", printed)
 
