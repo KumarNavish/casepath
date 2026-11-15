@@ -273,6 +273,8 @@ def kind_of(value, kinds):
 
 
 PERIOD_WORDS = re.compile(r"(\d{1,3})\s*(tag|tage|tagen|days?|woche|wochen|weeks?|monat|monate|monaten|months?)\b", re.I)
+MONTH_END = re.compile(r"\bende\s+(?:(des|dieses|diesen|laufenden|nächsten|naechsten|kommenden|folgenden)\s+)*monats?\b", re.I)
+CHECK_DATE = "Frist laut Akte, Datum prüfen"  # a date the file sets that no rule can read: said so, never guessed
 
 
 def _plus(start, n, unit):
@@ -300,7 +302,29 @@ def due_of(element, entry_date=None):
         start = None
     if m and start and not re.search(r"\d{1,2}\.\d{1,2}\.\d{4}|\d{4}-\d{2}-\d{2}", text):
         return _plus(start, int(m.group(1)), m.group(2)).isoformat(), text, True
+    end = MONTH_END.search(text or "")
+    if end and start:  # «bis Ende Monat»: the last day of the document's month, «Ende nächsten Monats» the next one's
+        later = int(bool(re.search(r"nächst|naechst|kommend|folgend", end.group(0), re.I)))
+        first = date(start.year + (start.month + later) // 12, (start.month + later) % 12 + 1, 1)
+        return (first - timedelta(days=1)).isoformat(), text, True
     return None, text, False
+
+
+def stored(element, entry_date):
+    """An element of a stored entry as the account reads it. A run stored before the reader gave ``by_date`` kept only
+    its words in «by» (a date written out, «innert 14 Tagen», «bis Ende Monat»): a written date is that date, a period
+    is counted from the entry's own date and marked computed, anything else has no date and is marked to check
+    (``by_check``). An element already read so, or without a «by», is returned as it is."""
+    raw = element.get("by")
+    if not raw or element.get("by_text") or element.get("by_computed") or re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(raw)):
+        return element
+    due, text, computed = due_of({"by": raw}, entry_date)
+    return {**element, "by": due, **({"by_text": text} if text and (computed or not due) else {}),
+            **({"by_computed": True} if computed else {}), **({"by_check": True} if not due else {})}
+
+
+def _stored_entry(e):
+    return {**e, **{k: [stored(x, e.get("date")) for x in e.get(k) or ()] for k in ("asks", "terms", "next")}}
 
 
 def _clip(text, n):
@@ -485,7 +509,7 @@ def promised(requests, e, x):
 def build(entries, graph=None):
     """The account from the located entries: {entries, requests, terms, agreement, paid, owes, actions, last_contact}.
     None without entries."""
-    entries = sorted([e for e in entries or () if e.get("n") is not None], key=_key)
+    entries = sorted([_stored_entry(e) for e in entries or () if e.get("n") is not None], key=_key)
     if not entries:
         return None
     record = (graph or {}).get("record") or {}
@@ -762,17 +786,23 @@ def stand(acc, look, graph=None):
         lines.append({"id": "vereinbart", "label": "Vereinbart", "text": short, "detail": f"{_terms_text(a)} · {state} · {_source(a)}{before}",
                       "open": acc["payment"] is None, "citations": a["citations"][:2] + ([c for c in was[-1]["citations"][:1]] if was else []),
                       "entries": [a["n"]] + ([was[-1]["n"]] if was else []), **({"handler": a["handler"]} if a.get("handler") else {})})
-    for party in ("kunde", "gegenpartei", "kanzlei", "behoerde", "versicherer"):
-        rows = [o for o in acc["owes"][party] if o["kind"] == "request"]
+    ledger = {r["id"]: r for r in acc["requests"]}
+    claimed = [o for o in acc["owes"]["kunde"] if o["kind"] == "request" and o["by"] == "gegenpartei"]
+    for party in ("kunde", "gegenpartei", "kanzlei", "behoerde", "versicherer", "forderung"):
+        if party == "forderung":  # what the other side demands of the customer: the dispute, never something owed to us
+            rows = claimed
+        else:
+            rows = [o for o in acc["owes"][party] if o["kind"] == "request" and not (party == "kunde" and o["by"] == "gegenpartei")]
         if not rows:
             continue
-        ledger = {r["id"]: r for r in acc["requests"]}
-        shown = [{"text": _request_text(o, with_by=o["by"] != INSURER), "citations": o["citations"][:1],
-                  "entries": list(ledger[o["request"]]["entries"]), "request": o["request"],
+        shown = [{"text": _request_text(o, with_by=party != "forderung" and o["by"] != INSURER),
+                  "citations": o["citations"][:1], "entries": list(ledger[o["request"]]["entries"]), "request": o["request"],
                   **({"handler": o["promised"]["handler"]} if (o.get("promised") or {}).get("handler") else {})} for o in rows[:SHOWN_PER_PARTY]]
         more = len(rows) - len(shown)
-        label = "Offen bei uns" if party == INSURER else f"Offen {AT[party]}"
-        lines.append({"id": f"offen_{party}", "label": label, "party": party, "rows": shown, "more": more,
+        label = "Offen bei uns" if party == INSURER else "Forderung der Gegenpartei" if party == "forderung" else f"Offen {AT[party]}"
+        party = "kunde" if party == "forderung" else party
+        lines.append({"id": "forderung_gegenpartei" if label.startswith("Forderung") else f"offen_{party}", "label": label, "party": party,
+                      "rows": shown, "more": more,
                       "text": "; ".join(r["text"] for r in shown) + (f"; … {more} weitere" if more else ""), "open": True,
                       "citations": [c for r in shown for c in r["citations"]],
                       "entries": sorted({n for o in rows for n in ledger[o["request"]]["entries"]})})
@@ -890,10 +920,40 @@ def warnings(acc):
     return sorted(out, key=lambda w: (w["date"] or "9999", w["n"]))
 
 
-def open_items(acc, party):
-    """What is asked of a party and not delivered, from the ledger: [{what, first, by, times, warned}] in the order asked."""
+OWED_TO_US = ("versicherer", "kanzlei")  # who may ask the customer for something the customer owes the insurer
+
+
+def open_items(acc, party, askers=None):
+    """What is asked of a party and not delivered, from the ledger: [{what, first, by, times, warned}] in the order asked.
+    ``askers``: only what these parties asked (a letter to the customer takes what the insurer or the mandated firm asked,
+    never a claim of the other side against the customer)."""
     return [{"what": r["what"], "first": r["first"], "by": r["by"], "times": r["times"], "warned": r["warned"]}
-            for r in (acc or {}).get("requests") or () if r["of"] == party and r["answered"] is None and r["by"] != party]
+            for r in (acc or {}).get("requests") or () if r["of"] == party and r["answered"] is None and r["by"] != party
+            and (askers is None or r["by"] in askers)]
+
+
+def _head(title):
+    """The first word that names a document need («Mietvertrag inkl. …» → «mietve»), as ``words`` cuts it."""
+    return next((w.lower()[:6] for w in WORD.findall(str(title or "")) if w.lower() not in STOP), None)
+
+
+def delivered(acc, needs):
+    """The document needs the account shows delivered: a request of the insurer or the mandated firm to the customer,
+    answered by an entry whose words name the need (its first word), with that answer's quote. {need id: finding}, in the
+    shape of the document finder's accepted findings; an open-ended need («Sämtliche …») is never settled this way."""
+    out = {}
+    for r in (acc or {}).get("requests") or ():
+        if r["answered"] is None or r["of"] != "kunde" or r["by"] not in OWED_TO_US:
+            continue
+        said = words(f"{r['answered'].get('what') or ''} {r['what']}") if r["answered"].get("confirmed") else words(r["answered"].get("what"))
+        for d in needs or ():
+            head = _head(d.get("title"))
+            if not head or d["id"] in out or re.match(r"\s*(sämtlich|alle|bisherig)", str(d.get("title") or ""), re.I) or head not in said:
+                continue
+            cites = list(r["answered"].get("citations") or [])[:1]
+            out[d["id"]] = {"document": d["id"], "status": "present", "verdict": "accepted", "files": [c.get("file") for c in cites if c.get("file")],
+                            "citations": cites, "note": f"laut Verlauf zugestellt am {day(r['answered'].get('date')) or 'ohne Datum'}", "account": True}
+    return out
 
 
 def open_dates(acc):
@@ -915,7 +975,7 @@ def open_dates(acc):
 
     promises = {}  # what the party asked said it delivers by a date: one line per date it gave, set by that party
     for r in acc["requests"]:
-        if r["answered"] is None and r["due"]:
+        if r["answered"] is None and (r["due"] or r.get("due_text")):  # a date the file sets in words no rule reads: to check
             n = r.get("due_n") or r["entries"][-1]
             if r.get("promised"):
                 promises.setdefault((n, r["due"], r["of"]), []).append(r)
@@ -927,7 +987,7 @@ def open_dates(acc):
     became = {(r["promised"]["n"], r["promised"].get("i")) for rs in promises.values() for r in rs}
     later_terms = lambda t: any((x.get("date") or "") > (t.get("date") or "") for x in acc["terms"] if x is not t)
     for t in acc["terms"]:
-        if not t.get("by"):
+        if not t.get("by") and not t.get("by_text"):
             continue
         if t is acc["agreement"] and acc["payment"] is None:
             add(f"konto-t{t['n']}", t["by"], f"Zahlung {t.get('amount') or t.get('what') or ''}".strip(), t["from"], t.get("payer") or "andere",
@@ -940,10 +1000,10 @@ def open_dates(acc):
         for i, x in enumerate(e.get("next") or ()):
             if (e["n"], i) in became:  # the step is the date of the requests it answers for, said once
                 continue
-            if x.get("by") and not (e.get("date") and _after(acc, parse_date(e["date"]), x.get("who"))):
+            if (x.get("by") or x.get("by_text")) and not (e.get("date") and _after(acc, parse_date(e["date"]), x.get("who"))):
                 add(f"konto-x{e['n']}-{i}", x["by"], x["what"], e["from"], x.get("who") or "andere", e["n"], x["citations"],
                     x.get("by_computed"), x.get("by_text"))
-    return sorted(out, key=lambda x: x["date"])
+    return sorted(out, key=lambda x: x["date"] or "9999")
 
 
 def note(acc, look, graph=None):

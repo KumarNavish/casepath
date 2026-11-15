@@ -228,11 +228,34 @@ def _customer(items):
     return customer([i for i in items if i["kind"] == "party"])
 
 
+FIRM_OR_INSURER = re.compile(r"kanzlei|anwalt|anwält|advokatur|rechtsanw|protekta|rechtsschutz|versicherer|versicherung", re.I)
+
+
+def role_word(party):
+    """A party's role as a letter names it, without the file's markers: «Mieterin (VN)» → «Mieterin»."""
+    label = (party.get("label") or {}).get("de") if isinstance(party.get("label"), dict) else party.get("label")
+    return re.sub(r"\s*\((?:VN|GP|versicherte Person)\)\s*", " ", str(label or "")).strip(" ,") or None
+
+
+def other_side(items, who):
+    """The other side by its role, as the file names it: the reader's fact first, else a party that is neither the
+    customer nor a firm or an insurer (the mandated firm is never the other side); None when the file names none."""
+    facts = {i["key"]: i.get("value") for i in items if i["kind"] == "fact"}
+    named = facts.get("gegenpartei")
+    if named and not FIRM_OR_INSURER.search(str(named)):
+        party = next((p for p in items if p["kind"] == "party" and p.get("value") and str(p["value"]) in str(named)), None)
+        return named, role_word(party) if party else None
+    for p in items:
+        if p["kind"] == "party" and p is not who and p.get("value") and not FIRM_OR_INSURER.search(f"{role_word(p) or ''} {p['value']}"):
+            return p["value"], role_word(p)
+    return None, None
+
+
 def letter_context(case, items, files, today=None):
     from .letters import gap
     facts = {i["key"]: i.get("value") for i in items if i["kind"] == "fact"}
     who = _customer(items) or {}
-    other = facts.get("gegenpartei") or next((p.get("value") for p in items if p["kind"] == "party" and p is not who and p.get("value")), None)
+    other, other_role = other_side(items, who)
     value, row = scope(facts)
     amount = amount_text(facts.get("kostengutsprache_betrag"))
     ref = re.search(r"\d{4}\.\d{4}\.\d{4}", f"{case.get('title', '')} {case.get('intake', '')}")
@@ -240,8 +263,9 @@ def letter_context(case, items, files, today=None):
     lines = {i["key"]: i for i in items if i["kind"] == "stage_line"}
     claim, given = lines.get("kg-forderung") or {}, lines.get("kg-gutsprache") or {}
     return {
-        "mandat_kunde": f"{who.get('value')} ({(who.get('label') or {}).get('de') or 'Kundschaft'})" if who.get("value") else gap("Name der Kundschaft"),
-        "mandat_gegenpartei": other or gap("Gegenpartei"),
+        "mandat_kunde": (f"{who.get('value')}" + (f" ({role_word(who)})" if role_word(who) and role_word(who).lower() not in {"kundschaft", "kunde", "kundin"} else ""))
+                        if who.get("value") else gap("Name der Kundschaft"),
+        "mandat_gegenpartei": (f"{other}" + (f" ({other_role})" if other_role else "")) if other else gap("Gegenpartei"),
         "mandat_auftrag": row["auftrag"],
         "mandat_kurz": (f"{who.get('value')} gegen {other}" if who.get("value") and other else
                         f"unserer Versicherten {who.get('value')}" if who.get("value") else "unserer Versicherten"),

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from datetime import date
 
 from casepath.agents import core
 from casepath.process import area, cover, letters, workflows
@@ -15,7 +16,7 @@ from tests.test_handler_workflow import document, fact
 FIXTURES = Path(__file__).parent / "fixtures"
 FROZEN = json.loads((FIXTURES / "areas" / "mietmangel-handler.2026-11-12.5.json").read_text())  # the seed as it was before the split
 CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "cases.json").read_text()).items() if not k.startswith("_")}
-NEW_KEYS = {"key_points", "stage_lines", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions", "customer_letters", "record", "incoming_lead"}
+NEW_KEYS = {"key_points", "stage_lines", "short_title", "area", "action_kinds", "cooperation", "assess_needs", "floor", "deadline_margin_days", "settled", "deadlines", "law", "laws", "incoming", "incoming_done", "stage_actions", "customer_letters", "record", "incoming_lead", "urgent"}
 INCOMING_FACTS = {"eingang_kostenforderung", "eingang_bericht", "eingang_mitwirkung", "eingang_angebot", "eingang_zahlung", "leistungen_einstellen",
                   "eingang_erledigt_bis", "kosten_offen", "eingang_kostenforderung_2", "eingang_kostenforderung_3", "eingang_angebot_2",
                   "eingang_zahlung_2"}  # the overlay of what comes in (incoming.py): up to three items of a kind
@@ -73,7 +74,7 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-15.6"))  # stored runs: same id, newer version governs
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-16.1"))  # stored runs: same id, newer version governs
         # plus: the nearest thing that does not count, for the reader; the stage a handler's decision belongs to
         unnear = lambda f: {k: v for k, v in f.items() if k not in {"not_this", "stages"}}
         self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
@@ -85,7 +86,7 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(settle(composed), {"all": [settle(FROZEN), {"fact": "kosten_offen", "is": False}]})  # no closing with a cost claim open
         self.assertEqual(next(s for s in composed["steps"] if s["id"] == "abschluss_still")["action"]["form"], "A12_still")  # no end of benefits
         self.assertEqual({k: {f: x for f, x in v.items() if f not in {"needs", "asks", "empty", "only_with"}} for k, v in composed["forms"].items()  # plus: what A1 is for
-                          if k not in {"A5", "A12_still", "A12_erledigt", "A2"} | INCOMING_FORMS | PACKAGE_FORMS},
+                          if k not in {"A5", "A12_still", "A12_erledigt", "A2", "A13"} | INCOMING_FORMS | PACKAGE_FORMS},
                          {k: v for k, v in FROZEN["forms"].items() if k not in {"A5", "A10", "A2"}})
         # the phone note is the handler's own entry of the account now (2026-11-15.6), no longer a file read as evidence
         self.assertEqual((composed["forms"]["A2"]["title"], FROZEN["forms"]["A2"]["title"]), ("Telefonnotiz", "Telefonnotiz"))
@@ -167,7 +168,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-15.6 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-16.1 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 
@@ -378,7 +379,8 @@ class DeadlineTests(unittest.TestCase):
         open_ = {"facts": [fact("rechtsgebiet", "Mietrecht / Kündigung")], "documents": []}
         listed = {i["item_id"]: i for i in build_items(core.evaluate(wf, [], [], open_, "c"), open_)}
         self.assertEqual(listed["letter_question:kuendigung_erhalten"]["value"], "Wann haben Sie die Kündigung erhalten?")
-        self.assertIn("Möglicherweise läuft eine gesetzliche Frist", listed["hint:frist-anfechtung"]["value"])
+        self.assertEqual(listed["letter_question:kuendigung_erhalten"]["ask"], "now")  # the letter asks the date that settles it
+        self.assertNotIn("hint:frist-anfechtung", listed)  # and says nothing more of a deadline whose date is open (2026-11-16.1)
         row = listed["deadline:anfechtung"]  # never absent while its date is unknown: possible, «Datum fehlt», what starts it
         self.assertEqual((row["value"], row["stated_as"], row["missing"], row["due_text"]), ("Datum fehlt", "possible", True, "Datum fehlt"))
         self.assertIn("Datum fehlt", row["rule"])
@@ -390,7 +392,7 @@ class DeadlineTests(unittest.TestCase):
         self.assertNotIn("letter_question:kuendigung_erhalten", listed)
 
     def test_with_nothing_known_every_areas_deadlines_appear_as_possible_or_conditional_and_only_a_failed_condition_hides_one(self):
-        from casepath.process.workflows import evaluate_condition
+        from casepath.process.workflows import evaluate_condition, holds_unless_done
         for wf in area.shipped():
             known = {"facts": [fact("rechtsgebiet", wf["applies_when"]["is"])], "documents": []}
             state = core.evaluate(wf, [], [], known, "c")
@@ -404,7 +406,9 @@ class DeadlineTests(unittest.TestCase):
                 self.assertIsNotNone(row, (wf["id"], d["id"]))
                 self.assertEqual((row["value"], row["stated_as"], row["trigger"]), ("Datum fehlt", "possible", d["trigger"]), (wf["id"], d["id"]))
                 self.assertTrue(row["starts"])
-                self.assertEqual(row.get("condition"), d.get("when_text") if holds is None else None, (wf["id"], d["id"]))
+                # an open condition is named only beyond «not yet done»: a step the file does not show is read as not taken
+                beyond = holds is None and not holds_unless_done(d["when"], state["facts"])
+                self.assertEqual(row.get("condition"), d.get("when_text") if beyond else None, (wf["id"], d["id"]))
         loan = area.workflow("vertrag-darlehen")
         known = {"facts": [fact("rechtsgebiet", loan["applies_when"]["is"])], "documents": []}
         listed = {i["item_id"]: i for i in build_items(core.evaluate(loan, [], [], known, "c"), known)}
@@ -533,7 +537,14 @@ class SyntheticRunTests(unittest.TestCase):
                 state = core.evaluate(wf, [], [], outcome["result"], f"case_{wid}")
                 items = build_items(state, outcome["result"])
                 listed = {i["item_id"]: i for i in items}
-                self.assertEqual(listed["next_action:0"]["action"], "A1")
+                # the first request, or «Frist wahren» first when a deadline of the customer ends within ten days of today
+                # (the fixtures' dates are near 15.11.2026), with the first request after it («danach»)
+                act = listed["next_action:0"]
+                if act["action"] == "A13":
+                    self.assertEqual([t["code"] for t in act["then"] if t.get("kind") == "stage"], ["A1"])
+                    self.assertTrue(listed[act["deadline"]]["value"] >= date.today().isoformat())
+                else:
+                    self.assertEqual(act["action"], "A1")
                 for fid, value in case["deadlines"].items():
                     row = listed[f"deadline:{fid}"]
                     self.assertEqual((row["value"], row["stated_as"]), (value, "computed"))
@@ -555,11 +566,13 @@ class SyntheticRunTests(unittest.TestCase):
                     self.assertIn(f"– {title}", text)
                 for fid in case["questions"]:
                     self.assertIn(f"– {listed[f'letter_question:{fid}']['value']}", text)
+                for bad in ("nach unserer Berechnung", "(nur bei", "solange keine", "«"):  # no rule's words in a customer's letter
+                    self.assertNotIn(bad, text)
                 for fid, value in case["deadlines"].items():
-                    if value != "prüfen":
+                    if value != "prüfen" and not listed[f"deadline:{fid}"].get("condition"):
                         shown = ".".join(reversed(value.split("-")))
-                        self.assertIn(f"«{listed[f'deadline:{fid}']['label']['de']}»: nach unserer Berechnung", text)
-                        self.assertIn(shown, text)
+                        ab = listed[f"deadline:{fid}"].get("direction") == "ab"
+                        self.assertIn(f"ab {shown}" if ab else f"endet am {shown}", text)  # stated plainly: «Die Frist für … endet am …»
 
 
 if __name__ == "__main__":

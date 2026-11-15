@@ -505,6 +505,8 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     overrides = casegraph.fact_overrides(graph, edits)  # a case worker's value governs
     facts.update({k: v for k, (v, _) in overrides.items()})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
+    for need, row in account.delivered(ledger, graph.get("documents")).items():  # what the account shows delivered is in the file
+        findings.setdefault(need, row)
     asked, partial = casegraph.whole_findings(graph, findings)  # a need for all of something stays asked
     checked = bool(result.get("documents"))
     facts = casegraph.derive_facts(graph, facts, asked, lambda f: workflows.evaluate(graph, f, asked, checked=checked),

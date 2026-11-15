@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "verkehr",
- "version": "2026-11-15.6",
- "backbone": "2026-11-15.6",
+ "version": "2026-11-16.1",
+ "backbone": "2026-11-16.1",
  "short_title": "Verkehr: Strafe und Ausweis",
  "title": "Strassenverkehr: Strafbefehl, Busse und Ausweisentzug (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -18,6 +18,7 @@
   "stpo-354.1": {"cite": "Art. 354 Abs. 1 StPO", "sr": "312.0", "article": "354", "passage": "Gegen den Strafbefehl können bei der Staatsanwaltschaft innert 10 Tagen schriftlich Einsprache erheben: a. die beschuldigte Person;", "verified": true},
   "stpo-354.2": {"cite": "Art. 354 Abs. 2 StPO", "sr": "312.0", "article": "354", "passage": "Die Einsprachen sind zu begründen; ausgenommen ist die Einsprache der beschuldigten Person.", "verified": true},
   "stpo-354.3": {"cite": "Art. 354 Abs. 3 StPO", "sr": "312.0", "article": "354", "passage": "Ohne gültige Einsprache wird der Strafbefehl zum rechtskräftigen Urteil.", "verified": true},
+  "stpo-91.2": {"cite": "Art. 91 Abs. 2 StPO", "sr": "312.0", "article": "91", "passage": "Eingaben müssen spätestens am letzten Tag der Frist bei der Strafbehörde abgegeben oder zu deren Handen der Schweizerischen Post", "verified": true},
   "stpo-356.1": {"cite": "Art. 356 Abs. 1 StPO", "sr": "312.0", "article": "356", "passage": "Entschliesst sich die Staatsanwaltschaft, am Strafbefehl festzuhalten, so überweist sie die Akten unverzüglich dem erstinstanzlichen Gericht zur Durchführung des Hauptverfahrens.", "verified": true},
   "stpo-357.1": {"cite": "Art. 357 Abs. 1 StPO", "sr": "312.0", "article": "357", "passage": "Die zur Verfolgung und Beurteilung von Übertretungen eingesetzten Verwaltungsbehörden haben die Befugnisse der Staatsanwaltschaft.", "verified": true},
   "stpo-357.2": {"cite": "Art. 357 Abs. 2 StPO", "sr": "312.0", "article": "357", "passage": "Das Verfahren richtet sich sinngemäss nach den Vorschriften über das Strafbefehlsverfahren.", "verified": true},
@@ -82,9 +83,23 @@
   "demand": {"text": "Wir ersuchen Sie, uns bis {frist} Einsicht in die vollständigen Verfahrensakten zu gewähren, und behalten uns die Einsprache und alle weiteren Rechte unserer Kundschaft ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "einsprache_strafbefehl", "title": "Einsprache gegen den Strafbefehl oder die Bussenverfügung", "trigger": "strafbefehl_erhalten", "period": {"days": 10}, "counting": "stpo", "from": "nach der Zustellung", "when": {"all": [{"fact": "strafbefehl", "is": true}, {"not": {"fact": "einsprache_erhoben", "is": true}}]}, "when_text": "nur bei einem Strafbefehl oder einer Bussenverfügung, solange keine Einsprache erhoben ist", "check": "bei nicht abgeholter eingeschriebener Post gilt der siebte Tag nach dem Zustellversuch (Art. 85 Abs. 4 lit. a StPO); Feiertage nach dem Recht des Wohnsitzkantons", "basis": "Art. 354 Abs. 1 StPO", "missed": "Ohne gültige Einsprache wird der Strafbefehl zum rechtskräftigen Urteil (Art. 354 Abs. 3 StPO).", "question": "An welchem Tag haben Sie den Strafbefehl oder die Bussenverfügung erhalten oder auf der Post abgeholt?", "source_refs": ["law#stpo-354.1", "law#stpo-354.3", "law#stpo-357.2", "law#stpo-85.4", "law#stpo-90.1", "law#stpo-89.2"], "party": "kunde"},
+  {"id": "einsprache_strafbefehl", "title": "Einsprache gegen den Strafbefehl oder die Bussenverfügung", "trigger": "strafbefehl_erhalten", "period": {"days": 10}, "counting": "stpo", "from": "nach der Zustellung", "when": {"all": [{"fact": "strafbefehl", "is": true}, {"not": {"fact": "einsprache_erhoben", "is": true}}]}, "when_text": "nur bei einem Strafbefehl oder einer Bussenverfügung, solange keine Einsprache erhoben ist", "check": "bei nicht abgeholter eingeschriebener Post gilt der siebte Tag nach dem Zustellversuch (Art. 85 Abs. 4 lit. a StPO); Feiertage nach dem Recht des Wohnsitzkantons", "basis": "Art. 354 Abs. 1 StPO", "missed": "Ohne gültige Einsprache wird der Strafbefehl zum rechtskräftigen Urteil (Art. 354 Abs. 3 StPO).", "question": "An welchem Tag haben Sie den Strafbefehl oder die Bussenverfügung erhalten oder auf der Post abgeholt?", "source_refs": ["law#stpo-354.1", "law#stpo-354.3", "law#stpo-357.2", "law#stpo-85.4", "law#stpo-90.1", "law#stpo-89.2"], "party": "kunde",
+   "sentence": "Die Frist für die Einsprache gegen den Strafbefehl endet am {datum}",
+   "wahren": {"tun": "Erheben Sie die Einsprache schriftlich bei {wo}", "wo": "der Staatsanwaltschaft, die den Strafbefehl erlassen hat", "wo_fact": {"fact": "gegenpartei", "match": "Staatsanwaltschaft|Statthalteramt|Übertretungsstrafbehörde"}, "law": ["law#stpo-354.1"], "requires": ["schriftlich Einsprache", "Staatsanwaltschaft"],
+              "dazu": [{"text": "Eine Begründung ist nicht nötig", "law": ["law#stpo-354.2"], "requires": ["zu begründen", "ausgenommen ist die Einsprache der beschuldigten Person"]},
+                       {"text": "Die Frist ist eingehalten, wenn Sie die Einsprache spätestens am letzten Tag bei der Staatsanwaltschaft abgeben oder der Schweizerischen Post übergeben", "law": ["law#stpo-91.2"], "requires": ["spätestens am letzten Tag", "abgegeben", "Schweizerischen Post"]}]}},
   {"id": "bedenkfrist", "title": "Bedenkfrist der Ordnungsbusse", "trigger": "ordnungsbusse_erhalten", "period": {"days": 30}, "counting": "obg", "from": "nach der Eröffnung der Ordnungsbusse", "when": {"fact": "ordnungsbusse", "is": true}, "when_text": "nur bei einer Ordnungsbusse", "basis": "Art. 6 Abs. 1, 7 Abs. 2 OBG", "missed": "Wird die Busse nicht innert der Frist bezahlt, wird ein ordentliches Strafverfahren durchgeführt (Art. 6 Abs. 4 OBG).", "question": "An welchem Tag haben Sie die Ordnungsbusse erhalten?", "source_refs": ["law#obg-6.1", "law#obg-7.2", "law#obg-6.4"], "party": "kunde"},
   {"id": "beschwerde_entzug", "title": "Beschwerde gegen den Ausweisentzug oder die Verwarnung", "trigger": "entzug_verfuegung", "period": "kantonal", "counting": "kantonal", "period_from": "rechtsmittelfrist", "period_from_label": "Frist laut Rechtsmittelbelehrung", "from": "nach der Zustellung der Verfügung", "when": {"fact": "entzug_verfahren", "is": true}, "when_text": "nur wenn das Strassenverkehrsamt ein Verfahren führt", "basis": "kantonales Verwaltungsverfahrensrecht gemäss Rechtsmittelbelehrung der Verfügung (Entzug nach Art. 16 SVG)", "missed": "Nach Ablauf der Frist ist die Verfügung nicht mehr anfechtbar; Frist und Folgen nennt die Rechtsmittelbelehrung.", "question": "An welchem Tag haben Sie die Verfügung des Strassenverkehrsamts erhalten?", "source_refs": ["law#svg-16.2"], "party": "kunde"}
+ ],
+ "customer_letters": [
+  {"id": "einsprache", "title": "Einsprache gegen den Strafbefehl", "to": "die Staatsanwaltschaft", "to_dative": "der Staatsanwaltschaft", "empfaenger": "Staatsanwaltschaft",
+   "when": {"all": [{"fact": "strafbefehl", "is": true}, {"not": {"fact": "einsprache_erhoben", "is": true}}]}, "subject": "Einsprache gegen den Strafbefehl",
+   "fill": {"strafbefehl_datum": "Datum des Strafbefehls", "verfahrensnummer": "Verfahrensnummer laut Strafbefehl"},
+   "parts": [{"text": "Am {strafbefehl_erhalten} habe ich Ihren Strafbefehl vom {strafbefehl_datum} ({verfahrensnummer}) erhalten.", "plain": true},
+             {"text": "Gegen diesen Strafbefehl erhebe ich Einsprache.", "law": ["law#stpo-354.1"]}],
+   "must_arrive": {"deadline": "einsprache_strafbefehl", "posted": true, "text": "Die Frist ist eingehalten, wenn Sie die Einsprache bei der Staatsanwaltschaft abgeben oder der Schweizerischen Post übergeben", "law": ["law#stpo-91.2"], "requires": ["abgegeben", "Schweizerischen Post", "spätestens am letzten Tag"]},
+   "send": {"text": "Wir empfehlen, die Einsprache eingeschrieben zu senden und eine Kopie mit dem Postbeleg aufzubewahren", "basis": "prudence"},
+   "advice": [{"text": "Eine Begründung ist nicht nötig", "law": ["law#stpo-354.2"], "requires": ["zu begründen", "ausgenommen ist die Einsprache der beschuldigten Person"]}]}
  ],
  "notes": [],
  "summary": [],

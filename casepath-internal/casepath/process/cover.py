@@ -320,7 +320,8 @@ def _insured_name(parties):
     for p in parties or ():
         role = str(p.get("role") or p.get("label") or "").lower()
         if any(w in role for w in ("versichert", "kund", "mieter", "tenant", "customer", "insured", "arbeitnehmer")) and "vermiet" not in role:
-            return f"{p.get('name') or p.get('value')} ({p.get('role') or p.get('label')})"
+            role = re.sub(r"\s*\((?:VN|GP)\)\s*", " ", str(p.get("role") or p.get("label") or "")).strip()  # «Mieterin (VN)» once
+            return f"{p.get('name') or p.get('value')}" + (f" ({role})" if role else "")
     return None
 
 
@@ -549,7 +550,7 @@ def checks(graph, facts, rows, action, stage, ledger=None):
                          warnings=[{k: w[k] for k in ("by", "by_title", "date", "due", "what", "own")} for w in account.warnings(ledger)],
                          own_date=(own[-1]["date"] if own else None),
                          # what is asked of the customer and not delivered, from the requests ledger, in neutral words
-                         open_requests=account.open_items(ledger, "kunde"),
+                         open_requests=account.open_items(ledger, "kunde", account.OWED_TO_US),
                          legal_basis=law_row("vvg-39.2.2")["cite"], law=[law_row("vvg-39.2.2")],
                          note={"text": "Ein Nachteil wegen verletzter Obliegenheit tritt nur bei Verschulden und Einfluss auf das Ereignis "
                                        "oder die Leistung ein: als Prüfung, nicht als Schluss.", "law": law_row("vvg-45.1")},
@@ -600,11 +601,14 @@ def adjust(planned, facts, stage, ledger=None):
 
 def missing_lines(items, by=None, fallback=True):
     """What is asked of the customer and not delivered, in neutral words from the requests ledger, each with the date it
-    was first asked for: ["– Belege der Reparaturkosten (erstmals verlangt am 01.03.2025)"]. Without an account, the
-    documents the case still needs. Never a third party's statement about the customer: that stays in «Der Fall»."""
+    was first asked for: ["– Belege der Reparaturkosten (erstmals verlangt am 01.03.2025)"]. Only what the insurer or the
+    mandated firm asked (``by``: one of them): a claim or demand of the other side against the customer is never something
+    the customer owes us. Without an account, the documents the case still needs. Never a third party's statement about
+    the customer: that stays in «Der Fall»."""
     check = next((i for i in items if i["kind"] == "check" and i["key"] == "androhung"), None) or {}
+    askers = {by} & set(account.OWED_TO_US) if by else set(account.OWED_TO_US)
     asked = [f"– {r['what']}" + (f" (erstmals verlangt am {day_text(parse_date(r['first']))})" if r.get("first") else "")
-             for r in check.get("open_requests") or () if by is None or r.get("by") == by]
+             for r in check.get("open_requests") or () if r.get("by") in askers]
     if asked or not fallback:
         return asked
     return [f"– {(i.get('label') or {}).get('de') or i['key']}" for i in items if i["kind"] == "document" and (i.get("ask") == "now" or i.get("required") == "yes")

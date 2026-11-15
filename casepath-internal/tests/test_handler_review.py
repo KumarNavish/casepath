@@ -92,7 +92,8 @@ class FirstContactAndHistoricFileTests(unittest.TestCase):
         self.assertGreater(row["first_contact"]["due"], date.today().isoformat())  # three working days from today, not from the letter
         self.assertFalse(row["first_contact"]["late"])
         self.assertEqual(row["stand"]["kind"], "contact")
-        self.assertTrue(row["stand"]["text"].startswith("Erstkontakt bis"))
+        self.assertEqual(row["stand"]["text"], "vorbereitet")  # the status word; the first contact is what is due
+        self.assertEqual(row["due"], {"date": row["first_contact"]["due"], "word": "Erstkontakt"})
         self.assertIn("Eröffnung des Falls", row["first_contact"]["rule"])
 
     def test_a_whole_old_file_is_historic_shows_no_first_contact_and_a_person_can_move_it(self):

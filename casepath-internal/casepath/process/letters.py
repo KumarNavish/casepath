@@ -7,7 +7,7 @@ A form with no draft says why ("kein Entwurf: …").
 import re
 from datetime import date
 
-from . import area, cover, customer_letters, mandate, settlement
+from . import area, cover, customer_letters, mandate, settlement, urgent
 from .clock import as_of, parse_date
 
 # Protekta's forms, from the handler's tenancy-defect workflow: the letters of any workflow that brings none of its own.
@@ -113,21 +113,16 @@ def greeting(parties):
 
 
 def statutory(item):
-    """A computed statutory deadline as the first request states it; "prüfen" when no date can be given."""
-    title, day = (item.get("label") or {}).get("de"), _day(item.get("value"))
-    what = "Termin der Gegenpartei" if item.get("party") == "gegenpartei" else "Gesetzliche Frist"  # the other side's date is not the customer's
-    if item.get("condition"):
-        what = f"{what} ({item['condition']})"
-    if item.get("possible"):  # its trigger date is not settled: never left out, its date is asked
-        what = "ein Termin der Gegenpartei" if item.get("party") == "gegenpartei" else "eine gesetzliche Frist"
-        return (f"Möglicherweise läuft {what}" + (f" ({item['condition']})" if item.get("condition") else "") + f" «{title}»"
-                + (f": nach dem Datum in Ihren Unterlagen {'ab' if item.get('direction') == 'ab' else 'bis'} {_day(item['candidate'])}" if item.get("candidate") else "")
-                + "; das massgebende Datum prüfen wir noch, bitte nennen Sie es uns.")
-    if day:
-        return f"{what} «{title}»: nach unserer Berechnung {'ab' if item.get('direction') == 'ab' else 'bis'} {day}."
-    if item.get("due_text"):
-        return f"{what} «{title}»: {item['due_text']}."
-    return f"{what} «{title}»: Das genaue Datum prüfen wir noch; bitte handeln Sie umgehend."
+    """A statutory deadline as a letter states it, plainly: «Die Frist für die Einsprache gegen den Strafbefehl endet am
+    16.11.2026.» (its article added by the caller); never its rule's condition, never its title in quotation marks."""
+    return urgent.sentence(item, with_basis=False)
+
+
+def stated_in_letter(item):
+    """Whether a deadline goes into a letter: the area's own, applying, its date known or not computable. One that depends
+    on a fact the file leaves open, or whose date is still open, is not stated: the letter asks what settles it."""
+    return (item["kind"] == "deadline" and item.get("origin") == "law" and not item.get("missing") and not item.get("possible")
+            and not item.get("condition"))
 
 
 def set_date_line(item, today=None):
@@ -144,10 +139,12 @@ def set_date_line(item, today=None):
 
 
 def with_basis(text, basis):
-    """A hint with its article, before the sentence's full stop: «… zurückzuzahlen (Art. 318 OR).»"""
+    """A hint with its article, before the sentence's full stop: «… zurückzuzahlen (Art. 318 OR).»; never brackets in
+    brackets."""
     text = str(text or "").strip()
     if not basis:
         return text
+    basis = urgent.basis_text(basis)
     return f"{text[:-1]} ({basis})." if text.endswith(".") else f"{text} ({basis})"
 
 
@@ -164,8 +161,8 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     lines = line_state(events)
     questions = [i for i in items if i["kind"] == "letter_question" and lines.get(i["item_id"], i.get("ask") != "proposed")]
     hints = [i for i in items if i["kind"] == "hint" and lines.get(i["item_id"], i.get("stated_as") != "put_to_handler")]
-    hints += [{"value": statutory(i), "legal_basis": i.get("legal_basis")} for i in items  # a statutory deadline of the area
-              if i["kind"] == "deadline" and i.get("origin") == "law" and not i.get("missing") and lines.get(i["item_id"], True)]  # a missing date: the area's hint says it
+    hints += [{"value": statutory(i), "legal_basis": i.get("legal_basis")} for i in items  # a statutory deadline of the area, plainly
+              if stated_in_letter(i) and lines.get(i["item_id"], True)]  # an open date or condition: the letter asks what settles it
     day = today or as_of(files)
     dates = [x for x in (set_date_line(i, day) for i in items if i["kind"] == "deadline") if x]  # an open date others set
     hints += [{"value": x} for x in dates]
@@ -182,8 +179,25 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     stated = {i["key"] for i in points[:3]}
     questions_asked = [i for i in items if i["kind"] == "customer_question" and i.get("value")]
     came = (next((i for i in items if i["kind"] == "next_action"), None) or {}).get("incoming") or {}  # what came in, as read
+    # «Frist wahren»: what the customer must do by when and where, from the deadline's data and the file
+    act = next((i for i in items if i["kind"] == "next_action"), None) or {}
+    keep = next((i for i in items if act.get("deadline") and i["item_id"] == act["deadline"]), None)
+    template = next((i for i in items if i["kind"] == "customer_letter" and act.get("template") == f"vorlage:{i['key']}"), None)
+    after_this = next((t for t in act.get("then") or () if t.get("kind") == "stage"), None)
+    written_before = bool(sent) or any(e.get("kind") == "letter.copied" for e in events or ())
+    registered = (f"Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz {ref.group(0)} provisorisch registriert."
+                  if ref else "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert.")
     return {
-        "referenz": ref.group(0) if ref else case.get("id", "")[-8:].upper(),
+        "wahren_eingang": "Vielen Dank für Ihre Nachricht." if written_before else registered,
+        "wahren_frist": urgent.sentence(keep, with_basis=not keep.get("wahren")) if keep else "",
+        "wahren_tun": urgent.what_to_do(keep, process, facts_values(items)) if keep else "",
+        "wahren_folge": urgent.consequence(keep) if keep else "",
+        "wahren_vorlage": (f"Für Ihr Schreiben an {template['to']} legen wir Ihnen eine Vorlage bei, die Sie prüfen, ergänzen und in Ihrem eigenen Namen senden."
+                           if template and template.get("template_kind") != "instruction" else
+                           "Wie Sie dabei vorgehen, beschreibt die beigelegte Anleitung." if template else ""),
+        "wahren_danach": {"A1": "Welche Unterlagen wir für die Prüfung noch brauchen, teilen wir Ihnen separat mit.",
+                          "A5": "Unsere rechtliche Einschätzung erhalten Sie separat."}.get((after_this or {}).get("code"), ""),
+        "referenz": ref.group(0) if ref else gap("Referenz"),
         "referenz_kopf": f"Unsere Referenz: {ref.group(0)}\n\n" if ref else "",
         "registrierung": (f"Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz {ref.group(0)} provisorisch "
                           "registriert; bitte geben Sie diese bei jeder Mitteilung an.") if ref
@@ -232,6 +246,10 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     }
 
 
+def facts_values(items):
+    return {i["key"]: i.get("value") for i in items if i["kind"] == "fact"}
+
+
 PLACEHOLDER = re.compile(r"\{([a-z_]+)\}")
 NOTHING = "kein Entwurf: der Brief hätte keinen Inhalt"
 
@@ -258,7 +276,7 @@ def render(kind, forms, ctx):
         ctx = {**ctx, "anrede": form["anrede"]}
     fill = lambda text: text.format(**ctx)
     kept = [p for p in form["parts"] if not PLACEHOLDER.findall(p) or any(filled(n) for n in PLACEHOLDER.findall(p))]
-    body = [fill(p) for p in kept]
+    body = [fill(p).strip(" ") for p in kept]
     for name, sentences in (form.get("only_with") or {}).items():  # words that belong to a placeholder: gone when it is empty
         if not filled(name):
             for sentence in sentences:

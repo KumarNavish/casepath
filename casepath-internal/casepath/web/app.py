@@ -30,7 +30,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import capped, follow_up, historic as historic_file, own_deadlines
 from ..agents import core
-from ..process import account, cover, customer_letters, letters, review as reviews, verlauf
+from ..process import account, cover, customer_letters, letters, review as reviews, screen, verlauf
+from ..process.clock import as_of
 from ..process.items import ITEM_KINDS, SCREEN_KINDS, kind_title, build_items, item_changes, items_sha256
 from . import identity, listing
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
@@ -481,6 +482,23 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(404, "Not found.")
         return workflow
 
+    def prepared_action(current, listed, events):
+        """The next action as every screen shows it: the evaluation's, or the one the handler picked instead («andere
+        Handlung»), which governs the draft, the date and the case list alike. (action item, options, forms)."""
+        action = next((i for i in listed if i["kind"] == "next_action"), None)
+        forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
+                 or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
+        options = letters.action_options(current.get("process") or {}, current.get("evaluation"), forms) if current.get("process") else []
+        picked = letters.chosen_action(events)
+        if action and picked and picked != action.get("action"):  # "andere Handlung": the handler's pick governs the draft and the date
+            option = next((o for o in options if o["kind"] == picked),
+                          {"title": kind_title(current.get("process"), picked), "next_in_days": action.get("next_in_days")})
+            action.update(action=picked, value=option["title"], label={"de": option["title"], "en": option["title"]},
+                          next_in_days=option["next_in_days"], chosen_by_handler=True)
+            for k in ("reason", "deadline", "urgency", "template", "then", "settlement", "incoming"):
+                action.pop(k, None)  # what led to the prepared action does not lead to the one picked instead
+        return action, options, forms
+
     @app.get("/api/cases")
     def list_cases(who=Depends(user)):
         rows = store.list_cases()
@@ -501,7 +519,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     current = state(row["id"])
                     listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events,
                                          None if (row.get("intake") or {}).get("study") else marks)
-                    action = next((i for i in listed if i["kind"] == "next_action"), None)
+                    action = prepared_action(current, listed, events)[0]
                     clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]),
                                       since=(action or {}).get("since"), until=(action or {}).get("until"))
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
@@ -509,6 +527,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
                     row["display_title"] = listing.display_title(row, listed, area_title(current.get("process")),
                                                                  renamed=any(e["kind"] == "case.renamed" for e in events))
+                    row["headline"] = listing.headline(row, listed, area_title(current.get("process")),
+                                                       renamed=any(e["kind"] == "case.renamed" for e in events))
+                    row["parties"] = listing.parties_line(listed)
                     contact = next((i for i in listed if i["kind"] == "contact"), None)  # the first contact the insurer promises (cover.py)
                     row["first_contact"] = contact and {"due": contact["value"], "late": contact.get("late"), "rule": contact.get("rule")}
                     # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
@@ -525,6 +546,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             row["stand"] = listing.stand(closed=row["closed"], run_status=row.get("run_status"), new_files=row["new_files"], items=listed,
                                          follow_up=row.get("follow_up"), events=events, completed_at=(completed or {}).get("created_at"),
                                          files=case_files, historic=row["historic"])
+            row["due"] = listing.due(listed, row.get("follow_up"), case_files, row["historic"], closed=row["stand"]["kind"] == "closed")
         return {"cases": rows}
 
     def area_title(process):
@@ -567,16 +589,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         marks, latest = ({}, {}) if study else review_marks()
         listed = build_items(current, (completed or {}).get("result"), texts or store.list_files(case_id), logged, marks)  # everything the case's screens and exports assert
         held = reviews.flags(current.get("process"), marks)
-        action = next((i for i in listed if i["kind"] == "next_action"), None)
-        forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
-                 or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
-        options = letters.action_options(current.get("process") or {}, current.get("evaluation"), forms) if current.get("process") else []
-        picked = letters.chosen_action(store.list_case_events(case_id))
-        if action and picked and picked != action.get("action"):  # "andere Handlung": the handler's pick governs the draft and the date
-            option = next((o for o in options if o["kind"] == picked),
-                          {"title": kind_title(current.get("process"), picked), "next_in_days": action.get("next_in_days")})
-            action.update(action=picked, value=option["title"], label={"de": option["title"], "en": option["title"]},
-                          next_in_days=option["next_in_days"], chosen_by_handler=True)
+        action, options, forms = prepared_action(current, listed, store.list_case_events(case_id))
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id),
                           since=(action or {}).get("since"), until=(action or {}).get("until"))  # a date the party gave: looked at then
         clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(case_id))  # before a statutory deadline
@@ -625,11 +638,28 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 added = {str(n) for n in ((done[0].get("result") or {}).get("update") or {}).get("entries") or ()}
                 changes["entries"] = [f"{account.day(i.get('date')) or 'ohne Datum'} · {i.get('from_title')} → {i.get('to_title')} · "
                                       f"{(i.get('label') or {}).get('de')}: {i.get('value')}" for i in listed if i["kind"] == "entry" and i["key"] in added]
+        renamed = any(e["kind"] == "case.renamed" for e in events)
         shown_case = {**current["case"], "display_title": listing.display_title(
-            current["case"], listed if completed else [], area_title(current.get("process")),
-            renamed=any(e["kind"] == "case.renamed" for e in events))}
+            current["case"], listed if completed else [], area_title(current.get("process")), renamed=renamed)}
+        shown_case["headline"] = listing.headline(shown_case, listed if completed else [], area_title(current.get("process")), renamed=renamed)
+        shown_case["parties"] = listing.parties_line(listed) if completed else None
+        historic = historic_file(files, current["case"].get("created_at"), events)
+        closed = any(e["kind"] == "case.closed" for e in events)
+        run_now = store.latest_run(case_id)  # the status the case list shows for it, from the same function and the same inputs
+        status = listing.stand(closed=closed, run_status=(run_now or {}).get("status"), new_files=len(arrived) if prepared else 0,
+                               items=listed if (run_now or {}).get("status") == "completed" else [], follow_up=(clock or {}).get("due"),
+                               events=events, completed_at=(prepared or {}).get("created_at"), files=files, historic=historic)
+        stage = ((current.get("evaluation") or {}).get("current") or {})
+        cover_edit = next((e for e in reversed(store.list_edits(case_id)) if e.get("op") == "set_fact" and (e.get("args") or {}).get("fact") == "deckung"), None)
+        model = screen.build(listed, draft, events, as_of(files), (current.get("process") or {}).get("urgent"), stage=stage.get("step"),
+                             stage_title=stage.get("title"), routing=(completed or {}).get("routing"), since=(prepared or {}).get("finished_at"),
+                             decided_by=f"{(cover_edit.get('at') or '')[8:10]}.{(cover_edit.get('at') or '')[5:7]}.{(cover_edit.get('at') or '')[:4]} · {cover_edit.get('by')}"
+                             if cover_edit and cover_edit.get("at") else None) if completed else None
+        if model is not None:
+            model.update(status=status["text"], status_kind=status["kind"],
+                         due=listing.due(listed, (clock or {}).get("due"), files, historic, closed=status["kind"] == "closed"))
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
-                "historic": historic_file(files, current["case"].get("created_at"), events),
+                "screen": model, "status": status, "historic": historic,
                 "new_files": new_files, "arrived": arrived, "update": update, "draft_stale": stale, "changes": changes,
                 "prepared_run": {k: prepared.get(k) for k in ("id", "kind", "builds_on", "created_at", "finished_at")} if prepared else None,
                 # the Verlauf: the report, every document, every entry the handler made and every gesture, in time order

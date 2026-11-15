@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "arbeit-kuendigung",
- "version": "2026-11-15.6",
- "backbone": "2026-11-15.6",
+ "version": "2026-11-16.1",
+ "backbone": "2026-11-16.1",
  "short_title": "Kündigung Arbeit",
  "title": "Kündigung des Arbeitsverhältnisses: missbräuchlich, zur Unzeit, fristlos (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -72,7 +72,8 @@
   "demand": {"text": "Wir erheben hiermit Einsprache gegen die Kündigung und fordern Sie auf, bis {frist} zur Fortsetzung des Arbeitsverhältnisses Stellung zu nehmen; alle weiteren Rechte, insbesondere eine Entschädigung (Art. 336a OR), bleiben ausdrücklich vorbehalten."}
  },
  "deadlines": [
-  {"id": "einsprache_kuendigung", "title": "Schriftliche Einsprache gegen eine missbräuchliche Kündigung", "trigger": "arbeitsende", "period": {"days": 0}, "from": "bis zum Ende der Kündigungsfrist", "shift": false, "check": "prüfen, ob eine Sperrfrist das Ende verschiebt (Art. 336c OR)", "basis": "Art. 336b Abs. 1 OR", "missed": "Ohne rechtzeitige Einsprache kann keine Entschädigung wegen missbräuchlicher Kündigung verlangt werden.", "question": "Auf welchen Tag wurde Ihnen gekündigt (Ende der Kündigungsfrist)?", "source_refs": ["law#336b"], "party": "kunde"},
+  {"id": "einsprache_kuendigung", "title": "Schriftliche Einsprache gegen eine missbräuchliche Kündigung", "trigger": "arbeitsende", "period": {"days": 0}, "from": "bis zum Ende der Kündigungsfrist", "shift": false, "check": "prüfen, ob eine Sperrfrist das Ende verschiebt (Art. 336c OR)", "basis": "Art. 336b Abs. 1 OR", "missed": "Ohne rechtzeitige Einsprache kann keine Entschädigung wegen missbräuchlicher Kündigung verlangt werden.", "question": "Auf welchen Tag wurde Ihnen gekündigt (Ende der Kündigungsfrist)?", "source_refs": ["law#336b"], "party": "kunde",
+   "wahren": {"tun": "Erheben Sie bei der Arbeitgeberin schriftlich Einsprache gegen die Kündigung", "law": ["law#336b"], "requires": ["beim Kündigenden schriftlich Einsprache"]}},
   {"id": "klage_entschaedigung", "title": "Klage auf Entschädigung wegen missbräuchlicher Kündigung", "trigger": "arbeitsende", "period": {"days": 180}, "from": "nach Beendigung des Arbeitsverhältnisses", "check": "prüfen, ob eine Sperrfrist das Ende verschiebt (Art. 336c OR)", "basis": "Art. 336b Abs. 2 OR", "missed": "Wird nicht innert 180 Tagen Klage anhängig gemacht, ist der Anspruch verwirkt.", "question": "Auf welchen Tag wurde Ihnen gekündigt (Ende der Kündigungsfrist)?", "source_refs": ["law#336b.2"], "party": "kunde"}
  ],
  "notes": [],

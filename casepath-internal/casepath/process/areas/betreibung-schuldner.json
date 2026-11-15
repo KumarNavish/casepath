@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "betreibung-schuldner",
- "version": "2026-11-15.6",
- "backbone": "2026-11-15.6",
+ "version": "2026-11-16.1",
+ "backbone": "2026-11-16.1",
  "short_title": "Betreibung gegen die Kundschaft",
  "title": "Betreibung gegen die Kundschaft: Zahlungsbefehl, Rechtsvorschlag, Rechtsöffnung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -77,9 +77,11 @@
   "demand": {"text": "Unsere Kundschaft bestreitet die in Betreibung gesetzte Forderung. Wir fordern Sie auf, die Betreibung bis {frist} zurückzuziehen; alle Rechte unserer Kundschaft bleiben ausdrücklich vorbehalten."}
  },
  "deadlines": [
-  {"id": "rechtsvorschlag", "title": "Rechtsvorschlag gegen den Zahlungsbefehl", "trigger": "zahlungsbefehl_zugestellt", "period": {"days": 10}, "counting": "schkg", "served": true, "from": "nach der Zustellung des Zahlungsbefehls", "when": {"not": {"fact": "rechtsvorschlag_erhoben", "is": true}}, "when_text": "solange kein Rechtsvorschlag erhoben ist", "check": "sofort beim Überbringer oder innert zehn Tagen beim Betreibungsamt", "basis": "Art. 74 Abs. 1 SchKG", "missed": "Ohne Rechtsvorschlag kann der Gläubiger 20 Tage nach der Zustellung die Fortsetzung der Betreibung verlangen (Art. 88 Abs. 1 SchKG).", "question": "An welchem Tag wurde Ihnen der Zahlungsbefehl übergeben oder zugestellt?", "source_refs": ["law#74.1", "law#31", "law#56.2", "law#63", "law#88.1"], "party": "kunde"},
+  {"id": "rechtsvorschlag", "title": "Rechtsvorschlag gegen den Zahlungsbefehl", "trigger": "zahlungsbefehl_zugestellt", "period": {"days": 10}, "counting": "schkg", "served": true, "from": "nach der Zustellung des Zahlungsbefehls", "when": {"not": {"fact": "rechtsvorschlag_erhoben", "is": true}}, "when_text": "solange kein Rechtsvorschlag erhoben ist", "check": "sofort beim Überbringer oder innert zehn Tagen beim Betreibungsamt", "basis": "Art. 74 Abs. 1 SchKG", "missed": "Ohne Rechtsvorschlag kann der Gläubiger 20 Tage nach der Zustellung die Fortsetzung der Betreibung verlangen (Art. 88 Abs. 1 SchKG).", "question": "An welchem Tag wurde Ihnen der Zahlungsbefehl übergeben oder zugestellt?", "source_refs": ["law#74.1", "law#31", "law#56.2", "law#63", "law#88.1"], "party": "kunde",
+   "wahren": {"tun": "Erklären Sie den Rechtsvorschlag dem Betreibungsamt mündlich oder schriftlich", "law": ["law#74.1"], "requires": ["Betreibungsamt mündlich oder schriftlich"], "dazu": [{"text": "Eine Begründung ist nicht nötig", "law": ["law#75.1"], "requires": ["keiner Begründung"]}]}},
   {"id": "aberkennungsklage", "title": "Aberkennungsklage nach provisorischer Rechtsöffnung", "trigger": "rechtsoeffnung_eroeffnet", "period": {"days": 20}, "counting": "schkg-klage", "from": "nach der Rechtsöffnung", "when": {"fact": "provisorisch", "is": true}, "when_text": "nur nach provisorischer Rechtsöffnung", "check": "Beginn mit der Eröffnung des Rechtsöffnungsentscheids, prüfen; Klage im ordentlichen Prozess am Betreibungsort", "basis": "Art. 83 Abs. 2 SchKG", "missed": "Ohne Klage werden die Rechtsöffnung und eine provisorische Pfändung definitiv (Art. 83 Abs. 3 SchKG).", "question": "An welchem Tag haben Sie den Entscheid über die Rechtsöffnung erhalten?", "source_refs": ["law#83.2", "law#83.3", "law#zpo-145.4"], "party": "kunde"},
-  {"id": "beschwerde_amt", "title": "Beschwerde gegen eine Verfügung des Betreibungsamts", "trigger": "verfuegung_amt", "period": {"days": 10}, "counting": "schkg", "from": "nach Kenntnis der Verfügung", "basis": "Art. 17 Abs. 2 SchKG", "missed": "Danach ist die Verfügung nicht mehr anfechtbar, ausser wegen Rechtsverweigerung oder Rechtsverzögerung (Art. 17 Abs. 3 SchKG).", "question": "An welchem Tag haben Sie von der Verfügung des Betreibungsamts erfahren, mit der Sie nicht einverstanden sind?", "source_refs": ["law#17.2", "law#17.3", "law#zpo-145.4"], "party": "kunde", "hint": false}
+  {"id": "beschwerde_amt", "title": "Beschwerde gegen eine Verfügung des Betreibungsamts", "trigger": "verfuegung_amt", "period": {"days": 10}, "counting": "schkg", "from": "nach Kenntnis der Verfügung", "basis": "Art. 17 Abs. 2 SchKG", "missed": "Danach ist die Verfügung nicht mehr anfechtbar, ausser wegen Rechtsverweigerung oder Rechtsverzögerung (Art. 17 Abs. 3 SchKG).", "question": "An welchem Tag haben Sie von der Verfügung des Betreibungsamts erfahren, mit der Sie nicht einverstanden sind?", "source_refs": ["law#17.2", "law#17.3", "law#zpo-145.4"], "party": "kunde", "hint": false,
+   "wahren": {"tun": "Führen Sie die Beschwerde bei der Aufsichtsbehörde über das Betreibungsamt", "law": ["law#17.1"], "requires": ["Aufsichtsbehörde", "Beschwerde"]}}
  ],
  "notes": [],
  "summary": [],

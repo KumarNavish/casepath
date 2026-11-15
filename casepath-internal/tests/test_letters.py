@@ -36,6 +36,9 @@ class LetterTests(unittest.TestCase):
                 self.assertIsNone(text)
                 self.assertTrue(reason)  # "kein Entwurf: <reason>"
                 continue
+            if text is None and form.get("asks"):  # a form for something this case does not have (no deadline to keep): says so
+                self.assertEqual(reason, form["empty"], kind)
+                continue
             self.assertNotIn("{", text, kind)
             self.assertNotIn("…", text, kind)
             self.assertNotIn("\n\n\n", text, kind)  # no empty line where a part was
@@ -72,7 +75,7 @@ class LetterTests(unittest.TestCase):
         self.assertTrue(note.startswith("Eingegangen: Schadenmeldung.pdf."))
         self.assertIn("Versandt: Schreiben vom 12.03.2024 (angepasst).", note)
         self.assertEqual(note, "Eingegangen: Schadenmeldung.pdf. Nächster Schritt: Dossier pendent halten mit Frist, weil keine Antwort "
-                               "seit A1 vom 12.03.2024 (39 Tage). Versandt: Schreiben vom 12.03.2024 (angepasst). "
+                               "seit unserer Anforderung vom 12.03.2024 (39 Tage). Versandt: Schreiben vom 12.03.2024 (angepasst). "
                                "Erwartet: Mietvertrag, Fotos des Mangels bis 02.04.2024.")
 
 

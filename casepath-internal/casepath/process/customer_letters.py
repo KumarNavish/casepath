@@ -18,7 +18,7 @@ from datetime import date, timedelta
 import re
 
 from .clock import parse_date
-from .workflows import CatalogueError, condition_facts, evaluate_condition
+from .workflows import CatalogueError, condition_facts, evaluate_condition, holds_unless_done
 
 SHORT_DAYS = 30  # a statutory deadline of the customer within this many days: the template goes with the first request
 FILL = "[einsetzen: "
@@ -62,6 +62,12 @@ def _supported(row, law, name, what):
     for word in row.get("requires") or []:
         if word.lower() not in passages:
             raise CatalogueError(f"{name}: {what} says «{word}», which the cited law does not support")
+
+
+def supported(row, law, name, what):
+    """An instruction resting on law (each word it relies on in a cited passage) or said as prudence: the check every
+    sentence that tells the customer what to do passes (a template's, a deadline's «wahren»)."""
+    return _supported(row, law, name, what)
 
 
 def validate(module, law, where, fact_ids):
@@ -164,6 +170,7 @@ def render(graph, letter, facts, sender, recipient, deadlines, today):
     """The template as the customer receives it: a heading that says it is theirs to send, the letter (or the short
     instruction), and the advice with its articles. Gaps are «[einsetzen: …]», never invented."""
     fills = letter.get("fill") or {}
+    recipient = letter.get("empfaenger") or recipient  # a letter to an authority goes to it, never to the other side named in it
     due = _statutory(deadlines, letter)
     due_day = _day(due.get("value")) if due else None
     own = {"absender": sender or filler("Ihr Vor- und Nachname"), "empfaenger": recipient or filler("Name der Empfängerin oder des Empfängers"),
@@ -221,8 +228,8 @@ def evaluate(graph, facts, deadlines, sender=None, recipient=None, today=None):
     statutory = {d["id"]: d for d in (graph or {}).get("deadlines") or ()}
     out = []
     for letter in (graph or {}).get("customer_letters") or ():
-        if evaluate_condition(letter["when"], facts or {}) is not True:
-            continue
+        if evaluate_condition(letter["when"], facts or {}) is not True and not holds_unless_done(letter["when"], facts or {}):
+            continue  # a step the file does not show as taken (an objection) is read as not taken, as for its deadline
         due = _statutory(deadlines, letter)
         due_day = parse_date(due.get("value")) if due else None
         sofort = (statutory.get((letter.get("must_arrive") or {}).get("deadline")) or {}).get("period") == "sofort"
@@ -231,17 +238,21 @@ def evaluate(graph, facts, deadlines, sender=None, recipient=None, today=None):
         out.append({"id": letter["id"], "title": letter["title"], "heading": heading(letter), "to": letter["to"], "to_dative": letter["to_dative"],
                     "kind": letter.get("kind", "letter"), "text": render(graph, letter, facts, sender, recipient, deadlines, today),
                     "short": short, "due": due_day.isoformat() if due_day else None, "cites": cites,
+                    "deadline": (letter.get("must_arrive") or {}).get("deadline"), "posted": bool((letter.get("must_arrive") or {}).get("posted")),
                     "offered_with": ["A5", "A1"] if short else ["A5"]})
     return out
 
 
 def referral(item):
-    """The one sentence the insurer's letter refers to the template with."""
+    """The one sentence the insurer's letter refers to the template with; never its title in quotation marks. Where the
+    deadline is kept by posting, not by arrival (``must_arrive.posted``), it says so."""
     if item.get("template_kind") == "instruction":
-        text = f"Wie Sie dabei vorgehen, haben wir Ihnen in einer kurzen Anleitung beigelegt («{item['label']['de']}»)"
+        text = f"Wie Sie dabei vorgehen, beschreibt die beigelegte Anleitung"
     else:
         text = f"Für Ihr Schreiben an {item['to']} legen wir Ihnen eine Vorlage bei, die Sie prüfen, ergänzen und in Ihrem eigenen Namen senden"
     day = _day(item.get("due"))
+    if day and item.get("posted"):
+        return text + f"; die Frist endet am {day}."
     return text + (f"; es muss {item['to_dative']} spätestens am {day} zugehen." if day and item.get("template_kind") != "instruction"
                    else f"; spätestens am {day}." if day else ".")
 

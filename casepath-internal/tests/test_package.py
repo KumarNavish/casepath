@@ -70,7 +70,7 @@ class MandatePackageTests(unittest.TestCase):
         ctx = context(self.items, self.files)
         request = letters.render("A10", FORMS, ctx)[0]
         self.assertIn("Sehr geehrte Damen und Herren", request)  # to the firm, not the customer's greeting
-        self.assertIn("Kundschaft: Lea Beispiel (Mieterin (VN))\nGegenpartei: Immo Verwaltung AG", request)
+        self.assertIn("Kundschaft: Lea Beispiel (Mieterin)\nGegenpartei: Immo Verwaltung AG", request)  # each role once, the other side by its role
         self.assertIn("Auftrag: Abklärung der Sach- und Rechtslage und aussergerichtliche Geltendmachung der Ansprüche", request)
         self.assertFalse(letters.has_gap(request))
         info = letters.render("A10_kunde", FORMS, ctx)[0]  # the customer's information keeps its required parts
@@ -294,7 +294,7 @@ class CustomerLetterTests(unittest.TestCase):
             self.assertNotIn("[bitte ergänzen", text, wid)  # gaps for the customer, not for the handler
             self.assertNotIn("Unsere Referenz", text, wid)
             self.assertRegex(text, r"\(Art\. \d+[a-z]*", wid)
-        self.assertEqual(sum(len(w.get("customer_letters") or []) for w in area.shipped()), 8)
+        self.assertEqual(sum(len(w.get("customer_letters") or []) for w in area.shipped()), 11)  # + the objection to a penalty order, two conciliation requests
 
     def test_with_time_short_the_first_request_carries_the_template_and_says_so_in_one_sentence(self):
         facts = TEMPLATES["arbeit-kuendigung"][0] + [("kuendigung_erhalten", "2026-10-28"), ("gegenpartei", "Beispiel AG")]

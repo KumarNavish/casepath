@@ -96,7 +96,7 @@ class HandlerWorkflowTests(unittest.TestCase):
         looked = [{"extraction": {"cut_of": {"as_of": "2025-02-07"}, "segments": [{"date": "18.10.2024"}]}}]
         nxt = {i["item_id"]: i for i in build_items(state, {"facts": quiet}, looked)}["next_action:0"]
         self.assertEqual((nxt["action"], nxt["next_in_days"]), ("A7", 7))
-        self.assertIn("keine Antwort seit A5", nxt["reason"])
+        self.assertIn("keine Antwort seit unserer Einschätzung", nxt["reason"])  # in words, never the code
         early = [{"extraction": {"cut_of": {"as_of": "2024-11-01"}, "segments": [{"date": "18.10.2024"}]}}]
         waiting = {i["item_id"]: i for i in build_items(state, {"facts": quiet}, early)}["next_action:0"]
         # before the clock runs out the assessment is not proposed again: its follow-up waits, dated for the day the clock comes due

@@ -152,12 +152,36 @@ def validate_backbone(backbone):
         if not re.fullmatch(r"A\d{1,2}", kind) or any(f not in facts for f in row.get("depends_on", [])):
             raise CatalogueError(f"backbone: action kind {kind!r} must depend only on backbone facts")
     check_stage_work(backbone)
+    check_urgent(backbone.get("urgent"), backbone, steps)
     keypoints.validate_lines(backbone, steps)
     from . import account, review
     account.validate(backbone)
     review.check_questions(backbone.get("open_questions"), review.backbone_ids(backbone), "backbone")
     check_forms(backbone["forms"])
     return incoming.validate(backbone)
+
+
+def check_urgent(rule, backbone, steps):
+    """«Frist wahren»: an action kind with a form of the backbone, a threshold in days, «dringend» within it, the line above
+    the letter's own reach, and the stages where it leads."""
+    if rule is None:
+        return
+    numbers = all(isinstance(rule.get(k), int) and rule[k] >= 0 for k in ("days", "dringend", "lead_days"))
+    if rule.get("kind") not in backbone["action_kinds"] or rule.get("form") not in backbone["forms"] or not numbers \
+            or rule["dringend"] > rule["days"] or not rule.get("stages") or set(rule["stages"]) - steps:
+        raise CatalogueError("backbone: urgent names an action kind and its form, days, dringend (not more than days), lead_days and stages of the backbone")
+
+
+def check_wahren(deadline, law, where):
+    """A deadline's ``wahren``: what the customer does to keep it, each sentence on an article whose passage holds its words."""
+    data = deadline.get("wahren")
+    if data is None:
+        return
+    if not isinstance(data, dict) or not str(data.get("tun") or "").strip():
+        raise CatalogueError(f"{where}: deadline {deadline.get('id')}: wahren needs what the customer does (tun)")
+    for row in [data] + list(data.get("dazu") or ()):
+        customer_letters.supported({"text": row.get("tun") or row.get("text"), "law": row.get("law"), "requires": row.get("requires")},
+                                   law, f"{where}: deadline {deadline.get('id')}", "what keeps it")
 
 
 def check_forms(forms, where="backbone"):
@@ -341,6 +365,9 @@ def validate_module(module, backbone):
             raise CatalogueError(f"{where}: deadline {d['id']} has an unknown period")
         if (period == "kantonal") != (counting == "kantonal") and period != "sofort":
             raise CatalogueError(f"{where}: deadline {d['id']}: a cantonal period is counted by the cantonal rule, and only it")
+        check_wahren(d, law, where)
+        if d.get("sentence") is not None and (not isinstance(d["sentence"], str) or "{datum}" not in d["sentence"] or "«" in d["sentence"]):
+            raise CatalogueError(f"{where}: deadline {d['id']}: sentence says the date as {{datum}}, without a title in quotation marks")
     from . import review  # an open question attached to an element names one the jurist reviews
     review.check_questions(module.get("open_questions"), review.module_ids(module), where, whole=True)
     return module
@@ -428,6 +455,8 @@ def compose(backbone, module):
                 # (review.py); the case's process carries the area's own
                 "open_questions": [q for q in m.get("open_questions", []) if "about" not in q],
                 "clock": bb["clock"], "forms": forms, "action_kinds": bb["action_kinds"], "cooperation": bb["cooperation"], "deadline_margin_days": bb.get("deadline_margin_days", 7),
+                # the most urgent thing leads: a deadline of the customer ending soon makes «Frist wahren» the prepared action
+                **({"urgent": bb["urgent"]} if bb.get("urgent") else {}),
                 "floor": {"actions": {k[1:]: v["stage"] for k, v in bb["action_kinds"].items() if v.get("stage")},
                           "decisions": bb.get("floor_decisions", [])},
                 "assess_needs": m.get("assess_needs", []),

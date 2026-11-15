@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "miete-kuendigung",
- "version": "2026-11-15.6",
- "backbone": "2026-11-15.6",
+ "version": "2026-11-16.1",
+ "backbone": "2026-11-16.1",
  "short_title": "Kündigung Miete",
  "title": "Kündigung des Mietverhältnisses: Anfechtung und Erstreckung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -17,6 +17,8 @@
   "271": {"cite": "Art. 271 OR", "sr": "220", "article": "271", "passage": "Die Kündigung ist anfechtbar, wenn sie gegen den Grundsatz von Treu und Glauben verstösst. Die Kündigung muss auf Verlangen begründet werden.", "verified": true},
   "271a": {"cite": "Art. 271a Abs. 1 lit. a OR", "sr": "220", "article": "271a", "passage": "Die Kündigung durch den Vermieter ist insbesondere anfechtbar, wenn sie ausgesprochen wird: a. weil der Mieter nach Treu und Glauben Ansprüche aus dem Mietverhältnis geltend macht;", "verified": true},
   "272": {"cite": "Art. 272 Abs. 1 OR", "sr": "220", "article": "272", "passage": "Der Mieter kann die Erstreckung eines befristeten oder unbefristeten Mietverhältnisses verlangen, wenn die Beendigung der Miete für ihn oder seine Familie eine Härte zur Folge hätte, die durch die Interessen des Vermieters nicht zu rechtfertigen wäre.", "verified": true},
+  "zpo-202.1": {"cite": "Art. 202 Abs. 1 ZPO", "sr": "272", "article": "202", "passage": "Das Verfahren wird durch das Schlichtungsgesuch eingeleitet. Dieses kann in den Formen nach Artikel 130 eingereicht oder mündlich bei der Schlichtungsbehörde zu Protokoll gegeben werden.", "verified": true},
+  "zpo-202.2": {"cite": "Art. 202 Abs. 2 ZPO", "sr": "272", "article": "202", "passage": "Im Schlichtungsgesuch sind die Gegenpartei, das Rechtsbegehren und der Streitgegenstand zu bezeichnen.", "verified": true},
   "273": {"cite": "Art. 273 Abs. 1 OR", "sr": "220", "article": "273", "passage": "Will eine Partei die Kündigung anfechten, so muss sie das Begehren innert 30 Tagen nach Empfang der Kündigung der Schlichtungsbehörde einreichen.", "verified": true},
   "273.2": {"cite": "Art. 273 Abs. 2 OR", "sr": "220", "article": "273", "passage": "so muss er das Begehren der Schlichtungsbehörde einreichen: a. bei einem unbefristeten Mietverhältnis innert 30 Tagen nach Empfang der Kündigung; b. bei einem befristeten Mietverhältnis spätestens 60 Tage vor Ablauf der Vertragsdauer.", "verified": true}
  },
@@ -55,6 +57,16 @@
   {"id": "erstreckung", "statement": "Erstreckung bei Härte möglich", "question": "Will die Kundschaft mehr Zeit? Dann Erstreckung prüfen", "when": {"fact": "will_erstreckung", "is": true}, "law": ["law#272"], "follows": "Bedeutet das Ende der Miete für Sie oder Ihre Familie eine Härte, können Sie eine Erstreckung des Mietverhältnisses verlangen.", "check": "Härtegründe (Familie, Gesundheit, Wohnungsmarkt), Suchbemühungen belegen", "answers": ["erstreck", "mehr zeit", "länger", "wohnung finden"], "advice": "Bedeutet das Ende der Miete für Sie oder Ihre Familie eine Härte, können Sie bei der Schlichtungsbehörde eine Erstreckung des Mietverhältnisses verlangen"}
  ],
  "customer_letters": [
+  {"id": "anfechtung", "title": "Schlichtungsgesuch: Anfechtung der Kündigung", "to": "die Schlichtungsbehörde", "to_dative": "der Schlichtungsbehörde", "empfaenger": "Schlichtungsbehörde für Mietsachen",
+   "when": {"all": [{"fact": "kuendigung_erhalten", "known": true}, {"not": {"fact": "will_anfechten", "is": false}}]}, "subject": "Schlichtungsgesuch: Anfechtung der Kündigung",
+   "fill": {"objekt": "Adresse der Mietwohnung", "gegenpartei": "Name und Adresse der Vermieterschaft", "mietende": "Tag, auf den gekündigt wurde"},
+   "parts": [{"text": "Gegenpartei: {gegenpartei}", "plain": true},
+             {"text": "Streitgegenstand: die Kündigung des Mietverhältnisses über die Wohnung {objekt} auf den {mietende}, mir zugegangen am {kuendigung_erhalten}.", "plain": true},
+             {"text": "Rechtsbegehren: Ich fechte die Kündigung an.", "law": ["law#273"]},
+             {"text": "Ich ersuche Sie, das Schlichtungsverfahren durchzuführen.", "law": ["law#zpo-202.1"]}],
+   "must_arrive": {"deadline": "anfechtung", "text": "Das Begehren muss innert 30 Tagen nach Empfang der Kündigung bei der Schlichtungsbehörde eingereicht werden", "law": ["law#273"], "requires": ["innert 30 Tagen nach Empfang der Kündigung", "Schlichtungsbehörde einreichen"]},
+   "send": {"text": "Wir empfehlen, das Gesuch eingeschrieben und so früh zu senden, dass es vor Ablauf der Frist eingeht, und eine Kopie des Schreibens der Vermieterschaft beizulegen", "basis": "prudence"},
+   "advice": [{"text": "Das Gesuch nennt die Gegenpartei, das Rechtsbegehren und den Streitgegenstand", "law": ["law#zpo-202.2"], "requires": ["Gegenpartei", "Rechtsbegehren", "Streitgegenstand"]}]},
   {"id": "begruendung", "title": "Verlangen einer Begründung der Kündigung", "to": "die Vermieterschaft", "to_dative": "der Vermieterschaft", "when": {"fact": "grund_genannt", "is": false}, "subject": "Begründung der Kündigung", "fill": {"kuendigung_erhalten": "Tag, an dem Sie die Kündigung erhalten haben", "objekt": "Adresse der Mietwohnung"}, "parts": [{"text": "Am {kuendigung_erhalten} habe ich Ihre Kündigung des Mietverhältnisses über die Wohnung {objekt} erhalten.", "plain": true}, {"text": "Ich bitte Sie, mir die Kündigung zu begründen.", "law": ["law#271"]}, {"text": "Für Ihre Antwort bis {frist} danke ich Ihnen.", "plain": true}], "sets": {"days": 10, "text": "zehn Tage für die Antwort", "basis": "prudence"}, "must_arrive": {"deadline": "anfechtung", "text": "Unabhängig von diesem Schreiben läuft die Frist, um die Kündigung bei der Schlichtungsbehörde anzufechten: innert 30 Tagen nach Empfang der Kündigung", "law": ["law#273"], "requires": ["30 Tagen", "Schlichtungsbehörde"]}, "send": {"text": "Wir empfehlen, das Schreiben eingeschrieben zu senden und eine Kopie aufzubewahren, damit Sie den Tag Ihres Verlangens belegen können", "basis": "prudence"}, "advice": []}
  ],
  "assessment": {
@@ -63,7 +75,9 @@
   "demand": {"text": "Wir fordern Sie auf, uns bis {frist} die Gründe der Kündigung schriftlich mitzuteilen, und behalten uns die Anfechtung der Kündigung und die Erstreckung des Mietverhältnisses (Art. 271 ff. OR) ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "anfechtung", "title": "Anfechtung der Kündigung bei der Schlichtungsbehörde", "trigger": "kuendigung_erhalten", "period": {"days": 30}, "from": "nach Empfang der Kündigung", "basis": "Art. 273 Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist ein Anfechtungsbegehren verspätet.", "question": "Wann haben Sie die Kündigung erhalten?", "source_refs": ["law#273"], "party": "kunde"},
+  {"id": "anfechtung", "title": "Anfechtung der Kündigung bei der Schlichtungsbehörde", "trigger": "kuendigung_erhalten", "period": {"days": 30}, "from": "nach Empfang der Kündigung", "basis": "Art. 273 Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist ein Anfechtungsbegehren verspätet.", "question": "Wann haben Sie die Kündigung erhalten?", "source_refs": ["law#273"], "party": "kunde",
+   "sentence": "Die Frist, um die Kündigung bei der Schlichtungsbehörde anzufechten, endet am {datum}",
+   "wahren": {"tun": "Reichen Sie das Begehren mit einem Schlichtungsgesuch bei der Schlichtungsbehörde ein", "law": ["law#273", "law#zpo-202.1"], "requires": ["Begehren", "Schlichtungsbehörde einreichen", "Schlichtungsgesuch"], "dazu": [{"text": "Das Gesuch nennt die Vermieterschaft als Gegenpartei, Ihr Rechtsbegehren und den Streitgegenstand", "law": ["law#zpo-202.2"], "requires": ["Gegenpartei", "Rechtsbegehren", "Streitgegenstand"]}]}},
   {"id": "erstreckung", "title": "Erstreckungsbegehren bei einem unbefristeten Mietverhältnis", "trigger": "kuendigung_erhalten", "period": {"days": 30}, "from": "nach Empfang der Kündigung", "when": {"fact": "befristet", "is": false}, "basis": "Art. 273 Abs. 2 OR", "missed": "Nach Ablauf dieser Frist ist das Erstreckungsbegehren verspätet.", "question": "Wann haben Sie die Kündigung erhalten?", "source_refs": ["law#273.2"], "party": "kunde", "when_text": "nur bei unbefristetem Mietverhältnis"},
   {"id": "erstreckung_befristet", "title": "Erstreckungsbegehren bei einem befristeten Mietverhältnis", "trigger": "mietende", "period": {"days_before": 60}, "from": "Ablauf der Vertragsdauer", "when": {"fact": "befristet", "is": true}, "basis": "Art. 273 Abs. 2 OR", "missed": "Danach ist das Erstreckungsbegehren verspätet.", "question": "Auf welchen Tag endet Ihr Mietverhältnis?", "source_refs": ["law#273.2"], "party": "kunde", "when_text": "nur bei befristetem Mietverhältnis"}
  ],

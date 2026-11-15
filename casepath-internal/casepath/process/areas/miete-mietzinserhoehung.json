@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "miete-mietzinserhoehung",
- "version": "2026-11-15.6",
- "backbone": "2026-11-15.6",
+ "version": "2026-11-16.1",
+ "backbone": "2026-11-16.1",
  "short_title": "Mietzinserhöhung",
  "title": "Mietzinserhöhung: Formular, Begründung und Anfechtung (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -15,6 +15,8 @@
   "269a": {"cite": "Art. 269a OR", "sr": "220", "article": "269a", "passage": "Mietzinse sind in der Regel nicht missbräuchlich, wenn sie insbesondere: a. im Rahmen der orts- oder quartierüblichen Mietzinse liegen; b. durch Kostensteigerungen oder Mehrleistungen des Vermieters begründet sind;", "verified": true},
   "269d": {"cite": "Art. 269d Abs. 1 OR", "sr": "220", "article": "269d", "passage": "Er muss dem Mieter die Mietzinserhöhung mindestens zehn Tage vor Beginn der Kündigungsfrist auf einem vom Kanton genehmigten Formular mitteilen und begründen.", "verified": true},
   "269d.2": {"cite": "Art. 269d Abs. 2 OR", "sr": "220", "article": "269d", "passage": "Die Mietzinserhöhung ist nichtig, wenn der Vermieter: a. sie nicht mit dem vorgeschriebenen Formular mitteilt; b. sie nicht begründet; c. mit der Mitteilung die Kündigung androht oder ausspricht.", "verified": true},
+  "zpo-202.1": {"cite": "Art. 202 Abs. 1 ZPO", "sr": "272", "article": "202", "passage": "Das Verfahren wird durch das Schlichtungsgesuch eingeleitet. Dieses kann in den Formen nach Artikel 130 eingereicht oder mündlich bei der Schlichtungsbehörde zu Protokoll gegeben werden.", "verified": true},
+  "zpo-202.2": {"cite": "Art. 202 Abs. 2 ZPO", "sr": "272", "article": "202", "passage": "Im Schlichtungsgesuch sind die Gegenpartei, das Rechtsbegehren und der Streitgegenstand zu bezeichnen.", "verified": true},
   "270b": {"cite": "Art. 270b Abs. 1 OR", "sr": "220", "article": "270b", "passage": "Der Mieter kann eine Mietzinserhöhung innert 30 Tagen, nachdem sie ihm mitgeteilt worden ist, bei der Schlichtungsbehörde als missbräuchlich im Sinne der Artikel 269 und 269a anfechten.", "verified": true}
  },
  "applies_when": {"fact": "rechtsgebiet", "is": "Mietrecht / Mietzinserhöhung"},
@@ -51,7 +53,21 @@
   "demand": {"text": "Wir fordern Sie auf, die Mietzinserhöhung bis {frist} zurückzunehmen oder schriftlich zu begründen, und behalten uns die Anfechtung (Art. 270b OR) ausdrücklich vor."}
  },
  "deadlines": [
-  {"id": "anfechtung_erhoehung", "title": "Anfechtung der Mietzinserhöhung bei der Schlichtungsbehörde", "trigger": "erhoehung_erhalten", "period": {"days": 30}, "from": "nach der Mitteilung", "basis": "Art. 270b Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist die Anfechtung verspätet.", "question": "Wann haben Sie die Mitteilung der Mietzinserhöhung erhalten?", "source_refs": ["law#270b"], "party": "kunde"}
+  {"id": "anfechtung_erhoehung", "title": "Anfechtung der Mietzinserhöhung bei der Schlichtungsbehörde", "trigger": "erhoehung_erhalten", "period": {"days": 30}, "from": "nach der Mitteilung", "basis": "Art. 270b Abs. 1 OR", "missed": "Nach Ablauf dieser Frist ist die Anfechtung verspätet.", "question": "Wann haben Sie die Mitteilung der Mietzinserhöhung erhalten?", "source_refs": ["law#270b"], "party": "kunde",
+   "sentence": "Die Frist, um die Mietzinserhöhung bei der Schlichtungsbehörde anzufechten, endet am {datum}",
+   "wahren": {"tun": "Fechten Sie die Erhöhung mit einem Schlichtungsgesuch bei der Schlichtungsbehörde als missbräuchlich an", "law": ["law#270b", "law#zpo-202.1"], "requires": ["Schlichtungsbehörde als missbräuchlich", "anfechten", "Schlichtungsgesuch"], "dazu": [{"text": "Das Gesuch nennt die Vermieterschaft als Gegenpartei, Ihr Rechtsbegehren und den Streitgegenstand", "law": ["law#zpo-202.2"], "requires": ["Gegenpartei", "Rechtsbegehren", "Streitgegenstand"]}]}}
+ ],
+ "customer_letters": [
+  {"id": "anfechtung", "title": "Schlichtungsgesuch: Anfechtung der Mietzinserhöhung", "to": "die Schlichtungsbehörde", "to_dative": "der Schlichtungsbehörde", "empfaenger": "Schlichtungsbehörde für Mietsachen",
+   "when": {"all": [{"fact": "erhoehung_erhalten", "known": true}, {"not": {"fact": "will_anfechten", "is": false}}]}, "subject": "Schlichtungsgesuch: Anfechtung der Mietzinserhöhung",
+   "fill": {"objekt": "Adresse der Mietwohnung", "gegenpartei": "Name und Adresse der Vermieterschaft", "erhoehung_ab": "Tag, ab dem der neue Mietzins gelten soll"},
+   "parts": [{"text": "Gegenpartei: {gegenpartei}", "plain": true},
+             {"text": "Streitgegenstand: die Mietzinserhöhung für die Wohnung {objekt}, mir mitgeteilt am {erhoehung_erhalten}, gültig ab {erhoehung_ab}.", "plain": true},
+             {"text": "Rechtsbegehren: Die Mietzinserhöhung sei als missbräuchlich aufzuheben.", "law": ["law#270b"]},
+             {"text": "Ich ersuche Sie, das Schlichtungsverfahren durchzuführen.", "law": ["law#zpo-202.1"]}],
+   "must_arrive": {"deadline": "anfechtung_erhoehung", "text": "Das Gesuch muss innert 30 Tagen seit der Mitteilung der Erhöhung bei der Schlichtungsbehörde angebracht werden", "law": ["law#270b"], "requires": ["innert 30 Tagen", "Schlichtungsbehörde"]},
+   "send": {"text": "Wir empfehlen, das Gesuch eingeschrieben und so früh zu senden, dass es vor Ablauf der Frist eingeht, und eine Kopie des Schreibens der Vermieterschaft beizulegen", "basis": "prudence"},
+   "advice": [{"text": "Das Gesuch nennt die Gegenpartei, das Rechtsbegehren und den Streitgegenstand", "law": ["law#zpo-202.2"], "requires": ["Gegenpartei", "Rechtsbegehren", "Streitgegenstand"]}]}
  ],
  "notes": [],
  "summary": [],

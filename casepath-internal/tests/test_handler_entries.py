@@ -135,7 +135,7 @@ class PromiseByPhoneTests(unittest.TestCase):
 
     def test_the_follow_up_date_follows_the_date_given(self):
         before = self.before[2]["next_action:0"]
-        self.assertEqual(before["reason"], "keine Antwort seit A1 vom 05.10.2026 (41 Tage)")  # silence until the call
+        self.assertEqual(before["reason"], "keine Antwort seit unserer Anforderung vom 05.10.2026 (41 Tage)")  # silence until the call
         nxt = self.by_id["next_action:0"]
         self.assertEqual((nxt["action"], nxt["value"], nxt["until"]), ("A6", "Dossier pendent halten mit Frist", "2026-12-15"))
         clock = follow_up(nxt.get("next_in_days"), looked_at(self.files), [], since=nxt.get("since"), until=nxt.get("until"))

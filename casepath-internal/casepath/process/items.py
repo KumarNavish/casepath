@@ -10,10 +10,10 @@ import hashlib
 import json
 import re
 
-from . import account, cover, customer_letters, incoming, keypoints, mandate, review as reviews, settlement
+from . import account, cover, customer_letters, incoming, keypoints, mandate, review as reviews, settlement, urgent
 from .area import compute_deadline, open_ended_title, period_text, set_date, statutory_period
 from .clock import as_of, historic as historic_file, parse_date, silence
-from .workflows import done_actions, evaluate_condition, stage_floor
+from .workflows import done_actions, evaluate_condition, holds_unless_done, stage_floor
 
 CUSTOMER_ROLE = re.compile(r"^user", re.I)  # a step the customer answers in the online form or chat
 DECISION_ROLE = re.compile(r"^entscheidung", re.I)
@@ -201,13 +201,7 @@ def ask_of(graph, d, row, files):
 
 def _unless_done(condition, facts):
     """Whether a condition holds when every negated fact the file leaves open is read as "not done"."""
-    if "not" in condition:
-        return evaluate_condition(condition["not"], facts) is not True
-    if "all" in condition:
-        return all(_unless_done(c, facts) for c in condition["all"])
-    if "any" in condition:
-        return any(_unless_done(c, facts) for c in condition["any"])
-    return evaluate_condition(condition, facts) is True
+    return holds_unless_done(condition, facts)
 
 
 def trigger_question(graph, fact_id, facts):
@@ -261,16 +255,31 @@ def account_dates(items, ledger, graph=None):
     letter); a date the file's set-date reading already gives for the same obligation is not added twice."""
     given = [i for i in items if i["kind"] == "deadline" and parse_date(i.get("value"))]
     for d in account.open_dates(ledger):
-        if any(parse_date(i["value"]) == parse_date(d["date"]) and (not i.get("what") or account.overlap(i.get("what"), d["what"]) >= 0.34
-                                                                     or i.get("unnamed")) for i in given):
+        if d["date"] and any(parse_date(i["value"]) == parse_date(d["date"]) and (not i.get("what") or account.overlap(i.get("what"), d["what"]) >= 0.34
+                                                                                  or i.get("unnamed")) for i in given):
             continue  # the same date, read once as a set date: one line
         set_by, for_ = account.PARTY_TITLES[d["set_by"]], account.PARTY_TITLES.get(d["for"], "Dritte")
+        undated = not d["date"]  # a date the file sets in words no rule reads: said so, with the words, never guessed
         items.append({"item_id": f"deadline:{d['key']}", "kind": "deadline", "key": d["key"], "system": "casepath",
-                      "label": {"de": d["what"], "en": d["what"]}, "value": d["date"], "stated_as": "computed" if d["computed"] else "established",
+                      "label": {"de": d["what"], "en": d["what"]}, "value": "prüfen" if undated else d["date"],
+                      "stated_as": "possible" if undated else "computed" if d["computed"] else "established",
                       "verdict": "accepted", "evidence": _evidence(d["citations"]), "node": None, "origin": "account", "chain": False,
-                      "what": d["what"], "by": set_by, "for": for_, "party": d["for"], "source": d["source"], "account": True,
-                      "set_by_others": d["set_by"] != account.INSURER, **({"due_text": d["text"]} if d.get("text") else {}),
+                      "what": d["what"], "by": set_by, "set_by": d["set_by"], "for": for_, "party": d["for"], "source": d["source"], "account": True,
+                      "set_by_others": d["set_by"] != account.INSURER,
+                      **({"due_text": account.CHECK_DATE, "stated": d["text"]} if undated else {"due_text": d["text"]} if d.get("text") else {}),
                       **({"stated": d["text"], "rule": f"{d['text']} ab {d['source']}, nach Kalendertagen berechnet"} if d["computed"] else {})})
+
+
+def open_condition(deadline, facts):
+    """Whether a statutory deadline depends on a fact the file leaves open: its condition is unsettled even when every
+    step the file does not show is read as not taken (a penalty order whose objection the file does not mention applies;
+    one «nur bei einer Ordnungsbusse» while the file does not say whether there is one does not)."""
+    return bool(deadline.get("when")) and evaluate_condition(deadline["when"], facts) is None and not _unless_done(deadline["when"], facts)
+
+
+def worded(deadline):
+    """What a deadline's data adds for the letters: how it is said where the rule reads badly, and what keeps it."""
+    return {k: deadline[k] for k in ("sentence", "wahren") if deadline.get(k)}
 
 
 # Every kind of item the list holds: build_items' own and the cover's (cover.items: cover, check, contact). The screen marks
@@ -374,13 +383,13 @@ def build_items(state, result, files=None, events=None, review=None):
             trigger = (state.get("facts") or {}).get(d["trigger"])
             computed = compute_deadline(d, trigger, state.get("facts") or {}) if trigger is not None else None
             if computed:
-                unsettled = bool(d.get("when")) and evaluate_condition(d["when"], state.get("facts") or {}) is None
+                unsettled = open_condition(d, state.get("facts") or {})
                 backwards = isinstance(d["period"], dict) and "days_before" in d["period"]
                 add("deadline", d["id"], value=computed[0], stated_as="computed", verdict="accepted", evidence=[],
                     node=_fact_node(graph, d["trigger"]), origin="law", chain=True, label=d["title"], stated=str(trigger),
                     rule=computed[1], legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"),
                     party=d.get("party", "kunde"), **({"condition": d["when_text"]} if unsettled else {}),
-                    **({"due_text": f"{period_text(d)} am {_day(trigger)}"} if backwards else {}), **marked(flagged.deadline(d["id"])))
+                    **({"due_text": f"{period_text(d)} am {_day(trigger)}"} if backwards else {}), **worded(d), **marked(flagged.deadline(d["id"])))
             elif trigger is None and (doubt := unsettled_trigger(result, d["trigger"])):
                 # A trigger date that was read but not settled (the checker rejected it, or two readings differ) never makes
                 # its deadline disappear: it is shown as possible, with the date the reading gives, and the date is asked.
@@ -394,8 +403,8 @@ def build_items(state, result, files=None, events=None, review=None):
                     rule=f"Auslöser «{doubt['value']}» {doubt['why']}" + (f"; danach bis {_day(candidate)}" if candidate else "") + "; Datum prüfen",
                     legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
                     possible=True, **({"candidate": candidate} if candidate else {}),
-                    **({"condition": d["when_text"]} if d.get("when") and evaluate_condition(d["when"], state.get("facts") or {}) is None else {}),
-                    **marked(flagged.deadline(d["id"])))
+                    **({"condition": d["when_text"]} if open_condition(d, state.get("facts") or {}) else {}),
+                    **worded(d), **marked(flagged.deadline(d["id"])))
             elif trigger is None:
                 # The file does not give the date that starts it: never left out while its condition holds or is open. It is
                 # shown as possible with «Datum fehlt», says what starts it, and its date is asked (the trigger question).
@@ -410,7 +419,8 @@ def build_items(state, result, files=None, events=None, review=None):
                     rule=f"{period_text(d)} {starts}; Datum fehlt" + (f" ({d['question']})" if d.get("question") else ""),
                     legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
                     possible=True, missing=True, starts=starts, trigger=d["trigger"], due_text="Datum fehlt",
-                    **({"condition": d["when_text"]} if holds is None and d.get("when_text") else {}), **marked(flagged.deadline(d["id"])))
+                    **({"condition": d["when_text"]} if open_condition(d, state.get("facts") or {}) else {}), **worded(d),
+                    **marked(flagged.deadline(d["id"])))
         account_dates(items, state.get("account"), graph)  # a date the account holds for an ask, an offer or a next step, still open
         pair_set_dates(items)  # a date the file sets for the same obligation stands beside the computed one
         asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
@@ -449,15 +459,15 @@ def build_items(state, result, files=None, events=None, review=None):
         # The insurer conducts the case and a settlement is reached: agreement, bank details once, payout, receipt, closing
         # (settlement.py); where the case has a running account, the agreement as it stands is read from it (amount, who pays,
         # by when, paid or not), otherwise from the offer and payment the file shows.
-        insured = customer_name(result)
-        settling = settlement.state(known_facts, rows, files, events, insured, settlement.from_account(ledger, known_facts)) \
+        insured_name = customer_name(result)
+        settling = settlement.state(known_facts, rows, files, events, insured_name, settlement.from_account(ledger, known_facts)) \
             if settlement.applies(here.get("id"), known_facts) and not ev.get("outcome") else None
         if settling and not quiet:
             planned = settlement.planned(settling, known_facts)
         if quiet:
             planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": quiet.get("title") or kind_title(graph, quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
-                       "reason": f'keine Antwort seit {quiet["last"]} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
+                       "reason": f'keine Antwort seit {silent_since(graph, quiet["last"])} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
         owed = None if ev.get("outcome") else account.payout_due(ledger, look)
         if owed:  # an agreed payment whose date has passed and that the file does not show made: chase it, a letter to the
             # party that owes it (form A11_nachfragen); the settlement sequence then proposes no step of its own beside it
@@ -505,6 +515,24 @@ def build_items(state, result, files=None, events=None, review=None):
             action = ({"obtain": "request"}.get(first["kind"], first["kind"]), first["text"], first["text"])
         else:
             action = None
+        # The most urgent thing leads: a deadline the customer must meet, open and ending within the backbone's threshold,
+        # makes «Frist wahren» the prepared action at the stages the rule names; the stage's own action follows («danach»).
+        # Done once its letter (and the template for the customer's own letter, where there is one) went out.
+        rule = graph.get("urgent") or {}
+        insured = customer_name(result)
+        templates = customer_letters.evaluate(graph, known_facts, [i for i in items if i["kind"] == "deadline"], insured,
+                                              known_facts.get("gegenpartei"), as_of(files))
+        pressing = urgent.find(items, rule, look, here.get("id")) if action and not ev.get("outcome") else None
+        template = next((t for t in templates if pressing and t.get("deadline") == pressing["key"]), None)
+        if pressing and wahrt(events, pressing, template):
+            pressing = None
+        displaced = None
+        if pressing:
+            displaced = {"kind": "stage", "fact": None, "title": action[1], "date": None, "action": action[1], "code": action[0]}
+            planned = {"kind": rule["kind"], "form": rule.get("form") or rule["kind"], "title": rule.get("title") or kind_title(graph, rule["kind"]),
+                       "next_in_days": None, "follow_up": None, "skip_if": None, "reason": urgent.reason(pressing),
+                       "deadline": pressing["item_id"], **({"template": f"vorlage:{template['id']}"} if template else {})}
+            action = (planned["kind"], planned["title"], {"de": planned["title"], "en": planned["title"]})
         # A waiting action (pending, status inquiry, the stage's follow-up) whose party said by when it delivers what it still
         # owes («Unterlagen folgen bis 15.12.»): the case is looked at again on that day, not on the clock's
         waits = action and (action[0] in {"A6", "A7"} or (planned and action[0] == planned.get("follow_up") and planned.get("skip_if")))
@@ -523,15 +551,21 @@ def build_items(state, result, files=None, events=None, review=None):
                                         **({"because": planned["because"]} if planned.get("because") else {}),
                                         **({"since": planned["since"]} if planned.get("since") else {}),
                                         **({"owed": planned["owed"]} if planned.get("owed") else {}),
+                                        **({"settlement": {"step": (settling or {}).get("step", ("",))[0], "done": list((settling or {}).get("done") or []),
+                                                           "terms": bool(((settling or {}).get("terms") or {}).get("amount")),
+                                                           "iban": bool(((settling or {}).get("iban") or {}).get("holder"))}} if settling or owed else {}),
                                         **({"choices": planned["choices"]} if planned.get("choices") else {}),
                                         **({"until": awaited["date"], "awaits": awaited} if awaited else {}),
+                                        **({"deadline": planned["deadline"], "urgency": urgent.urgency(pressing, look, rule)} if pressing else {}),
+                                        **({"template": planned["template"]} if pressing and planned.get("template") else {}),
                                         **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}),
                 **({"incoming": {"kind": open_items[0]["kind"]["id"], "fact": open_items[0]["fact"], "date": open_items[0]["date"],
                                  "value": open_items[0]["value"], **({"dated_by": "document"} if open_items[0]["dated_by"] == "document" else {})},
                     "then": [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"]}
                              for r in open_items[1:]]} if open_items else {}),
-                **({"then": [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"],
-                              "line": customer_line(r)} for r in after]} if after else {}),
+                **({"then": ([displaced] if displaced else []) + [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"],
+                                                                     "action": r["action"]["title"], "line": customer_line(r)} for r in after]}
+                   if after or displaced else {}),
                 value=action[1], stated_as="established", verdict=None,
                 evidence=_evidence((rows.get(open_items[0]["fact"]) or {}).get("citations")) if open_items else [], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
@@ -549,7 +583,7 @@ def build_items(state, result, files=None, events=None, review=None):
         # cover question) is offered unless the area's data cites practice for it, and an observed hint is never rewritten
         # or replaced. In an area written from the law alone, advice is ticked when its condition holds.
         practiced = bool((graph.get("area") or {}).get("practice"))
-        first_request = bool(planned and planned.get("kind") == "A1" and action and action[0] == "A1")
+        first_request = bool(planned and planned.get("kind") == "A1" and action and action[0] == "A1") or bool(displaced and displaced["code"] == "A1")
         if first_request:
             for f in graph["facts"]:
                 # a trigger date is asked only while a deadline it starts applies: offered while that depends on an open fact
@@ -582,15 +616,15 @@ def build_items(state, result, files=None, events=None, review=None):
             for hint in graph.get("hints", []):
                 if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True or hint["id"] in replaced:
                     continue
-                if hint.get("trigger") in unsettled_triggers:
-                    continue  # the possible deadline itself is in the letter, with its date to check
+                if hint.get("trigger"):
+                    continue  # a deadline whose date is open: the letter asks the date that settles it, nothing more
                 given.add(hint["id"])
                 held = flagged.hint(hint["id"])  # a hint marked «Änderung nötig» is offered, not ticked; a deadline's stays
                 add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler" if held == "untick" else "established", verdict=None,
                     evidence=[], node=here.get("id"), origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"),
                     **marked(held))
             for hint in graph.get("hints", []):  # a hint whose condition is still open is offered too: Protekta gives it early
-                if hint["when"] is not True and evaluate_condition(hint["when"], known) is None and hint["id"] not in replaced:
+                if hint["when"] is not True and evaluate_condition(hint["when"], known) is None and hint["id"] not in replaced and not hint.get("trigger"):
                     given.add(hint["id"])
                     add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
                         origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"), **marked(flagged.hint(hint["id"])))
@@ -628,7 +662,7 @@ def build_items(state, result, files=None, events=None, review=None):
         firm_claim = open_items[0] if open_items and mandate.is_firm_claim(open_items[0]) else None
         checked = mandate.cost_check(known_facts, rows, files, firm_claim, dated, graph) if firm_claim else []
         if settling is None and owed:  # a chase outside the sequence: the agreement and the customer's IBAN, if the file has it
-            chase = {"terms": settlement.agreement({}, None, settlement.from_account(ledger, known_facts)), "iban": settlement.customer_iban(files, insured)}
+            chase = {"terms": settlement.agreement({}, None, settlement.from_account(ledger, known_facts)), "iban": settlement.customer_iban(files, insured_name)}
         for line in checked + (settlement.lines(settling) if settling else settlement.lines(chase) if owed else []):
             extra = {k: v for k, v in line.items() if k not in {"id", "text", "citations", "facts"}}
             add("stage_line", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
@@ -671,10 +705,9 @@ def build_items(state, result, files=None, events=None, review=None):
                     file=gap["file"], pages=[gap["from"], gap["to"]])
         # Letters the customer sends in his own name, whose condition holds (customer_letters.py): offered with the
         # assessment, and with the first request when the customer's own deadline is close
-        deadlines = [i for i in items if i["kind"] == "deadline"]
         rows_by_id = {c["id"]: c for c in graph.get("customer_letters") or ()}
-        for t in customer_letters.evaluate(graph, known_facts, deadlines, insured, known_facts.get("gegenpartei"), as_of(files)):
-            offered_with = t["offered_with"]
+        for t in templates:
+            offered_with = t["offered_with"] + ([rule["kind"]] if pressing and t is template else [])
             held = flagged.letter(t["id"])  # marked «Änderung nötig»: offered, never sent along by default
             if (practiced and not keypoints.observed(rows_by_id.get(t["id"])) or held) and "A1" in offered_with:
                 # practice does not show this template in a first request (or a jurist asked for a change): its sentence is
@@ -682,12 +715,13 @@ def build_items(state, result, files=None, events=None, review=None):
                 offered_with = [k for k in offered_with if k != "A1"]
                 if first_request:
                     line = customer_letters.referral({"template_kind": t["kind"], "label": {"de": t["heading"]}, "to": t["to"],
-                                                      "to_dative": t["to_dative"], "due": t["due"]})
+                                                      "to_dative": t["to_dative"], "due": t["due"], "posted": t.get("posted")})
                     add("hint", f"cl-{t['id']}", value=line, stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
                         origin="template", chain=True, label=line, customer_letter=t["id"], **marked(held))
             add("customer_letter", t["id"], value="applies", stated_as="established", verdict=None, evidence=[], node=here.get("id"),
                 origin="law", chain=False, label=t["heading"], legal_basis=", ".join(t["cites"]), title=t["title"], text=t["text"],
                 to=t["to"], to_dative=t["to_dative"], template_kind=t["kind"], short=t["short"], due=t["due"], offered_with=offered_with,
+                **({"deadline": t["deadline"]} if t.get("deadline") else {}), **({"posted": True} if t.get("posted") else {}),
                 **marked(held))
     brief = result.get("brief") or {}
     applying = [p for p in keypoints.evaluate(graph, state.get("facts") or {}) if not flagged.key_point(p["id"])] if graph and ev else []
@@ -735,6 +769,23 @@ def build_items(state, result, files=None, events=None, review=None):
                 if isinstance(i.get(field), str) and placeholder(i[field]):
                     i[field] = plain(i[field]) or "Angabe klären"
     return items
+
+
+SINCE = {"A1": "unserer Anforderung", "A4": "unserer Rückfrage", "A5": "unserer Einschätzung", "A6": "unserem Schreiben mit Frist",
+         "A7": "unserer Statusanfrage", "A8": "unserem Schreiben an die Gegenpartei", "A9": "unserer Antwort an die Gegenpartei"}
+
+
+def silent_since(graph, code):
+    """What nobody answered, in words (never the action's code): «unserer Anforderung»."""
+    return SINCE.get(code) or f"unserem Schreiben ({kind_title(graph, code)})"
+
+
+def wahrt(events, deadline, template=None):
+    """Whether «Frist wahren» went out for this deadline: its letter copied and, where it has one, the template for the
+    customer's own letter too."""
+    copied = [e for e in events or () if e.get("kind") == "letter.copied" and (not e.get("deadline") or e.get("deadline") == deadline["item_id"])]
+    letter = any(e.get("form") == "A13" and not e.get("also") for e in copied)
+    return letter and (template is None or any(e.get("also") == f"vorlage:{template['id']}" for e in copied))
 
 
 def customer_line(row):

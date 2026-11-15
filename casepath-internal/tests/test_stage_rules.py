@@ -233,7 +233,7 @@ class AnsweredOfferTests(unittest.TestCase):
         self.assertNotIn("incoming", nxt)
         _, _, nxt = view(self.OWN, "A1 2024-01-10; A5 2024-02-15; A8 2024-04-20; A9 2024-05-14", segments=self.SEGMENTS, as_of="2024-06-05")
         self.assertEqual((nxt["action"], nxt["value"]), ("A9", "Gegenpartei mahnen"))  # the clock: nothing came in for 14 days
-        self.assertIn("keine Antwort seit A9 vom 14.05.2024", nxt["reason"])
+        self.assertIn("keine Antwort seit unserer Antwort an die Gegenpartei vom 14.05.2024", nxt["reason"])
         again = self.OWN[:3] + [("eingang_angebot", "Anwalt der Vermieterin: neues Angebot CHF 2'000, Schreiben vom 2024-06-01", "CHF 2'000"),
                                 ("eingang_angebot_2", self.OWN[3][1], self.OWN[3][2])]
         _, _, nxt = view(again, "A1 2024-01-10; A5 2024-02-15; A8 2024-04-20; A9 2024-05-14", segments=self.SEGMENTS, as_of="2024-06-05")
@@ -301,7 +301,7 @@ class StoredRunTests(unittest.TestCase):
         rows = Catalogue(tuple(area.shipped()))
         self.assertIsNone(rows.get("mietmangel-handler", "2026-11-14.1"))
         governing = rows.get("mietmangel-handler", "2026-11-14.1") or rows.get("mietmangel-handler")  # as runner.case_state falls back
-        self.assertEqual((governing["version"], governing["area"]["backbone"]), ("2026-11-15.6", "2026-11-15.6"))
+        self.assertEqual((governing["version"], governing["area"]["backbone"]), ("2026-11-16.1", "2026-11-16.1"))
         stored = {"facts": [fact(*f) for f in MANDATE] + [fact("bisherige_handlungen", HISTORY),
                                                          fact("eingang_kostenforderung", "Kanzlei Muster: Honorarnote vom 2024-05-02", "Honorarnote")],
                   "documents": [], "brief": {"request": "x", "parties": [], "timeline": []}}

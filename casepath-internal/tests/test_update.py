@@ -276,7 +276,7 @@ class EquivalenceTests(unittest.TestCase):
         self.assertEqual(rows["Mängelrüge an die Verwaltung"]["answered"]["n"], 3)
         self.assertIsNone(rows["Fotos des Mangels"]["answered"])
         # before: nobody answered our request (the clock); after: the customer answered, the case waits for the photos
-        self.assertEqual((before["action"], before["reason"]), ("A6", "keine Antwort seit A1 vom 05.10.2026 (41 Tage)"))
+        self.assertEqual((before["action"], before["reason"]), ("A6", "keine Antwort seit unserer Anforderung vom 05.10.2026 (41 Tage)"))
         self.assertEqual((after["action"], after["value"], after.get("reason")), ("A6", "Dossier pendent halten mit Frist", None))
         self.assertEqual(sorted(result["update"]["documents"]), ["maengelruege", "mietvertrag"])
 

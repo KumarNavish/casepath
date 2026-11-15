@@ -84,6 +84,8 @@ def check_truth(case, workflows):
     if points is not None and (not isinstance(points, list) or set(points) - {p["id"] for p in workflow.get("key_points") or ()}
                                or len(points) != len(set(points))):
         raise BenchmarkError(f"{where}: key_points must name key points of {workflow['id']}, each once")
+    if truth.get("as_of") is not None and not DATE.match(str(truth["as_of"])):
+        raise BenchmarkError(f"{where}: as_of is the day the truth holds, as YYYY-MM-DD")
     return truth
 
 
@@ -274,8 +276,9 @@ def render(scored):
 
 # -- self-check against the product's rules ---------------------------------------------
 
-def _files(case):
-    """The case's files as a perfect reading would list them: one segment per document, photos and measurements named."""
+def _files(case, as_of=None):
+    """The case's files as a perfect reading would list them: one segment per document, photos and measurements named;
+    looked at on ``as_of`` (the truth's day: the action can depend on it, a deadline of the customer close by leads)."""
     def kind(d):
         if d["kind"] == "photo_sheet":
             return "Fotodokumentation"
@@ -284,7 +287,7 @@ def _files(case):
         return d["kind"]
     segments = [{"kind": kind(d), "date": ".".join(reversed(d["date"].split("-"))), "sender": (d.get("sender") or "").split("\n")[0]}
                 for d in case["documents"]]
-    return [{"name": "Akte.pdf", "extraction": {"segments": segments}}]
+    return [{"name": "Akte.pdf", "extraction": {"segments": segments, **({"cut_of": {"as_of": as_of}} if as_of else {})}}]
 
 
 def rules(case, workflow):
@@ -304,7 +307,7 @@ def rules(case, workflow):
               "documents": [{"document": d, "status": "present", "verdict": "accepted", "files": ["f"], "citations": []}
                             for d in held],
               "brief": {"request": "", "parties": [], "timeline": []}}
-    files = _files(case)
+    files = _files(case, truth.get("as_of"))
     items = build_items(core.evaluate(workflow, knowledge(workflow), [], result, short_id(case), files=files), result, files)
     pick = lambda ask: sorted(i["key"] for i in items if i["kind"] == "document" and i.get("ask") == ask)
     action = next((i.get("action") for i in items if i["kind"] == "next_action"), None)
@@ -320,7 +323,8 @@ def self_check(cases, workflows):
     for case in cases:
         truth = check_truth(case, workflows)
         got = rules(case, workflows[truth["area"]])
-        want = set(truth.get("ask_now", [])) if truth["action"] == "A1" else set()
+        # the first request asks; «Frist wahren» (A13) goes before it and the first request follows with the same list
+        want = set(truth.get("ask_now", [])) if truth["action"] in ("A1", "A13") else set()
         diff = {}
         if set(got["now"]) != want:
             diff["now"] = {"rules_only": sorted(set(got["now"]) - want), "truth_only": sorted(want - set(got["now"]))}

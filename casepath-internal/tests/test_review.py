@@ -183,7 +183,7 @@ class CaseTests(unittest.TestCase):
         self.assertIn("Sperrfrist", hints(before))
         self.assertNotIn("Sperrfrist, etwa bei Krankheit", hints(after))
         self.assertNotIn("schriftlich begründet (Art. 335 Abs. 2 OR)", hints(after))
-        self.assertIn("«Schriftliche Einsprache gegen eine missbräuchliche Kündigung»: nach unserer Berechnung bis 31.12.2026", hints(after))
+        self.assertIn("Die Frist für die schriftliche Einsprache gegen eine missbräuchliche Kündigung endet am 31.12.2026 (Art. 336b Abs. 1 OR).", hints(after))
         in_case = lambda items: letters.context({"id": "c", "title": "t"}, list(items.values()), [], {"due": "2026-12-01"})["im_fall"]
         self.assertIn("Art. 336c Abs. 2 OR", in_case(before))  # the assessment states a point by itself only while no change is asked
         self.assertNotIn("Art. 336c Abs. 2 OR", in_case(after))

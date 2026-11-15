@@ -112,8 +112,8 @@ class UnsettledTriggerTests(unittest.TestCase):
         self.assertIn("Datum prüfen", row["rule"])
         self.assertEqual(listed["letter_question:aufforderung"]["ask"], "now")
         text, _ = draft(wf, state, items)
-        self.assertIn("Möglicherweise läuft ein Termin der Gegenpartei «Rückzahlung des Darlehens ohne vereinbarten Termin»", text)
-        self.assertIn("02.10.2026", text)
+        self.assertNotIn("Rückzahlung des Darlehens ohne vereinbarten Termin", text)  # a date still open: the letter asks it, nothing more
+        self.assertNotIn("«", text)
         self.assertIn(f"– {listed['letter_question:aufforderung']['value']}", text)
 
     def test_a_conflicting_trigger_date_keeps_the_deadline_and_an_offered_question_is_asked(self):

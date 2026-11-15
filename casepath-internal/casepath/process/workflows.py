@@ -787,3 +787,19 @@ def presumed(workflow, recorded):
         if row is None or (row.get("status") == "unknown" and not row.get("citations")):
             out[item["fact"]] = item
     return out
+
+
+def holds_unless_done(condition, facts):
+    """Whether a condition holds when every negated fact the file leaves open is read as «not done»: a step the file does
+    not show as taken (an objection, a payment) counts as not taken, so its deadline applies and is kept."""
+    if condition is True:
+        return True
+    if not isinstance(condition, dict):
+        return False
+    if "not" in condition:
+        return evaluate_condition(condition["not"], facts) is not True
+    if "all" in condition:
+        return all(holds_unless_done(c, facts) for c in condition["all"])
+    if "any" in condition:
+        return any(holds_unless_done(c, facts) for c in condition["any"])
+    return evaluate_condition(condition, facts) is True

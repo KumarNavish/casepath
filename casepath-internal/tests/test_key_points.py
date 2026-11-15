@@ -252,14 +252,17 @@ class CaseListTests(unittest.TestCase):
             "copied": self.stand([item("next_action", "0", action="A8")], events=[{"kind": "letter.copied", "at": "2026-11-14T09:00:00"}]),
             "done": self.stand([item("next_action", "0", action="A12")], closed=True),
         }
-        self.assertEqual(rows["frist"]["text"], "Frist 03.12.")
-        self.assertEqual(rows["termin"]["text"], "Termin 20.11.")
-        self.assertEqual(rows["contact"]["text"], "Erstkontakt bis 18.11.")
+        # the status in one word, the same on the card; the date it goes with is the list's «Fällig» (listing.due)
+        self.assertEqual((rows["frist"]["text"], rows["frist"]["date"]), ("Frist läuft", "2026-12-03"))
+        self.assertEqual((rows["termin"]["text"], rows["termin"]["date"]), ("Frist läuft", "2026-11-20"))
+        self.assertEqual((rows["contact"]["text"], rows["contact"]["date"]), ("vorbereitet", "2026-11-18"))
         self.assertEqual(rows["prepared"]["text"], "vorbereitet")
         self.assertEqual(rows["arrived"]["text"], "neue Unterlagen")
-        self.assertEqual(rows["waiting"]["text"], "wartet auf Kundschaft bis 05.12.")
-        self.assertEqual(rows["copied"]["text"], "wartet auf Gegenpartei bis 05.12.")
-        self.assertEqual(rows["due"]["text"], "Wiedervorlage fällig 10.11.")
+        self.assertEqual((rows["waiting"]["text"], rows["waiting"]["date"]), ("wartet auf Kundschaft", "2026-12-05"))
+        self.assertEqual(rows["copied"]["text"], "wartet auf Gegenpartei")
+        self.assertEqual(rows["due"]["text"], "Wiedervorlage fällig")
+        self.assertEqual(listing.due([termin, frist, contact], "2026-12-05", [], today=self.TODAY), {"date": "2026-11-18", "word": "Erstkontakt"})
+        self.assertEqual(listing.due([termin, frist], "2026-12-05", [], today=self.TODAY), {"date": "2026-11-20", "word": "Termin"})
         self.assertEqual(rows["done"]["text"], "erledigt")
         order = sorted(rows, key=lambda k: rows[k]["rank"])
         self.assertEqual(order[0], "arrived")
@@ -273,7 +276,7 @@ class CaseListTests(unittest.TestCase):
         self.assertEqual(listing.as_of(files), date(2025, 2, 7))
         old = item("deadline", "anfechtung", "2025-02-20", origin="law")
         row = self.stand([old, item("contact", "erstkontakt", "2026-11-18")], files=files)
-        self.assertEqual(row["text"], "Frist 20.02.")  # running as of its own day, the first contact not counted
+        self.assertEqual((row["text"], row["date"]), ("Frist läuft", "2025-02-20"))  # running as of its own day, the first contact not counted
 
     def test_a_closing_row_names_its_reason_once(self):
         self.assertEqual(listing.next_step(item("next_action", "0", action="A12", label={"de": "Dossier schliessen"}, closing="keine Rückmeldung")),

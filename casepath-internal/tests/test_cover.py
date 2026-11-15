@@ -90,7 +90,7 @@ class CoverPointTests(unittest.TestCase):
         self.assertEqual(points["wartefrist"]["aid"], "bei drei Monaten: Police spätestens am 10.12.2025 in Kraft")
         self.assertEqual(points["wartefrist"]["text"], "gemäss Police; allgemein drei Monate")  # never a fact about this policy
         self.assertEqual(points["rechtsgebiet"]["text"], "«Miet- und Pachtrecht» in der Police eingeschlossen?")
-        self.assertEqual(points["person"]["aid"], "laut Akte: Lea Beispiel (Mieterin (VN))")
+        self.assertEqual(points["person"]["aid"], "laut Akte: Lea Beispiel (Mieterin)")  # the role once, without its marker
         self.assertEqual(listed["cover:summary"]["value"], "Deckung: 3 aus der Akte geklärt · 7 in der Police prüfen")
         self.assertEqual(points["zeitraum"]["legal_basis"], "Art. A2 Ziff. 1 und 2")
         self.assertIn("Ursache bei Antragsstellung", points["zeitraum"]["clauses"][0]["passage"])

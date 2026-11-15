@@ -6,10 +6,12 @@ point is looked at as of its own day and listed apart, so its dates never count 
 from datetime import date, timedelta
 import re
 
+from ..process import urgent
 from ..process.clock import parse_date
 from ..process.letters import customer
 
 RUNNING_DAYS = 21  # a customer's deadline or a set date this close is what the row says
+URGENT_DAYS = 3  # this close it is «dringend» (the backbone's urgent.dringend)
 HANDLED_ELSEWHERE = re.compile(r"protekta|rechtsschutz|kanzlei|anwalt|versicherer \(|rechtsschutzversicherung", re.I)
 REDACTED = re.compile(r"geschw|xxx|^[\W_]*$", re.I)
 SALUTATION = re.compile(r"^(Frau|Herr|Fr\.|Hr\.)\s+")
@@ -135,6 +137,28 @@ def display_title(case, items, short_title, renamed=False):
     return f"{short_title} · {thing}" if thing else short_title
 
 
+def parties_line(items):
+    """The parties as the list's second line and the rail's: «Lea Beispiel ./. Muster Immobilien AG», the customer alone
+    when the other side is not known; None when the file names nobody."""
+    parties = [i for i in items or () if i["kind"] == "party"]
+    own = customer(parties)
+    role = lambda p: (p.get("label") or {}).get("de") if isinstance(p.get("label"), dict) else str(p.get("label") or "")
+    other = next((p for p in parties if p is not own and _name(p) and not HANDLED_ELSEWHERE.search(f"{role(p)} {p.get('value')}")), None)
+    names = [x for x in (_name(own), _name(other)) if x]
+    return " ./. ".join(names) or None
+
+
+def headline(case, items, short_title, renamed=False):
+    """What the case is about, in the list's first line and the rail's: the area and the place or object of the dispute
+    («Kündigung Miete · Testgasse 4»), the area alone when the request names neither; a title a person gave stands."""
+    if renamed or not short_title or not any(i["kind"] in {"next_action", "summary", "party"} for i in items or ()):
+        return case.get("display_title") or case["title"]
+    parties = [i for i in items if i["kind"] == "party"]
+    request = next((str(i.get("value") or "") for i in items if i["kind"] == "summary" and i.get("value")), "")
+    thing = dispute_object(request, [p.get("value") for p in parties] + [short_title])
+    return f"{short_title} · {thing}" if thing else short_title
+
+
 def closing_reason(action):
     """The three or four words a closing gives as its reason: «keine Rückmeldung», «Sache erledigt» …"""
     return (action or {}).get("closing") or CLOSING.get((action or {}).get("form") or "", "Sache erledigt")
@@ -179,19 +203,40 @@ def stand(*, closed, run_status, new_files, items, follow_up, events, completed_
         if (action or {}).get("action") in {"A12", "close"} and closed:
             return row("closed", "erledigt", 9)
         if due and due > ref:
-            return row("waiting", f"wartet auf {waiting_for(action)} bis {_day(due)}", 8, due)
+            return row("waiting", f"wartet auf {waiting_for(action)}", 8, due)
         if due and not historic:
-            return row("due", f"Wiedervorlage fällig {_day(due)}", 2, due)
+            return row("due", "Wiedervorlage fällig", 2, due)
         return row("closed", "erledigt", 9)
-    running = sorted(((parse_date(i["value"]), i) for i in items if i["kind"] == "deadline" and i.get("direction") != "ab"
-                     and (i.get("party") or "kunde") == "kunde" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or ""))
-                     and (i.get("origin") == "law" or i.get("set_by_others")) and ref <= parse_date(i["value"]) <= ref + timedelta(days=RUNNING_DAYS)),
-                     key=lambda row: row[0])
+    running = sorted(((parse_date(i["value"]), i) for i in items if urgent.customers(i) and urgent.dated(i) and not urgent.open_condition(i)
+                      and ref <= parse_date(i["value"]) <= ref + timedelta(days=RUNNING_DAYS)), key=lambda row: row[0])
     if running:
         day, item = running[0]
-        return row("frist", f"{'Termin' if item.get('set_by_others') else 'Frist'} {_day(day)}", 1, day)
+        return row("frist", "dringend" if (day - ref).days <= URGENT_DAYS else "Frist läuft", 1, day)
     contact = None if as_of(files) or historic else next((i for i in items if i["kind"] == "contact"), None)  # a historic file has no first contact due
     if contact and parse_date(contact.get("value")):
         day = parse_date(contact["value"])
-        return row("contact", f"Erstkontakt {'überfällig seit' if day < ref else 'bis'} {_day(day)}", 1.5 if day < ref else 3, day)
+        return row("contact", "Erstkontakt überfällig" if day < ref else "vorbereitet", 1.5 if day < ref else 3, day)
     return row("prepared", "vorbereitet", 4, due)
+
+
+def due(items, follow_up, files, historic=None, closed=False, today=None):
+    """«Fällig» in the case list: the earliest of the open deadlines of the customer or of Protekta (statutory, set by a
+    court, an authority or the other side, or held by the account), the follow-up and the first contact, with its word.
+    None for a closed case."""
+    if closed:
+        return None
+    ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or date.today()
+    rows = []
+    for i in items or ():
+        if i["kind"] == "deadline" and (urgent.customers(i) or urgent.ours(i) or (i.get("account") and i.get("party") == "kunde")) \
+                and urgent.dated(i) and not urgent.open_condition(i) and parse_date(i["value"]) >= ref:
+            rows.append((i["value"], "Termin" if i.get("set_by_others") and not i.get("account") and i.get("what") else "Frist"))
+    if follow_up and parse_date(follow_up):
+        rows.append((parse_date(follow_up).isoformat(), "Wiedervorlage"))
+    contact = None if as_of(files) or historic else next((i for i in items or () if i["kind"] == "contact"), None)
+    if contact and parse_date(contact.get("value")):
+        rows.append((parse_date(contact["value"]).isoformat(), "Erstkontakt"))
+    if not rows:
+        return None
+    when, word = min(rows)
+    return {"date": when, "word": word}
