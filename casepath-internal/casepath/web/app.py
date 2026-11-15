@@ -30,7 +30,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import capped, follow_up, historic as historic_file, own_deadlines
 from ..agents import core
-from ..process import account, cover, customer_letters, letters, review as reviews, screen, verlauf
+from ..process import account, letters, review as reviews, screen, verlauf
 from ..process.clock import as_of
 from ..process.items import ITEM_KINDS, SCREEN_KINDS, kind_title, build_items, item_changes, items_sha256
 from . import identity, listing
@@ -499,6 +499,20 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 action.pop(k, None)  # what led to the prepared action does not lead to the one picked instead
         return action, options, forms
 
+    def _list_run_inputs(row):
+        """A row of the case list and its runs: the run its items are built from (``run``, None when there is none to build
+        from), the case's files, the files that run did not read, and what the status reads of the case's runs
+        (``run_status``, ``run_kind``)."""
+        completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
+        case_files = store.list_files(row["id"])
+        return {"run": completed, "files": case_files, "new_files": len(core.unread(case_files, completed)) if completed else 0,
+                "run_status": row.get("run_status"), "run_kind": None}
+
+    def _list_completion(row, current, listed, events, files):
+        """Where the prepared letter of a row stands after the decision, for its status (Slice B: completion.state(...));
+        None so far."""
+        return None
+
     @app.get("/api/cases")
     def list_cases(who=Depends(user)):
         rows = store.list_cases()
@@ -506,15 +520,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         for row in rows:  # the next date a case is to be looked at: the list sorts by it
             events = store.list_case_events(row["id"])
             row["closed"] = any(e["kind"] == "case.closed" for e in events)
-            completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
-            case_files = store.list_files(row["id"])
-            row["new_files"] = len(core.unread(case_files, completed)) if completed else 0  # the files its last run did not read
+            runs_in = _list_run_inputs(row)
+            completed, case_files = runs_in["run"], runs_in["files"]
+            row["new_files"] = runs_in["new_files"]  # the files its last run did not read
             cut_day = listing.as_of(case_files)  # a test cut of a historic file: looked at as of its own day, listed apart
             row["as_of"] = cut_day.isoformat() if cut_day else None
             # a historic file (a cut, or a whole old file uploaded for testing, or as a person placed it): listed apart, never overdue
             row["historic"] = historic_file(case_files, row.get("created_at"), events)
-            listed, action = [], None
-            if row.get("run_status") == "completed":
+            listed, action, current = [], None, None
+            if completed:
                 try:
                     current = state(row["id"])
                     listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events,
@@ -543,9 +557,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 except Exception:  # noqa: BLE001  a case that cannot be evaluated still lists
                     row["follow_up"] = None
             row.setdefault("display_title", row["title"])
-            row["stand"] = listing.stand(closed=row["closed"], run_status=row.get("run_status"), new_files=row["new_files"], items=listed,
+            row["stand"] = listing.stand(closed=row["closed"], run_status=runs_in["run_status"], new_files=row["new_files"], items=listed,
                                          follow_up=row.get("follow_up"), events=events, completed_at=(completed or {}).get("created_at"),
-                                         files=case_files, historic=row["historic"])
+                                         files=case_files, historic=row["historic"], run_kind=runs_in["run_kind"],
+                                         completion=_list_completion(row, current, listed, events, case_files))
             row["due"] = listing.due(listed, row.get("follow_up"), case_files, row["historic"], closed=row["stand"]["kind"] == "closed")
         return {"cases": rows}
 
@@ -575,47 +590,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         record(case_id, who, "case.renamed", text=title[:300])  # a person's title stands over the one the case gives itself
         return renamed
 
-    @app.get("/api/cases/{case_id}")
-    def get_case(case_id: str, who=Depends(user)):
-        current = state(case_id)
+    # The case view is built in three parts, each one slice's, merged into the view: what arrived and what changed
+    # (_arrival_view), the decision brief (_assessment_view) and where the letter stands after the decision
+    # (_completion_view). Each returns only its own keys.
+    def _arrival_view(case_id, current, prepared, files, logged, listed, marks):
+        """Arrival: the files the last preparation did not read (name and the day they came), whether «Aktualisieren» can
+        read them alone, and the draft held back until it has; after an update or a new preparation, what changed against
+        the run before, with the new entries of the account. Returns (its keys of the case view, the run whose status the
+        case shows, as the case list's)."""
         completed = current["run"]
         study = (current["case"].get("intake") or {}).get("study")
-        logged = None if study else store.list_case_events(case_id)  # a study copy shows its frozen run as it was
-        # at the mandate and handling stages the files' text is read too: the summary for the firm, the customer's IBAN and
-        # the cost check name the page they come from
-        stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
-        texts = store.list_files(case_id, with_text=True) if stage in {"mandat", "abwicklung"} else None
-        # the jurists' marks on the legal content (a study copy shows its frozen run as it was, without them)
-        marks, latest = ({}, {}) if study else review_marks()
-        listed = build_items(current, (completed or {}).get("result"), texts or store.list_files(case_id), logged, marks)  # everything the case's screens and exports assert
-        held = reviews.flags(current.get("process"), marks)
-        action, options, forms = prepared_action(current, listed, store.list_case_events(case_id))
-        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id),
-                          since=(action or {}).get("since"), until=(action or {}).get("until"))  # a date the party gave: looked at then
-        clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(case_id))  # before a statutory deadline
-        events, files = store.list_case_events(case_id), store.list_files(case_id)
-        draft = None
-        if action and forms:  # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
-            kind = "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")  # a closing in silence has its own (no) letter
-            ctx = letters.context(current["case"], listed, events, clock, texts or files, evaluation=current["evaluation"], process=current["process"])
-            text, none = letters.render(kind, forms, ctx)
-            # parts the law or the conditions require (copying is refused while one is missing, cover.py), each «in Prüfung»
-            # while a jurist marked it «Änderung nötig»
-            required = lambda k: [{**r, **({"review": reviews.IN_REVIEW} if held.required(k, r["id"]) else {})} for r in cover.required_for(k, current.get("facts"))]
-            draft = {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "to": (forms.get(kind) or {}).get("to"), "text": text, "none": none,
-                     "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
-                     "required": required(kind),
-                     # what goes out with it, each opened and copied on its own: the mandate package, the fee-note letters, and a
-                     # template for the customer's own letter (marked as the customer's, never sent by the insurer)
-                     "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": required(k),
-                               **({"set": forms[k]["set"]} if forms[k].get("set") else {})} for k in letters.accompanying(kind, forms, listed)]
-                             + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "name": i.get("title"), "text": i["text"], "required": [], "template": True,
-                                 **({"review": i["review"]} if i.get("review") else {})}
-                                for i in customer_letters.with_letter(listed, events, kind)]}
-        # Arrival: the files the last preparation did not read (name and the day they came), whether «Aktualisieren» can read
-        # them alone, and the draft held back until it has; after an update or a new preparation, what changed against the
-        # run before, with the new entries of the account.
-        prepared = store.latest_run(case_id, "completed")
         unread = set(core.unread(files, prepared or completed)) if (prepared or completed) and not study else set()  # a study copy reads nothing
         arrived = [{"id": f["id"], "name": f["name"], "added": f.get("created_at")} for f in files if f["id"] in unread]
         new_files = [f["name"] for f in arrived]
@@ -638,6 +622,43 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 added = {str(n) for n in ((done[0].get("result") or {}).get("update") or {}).get("entries") or ()}
                 changes["entries"] = [f"{account.day(i.get('date')) or 'ohne Datum'} · {i.get('from_title')} → {i.get('to_title')} · "
                                       f"{(i.get('label') or {}).get('de')}: {i.get('value')}" for i in listed if i["kind"] == "entry" and i["key"] in added]
+        run_now = store.latest_run(case_id)  # the status the case list shows for it, from the same function and the same inputs
+        return {"new_files": new_files, "arrived": arrived, "update": update, "draft_stale": stale, "changes": changes}, run_now
+
+    def _assessment_view(current, completed, listed, files, events, marks):
+        """The decision brief of the prepared action (Slice A: {"assessment": assessment.build(...)}), which the letter and
+        the screen read; nothing so far."""
+        return {}
+
+    def _completion_view(case_id, current, listed, draft, events, files, assessment=None):
+        """Where the prepared letter stands after the decision: approved, dispatched, fulfilled (Slice B: {"completion":
+        completion.state(...)}), which the status and the screen read; nothing so far."""
+        return {}
+
+    @app.get("/api/cases/{case_id}")
+    def get_case(case_id: str, who=Depends(user)):
+        current = state(case_id)
+        completed = current["run"]
+        study = (current["case"].get("intake") or {}).get("study")
+        logged = None if study else store.list_case_events(case_id)  # a study copy shows its frozen run as it was
+        # at the mandate and handling stages the files' text is read too: the summary for the firm, the customer's IBAN and
+        # the cost check name the page they come from
+        stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
+        texts = store.list_files(case_id, with_text=True) if stage in {"mandat", "abwicklung"} else None
+        # the jurists' marks on the legal content (a study copy shows its frozen run as it was, without them)
+        marks, latest = ({}, {}) if study else review_marks()
+        listed = build_items(current, (completed or {}).get("result"), texts or store.list_files(case_id), logged, marks)  # everything the case's screens and exports assert
+        held = reviews.flags(current.get("process"), marks)
+        action, options, forms = prepared_action(current, listed, store.list_case_events(case_id))
+        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id),
+                          since=(action or {}).get("since"), until=(action or {}).get("until"))  # a date the party gave: looked at then
+        clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(case_id))  # before a statutory deadline
+        events, files = store.list_case_events(case_id), store.list_files(case_id)
+        assessed = _assessment_view(current, completed, listed, files, events, marks)
+        # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
+        draft = letters.draft(current, listed, events, clock, files, forms, texts=texts, held=held, assessment=assessed.get("assessment"))
+        prepared = store.latest_run(case_id, "completed")
+        arrival, run_now = _arrival_view(case_id, current, prepared, files, logged, listed, marks)
         renamed = any(e["kind"] == "case.renamed" for e in events)
         shown_case = {**current["case"], "display_title": listing.display_title(
             current["case"], listed if completed else [], area_title(current.get("process")), renamed=renamed)}
@@ -645,23 +666,25 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         shown_case["parties"] = listing.parties_line(listed) if completed else None
         historic = historic_file(files, current["case"].get("created_at"), events)
         closed = any(e["kind"] == "case.closed" for e in events)
-        run_now = store.latest_run(case_id)  # the status the case list shows for it, from the same function and the same inputs
-        status = listing.stand(closed=closed, run_status=(run_now or {}).get("status"), new_files=len(arrived) if prepared else 0,
+        done = _completion_view(case_id, current, listed, draft, events, files, assessed.get("assessment"))
+        status = listing.stand(closed=closed, run_status=(run_now or {}).get("status"), new_files=len(arrival["arrived"]) if prepared else 0,
                                items=listed if (run_now or {}).get("status") == "completed" else [], follow_up=(clock or {}).get("due"),
-                               events=events, completed_at=(prepared or {}).get("created_at"), files=files, historic=historic)
+                               events=events, completed_at=(prepared or {}).get("created_at"), files=files, historic=historic,
+                               run_kind=None, completion=done.get("completion"))
         stage = ((current.get("evaluation") or {}).get("current") or {})
         cover_edit = next((e for e in reversed(store.list_edits(case_id)) if e.get("op") == "set_fact" and (e.get("args") or {}).get("fact") == "deckung"), None)
         model = screen.build(listed, draft, events, as_of(files), (current.get("process") or {}).get("urgent"), stage=stage.get("step"),
                              via=stage.get("via"), routing=(completed or {}).get("routing"), since=(prepared or {}).get("finished_at"),
                              decided_by=f"{(cover_edit.get('at') or '')[8:10]}.{(cover_edit.get('at') or '')[5:7]}.{(cover_edit.get('at') or '')[:4]} · {cover_edit.get('by')}"
-                             if cover_edit and cover_edit.get("at") else None) if completed else None
+                             if cover_edit and cover_edit.get("at") else None,
+                             assessment=assessed.get("assessment"), completion=done.get("completion")) if completed else None
         if model is not None:
             model["title"] = listing.next_step(action) if action else model["title"]  # the same words as the case list's «Als Nächstes»
             model.update(status=status["text"], status_kind=status["kind"],
                          due=listing.due(listed, (clock or {}).get("due"), files, historic, closed=status["kind"] == "closed"))
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "screen": model, "status": status, "historic": historic,
-                "new_files": new_files, "arrived": arrived, "update": update, "draft_stale": stale, "changes": changes,
+                **arrival, **assessed, **done,
                 "prepared_run": {k: prepared.get(k) for k in ("id", "kind", "builds_on", "created_at", "finished_at")} if prepared else None,
                 # the Verlauf: the report, every document, every entry the handler made and every gesture, in time order
                 "verlauf": verlauf.rows(listed, files, events if logged is not None else [], store.list_edits(case_id, active_only=False),

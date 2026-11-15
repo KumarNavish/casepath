@@ -20,7 +20,11 @@ from .workflows import CatalogueError, condition_facts, evaluate, evaluate_condi
 EXTRA_SOURCES = [{"id": "knowledge", "kind": "knowledge", "title": "CasePath Knowledge learned from earlier cases"},
                  {"id": "edit", "kind": "case_edit", "title": "Changes made to this case's process"}]
 EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_question", "add_step", "set_transition", "rename_step", "set_fact",
-            "add_entry"}  # add_entry: the handler's own entry of the running account (account.handler_entry); the process is unchanged
+            "add_entry",  # add_entry: the handler's own entry of the running account (account.handler_entry); the process is unchanged
+            # none of these three changes the process either; each is refused until its slice fills its branch in apply_edit:
+            "add_dispatch",  # a letter dispatched to one recipient, an entry of the account (Slice B; written by the store only)
+            "settle_request",  # a request of the account settled by the handler (Slice C)
+            "set_party"}  # a party as the handler names it (Slice C)
 
 
 def fact_value(definition, value):
@@ -217,6 +221,12 @@ def apply_edit(graph, edit):
             check_form(args)
         except FormError as error:
             raise EditError(str(error)) from None
+    elif op == "add_dispatch":  # Slice B fills this: a dispatch is an entry of the account, not a change to the process
+        raise EditError(f"unknown edit {op!r}")  # refused, as before, until then
+    elif op == "settle_request":  # Slice C fills this: a request settled by the handler (account.apply_corrections)
+        raise EditError(f"unknown edit {op!r}")
+    elif op == "set_party":  # Slice C fills this: a party as the handler names it (the party items, letters and title)
+        raise EditError(f"unknown edit {op!r}")
     elif op == "set_fact":  # changes the facts the case is evaluated with, not the process; see fact_overrides
         definition = next((f for f in graph["facts"] if f["id"] == args.get("fact")), None)
         if definition is None:
@@ -464,7 +474,8 @@ def open_stage_facts(graph, facts, evaluation):
 
 
 def check_edit(base_graph, edit):
-    """Validate one proposed edit against the current case process before saving it."""
+    """Validate one proposed edit against the current case process before saving it (by applying it to a copy: an op
+    whose branch in apply_edit still refuses, add_dispatch, settle_request or set_party, is refused here too)."""
     trial = deepcopy(base_graph)
     apply_edit(trial, {**edit, "id": edit.get("id", "pending")})
     validate_workflow(trial)

@@ -1562,12 +1562,11 @@ def finalize(work):
             "warnings": [{"kind": "instruction_like_text", "file": fid} for fid, f in work.evidence.files.items() if f.get("instruction_like")]}
 
 
-def finalize_update(work, prior, report, files, new):
-    """The merged result of an update: ``prior``'s result with the new entries, the facts and documents it changed (each
-    with its verdict; what it did not touch keeps its value, quotes and verdict), the record's coverage over every file,
-    and the evaluation code derives from it, as a full run's. Usage and events are the update's own."""
+def _update_record(work, prior, report, files, new):
+    """The running account after an update and what the update did: (record, update). The record is ``prior``'s with the
+    new entries and its coverage over every file; ``update`` names the new files and entries, the facts and documents the
+    update changed, its summary and what it skipped."""
     from ..read.hygiene import documents as split_documents
-    evaluation = work.evaluate()
     old = prior.get("record") or {}
     before = {e["n"] for e in old.get("entries") or ()}
     entries = sorted(work.record["entries"], key=lambda e: (e.get("date") or "9999", e["n"]))
@@ -1579,13 +1578,33 @@ def finalize_update(work, prior, report, files, new):
               "documents": len(split_documents(whole.files)), "hygiene": whole.hygiene,
               "coverage": {**account.coverage(entries, {fid: list(f["pages_text"]) for fid, f in whole.files.items()}),
                            **{k: cov[k] for k in ("given_back", "given_back_pages", "covered_after", "added")}}}
+    update = {"files": list(new), "entries": [e["n"] for e in entries if e["n"] not in before],
+              "facts": sorted(work.updating["facts"]), "documents": sorted(work.updating["documents"]),
+              "summary": (report or {}).get("summary"), "skipped": {"result_checker": RESULT_CHECKER_SKIPPED}}
+    return record, update
+
+
+def _merge_brief(work, report):
+    """The brief after an update: the new documents' dated events, the customer's new questions and what they mention but
+    do not enclose join it (a question once); the rest stays as it was."""
     brief = {**(work.brief or {})}
-    if report:  # the new documents' dated events and the customer's new questions join the brief; the rest stays
+    if report:
         found = _located_brief(work, report)
         brief["timeline"] = list(brief.get("timeline") or []) + found["timeline"]
         asked = {q["question"] for q in brief.get("questions") or []}
         brief["questions"] = list(brief.get("questions") or []) + [q for q in found["questions"] if q["question"] not in asked]
         brief["not_enclosed"] = list(brief.get("not_enclosed") or []) + found["not_enclosed"]
+    return brief
+
+
+def finalize_update(work, prior, report, files, new):
+    """The merged result of an update: ``prior``'s result with the new entries, the facts and documents it changed (each
+    with its verdict; what it did not touch keeps its value, quotes and verdict), the record's coverage over every file,
+    and the evaluation code derives from it, as a full run's. Usage and events are the update's own. The record and the
+    update's own account come from _update_record, the brief from _merge_brief."""
+    evaluation = work.evaluate()
+    record, update = _update_record(work, prior, report, files, new)
+    brief = _merge_brief(work, report)
     kept = {k: v for k, v in prior.items() if k not in {"resumed_from", "speed_trials", "update", "paused", "done"}}
     return {**kept, "workflow": workflows.ref(work.base), "process": work.graph, "provenance": work.provenance,
             "agent_edits": work.agent_edits, "brief": brief, "facts": result_facts(work), "documents": list(work.documents.values()),
@@ -1593,6 +1612,4 @@ def finalize_update(work, prior, report, files, new):
             "read_files": [f["id"] for f in files],
             "warnings": list(prior.get("warnings") or []) + [{"kind": "instruction_like_text", "file": fid} for fid, f in work.evidence.files.items()
                                                              if f.get("instruction_like")],
-            "update": {"files": list(new), "entries": [e["n"] for e in entries if e["n"] not in before],
-                       "facts": sorted(work.updating["facts"]), "documents": sorted(work.updating["documents"]),
-                       "summary": (report or {}).get("summary"), "skipped": {"result_checker": RESULT_CHECKER_SKIPPED}}}
+            "update": update}

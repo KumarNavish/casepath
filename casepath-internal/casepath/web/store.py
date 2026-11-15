@@ -478,3 +478,10 @@ class CaseStore:
             self._db.execute("update case_edits set status=? where id=?", (status, edit_id))
             self._db.execute("update cases set updated_at=? where id=?", (now(), edit["case_id"]))
         return self.get_edit(edit_id) | {"changed_by": user}
+
+    # Each slice's own methods go in its section below.
+    # -- assessment (Slice A) ----------------------------------------------------------------------------------------------
+
+    # -- completion (Slice B): the drafts per letter part, numbered edits, the dispatch ---------------------------------------
+
+    # -- arrival (Slice C): files by their content -----------------------------------------------------------------------
