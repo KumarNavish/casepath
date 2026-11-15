@@ -2262,6 +2262,7 @@
   },
   "/api/knowledge/{knowledge_id}/activate": {
    "post": {
+    "description": "«Freigeben»: only an item whose replay is of its current version (a refinement: the refining item's own).",
     "operationId": "activate_api_knowledge__knowledge_id__activate_post",
     "parameters": [
      {
@@ -2305,6 +2306,44 @@
      }
     },
     "summary": "Activate"
+   }
+  },
+  "/api/knowledge/{knowledge_id}/replay": {
+   "post": {
+    "description": "«Nachspielen»: the item's current version applied to every prepared case without a model; what it would change\nis kept on the item, and only then can it be activated («Freigeben»).",
+    "operationId": "replay_knowledge_api_knowledge__knowledge_id__replay_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "knowledge_id",
+      "required": true,
+      "schema": {
+       "title": "Knowledge Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Replay Knowledge"
    }
   },
   "/api/knowledge/{knowledge_id}/retire": {

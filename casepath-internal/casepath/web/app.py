@@ -1190,6 +1190,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         reason_text = body.reason.strip() or REASONS[body.reason_code]
         if body.op == "add_entry":
             raise HTTPException(422, "Einträge der Fallbearbeitung über /entries.")
+        if body.activate:  # shared Knowledge is activated in «Wissen» only, after a replay of its version (HANDLER_BAR L3)
+            raise HTTPException(422, "Freigabe im Wissen erst nach dem Nachspielen")
         try:
             casegraph.check_edit(before["process"], {"op": body.op, "args": body.args})
         except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
@@ -1202,20 +1204,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if not body.use_for_similar and (body.reason_code == "4" or repeated):
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
-                rows = replay(store, catalogue, [item])
-                item["replay"] = {"cases": len(rows), "changed": [{"case": r["case"], "changed": sorted(r["changed"])} for r in rows if r["changed"]],
-                                  "because": "gilt generell" if body.reason_code == "4" else "wiederholt"}
-                learned = store.save_knowledge(item)
+                learned = store.save_knowledge(replayed(item, who, "gilt generell" if body.reason_code == "4" else "wiederholt"))
             except kb.KnowledgeError:
                 learned = None  # not every correction can be said in general terms; the case keeps its edit
-        if body.use_for_similar:
+        if body.use_for_similar:  # a candidate with the replay of its version: activated in «Wissen», never here
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
             except kb.KnowledgeError as error:
                 raise HTTPException(422, str(error)) from None
-            if body.activate:
-                item = kb.set_status(item, "active", by=who, reason="activated by the case worker who made the change")
-            learned = store.save_knowledge(item)
+            learned = store.save_knowledge(replayed(item, who, "für ähnliche Fälle"))
         after = state(case_id)
         change = casegraph.diff(before["evaluation"], after["evaluation"])
         args = body.args
@@ -1340,9 +1337,30 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def get_knowledge(knowledge_id: str, who=Depends(user)):
         return {"item": found(store.get_knowledge, knowledge_id), "uses": store.knowledge_uses(knowledge_id)}
 
+    def replayed(item, who, because=None):
+        """The item with the model-free replay of its current version on the stored cases (quality/replay.py): how many
+        cases were replayed and what it changes in each, kept on the item (``replay.version``) and logged
+        (``knowledge.replayed``). A refining item is replayed as itself: its replay is the one its activation needs."""
+        rows = replay(store, catalogue, [item])
+        changed = [{"case": r["case"], "title": r["title"], "changed": sorted(r["changed"])} for r in rows if r["changed"]]
+        item = {**item, "replay": {"version": item["version"], "cases": len(rows), "changed": changed, "by": who,
+                                   "at": datetime.now().astimezone().isoformat(timespec="seconds"), **({"because": because} if because else {})}}
+        store.append_workspace_event({"schema": "casepath.knowledge.event/1", "kind": "knowledge.replayed", "item": item["id"],
+                                      "version": item["version"], "cases": len(rows), "changed": len(changed), "by": who})
+        return item
+
+    @app.post("/api/knowledge/{knowledge_id}/replay")
+    def replay_knowledge(knowledge_id: str, who=Depends(user)):
+        """«Nachspielen»: the item's current version applied to every prepared case without a model; what it would change
+        is kept on the item, and only then can it be activated («Freigeben»)."""
+        return store.save_knowledge(replayed(found(store.get_knowledge, knowledge_id), who))
+
     @app.post("/api/knowledge/{knowledge_id}/activate")
     def activate(knowledge_id: str, body: StatusChange, who=Depends(user)):
+        """«Freigeben»: only an item whose replay is of its current version (a refinement: the refining item's own)."""
         item = found(store.get_knowledge, knowledge_id)
+        if (item.get("replay") or {}).get("version") != item.get("version"):
+            raise HTTPException(409, "Zuerst nachspielen: die Wirkung dieser Fassung ist nicht bekannt")
         if item.get("refines"):
             target = found(store.get_knowledge, item["refines"])
             merged = kb.refine(target, content=item["content"], applies_when=item["applies_when"],

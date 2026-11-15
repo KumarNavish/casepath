@@ -135,6 +135,9 @@ class AppTests(unittest.TestCase):
         self.assertTrue(any(e["agent"] == "document_finder" for e in run_a["events"]))
         item, = client.get("/api/knowledge", params={"status": "candidate"}).json()["knowledge"]
         self.assertEqual((item["content"]["title"], item["origin"]["case_id"]), ("Ventilation record", case_a["id"]))
+        # Slice C (C12): activation goes through a replay of the current version («Freigabe nach dem Nachspielen»)
+        self.assertEqual(client.post(f"/api/knowledge/{item['id']}/activate", json={"reason": "Seen often."}).status_code, 409)
+        self.assertEqual(client.post(f"/api/knowledge/{item['id']}/replay").json()["replay"]["version"], item["version"])
         active = client.post(f"/api/knowledge/{item['id']}/activate", json={"reason": "Seen often."}).json()
         self.assertEqual(active["status"], "active")
 
@@ -160,11 +163,14 @@ class AppTests(unittest.TestCase):
                                   "files": [file_b["id"]], "citations": [{"file": file_b["id"], "quote": LEASE}], "note": ""}
         client.app.state.runs.model_factory = lambda: ScriptedModel([[("record_document", recheck_finder), report("document_finder")]])
         body = {"op": "add_document", "args": {"title": "Lease", "why": "Shows who rents the flat.", "step": "assess"},
-                "reason": "Protekta needs the lease for defect claims.", "use_for_similar": True, "activate": True}
+                "reason": "Protekta needs the lease for defect claims.", "use_for_similar": True}
+        # Slice C (C12): the edit form no longer activates; its candidate carries the replay of its version, then «Freigeben»
+        self.assertEqual(client.post(f"/api/cases/{case_b['id']}/edits", json={**body, "activate": True}).status_code, 422)
         changed = client.post(f"/api/cases/{case_b['id']}/edits", json=body).json()
         added, = changed["diff"]["documents_added"]
         self.assertEqual((added["title"], added["status"]), ("Lease", "missing"))
-        self.assertEqual(changed["knowledge"]["status"], "active")
+        self.assertEqual((changed["knowledge"]["status"], changed["knowledge"]["replay"]["version"]), ("candidate", 1))
+        self.assertEqual(client.post(f"/api/knowledge/{changed['knowledge']['id']}/activate", json={"reason": "Nachgespielt."}).json()["status"], "active")
         recheck = self.wait(client, changed["recheck"]["id"])
         self.assertEqual(recheck["status"], "completed", recheck.get("error"))
         after = client.get(f"/api/cases/{case_b['id']}").json()

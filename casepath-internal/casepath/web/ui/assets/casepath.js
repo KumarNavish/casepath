@@ -1050,8 +1050,7 @@ function editForm(step) {
     <div data-op="set_transition" hidden><label>${T("Branch", "Verzweigung")}<select name="edge">${edges}</select></label><label>${T("Now leads to", "Führt neu zu")}<select name="to">${steps}</select></label></div>
     <div data-op="rename_step" hidden><label>${T("New wording", "Neue Bezeichnung")}<input name="rename" maxlength="200" value="${esc(step.title)}"></label></div>
     <label>${T("Why this changes (required)", "Begründung (Pflicht)")}<textarea name="reason" rows="2" required maxlength="500"></textarea></label>
-    <label class="cp-check"><input type="checkbox" name="similar"> ${T("Use for similar cases", "Für ähnliche Fälle übernehmen")}</label>
-    <label class="cp-check"><input type="checkbox" name="activate" disabled> ${T("Apply to new cases now (otherwise it is suggested until approved)", "Ab sofort bei neuen Fällen anwenden (sonst nur Vorschlag bis zur Freigabe)")}</label>
+    <label class="cp-check"><input type="checkbox" name="similar"> ${T("Use for similar cases (a proposal in Knowledge, approved there after its replay)", "Für ähnliche Fälle übernehmen (Vorschlag im Wissen, dort nach dem Nachspielen freigeben)")}</label>
     <div class="row"><button class="cp-button primary">${T("Save change", "Änderung speichern")}</button><button type="button" class="cp-button" id="edit-cancel">${T("Cancel", "Abbrechen")}</button>
       <span class="cp-error" id="edit-error"></span></div></form>`;
 }
@@ -1072,7 +1071,6 @@ function bindEdit() {
   };
   form.op.addEventListener("change", show);
   for (const prefix of ["add", "set"]) form[`${prefix}-fact`].addEventListener("change", () => fillValues(prefix));
-  form.similar.addEventListener("change", () => { form.activate.disabled = !form.similar.checked; if (!form.similar.checked) form.activate.checked = false; });
   $("#edit-cancel").addEventListener("click", () => { S.editing = false; renderCase(); });
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -1089,7 +1087,7 @@ function bindEdit() {
     const before = snapshot(op, args);
     try {
       const response = await api(`/api/cases/${S.route.id}/edits`, { method: "POST", body: JSON.stringify({
-        op, args, reason: form.reason.value, use_for_similar: form.similar.checked, activate: form.activate.checked }) });
+        op, args, reason: form.reason.value, use_for_similar: form.similar.checked }) });
       S.lastEdit = { ...response, op, args, before };
       S.editing = false;
       await loadCase();
@@ -2391,7 +2389,10 @@ async function renderKnowledge() {
       ${seededNote(k) ? `<span class="cp-muted">${esc(seededNote(k))}</span>` : `<span class="cp-muted">${k.origin.kind === "case_edit" ? T("Learned from a case worker’s change in", "Gelernt aus einer Änderung in der Fallbearbeitung, im Fall") : T("Learned by the result checker in", "Gelernt vom Ergebnisprüfer im Fall")} <a href="#/case/${esc(k.origin.case_id)}/process_builder">${esc(caseName(k.origin.case_id))}</a></span>`}
       ${k.uses.length ? `<span>${T("Cases", "Fälle")}: ${k.uses.map((u) => `<a href="#/case/${esc(u.case_id)}/document_finder">${esc(caseName(u.case_id))}</a> <span class="cp-chip ${u.outcome === "present" ? "good" : u.outcome === "contradicted" ? "bad" : ""}">${esc(word(u.outcome))}</span>`).join(" ")}</span>` : ""}
       <details><summary class="cp-link">${T("History", "Verlauf")}</summary><ul class="cp-log">${k.history.map((h) => `<li><b>v${h.version}</b><span>${esc(changeText(h.change))}${h.by ? ` · ${esc(byWhom(h.by))}` : ""} · ${dateText(h.at)}</span></li>`).join("")}</ul></details>
-      <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? `<button class="cp-button primary" data-activate="${esc(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>` : ""}
+      ${k.status !== "active" && k.status !== "retired" ? replayLine(k, data.knowledge, caseName) : ""}
+      <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? (replayCurrent(k, data.knowledge)
+          ? `<button class="cp-button primary" data-activate="${esc(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>`
+          : `<button class="cp-button primary" data-replay="${esc(k.ids.join(","))}">${T("Replay", "Nachspielen")}</button>`) : ""}
         ${k.status !== "retired" ? `<button class="cp-button" data-retire="${esc(k.ids.join(","))}">${T("Retire", "Zurückziehen")}</button>` : ""}</div></article>`;
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const sections = Object.entries(groups).sort(([a], [b]) => a.localeCompare(b, "de")).map(([name, entries]) => {
@@ -2406,7 +2407,12 @@ async function renderKnowledge() {
       "Was CasePath aus früheren Fällen und aus Änderungen der Fallbearbeitung gelernt hat. Freigegebene Einträge prägen neue Fälle; Vorschläge werden nur als Vorschlag geprüft, bis ein Mensch sie freigibt.")}</p>
     ${sections || `<p class="cp-empty">${T("Nothing learned yet. Knowledge appears after cases are prepared or a case worker saves a change for similar cases.", "Noch nichts gelernt. Wissen entsteht, wenn Fälle vorbereitet werden oder eine Änderung für ähnliche Fälle gespeichert wird.")}</p>`}</main>`;
   const each = (ids, path, reason) => Promise.all(ids.split(",").map((id) => api(`/api/knowledge/${id}/${path}`, { method: "POST", body: JSON.stringify({ reason }) })));
-  for (const b of document.querySelectorAll("[data-activate]")) b.addEventListener("click", async () => { await each(b.dataset.activate, "activate", T("approved in Knowledge", "im Wissen freigegeben")); renderKnowledge(); });
+  for (const b of document.querySelectorAll("[data-replay]")) b.addEventListener("click", async () => {  // without a model: what this version would change
+    b.disabled = true;
+    await each(b.dataset.replay, "replay").catch(() => {});
+    renderKnowledge();
+  });
+  for (const b of document.querySelectorAll("[data-activate]")) b.addEventListener("click", async () => { await each(b.dataset.activate, "activate", T("approved in Knowledge", "im Wissen freigegeben")).catch(() => {}); renderKnowledge(); });
   for (const b of document.querySelectorAll("[data-retire]")) b.addEventListener("click", async () => { await each(b.dataset.retire, "retire", T("retired in Knowledge", "im Wissen zurückgezogen")); renderKnowledge(); });
 }
 
@@ -2552,6 +2558,22 @@ function autoTitle(u) {
   if (reason === "lauf_aktiv") return T("A run is in progress", "Ein Lauf ist im Gang");
   if (reason === "anmelden") return T("Sign in again to update", "Zum Aktualisieren erneut anmelden");
   return u.text || "";
+}
+// Knowledge is approved only after a replay of its current version (HANDLER_BAR L3): each item of a card (the same item
+// seeded for an area and the intake it replaced) has its own; «ändert n von m Fällen», the changes by case, then «Freigeben».
+const KNOWLEDGE_CHANGE = { needs: T("documents", "Unterlagen"), now: T("asked now", "jetzt verlangt"), offered: T("offered", "angeboten"),
+                           later: T("asked later", "später verlangt"), questions: T("questions", "Fragen"), next_action: T("next step", "nächster Schritt") };
+function replayCurrent(k, all) {
+  return k.ids.every((id) => { const it = all.find((x) => x.id === id); return it && it.replay && it.replay.version === it.version; });
+}
+function replayLine(k, all, caseName) {
+  if (!replayCurrent(k, all)) return `<span class="cp-muted">${T("Its effect on the stored cases is not known yet.", "Die Wirkung auf die vorbereiteten Fälle ist noch nicht bekannt.")}</span>`;
+  const replays = k.ids.map((id) => all.find((x) => x.id === id).replay);
+  const changed = {};
+  for (const r of replays) for (const row of r.changed || []) changed[row.case] = [...new Set([...(changed[row.case] || []), ...row.changed])];
+  const total = Math.max(...replays.map((r) => r.cases || 0)), n = Object.keys(changed).length;
+  return `<details class="cp-replay"><summary class="cp-link">${T(`changes ${n} of ${total} cases`, `ändert ${n} von ${total} Fällen`)}</summary>
+    <ul class="cp-log">${Object.entries(changed).map(([id, what]) => `<li><a href="#/case/${esc(id)}/overview">${esc(caseName(id))}</a> <span class="cp-muted">· ${what.map((w) => esc(KNOWLEDGE_CHANGE[w] || w)).join(", ")}</span></li>`).join("")}</ul></details>`;
 }
 // An update at work says what it reads: «Neu eingegangen: 2 Datei(en) · wird aktualisiert»; one started again after a
 // restart says so («wird fortgesetzt»).

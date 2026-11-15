@@ -147,12 +147,28 @@ def run_case(api, case, rendered, *, given_workflow=False, poll=2.0, timeout=360
 
 
 def expert_edits(api, case_id, edits):
-    """Make the truth's expert corrections through the edit endpoint, as a case worker would."""
+    """Make the truth's expert corrections through the edit endpoint, as a case worker would. A correction the truth also
+    activates for similar cases is posted without activation, which makes it a candidate; its effect on the stored cases is
+    then replayed and it is activated (POST /api/knowledge/{id}/replay, then /activate), as shared Knowledge is activated
+    only after a replay of its current version (docs/HANDLER_BAR.md, L3). A deployment without the replay route activates
+    the candidate directly (``replayed`` false). An activation the truth asks for that fails fails the correction."""
     done = []
     for edit in edits:
         try:
-            answer = api.call("POST", f"/api/cases/{case_id}/edits", {**edit, "recheck": False})
-            done.append({"op": edit["op"], "accepted": True, "knowledge": (answer.get("knowledge") or {}).get("status")})
+            answer = api.call("POST", f"/api/cases/{case_id}/edits", {**{k: v for k, v in edit.items() if k != "activate"}, "recheck": False})
+            item = answer.get("knowledge") or {}
+            row = {"op": edit["op"], "accepted": True, "knowledge": item.get("status")}
+            if edit.get("activate") and item.get("id"):
+                try:
+                    api.call("POST", f"/api/knowledge/{item['id']}/replay", {})
+                    row["replayed"] = True
+                except ApiError as error:
+                    if error.status not in (404, 405):
+                        raise
+                    row["replayed"] = False  # a deployment from before the replay gate
+                activated = api.call("POST", f"/api/knowledge/{item['id']}/activate", {"reason": "nach dem Nachspielen freigegeben"})
+                row["knowledge"] = activated.get("status")
+            done.append(row)
         except ApiError as error:
             done.append({"op": edit["op"], "accepted": False, "error": str(error)})
     return done
