@@ -5,8 +5,14 @@ with a paced scripted model (so the live view can be watched), lets case A teach
 a Knowledge item and activates it, and serves the app. Nothing here is Mobiliar
 data or a real model run.
 
+Every stage has an example: intake with an urgent deadline (the penalty order, one day left), intake and assessment
+in every area, the mandate package, a fee note, a settlement whose payout is chased, a closed case, historic files,
+a case where new files arrived, a run that failed and one to prepare live. The area cases were written for 15.11.2026;
+on another day their dates move with it, so a deadline is as close as it was then.
+
     python deploy/preview/preview.py [port]
 """
+from datetime import date, timedelta
 from pathlib import Path
 import io
 import json
@@ -56,27 +62,27 @@ def script(email, letter, knowledge_id=None):
         [("list_files", {})],
         [("read_file", {"file": email, "from_page": None, "to_page": None})],
         [("read_file", {"file": letter, "from_page": None, "to_page": None})],
-        [report("claim_reader", summary="Tenant reports recurring mould and says the management was told in writing.",
-                request="Lea Brunner wants help because mould keeps coming back in the bathroom.",
-                parties=[{"role": "tenant", "name": "Lea Brunner"}, {"role": "property management", "name": "Immo Aare AG"}],
-                timeline=[{"date": "03.02.2025", "event": "Tenant tells the management in writing", "citations": [{"file": email, "quote": TOLD}]},
-                          {"date": "07.02.2025", "event": "Management confirms receipt", "citations": [{"file": letter, "quote": REPLY}]}])],
+        [report("claim_reader", summary="Die Mieterin meldet wiederkehrenden Schimmel und hat die Verwaltung schriftlich informiert.",
+                request="Lea Brunner möchte Hilfe, weil im Badezimmer immer wieder Schimmel auftritt.",
+                parties=[{"role": "Mieterin (VN)", "name": "Lea Brunner"}, {"role": "Verwaltung", "name": "Immo Aare AG"}],
+                timeline=[{"date": "03.02.2025", "event": "Die Mieterin informiert die Verwaltung schriftlich", "citations": [{"file": email, "quote": TOLD}]},
+                          {"date": "07.02.2025", "event": "Die Verwaltung bestätigt den Eingang", "citations": [{"file": letter, "quote": REPLY}]}])],
         [delegate("process_builder", "Build this case's process.")],
         [("open_process", {}), ("view_knowledge", {})],
-        [report("process_builder", summary="Defect process; the landlord notice decides the branch.",
-                questions=[{"fact": "legal_area", "plain": "Is this a rental defect?"}, {"fact": "landlord_notified", "plain": "Was the landlord told?"}])],
+        [report("process_builder", summary="Prozess für einen Mietmangel; die Meldung an die Vermieterschaft entscheidet den Weg.",
+                questions=[{"fact": "legal_area", "plain": "Geht es um einen Mangel der Mietsache?"}, {"fact": "landlord_notified", "plain": "Wurde die Vermieterschaft informiert?"}])],
         [delegate("claim_reader", "Record the facts the process asks about.")],
         [("search", {"query": "Verwaltung informiert"})],
-        [("record_fact", {"fact": "legal_area", "status": "established", "value": "tenancy_defect",
+        [("record_fact", {"fact": "legal_area", "status": "established", "value": "Mietmangel",
                           "citations": [{"file": email, "quote": "Im Badezimmer meiner Wohnung bildet sich seit Dezember schwarzer Schimmel."}]})],
         [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": email, "quote": TOLD}]}),
-         report("claim_reader", summary="Both facts recorded with exact quotes.")],
+         report("claim_reader", summary="Beide Angaben mit wörtlichen Zitaten festgehalten.")],
         [delegate("document_finder", "Match each document need to a file.")],
         [("open_process", {})],
-        [*finder, report("document_finder", summary="Message and notice found; no photo text.")],
+        [*finder, report("document_finder", summary="Meldung und Mängelrüge gefunden; das Foto enthält keinen Text.")],
         [delegate("result_checker", "Evaluate and draft.")],
-        [("evaluate", {}), report("result_checker", summary="The tenant told the management in writing; the defect can be assessed. Photos are attached but not read as text.",
-                                  answer="The landlord was told in writing; assess the defect with its evidence.", open_points=["Whether the ventilation claim holds"],
+        [("evaluate", {}), report("result_checker", summary="Die Mieterin hat die Verwaltung schriftlich informiert; der Mangel lässt sich beurteilen. Die Fotos liegen bei.",
+                                  answer="Die Vermieterschaft wurde schriftlich informiert; den Mangel mit seinen Belegen beurteilen.", open_points=["Ob der Einwand des Lüftens zutrifft"],
                                   reply={"needed": True, "subject": "Ihre Meldung: Schimmel im Badezimmer", "clauses": [
                                       {"text": "Sie haben die Verwaltung am 3. Februar schriftlich informiert.", "kind": "statement", "basis": ["fact:landlord_notified"]},
                                       {"text": "Die Verwaltung hat den Eingang Ihrer Meldung bestätigt.", "kind": "statement", "basis": ["document:notice_letter"]}]},
@@ -89,6 +95,27 @@ def script(email, letter, knowledge_id=None):
                                                citations=[{"file": email, "quote": VENT}])])],
         [("complete", {"summary": "Prepared."})],
     ]
+
+
+EXAMPLE_DE = {
+    "Example: rental defect (synthetic test fixture)": "Mietmangel (Testprozess)", "Synthetic test fixture, not a Mobiliar process": "Synthetischer Testprozess, kein Prozess der Mobiliar",
+    "Which legal area does the request concern?": "Welches Rechtsgebiet betrifft das Anliegen?", "Has the tenant told the landlord about the defect?": "Hat die Mieterin den Mangel gemeldet?",
+    "Read the request": "Anliegen lesen", "Check whether the landlord was told": "Prüfen, ob die Vermieterschaft informiert wurde",
+    "Assess the defect with its evidence": "Mangel mit seinen Belegen beurteilen", "Advise telling the landlord first": "Raten, den Mangel zuerst zu melden",
+    "told": "gemeldet", "not told": "nicht gemeldet", "The customer's message": "Meldung der Kundschaft", "It states the request.": "Sie nennt das Anliegen.",
+    "Photo of the defect": "Foto des Mangels", "It shows the defect.": "Es zeigt den Mangel.", "Notice to the landlord": "Mängelrüge an die Vermieterschaft",
+    "It proves the landlord was told.": "Sie belegt, dass die Vermieterschaft informiert wurde.", "Case reported": "Fall gemeldet", "Advice given": "Beraten",
+    "Synthetic open question for tests.": "Synthetische offene Frage für Tests.", "tenancy_defect": "Mietmangel", "loan": "Darlehen", "other": "anderes"}
+
+
+def german_example(workflow):
+    """The synthetic test workflow of cases A and B in the handler's language (its ids stay; the tests keep the original)."""
+    if isinstance(workflow, dict):
+        return {k: german_example(v) if k not in {"id", "to", "fact", "source_refs", "start", "outcome", "format", "status", "version"} else v
+                for k, v in workflow.items()}
+    if isinstance(workflow, list):
+        return [german_example(v) for v in workflow]
+    return EXAMPLE_DE.get(workflow, workflow) if isinstance(workflow, str) else workflow
 
 
 def request(text):
@@ -106,18 +133,109 @@ def area_script(case, file_id):
     """The scripted team for one synthetic area case (tests/fixtures/areas/cases.json): routing, facts with quotes, report."""
     cite = lambda quote: [{"file": file_id, "quote": quote}]
     routing = [{"fact": "rechtsgebiet", "value": case["routing"][0], "citations": cite(case["routing"][1])}] if case["routing"] else []
+    signed = re.search(r"([A-ZÄÖÜ][a-zäöüé]+ [A-ZÄÖÜ][a-zäöüé]+)\s*$", case["text"])  # the customer signs the report
     return ScriptedModel([
         [*[("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
-         report("claim_reader", request=request(case["text"]))],
+         report("claim_reader", request=request(case["text"]), parties=[{"role": "Kundschaft (VN)", "name": signed.group(1)}] if signed else [])],
         [report("document_finder")],
         *[[report("result_checker", answer="Die erste Anforderung ist vorbereitet.")]] * 3,
     ], routing=routing)
 
 
+WRITTEN_FOR = date(2026, 11, 15)  # the day the synthetic area cases were written for
+GERMAN_MONTHS = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"]
+
+
+def moved(value, days=None):
+    """A synthetic case with its dates moved by the days since it was written (none today): ISO dates and «6. November
+    2026» alike, in the text, the quotes and the values, so a deadline is as close on any day as on the day it was written."""
+    days = (date.today() - WRITTEN_FOR).days if days is None else days
+    if not days:
+        return value
+    if isinstance(value, dict):
+        return {k: moved(v, days) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return type(value)(moved(v, days) for v in value)
+    if not isinstance(value, str):
+        return value
+    shift = lambda d: d + timedelta(days=days)
+    value = re.sub(r"\b(\d{4})-(\d{2})-(\d{2})\b", lambda m: shift(date(*map(int, m.groups()))).isoformat(), value)
+    long = lambda d: f"{d.day}. {GERMAN_MONTHS[d.month - 1]} {d.year}"
+    return re.sub(rf"\b(\d{{1,2}})\. ({'|'.join(GERMAN_MONTHS)}) (\d{{4}})\b",
+                  lambda m: long(shift(date(int(m[3]), GERMAN_MONTHS.index(m[2]) + 1, int(m[1])))), value)
+
+
+def renamed(case, names):
+    """A copy of a synthetic case with other made-up names, so a second example of an area reads as another case."""
+    text = json.dumps(case, ensure_ascii=False)
+    for old, new in names.items():
+        text = text.replace(old, new)
+    return json.loads(text)
+
+
+def prepare_area_case(store, runs, case, title=None, decisions=(), files_after=()):
+    """One synthetic area case prepared by the scripted team from one e-mail; the handler's decisions set before the run,
+    files added after it (new files the run did not read)."""
+    from casepath.read.extract import extract
+    made = store.create_case(title or f"{case['title']} (synthetisch)", {"synthetic": True}, "N. Kumar")
+    mail = (f"From: kundin@example.ch\r\nTo: schaden@example-rechtsschutz.ch\r\nSubject: {case['title']}\r\n"
+            f"Content-Type: text/plain; charset=utf-8\r\n\r\n{case['text']}\r\n").encode()
+    row = extract("Schadenmeldung.eml", "message/rfc822", mail)
+    file_id = store.add_file(made["id"], "Schadenmeldung.eml", row["media_type"], row["kind"], mail, row, "N. Kumar")["id"]
+    for fact_id, value in decisions:
+        store.add_edit(made["id"], "set_fact", {"fact": fact_id, "value": value}, "N. Kumar", "Entscheid der Fallbearbeitung")
+    script = key_script if "request" in case else area_script
+    runs.model_factory = lambda case=case, file_id=file_id: script(case, file_id)
+    run = runs.start(made["id"], "N. Kumar")
+    while store.get_run(run["id"])["status"] in ("queued", "running"):
+        time.sleep(0.05)
+    if store.get_run(run["id"])["status"] != "completed":
+        print(f"case {made['title']} did not complete: {store.get_run(run['id']).get('error')}", flush=True)
+    for name, text in files_after:
+        data = text.encode()
+        row = extract(name, "text/plain", data)
+        store.add_file(made["id"], name, row["media_type"], row["kind"], data, row, "N. Kumar")
+    return made
+
+
+def log_event(store, case_id, kind, **fields):
+    """One event in the case's log, as the app records a gesture (casepath.study.event/1)."""
+    completed = store.latest_run(case_id, "completed")
+    return store.append_case_event(case_id, {"schema": "casepath.study.event/1", "session_id": None, "expert": "N. Kumar", "case_copy": case_id,
+                                             "source_case": None, "frozen_run_id": (completed or {}).get("id"), "kind": kind,
+                                             "parity_sha": "preview", "item_id": None, **fields})
+
+
+def seed_stages(store, runs):
+    """The stages the area cases do not reach by themselves: a case at the mandate stage (the mandate package), a closed
+    case, a case where new files came in after its preparation, and a run that failed."""
+    areas = moved(json.loads((ROOT / "tests" / "fixtures" / "areas" / "cases.json").read_text()))
+    keyed = moved(json.loads((ROOT / "tests" / "fixtures" / "areas" / "key_cases.json").read_text()))
+    hearing = renamed(keyed["miete-schlichtung"], {"Peter Muster": "Rita Exempel", "Probegasse 7": "Lindenweg 3"})
+    mandate = prepare_area_case(store, runs, hearing, "Kündigung Miete, Mandat (synthetisch)",
+                                decisions=[("deckung", "bestätigt"), ("vorgehen", "Mandat an Anwaltskanzlei")])
+    done = renamed(areas["arbeit-zeugnis"], {"Greta Muster": "Olga Exempel", "Exempel Treuhand AG": "Probe Treuhand AG"})
+    closed = prepare_area_case(store, runs, done, "Arbeitszeugnis, erledigt (synthetisch)")
+    log_event(store, closed["id"], "letter.copied", form="A1", edited=False, change_ratio=0)
+    log_event(store, closed["id"], "case.closed", form="erledigt", note_present=False)
+    later = renamed(areas["vertrag-kauf"], {"Ivan Muster": "Lukas Exempel", "Garage Beispiel AG": "Auto Probe AG"})
+    arrived = prepare_area_case(store, runs, later, "Kauf mit Mangel, Antwort der Garage (synthetisch)",
+                                files_after=[("Antwort Auto Probe AG.txt", "SYNTHETISCHE AKTE. Auto Probe AG an Lukas Exempel: Wir lehnen "
+                                              "eine Rücknahme des Fahrzeugs ab; die Gewährleistung ist im Kaufvertrag ausgeschlossen.")])
+    from casepath.read.extract import extract
+    failed = store.create_case("Werkvertrag, Lauf abgebrochen (synthetisch)", {"synthetic": True}, "N. Kumar")
+    text = areas["werkvertrag-bau"]["text"].encode()
+    row = extract("Meldung.txt", "text/plain", text)
+    store.add_file(failed["id"], "Meldung.txt", row["media_type"], row["kind"], text, row, "N. Kumar")
+    run = store.create_run(failed["id"], "N. Kumar")
+    store.update_run(run["id"], status="failed", error="transport: the model could not be reached", finished_at="2026-11-15T09:00:00+00:00")
+    return {"mandate": mandate, "closed": closed, "arrived": arrived, "failed": failed}
+
+
 def seed_areas(store, runs):
     """One prepared synthetic case per shipped area, routed and prepared by the scripted team: the breadth of the product."""
     from casepath.read.extract import extract
-    cases = json.loads((ROOT / "tests" / "fixtures" / "areas" / "cases.json").read_text())
+    cases = moved(json.loads((ROOT / "tests" / "fixtures" / "areas" / "cases.json").read_text()))
     for wid, case in cases.items():
         if wid.startswith("_"):
             continue
@@ -153,7 +271,7 @@ def seed_key_cases(store, runs):
     """The cases of key_cases.json (a dismissal during sick leave, a summons to a conciliation hearing), prepared by the
     scripted team from one e-mail each."""
     from casepath.read.extract import extract
-    cases = json.loads((ROOT / "tests" / "fixtures" / "areas" / "key_cases.json").read_text())
+    cases = moved(json.loads((ROOT / "tests" / "fixtures" / "areas" / "key_cases.json").read_text()))
     made = {}
     for key, case in cases.items():
         if key.startswith("_"):
@@ -333,7 +451,8 @@ def main():
     data = tempfile.mkdtemp(prefix="cp-preview-")
     # The fixture's workflow plus a synthetic intake, so the handler's own workflow (which supersedes the intake) joins too.
     catalogue = Path(tempfile.mkdtemp(prefix="cp-preview-catalogue-"))
-    (catalogue / "example-defect.json").write_text((ROOT / "tests" / "fixtures" / "example-defect.json").read_text())
+    (catalogue / "example-defect.json").write_text(json.dumps(german_example(json.loads((ROOT / "tests" / "fixtures" / "example-defect.json").read_text())),
+                                                               ensure_ascii=False))
     from tests.test_handler_workflow import intake
     (catalogue / "osm-mold.json").write_text(json.dumps(intake()))
     settings = load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(catalogue), "CASEPATH_DEV_USER": "N. Kumar"})
@@ -373,7 +492,7 @@ def main():
             return "e-" + runs.store.list_edits(case_b["id"])[-1]["id"]
         return Paced([[("read_file", {"file": letter_b, "from_page": None, "to_page": None})],
                       [("record_document", lambda: {"document": need(), "status": "absent", "files": [], "citations": [],
-                                                    "note": "No lease is among the files."}), report("document_finder", summary="No lease among the files.")]], pause)
+                                                    "note": "Kein Mietvertrag in den Akten."}), report("document_finder", summary="Kein Mietvertrag in den Akten.")]], pause)
     runs.model_factory = factory
     # Case C: a synthetic case on the handler's workflow with a stored result (no model), so its stage actions,
     # its letter and "andere Handlung" can be tried in the browser. Case D is the same, for the gesture checks.
@@ -401,6 +520,7 @@ def main():
     case_account = seed_account(store, runs)
     case_update = seed_update(store, runs)
     case_offer = seed_offer(store, runs)
+    stages = seed_stages(store, runs)
     # «Aktualisieren» in the browser runs the update's script; every other run the one case B's live view plays
     asked = {}
     start_update = runs.update
@@ -417,7 +537,8 @@ def main():
     runs.model_factory = dispatch
     print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}"
           f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}  account {case_account['id']}"
-          f"  update {case_update['id']}  offer {case_offer['id']}", flush=True)
+          f"  update {case_update['id']}  offer {case_offer['id']}  mandate {stages['mandate']['id']}  closed {stages['closed']['id']}"
+          f"  arrived {stages['arrived']['id']}  failed {stages['failed']['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 
