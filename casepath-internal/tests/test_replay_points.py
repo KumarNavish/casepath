@@ -80,6 +80,82 @@ class LabelsFormatTests(unittest.TestCase):
         with self.assertRaises(points.LabelsError):
             points.check(labels)
 
+    def test_the_expanded_truth_is_optional_and_checked_where_it_is_given(self):
+        """A labels file of the narrow score stays valid; a point may add how many questions the letter answered, the dates
+        it stated, and a verdict on its substance with the role of whoever gave it."""
+        labels = made_up()
+        labels["points"][2].update(answered=1, deadlines=[{"id": "anfechtung", "date": "2025-04-07"}, {"id": "verjaehrung", "date": "prüfen"}],
+                                   substantive={"by_role": "jurist", "verdict": "incomplete", "questions": ["correct", "incomplete"]})
+        self.assertEqual(points.check(labels)["points"][2]["answered"], 1)
+        bad = copy.deepcopy(labels)
+        bad["points"][2].update(answered=-1, deadlines=[{"id": "Frist", "date": "bald"}], substantive={"by_role": "developer", "verdict": "fine"})
+        bad["points"][0]["extra"] = True
+        with self.assertRaises(points.LabelsError) as caught:
+            points.check(bad)
+        problems = caught.exception.problems
+        for part in ("points[0]: n, date, kind", "points[2].answered", "points[2].deadlines: 'Frist' needs a date",
+                     "points[2].deadlines: 'Frist' is not a deadline", "points[2].substantive: by_role"):
+            self.assertTrue(any(part in p for p in problems), (part, problems))
+        process = {"facts": [{"id": "deckung", "type": "enum", "values": ["offen", "bestätigt", "abgelehnt"], "handler_only": True}],
+                   "documents": [{"id": "mietvertrag"}, {"id": "fotos"}], "action_kinds": {f"A{i}": {} for i in range(13)},
+                   "deadlines": [{"id": "anfechtung"}]}
+        with self.assertRaises(points.LabelsError) as caught:
+            points.check(labels, process, "case_made_up_0001")
+        self.assertEqual([p for p in caught.exception.problems if "deadlines" in p], ["points[2].deadlines: 'verjaehrung' is not a deadline of this process"])
+
+
+class AcceptRuleTests(unittest.TestCase):
+    """The rules of the expanded acceptance, declared before any result (quality/points.py)."""
+
+    def test_the_recipient_is_read_from_the_forms_addressee_line(self):
+        self.assertEqual(points.recipients("Kundschaft"), ["kunde"])
+        self.assertEqual(points.recipients("Gegenpartei, als Entwurf zuerst an die Kundschaft"), ["gegenpartei", "kunde"])
+        self.assertEqual(points.recipients("Anwaltskanzlei"), ["kanzlei"])
+        self.assertEqual(points.recipients(None), ["andere"])
+
+    def test_other_is_hit_by_a_word_that_starts_with_it_and_a_need_by_its_line_or_its_whole(self):
+        lines = [{"key": "residual:claim.0", "line": "Belege zu: Stromkosten für den Bautrockner"},
+                 {"key": "residual:document.maengelruege", "line": "Mängelrüge"}]
+        process = {"documents": [{"id": KORRESPONDENZ, "includes": ["maengelruege"]}, {"id": "maengelruege"}]}
+        verdict = lambda wanted: points.residual_verdict(wanted, lines, process)
+        self.assertEqual(verdict(["other:stromkosten", "maengelruege"]),
+                         {"label": 2, "hits": ["other:stromkosten", "maengelruege"], "missed": [], "extras": [], "ok": True})
+        self.assertEqual(verdict(["other:strom"])["hits"], ["other:strom"])  # the start of a word
+        loud = [{"key": "residual:claim.0", "line": "BELEGE ZU: STROMKOSTEN"}]
+        self.assertEqual(points.residual_verdict(["other:stromkosten"], loud, process)["hits"], ["other:stromkosten"])  # case-folded
+        self.assertEqual(verdict(["other:kosten"])["missed"], ["other:kosten"])  # inside a word is not a hit
+        self.assertEqual(verdict(["other:stromkosten"])["extras"], ["residual:document.maengelruege"])
+        self.assertEqual(verdict([KORRESPONDENZ])["hits"], [])  # a whole is not asked by one of its parts
+        whole = points.residual_verdict(["maengelruege"], [{"key": f"residual:document.{KORRESPONDENZ}", "line": "Korrespondenz"}], process)
+        self.assertEqual((whole["hits"], whole["extras"]), (["maengelruege"], []))  # a part named inside an asked whole is asked
+
+    def test_a_stated_date_counts_exactly_and_a_wrong_one_is_critical(self):
+        deadline = {"kind": "deadline", "key": "anfechtung", "value": "2026-12-10", "origin": "law"}
+        text = "Die Frist für die Anfechtung endet am 10.12.2026."
+        right = points.deadline_check({"deadlines": [{"id": "anfechtung", "date": "2026-12-10"}]}, [deadline], text)
+        self.assertEqual((right["stated"], right["right"], right["ok"], right["critical"]), (1, 1, True, 0))
+        wrong = points.deadline_check({"deadlines": [{"id": "anfechtung", "date": "2026-12-11"}]}, [deadline], text)
+        self.assertEqual((wrong["wrong"], wrong["ok"], wrong["critical"]), (["anfechtung"], False, 1))  # one day off: no tolerance
+        unstated = points.deadline_check({"deadlines": [{"id": "anfechtung", "date": "2026-12-10"}]}, [deadline], "Kein Datum.")
+        self.assertEqual((unstated["missing"], unstated["ok"]), (["anfechtung"], False))
+        self.assertIsNone(points.deadline_check({}, [deadline], text)["ok"])  # no label: nothing to judge
+
+    def test_who_gave_a_verdict_decides_whether_substance_counts_as_verified(self):
+        shown = {"items": [{"kind": "customer_question", "value": "Q?", "answer": "A.", "item_id": "customer_question:0"}],
+                 "action": {"action": "A5", "form": "A5"}}
+        drafted = {"form": "A5", "to": "Kundschaft", "needs": [], "parts": ["{zu_fragen}"], "text": "Brief ohne Lücke."}
+        point = {"date": "2025-03-07", "to": "kunde", "documents": []}
+        status = lambda role: points.accept({**point, "substantive": {"by_role": role, "verdict": "correct"}}, shown, drafted, [], {})["substantive"]["status"]
+        self.assertEqual([status("jurist"), status("process_owner"), status("developer")], ["verified", "verified", "developer_check"])
+        out = points.accept(point, shown, drafted, [{"fact": "aussichten", "value": "genügend", "from": "2025-03-07"}], {})
+        self.assertEqual((out["substantive"]["status"], out["substantive"]["present"], out["authority"]), ("unverified", True,
+                         {"needs": ["aussichten"], "missing": [], "ok": True}))
+        self.assertEqual((out["questions"]["beantwortet"], out["questions"]["offen"]), (1, 0))
+        closed = points.accept(point, shown, {**drafted, "parts": ["{im_fall}"]}, [], {})  # a form that answers no question
+        self.assertEqual((closed["questions"]["offen"], closed["authority"]["missing"]), (1, ["aussichten"]))
+        nothing = points.accept(point, shown, {**drafted, "text": None}, [], {})
+        self.assertEqual((nothing["draft"], nothing["recipient"], nothing["substantive"]["present"]), (False, None, False))
+
 
 class CoverageTests(unittest.TestCase):
     def test_whether_the_document_answered_had_an_entry_an_enclosure_counts_with_its_letter(self):
@@ -219,6 +295,19 @@ class ReplayTests(unittest.TestCase):
         finally:
             desk.close()
 
+    def test_j_the_narrow_score_is_named_and_the_stated_limits_are_repeated(self):
+        lines = self.table["lines"]
+        self.assertIn("historische Handlung (eng; Wiedervorlage ±7 Tage, keine Frist-Toleranz): Handlungsart 8/8 · bereit 7/8", lines)
+        self.assertIn(points.STATED_LIMITS, lines)
+        for part in ("16/35", "11 of them", "7/50", "not comparable", "28 of the 50", "not independent validation"):
+            self.assertIn(part, points.STATED_LIMITS)
+        self.assertEqual(self.table["summary"]["narrow"], {"kind_ok": 8, "ready": 7, "of": 8})
+        accept = self.table["summary"]["accept"]
+        self.assertEqual((accept["of"], accept["no_draft"]), (8, 4))  # the payments and the closing have no letter of CasePath's
+        # the assessment's form waits for the cover decision (labelled) and the prospects (not labelled): «decision pending»
+        self.assertEqual(self.rows[4]["accept"]["authority"], {"needs": ["deckung", "aussichten"], "missing": ["aussichten"], "ok": False})
+        self.assertNotIn("accept", self.rows[3])  # a phone note has no letter
+
     def test_i_deleting_a_case_deletes_its_labels(self):
         desk = phased.Desk()
         try:
@@ -228,6 +317,89 @@ class ReplayTests(unittest.TestCase):
             self.assertEqual(desk.store.list_labels(), [])
         finally:
             desk.close()
+
+
+class ReplyAssessmentTests(unittest.TestCase):
+    """S-D11A (tests/fixtures/replay/reply_assessment.json), the shape of D11 with its four labelled points and the expanded
+    truth of the assessment: answered 1, the electricity-cost receipts as the one document asked, no verdict on substance.
+    The values pinned here are the product's before the episode's slices: the slice that writes the assessment changes the
+    third point's acceptance (its residual, its answers, its gaps), and that change is to be named where it is pinned."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.case = phased.load("reply_assessment")
+        cls.desk = phased.Desk()
+        cls.case_id = cls.desk.prepare(cls.case)
+        labels = {**copy.deepcopy(cls.case["labels"]), "case": cls.case_id}
+        cls.desk.store.save_labels(cls.case_id, points.check_case(cls.desk.store, cls.desk.catalogue, cls.case_id, labels), "test")
+        cls.table = points.table(cls.desk.store, cls.desk.catalogue, accept_lines=True)
+        cls.rows = {r["n"]: r for r in cls.table["rows"]}
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.desk.close()
+
+    def test_a_the_narrow_score_of_the_four_points(self):
+        self.assertEqual([(r["label"], r["kind"], r["ready"]) for r in self.table["rows"]],
+                         [("A1", "A1", False), ("A4", "A6", False), ("A5", "A5", False), ("A7", "A7", True)])
+        self.assertEqual(self.rows[3]["documents"]["missed"], ["other:stromkosten"])  # the narrow rule never hits another document
+        self.assertIn("historische Handlung (eng; Wiedervorlage ±7 Tage, keine Frist-Toleranz): Handlungsart 3/4 · bereit 1/4", self.table["lines"])
+
+    def test_b_the_assessment_is_accepted_by_its_own_rules(self):
+        accept = self.rows[3]["accept"]
+        self.assertEqual((accept["form"], accept["draft"], accept["recipient"]["ok"]), ("A5", True, True))
+        self.assertEqual({k: accept["questions"][k] for k in ("beantwortet", "bedingt", "offen", "pruefen", "label", "ok")},
+                         {"beantwortet": 1, "bedingt": 0, "offen": 2, "pruefen": 0, "label": 1, "ok": True})
+        self.assertEqual(accept["residual"], {"label": 1, "hits": [], "missed": ["other:stromkosten"], "ok": False,
+                                              "extras": [f"residual:document.{KORRESPONDENZ}", "residual:document.quittungen"]})
+        self.assertEqual(accept["substantive"], {"present": False, "gaps": 4, "status": "unverified", "verdict": None})
+        self.assertEqual(accept["authority"]["missing"], ["aussichten"])  # the labels hold no prospects decision: «decision pending»
+        self.assertEqual(accept["deadlines"]["label"], 0)
+        line = next(x for x in self.table["lines"] if x.startswith("   accept:") and "residual 0/1" in x)
+        self.assertIn("missed other:stromkosten", line)
+        self.assertIn("decision pending (aussichten)", line)
+        s = self.table["summary"]["accept"]
+        self.assertEqual((s["recipient"], s["questions"], s["residual"], s["present"], s["decision_pending"]), (4, [1, 1], 1, 3, 1))
+
+    def test_c_the_exposure_to_the_whole_file(self):
+        self.assertEqual([self.rows[n]["exposure"]["request_uncited"] for n in (1, 2, 3, 4)], [1, 1, 1, 1])
+        self.assertEqual(self.rows[1]["exposure"]["parties_named_later"], 1)
+        self.assertEqual(self.table["summary"]["exposure"]["points"], 4)
+        self.assertTrue(any(x.startswith("exposure to the whole-file brief (not an effect): 4 of 4 points · parties named later 1")
+                            for x in self.table["lines"]))
+        self.assertIn("whole-file brief parties_named_later 1 request_uncited 1", self.table["lines"][2])  # the first point's diagnosis
+
+    def test_d_a_table_before_and_after_names_each_point_whose_kind_or_ready_changed(self):
+        after = copy.deepcopy(self.table)
+        after["rows"][1].update(kind="A5", kind_ok=False)  # the question back: a different action prepared
+        after["rows"][2]["ready"] = True
+        after["summary"]["ready"] = 2
+        self.assertEqual(points.change_lines(self.table, after), [
+            f"S-D11A {self.case_id} #2 A4: kind A6 → A5, ready no → no",
+            f"S-D11A {self.case_id} #3 A5: kind A5 → A5, ready no → yes",
+            "2 of 4 points changed kind or ready · ready (letters) 1/4 before, 2/4 after"])
+        self.assertEqual(points.change_lines(self.table, self.table)[-1], "0 of 4 points changed kind or ready · ready (letters) 1/4 before, 1/4 after")
+        with tempfile.TemporaryDirectory() as folder:
+            paths = [Path(folder) / "before.json", Path(folder) / "after.json"]
+            for path, out in zip(paths, (self.table, after)):
+                path.write_text(json.dumps(out, ensure_ascii=False))
+            printed = io.StringIO()
+            with contextlib.redirect_stdout(printed):
+                points.main(["--compare", *map(str, paths)])  # no store: two saved tables
+        self.assertEqual(printed.getvalue().splitlines(), points.change_lines(self.table, after))
+
+    def test_e_the_command_line_prints_each_acceptance_on_request_and_stays_content_free(self):
+        with mock.patch.dict(os.environ, {"CASEPATH_DATA_DIR": self.desk.directory.name}):
+            plain, accepted = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(plain):
+                points.main(["--case", self.case_id])
+            with contextlib.redirect_stdout(accepted):
+                points.main(["--case", self.case_id, "--accept"])
+        self.assertNotIn("   accept:", plain.getvalue())
+        self.assertEqual(accepted.getvalue().count("   accept:"), 4)
+        for text in (accepted.getvalue(), json.dumps(self.table, ensure_ascii=False)):
+            self.assertIsNone(DATES.search(text))
+            self.assertFalse([w for w in ("Steiner", "Sonnmatt", "Brunnmatt", "Lerchenweg", "Stromkosten für", "CHF") if w in text])
 
 
 if __name__ == "__main__":
