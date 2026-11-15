@@ -25,7 +25,8 @@ create table if not exists files(
 create table if not exists runs(
   id text primary key, case_id text not null references cases(id), status text not null,
   files_sha256 text not null, workflow_id text, workflow_version text, deployment text,
-  routing text, result text, error text, created_by text not null, created_at text not null, finished_at text);
+  routing text, result text, error text, created_by text not null, created_at text not null, finished_at text,
+  kind text not null default 'full', builds_on text);
 create table if not exists run_events(
   run_id text not null references runs(id), seq integer not null, at text not null, data text not null,
   primary key(run_id, seq));
@@ -82,6 +83,12 @@ class CaseStore:
         self._db.execute("pragma foreign_keys=on")
         self._db.executescript(SCHEMA)
         self._lock = threading.RLock()
+        # a store made before updates: its runs are full preparations
+        columns = {r["name"] for r in self._all("pragma table_info(runs)")}
+        if "kind" not in columns:
+            self._db.execute("alter table runs add column kind text not null default 'full'")
+        if "builds_on" not in columns:
+            self._db.execute("alter table runs add column builds_on text")
 
     def close(self):
         with self._lock:
@@ -115,7 +122,7 @@ class CaseStore:
 
     def list_cases(self):
         rows = self._all("select c.*, (select count(*) from files f where f.case_id=c.id) as file_count,"
-                         " (select status from runs r where r.case_id=c.id order by created_at desc, rowid desc limit 1) as run_status,"
+                         " (select status from runs r where r.case_id=c.id and r.status<>'discarded' order by created_at desc, rowid desc limit 1) as run_status,"
                          " (select workflow_id from runs r where r.case_id=c.id and status='completed' order by created_at desc, rowid desc limit 1) as run_workflow_id"
                          " from cases c order by updated_at desc")
         for row in rows:
@@ -188,14 +195,17 @@ class CaseStore:
         return sha256("\n".join(r["sha256"] for r in rows).encode()).hexdigest()
 
     # Runs
-    def create_run(self, case_id, user):
+    def create_run(self, case_id, user, kind="full", builds_on=None):
+        """A run of the case: a full preparation, or an update (``kind`` «update») that builds on a completed run."""
+        if kind not in ("full", "update"):
+            raise ValueError("a run is full or an update")
         with self._lock:
             self.get_case(case_id)
             if self._one(f"select id from runs where case_id=? and status in {ACTIVE}", case_id):
                 raise Conflict("this case already has a run in progress")
             run_id = new_id("run")
-            self._db.execute("insert into runs(id,case_id,status,files_sha256,created_by,created_at) values(?,?,?,?,?,?)",
-                             (run_id, case_id, "queued", self.files_digest(case_id), user, now()))
+            self._db.execute("insert into runs(id,case_id,status,files_sha256,created_by,created_at,kind,builds_on) values(?,?,?,?,?,?,?,?)",
+                             (run_id, case_id, "queued", self.files_digest(case_id), user, now(), kind, builds_on))
         return self.get_run(run_id)
 
     def update_run(self, run_id, **fields):
@@ -218,9 +228,13 @@ class CaseStore:
                          for e in self._all("select * from run_events where run_id=? and seq>? order by seq", run_id, after)]
         return row
 
-    def recent_runs(self, limit=30):
-        """The latest completed runs of any case, newest first (for the stage times a run line expects)."""
-        rows = self._all("select id from runs where status='completed' order by created_at desc, rowid desc limit ?", limit)
+    def recent_runs(self, limit=30, kind=None):
+        """The latest completed runs of any case, newest first (for the stage times a run line expects); ``kind``: only
+        full preparations or only updates, never the two mixed."""
+        if kind:
+            rows = self._all("select id from runs where status='completed' and kind=? order by created_at desc, rowid desc limit ?", kind, limit)
+        else:
+            rows = self._all("select id from runs where status='completed' order by created_at desc, rowid desc limit ?", limit)
         return [self.get_run(r["id"]) for r in rows]
 
     def completed_runs(self, case_id, limit=2):
@@ -228,9 +242,11 @@ class CaseStore:
         rows = self._all("select id from runs where case_id=? and status='completed' order by created_at desc, rowid desc limit ?", case_id, limit)
         return [self.get_run(r["id"]) for r in rows]
 
-    def latest_run(self, case_id, status=None):
-        sql = "select id from runs where case_id=?" + (" and status=?" if status else "") + " order by created_at desc, rowid desc limit 1"
-        row = self._one(sql, *((case_id, status) if status else (case_id,)))
+    def latest_run(self, case_id, status=None, exclude=None):
+        """The case's newest run (of a status; ``exclude``: not of this status, as a run set aside)."""
+        sql = ("select id from runs where case_id=?" + (" and status=?" if status else "") + (" and status<>?" if exclude else "")
+               + " order by created_at desc, rowid desc limit 1")
+        row = self._one(sql, case_id, *([status] if status else []), *([exclude] if exclude else []))
         return self.get_run(row["id"]) if row else None
 
     def append_event(self, run_id, data):

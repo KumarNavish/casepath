@@ -28,6 +28,88 @@
     "title": "ActionChoice",
     "type": "object"
    },
+   "AgreedPart": {
+    "additionalProperties": false,
+    "properties": {
+     "amount": {
+      "default": "",
+      "maxLength": 40,
+      "title": "Amount",
+      "type": "string"
+     },
+     "by": {
+      "default": "",
+      "maxLength": 20,
+      "title": "By",
+      "type": "string"
+     },
+     "payer": {
+      "anyOf": [
+       {
+        "enum": [
+         "kunde",
+         "gegenpartei",
+         "kanzlei",
+         "versicherer",
+         "behoerde",
+         "andere"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Payer"
+     },
+     "what": {
+      "default": "",
+      "maxLength": 120,
+      "title": "What",
+      "type": "string"
+     }
+    },
+    "title": "AgreedPart",
+    "type": "object"
+   },
+   "AskedPart": {
+    "additionalProperties": false,
+    "properties": {
+     "by": {
+      "default": "",
+      "maxLength": 20,
+      "title": "By",
+      "type": "string"
+     },
+     "of": {
+      "anyOf": [
+       {
+        "enum": [
+         "kunde",
+         "gegenpartei",
+         "kanzlei",
+         "versicherer",
+         "behoerde",
+         "andere"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Of"
+     },
+     "what": {
+      "default": "",
+      "maxLength": 120,
+      "title": "What",
+      "type": "string"
+     }
+    },
+    "title": "AskedPart",
+    "type": "object"
+   },
    "Body_create_from_files_api_cases_from_files_post": {
     "properties": {
      "files": {
@@ -170,6 +252,87 @@
      "reason"
     ],
     "title": "EditRequest",
+    "type": "object"
+   },
+   "EntryForm": {
+    "additionalProperties": false,
+    "description": "The handler's own entry of the running account («Notiz hinzufügen»): what kind, with whom, when, what was said, and\nat most one row each of what was agreed, asked and the next step.",
+    "properties": {
+     "agreed": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/AgreedPart"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "asked": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/AskedPart"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "date": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "title": "Date",
+      "type": "string"
+     },
+     "kind": {
+      "enum": [
+       "telefon",
+       "gespraech",
+       "notiz",
+       "email"
+      ],
+      "title": "Kind",
+      "type": "string"
+     },
+     "name": {
+      "default": "",
+      "maxLength": 120,
+      "title": "Name",
+      "type": "string"
+     },
+     "next": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/NextPart"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "party": {
+      "default": "kunde",
+      "enum": [
+       "kunde",
+       "gegenpartei",
+       "kanzlei",
+       "behoerde",
+       "andere"
+      ],
+      "title": "Party",
+      "type": "string"
+     },
+     "said": {
+      "default": "",
+      "maxLength": 2000,
+      "title": "Said",
+      "type": "string"
+     }
+    },
+    "required": [
+     "kind",
+     "date"
+    ],
+    "title": "EntryForm",
     "type": "object"
    },
    "EventRequest": {
@@ -342,6 +505,44 @@
      "title"
     ],
     "title": "NewCase",
+    "type": "object"
+   },
+   "NextPart": {
+    "additionalProperties": false,
+    "properties": {
+     "by": {
+      "default": "",
+      "maxLength": 20,
+      "title": "By",
+      "type": "string"
+     },
+     "what": {
+      "default": "",
+      "maxLength": 120,
+      "title": "What",
+      "type": "string"
+     },
+     "who": {
+      "anyOf": [
+       {
+        "enum": [
+         "kunde",
+         "gegenpartei",
+         "kanzlei",
+         "versicherer",
+         "behoerde",
+         "andere"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Who"
+     }
+    },
+    "title": "NextPart",
     "type": "object"
    },
    "OwnAnswer": {
@@ -871,6 +1072,156 @@
     "summary": "Edit Process"
    }
   },
+  "/api/cases/{case_id}/entries": {
+   "post": {
+    "description": "«Notiz hinzufügen»: the handler's own entry of the running account (a call, a conversation, a note, an e-mail\noutside the file). It counts at once, without a model: the account, «Stand», the dates and the next action are\nrecomputed from it. Kept as an edit of the case and logged like every handler gesture.",
+    "operationId": "add_entry_api_cases__case_id__entries_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EntryForm"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Add Entry"
+   }
+  },
+  "/api/cases/{case_id}/entries/{n}": {
+   "delete": {
+    "description": "A handler's entry removed: it no longer counts; the edit stays in the store and the removal is logged.",
+    "operationId": "remove_entry_api_cases__case_id__entries__n__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "n",
+      "required": true,
+      "schema": {
+       "title": "N",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Remove Entry"
+   },
+   "put": {
+    "description": "A handler's entry changed: the one in force is replaced by a new edit with the same number; logged.",
+    "operationId": "change_entry_api_cases__case_id__entries__n__put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "n",
+      "required": true,
+      "schema": {
+       "title": "N",
+       "type": "integer"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EntryForm"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Change Entry"
+   }
+  },
   "/api/cases/{case_id}/events": {
    "get": {
     "operationId": "list_events_api_cases__case_id__events_get",
@@ -1351,6 +1702,44 @@
      }
     },
     "summary": "Rename Case"
+   }
+  },
+  "/api/cases/{case_id}/update": {
+   "post": {
+    "description": "«Aktualisieren»: a run that reads only the files the latest completed run did not read, and builds on it.",
+    "operationId": "update_case_api_cases__case_id__update_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Update Case"
    }
   },
   "/api/cases/{case_id}/workflow": {
@@ -2051,7 +2440,7 @@
   },
   "/api/run-profile": {
    "get": {
-    "description": "Median seconds per stage over this deployment's recent completed runs of cases of the same size (pages);\nall recent runs when there are fewer than three of that size.",
+    "description": "Median seconds per stage over this deployment's recent completed runs of cases of the same size (pages);\nall recent runs when there are fewer than three of that size. ``kind``: full preparations or updates, never the\ntwo mixed; an update's time comes from updates alone, whatever the case's size.",
     "operationId": "run_profile_api_run_profile_get",
     "parameters": [
      {
@@ -2070,6 +2459,20 @@
         }
        ],
        "title": "Pages"
+      }
+     },
+     {
+      "in": "query",
+      "name": "kind",
+      "required": false,
+      "schema": {
+       "default": "full",
+       "enum": [
+        "full",
+        "update"
+       ],
+       "title": "Kind",
+       "type": "string"
       }
      }
     ],

@@ -257,6 +257,77 @@ def seed_account(store, runs):
     return case
 
 
+def _remap(value, ids):
+    """A scripted turn's file ids («fa», «fb» in the update tests) replaced by the store's."""
+    if isinstance(value, dict):
+        return {k: _remap(v, ids) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return type(value)(_remap(v, ids) for v in value)
+    return ids.get(value, value) if isinstance(value, str) else value
+
+
+def _text_file(store, case_id, fixture, name=None):
+    """A synthetic file of the update tests, stored as text with its pages and documents, so its original opens."""
+    ex = fixture["extraction"]
+    extraction = {**ex, "media_type": "text/plain", "kind": "text"}
+    return store.add_file(case_id, (name or fixture["name"]).replace(".pdf", ".txt").replace(".eml", ".txt"), "text/plain", "text",
+                          ex["text"].encode(), extraction, "N. Kumar")["id"]
+
+
+def seed_update(store, runs):
+    """A mandated case prepared from its file (tests/test_update.py): the firm's fee note is added in the browser
+    (deploy/preview/Zwischenhonorar Kanzlei Muster.txt) and «Aktualisieren» reads it alone."""
+    from tests.test_update import MANDATE_A, MANDATE_DOCS_A, MANDATE_EDITS, MANDATE_ENTRIES_A, MANDATE_FACTS_A, full_turns
+    case = store.create_case("Mietmangel, Mandat Kanzlei Muster (synthetisch) 4321.5555.0001", {"synthetic": True}, "N. Kumar")
+    fid = _text_file(store, case["id"], MANDATE_A)
+    store.select_workflow(case["id"], "mietmangel-handler", None, "N. Kumar")
+    for edit in MANDATE_EDITS:
+        store.add_edit(case["id"], "set_fact", edit["args"], "N. Kumar", "Entscheid der Fallbearbeitung")
+    turns = _remap(full_turns(MANDATE_ENTRIES_A, MANDATE_FACTS_A, MANDATE_DOCS_A), {"fa": fid})
+    turns[0] = turns[0][:-1] + [report("claim_reader", request="Lea Beispiel lässt einen Schimmelbefall durch die Kanzlei Muster abklären.",
+                                       parties=[{"role": "Mieterin (VN)", "name": "Frau Lea Beispiel"}, {"role": "Vermieterin (GP)", "name": "Muster Immobilien AG"},
+                                                {"role": "beauftragte Kanzlei", "name": "Kanzlei Muster"}])]
+    runs.model_factory = lambda: ScriptedModel(turns)
+    run = runs.start(case["id"], "N. Kumar")
+    while store.get_run(run["id"])["status"] in ("queued", "running"):
+        time.sleep(0.05)
+    return case
+
+
+def update_script(store, case_id, pause):
+    """The scripted update of the mandated case: the fee note's entry and the cost claim it brings, cited from the file the
+    handler added (one without the note's words gives the update nothing to record)."""
+    from tests.test_update import MANDATE_ENTRY_B, MANDATE_FACT_B
+    base = store.latest_run(case_id, "completed")
+    read = set(((base or {}).get("result") or {}).get("read_files") or ())
+    new = [f["id"] for f in store.list_files(case_id) if f["id"] not in read]
+    fid = new[0] if new else "none"
+    entry = _remap({**MANDATE_ENTRY_B, "page": None}, {"fb": fid})
+    return Paced([[("record_steps", {"entries": [entry]}), _remap(MANDATE_FACT_B, {"fb": fid}),
+                   report("claim_reader", summary="Die Kanzlei stellt ihr Zwischenhonorar in Rechnung.")],
+                  [report("document_finder", summary="Die Kostennote erfüllt keine fehlende Unterlage.")]], pause)
+
+
+def seed_offer(store, runs):
+    """A case Protekta conducts itself whose other side made an offer after Protekta's letter (tests/test_update.py,
+    prepared from both files): the place to enter a phone call that settles it."""
+    from tests.test_update import OFFER_A, OFFER_B, OFFER_EDITS, OFFER_ENTRIES_A, OFFER_ENTRY_B, OFFER_FACTS_A, OFFER_FACT_B, full_turns
+    case = store.create_case("Heizungsausfall, Angebot der Gegenpartei (synthetisch) 4321.5555.0003", {"synthetic": True}, "N. Kumar")
+    ids = {"oa": _text_file(store, case["id"], OFFER_A), "ob": _text_file(store, case["id"], OFFER_B)}
+    store.select_workflow(case["id"], "mietmangel-handler", None, "N. Kumar")
+    for edit in OFFER_EDITS:
+        store.add_edit(case["id"], "set_fact", edit["args"], "N. Kumar", "Entscheid der Fallbearbeitung")
+    turns = _remap(full_turns(OFFER_ENTRIES_A + [OFFER_ENTRY_B], OFFER_FACTS_A + [OFFER_FACT_B], [],
+                              request="Sandra Keller verlangt die Reparatur der Heizung; die Vermieterin bietet eine Mietzinsreduktion an."), ids)
+    turns[0] = turns[0][:-1] + [report("claim_reader", request="Sandra Keller verlangt die Reparatur der Heizung; die Vermieterin bietet eine Mietzinsreduktion an.",
+                                       parties=[{"role": "Mieterin (VN)", "name": "Frau Sandra Keller"}, {"role": "Vermieterin (GP)", "name": "Muster Immobilien AG"}])]
+    runs.model_factory = lambda: ScriptedModel(turns)
+    run = runs.start(case["id"], "N. Kumar")
+    while store.get_run(run["id"])["status"] in ("queued", "running"):
+        time.sleep(0.05)
+    return case
+
+
 def main():
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
     data = tempfile.mkdtemp(prefix="cp-preview-")
@@ -328,9 +399,25 @@ def main():
     keyed = seed_key_cases(store, runs)
     historic = seed_historic(store)
     case_account = seed_account(store, runs)
-    runs.model_factory = factory_b
+    case_update = seed_update(store, runs)
+    case_offer = seed_offer(store, runs)
+    # «Aktualisieren» in the browser runs the update's script; every other run the one case B's live view plays
+    asked = {}
+    start_update = runs.update
+
+    def update(case_id, user, token=None):
+        asked["update"] = case_id
+        return start_update(case_id, user, token)
+    runs.update = update
+
+    def dispatch():
+        if asked.get("update"):
+            return update_script(store, asked.pop("update"), pause)
+        return factory_b()
+    runs.model_factory = dispatch
     print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}"
-          f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}  account {case_account['id']}", flush=True)
+          f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}  account {case_account['id']}"
+          f"  update {case_update['id']}  offer {case_offer['id']}", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 

@@ -1,7 +1,7 @@
 {
  "format": "casepath.backbone/1",
  "id": "fallbearbeitung",
- "version": "2026-11-15.5",
+ "version": "2026-11-15.6",
  "title": "Fallbearbeitung Rechtsschutz: Stufen, Handlungen, Entscheide, Uhr und Formulare",
  "sources": [
   {"id": "practice", "kind": "process_guidance", "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"}
@@ -89,7 +89,7 @@
   "A8": {"title": "Schreiben an die Gegenpartei (Entwurf an die Kundschaft)", "to": "Gegenpartei, als Entwurf zuerst an die Kundschaft", "parts": ["Wir zeigen Ihnen an, dass wir die Interessen unserer Versicherten in dieser Angelegenheit vertreten.", "Unpräjudiziell und ohne Anerkennung einer Rechtspflicht halten wir Folgendes fest: {anliegen}", "@demand"]},
   "A10": {"title": "Mandatsanfrage an die Kanzlei", "to": "Anwaltskanzlei", "anrede": "Sehr geehrte Damen und Herren", "parts": ["Gerne möchten wir Ihnen in folgender Angelegenheit ein Mandat übertragen:\nKundschaft: {mandat_kunde}\nGegenpartei: {mandat_gegenpartei}\nAuftrag: {mandat_auftrag}", "Die Akten stellen wir Ihnen separat über einen Übermittlungslink zu; eine Zusammenfassung des Falls liegt bei. Die Kostengutsprache erhalten Sie mit separatem Schreiben.", "Bitte bestätigen Sie uns die Übernahme des Mandats."]},
   "A12": {"title": "Dossier abschliessen", "to": "Kundschaft", "parts": ["Mit Schreiben vom {letzter_kontakt} haben wir Sie um folgende Unterlagen gebeten:\n{verlangt}", "Da wir diese bis heute nicht erhalten haben, können wir Ihren Fall nicht weiter bearbeiten und schliessen Ihr Dossier. Die Leistungen aus diesem Fall enden damit."]},
-  "A2": {"title": "Telefonnotiz", "none": "die Notiz schreibt die Fallbearbeitung mit «Telefonnotiz erfassen»; sie wird als Akte gespeichert und als Beleg gelesen"},
+  "A2": {"title": "Telefonnotiz", "none": "die Notiz erfasst die Fallbearbeitung mit «Telefonnotiz erfassen»: ein Eintrag im Verlauf, der sofort zählt"},
   "A3": {"title": "Upload-Link", "none": "der Link entsteht im Upload-System von Protekta"},
   "A9": {"title": "Antwort in der Verhandlung", "none": "die Stellungnahme zu einem Angebot entscheidet die Fallbearbeitung"},
   "A11": {"title": "Zahlung bestätigen", "none": "Betrag und Datum kommen aus dem Zahlungssystem"},

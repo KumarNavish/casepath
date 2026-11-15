@@ -352,8 +352,11 @@ class CaseWork:
         return documents(self.evidence.files)
 
     def account(self):
-        """The running account from the entries recorded so far; None without any."""
-        return account.build(self.record["entries"], self.graph)
+        """The running account from the entries recorded so far, with the handler's own entries in force (a phone call,
+        a note); None without any, and None for a process without the account."""
+        if not self.graph.get("record"):
+            return None
+        return account.build(account.with_handler(self.record["entries"], self.employee_edits), self.graph)
 
     def document_of(self, file_id, page):
         """The pages of the document a page belongs to: (first, last) of its segment, or (None, None) for the whole file."""
@@ -635,6 +638,10 @@ def _record_fact(work, agent, args):
         return {"accepted": False, "reason": "a case worker decides this fact, or it is computed; do not record it"}
     if args["fact"] in work.set_by_hand():  # the case worker's answer stands, also when given while the run was paused
         return {"accepted": False, "reason": "the case worker has answered this fact; do not record it"}
+    updating = getattr(work, "updating", None)
+    if updating is not None and args["status"] == "unknown":  # what the new documents do not speak to keeps its value
+        return {"accepted": False, "reason": "an update records only what a new document states; a fact the new documents do not "
+                                             "speak to keeps its value: do not record it"}
     known = work.facts.get(args["fact"])
     if args["status"] == "unknown" and known and known.get("by") == "routing" and known["status"] == "established":
         return {"accepted": False, "reason": "routing already established this fact with quotes; record it only with other quotes"}
@@ -650,12 +657,47 @@ def _record_fact(work, agent, args):
             reason = problem or "no quote was found word for word in its file"
             work.emit("source_checker", "fact.rejected", fact=args["fact"], reason=reason)
             return {"accepted": False, "reason": reason}
-    work.facts[args["fact"]] = {"fact": args["fact"], "status": args["status"], "value": value, "citations": located,
-                                "verdict": None if args["status"] == "established" else "not_checked", "by": agent,
-                                **({"part": args["part"].strip()} if args.get("part") and " / " in str(value or "") else {})}
-    work.emit("source_checker", "fact.located", fact=args["fact"], status=args["status"], quotes=len(located), missed=missed,
-              cite=located[0] if located else None)
-    return {"accepted": True, "status": args["status"], "located_quotes": len(located), "missed_quotes": missed}
+    row = {"fact": args["fact"], "status": args["status"], "value": value, "citations": located,
+           "verdict": None if args["status"] == "established" else "not_checked", "by": agent,
+           **({"part": args["part"].strip()} if args.get("part") and " / " in str(value or "") else {})}
+    kind = next((k for k in work.graph.get("incoming") or () if args["fact"] in incoming.slots(k)), None)
+    landed = place_incoming(work, kind, row) if updating is not None and kind and args["status"] == "established" else args["fact"]
+    if landed == args["fact"]:
+        work.facts[args["fact"]] = row
+    if updating is not None:
+        updating["facts"].add(landed)
+    work.emit("source_checker", "fact.located", fact=landed, status=args["status"], quotes=len(located), missed=missed,
+              cite=located[0] if located else None, **shown_value(value))  # «Der Fall» fills in as the facts arrive
+    return {"accepted": True, "status": args["status"], "located_quotes": len(located), "missed_quotes": missed,
+            **({"recorded_as": landed} if landed != args["fact"] else {})}
+
+
+def shown_value(value):
+    """A recorded value as a run's event carries it for the screen: a yes or no, or the text cut to 160 characters."""
+    if value is None:
+        return {}
+    return {"value": value if isinstance(value, bool) else _clipped(value, 160)}
+
+
+def place_incoming(work, kind, row):
+    """In an update, a new item of what came in takes its place among its kind's items by its date: the latest in the plain
+    fact, the earlier ones moved down, each keeping its quotes and its verdict; the same item (the same date) read again
+    replaces itself; beyond the kind's slots the oldest is not kept. Returns the fact it landed in."""
+    slots = incoming.slots(kind)
+    day = lambda r: incoming.read_item(str(r.get("value") or ""))[0]
+    mine = day(row)
+    items = [dict(work.facts[s]) for s in slots if (work.facts.get(s) or {}).get("status") in ("established", "conflicting")
+             and work.facts[s].get("value") and not (mine and day(work.facts[s]) == mine)]
+    items.append(row)
+    items.sort(key=lambda r: (day(r) is not None, day(r) or date.min), reverse=True)  # newest first, undated last
+    for s in slots:
+        work.facts.pop(s, None)
+    landed = row["fact"]
+    for s, r in zip(slots, items):
+        work.facts[s] = {**r, "fact": s}
+        if r is row:
+            landed = s
+    return landed
 
 
 def _record_steps(work, agent, args, fitted=()):
@@ -676,13 +718,14 @@ def _record_steps(work, agent, args, fitted=()):
         rows.append(raw)
     same = lambda e, raw: (e["file"] == raw["file"] and e.get("page") == raw.get("page") and e.get("date") == account._iso(raw.get("date"))
                            and e["from"] == account.party_of(raw.get("from")))
-    taken = {e["n"] for e in work.record["entries"]}
+    # the numbers in use: the record's (an update's earlier entries among them) and the handler's own entries
+    taken = {e["n"] for e in work.record["entries"]} | {e["n"] for e in account.handler_entries(work.employee_edits)}
     renumbered = {}
     for raw in rows:
         again = next((e for e in work.record["entries"] if same(e, raw)), None)
         n = again["n"] if again else raw.get("n")
-        if again is None and (n is None or n in taken):
-            n = max(taken | {0}) + 1
+        if again is None and (n is None or n in taken or n > account.HANDLER_BASE):
+            n = max([x for x in taken if x <= account.HANDLER_BASE] or [0]) + 1
         if raw.get("n") is not None and n != raw["n"]:
             renumbered[raw["n"]] = n
         raw["n"] = n
@@ -697,7 +740,7 @@ def _record_steps(work, agent, args, fitted=()):
         if isinstance(e.get("page"), int):
             firsts.setdefault(e["file"], set()).add(e["page"])
     kept = dropped = whole = elsewhere = 0
-    issues = []
+    issues, shown = [], []
     for raw in rows:
         first, last = work.page_range(raw["file"], raw.get("page"), sorted(firsts.get(raw["file"], ())))
         before = len(issues)
@@ -710,11 +753,14 @@ def _record_steps(work, agent, args, fitted=()):
             continue
         work.record["entries"] = [e for e in work.record["entries"] if e["n"] != entry["n"]] + [entry]  # read again: the later reading counts
         kept += 1
+        shown.append({**{k: entry.get(k) for k in ("n", "date", "from", "to", "kind", "phone", "what", "file", "page")},
+                      "cite": (entry.get("citations") or [None])[0]})
     work.record["dropped"] += dropped
     work.record["elsewhere"] = work.record.get("elsewhere", 0) + elsewhere
     work.record.setdefault("issues", []).extend(issues)
     work.emit(agent, "record.recorded", entries=kept, dropped=dropped, dropped_entries=whole, elsewhere=elsewhere, invalid=len(invalid),
-              issues=[{k: x.get(k) for k in ("n", "kind", "reason", "page")} for x in issues])
+              issues=[{k: x.get(k) for k in ("n", "kind", "reason", "page")} for x in issues],
+              rows=[{k: v for k, v in r.items() if k != "cite"} for r in shown], **({"cite": shown[-1]["cite"]} if shown and shown[-1]["cite"] else {}))
     return {"accepted": kept, "dropped_entries": whole, "dropped_quotes": dropped, "kept_elsewhere": elsewhere,
             **({"renumbered": {str(k): v for k, v in renumbered.items()}} if renumbered else {}),
             **({"not_accepted": invalid, "fix": "send only these entries again with the field corrected"} if invalid else {}),
@@ -724,6 +770,13 @@ def _record_steps(work, agent, args, fitted=()):
 
 
 def _record_document(work, agent, args):
+    updating = getattr(work, "updating", None)
+    if updating is not None:  # an update records what a new file shows: a need stays missing, an earlier file still serves
+        current = work.documents.get(args["document"]) or {}
+        if args["status"] == "absent":
+            return {"accepted": False, "reason": "an update records only what a new file shows; a need no new file meets stays as it is"}
+        if args["status"] == "unusable" and current.get("status") == "present":
+            return {"accepted": False, "reason": "an earlier file already meets this need; record a new file only when it replaces it"}
     located, missed = work.located(args["citations"])
     if args["status"] in {"present", "unusable"} and (not args["files"] or not located):
         work.emit("source_checker", "document.rejected", document=args["document"], reason="no located quote")
@@ -743,6 +796,8 @@ def _record_document(work, agent, args):
     work.documents[args["document"]] = {"document": args["document"], "status": status, "files": args["files"],
                                         "citations": located, "note": note, "by": agent, "shows": shown,
                                         "verdict": None if status != "missing" else "not_checked"}
+    if updating is not None:
+        updating["documents"].add(args["document"])
     work.emit(agent, "document.recorded", document=args["document"], status=status, files=args["files"],
               cite=located[0] if located else None)
     return {"accepted": True, "status": status, "located_quotes": len(located), "missed_quotes": missed}
@@ -880,8 +935,10 @@ class TeamStopped(Exception):
 SHORTER = "Your last turn was longer than the output limit and was lost. Do the same work in shorter turns: at most eight tool calls per turn, short quotes."
 
 
-def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12, given=(), task=None, after_first_turn=None, role=None):
+def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12, given=(), task=None, after_first_turn=None, role=None,
+              extra=None):
     """``given``: tools the lead runs itself and hands over in the opening, so the agent needs no turn for them.
+    ``extra``: more for the opening (an update's case so far).
     ``task``: a message after the opening, so two conversations with the same opening share its cached prefix.
     ``after_first_turn``: called once the first turn is back (the second conversation starts then).
     ``role``: "facts" when a second conversation records the running account (the speed trial «record_apart»)."""
@@ -898,6 +955,7 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
     for name in given:
         with TOOL_LOCK:
             opening[name] = _dispatch(work, agent, name, {})
+    opening.update(extra or {})
     if work.total_chars <= SMALL_CASE_CHARS and "read_file" in spec["tools"] and not (
             agent == "result_checker" and "result_without_files" in getattr(work, "trials", ())):  # trial: it may still open a file
         opening["files_text"] = {fid: work.evidence.read(fid, limit=SMALL_CASE_CHARS)["text"] for fid in work.file_ids}
@@ -1078,11 +1136,12 @@ def same_reading(definition, first, second):
     return bool(shorter) and len(shorter & longer) / len(shorter) >= 0.75
 
 
-def confirm_facts(model, work, effort="medium"):
-    """A second, independent reading of the deciding facts. Where the two readings differ, the fact is marked as
-    conflicting for a person to settle; where only the second reading finds a quoted value, it is recorded for the
-    source checker. Nothing is decided silently."""
-    facts = [f for f in gating_facts(work) if f["id"] not in work.set_by_hand()]  # the case worker's answers are not read again
+def confirm_facts(model, work, effort="medium", only=None):
+    """A second, independent reading of the deciding facts (``only``: of these, in an update the ones it changed). Where
+    the two readings differ, the fact is marked as conflicting for a person to settle; where only the second reading
+    finds a quoted value, it is recorded for the source checker. Nothing is decided silently."""
+    facts = [f for f in gating_facts(work) if f["id"] not in work.set_by_hand()  # the case worker's answers are not read again
+             and (only is None or f["id"] in only)]
     if "second_reading_unquoted" in getattr(work, "trials", ()):  # trial: a value its own quote states is not read twice
         facts = [f for f in facts if not _quote_states_value(work.facts.get(f["id"]))]
     if not facts:
@@ -1112,7 +1171,8 @@ def confirm_facts(model, work, effort="medium"):
         if first is None or first["status"] == "unknown":
             work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": value, "citations": located,
                                        "verdict": None, "by": "second_reading"}
-            work.emit("source_checker", "fact.located", fact=row["fact"], status="established", quotes=len(located), cite=located[0])
+            work.emit("source_checker", "fact.located", fact=row["fact"], status="established", quotes=len(located), cite=located[0],
+                      **shown_value(value))
             added += 1
         elif first["status"] == "established" and not same_reading(definition, first["value"], value):
             first.update(status="conflicting", verdict="not_checked", citations=first["citations"] + located,
@@ -1147,6 +1207,64 @@ RECORD_ONLY = ("Your task in this conversation is the running account only: call
                "described, then call report with a one-line summary. Record no facts; the brief is written elsewhere.")
 
 
+# «Aktualisieren»: what came in after a preparation is read by itself. The reader gets the new documents in full and the
+# case so far in one compact view; the document finder only the needs still missing; the second reading and the source
+# checker what changed; code re-derives everything else from the merged result, as for a full run.
+UPDATE_READ = ("New files came into this case after it was prepared: {files}. Read only these new documents. The case so far "
+               "is given in case_so_far: the record's entries one line each, the deciding facts with their values, the open "
+               "requests. Record one entry for each new document with record_steps, numbered after the existing entries (the "
+               "last is {last}); an answer or a repeat names the earlier entry by its number. Record a fact with record_fact "
+               "only where a new document changes a deciding fact or establishes one, quoting that new document; a fact the "
+               "new documents do not speak to keeps its value: do not record it, not even as unknown. What came in (eingang_…) "
+               "is recorded in its plain fact: code moves the earlier items down. Then report: summary, one sentence on what "
+               "the new documents add; timeline, only their dated events; request and parties empty.")
+UPDATE_FIND = ("New files came into this case: {files}. Check only these new files. Still missing: {missing}; record each one a "
+               "new file meets, or one a new file of that kind cannot serve as unusable.{present} Record nothing else, and no "
+               "need as absent.")
+UPDATE_PRESENT = " Already in the case: {present}; record one of these only when a new file replaces it."
+RESULT_CHECKER_SKIPPED = ("Ergebnisprüfer in der Aktualisierung nicht gelaufen: Zusammenfassung, Kurzeinschätzung, offene Punkte "
+                          "und Lernvorschläge sind die der Vorbereitung, auf der sie aufbaut")
+
+
+def _clipped(text, n):
+    text = re.sub(r"\s+", " ", str(text or "")).strip()
+    return text if len(text) <= n else text[:n - 1].rstrip() + "…"
+
+
+def case_so_far(work):
+    """The case as an update's reader needs it, one line per item: the record's entries (number, date, from → to, kind, a
+    few words; the handler's own marked), the deciding facts the files settle with their values and status, the open
+    requests, and the handler's decisions. Nothing of the earlier files' text."""
+    acc = work.account() or {}
+    entries = [f"{e['n']} · {e.get('date') or 'ohne Datum'} · {e['from']} → {e['to']} · {e.get('kind')}"
+               + (" · Telefon" if e.get("phone") else "") + (" · Fallbearbeitung" if e.get("handler") else "")
+               + f" · {_clipped(e.get('what'), 80)}" for e in acc.get("entries") or ()]
+    facts = []
+    for f in gating_facts(work):
+        if f.get("derived") or f.get("handler_only"):
+            continue
+        row = work.facts.get(f["id"]) or {}
+        now = {"value": row.get("value"), "status": row["status"] + (f"/{row['verdict']}" if row.get("verdict") else "")} \
+            if row.get("status") in ("established", "conflicting") else {}
+        facts.append({**fact_view(f), "question": _clipped(f.get("question"), 200), **now})
+    requests = [f"{r['what']} · {r['by']} → {r['of']} · seit {r.get('first') or '?'}" + (f" · bis {r['due']}" if r.get("due") else "")
+                + f" · Nr. {', '.join(str(n) for n in r['entries'])}" for r in acc.get("requests") or () if r["answered"] is None]
+    decided = {f["id"]: v for f in work.graph["facts"] if f.get("handler_only")
+               and (v := casegraph.fact_overrides(work.graph, work.employee_edits).get(f["id"], (None,))[0]) is not None}
+    return {"entries": entries, "facts": facts, "open_requests": requests, "decisions": decided}
+
+
+def update_finder_instruction(work, names):
+    """The document finder's task in an update, or None when no need could be met or replaced by a new file."""
+    rows = work.evaluate()["documents"]
+    missing = [f"{d['document']} ({d['title']})" for d in rows if d["status"] in ("missing", "unusable")]
+    present = [f"{d['document']} ({d['title']})" for d in rows if d["status"] == "present"]
+    if not missing and not present:
+        return None
+    return UPDATE_FIND.format(files=names, missing="; ".join(missing) or "none",
+                              present=UPDATE_PRESENT.format(present="; ".join(present)) if present else "")
+
+
 class CaseTeam:
     def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, should_stop=None, edits_now=None, speed_trials=()):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
@@ -1158,7 +1276,7 @@ class CaseTeam:
         """The model an agent runs on: its own deployment when one is configured, otherwise the case's model."""
         return (getattr(self.model, "agents", None) or {}).get(agent, self.model)
 
-    def _delegate(self, work, state, agent, instruction, task=None, after_first_turn=None, role=None):
+    def _delegate(self, work, state, agent, instruction, task=None, after_first_turn=None, role=None, extra=None):
         if self.should_stop():
             raise TeamStopped()
         if state["delegations"] >= self.max_delegations:
@@ -1172,7 +1290,7 @@ class CaseTeam:
         given = ("open_process", "evaluate", "get_findings") if agent == "result_checker" and getattr(self, "handler_flow", False) else ()
         more = record_turns(work) if agent == "claim_reader" and role != "facts" else 0
         report = run_agent(self.model_for(agent), work, agent, instruction, effort=self.effort, given=given, max_turns=12 + more,
-                           task=task, after_first_turn=after_first_turn, role=role)
+                           task=task, after_first_turn=after_first_turn, role=role, extra=extra)
         if agent == "claim_reader" and work.brief is None and role != "record":
             work.brief = _located_brief(work, report)
         if agent == "process_builder":
@@ -1271,11 +1389,64 @@ class CaseTeam:
         work.emit("lead", "agent.end", summary="Prepared.")
         return finalize(work)
 
-    def _retry_rejected(self, work, state):
-        """One more pass on items the source checker rejected, since the files may still settle them."""
+    def update(self, *, case, files, new, workflow, knowledge=(), edits=(), prior, on_event=None):
+        """«Aktualisieren»: the files ``new`` came in after the run ``prior`` (its result, which holds the running account).
+        Only they are read: the reader records their entries and what they change, the document finder whether they meet
+        a need still missing, the second reading and the source checker what changed; the result checker does not run.
+        Everything else is ``prior``'s, and code re-derives the rest as for a full run (finalize_update)."""
+        new = [f for f in new if f in {x["id"] for x in files}]
+        fresh = [f for f in files if f["id"] in new]
+        work = CaseWork(case=case, files=fresh, base_workflow=workflow, knowledge=knowledge, edits=edits, on_event=on_event, voice=self.voice)
+        work.dated = [{"id": f.get("id"), "extraction": {k: f[k] for k in ("segments", "cut_of") if k in f}, "created_at": f.get("created_at")}
+                      for f in files]  # what arrived and when: every file of the case, as the case view sees it
+        work.agent_edits = list(prior.get("agent_edits") or [])
+        work.rebuild()
+        work.facts = {f["fact"]: dict(f) for f in prior.get("facts") or [] if f.get("status") != "presumed" and f["fact"] in work.fact_defs
+                      and f["fact"] not in work.set_by_hand()}
+        work.documents = {d["document"]: dict(d) for d in prior.get("documents") or [] if d["document"] in work.document_defs}
+        work.documents_looked_for = True
+        work.brief = prior.get("brief") or {"request": None, "parties": [], "timeline": [], "summary": None, "not_enclosed": [], "questions": []}
+        work.record = {"entries": [dict(e) for e in account.entries_of(prior)], "dropped": 0, "elsewhere": 0, "issues": []}
+        work.updating = {"facts": set(), "documents": set(), "files": list(new)}
+        work.should_stop, work.edits_now, work.trials = self.should_stop, self.edits_now, self.speed_trials
+        self.handler_flow = any(s.get("action") for s in work.graph["steps"])
+        state, report = {"delegations": 0, "done": []}, {}
+        names = ", ".join(f"{f.get('name') or f['id']} (file {f['id']})" for f in fresh)
+        numbers = [e["n"] for e in work.record["entries"]] + [e["n"] for e in account.handler_entries(work.employee_edits)]
+        last = max([n for n in numbers if n <= account.HANDLER_BASE] or [0])
+        try:
+            work.emit("lead", "agent.start", instruction="Update the case with what came in.")
+            reading = UPDATE_READ.format(files=names, last=last)
+            finding = update_finder_instruction(work, names)
+            jobs = [lambda: report.update(self._delegate(work, state, "claim_reader", reading, extra={"case_so_far": case_so_far(work)}))]
+            if finding:
+                jobs.append(lambda: self._delegate(work, state, "document_finder", finding))
+            else:
+                work.emit("lead", "agent.skipped", skipped="document_finder", reason="no need a new file could meet or replace")
+            if getattr(self.model, "sequential", False) or len(jobs) == 1:
+                for job in jobs:
+                    job()
+            else:
+                with ThreadPoolExecutor(max_workers=len(jobs)) as pool:
+                    for future in [pool.submit(job) for job in jobs]:
+                        future.result()
+            confirm_facts(self.model, work, self.effort, only=set(work.updating["facts"]))  # what changed, read a second time
+            if work.unverified():
+                run_source_checker(self.model_for("source_checker"), work, self.effort)
+            self._retry_rejected(work, state, only=work.updating)
+            work.emit("lead", "agent.skipped", skipped="result_checker", reason=RESULT_CHECKER_SKIPPED)
+            work.emit("lead", "agent.end", summary="Updated.")
+        except TeamStopped:
+            work.emit("lead", "run.paused")
+            return {"stopped": True, "usage": work.usage, "events": work.events}
+        return finalize_update(work, prior, report or None, files, new)
+
+    def _retry_rejected(self, work, state, only=None):
+        """One more pass on items the source checker rejected, since the files may still settle them (``only``: in an
+        update, the facts and documents it recorded)."""
         deciding = {f["id"] for f in gating_facts(work)}  # a rejected fact that decides nothing a handler sees is not read again
-        facts = [k for k, v in work.facts.items() if v["verdict"] == "rejected" and k in deciding]
-        documents = [k for k, v in work.documents.items() if v["verdict"] == "rejected"]
+        facts = [k for k, v in work.facts.items() if v["verdict"] == "rejected" and k in deciding and (only is None or k in only["facts"])]
+        documents = [k for k, v in work.documents.items() if v["verdict"] == "rejected" and (only is None or k in only["documents"])]
         if not facts and not documents:
             return
         if facts:
@@ -1322,6 +1493,25 @@ def personal_details(row, names):
     return any(re.search(r"\b" + re.escape(n) + r"\b", words) for n in names)
 
 
+def result_facts(work):
+    """The facts a result stores: those recorded, and the workflow's presumptions that apply."""
+    return list(work.facts.values()) + [
+        {"fact": k, "status": "presumed", "value": p["value"], "citations": [], "verdict": "presumed", "by": "presumption",
+         "presumption": {"applies": p["applies"], "source_ref": p["source_ref"], "text": p["text"]}}
+        for k, p in work.presumptions().items()]
+
+
+def result_deadlines(work):
+    """The dates the files set, from the accepted deadline facts: a date, a date others set, or a stated period's end."""
+    return [{"fact": f["fact"], "question": work.fact_defs[f["fact"]]["question"],
+             **({"date": area.set_date(f["value"])["date"], **set_by_others(f["value"])} if area.set_date(f["value"]) else
+                {"date": f["value"]} if not computed_date(f["value"]) else
+                {"date": computed_date(f["value"]), "computed": True, "stated": f["value"],
+                 "rule": "calendar days from the stated date; which day counts, weekends and holidays not applied"})}
+            for f in work.facts.values() if f["verdict"] == "accepted" and work.fact_defs.get(f["fact"], {}).get("deadline")
+            and f["value"] != "none"]
+
+
 def finalize(work):
     evaluation = work.evaluate()
     result = work.result
@@ -1355,10 +1545,7 @@ def finalize(work):
     questions = {q["fact"]: q["plain"] for q in (work.process_report or {}).get("questions", [])}
     return {"workflow": workflows.ref(work.base), "process": work.graph, "provenance": work.provenance,
             "agent_edits": work.agent_edits, "brief": work.brief, "questions": questions,
-            "facts": list(work.facts.values()) + [
-                {"fact": k, "status": "presumed", "value": p["value"], "citations": [], "verdict": "presumed", "by": "presumption",
-                 "presumption": {"applies": p["applies"], "source_ref": p["source_ref"], "text": p["text"]}}
-                for k, p in work.presumptions().items()],
+            "facts": result_facts(work),
             "documents": list(work.documents.values()), "evaluation": evaluation,
             # the running account's entries, each element located in its document; what was dropped, counted
             **({"record": {**work.record, "entries": sorted(work.record["entries"], key=lambda e: (e.get("date") or "9999", e["n"])),
@@ -1368,14 +1555,44 @@ def finalize(work):
             "fitted": getattr(work, "fitted", []),
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),
                               "text": row["text"]} for row in result.get("case_summary", [])],
-            "deadlines": [{"fact": f["fact"], "question": work.fact_defs[f["fact"]]["question"],
-                           **({"date": area.set_date(f["value"])["date"], **set_by_others(f["value"])} if area.set_date(f["value"]) else
-                              {"date": f["value"]} if not computed_date(f["value"]) else
-                              {"date": computed_date(f["value"]), "computed": True, "stated": f["value"],
-                               "rule": "calendar days from the stated date; which day counts, weekends and holidays not applied"})}
-                          for f in work.facts.values() if f["verdict"] == "accepted" and work.fact_defs.get(f["fact"], {}).get("deadline")
-                          and f["value"] != "none"],
+            "deadlines": result_deadlines(work),
             "reply": {"needed": result["reply"]["needed"], "subject": result["reply"]["subject"], "clauses": clauses,
                       "status": "draft_not_sent", "label": "AI-generated draft"},
             "learning": learning, "events": work.events, "usage": work.usage,
             "warnings": [{"kind": "instruction_like_text", "file": fid} for fid, f in work.evidence.files.items() if f.get("instruction_like")]}
+
+
+def finalize_update(work, prior, report, files, new):
+    """The merged result of an update: ``prior``'s result with the new entries, the facts and documents it changed (each
+    with its verdict; what it did not touch keeps its value, quotes and verdict), the record's coverage over every file,
+    and the evaluation code derives from it, as a full run's. Usage and events are the update's own."""
+    from ..read.hygiene import documents as split_documents
+    evaluation = work.evaluate()
+    old = prior.get("record") or {}
+    before = {e["n"] for e in old.get("entries") or ()}
+    entries = sorted(work.record["entries"], key=lambda e: (e.get("date") or "9999", e["n"]))
+    whole = Evidence(files)  # every file of the case: what the record covers now
+    cov = work.coverage()
+    record = {**old, "entries": entries, "dropped": old.get("dropped", 0) + work.record["dropped"],
+              "elsewhere": old.get("elsewhere", 0) + work.record.get("elsewhere", 0),
+              "issues": list(old.get("issues") or []) + list(work.record.get("issues") or []),
+              "documents": len(split_documents(whole.files)), "hygiene": whole.hygiene,
+              "coverage": {**account.coverage(entries, {fid: list(f["pages_text"]) for fid, f in whole.files.items()}),
+                           **{k: cov[k] for k in ("given_back", "given_back_pages", "covered_after", "added")}}}
+    brief = {**(work.brief or {})}
+    if report:  # the new documents' dated events and the customer's new questions join the brief; the rest stays
+        found = _located_brief(work, report)
+        brief["timeline"] = list(brief.get("timeline") or []) + found["timeline"]
+        asked = {q["question"] for q in brief.get("questions") or []}
+        brief["questions"] = list(brief.get("questions") or []) + [q for q in found["questions"] if q["question"] not in asked]
+        brief["not_enclosed"] = list(brief.get("not_enclosed") or []) + found["not_enclosed"]
+    kept = {k: v for k, v in prior.items() if k not in {"resumed_from", "speed_trials", "update", "paused", "done"}}
+    return {**kept, "workflow": workflows.ref(work.base), "process": work.graph, "provenance": work.provenance,
+            "agent_edits": work.agent_edits, "brief": brief, "facts": result_facts(work), "documents": list(work.documents.values()),
+            "evaluation": evaluation, "record": record, "deadlines": result_deadlines(work), "events": work.events, "usage": work.usage,
+            "read_files": [f["id"] for f in files],
+            "warnings": list(prior.get("warnings") or []) + [{"kind": "instruction_like_text", "file": fid} for fid, f in work.evidence.files.items()
+                                                             if f.get("instruction_like")],
+            "update": {"files": list(new), "entries": [e["n"] for e in entries if e["n"] not in before],
+                       "facts": sorted(work.updating["facts"]), "documents": sorted(work.updating["documents"]),
+                       "summary": (report or {}).get("summary"), "skipped": {"result_checker": RESULT_CHECKER_SKIPPED}}}

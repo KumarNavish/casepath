@@ -273,6 +273,15 @@ def account_dates(items, ledger, graph=None):
                       **({"stated": d["text"], "rule": f"{d['text']} ab {d['source']}, nach Kalendertagen berechnet"} if d["computed"] else {})})
 
 
+# Every kind of item the list holds: build_items' own and the cover's (cover.items: cover, check, contact). The screen marks
+# each element it shows with «kind:key», and the event route accepts exactly these kinds (and the screen's own, below), so
+# nothing shown goes unmeasured; add() refuses a kind not named here, so the two never drift apart.
+ITEM_KINDS = frozenset({"step", "document", "fact", "deadline", "next_action", "letter_question", "hint", "key_point", "stage_line",
+                        "stand", "entry", "record_gap", "customer_letter", "customer_question", "party", "timeline", "open_point",
+                        "answer", "summary", "reply", "cover", "check", "contact"})
+SCREEN_KINDS = frozenset({"letter", "point", "followup"})  # beside the list: the letter, a point to settle first, the follow-up date
+
+
 def build_items(state, result, files=None, events=None, review=None):
     """``events``: the case's log, for what a person did outside the facts (a letter copied, a case moved into or out of
     the historic files). ``review``: the jurists' marks that hold for the legal content as it is now (review.Model.current):
@@ -288,6 +297,8 @@ def build_items(state, result, files=None, events=None, review=None):
     contacted = any(e.get("kind") == "letter.copied" for e in events or ())  # a letter of the insurer went out
     items = []
     def add(kind, key, label=None, **fields):
+        if kind not in ITEM_KINDS:
+            raise ValueError(f"item kind {kind!r} is not in ITEM_KINDS")
         text = label if isinstance(label, dict) else {"de": label, "en": label}  # the process speaks German; both keys always present
         items.append({"item_id": f"{kind}:{key}", "kind": kind, "key": key, "system": "casepath", "label": text, **fields})
     if graph and ev:
@@ -494,6 +505,11 @@ def build_items(state, result, files=None, events=None, review=None):
             action = ({"obtain": "request"}.get(first["kind"], first["kind"]), first["text"], first["text"])
         else:
             action = None
+        # A waiting action (pending, status inquiry, the stage's follow-up) whose party said by when it delivers what it still
+        # owes («Unterlagen folgen bis 15.12.»): the case is looked at again on that day, not on the clock's
+        waits = action and (action[0] in {"A6", "A7"} or (planned and action[0] == planned.get("follow_up") and planned.get("skip_if")))
+        waited_for = {"A9": "gegenpartei", "A8": "gegenpartei", "A2": "kanzlei", "A10": "kanzlei"}.get(action[0] if action else None, "kunde")
+        awaited = account.awaited(ledger, waited_for, look) if waits and ledger else None
         closing = None
         if action and action[0] in {"A12", "close"}:  # a closing names its reason once: «keine Rückmeldung», «Sache erledigt»
             stage_title = str(here.get("title") or "")
@@ -508,6 +524,7 @@ def build_items(state, result, files=None, events=None, review=None):
                                         **({"since": planned["since"]} if planned.get("since") else {}),
                                         **({"owed": planned["owed"]} if planned.get("owed") else {}),
                                         **({"choices": planned["choices"]} if planned.get("choices") else {}),
+                                        **({"until": awaited["date"], "awaits": awaited} if awaited else {}),
                                         **({"form": planned["form"]} if planned.get("form") and action[0] == planned["kind"] else {})} if planned else {}),
                 **({"incoming": {"kind": open_items[0]["kind"]["id"], "fact": open_items[0]["fact"], "date": open_items[0]["date"],
                                  "value": open_items[0]["value"], **({"dated_by": "document"} if open_items[0]["dated_by"] == "document" else {})},
@@ -635,13 +652,17 @@ def build_items(state, result, files=None, events=None, review=None):
         for line in account.stand(ledger, look, graph):
             add("stand", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
                 node=None, origin="account", chain=False, label=line["label"], open=line["open"], entries=line["entries"],
-                **({"detail": line["detail"]} if line.get("detail") else {}),
-                **({"rows": [{"text": r["text"], "evidence": _evidence(r["citations"]), "entries": r["entries"]} for r in line["rows"]],
+                **({"detail": line["detail"]} if line.get("detail") else {}), **({"handler": line["handler"]} if line.get("handler") else {}),
+                **({"rows": [{"text": r["text"], "evidence": _evidence(r["citations"]), "entries": r["entries"],
+                              **({"handler": r["handler"]} if r.get("handler") else {})} for r in line["rows"]],
                     "more": line["more"], "party": line["party"]} if line.get("rows") else {}))
-        for row in account.rows(ledger, graph):
+        # a run made before the account: the handler's own entries are listed, and count once a full preparation read the account
+        listed_only = None if ledger else account.build(state.get("handler_entries") or [], graph)
+        for row in account.rows(ledger or listed_only, graph):
             add("entry", str(row["n"]), value=row["what"], stated_as="established", verdict=None, evidence=_evidence(row["citations"]),
-                node=None, origin="claim_reader", chain=False, label=row["kind_title"],
-                **{k: row[k] for k in ("date", "from", "to", "from_title", "to_title", "phone", "notes", "open", "open_of")}, step_kind=row["kind"])
+                node=None, origin="handler" if row.get("handler") else "claim_reader", chain=False, label=row["kind_title"],
+                **{k: row[k] for k in ("date", "from", "to", "from_title", "to_title", "phone", "notes", "open", "open_of", "number")}, step_kind=row["kind"],
+                **({"handler": row["handler"]} if row.get("handler") else {}), **({"waiting": True} if listed_only else {}))
         if ledger:  # part of the file with no entry is said, never silent: «S. 26–79 ohne Eintrag» above the Verlauf
             for gap in account.gaps(ledger["entries"], account.pages_of(files)):
                 name = next((f.get("name") for f in files or () if f.get("id") == gap["file"]), None)
@@ -744,10 +765,22 @@ def items_sha256(items):
     return hashlib.sha256(json.dumps(rows, ensure_ascii=False, separators=(",", ":"), default=str).encode()).hexdigest()
 
 
-def item_changes(before, after):
-    """What a new preparation changed, item by item: added, changed (value, status or ask) and removed. Labels only."""
+def short_label(item, titles=None):
+    """An item as «Was sich geändert hat» names it: what came in by its kind's title (``titles``: {fact: title}), a fact
+    by its question's first clause, nothing longer than 90 characters."""
+    if item["kind"] == "fact" and (titles or {}).get(item["key"]):
+        return titles[item["key"]]
+    text = (item.get("label") or {}).get("de") or str(item.get("value") or item["key"])
+    if item["kind"] == "fact":
+        text = re.split(r"(?<=\?)\s|:\s|,\s|\s\(", text, maxsplit=1)[0]
+    return text if len(text) <= 90 else text[:89].rstrip() + "…"
+
+
+def item_changes(before, after, titles=None):
+    """What a new preparation changed, item by item: added, changed (value, status or ask) and removed. Labels only, short
+    (``titles``: what came in, by its kind's title)."""
     key = lambda i: (i.get("value"), i.get("status"), i.get("ask"))
-    label = lambda i: (i.get("label") or {}).get("de") or str(i.get("value") or i["key"])
+    label = lambda i: short_label(i, titles)
     old, new = {i["item_id"]: i for i in before}, {i["item_id"]: i for i in after}
     shown = {"document", "fact", "next_action", "letter_question", "hint", "deadline"}
     return {"added": [label(new[k]) for k in new if k not in old and new[k]["kind"] in shown],

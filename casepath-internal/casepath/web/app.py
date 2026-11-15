@@ -15,6 +15,7 @@ import secrets
 import html
 import json
 import importlib.util
+import threading
 from dataclasses import replace
 from pathlib import Path
 from typing import Literal
@@ -29,8 +30,8 @@ from pydantic import BaseModel, ConfigDict, Field
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import capped, follow_up, historic as historic_file, own_deadlines
 from ..agents import core
-from ..process import cover, customer_letters, letters, review as reviews
-from ..process.items import kind_title, build_items, item_changes, items_sha256
+from ..process import account, cover, customer_letters, letters, review as reviews, verlauf
+from ..process.items import ITEM_KINDS, SCREEN_KINDS, kind_title, build_items, item_changes, items_sha256
 from . import identity, listing
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
@@ -72,7 +73,8 @@ class CaseTitle(BaseModel):
 EVENT_KINDS = {"filenote.copied", "session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
                "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
                "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
-               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set", "letter.line", "case.historic"}
+               "cap.reached", "scale.answered", "technical.failure", "session.ended", "note.added", "followup.set", "letter.line", "case.historic",
+               "letter.unblocked"}
 REASONS = {"1": "Steht anders in den Akten", "2": "Steht nicht in den Akten", "3": "Hier nicht relevant", "4": "Gilt generell so",
            "5": "Weiss ich von ausserhalb der Akten", "6": "Formulierung", "none": "ohne Angabe"}
 
@@ -86,7 +88,8 @@ class OwnAnswer(BaseModel):
 
 
 SERVER_KINDS = {"run.discarded", "study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
-                "item.confirmed", "correction.undone", "point.settled", "case.renamed", "case.historic"}  # written by the server only
+                "item.confirmed", "correction.undone", "point.settled", "case.renamed", "case.historic",
+                "entry.added", "entry.changed", "entry.removed"}  # written by the server only
 
 
 class EventRequest(BaseModel):
@@ -141,6 +144,45 @@ class ReviewMark(BaseModel):
     comment: str = Field("", max_length=4000)
     suggestion: str = Field("", max_length=4000)  # the wording the jurist proposes (with «Änderung nötig»)
     sha256: str | None = Field(None, pattern=r"^[0-9a-f]{64}$")  # the content the jurist saw: refused when it changed meanwhile
+
+
+PARTY = Literal["kunde", "gegenpartei", "kanzlei", "versicherer", "behoerde", "andere"]
+
+
+class AgreedPart(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    what: str = Field("", max_length=120)
+    amount: str = Field("", max_length=40)
+    payer: PARTY | None = None
+    by: str = Field("", max_length=20)
+
+
+class AskedPart(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    what: str = Field("", max_length=120)
+    of: PARTY | None = None
+    by: str = Field("", max_length=20)
+
+
+class NextPart(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    what: str = Field("", max_length=120)
+    by: str = Field("", max_length=20)
+    who: PARTY | None = None
+
+
+class EntryForm(BaseModel):
+    """The handler's own entry of the running account («Notiz hinzufügen»): what kind, with whom, when, what was said, and
+    at most one row each of what was agreed, asked and the next step."""
+    model_config = ConfigDict(extra="forbid")
+    kind: Literal["telefon", "gespraech", "notiz", "email"]
+    party: Literal["kunde", "gegenpartei", "kanzlei", "behoerde", "andere"] = "kunde"
+    name: str = Field("", max_length=120)
+    date: str = Field(pattern=r"^\d{4}-\d{2}-\d{2}$")
+    said: str = Field("", max_length=2000)
+    agreed: AgreedPart | None = None
+    asked: AskedPart | None = None
+    next: NextPart | None = None
 
 
 class Feedback(BaseModel):
@@ -448,7 +490,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             row["closed"] = any(e["kind"] == "case.closed" for e in events)
             completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
             case_files = store.list_files(row["id"])
-            row["new_files"] = sum(1 for f in case_files if completed and f.get("created_at", "") > completed.get("created_at", ""))
+            row["new_files"] = len(core.unread(case_files, completed)) if completed else 0  # the files its last run did not read
             cut_day = listing.as_of(case_files)  # a test cut of a historic file: looked at as of its own day, listed apart
             row["as_of"] = cut_day.isoformat() if cut_day else None
             # a historic file (a cut, or a whole old file uploaded for testing, or as a person placed it): listed apart, never overdue
@@ -460,7 +502,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events,
                                          None if (row.get("intake") or {}).get("study") else marks)
                     action = next((i for i in listed if i["kind"] == "next_action"), None)
-                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]), since=(action or {}).get("since"))
+                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]),
+                                      since=(action or {}).get("since"), until=(action or {}).get("until"))
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
@@ -534,7 +577,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                           {"title": kind_title(current.get("process"), picked), "next_in_days": action.get("next_in_days")})
             action.update(action=picked, value=option["title"], label={"de": option["title"], "en": option["title"]},
                           next_in_days=option["next_in_days"], chosen_by_handler=True)
-        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id), since=(action or {}).get("since"))
+        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id),
+                          since=(action or {}).get("since"), until=(action or {}).get("until"))  # a date the party gave: looked at then
         clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(case_id))  # before a statutory deadline
         events, files = store.list_case_events(case_id), store.list_files(case_id)
         draft = None
@@ -555,20 +599,42 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                              + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "text": i["text"], "required": [], "template": True,
                                  **({"review": i["review"]} if i.get("review") else {})}
                                 for i in customer_letters.with_letter(listed, events, kind)]}
-        # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
-        new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
+        # Arrival: the files the last preparation did not read (name and the day they came), whether «Aktualisieren» can read
+        # them alone, and the draft held back until it has; after an update or a new preparation, what changed against the
+        # run before, with the new entries of the account.
+        prepared = store.latest_run(case_id, "completed")
+        unread = set(core.unread(files, prepared or completed)) if (prepared or completed) and not study else set()  # a study copy reads nothing
+        arrived = [{"id": f["id"], "name": f["name"], "added": f.get("created_at")} for f in files if f["id"] in unread]
+        new_files = [f["name"] for f in arrived]
+        blocked = core.update_blocked(current["case"], files, prepared)
+        update = {"available": blocked is None, "reason": blocked[0] if blocked else None, "text": blocked[1] if blocked else None,
+                  "needs_full": bool(blocked) and blocked[0] == "full_needed" and bool(arrived)}
+        newest = max((str(f["added"] or "") for f in arrived), default="")
+        stale = bool(arrived) and not any(e["kind"] == "letter.unblocked" and str(e.get("at") or "") >= newest for e in logged or ())
         changes = None
         done = store.completed_runs(case_id, 2)
-        if len(done) == 2 and current.get("workflow") and not (current["case"].get("intake") or {}).get("study"):
+        before_run = (store.get_run(done[0]["builds_on"]) if done and done[0].get("kind") == "update" and done[0].get("builds_on")
+                      else done[1] if len(done) == 2 else None)
+        if before_run and current.get("workflow") and not (current["case"].get("intake") or {}).get("study"):
             workflow = catalogue.get(current["workflow"]["id"], current["workflow"].get("version")) or catalogue.get(current["workflow"]["id"])
-            before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), done[1].get("result") or {}, case_id, files=files)
-            changes = item_changes(build_items(before_state, done[1].get("result"), files, logged, marks), listed)
+            before_state = core.evaluate(workflow, current.get("knowledge") or [], store.list_edits(case_id), before_run.get("result") or {}, case_id, files=files)
+            titles = {f: k["title"] + ("" if f == k["fact"] else " (davor)") for k in (current.get("process") or {}).get("incoming") or ()
+                      for f in [k["fact"], *(k.get("earlier") or [])]}  # what came in, by its kind's title
+            changes = item_changes(build_items(before_state, before_run.get("result"), files, logged, marks), listed, titles)
+            if done[0].get("kind") == "update":  # the account's new entries, one line each, as the Verlauf shows them
+                added = {str(n) for n in ((done[0].get("result") or {}).get("update") or {}).get("entries") or ()}
+                changes["entries"] = [f"{account.day(i.get('date')) or 'ohne Datum'} · {i.get('from_title')} → {i.get('to_title')} · "
+                                      f"{(i.get('label') or {}).get('de')}: {i.get('value')}" for i in listed if i["kind"] == "entry" and i["key"] in added]
         shown_case = {**current["case"], "display_title": listing.display_title(
             current["case"], listed if completed else [], area_title(current.get("process")),
             renamed=any(e["kind"] == "case.renamed" for e in events))}
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "historic": historic_file(files, current["case"].get("created_at"), events),
-                "new_files": new_files, "changes": changes,
+                "new_files": new_files, "arrived": arrived, "update": update, "draft_stale": stale, "changes": changes,
+                "prepared_run": {k: prepared.get(k) for k in ("id", "kind", "builds_on", "created_at", "finished_at")} if prepared else None,
+                # the Verlauf: the report, every document, every entry the handler made and every gesture, in time order
+                "verlauf": verlauf.rows(listed, files, events if logged is not None else [], store.list_edits(case_id, active_only=False),
+                                        current.get("process")),
                 "file_note": letters.file_note(current["case"], listed, events, clock, files, package=[(draft["form"], draft["title"])] + [(a["kind"], a["title"]) for a in draft["also"]]
                                                if draft and draft.get("also") else None) if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
@@ -696,9 +762,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(409, reason)  # a session starts only on the frozen run's exact item list
         if body.fields.get("reason") is not None and str(body.fields["reason"]) not in REASONS:
             raise HTTPException(422, "Unknown reason.")
-        if body.item_id and body.item_id.split(":")[0] not in {"step", "fact", "deadline", "document", "next_action", "reply", "open_point", "summary",
-                                                            "party", "timeline", "answer", "point", "letter", "letter_question", "hint", "followup",
-                                                            "cover", "check", "contact", "key_point", "customer_question"}:
+        if body.item_id and body.item_id.split(":")[0] not in ITEM_KINDS | SCREEN_KINDS:  # every kind the item list holds (items.py)
             raise HTTPException(422, "Unknown item kind.")
         if len(json.dumps(body.fields, ensure_ascii=False)) > 8000:
             raise HTTPException(422, "Too much in one event.")
@@ -847,6 +911,70 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         except Conflict as error:
             raise HTTPException(409, str(error)) from None
 
+    @app.post("/api/cases/{case_id}/update", status_code=202)
+    def update_case(case_id: str, request: Request, who=Depends(user)):
+        """«Aktualisieren»: a run that reads only the files the latest completed run did not read, and builds on it."""
+        if (found(store.get_case, case_id).get("intake") or {}).get("study"):
+            raise HTTPException(409, "Eine Studienkopie wird nicht aktualisiert: sie zeigt den eingefrorenen Lauf.")
+        try:
+            return runs.update(case_id, who, model_token(request))
+        except Conflict as error:
+            raise HTTPException(409, str(error)) from None
+
+    entries_lock = threading.Lock()  # one number per entry, also when two handlers save at once
+
+    def entry_form(case_id, body):
+        if (found(store.get_case, case_id).get("intake") or {}).get("study"):
+            raise HTTPException(409, "Eine Studienkopie zeigt den eingefrorenen Lauf; Einträge gehören in den Fall selbst.")
+        try:
+            return account.check_form(body.model_dump())
+        except account.FormError as error:
+            raise HTTPException(422, str(error)) from None
+
+    def entry_in_force(case_id, n):
+        found_edit = next((e for e in store.list_edits(case_id) if e["op"] == "add_entry" and (e.get("args") or {}).get("n") == n), None)
+        if found_edit is None:
+            raise HTTPException(404, "Kein solcher Eintrag.")
+        return found_edit
+
+    def entry_event(form):
+        return {"entry_kind": form["kind"], "party": form["party"], "text": form["said"][:2000], "parts": [k for k in ("agreed", "asked", "next") if form[k]]}
+
+    @app.post("/api/cases/{case_id}/entries", status_code=201)
+    def add_entry(case_id: str, body: EntryForm, who=Depends(user)):
+        """«Notiz hinzufügen»: the handler's own entry of the running account (a call, a conversation, a note, an e-mail
+        outside the file). It counts at once, without a model: the account, «Stand», the dates and the next action are
+        recomputed from it. Kept as an edit of the case and logged like every handler gesture."""
+        form = entry_form(case_id, body)
+        with entries_lock:
+            n = account.next_handler_number(store.list_edits(case_id, active_only=False))
+            edit = store.add_edit(case_id, "add_entry", {**form, "n": n}, who, "Eintrag der Fallbearbeitung")
+        record(case_id, who, "entry.added", item_id=f"entry:{n}", edit_id=edit["id"], **entry_event(form))
+        return {"entry": account.handler_entry(form, n, by=who, at=edit["at"], edit=edit["id"]), "edit": edit}
+
+    @app.put("/api/cases/{case_id}/entries/{n}")
+    def change_entry(case_id: str, n: int, body: EntryForm, who=Depends(user)):
+        """A handler's entry changed: the one in force is replaced by a new edit with the same number; logged."""
+        form = entry_form(case_id, body)
+        with entries_lock:
+            current = entry_in_force(case_id, n)
+            store.set_edit_status(current["id"], "replaced", who)
+            edit = store.add_edit(case_id, "add_entry", {**form, "n": n}, who, "Eintrag der Fallbearbeitung geändert")
+        record(case_id, who, "entry.changed", item_id=f"entry:{n}", edit_id=edit["id"], replaces=current["id"], **entry_event(form))
+        return {"entry": account.handler_entry(form, n, by=who, at=edit["at"], edit=edit["id"]), "edit": edit}
+
+    @app.delete("/api/cases/{case_id}/entries/{n}")
+    def remove_entry(case_id: str, n: int, who=Depends(user)):
+        """A handler's entry removed: it no longer counts; the edit stays in the store and the removal is logged."""
+        found(store.get_case, case_id)
+        with entries_lock:
+            current = entry_in_force(case_id, n)
+            store.set_edit_status(current["id"], "removed", who)
+        args = current.get("args") or {}
+        record(case_id, who, "entry.removed", item_id=f"entry:{n}", edit_id=current["id"], entry_kind=args.get("kind"),
+               party=args.get("party"), text=str(args.get("said") or "")[:2000])
+        return {"removed": n}
+
     @app.post("/api/runs/{run_id}/discard")
     def discard_run(run_id: str, who=Depends(user)):
         """'Verwerfen': a paused run is set aside (kept in the store and the log, never deleted); the case shows its last
@@ -923,6 +1051,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if not body.reason.strip() and not body.reason_code:
             raise HTTPException(422, "Say why the process changes.")
         reason_text = body.reason.strip() or REASONS[body.reason_code]
+        if body.op == "add_entry":
+            raise HTTPException(422, "Einträge der Fallbearbeitung über /entries.")
         try:
             casegraph.check_edit(before["process"], {"op": body.op, "args": body.args})
         except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
@@ -999,13 +1129,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     band = lambda pages: "klein" if pages <= 10 else "mittel" if pages <= 30 else "gross"  # case size, in pages read
 
     @app.get("/api/run-profile")
-    def run_profile(pages: int | None = Query(None, ge=0, le=5000), who=Depends(user)):
+    def run_profile(pages: int | None = Query(None, ge=0, le=5000), kind: Literal["full", "update"] = "full", who=Depends(user)):
         """Median seconds per stage over this deployment's recent completed runs of cases of the same size (pages);
-        all recent runs when there are fewer than three of that size."""
+        all recent runs when there are fewer than three of that size. ``kind``: full preparations or updates, never the
+        two mixed; an update's time comes from updates alone, whatever the case's size."""
         trials = sorted(settings.speed_trials)  # a band never mixes runs made with different speed trials
-        runs = [r for r in store.recent_runs(60) if not (r.get("result") or {}).get("resumed_from")  # a continued run times only its rest
+        runs = [r for r in store.recent_runs(60, kind=kind) if not (r.get("result") or {}).get("resumed_from")  # a continued run times only its rest
                 and sorted((r.get("result") or {}).get("speed_trials") or []) == trials]
-        same = [r for r in runs if pages is not None and band(case_pages(r["case_id"])) == band(pages)]
+        same = [r for r in runs if pages is not None and kind == "full" and band(case_pages(r["case_id"])) == band(pages)]
         chosen = same if len(same) >= 3 else runs[:30]
         spans = {stage: [] for stage in STAGES}
         for run in chosen:
@@ -1015,8 +1146,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 if times:
                     spans[stage].append((max(times) - min(times)).total_seconds())
         median = lambda xs: sorted(xs)[len(xs) // 2] if xs else None
-        return {"runs": len(chosen), "band": band(pages) if pages is not None and chosen is same else "alle",
-                "median_seconds": {s: median(v) for s, v in spans.items()}}
+        totals = [(datetime.fromisoformat(r["finished_at"]) - datetime.fromisoformat(r["created_at"])).total_seconds()
+                  for r in chosen if r.get("finished_at") and r.get("created_at")]
+        return {"runs": len(chosen), "kind": kind, "band": band(pages) if pages is not None and chosen is same else "alle",
+                "median_seconds": {s: median(v) for s, v in spans.items()}, "median_total": median(totals)}
 
     @app.get("/api/manifest")
     def running_manifest(who=Depends(user)):

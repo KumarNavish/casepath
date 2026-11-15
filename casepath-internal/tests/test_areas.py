@@ -73,7 +73,7 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-15.5"))  # stored runs: same id, newer version governs
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-15.6"))  # stored runs: same id, newer version governs
         # plus: the nearest thing that does not count, for the reader; the stage a handler's decision belongs to
         unnear = lambda f: {k: v for k, v in f.items() if k not in {"not_this", "stages"}}
         self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
@@ -85,8 +85,11 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(settle(composed), {"all": [settle(FROZEN), {"fact": "kosten_offen", "is": False}]})  # no closing with a cost claim open
         self.assertEqual(next(s for s in composed["steps"] if s["id"] == "abschluss_still")["action"]["form"], "A12_still")  # no end of benefits
         self.assertEqual({k: {f: x for f, x in v.items() if f not in {"needs", "asks", "empty", "only_with"}} for k, v in composed["forms"].items()  # plus: what A1 is for
-                          if k not in {"A5", "A12_still", "A12_erledigt"} | INCOMING_FORMS | PACKAGE_FORMS},
-                         {k: v for k, v in FROZEN["forms"].items() if k not in {"A5", "A10"}})
+                          if k not in {"A5", "A12_still", "A12_erledigt", "A2"} | INCOMING_FORMS | PACKAGE_FORMS},
+                         {k: v for k, v in FROZEN["forms"].items() if k not in {"A5", "A10", "A2"}})
+        # the phone note is the handler's own entry of the account now (2026-11-15.6), no longer a file read as evidence
+        self.assertEqual((composed["forms"]["A2"]["title"], FROZEN["forms"]["A2"]["title"]), ("Telefonnotiz", "Telefonnotiz"))
+        self.assertIn("«Telefonnotiz erfassen»: ein Eintrag im Verlauf", composed["forms"]["A2"]["none"])
         self.assertEqual((composed["forms"]["A1"]["needs"], composed["forms"]["A8"]["needs"]), ([], ["deckung", "vorgehen"]))
         self.assertEqual(composed["short_title"], "Mietmangel")
         self.assertEqual(composed["action_kinds"]["A1"]["depends_on"], [])  # the cover decision does not block the first request
@@ -164,7 +167,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-15.5 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-15.6 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 

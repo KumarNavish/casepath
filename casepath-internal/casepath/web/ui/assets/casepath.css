@@ -527,3 +527,50 @@ h2.cp-rv-group+.cp-rv-el{border-top:0}
 .cp-review-mark{display:inline-block;margin-left:4px;padding:0 7px;border:1px dashed var(--ghost-ring);border-radius:999px;font-size:11.5px;font-weight:400;font-style:normal;color:var(--ink-2);white-space:nowrap;vertical-align:1px}
 .cp-caseline small.cp-area-review{margin-top:3px}
 .cp-caseline small.cp-area-review.released{color:var(--green-ink)}
+
+/* «Aktualisieren»: the banner's time, the draft held back while new files are not read */
+.cp-eta{font-weight:400;opacity:.85}
+.cp-stale{opacity:.45;filter:grayscale(1);pointer-events:none;user-select:none}
+.cp-stale-note{margin:6px 22px 0;padding:6px 10px;border-left:3px solid var(--crimson);font-size:13.5px;color:var(--ink-2)}
+.cp-stale-note .cp-quiet-link{margin-left:6px;padding:0}
+.cp-new-entries{margin:0 0 4px;padding-left:18px}
+
+/* the handler's own entry: one compact card in «Der Fall» */
+.cp-entry-form{display:grid;gap:8px;margin-top:10px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);font-size:13.5px}
+.cp-entry-kinds{display:flex;flex-wrap:wrap;gap:5px}
+.cp-entry-kind{cursor:pointer}
+.cp-entry-kind input{position:absolute;opacity:0;width:1px;height:1px}
+.cp-entry-kind span{display:inline-block;border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:13px;color:var(--ink-2)}
+.cp-entry-kind input:checked+span{border-color:var(--crimson);color:var(--crimson);background:var(--crimson-wash);font-weight:600}
+.cp-entry-kind input:focus-visible+span{outline:2px solid var(--crimson-tint)}
+.cp-entry-row,.cp-entry-part{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+.cp-entry-row label,.cp-entry-part label{display:inline-flex;gap:5px;align-items:center;color:var(--ink-2)}
+.cp-entry-form input:not([type=radio]),.cp-entry-form select,.cp-entry-form textarea{font:inherit;font-size:13.5px;border:1px solid var(--border);border-radius:4px;padding:4px 7px;background:var(--bg);color:var(--ink);min-width:0}
+.cp-entry-form textarea{width:100%;box-sizing:border-box;resize:vertical}
+.cp-entry-name{flex:1 1 110px}
+.cp-entry-part{padding:6px 0 0;border-top:1px dashed var(--line)}
+.cp-entry-part[hidden]{display:none}
+.cp-entry-part-label{flex-basis:100%;font-size:12.5px;color:var(--ink-2);font-weight:600}
+.cp-entry-part input[name$=_what]{flex:1 1 150px}
+.cp-entry-adds{margin:0;display:flex;gap:12px;flex-wrap:wrap}
+.cp-entry-adds .cp-quiet-link{padding:0;font-size:13px}
+.cp-entry-actions{display:flex;gap:12px;align-items:center}
+.cp-entry-edit{max-width:640px;margin-bottom:16px}
+.cp-entry-tag.own{border-color:var(--crimson-tint);color:var(--crimson)}
+.cp-entry-tools{display:flex;gap:12px;margin-top:4px}
+.cp-entry-tools .cp-quiet-link{padding:0;font-size:12.5px}
+
+/* the Verlauf: one table, the handler's work among the documents */
+.cp-account-table tr.cp-row-gesture td{color:var(--ink-2);background:#fcfbfb}
+.cp-account-table tr.cp-row-entry td:nth-child(4){box-shadow:inset 2px 0 0 var(--crimson-tint)}
+.cp-account-table tr.cp-row-report td{font-weight:600}
+.cp-account-table tr.cp-row-report .cp-muted{font-weight:400}
+
+/* during a run: what is read beside «Der Fall» filling in */
+.cp-live-overview #overview-source .cp-doc-body{max-height:calc(100vh - 330px)}
+.cp-live-case h3{display:flex;gap:8px;align-items:baseline}
+.cp-live-row{font-size:13.5px;line-height:1.35}
+.cp-live-row+.cp-live-row{margin-top:4px}
+.cp-live-ok .cp-icon{width:14px;height:14px;color:var(--green-ink);vertical-align:-2px}
+@media (prefers-reduced-motion:no-preference){.cp-live-row.enter{animation:cp-arrive .5s ease-out}}
+@keyframes cp-arrive{from{background:var(--crimson-wash)}}

@@ -106,9 +106,10 @@ def historic(files, created=None, events=(), today=None):
     return None
 
 
-def follow_up(next_in_days, files, events, today=None, since=None):
+def follow_up(next_in_days, files, events, today=None, since=None, until=None):
     """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date.
     ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from.
+    ``until``: a date the party waited for gave itself («Unterlagen folgen bis …»): the case is looked at again then.
     A cut counts from its «Stand am», never from an older document or action."""
     ref = parse_date(since) if since and parse_date(since) else reference_day(files, today)
     cut = cut_day(files)
@@ -117,6 +118,8 @@ def follow_up(next_in_days, files, events, today=None, since=None):
     set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date")]
     if set_by_hand:
         return {"due": set_by_hand[-1]["date"], "reference": ref.isoformat(), "set_by": set_by_hand[-1].get("expert")}
+    if until and parse_date(until):
+        return {"due": parse_date(until).isoformat(), "reference": ref.isoformat(), "set_by": None, "awaits": True}
     if not next_in_days:
         return None
     return {"due": (ref + timedelta(days=int(next_in_days))).isoformat(), "reference": ref.isoformat(), "set_by": None}

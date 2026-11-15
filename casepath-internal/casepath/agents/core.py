@@ -8,6 +8,8 @@ core a job and persists what comes back. The core keeps no state and writes noth
   out what the run teaches. Returns an outcome.
 - ``recheck(job, prior, documents, model, blobs, on_event)``: after a process edit, check only the document needs the
   edit added, against the files the case already has.
+- ``update(job, prior, model, blobs, on_event)``: «Aktualisieren». Read only the files added since ``prior`` (the latest
+  completed run, whose result holds the running account), merge what they add into its result and re-derive the rest.
 - ``evaluate(workflow, knowledge, edits, result, case_id)``: the case's own process and where the case stands in it.
   No model, so it can answer a request synchronously.
 
@@ -358,6 +360,7 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, shou
         result = team.run(case=job["case"], files=files, workflow=workflow, knowledge=family_knowledge(job, workflow),
                           edits=job["edits"], on_event=on_event, routed=decision.get("facts") or [], resume=(resume or {}).get("result"))
         result["usage"] = usage + result["usage"]
+        result["read_files"] = [f["id"] for f in job["files"]]  # what this run read: a file added later is new to it
         if options.get("speed_trials"):  # a run says which speed trials shaped it, so runs stay comparable
             result["speed_trials"] = sorted(options["speed_trials"])
         if resume:  # the paused run's usage is carried in this one; sums count this run, never the paused one too
@@ -404,6 +407,82 @@ def recheck(job, prior, documents, model, on_event=lambda e: None):
         return _outcome(status="failed", error=f"internal: {type(error).__name__}: {error}")
 
 
+def unread(files, run):
+    """The ids of the case's files a run did not read: those it does not name among its read files, or, for a run made
+    before runs named them, those added after it began. All of them without a run."""
+    if not run:
+        return [f["id"] for f in files or ()]
+    read = (run.get("result") or {}).get("read_files")
+    if read is not None:
+        return [f["id"] for f in files or () if f["id"] not in set(read)]
+    return [f["id"] for f in files or () if str(f.get("created_at") or "") > str(run.get("created_at") or "")]
+
+
+FULL_NEEDED = "Die letzte Vorbereitung hat noch keinen Verlauf: einmal ganz neu vorbereiten, danach genügt «Aktualisieren»."
+OTHER_PROCESS = "Ein anderer Prozess ist gewählt: einmal ganz neu vorbereiten."
+NOTHING_NEW = "Seit der letzten Vorbereitung ist nichts Neues eingegangen."
+
+
+def update_blocked(case, files, prior):
+    """Why «Aktualisieren» cannot build on ``prior`` (the latest completed run), as (reason, message in the handler's
+    words), or None: no completed run; a run made before the running account (a full preparation is needed once); another
+    process chosen since; nothing new."""
+    if not prior or not prior.get("workflow_id"):
+        return "no_assessment", "Der Fall ist noch nicht vorbereitet."
+    if not account.kept(prior.get("result")):
+        return "full_needed", FULL_NEEDED
+    if (case or {}).get("workflow_id") and case["workflow_id"] != prior["workflow_id"]:
+        return "full_needed", OTHER_PROCESS
+    if not unread(files, prior):
+        return "nothing_new", NOTHING_NEW
+    return None
+
+
+def update(job, prior, model, blobs, on_event=lambda e: None, on_extraction=None, should_stop=None, edits_now=None):
+    """«Aktualisieren»: ``prior`` is the latest completed run (id, workflow_id, workflow_version, routing, result). Only the
+    files it did not read are read (their pages, as a full run reads them) and given to the team's update
+    (CaseTeam.update); the outcome is a full result like prepare's, its usage and events this update's own. Status
+    completed, failed, or stopped (a person pressed «Anhalten»: nothing of the update is kept but the new files' reading).
+    No Knowledge is learned from an update: its result checker does not run, and the run it builds on counted its uses."""
+    check_job(job)
+    options = job.get("options") or {}
+    storage = _Files(blobs, job["files"], on_extraction)
+    try:
+        if model is None:
+            raise ModelError("model_not_configured", "No model deployment is configured for this workspace.")
+        blocked = update_blocked(job["case"], job["files"], prior)
+        if blocked:
+            raise TeamError(*blocked)
+        catalogue = catalogue_of(job)
+        workflow = catalogue.get(prior["workflow_id"], prior.get("workflow_version")) or catalogue.get(prior["workflow_id"])
+        if workflow is None:
+            raise TeamError("workflow_missing", WORKFLOW_MISSING)
+        new = unread(job["files"], prior)
+        usage = []
+        model = _Budget(model, options.get("token_budget"))
+        if options.get("read_scans", True):  # the new files' pages without text, read as a full run reads them
+            reader = _Counted(getattr(model, "reading", None) or model, "reader", usage)
+            for file_id in new:
+                prepare_file(reader, storage, storage.rows[file_id], on_event=on_event, workers=options.get("reading_workers", 1),
+                             voice=options.get("voice"), image_side=options.get("page_image_side", 1700))
+        files = case_files(storage.rows.values())
+        on_event({"agent": "lead", "kind": "update.started", "builds_on": prior.get("id"), "files": new, "workflow": workflow["id"]})
+        team = CaseTeam(model, effort=options.get("effort", "medium"), voice=options.get("voice"), should_stop=should_stop, edits_now=edits_now)
+        result = team.update(case=job["case"], files=files, new=new, workflow=workflow, knowledge=family_knowledge(job, workflow),
+                             edits=job["edits"], prior=prior.get("result") or {}, on_event=on_event)
+        result["usage"] = usage + result["usage"]
+        if result.get("stopped"):
+            return _outcome(status="stopped", result=result, extractions=storage.extractions)
+        result["update"]["builds_on"] = prior.get("id")
+        if options.get("speed_trials"):
+            result["speed_trials"] = sorted(options["speed_trials"])
+        return _outcome(routing=prior.get("routing"), workflow=workflows.ref(workflow), result=result, extractions=storage.extractions)
+    except (ModelError, TeamError) as error:
+        return _outcome(status="failed", error=f"{error.reason}: {error}", extractions=storage.extractions)
+    except Exception as error:  # Every failure ends the job with a stated reason.
+        return _outcome(status="failed", error=f"internal: {type(error).__name__}: {error}", extractions=storage.extractions)
+
+
 def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None):
     """The case's process (workflow, active Knowledge, edits) and where the case stands, from a run's accepted findings."""
     result = result or {}
@@ -418,9 +497,10 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     read_in = {f for kind in graph.get("incoming") or () for f in incoming.slots(kind)}
     facts.update({f["fact"]: f["value"] for f in rows if f["status"] == "conflicting" and f["fact"] in read_in and f.get("value")
                   and f["fact"] not in facts})
-    # The running account, when the run recorded one: the insurer's actions taken and the agreement come from its entries.
-    # A run made before the account has none, and nothing changes.
-    ledger = account.from_result(result, graph)
+    # The running account, when the run recorded one: the insurer's actions taken and the agreement come from its entries,
+    # the handler's own entries (phone calls, notes) among them. A run made before the account has none, and nothing
+    # changes: the handler's entries are listed and count once a full preparation has read the account.
+    ledger = account.from_result(result, graph, edits)
     facts = account.merge(facts, ledger, graph)
     overrides = casegraph.fact_overrides(graph, edits)  # a case worker's value governs
     facts.update({k: v for k, (v, _) in overrides.items()})
@@ -432,7 +512,7 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
                                    incoming_dates=incoming.document_dates(graph, rows, files), account=ledger)  # at view time: what arrived decides, not the run
     evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=checked), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings,
-            "overrides": {k: e for k, (_, e) in overrides.items()}, "account": ledger}
+            "overrides": {k: e for k, (_, e) in overrides.items()}, "account": ledger, "handler_entries": account.handler_entries(edits)}
 
 
 def main(argv=None):

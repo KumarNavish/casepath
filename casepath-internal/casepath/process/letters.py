@@ -295,6 +295,11 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
     parts = []
     if received:
         parts.append(f"Eingegangen: {', '.join(received)}.")
+    # what the handler entered (a call, a conversation, a note) since the file note was last copied: it is not in the files
+    copied_at = max((str(e.get("at") or "") for e in events or () if e.get("kind") == "filenote.copied"), default="")
+    own = [i for i in items if i["kind"] == "entry" and i.get("handler") and str(i["handler"].get("at") or "") > copied_at]
+    if own:
+        parts.append("Erfasst durch die Fallbearbeitung: " + "; ".join(handler_line(i) for i in own) + ".")
     # the running account (account.py), when the run recorded one: what is agreed, open at whom, the last contact
     parts += [f"{label(i)}: {i.get('detail') or i.get('value')}." for i in items if i["kind"] == "stand"]
     if decided:
@@ -324,6 +329,18 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
 
 def _value(v):
     return {True: "ja", False: "nein"}.get(v, v)
+
+
+def handler_line(item):
+    """A handler's entry in the file note: «Telefon mit der Gegenpartei (Herr Muster) am 15.11.2026: Einigung …;
+    vereinbart: …», what was said and each structured part as the Verlauf states it."""
+    from .account import FORM_KINDS, WITH
+    h = item.get("handler") or {}
+    with_ = "" if h.get("kind") == "notiz" and h.get("party") in (None, "andere") else f" mit {WITH.get(h.get('party'), 'Dritten')}"
+    head = f"{FORM_KINDS.get(h.get('kind'), 'Eintrag')}{with_}" + (f" ({h['name']})" if h.get("name") else "") + (f" am {_day(item.get('date'))}" if item.get("date") else "")
+    said = re.sub(r"\s+", " ", str(h.get("said") or "")).strip().rstrip(".")
+    notes = [n["text"] for n in item.get("notes") or () if n.get("kind") in {"agreed", "asked", "next", "promised"}]
+    return head + (f": {said}" if said else "") + (f" ({'; '.join(notes)})" if notes else "")
 
 
 def action_options(graph, evaluation, forms):

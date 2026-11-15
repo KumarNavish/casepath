@@ -5,15 +5,18 @@ reason), or interrupted by a restart. The run service builds a job from the stor
 Knowledge, edits), hands it to the agent core (``core.prepare``) on a worker thread and saves the outcome: each
 file's reading as soon as it is done, the result, each applied Knowledge item's statistics on its current version,
 and the result checker's proposals as candidate Knowledge. A re-check after a process edit runs only the document
-finder and the source checker on the needs the edit added. In an operated deployment, a queue worker calls the same
-core functions with the same job, and the case service saves the outcome the same way.
+finder and the source checker on the needs the edit added. An update («Aktualisieren», run kind «update») reads only the
+files added since the latest completed run and builds on it (``builds_on``); its tokens and seconds are its own, it
+learns no Knowledge, and a stopped update keeps nothing but the new files' reading (status «discarded»). In an operated
+deployment, a queue worker calls the same core functions with the same job, and the case service saves the outcome the
+same way.
 """
 from concurrent.futures import ThreadPoolExecutor
 
 from . import core
 from ..process import knowledge as kb, workflows
 from .azure_model import ModelError
-from ..web.store import now
+from ..web.store import Conflict, now
 
 
 def case_files(store, case_id):
@@ -65,6 +68,32 @@ class RunService:
         run = self.store.create_run(case_id, user)
         self._pool.submit(self._execute, run["id"], case_id, token)
         return run
+
+    def update(self, case_id, user, token=None):
+        """«Aktualisieren»: a run that reads only what came in since the latest completed run and builds on it. Conflict,
+        with the reason in the handler's words, when it cannot (core.update_blocked)."""
+        base = self.store.latest_run(case_id, "completed")
+        blocked = core.update_blocked(self.store.get_case(case_id), self.store.list_files(case_id), base)
+        if blocked:
+            raise Conflict(blocked[1])
+        run = self.store.create_run(case_id, user, kind="update", builds_on=base["id"])
+        self._pool.submit(self._update, run["id"], case_id, base["id"], token)
+        return run
+
+    def _update(self, run_id, case_id, base_id, token=None):
+        try:
+            self.store.update_run(run_id, status="running")
+            outcome = core.update(self.job(case_id), self.store.get_run(base_id), self._model(run_id, token), core.StoreBlobs(self.store),
+                                  on_event=lambda e: self._event(run_id, e),
+                                  on_extraction=lambda file_id, extraction: self.store.update_extraction(file_id, extraction),
+                                  should_stop=lambda: run_id in self._stops, edits_now=lambda: self.store.list_edits(case_id))
+            self.save(run_id, case_id, outcome)
+        except ModelError as error:
+            self.store.update_run(run_id, status="failed", error=f"{error.reason}: {error}", finished_at=now())
+        except Exception as error:  # Every failure ends the run with a stated reason.
+            self.store.update_run(run_id, status="failed", error=f"internal: {type(error).__name__}: {error}", finished_at=now())
+        finally:
+            self._stops.discard(run_id)
 
     def recheck(self, case_id, document_ids, user, token=None):
         run = self.store.create_run(case_id, user)
@@ -131,6 +160,9 @@ class RunService:
         """Persist an agent outcome: readings, routing, result, Knowledge statistics and proposals."""
         for file_id, extraction in outcome["extractions"].items():
             self.store.update_extraction(file_id, extraction)
+        if outcome["status"] == "stopped":  # an update stopped by a person keeps nothing: the case shows the run it built on
+            self.store.update_run(run_id, status="discarded", error="stopped: Aktualisierung angehalten; nichts übernommen", finished_at=now())
+            return
         if outcome["status"] == "paused":  # stopped by a person: the partial result is kept for "Weiter"
             self.store.update_run(run_id, status="paused", result=outcome["result"], finished_at=now(),
                                   **({"workflow_id": outcome["workflow"]["id"], "workflow_version": outcome["workflow"]["version"]} if outcome.get("workflow") else {}))
@@ -146,7 +178,7 @@ class RunService:
             return
         self.store.update_run(run_id, workflow_id=workflow["id"], workflow_version=workflow["version"])
         result = outcome["result"]
-        if "recheck_of" not in result:
+        if "recheck_of" not in result and "update" not in result:  # an update learns nothing: the run it builds on did
             result["learned"] = self._learn(case_id, run_id, outcome)
         self.store.update_run(run_id, status="completed", result=result, finished_at=now())
 

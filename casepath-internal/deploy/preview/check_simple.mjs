@@ -2,8 +2,11 @@
 //   SIZE=1440x900 SHOTS=/some/dir NODE_PATH=$(npm root -g) node deploy/preview/check_simple.mjs
 // It measures, as a handler meets them: the main path on case C (open it from the case list, untick one line, copy the
 // letter, Erledigt) in clicks and scrolls; the one primary button in each state (prepared, running, paused, closed, new
-// files); instruction sentences and interactive elements above the fold on the Übersicht; and that every handler gesture
-// on case D still leaves its event. MODE=before runs only the measures that also apply to an older build.
+// files); instruction sentences and interactive elements above the fold on the Übersicht; that every handler gesture
+// on case D still leaves its event; that a file added in the rail leaves every button working without a reload, that the
+// draft waits while new files are unread, that the Verlauf is one table with the report first and every gesture, that
+// «Der Fall» fills in while a run works and the viewer shows what is read, and that no element's event is refused.
+// MODE=before runs only the measures that also apply to an older build.
 import { createRequire } from "module";
 const { chromium } = createRequire(import.meta.url)("playwright");
 const BASE = process.env.BASE || "http://127.0.0.1:8790", SHOTS = process.env.SHOTS || "", BEFORE = process.env.MODE === "before";
@@ -15,9 +18,10 @@ const C = by(/Handler-Prozess/), D = by(/zweite Meldung/), B = by(/zweiter Fall/
 const browser = await chromium.launch();
 const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, permissions: ["clipboard-read", "clipboard-write"] });
 const page = await context.newPage();
-let dialogs = 0;
+let dialogs = 0, pageErrors = 0, refused = 0;
 page.on("dialog", async (d) => { dialogs += 1; await d.accept(d.type() === "prompt" ? "3" : undefined); });
-page.on("pageerror", (e) => console.log("page error: " + e.message));
+page.on("pageerror", (e) => { pageErrors += 1; console.log("page error: " + e.message); });
+page.on("response", (r) => { if (r.status() === 422 && r.url().includes("/events")) refused += 1; });  // an element's event the route refused
 const out = [];
 const shot = async (name) => { if (!SHOTS) return; await page.screenshot({ path: `${SHOTS}/${name}-${tag}.png` }); await page.screenshot({ path: `${SHOTS}/${name}-${tag}-full.png`, fullPage: true }); };
 const open = async (hash) => { await page.goto(`${BASE}/?lang=de#${hash}`); await sleep(2500); };
@@ -99,10 +103,15 @@ if (!BEFORE) {
   await open(`/case/${B}/overview`);
   const fresh = await measure();
   out.push(`not prepared: primary "${fresh.primaries.join(", ")}" (${fresh.primaries.length}) in view ${fresh.primaryInView}`);
-  await click("#start-run", "prepare"); await sleep(9000);
+  await click("#start-run", "prepare");
+  const started = Date.now();  // «Der Fall» fills in from the run's events; the viewer beside it shows what is read
+  let filled = 0;
+  for (let i = 0; i < 50 && !filled; i += 1) { await sleep(500); filled = await page.evaluate(() => document.querySelectorAll(".cp-live-case .cp-live-row").length); }
+  const viewer = await page.evaluate(() => (document.querySelector("#overview-source .cp-doc-toolbar .name") || {}).innerText || null);
   const run = await measure();
   await shot("running-case");
-  out.push(`running: primary "${run.primaries.join(", ")}" (${run.primaries.length}) in view ${run.primaryInView}; prepare button shown ${await page.$("#run, #start-run") !== null}`);
+  out.push(`running: primary "${run.primaries.join(", ")}" (${run.primaries.length}) in view ${run.primaryInView}; prepare button shown ${await page.$("#run, #start-run") !== null}; ` +
+    `«Der Fall» filled during the run ${filled > 0} (${filled} row(s) after ${Math.round((Date.now() - started) / 1000)} s), viewer shows «${viewer}»`);
   await click("#stop-run", "stop");
   for (let i = 0; i < 30 && (await get(`/api/cases/${B}`)).run.status !== "paused"; i += 1) await sleep(1000);
   await sleep(2500);
@@ -110,12 +119,20 @@ if (!BEFORE) {
   await shot("paused-case");
   out.push(`paused: primary "${paused.primaries.join(", ")}" (${paused.primaries.length}) in view ${paused.primaryInView}`);
 
-  // 4. New files on case A
-  const form = new FormData(); form.append("file", new Blob(["Nachtrag der Mieterin: Fotos folgen."], { type: "text/plain" }), "Nachtrag.txt");
-  await fetch(`${BASE}/api/cases/${A}/files`, { method: "POST", body: form });
+  // 4. New files on case A, added in the rail: every button still works without a reload, the draft waits
   await open(`/case/${A}/overview`);
+  const errorsBefore = pageErrors;
+  await page.setInputFiles("#upload", { name: "Nachtrag.txt", mimeType: "text/plain", buffer: Buffer.from("Nachtrag der Mieterin: Fotos folgen.") });
+  await sleep(2500);
   const arrived = await measure();
-  out.push(`new files: primary "${arrived.primaries.join(", ")}" (${arrived.primaries.length}) in view ${arrived.primaryInView}`);
+  await shot("new-files");
+  await click("#add-note", "note"); const formOpens = await page.$("#note-form") !== null; await click("#note-cancel", "cancel");
+  const blocked = await page.evaluate(() => Boolean((document.querySelector("#copy-draft") || {}).disabled) && Boolean(document.querySelector(".cp-letter.cp-stale")));
+  await click("#use-anyway", "use anyway");
+  const usable = await page.evaluate(() => (document.querySelector("#copy-draft") || { disabled: true }).disabled === false);
+  const unblocked = (await events(A)).some((e) => e.kind === "letter.unblocked");
+  out.push(`new files: primary "${arrived.primaries.join(", ")}" (${arrived.primaries.length}) in view ${arrived.primaryInView}; banner «${(await page.evaluate(() => (document.querySelector(".cp-runnow") || {}).innerText || "")).replace(/\s+/g, " ").slice(0, 90)}»; ` +
+    `after adding a file in the rail: page errors ${pageErrors - errorsBefore}, a button works without reload ${formOpens}; draft held back ${blocked}, «trotzdem verwenden» unblocks it ${usable} (logged ${unblocked})`);
 
   // 5. Every handler gesture on case D leaves its event
   await open(`/case/${D}/overview`);
@@ -135,7 +152,7 @@ if (!BEFORE) {
   await click("#copy-draft", "copy");
   checks.push(["reword the letter (copied as edited)", await last("letter.copied", (e) => e.edited === true)]);
   await click("#add-note", "note"); await page.fill("#note-form textarea", "Kundin ruft morgen zurück."); await click("#note-form button:not([type])", "save");
-  checks.push(["note", await last("note.added", (e) => e.text === "Kundin ruft morgen zurück.")]);
+  checks.push(["note (an entry of the account)", await last("entry.added", (e) => e.text === "Kundin ruft morgen zurück.")]);
   await page.evaluate(() => { const i = document.querySelector("#followup-date"); i.value = "2026-12-20"; i.dispatchEvent(new Event("change")); }); await sleep(1500);
   checks.push(["follow-up date", await last("followup.set", (e) => e.date === "2026-12-20")]);
   await click("#change-action", "change"); await click("[data-pick-action='A5']", "pick"); await click("[data-action-reason='5']", "reason");
@@ -149,6 +166,14 @@ if (!BEFORE) {
   await click(".cp-split summary", "more"); await page.fill("#reservation", "Deckung nochmals prüfen"); await click("[data-close='erledigt_mit_vorbehalt']", "close");
   checks.push(["close with reservation", await last("case.closed", (e) => e.form === "erledigt_mit_vorbehalt" && e.text === "Deckung nochmals prüfen")]);
   out.push(`gestures (${(await events(D)).length - n0} events): ` + checks.map(([what, ok]) => `${what} ${ok ? "ok" : "MISSING"}`).join(" · "));
+  const mine = await page.evaluate(() => document.body.innerText.includes("Ihre Änderungen"));
+  await open(`/case/${D}/history`);
+  const verlauf = await page.evaluate(() => ({ first: (document.querySelector(".cp-account-table tbody tr") || { className: "" }).className,
+    gestures: document.querySelectorAll(".cp-account-table tr.cp-row-gesture").length, entries: document.querySelectorAll(".cp-account-table tr.cp-row-entry").length,
+    tables: document.querySelectorAll("main table").length }));
+  await shot("verlauf");
+  out.push(`Verlauf: ${verlauf.tables} table, row 1 the report ${/cp-row-report/.test(verlauf.first)}, ${verlauf.gestures} gestures, ${verlauf.entries} entry; «Ihre Änderungen» on the Übersicht ${mine}`);
 }
+out.push(`events refused by the route: ${refused}; page errors: ${pageErrors}`);
 console.log(`${tag}${BEFORE ? " (before)" : ""}\n` + out.join("\n"));
 await browser.close();
