@@ -291,6 +291,9 @@ report.summary = {
   agreeAll: live.filter((c) => c.agree.docs && c.agree.next && c.agree.status).length,
   pageErrors: sum(live.map((c) => c.errors.length)), refused: sum(live.map((c) => c.refused)),
   scrollAt1440: live.filter((c) => c.overview.pageHeight > 900).length, scrollAt1280: live.filter((c) => c.small.pageHeight > 720).length,
+  // the assessment and the question back: the gaps a handler still fills («[bitte ergänzen: …]»), in every version a case can produce
+  handlerGapsMax: max(report.texts.filter((t) => /^A[45](_|$)/.test(t.kind || "")).map((t) => t.gaps)),
+  handlerGapsMedian: median(report.texts.filter((t) => /^A[45](_|$)/.test(t.kind || "")).map((t) => t.gaps)),
 };
 const urgent = live.find((c) => c.workflow === "verkehr");
 if (urgent) report.summary.urgentTraffic = { action: urgent.actionTitle, head: urgent.overview.head, repeats: urgent.overview.repeats,
@@ -307,6 +310,7 @@ const lines = [`# Screens, measured ${report.at.slice(0, 16)} on ${BASE}`, "",
   `| Repeats on the Übersicht (total · cases) | ${s.repeats} · ${s.casesWithRepeats} |`,
   `| Internal words on handler screens | ${s.internalScreens} |`,
   `| Internal words in customer texts (${s.texts} texts) | ${s.internalTexts} |`,
+  `| A4/A5 Lücken für die Fallbearbeitung (max · median) | ${s.handlerGapsMax ?? "—"} · ${s.handlerGapsMedian ?? "—"} |`,
   `| Explanatory sentences | ${s.sentences} |`,
   `| Screens with exactly one primary in view | ${s.screensWithOnePrimary} of ${s.screensMeasuredForPrimary} |`,
   `| Cases where the tabs and the list agree (documents · next step · status · all) | ${s.agreeDocs} · ${s.agreeNext} · ${s.agreeStatus} · ${s.agreeAll} of ${s.cases} |`,
@@ -322,4 +326,4 @@ const lines = [`# Screens, measured ${report.at.slice(0, 16)} on ${BASE}`, "",
   ...report.texts.filter((t) => t.internal.length).map((t) => `- ${cell(t.caseTitle)} · ${cell(t.title)} (${t.via}): ${t.internal.slice(0, 6).join("; ")}${t.internal.length > 6 ? ` … ${t.internal.length}` : ""}`),
 ];
 fs.writeFileSync(`${OUT}/screens.md`, lines.join("\n") + "\n");
-console.log(lines.slice(0, 18).join("\n"));
+console.log(lines.slice(0, 19).join("\n"));
