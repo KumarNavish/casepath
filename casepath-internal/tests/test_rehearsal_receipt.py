@@ -31,6 +31,7 @@ CELL = Path(__file__).resolve().parents[1] / "deploy" / "databricks" / "rehearse
 
 FORMAT = "casepath.rehearsal/1"
 LABEL = "developer_rehearsal.synthetic_analog.handler_savings_unverified"
+SCRIPTED = "scripted_path.synthetic_analog.no_handler_time"  # the script took the steps: the path's counts, never a handler's time
 CONDITIONS = {"b0", "b1", "n"}
 STEP = {"n", "name", "ms", "clicks", "decisions", "confirmations", "edits", "chars", "switches", "opened_whole", "passages", "scrolls"}
 SLOTS = {"im_fall", "zu_fragen", "empfehlung", "nachzureichen", "other"}
@@ -49,17 +50,21 @@ def check_rehearsal(receipt):
     guard(body)
     if DATE.search(json.dumps(body)):
         raise ScorecardLeak("a date is case content: a receipt holds none")
-    if body["label"] != LABEL or body["condition"] not in CONDITIONS or body["episode"] not in {"e1", "e2"} or body["session"] not in {1, 2}:
+    if body["label"] not in (LABEL, SCRIPTED) or body["condition"] not in CONDITIONS or body["episode"] not in {"e1", "e2"} or body["session"] not in {1, 2}:
         raise ValueError("label, condition (b0, b1, n), episode (e1, e2) and session (1, 2) as declared")
+    unmeasured = {"clicks", "edits", "chars", "opened_whole", "passages"} if body["condition"] == "b0" else set()  # no browser in B0
     for i, step in enumerate(body["steps"]):
         if set(step) != STEP or step["n"] != i + 1 or set(step["scrolls"]) != {"page", "inner"}:
             raise ValueError(f"steps[{i}]: {sorted(STEP)}, numbered from 1, scrolls {{page, inner}}")
-        if any(type(step[k]) is not int or step[k] < 0 for k in STEP - {"name", "scrolls"}):
-            raise ValueError(f"steps[{i}]: counts and milliseconds are whole numbers from 0")
+        counts = [(k, step[k]) for k in STEP - {"name", "scrolls"}] + [(f"scrolls.{k}", v) for k, v in step["scrolls"].items()]
+        if any(not (v is None and k.split(".")[0] in unmeasured | {"scrolls"} and body["condition"] == "b0") and (type(v) is not int or v < 0)
+               for k, v in counts):
+            raise ValueError(f"steps[{i}]: counts and milliseconds are whole numbers from 0 (in B0, what no browser measures is null)")
     if any(set(x) != {"name", "ms"} for x in body["external"]):
         raise ValueError("external: [{name, ms}]")
     edit = body["edit"]
-    if set(edit) != {"ratio_words", "substantive", "stylistic", "slots"} or set(edit["slots"]) - SLOTS:
+    if set(edit) != {"ratio_words", "substantive", "stylistic", "slots"} or set(edit["slots"]) - SLOTS or (
+            body["condition"] != "b0" and None in (edit["ratio_words"], edit["substantive"], edit["stylistic"])):
         raise ValueError(f"edit: ratio_words, substantive, stylistic and slots by {sorted(SLOTS)}")
     if body["duplicate_refused"] not in (True, False, None):
         raise ValueError("duplicate_refused: whether the second drop of the reply was refused (None in the baseline)")
@@ -100,6 +105,18 @@ class RehearsalReceiptTests(unittest.TestCase):
                        {"steps": [{**example()["steps"][0], "name": "open_2026-11-15"}]}):
             with self.assertRaises((ValueError, ScorecardLeak), msg=str(change)):
                 check_rehearsal({**example(), **change})
+
+    def test_the_baseline_leaves_unmeasured_what_no_browser_measures(self):
+        b0 = example()
+        b0.update(condition="b0", build="none", duplicate_refused=None, events={},
+                  edit={"ratio_words": None, "substantive": None, "stylistic": None, "slots": {}},
+                  steps=[{**s, "clicks": None, "edits": None, "chars": None, "opened_whole": None, "passages": None,
+                          "scrolls": {"page": None, "inner": None}} for s in example()["steps"]])
+        check_rehearsal(b0)
+        with self.assertRaises(ValueError):  # with CasePath every count is measured
+            check_rehearsal({**b0, "condition": "n"})
+        with self.assertRaises(ValueError):  # time is measured in the baseline too
+            check_rehearsal({**b0, "steps": [{**b0["steps"][0], "ms": None}]})
 
     def test_the_declared_fields_and_enums_are_required(self):
         for change in ({"condition": "with_casepath"}, {"session": 3}, {"model_tokens": 1200},
