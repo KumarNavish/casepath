@@ -113,7 +113,7 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         doc = document(view, form)
         return {**({"id": saved["id"], "by": saved["by"], "at": saved["at"]} if saved else {}), "draft_id": doc.get("draft_id"),
                 "version": (view.get("draft") or {}).get("version"), "conflicts": doc.get("conflicts") or [], "parts": doc.get("parts") or [],
-                "text": doc.get("text"), "completion": view.get("completion")}
+                "text": doc.get("text"), "line_parts": doc.get("line_parts"), "completion": view.get("completion")}
 
     @app.put("/api/cases/{case_id}/drafts/{form}")
     def save_draft(case_id: str, form: str, body: DraftSave, who=Depends(user)):
@@ -229,7 +229,7 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         if unknown:
             raise HTTPException(422, "Diese Empfänger gehören nicht zur freigegebenen Fassung.")
         day = date.fromisoformat(body.date)
-        if day > date.today():
+        if day > completion.swiss_today():  # the handler's day: Swiss time
             raise HTTPException(422, "Das Versanddatum liegt in der Zukunft.")
         first = completion.earliest(approval, events, approval.get("form"))
         if first and body.date < first:
@@ -237,7 +237,9 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         view = case_view(case_id, who=who)
         done = view.get("completion") or {}
         current = (view.get("draft") or {}).get("form") or (view.get("draft") or {}).get("kind")
+        rest = done.get("rest") or {}
         stale = (done.get("stale") if (done.get("approved") or {}).get("version") == body.version
+                 else rest.get("stale") or [] if rest.get("version") == body.version  # the rest of a package sent in part: what it rests on
                  else ["Schritt geändert" if approval.get("form") != current else "Text geändert"])
         prepared = store.latest_run(case_id, "completed")
         written = []
@@ -328,8 +330,10 @@ def approved_letter(store, case_id):
         if found is None:
             continue
         name, data = found
+        main = next((r for r in approval.get("recipients") or () if approval.get("form") in (r.get("forms") or ())), None) or {}
         return {"version": approval.get("version"), "form": approval.get("form"), "title": approval.get("title"), "approved_at": approval.get("at"),
-                "approved_by": approval.get("expert"), "name": name, "docx": data, "text": versandpaket.text_of(data), "bundle": saved.get("sha256")}
+                "approved_by": approval.get("expert"), "to": main.get("title") or main.get("to"), "recipient": main.get("recipient"),
+                "name": name, "docx": data, "text": versandpaket.text_of(data), "bundle": saved.get("sha256")}
     return None
 
 

@@ -297,6 +297,28 @@ def cover_line(items, stage, decided_by=None):
 
 CHANGED_CHARS = 90  # «Was sich geändert hat» in one line
 AFTER = {"Deckung": "dem Deckungsentscheid", "Empfehlung": "dem Entscheid zur Empfehlung", "Erfolgsaussichten": "dem Entscheid zu den Erfolgsaussichten"}
+FROM_WORDS = {"Kundschaft": "der Kundschaft", "Gegenpartei": "der Gegenpartei", "Kanzlei": "der Kanzlei", "Gericht/Behörde": "des Gerichts oder der Behörde"}
+ENTRY_LINE = re.compile(r"^(\d{2}\.\d{2}\.\d{4}|ohne Datum) · (.+?) → (.+?) · ")
+
+
+def entries_line(entries):
+    """The new entries of the account in one line, as the handler first wants them: what came to Protekta, by sender and
+    day («2 Nachrichten der Kundschaft vom 05.09.2026»), then what was forwarded with it; None without entries."""
+    came, forwarded = {}, 0
+    for line in entries or ():
+        m = ENTRY_LINE.match(str(line))
+        if not m:
+            continue
+        day, sender, to = m.groups()
+        if to == "Protekta" and sender != "Protekta":
+            came.setdefault(sender, []).append(day)
+        elif sender != "Protekta":
+            forwarded += 1
+    parts = [f"{len(days)} {'Nachricht' if len(days) == 1 else 'Nachrichten'} {FROM_WORDS.get(who, 'von ' + who)} vom "
+             + " und ".join(dict.fromkeys(days)) for who, days in came.items()]
+    if forwarded:
+        parts.append(f"{forwarded} weitergeleitet{'e Nachricht' if forwarded == 1 else 'e Nachrichten'}")
+    return " · ".join(parts) or None
 
 
 def _one_line(lines, limit=CHANGED_CHARS):
@@ -323,7 +345,9 @@ def head_block(changes, assessment, completion, draft=None):
     changed since («versandt mit früherem Stand – prüfen»).
 
     - ``changed``: «Was sich geändert hat: …», one line of at most 90 characters, the account's ledger lines first
-      (``changes['ledger']``), then the new entries and what the preparation changed; ``changed_all``: every line.
+      (``changes['ledger']``, slice C) and the update's summary (``changes['update_summary']``), else the new entries in
+      one line (entries_line); then the entries and what the preparation changed; ``changed_all``: every line. (Slice C's
+      change line in «Der Fall» hides itself while ``changed`` is set.)
     - ``meaning``: «Was das bedeutet: …»: for a reply to a letter that went out, what its evidence means (completion's
       ``consequence``: the judgment it allows now, the remainder still owed, a refusal, an answer without evidence, or
       nothing to the asks, so the wait goes on); otherwise from the assessment's summary, the decision still open and the
@@ -343,7 +367,9 @@ def head_block(changes, assessment, completion, draft=None):
     if not (done.get("fresh") or stale or recheck):
         return None
     ch = changes or {}
-    every = list(ch.get("ledger") or []) + list(ch.get("entries") or []) + [f"neu: {x}" for x in ch.get("added") or ()] \
+    first = [] if ch.get("ledger") else [x for x in [entries_line(ch.get("entries"))] if x]  # the ledger (slice C) says it first where it is
+    summary_line = [ch["update_summary"]] if isinstance(ch.get("update_summary"), str) and ch.get("update_summary").strip() else []
+    every = first + list(ch.get("ledger") or []) + summary_line + list(ch.get("entries") or []) + [f"neu: {x}" for x in ch.get("added") or ()] \
         + [f"geändert: {x}" for x in ch.get("changed") or ()] + [f"nicht mehr: {x}" for x in ch.get("removed") or ()]
     summary = (assessment or {}).get("summary") or {}
     counts = [f"{summary[k]} {w}" for k, w in (("answered", "Frage beantwortet" if summary.get("answered") == 1 else "Fragen beantwortet"),
@@ -354,6 +380,8 @@ def head_block(changes, assessment, completion, draft=None):
     until = f"{until[8:10]}.{until[5:7]}.{until[:4]}" if until and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(until)) else until
     details = []
     kind = after.get("kind") if done.get("state") != "freigegeben" else None
+    if not (every or stale or recheck or kind in ("resolved", "partial", "refused", "unbelegt", "unrelated")):
+        return None  # a first preparation with nothing changed: the card says it already, no head to read
     if recheck:
         meaning = f"{recheck}; der Brief ging so hinaus, eine Korrektur wäre ein eigener Brief."
         details = [f"Versandt: {last.get('title') or 'Brief'} am " + ", ".join(d.get("date") or "" for d in last.get("dispatched") or ())]
@@ -374,7 +402,11 @@ def head_block(changes, assessment, completion, draft=None):
         meaning = f"Nichts zum Verlangten ({', '.join(last.get('asks') or []) or 'Rückmeldung'}); wartet weiter" + (f" bis {until}." if until else ".")
     elif done.get("waits"):
         meaning = f"{done['waits']}; {title} ist danach vorbereitet."
-    elif done.get("state") == "freigegeben" and not stale:
+    elif stale:
+        at = str((done.get("approved") or {}).get("at") or "")
+        meaning = (f"{title} freigegeben" + (f" am {at[8:10]}.{at[5:7]}.{at[:4]}" if len(at) >= 10 else "")
+                   + ", gilt so nicht mehr: vor dem Versand prüfen und erneut freigeben.")
+    elif done.get("state") == "freigegeben":
         meaning = f"{title} freigegeben, Versand offen."
     else:
         gaps = (done.get("bar") or {}).get("gaps") or 0

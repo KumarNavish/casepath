@@ -665,5 +665,58 @@ mark.cp-gap{background:var(--yellow);color:inherit;border-radius:2px;padding:0 2
 /* assessment */
 
 /* completion */
+/* the case head: what changed, what it means, an approval that no longer holds, each one line that opens on a click */
+.cp-head{margin:0 22px 2px;font-size:13.5px;color:var(--ink-2)}
+.cp-head-line{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px}
+.cp-head-text{display:block;max-width:100%;border:0;background:none;padding:0;font:inherit;color:inherit;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+button.cp-head-text{cursor:pointer}
+button.cp-head-text:hover{color:var(--crimson)}
+.cp-head-line.open .cp-head-text{white-space:normal}
+.cp-head-label{color:var(--ink);font-weight:600}
+.cp-head-more{display:block;margin:2px 0 4px 12px;color:var(--ink-2)}
+.cp-head-stale,.cp-head-stale .cp-head-text{color:var(--crimson);font-weight:600}
+.cp-head-stale .cp-button{margin:3px 0}
+/* a tab's state: «freigegeben», «Freigabe veraltet», «versandt am …» */
+.cp-tab-state{font-size:12px;font-weight:400;color:var(--ink-2);margin-left:4px;display:inline-flex;align-items:center;gap:2px}
+.cp-tab-state.freigegeben{color:var(--green-ink)}
+.cp-tab-state.veraltet{color:var(--crimson)}
+.cp-tab-state.versandt{color:var(--green-ink)}
+/* a paragraph the case changed while the handler had edited it */
+.cp-conflicts{margin:6px 22px 0;padding:8px 10px;border:1px solid var(--crimson-tint);background:var(--crimson-wash);border-radius:var(--radius);font-size:13.5px}
+.cp-conflict-head{margin:0 0 6px;color:var(--crimson);font-weight:600}
+.cp-conflict{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:0 0 8px}
+.cp-conflict .cp-point-actions{grid-column:1 / -1}
+.cp-conflict-text{white-space:pre-wrap;background:#fff;border:1px solid var(--line);border-radius:4px;padding:4px 6px;max-height:7.5em;overflow:auto}
+/* the carry bar: Freigeben, then Brief kopieren and «Versandt am [Datum] [Kanal]» per recipient, the package and the note */
+.cp-bar.cp-carry{gap:8px 10px;flex-wrap:wrap}
+.cp-waits{font-size:13.5px;color:var(--ink-2);white-space:nowrap}
+.cp-dispatch{display:inline-flex;align-items:center;gap:4px;flex:none}
+.cp-dispatch-date,.cp-dispatch-channel{border:1px solid var(--border);border-radius:var(--radius);padding:7px 6px;font-size:13.5px;background:var(--bg)}
+.cp-dispatch-date{width:8.6em}
+.cp-dispatch .cp-button{padding:9px 12px}
+.cp-bar.cp-carry>.cp-link{flex:none;font-size:13.5px;color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px;border:0;background:none;padding:0}
+.cp-save-state{font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+.cp-save-state.error{color:var(--crimson);font-weight:600}
+.cp-stale-bar{font-size:13.5px;color:var(--crimson);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cp-sent{display:inline-flex;align-items:center;gap:6px;color:var(--green-ink);font-weight:600;white-space:nowrap}
+.cp-sent .cp-icon{width:18px;height:18px}
+.cp-legacy{font-size:13px;white-space:nowrap}
+/* the case list's groups; a case that waits is quiet */
+.cp-bucket{font-size:15px;font-weight:700;margin:18px 0 6px}
+h3.cp-bucket{font-size:14px;margin:12px 0 4px}
+.cp-bucket.urteil{color:var(--crimson)}
+.cp-bucket.wartet,.cp-bucket.erledigt{color:var(--ink-2)}
+.cp-bucket.fehlgeschlagen{color:var(--crimson)}
+.cp-bucket-done summary{cursor:pointer;list-style:none}
+.cp-quiet-row td{color:var(--ink-2)}
+/* the list uses the width it has, so a row stays one line where it can: more of the queue in view */
+.cp-list{max-width:1320px}
+.cp-cases th:nth-child(1){width:34%}
+.cp-cases td{padding:9px 8px}
+.cp-cases .cp-stand{white-space:normal;display:inline-block;max-width:330px}
+.cp-quiet-row .cp-stand{border-color:transparent}
+.cp-stand.check,.cp-stand.failed{border-color:var(--crimson);color:var(--crimson)}
+.cp-stand.ready{border-color:var(--green-ink);color:var(--green-ink)}
+.cp-stand.decision{border-color:var(--ink-2);color:var(--ink)}
 
 /* arrival */

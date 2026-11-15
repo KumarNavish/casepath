@@ -859,6 +859,16 @@ class PackageTests(unittest.TestCase):
         self.assertEqual({r["to"]: bool(r["dispatched"]) for r in st["bar"]["recipients"]}, {"kanzlei": True, "kunde": False})
         tabs = completion.tab_states(st, events)
         self.assertEqual((tabs["A10"]["label"], tabs["A10_kunde"]["label"]), ("versandt am 15.11.2026", "freigegeben"))
+        # the plan moves on with the firm's dispatch (A10 done: «Stand bei der Kanzlei erfragen»): the customer's letter of the
+        # same approved package keeps its «Versandt am», in «Versandbereit», never «Freigabe veraltet: Schritt geändert»
+        moved = {"form": "A2", "kind": "A2", "text": None, "version": None, "recipients": [], "needs": []}
+        st = completion.state({}, items, moved, events, [], today=date(2026, 11, 15), facts={"deckung": "bestätigt", "vorgehen": "Mandat an Anwaltskanzlei"})
+        self.assertEqual((st["state"], st["bucket"], st["status"]), ("entwurf", "versandbereit", "freigegeben, Versand an Kundschaft offen"))
+        self.assertEqual(([r["to"] for r in st["rest"]["pending"]], st["rest"]["stale"]), (["kunde"], []))
+        self.assertEqual([r["to"] for r in st["bar"]["rest"]["recipients"]], ["kunde"])
+        arrived = completion.state({}, items, moved, events, [], today=date(2026, 11, 15), facts={"deckung": "bestätigt", "vorgehen": "Mandat an Anwaltskanzlei"},
+                                   files=[{"id": "f9", "name": "Rueckmeldung Kanzlei.txt", "created_at": "2026-11-15T12:00:00+00:00"}])
+        self.assertEqual(arrived["status"], "Freigabe veraltet: Neue Unterlagen (Versand an Kundschaft offen)")  # what it rests on still counts
         note = letters.file_note({"title": "x"}, items, events, None, files, package=[(k, FORMS[k]["title"]) for k in ["A10", *letters.accompanying("A10", FORMS, items)]])
         self.assertIn("Mandatsanfrage an die Kanzlei – versandt am 15.11.2026", note)
         self.assertIn("Information der Kundschaft zum Mandat – freigegeben", note)
@@ -1066,8 +1076,8 @@ class OneArtifactTests(Service):
         self.assertEqual((found["version"], found["docx"], found["bundle"]), (draft["version"], letter, out["bundle"]["sha256"]))
         self.assertEqual(found["text"], versandpaket.text_of(letter))
 
-    @unittest.expectedFailure  # slice C's export routes take the approved letter from actions.approved_letter (NEEDS_B.md 1); drop once they do
-    def test_the_report_and_the_draft_download_serve_the_approved_letter_after_an_update(self):
+    def approved_after_an_update(self):
+        """The A5 approved, a file arrived and read by an update that keeps the full preparation's reply (synthetic)."""
         from casepath.web import actions
         prior = self.store.latest_run(self.case, "completed")  # the full preparation's result checker wrote a reply (synthetic)
         self.store.update_run(prior["id"], result={**prior["result"], "reply": {"needed": True, "subject": "Antwortentwurf der Vorbereitung",
@@ -1077,11 +1087,19 @@ class OneArtifactTests(Service):
         ApplicabilityTests.arrive(self)
         run = ApplicabilityTests.update(self)  # incremental: the update keeps the earlier reply
         self.assertEqual(self.store.get_run(run["id"])["result"]["reply"]["clauses"][0]["text"], "Früherer Antwortentwurf, vor den Antworten der Kundin.")
-        approved = actions.approved_letter(self.store, self.case)
-        self.assertEqual(self.client.get(f"/api/runs/{run['id']}/draft.docx").content, approved["docx"])
+        return run, actions.approved_letter(self.store, self.case)
+
+    @unittest.expectedFailure  # the integrator fills slice C's _report_package with actions.approved_letter (NEEDS_B.md 1a); drop once it does
+    def test_the_report_carries_the_approved_letter_after_an_update(self):
+        run, approved = self.approved_after_an_update()
         report = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{self.case}/report.docx").content)).read("word/document.xml").decode()
         self.assertNotIn("Früherer Antwortentwurf", report)  # never the stored reply of an earlier run
         self.assertIn(approved["text"].split("\n")[-1], report)
+
+    @unittest.expectedFailure  # slice C's draft download serves actions.approved_letter once a letter is approved (NEEDS_B.md 1b); drop once it does
+    def test_the_draft_download_serves_the_approved_letter_after_an_update(self):
+        run, approved = self.approved_after_an_update()
+        self.assertEqual(self.client.get(f"/api/runs/{run['id']}/draft.docx").content, approved["docx"])
 
 
 class ConsequenceTests(unittest.TestCase):
@@ -1188,6 +1206,23 @@ class ConsequenceTests(unittest.TestCase):
         checked = self.EVENTS + [{"kind": "action.reconciled", "version": "v1", "premise": {"mangel_besteht": False}, "at": "2026-09-29T08:00:00+00:00"}]
         quiet = self.state_of([self.CLAIM], (), facts={"mangel_besteht": False}, events=checked, documented=False, receipt="fq")
         self.assertEqual((quiet["bucket"], quiet["last"]["consequence"]["kind"]), (None, "unrelated"))  # reconciled: the wait as before
+
+    def test_a_claim_line_is_judged_by_slice_cs_receipt_check_once_it_is_there(self):
+        """account.held of slice C (it takes the account's entries) decides a claim line from what the reading records of the
+        receipt; before it (the stub), the claim documented by a receipt in a file of the reply."""
+        entry, acc = self.account_with([self.CLAIM], ["Stromabrechnung anbei."])
+        seen = []
+
+        def agrees(row, files, findings=None, claims=None, need=None, entries=None, why=None):
+            seen.append((row["ask"], sorted(f["id"] for f in files), len(entries or ()), claims is not None))
+            return {"file": "ft", "how": "receipt", "n": 16}
+
+        def disagrees(row, files, findings=None, claims=None, need=None, entries=None, why=None):
+            return None  # e.g. «Betrag weicht ab»: the same amount for another expense
+        self.assertTrue(completion.fulfilment(entry, acc, self.FILES, self.result(documented=False), held=agrees)["fulfilled"])
+        self.assertEqual(seen[0][:2], ({"kind": "claim", "ref": 0}, ["fq", "fs", "ft"]))  # the reply's files only
+        self.assertFalse(completion.fulfilment(entry, acc, self.FILES, self.result(documented=True), held=disagrees)["fulfilled"])  # C decides
+        self.assertTrue(completion.fulfilment(entry, acc, self.FILES, self.result(documented=True))["fulfilled"])  # the stub: the reading's flag
 
     def test_the_plan_takes_the_assessment_again_when_its_evidence_came(self):
         here = next(s for s in WF["steps"] if s["id"] == "beurteilen")
