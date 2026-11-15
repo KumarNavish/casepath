@@ -1,0 +1,98 @@
+{
+  "_note": "Synthetic, made up: a tenancy defect in three phases for the state as of a day (quality/asof.py). Phase 1: the report and the first request; phase 2: the customer's reply with the lease and photos, a phone note; phase 3: a mandate and the firm's fee note. Every name, address and number is invented.",
+  "title": "Schimmel Schlafzimmer (synthetisch) 2025.0001.0303",
+  "workflow": "mietmangel-handler",
+  "name": "Akte Brunner.pdf",
+  "pages": [
+    "Von: Lea Brunner\nGesendet: Montag, 3. Februar 2025 09:12\nAn: Protekta Rechtsschutz\nBetreff: Schimmel im Schlafzimmer, Seestrasse 8\nGuten Tag\nSeit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel. Die Verwaltung Immo Seeblick AG reagiert nicht.\nIch möchte, dass der Mangel beseitigt wird und der Mietzins herabgesetzt wird.\nFreundliche Grüsse\nLea Brunner",
+    "Protekta Rechtsschutz-Versicherung AG\nBern, 6. Februar 2025\nSchadennummer 2025.0001.0303\nSehr geehrte Frau Brunner\nUm die Versicherungsdeckung prüfen zu können, bitten wir Sie um folgende Unterlagen bis 27. Februar 2025: Mietvertrag, Mängelrüge an die Verwaltung und Fotos des Schimmels.\nFreundliche Grüsse\nProtekta Rechtsschutz",
+    "Von: Lea Brunner\nGesendet: Donnerstag, 20. Februar 2025 18:40\nAn: Protekta Rechtsschutz\nBetreff: AW: Unterlagen 2025.0001.0303\nIm Anhang sende ich Ihnen den Mietvertrag und Fotos des Schimmels.\nEine schriftliche Mängelrüge habe ich noch nicht geschickt, ich habe der Verwaltung nur telefoniert.",
+    "Mietvertrag für Wohnräume\nVermieterin: Immo Seeblick AG, Thun\nMieterin: Lea Brunner\nMietobjekt: 3-Zimmer-Wohnung, Seestrasse 8, Thun\nMietbeginn: 1. April 2021\nNettomietzins: CHF 1'650.– pro Monat\nThun, 1. April 2021",
+    "Fotodokumentation Schlafzimmer Seestrasse 8\nAufnahmen vom 18.02.2025: dunkle Flecken an der Aussenwand hinter dem Bett, auch hinter dem Schrank.",
+    "Telefonnotiz\nDatum: 24.02.2025 Benutzer: PRK204\nTel mit VN: Mängelrüge noch nicht schriftlich erfolgt.\nVN schickt der Verwaltung eine schriftliche Mängelrüge per Einschreiben und uns eine Kopie bis 10.03.2025.",
+    "Protekta Rechtsschutz-Versicherung AG\nBern, 17. März 2025\nMandat und Kostengutsprache\nSehr geehrte Damen und Herren\nWir beauftragen Sie mit der Vertretung unserer Versicherten Lea Brunner gegenüber der Immo Seeblick AG wegen Schimmel in der Wohnung Seestrasse 8. Unsere Versicherte verlangt die Beseitigung des Mangels und eine Herabsetzung des Mietzinses.\nKostengutsprache: aussergerichtlich.",
+    "Advokatur Lindenhof\nZürich, 30. April 2025\nHonorarnote\nFür unsere Bemühungen im Mandat Brunner / Immo Seeblick AG stellen wir Ihnen CHF 1'540.– in Rechnung, zahlbar innert 30 Tagen."
+  ],
+  "segments": [
+    [1, 1, "E-Mail", "03.02.2025", "Lea Brunner", "Protekta Rechtsschutz", "Schadenmeldung Schimmel"],
+    [2, 2, "Brief", "06.02.2025", "Protekta Rechtsschutz", "Lea Brunner", "Anforderung von Unterlagen"],
+    [3, 3, "E-Mail", "20.02.2025", "Lea Brunner", "Protekta Rechtsschutz", "Unterlagen"],
+    [4, 4, "Mietvertrag", "01.04.2021", "Immo Seeblick AG", "Lea Brunner", "Mietvertrag"],
+    [5, 5, "Fotodokumentation", "18.02.2025", "Lea Brunner", null, "Fotos Schlafzimmer"],
+    [6, 6, "Telefonnotiz", "24.02.2025", "Protekta Rechtsschutz", null, "Telefon mit VN"],
+    [7, 7, "Brief", "17.03.2025", "Protekta Rechtsschutz", "Advokatur Lindenhof", "Mandat und Kostengutsprache"],
+    [8, 8, "Honorarnote", "30.04.2025", "Advokatur Lindenhof", "Protekta Rechtsschutz", "Honorarnote"]
+  ],
+  "brief": {"request": "Schimmel im Schlafzimmer beseitigen lassen und den Mietzins herabsetzen.", "parties": [["Versicherte", "Lea Brunner"], ["Verwaltung", "Immo Seeblick AG"]]},
+  "entries": [
+    {"n": 1, "page": 1, "date": "2025-02-03", "from": "kunde", "to": "versicherer", "kind": "meldung", "what": "Meldung: Schimmel im Schlafzimmer seit November 2024",
+     "quote": "Betreff: Schimmel im Schlafzimmer, Seestrasse 8"},
+    {"n": 2, "page": 2, "date": "2025-02-06", "from": "versicherer", "to": "kunde", "kind": "anforderung", "what": "Anforderung Mietvertrag, Mängelrüge und Fotos",
+     "quote": "Bern, 6. Februar 2025",
+     "asks": [{"what": "Mietvertrag, Mängelrüge an die Verwaltung und Fotos des Schimmels", "of": "kunde", "by_date": "2025-02-27",
+               "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"}]},
+    {"n": 3, "page": 3, "date": "2025-02-20", "from": "kunde", "to": "versicherer", "kind": "unterlagen", "what": "Mietvertrag und Fotos zugestellt",
+     "quote": "Gesendet: Donnerstag, 20. Februar 2025 18:40",
+     "answers": [{"what": "Mietvertrag und Fotos des Schimmels", "answers": 2, "quote": "Im Anhang sende ich Ihnen den Mietvertrag und Fotos des Schimmels."}]},
+    {"n": 4, "page": 6, "date": "2025-02-24", "from": "versicherer", "to": "kunde", "kind": "telefon", "phone": true, "what": "Telefon mit VN: Kopie der Mängelrüge bis 10.03.2025",
+     "quote": "Datum: 24.02.2025 Benutzer: PRK204",
+     "asks": [{"what": "Kopie der schriftlichen Mängelrüge", "of": "kunde", "by_date": "2025-03-10", "quote": "uns eine Kopie bis 10.03.2025"}],
+     "next": [{"what": "VN schickt der Verwaltung eine schriftliche Mängelrüge", "who": "kunde", "by_date": "2025-03-10",
+               "quote": "VN schickt der Verwaltung eine schriftliche Mängelrüge per Einschreiben"}]},
+    {"n": 5, "page": 7, "date": "2025-03-17", "from": "versicherer", "to": "kanzlei", "kind": "mandat", "what": "Mandat und Kostengutsprache an die Kanzlei",
+     "quote": "Bern, 17. März 2025"},
+    {"n": 6, "page": 8, "date": "2025-04-30", "from": "kanzlei", "to": "versicherer", "kind": "kostenforderung", "what": "Honorarnote CHF 1'540",
+     "quote": "Zürich, 30. April 2025"}
+  ],
+  "facts": [
+    ["rechtsgebiet", "Mietrecht / Mangel", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+    ["mangel_seit", "2024-11", "Seit November 2024 bildet sich in meinem Schlafzimmer"],
+    ["mangel_besteht", "ja", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+    ["will_beseitigung", "ja", ["Ich möchte, dass der Mangel beseitigt wird", "Unsere Versicherte verlangt die Beseitigung des Mangels"]],
+    ["will_reduktion", "ja", "der Mietzins herabgesetzt wird"],
+    ["gegenpartei", "Immo Seeblick AG", ["Die Verwaltung Immo Seeblick AG reagiert nicht.", "Vermieterin: Immo Seeblick AG, Thun"]],
+    ["maengelruege_schriftlich", "nein", "Eine schriftliche Mängelrüge habe ich noch nicht geschickt"],
+    ["mangel_gemeldet", "ja", "ich habe der Verwaltung nur telefoniert"],
+    ["mietbeginn", "2021-04-01", "Mietbeginn: 1. April 2021"],
+    ["eingang_kostenforderung", "Advokatur Lindenhof: Honorarnote vom 2025-04-30 über CHF 1'540", "stellen wir Ihnen CHF 1'540.– in Rechnung"]
+  ],
+  "found": [["mietvertrag", "Mietvertrag für Wohnräume"], ["fotos", "Aufnahmen vom 18.02.2025: dunkle Flecken an der Aussenwand"]],
+  "absent": ["maengelruege"],
+  "decisions": [
+    {"fact": "deckung", "value": "bestätigt", "from": "2025-02-26"},
+    {"fact": "vorgehen", "value": "Mandat an Anwaltskanzlei", "from": "2025-03-14"}
+  ],
+  "cuts": [
+    {"phase": "before the first request", "as_of": "2025-02-05", "pages": [1],
+     "facts": [
+       ["rechtsgebiet", "Mietrecht / Mangel", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+       ["mangel_seit", "2024-11", "Seit November 2024 bildet sich in meinem Schlafzimmer"],
+       ["mangel_besteht", "ja", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+       ["will_beseitigung", "ja", "Ich möchte, dass der Mangel beseitigt wird"],
+       ["will_reduktion", "ja", "der Mietzins herabgesetzt wird"],
+       ["gegenpartei", "Immo Seeblick AG", "Die Verwaltung Immo Seeblick AG reagiert nicht."]],
+     "found": [], "absent": ["mietvertrag", "fotos", "maengelruege"]},
+    {"phase": "between phase 1 and 2", "as_of": "2025-02-15", "pages": [1, 2],
+     "facts": [
+       ["rechtsgebiet", "Mietrecht / Mangel", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+       ["mangel_seit", "2024-11", "Seit November 2024 bildet sich in meinem Schlafzimmer"],
+       ["mangel_besteht", "ja", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+       ["will_beseitigung", "ja", "Ich möchte, dass der Mangel beseitigt wird"],
+       ["will_reduktion", "ja", "der Mietzins herabgesetzt wird"],
+       ["gegenpartei", "Immo Seeblick AG", "Die Verwaltung Immo Seeblick AG reagiert nicht."]],
+     "found": [], "absent": ["mietvertrag", "fotos", "maengelruege"]},
+    {"phase": "between phase 2 and 3", "as_of": "2025-03-05", "pages": [1, 2, 3, 4, 5, 6],
+     "facts": [
+       ["rechtsgebiet", "Mietrecht / Mangel", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+       ["mangel_seit", "2024-11", "Seit November 2024 bildet sich in meinem Schlafzimmer"],
+       ["mangel_besteht", "ja", "Seit November 2024 bildet sich in meinem Schlafzimmer an der Seestrasse 8 in Thun Schimmel."],
+       ["will_beseitigung", "ja", "Ich möchte, dass der Mangel beseitigt wird"],
+       ["will_reduktion", "ja", "der Mietzins herabgesetzt wird"],
+       ["gegenpartei", "Immo Seeblick AG", ["Die Verwaltung Immo Seeblick AG reagiert nicht.", "Vermieterin: Immo Seeblick AG, Thun"]],
+       ["maengelruege_schriftlich", "nein", "Eine schriftliche Mängelrüge habe ich noch nicht geschickt"],
+       ["mangel_gemeldet", "ja", "ich habe der Verwaltung nur telefoniert"],
+       ["mietbeginn", "2021-04-01", "Mietbeginn: 1. April 2021"]],
+     "found": [["mietvertrag", "Mietvertrag für Wohnräume"], ["fotos", "Aufnahmen vom 18.02.2025: dunkle Flecken an der Aussenwand"]],
+     "absent": ["maengelruege"]}
+  ]
+}

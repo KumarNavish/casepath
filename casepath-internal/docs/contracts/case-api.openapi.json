@@ -1438,6 +1438,129 @@
     "summary": "Mark Historic"
    }
   },
+  "/api/cases/{case_id}/labels": {
+   "get": {
+    "operationId": "get_labels_api_cases__case_id__labels_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Get Labels"
+   },
+   "post": {
+    "description": "A casepath.labels/1 file for this case, checked against its process and kept in the case store (replaced whole).",
+    "operationId": "save_labels_api_cases__case_id__labels_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Labels",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Save Labels"
+   }
+  },
+  "/api/cases/{case_id}/labels-template": {
+   "get": {
+    "description": "The file's documents in time order from the stored run, the insurer's own marked, and labels to complete. Inside only.",
+    "operationId": "labels_template_api_cases__case_id__labels_template_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Labels Template"
+   }
+  },
   "/api/cases/{case_id}/own-answer": {
    "post": {
     "description": "The own answer before CasePath's result: stored, hashed and frozen with the reveal, once per person and case.",
@@ -2243,6 +2366,58 @@
      }
     },
     "summary": "Me"
+   }
+  },
+  "/api/replay-points": {
+   "get": {
+    "description": "Every labelled point replayed from its case's stored run: one row per point and the summary table.",
+    "operationId": "replay_points_api_replay_points_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "detail",
+      "required": false,
+      "schema": {
+       "default": false,
+       "title": "Detail",
+       "type": "boolean"
+      }
+     },
+     {
+      "in": "query",
+      "name": "case",
+      "required": false,
+      "schema": {
+       "default": [],
+       "items": {
+        "type": "string"
+       },
+       "title": "Case",
+       "type": "array"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Replay Points"
    }
   },
   "/api/review": {

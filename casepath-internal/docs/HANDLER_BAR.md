@@ -79,6 +79,28 @@ Study cases D2, D4, D7 and reserve D5 are sealed and take no part. Item labels b
 
 **Round 2 list (with Dominik's points, one combined re-run before the freeze):** conditional needs whose condition the file states (D1 expert report, D8 rent payments, D9 and D11 receipts for damaged goods); ask for the rest of an all-of need only when the file refers to correspondence it does not hold; the seeded evidence need asks for more than Protekta does at intake ("über die ganze Dauer, Messprotokoll oder Fachbericht"), so a few undated photos fail it (D6): when a document is there but falls short, the letter asks for exactly what is short ("weitere Fotos über die Dauer oder ein Messprotokoll"), not for the document as if nothing existed; whether the need's bar is right is a question for Dominik's session. The brief carries the sentence of the claim report it took the customer's request from, so the Anliegen line has its source (until then it shows no chip).
 
+## Decision points: labels and their replay (model-free)
+
+One reading of a whole case file answers what CasePath would have prepared at each of the insurer's real decision points in it. The stored run is rebuilt by code as the case stood on each point's day (`casepath/quality/asof.py`: the account entries, facts and found documents known then, the handler's decisions then in force, «Stand am» = that day) and evaluated by the case view's own path; every later rule change is re-measured on all points without a model (`casepath/quality/points.py`).
+
+**Labels** (`casepath.labels/1`), one file per case file, written and kept by the insurer's side; real labels never go into Git:
+
+```json
+{"format": "casepath.labels/1", "dossier": "D3", "case": "<case id in the store>",
+ "decisions": [{"fact": "deckung", "value": "bestätigt", "from": "2025-03-05"}],
+ "points": [{"n": 1, "date": "2025-01-10", "kind": "A1", "to": "kunde", "documents": ["mietvertrag", "fotos"],
+             "questions": 2, "date_set": "2025-01-31", "internal": false}]}
+```
+
+- `dossier` is a pseudonym (letters, digits, `-`, `_`), never a name; `case` the case id in the store.
+- `decisions`: the handler's own decisions (the process's handler-only facts: cover, the way to proceed, the cost guarantee's scope, the settlement as recorded …) with the day from which each held. Stages after cover and the way to proceed are reached only through them.
+- `points`: each action of the insurer: `n` (from 1, once each), `date`, `kind` (A0–A12), `to` (kunde, versicherer, kanzlei, gegenpartei, behoerde, andere), `documents` (need ids of the case's process, Knowledge needs by their own ids such as `k-know-seed-…`, else `other:<word>` in lower case), `questions` (how many the letter asked), `date_set` (the date it set, or null), `internal` (a phone note, A2, is internal).
+- Saving checks the labels against the case's process and names every problem at once.
+
+**The comparison.** Kind right or wrong. For a letter: the documents CasePath's letter asks now (where its form lists documents: A1, A4, A5, A6) against the label's (hits, missed, extras; a part named inside an asked whole, the written notice within all correspondence, counts as asked and is never an extra), the number of questions, the follow-up date against `date_set` in days. **bereit**: the kind right and, for a letter, at least 80 % of the label's documents asked with at most one extra, and the date within 7 days where the label sets one. Internal points are counted apart. Each miss gets a diagnosis by code: the stage, the rule that chose the action (`incoming:<kind>`, `silence:A<n>`, `stage:<stage>`, `follow_up:…`, `variant:…`, `decision:…`, `outcome:…`), the deciding facts on that day, what was open, whether the decisive documents had an account entry at all, and what the rebuild could not settle: a yes/no quoted on both sides of the day (`undecided`), a value the file later changed when the whole-file reading quotes only the later document (`later_only`), undated pages.
+
+**Commands and routes.** `python -m casepath labels-template <case id>` and `GET /api/cases/{id}/labels-template`: the file's documents in time order (n, date, from, to, kind, first page), the insurer's own marked with their action kind, documents without an entry listed, and labels to complete; inside only, and it says so. `POST`/`GET /api/cases/{id}/labels`. `python -m casepath replay-points [--case ID …] [--labels FILE …] [--detail]` and `GET /api/replay-points`: one line per point and the table, content-free by default (case and dossier ids, point numbers, action kinds, need, stage and fact ids, counts, day differences), with `--detail` (`?detail=true`) values and dates for use inside only. Example: `S1 case_… #4 A5 → A5 ok · docs 0/1 +1 missed mietzinszahlungen extra k-know-seed-mold-korrespondenz--mietmangel-handler · questions 0/1 · date +0d · not ready`.
+
 ## Ground rules
 
 1. **One chain.** Process node → the facts it needs → the documents that show them → the next action. Nothing on a handler screen exists outside this chain, and every item says which node it is there for.

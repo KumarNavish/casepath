@@ -1162,6 +1162,38 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         man = parity.manifest(settings, knowledge=store.list_knowledge())
         return auswertung(store, auswertung_salt, hashlib.sha256(json.dumps(man, sort_keys=True).encode()).hexdigest())
 
+    # Decision points (quality/points.py): the insurer's real actions in a case file, labelled inside the insurer, each
+    # replayed from the case's stored run as the case stood on its day, without a model; the table is content-free
+    # unless detail is asked for.
+    from ..quality import points as decision_points
+
+    @app.get("/api/cases/{case_id}/labels-template")
+    def labels_template(case_id: str, who=Depends(user)):
+        """The file's documents in time order from the stored run, the insurer's own marked, and labels to complete. Inside only."""
+        found(store.get_case, case_id)
+        try:
+            return decision_points.template(store, catalogue, case_id)
+        except decision_points.LabelsError as error:
+            raise HTTPException(409, str(error)) from None
+
+    @app.post("/api/cases/{case_id}/labels", status_code=201)
+    def save_labels(case_id: str, labels: dict, who=Depends(user)):
+        """A casepath.labels/1 file for this case, checked against its process and kept in the case store (replaced whole)."""
+        found(store.get_case, case_id)
+        try:
+            return store.save_labels(case_id, decision_points.check_case(store, catalogue, case_id, labels), who)
+        except decision_points.LabelsError as error:
+            raise HTTPException(422, str(error)) from None
+
+    @app.get("/api/cases/{case_id}/labels")
+    def get_labels(case_id: str, who=Depends(user)):
+        return found(store.get_labels, case_id)
+
+    @app.get("/api/replay-points")
+    def replay_points(detail: bool = False, case: list[str] = Query(default=[]), who=Depends(user)):
+        """Every labelled point replayed from its case's stored run: one row per point and the summary table."""
+        return decision_points.table(store, catalogue, set(case) or None, detail=detail)
+
     @app.get("/api/knowledge")
     def list_knowledge(family: str | None = None, status: str | None = None, who=Depends(user)):
         items = store.list_knowledge(family, {status} if status else None)
