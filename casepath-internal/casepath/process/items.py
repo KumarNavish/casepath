@@ -740,27 +740,41 @@ def build_items(state, result, files=None, events=None, review=None):
         add("document", f"mention-{i}", value="missing", stated_as="established", verdict="accepted", evidence=_evidence(doc.get("citations")),
             node=None, origin="claim_reader", chain=True, label=doc["title"], status="missing", legal_basis=None, required="yes",
             ask="proposed", part_of=None, reason=f'{"in " + doc["mentioned"] + " " if doc.get("mentioned") else ""}erwähnt, lag nicht bei')
-    for i, party in enumerate(brief.get("parties") or []):
-        add("party", str(i), value=party.get("name"), stated_as="established", verdict=None, evidence=[], node=None, origin="claim_reader",
-            chain=False, label=party.get("role"))
+    parties = [dict(p) for p in brief.get("parties") or []]
+    for role, named in (state.get("parties_set") or {}).items():  # a party a case worker named governs the read one (C9)
+        title = {"kunde": "Kundschaft (VN)", "gegenpartei": "Gegenpartei (GP)"}[role]
+        row = next((p for p in parties if account_party(p.get("role")) == role), None)
+        name = f"{named['salutation']} {named['name']}" if named.get("salutation") and not named["name"].startswith(("Frau ", "Herr ")) else named["name"]
+        if row is None:
+            parties.append(row := {"role": title})
+        row.update(name=name, set_by={"edit": named.get("edit"), "by": named.get("by"), "at": named.get("at"), "read": row.get("name")})
+    for i, party in enumerate(parties):
+        add("party", str(i), value=party.get("name"), stated_as="established", verdict=None, evidence=[], node=None,
+            origin="case_edit" if party.get("set_by") else "claim_reader", chain=False, label=party.get("role"),
+            **({"set_by": party["set_by"]} if party.get("set_by") else {}))
     for i, event in enumerate(brief.get("timeline") or []):
         add("timeline", str(i), value=f"{event.get('date') or ''} {event.get('event') or ''}".strip(), stated_as="established",
             verdict=None, evidence=_evidence(event.get("citations")), node=None, origin="claim_reader", chain=False, label=None)
     cut = set(result.get("fitted") or [])  # what fitting the report shortened: the screen says so ("gekürzt")
+    # after an update the result checker's fields are the full preparation's (C6): each says since when (not hashed)
+    since = result.get("stale_since")
+    stale = {"stale": {"since": since.get("prepared_at"), "run": since.get("run"), "files": since.get("files")}} if since else {}
     for i, point in enumerate(result.get("open_points") or []):
         add("open_point", str(i), value=point if isinstance(point, str) else json.dumps(point, ensure_ascii=False), stated_as="put_to_handler",
-            verdict=None, evidence=[], node=None, origin="result_checker", chain=False, label=None,
+            verdict=None, evidence=[], node=None, origin="result_checker", chain=False, label=None, **stale,
             **({"trimmed": True} if f"$.open_points[{i}]" in cut or (i == len(result["open_points"]) - 1 and "$.open_points" in cut) else {}))
     if result.get("answer"):
         add("answer", "0", value=result["answer"], stated_as="established", verdict=None, evidence=[], node=None, origin="result_checker",
-            chain=False, label=None, **({"trimmed": True} if "$.answer" in cut else {}))
+            chain=False, label=None, **stale, **({"trimmed": True} if "$.answer" in cut else {}))
     if brief.get("request") or result.get("summary"):
+        update_summary = ((result.get("update") or {}).get("summary") or None) if since else None
         add("summary", "0", value=brief.get("request") or result.get("summary"), stated_as="established", verdict=None, evidence=[],
-            node=None, origin="claim_reader", chain=False, label=None)
+            node=None, origin="claim_reader", chain=False, label=None, **(stale if not brief.get("request") else {}),
+            **({"update_summary": update_summary} if update_summary else {}))
     for i, clause in enumerate((result.get("reply") or {}).get("clauses") or []):
         add("reply", str(i), value=clause.get("text") if isinstance(clause, dict) else clause, stated_as="established", verdict=None,
             evidence=_evidence((clause or {}).get("citations") if isinstance(clause, dict) else None), node=None, origin="result_checker",
-            chain=False, label=None)
+            chain=False, label=None, **stale)
     for i in items:  # what the list and the card show never holds a placeholder (a date format, {…}, <…>)
         if i["kind"] in SHOWN_KINDS:
             for lang in ("de", "en"):
@@ -796,6 +810,13 @@ def customer_line(row):
 
 
 SHOWN_KINDS = {"next_action", "key_point", "stage_line", "deadline", "contact", "check"}
+
+
+def account_party(role):
+    """The party a role the reader wrote names («Mieterin (VN)» → kunde, «Verwaltung (GP)» → gegenpartei), else None."""
+    from .account import party_of
+    found = party_of(role, None)
+    return found if found in ("kunde", "gegenpartei") else None
 
 
 def customer_name(result):

@@ -1780,6 +1780,82 @@ def _delivered_held(acc, needs, files, findings, claims):
     return out
 
 
+# -- what an update did to the account (C7) --------------------------------------------------------------------------------
+
+LEDGER_KEYS = ("closed", "refused", "partial", "promised", "unspecified", "opened")
+
+
+def ledger(before, after):
+    """What the new entries of an update did to the account, row by row (stable ids, Step 0): {closed [{id, what, n, how,
+    held, unheld}], refused [{id, what, n, refusal}], partial [{id, what, n, rest}], promised [{id, what, n, by}],
+    unspecified [{n, what, rows}], opened [{id, what, by, of, due}], agreement {before, after} | None, payment {before,
+    after} | None, actions [{code, date, n}], entries [n]}. ``before``: the account of the run the update builds on (with the
+    handler's entries in force), ``after``: the account with the update's entries; both built the same way."""
+    was = {r["id"]: r for r in (before or {}).get("requests") or ()}
+    out = {k: [] for k in LEDGER_KEYS}
+    for r in (after or {}).get("requests") or ():
+        old = was.get(r["id"]) or {}
+        if old == {}:
+            out["opened"].append({"id": r["id"], "what": r["what"], "by": r["by"], "of": r["of"], "due": r.get("due"), "n": r["entries"][0]})
+        if r["answered"] and not old.get("answered"):
+            a = r["answered"]
+            out["closed"].append({"id": r["id"], "what": r["what"], "n": a.get("n"), "how": a.get("how"), "asked_in": r["entries"][0],
+                                  "held": a.get("held"), "unheld": a.get("unheld"), **({"settled": True} if a.get("settled") else {})})
+            continue
+        if r["answered"]:
+            continue
+        for key, field in (("refused", "refused"), ("partial", "partial"), ("promised", "promised")):
+            mark = r.get(field)
+            if mark and mark != old.get(field):
+                row = {"id": r["id"], "what": r["what"], "n": mark.get("n"), "asked_in": r["entries"][0]}
+                row.update({"refused": {"refusal": mark.get("what")}, "partial": {"rest": mark.get("rest"), "answer": mark.get("what")},
+                            "promised": {"by": mark.get("by"), "overdue": False}}[key])
+                out[key].append(row)
+    seen = {u["n"] for u in (before or {}).get("unspecified") or ()}
+    out["unspecified"] = [{"n": u["n"], "what": u["what"], "rows": u.get("rows") or []} for u in (after or {}).get("unspecified") or () if u["n"] not in seen]
+    terms = lambda acc: (lambda a: _terms_text(a) if a else None)((acc or {}).get("agreement"))
+    out["agreement"] = {"before": terms(before), "after": terms(after)} if terms(before) != terms(after) else None
+    paid = lambda acc: ((acc or {}).get("payment") or {}).get("amount") or (f"teilweise CHF {_chf(acc['partly_paid']['paid'])}"
+                                                                             if (acc or {}).get("partly_paid") else None)
+    out["payment"] = {"before": paid(before), "after": paid(after)} if paid(before) != paid(after) else None
+    done = {(a["code"], a.get("date"), a["n"]) for a in (before or {}).get("actions") or ()}
+    out["actions"] = [a for a in (after or {}).get("actions") or () if (a["code"], a.get("date"), a["n"]) not in done]
+    known = {e["n"] for e in (before or {}).get("entries") or ()}
+    out["entries"] = [e["n"] for e in (after or {}).get("entries") or () if e["n"] not in known]
+    return out
+
+
+def ledger_lines(led, acc=None):
+    """The update's ledger in the handler's words (C7), the most consequential first: «beantwortet: … (zu Nr. n)»,
+    «Antwort ohne Beleg – prüfen: …», «abgelehnt: …», «teilweise: … – offen: …», «zugesagt bis …: …», «neu verlangt: …»
+    (a question of the customer: «Frage an Protekta: …»), «Antwort ohne Zuordnung – prüfen», «n Nachricht(en) der Kundschaft
+    vom …». Numbers as the Verlauf shows them."""
+    if not led:
+        return []
+    shown = {e["n"]: i for i, e in enumerate((acc or {}).get("entries") or (), 1)}
+    nr = lambda n: shown.get(n, n)
+    lines = []
+    for c in led.get("closed") or ():
+        if c.get("settled"):
+            continue
+        lines.append(f"Antwort ohne Beleg – prüfen: {c['what']}" if c.get("unheld") else f"beantwortet: {c['what']} (zu Nr. {nr(c['asked_in'])})")
+    lines += [f"abgelehnt: {r['what']}" for r in led.get("refused") or ()]
+    lines += [f"teilweise: {r['what']} – offen: {r['rest']}" for r in led.get("partial") or ()]
+    lines += [f"zugesagt bis {day(r['by'])}: {r['what']}" if r.get("by") else f"zugesagt, ohne Datum: {r['what']}" for r in led.get("promised") or ()]
+    lines += [f"Frage an Protekta: {r['what']}" if r["of"] == INSURER else f"neu verlangt: {r['what']}"
+              for r in led.get("opened") or () if r["by"] in OWED_TO_US or r["of"] == INSURER]
+    lines += ["Antwort ohne Zuordnung – prüfen" for _ in led.get("unspecified") or ()]
+    if led.get("agreement"):
+        lines.append(f"Vereinbarung: {led['agreement']['after'] or 'keine mehr'}")
+    if led.get("payment"):
+        lines.append(f"Zahlung: {led['payment']['after'] or 'keine mehr'}")
+    mine = [e for e in (acc or {}).get("entries") or () if e["n"] in set(led.get("entries") or ()) and e["from"] == "kunde"]
+    if mine:
+        days = sorted({day(e["date"]) for e in mine if e.get("date")})
+        lines.append(f"{len(mine)} Nachricht{'en' if len(mine) != 1 else ''} der Kundschaft" + (f" vom {', '.join(days)}" if days else ""))
+    return lines
+
+
 SETTLE = {"erledigt": "erledigt", "nicht_mehr_noetig": "nicht mehr nötig", "beantwortet": "beantwortet"}
 
 

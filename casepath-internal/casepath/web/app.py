@@ -660,9 +660,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                       for f in [k["fact"], *(k.get("earlier") or [])]}  # what came in, by its kind's title
             changes = item_changes(build_items(before_state, before_run.get("result"), files, logged, marks), listed, titles)
             if done[0].get("kind") == "update":  # the account's new entries, one line each, as the Verlauf shows them
-                added = {str(n) for n in ((done[0].get("result") or {}).get("update") or {}).get("entries") or ()}
+                done_update = (done[0].get("result") or {}).get("update") or {}
+                added = {str(n) for n in done_update.get("entries") or ()}
                 changes["entries"] = [f"{account.day(i.get('date')) or 'ohne Datum'} · {i.get('from_title')} → {i.get('to_title')} · "
                                       f"{(i.get('label') or {}).get('de')}: {i.get('value')}" for i in listed if i["kind"] == "entry" and i["key"] in added]
+                # how the reply was matched (C7): what the update's entries closed, refused, left partial, promised or opened
+                changes["ledger"] = list((done_update.get("ledger") or {}).get("lines") or [])
+                changes["update_summary"] = done_update.get("summary")
+                changes["updated_at"] = done[0].get("finished_at")
         # the status the case list shows for it, from the same function and the same inputs: a run set aside (a stopped
         # update, a discarded pause) does not count, so the case shows the run it built on, as the list does
         run_now = store.latest_run(case_id, exclude="discarded")
@@ -1160,27 +1165,94 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             record(run["case_id"], who, kind, item_id=target, **({"reason": body.reason_code or "none", "note_present": bool(body.note)} if kind == "item.corrected" else {}))
         return {"feedback": listed}
 
+    def _report_package(case_id, view):
+        """The approved package the exports serve once the letter is approved ({title, to, text, by, at}; Slice B fills
+        this from its stored bundle); None so far."""
+        return None
+
     @app.get("/api/cases/{case_id}/report.docx")
     def report_docx(case_id: str, lang: str = "de", who=Depends(user)):
-        """The case report for the case file: what the last prepared run found, each finding with its source."""
+        """The case report for the case file: what the last prepared run found, each finding with its source. After an
+        update the result checker's fields stand under the full preparation's date; the letter is the one the case shows."""
         from .report import build
 
         current = state(case_id)
+        view = get_case(case_id, who) if current.get("run") else {}
+        draft = view.get("draft") or {}
+        shown = {"title": draft.get("title"), "to": draft.get("to"), "text": draft.get("text")} if draft.get("text") else None
         data = build(current["case"], current, store.list_files(case_id), lang=lang if lang in ("de", "en") else "de",
-                     knowledge=store.list_knowledge())
+                     knowledge=store.list_knowledge(), current=shown, package=_report_package(case_id, view))
         name = "Fallbericht.docx" if lang != "en" else "Case-report.docx"
         return Response(data, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                         headers={"Content-Disposition": f"attachment; filename={name}", "Cache-Control": "private, no-store"})
 
     @app.get("/api/runs/{run_id}/draft.docx")
     def draft_docx(run_id: str, who=Depends(user)):
+        """The result checker's reply draft of a full preparation; an update inherited it (409)."""
         run = found(store.get_run, run_id)
         reply = ((run.get("result") or {}).get("reply")) or {}
         if not reply.get("clauses"):
             raise HTTPException(404, "This run has no draft.")
+        if (run.get("result") or {}).get("stale_since"):
+            raise HTTPException(409, "Der Entwurf stammt aus einer früheren Vorbereitung")
         data = _docx(reply.get("subject") or "Entwurf", [c["text"] for c in reply["clauses"]])
         return Response(data, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                         headers={"Content-Disposition": "attachment; filename=Entwurf.docx", "Cache-Control": "private, no-store"})
+
+    # One correction repairs the whole package (C9): what the handler reviews is the difference, not the whole case
+    def _package(view):
+        """What a correction can change in the prepared package, as the handler reviews it: the step and its letter (form,
+        recipient line, text), the documents still asked, what is open in the account, the date it is awaited by, the case
+        note, the status in the queue and, with Slice B, the approval."""
+        items = view.get("items") or []
+        label = lambda i: (i.get("label") or {}).get("de") or str(i.get("key"))
+        draft = view.get("draft") or {}
+        text = draft.get("text") or ""
+        open_ = []
+        for i in items:
+            if i["kind"] == "stand" and i.get("key") != "kontakt":
+                open_ += [f"{label(i)}: {r}" for r in ([x.get("text") for x in i.get("rows") or ()] or ([i["value"]] if i.get("value") else []))]
+        done = view.get("completion") or {}
+        return {"Schritt": (view.get("screen") or {}).get("title"), "Brief": draft.get("title"),
+                "Empfänger": next((line for line in text.splitlines() if line.startswith(("Sehr geehrte", "Guten Tag"))), None),
+                "Unterlagen": sorted(label(i) for i in items if i["kind"] == "document" and i.get("status") == "missing" and i.get("ask") == "now"),
+                "Offen": open_, "Wiedervorlage": account.day((view.get("follow_up") or {}).get("due")),
+                "Status": (view.get("status") or {}).get("text"), "Freigabe": done.get("status") or done.get("state"),
+                "text": text, "note": view.get("file_note") or ""}
+
+    def _consequences(before, after):
+        """Each part of the package the correction changed, before and after: lists by what left and what came, the
+        letter's text and the case note by the paragraphs and sentences that changed."""
+        out = []
+        for key in ("Schritt", "Brief", "Empfänger", "Unterlagen", "Offen", "Wiedervorlage", "Status", "Freigabe"):
+            b, a = before.get(key), after.get(key)
+            if b == a:
+                continue
+            if isinstance(b, list) or isinstance(a, list):
+                out.append({"what": key, "before": [x for x in b or () if x not in (a or ())], "after": [x for x in a or () if x not in (b or ())]})
+            else:
+                out.append({"what": key, "before": b, "after": a})
+        for key, what, split in (("text", "Brieftext", "\n\n"), ("note", "Aktennotiz", ". ")):
+            b, a = [x.strip() for x in before[key].split(split) if x.strip()], [x.strip() for x in after[key].split(split) if x.strip()]
+            if b != a:
+                out.append({"what": what, "before": [x for x in b if x not in a][:4], "after": [x for x in a if x not in b][:4]})
+        return out
+
+    def _basis(op, args, reason, current, who):
+        """Why the package changed, in the handler's words: the correction itself, with its reason and who made it."""
+        if op == "set_fact":
+            fact = next((f for f in (current.get("process") or {}).get("facts") or () if f["id"] == args.get("fact")), {})
+            value = lambda v: "ja" if v is True else "nein" if v is False else "offen" if v in (None, "") else str(v)
+            what = f"{fact.get('question') or args.get('fact')}: {value((current.get('facts') or {}).get(args.get('fact')))} → {value(args.get('value'))}"
+        elif op == "settle_request":
+            row = next((r for r in (current.get("account") or {}).get("requests") or () if r["id"] == args.get("request")), {})
+            what = f"«{row.get('what') or args.get('request')}»: " + {"erledigt": "erledigt", "nicht_mehr_noetig": "nicht mehr nötig",
+                                                                       "beantwortet": f"beantwortet durch Nr. {args.get('entry')}"}.get(args.get("how"), "")
+        elif op == "set_party":
+            what = f"{'Kundschaft' if args.get('role') == 'kunde' else 'Gegenpartei'}: {' '.join(x for x in (args.get('salutation'), args.get('name')) if x)}"
+        else:
+            what = {"add_document": f"Unterlage verlangt: {args.get('title')}", "remove_document": "Unterlage nicht mehr nötig"}.get(op, "Prozess angepasst")
+        return f"{what} ({reason}; {who})" if reason else f"{what} ({who})"
 
     # Editing the case's process
     @app.post("/api/cases/{case_id}/edits", status_code=201)
@@ -1193,12 +1265,22 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         reason_text = body.reason.strip() or REASONS[body.reason_code]
         if body.op == "add_entry":
             raise HTTPException(422, "Einträge der Fallbearbeitung über /entries.")
+        if body.op == "add_dispatch":  # written only when a dispatch is confirmed (store.dispatch_once, Slice B), never here
+            raise HTTPException(422, "Ein Versand wird mit «Versandt am» bestätigt, nicht hier.")
+        if (before["case"].get("intake") or {}).get("study") and body.op in ("settle_request", "set_party"):
+            raise HTTPException(409, "Eine Studienkopie bleibt, wie sie eingefroren wurde.")
         if body.activate:  # shared Knowledge is activated in «Wissen» only, after a replay of its version (HANDLER_BAR L3)
             raise HTTPException(422, "Freigabe im Wissen erst nach dem Nachspielen")
         try:
             casegraph.check_edit(before["process"], {"op": body.op, "args": body.args})
+        except casegraph.Derived as error:  # a fact code computes: said where it follows from (C9)
+            raise HTTPException(422, str(error)) from None
         except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
             raise HTTPException(422, f"This change cannot be applied: {error}") from None
+        if body.op == "settle_request" and not any(r["id"] == body.args.get("request") and r["answered"] is None
+                                                   for r in (before.get("account") or {}).get("requests") or ()):
+            raise HTTPException(422, "Diese Anforderung ist nicht mehr offen.")
+        package_before = _package(get_case(case_id, who)) if before.get("run") else None
         edit = store.add_edit(case_id, body.op, body.args, who, reason_text)
         learned = None
         # "gilt generell so" (reason 4), or the same correction made in two other cases, becomes a proposal by itself;
@@ -1222,7 +1304,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         target = (f"fact:{args['fact']}" if body.op == "set_fact" and args.get("fact") else f"document:{args.get('document')}" if args.get("document")
                   else f"step:{args.get('step')}" if args.get("step") else None)
         values = {"before": before["facts"].get(args.get("fact")), "after": after["facts"].get(args.get("fact"))} if body.op == "set_fact" else {}
-        kind = {"remove_document": "item.dismissed", "add_document": "item.added", "add_step": "item.added", "add_question": "item.added"}.get(body.op, "item.corrected")
+        kind = {"remove_document": "item.dismissed", "add_document": "item.added", "add_step": "item.added", "add_question": "item.added",
+                "settle_request": "entry.corrected"}.get(body.op, "item.corrected")
+        if body.op == "settle_request":
+            target, values = f"request:{args.get('request')}", {"request": args.get("request"), "how": args.get("how")}
         what = {"add_document": "document", "add_step": "step", "add_question": "question"}.get(body.op)
         cause = record(case_id, who, kind, item_id=target, edit_id=edit["id"], op=body.op, reason=body.reason_code or "none",
                        note_present=bool(body.reason.strip()), **values, **({"what": what, "free_text_present": True} if what else {}))
@@ -1243,17 +1328,45 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 recheck = runs.recheck(case_id, added, who, model_token(request))
             except Conflict:
                 recheck = None
-        return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"]}
+        consequences = None
+        if package_before is not None:  # the package before and after, with the correction as its basis (C9)
+            consequences = {"basis": _basis(body.op, body.args, body.reason.strip() or ("" if body.reason_code in (None, "none") else reason_text), before, who),
+                            "changes": _consequences(package_before, _package(get_case(case_id, who)))}
+        return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"], "consequences": consequences}
+
+    def _undo_limits(edit):
+        """What undoing a correction cannot undo: a letter copied, approved or dispatched since (it went out, or may have,
+        with the corrected state: it stays as it was, to check), and Knowledge proposed from it (retired in «Wissen»)."""
+        out, events = [], store.list_case_events(edit["case_id"])
+        start = next((e["seq"] for e in events if e.get("edit_id") == edit["id"]), None)  # the correction's own event: after it
+        for e in events:
+            if (e.get("seq") or 0) <= start if start is not None else str(e.get("at") or "") <= str(edit.get("at") or ""):
+                continue
+            when = account.day(str(e.get("at") or "")[:10])
+            if e["kind"] == "action.dispatched":
+                out.append(f"Versandt am {account.day(e.get('date')) or when}: der versandte Brief bleibt, wie er war; prüfen, ob er zu berichtigen ist")
+            elif e["kind"] == "letter.copied":
+                out.append(f"Brief am {when} kopiert: der kopierte Text bleibt, wie er war; prüfen, ob er so versandt wurde")
+            elif e["kind"] == "action.approved":
+                out.append(f"Freigabe vom {when}: sie galt dem korrigierten Stand und gilt nicht mehr")
+        if any((k.get("origin") or {}).get("edit_id") == edit["id"] and k.get("status") != "retired" for k in store.list_knowledge()):
+            out.append("Der Vorschlag im Wissen bleibt; dort zurückziehen")
+        return list(dict.fromkeys(out))
 
     @app.post("/api/edits/{edit_id}/undo")
     def undo(edit_id: str, who=Depends(user)):
+        """Undo a correction: everything that follows from the case's state follows back (the package's before and after);
+        what already left CasePath cannot be undone and is named (``limits``)."""
         edit = found(store.get_edit, edit_id)
         before = state(edit["case_id"])
+        package_before = _package(get_case(edit["case_id"], who)) if before.get("run") else None
         store.set_edit_status(edit_id, "undone", who)
         undoes = next((e["event_id"] for e in reversed(store.list_case_events(edit["case_id"])) if e.get("edit_id") == edit_id), None)
         record(edit["case_id"], who, "correction.undone", undoes=undoes, edit_id=edit_id)
         after = state(edit["case_id"])
-        return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"])}
+        changes = _consequences(package_before, _package(get_case(edit["case_id"], who))) if package_before is not None else None
+        return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"]),
+                "consequences": {"basis": "Rückgängig gemacht", "changes": changes} if changes is not None else None, "limits": _undo_limits(edit)}
 
     # Knowledge
     STAGES = {"lesen": {"reader"}, "prozess": {"router", "process_builder"}, "fakten": {"claim_reader"},

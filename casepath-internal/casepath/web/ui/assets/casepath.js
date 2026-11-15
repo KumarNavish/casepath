@@ -1231,7 +1231,9 @@ function resultView() {
   const deadlines = (r.deadlines || []).map((d, i) => { const n = days(d.date); return `<li><b>${dateText(d.date)}</b> · ${esc(d.question)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : left(n)}</span>${rate(`deadline:${i}`)}</li>`; }).join("");
   const summary = (r.case_summary || []).length ? `<section class="cp-card" style="padding:16px 20px;max-width:900px;margin-bottom:18px"><h2 class="cp-section" style="margin-top:0">${T("Case summary", "Fallzusammenfassung")}</h2>
       <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:180px 1fr">${r.case_summary.map((f, i) => `<dt>${esc(f.label)}</dt><dd>${esc(f.text)}${rate(`summary:${i}`)}</dd>`).join("")}</dl></section>` : "";
-  const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
+  // after an update the result checker's fields are the full preparation's: «Stand <Datum>», and its draft is no download (C6)
+  const stale = r.stale_since ? ` <span class="cp-stale-chip" title="${esc(T(`Before ${r.stale_since.files} new document(s)`, `Vor ${r.stale_since.files} neuen Dokument(en)`))}">${T("As of", "Stand")} ${dateText(r.stale_since.prepared_at)}</span>` : "";
+  const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run && !r.stale_since ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
   const action = { answer: T("Answer: ", "Klären: "), resolve: T("Not met: ", "Nicht erfüllt: "), obtain: T("Obtain: ", "Einholen: ") };
   const docs = ev ? ev.documents.filter((d) => !["suggested", "optional"].includes(d.required)) : [];
   const present = docs.filter((d) => d.status === "present").length, missing = docs.filter((d) => d.status !== "present").length;
@@ -1248,10 +1250,10 @@ function resultView() {
   const report = `<p><a class="cp-button" href="/api/cases/${esc(S.route.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report as .docx", "Fallbericht als .docx")}</a>
     <span class="cp-muted">${T("Everything above with its sources, for the case file.", "Alles hier mit den Fundstellen, für das Dossier.")}</span></p>`;
   return `${ratedRun() ? feedbackLine() : ""}${report}${position}${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
-    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${trimmed("open_point", String(i))}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
+    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}${stale}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${trimmed("open_point", String(i))}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
     ${learning}
-    <h2 class="cp-section">${T("Short assessment (draft)", "Kurzeinschätzung (Entwurf)")}</h2><p class="cp-answer">${esc(r.answer)}${trimmed("answer", "0")}${rate("answer")}</p><p>${esc(r.summary)}</p>
-    ${r.reply && r.reply.needed ? `<h2 class="cp-section">${T("Reply draft", "Antwortentwurf")}</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(T("AI-generated draft", "KI-generierter Entwurf"))}</span></header>
+    <h2 class="cp-section">${T("Short assessment (draft)", "Kurzeinschätzung (Entwurf)")}${stale}</h2><p class="cp-answer">${esc(r.answer)}${trimmed("answer", "0")}${rate("answer")}</p><p>${esc(r.summary)}</p>
+    ${r.reply && r.reply.needed ? `<h2 class="cp-section">${T("Reply draft", "Antwortentwurf")}${stale}</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(T("AI-generated draft", "KI-generierter Entwurf"))}</span></header>
       <div class="clauses">${r.reply.clauses.map((c, i) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}${rate(`reply:${i}`)}</p>
         <small class="cp-muted">${c.supported ? (c.kind === "formal" ? "" : (c.kind === "request" ? T("Asks for: ", "Fragt nach: ") : T("Rests on: ", "Beruht auf: ")) + c.basis.map((b) => esc(b.startsWith("fact:") ? questionOf(b.slice(5)) : needOf(b.slice(9)))).join("; "))
           : T("Not supported by an accepted finding: review before use", "Durch keine bestätigte Feststellung gestützt: vor Verwendung prüfen")}</small></div>`).join("")}</div>
@@ -1700,7 +1702,7 @@ function partiesHtml() {
 function sideAnliegen() {
   const r = result() || {}, brief = r.brief || {}, items = S.data.items || [];
   const summary = items.find((i) => i.kind === "summary" && i.value);
-  const anliegen = (summary && summary.value) || brief.request || r.answer || "";
+  const anliegen = (summary && summary.value) || brief.request || "";  // never the result checker's answer (C6: after an update it is inherited)
   const long = anliegen.length > 95;  // about two lines: more opens on a click
   return `<dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${long ? `<button class="cp-anliegen ${S.anliegenOpen ? "open" : ""}" id="anliegen-open" aria-expanded="${Boolean(S.anliegenOpen)}">${esc(anliegen)}</button>` : esc(anliegen) || "—"}</dd>`;
 }
@@ -1713,12 +1715,39 @@ function sideAccount() {
   const stand = sc.stand || [];  // the account's lines as the server words them for this screen (screen.account_lines)
   const stageLines = sc.lines || [];  // the stage's short lines, without what the card head states (screen.py)
   const next = stand.map((l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}${handlerTag(l.handler)}</div>`
-    : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
+    : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}${settleButtons(x)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
     .concat(stageLines.map((l) => `<div class="cp-acct-line" data-item="${esc(l.item_id)}">${esc(l.value || "")}${sourceChips(l.evidence)}</div>`)).join("");
   return next ? `<dt>${T("Next", "Als Nächstes")}</dt><dd><div class="cp-acct">${next}</div></dd>` : "";
 }
+// After a correction: what changed in the prepared package, before and after, with its basis, and its undo; after an undo,
+// what came back and what an undo cannot reach. Otherwise, after an update, how the reply was matched (C7), unless the
+// card head (Slice B) already says it.
 function sideChangeLine() {
-  return S.lastEdit && !S.lastEdit.op ? `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : "";
+  if (S.lastUndo && S.lastUndo.case === S.route.id && !S.lastEdit) return consequencesBlock(S.lastUndo.consequences, T("Undone", "Rückgängig gemacht"), "", S.lastUndo.limits);
+  if (S.lastEdit && !S.lastEdit.op) {
+    const undo = `<button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button>`;
+    return S.lastEdit.consequences ? consequencesBlock(S.lastEdit.consequences, T("Changed", "Geändert"), undo)
+      : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} ${undo}</p>`;
+  }
+  const ch = S.data.changes || {}, sc = scr();
+  if (running() || !(ch.ledger || []).length || (sc.head && (sc.head.changed || sc.head.lines))) return "";
+  return `<div class="cp-change cp-ledger"><b>${T("Updated", "Aktualisiert")}${ch.updated_at ? ` ${T("on", "am")} ${dateText(ch.updated_at)}` : ""}</b>
+    <ul>${ch.ledger.map((line) => `<li class="${/prüfen|abgelehnt|teilweise|nicht eingegangen/.test(line) ? "check" : ""}">${esc(line)}</li>`).join("")}</ul></div>`;
+}
+function consequencesBlock(c, head, undo, limits) {
+  const rows = (c && c.changes) || [];
+  const side = (v) => Array.isArray(v) ? v.map((x) => esc(clip(x, 140))).join("<br>") || "—" : esc(clip(v == null ? "—" : String(v), 140));
+  return `<div class="cp-change cp-consequences" aria-live="polite"><p><b>${head}</b>${c && c.basis ? ` · ${T("because", "weil")}: ${esc(c.basis)}` : ""} ${undo}</p>
+    ${rows.length ? `<dl>${rows.map((r) => `<dt>${esc(r.what)}</dt><dd><span class="cp-before">${side(r.before)}</span> → <span class="cp-after">${side(r.after)}</span></dd>`).join("")}</dl>`
+      : `<p class="cp-muted">${T("Nothing else in the package changed", "Sonst änderte sich nichts am Paket")}</p>`}
+    ${(limits || []).length ? `<p class="cp-limits"><b>${T("Not undone", "Nicht rückgängig")}</b>: ${limits.map(esc).join("; ")}</p>` : ""}</div>`;
+}
+function studyCopy() { return Boolean((((S.data || {}).case || {}).intake || {}).study); }
+// «erledigt» and «nicht mehr nötig» on an open request of the account (C9): kept and undone like every correction
+function settleButtons(x) {
+  if (!x || !x.request || studyCopy() || running()) return "";
+  return ` <span class="cp-settle"><button class="cp-link cp-quiet-link" data-settle="${esc(x.request)}" data-how="erledigt">${T("done", "erledigt")}</button>
+    · <button class="cp-link cp-quiet-link" data-settle="${esc(x.request)}" data-how="nicht_mehr_noetig">${T("no longer needed", "nicht mehr nötig")}</button></span>`;
 }
 function sideChanges() {
   const ch = S.data.changes || {}, any = (ch.added || []).length + (ch.changed || []).length + (ch.removed || []).length + (ch.entries || []).length;
@@ -2048,6 +2077,12 @@ function bindOverview() {
     await api(`/api/cases/${S.route.id}/action`, { method: "POST", body: JSON.stringify({ kind, reason_code: b.dataset.actionReason }) }).catch((error) => { S.message = error.message; });
     await loadCase();
   });
+  on("[data-settle]", "click", async (b) => {  // an open request the handler settles: the package follows, with its undo
+    S.lastUndo = null;
+    S.lastEdit = await edit({ op: "settle_request", args: { request: b.dataset.settle, how: b.dataset.how }, reason: "", reason_code: "none", recheck: false })
+      .catch((error) => { S.message = error.message; return S.lastEdit; });
+    await loadCase();
+  });
   on("[data-decide]", "click", async (b) => {  // the handler's own decision: one click, no reason asked
     S.lastEdit = await edit({ op: "set_fact", args: { fact: b.dataset.decide, value: b.dataset.value }, reason: "", reason_code: "none", recheck: false }).catch(() => S.lastEdit);
     S.decideOpen = false; S.docTab = null;
@@ -2285,7 +2320,9 @@ async function renderCase() {
   const open = $("#edit-open");
   if (open) open.addEventListener("click", () => { S.editing = !S.editing; renderCase(); });
   const undo = $("#undo");
-  if (undo) undo.addEventListener("click", async () => { await api(`/api/edits/${S.lastEdit.edit.id}/undo`, { method: "POST" }); S.lastEdit = null; await loadCase(); });
+  if (undo) undo.addEventListener("click", async () => {  // what came back and what an undo cannot reach stay in view once
+    const done = await api(`/api/edits/${S.lastEdit.edit.id}/undo`, { method: "POST" }).catch(() => null);
+    S.lastUndo = done && { ...done, case: S.route.id }; S.lastEdit = null; await loadCase(); });
   const onlyOpen = $("#only-open");
   if (onlyOpen) onlyOpen.addEventListener("change", () => { S.onlyOpen = onlyOpen.checked; S.openParty = null; renderCase(); });
   for (const b of document.querySelectorAll("[data-open-party]")) b.addEventListener("click", () => {

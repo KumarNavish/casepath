@@ -293,10 +293,14 @@ def _context_contact(case, items, events, files, day, evaluation=None, process=N
 
 
 def _context_parties(case, items, events, files, day, evaluation=None, process=None, facts=None, assessment=None):
-    """The other side as the letters name it (``gegenpartei``; Slice C: a party the handler corrected first). So far the
-    first party the file names that is not the tenant."""
+    """The other side as the letters name it (``gegenpartei``): the one a case worker named (set_party, C9), else the
+    ``gegenpartei`` fact the file settles, else the first party the file names that is not the tenant."""
+    from .account import party_of
     parties = [i for i in items if i["kind"] == "party"]
-    return {"gegenpartei": next((p["value"] for p in parties if p.get("value") and "mieter" not in str(p.get("label") or "").lower()), "…")}
+    named = next((p["value"] for p in parties if p.get("set_by") and p.get("value") and party_of(p.get("label"), None) == "gegenpartei"), None)
+    fact = (facts or {}).get("gegenpartei")
+    return {"gegenpartei": named or (fact if isinstance(fact, str) and fact.strip() else None)
+            or next((p["value"] for p in parties if p.get("value") and "mieter" not in str(p.get("label") or "").lower()), "…")}
 
 
 def facts_values(items):

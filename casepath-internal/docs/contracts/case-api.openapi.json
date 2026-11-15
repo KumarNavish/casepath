@@ -1630,7 +1630,7 @@
   },
   "/api/cases/{case_id}/report.docx": {
    "get": {
-    "description": "The case report for the case file: what the last prepared run found, each finding with its source.",
+    "description": "The case report for the case file: what the last prepared run found, each finding with its source. After an\nupdate the result checker's fields stand under the full preparation's date; the letter is the one the case shows.",
     "operationId": "report_docx_api_cases__case_id__report_docx_get",
     "parameters": [
      {
@@ -1933,6 +1933,7 @@
   },
   "/api/edits/{edit_id}/undo": {
    "post": {
+    "description": "Undo a correction: everything that follows from the case's state follows back (the package's before and after);\nwhat already left CasePath cannot be undone and is named (``limits``).",
     "operationId": "undo_api_edits__edit_id__undo_post",
     "parameters": [
      {
@@ -2857,6 +2858,7 @@
   },
   "/api/runs/{run_id}/draft.docx": {
    "get": {
+    "description": "The result checker's reply draft of a full preparation; an update inherited it (409).",
     "operationId": "draft_docx_api_runs__run_id__draft_docx_get",
     "parameters": [
      {

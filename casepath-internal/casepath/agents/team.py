@@ -529,7 +529,7 @@ def steps_entry(work):
     return obj(n=number, file=choice(work.file_ids), page={"type": ["integer", "null"]}, date=day,
                **{"from": party}, to=party, kind=choice(kinds), phone={"type": "boolean"}, what=text(300), quote=quote,
                asks=arr(obj(what=text(300), of=party, by=by, by_date=day, repeats=number, warns={"type": "boolean"}, quote=quote), maxItems=12),
-               answers=arr(obj(what=text(300), answers=number, quote=quote), maxItems=12),
+               answers=arr(obj(what=text(300), answers=number, request={"type": ["string", "null"], "maxLength": 12}, quote=quote), maxItems=12),
                terms=arr(obj(what=text(300), amount=money, payer=party, by=by, by_date=day, agreed={"type": "boolean"}, quote=quote), maxItems=12),
                paid=arr(obj(amount=money, payer=party, date=day, quote=quote), maxItems=8),
                next=arr(obj(what=text(300), who=party, by=by, by_date=day, quote=quote), maxItems=6))
@@ -709,6 +709,10 @@ def _record_steps(work, agent, args, fitted=()):
     and reason (``issues``)."""
     kinds, schema = account.kinds_of(work.graph), steps_entry(work)
     rows, invalid = [], []
+    for raw in args["entries"]:  # an answer names the open request it answers by its id (C8); a reader that names none gives null
+        for x in (raw.get("answers") or []) if isinstance(raw, dict) and isinstance(raw.get("answers"), list) else []:
+            if isinstance(x, dict):
+                x.setdefault("request", None)
     for i, raw in enumerate(args["entries"]):
         try:
             validate_result(raw, schema, f"entries[{i}]")
@@ -1217,7 +1221,8 @@ RECORD_ONLY = ("Your task in this conversation is the running account only: call
 UPDATE_READ = ("New files came into this case after it was prepared: {files}. Read only these new documents. The case so far "
                "is given in case_so_far: the record's entries one line each, the deciding facts with their values, the open "
                "requests. Record one entry for each new document with record_steps, numbered after the existing entries (the "
-               "last is {last}); an answer or a repeat names the earlier entry by its number. Record a fact with record_fact "
+               "last is {last}); an answer or a repeat names the earlier entry by its number, and an answer the open request it "
+               "answers by its id as case_so_far gives it (request, «r3.0»), or null. Record a fact with record_fact "
                "only where a new document changes a deciding fact or establishes one, quoting that new document; a fact the "
                "new documents do not speak to keeps its value: do not record it, not even as unknown. What came in (eingang_…) "
                "is recorded in its plain fact: code moves the earlier items down. Then report: summary, one sentence on what "
@@ -1252,8 +1257,8 @@ def case_so_far(work):
         now = {"value": row.get("value"), "status": row["status"] + (f"/{row['verdict']}" if row.get("verdict") else "")} \
             if row.get("status") in ("established", "conflicting") else {}
         facts.append({**fact_view(f), "question": _clipped(f.get("question"), 200), **now})
-    requests = [f"{r['what']} · {r['by']} → {r['of']} · seit {r.get('first') or '?'}" + (f" · bis {r['due']}" if r.get("due") else "")
-                + f" · Nr. {', '.join(str(n) for n in r['entries'])}" for r in acc.get("requests") or () if r["answered"] is None]
+    requests = [f"{r['id']} · {r['what']} · {r['by']} → {r['of']} · seit {r.get('first') or '?'}" + (f" · bis {r['due']}" if r.get("due") else "")
+                + f" · Nr. {', '.join(str(n) for n in r['entries'])}" for r in acc.get("requests") or () if r["answered"] is None]  # «r3.0 · …» (C8)
     decided = {f["id"]: v for f in work.graph["facts"] if f.get("handler_only")
                and (v := casegraph.fact_overrides(work.graph, work.employee_edits).get(f["id"], (None,))[0]) is not None}
     points = [{"id": p["id"], "statement": p["statement"]} for p in work.graph.get("key_points") or ()]
@@ -1586,8 +1591,33 @@ def _update_record(work, prior, report, files, new):
                            **{k: cov[k] for k in ("given_back", "given_back_pages", "covered_after", "added")}}}
     update = {"files": list(new), "entries": [e["n"] for e in entries if e["n"] not in before],
               "facts": sorted(work.updating["facts"]), "documents": sorted(work.updating["documents"]),
-              "summary": (report or {}).get("summary"), "skipped": {"result_checker": RESULT_CHECKER_SKIPPED}}
+              "summary": (report or {}).get("summary"), "skipped": {"result_checker": RESULT_CHECKER_SKIPPED},
+              "ledger": _update_ledger(work, old, entries, files)}
     return record, update
+
+
+def _update_ledger(work, old, entries, files):
+    """What the update's entries did to the account (C7, account.ledger): the account of the run it builds on against the
+    one with the new entries, both with the handler's entries and corrections in force and checked the same way, each
+    answer's evidence looked for in the reply's files (account.delivered: held, or «Antwort ohne Beleg – prüfen»). None for
+    a process without the account."""
+    if not work.graph.get("record"):
+        return None
+    edits = work.employee_edits
+    shown = [{"id": f["id"], "name": f.get("name"), "created_at": f.get("created_at"),
+              "extraction": {k: f.get(k) for k in ("segments", "attached_to", "same_as") if f.get(k) is not None}} for f in files or ()]
+    findings = {d["document"]: d for d in work.documents.values() if d.get("status") in ("present", "unusable") and d.get("verdict") == "accepted"}
+    claims = (work.brief or {}).get("claims")
+
+    def built(rows):
+        acc = account.build(account.apply_corrections(account.with_handler(rows, edits), edits), work.graph)
+        if acc:
+            account.delivered(acc, work.graph.get("documents"), shown, findings, claims)
+        return acc
+    before, after = built(list(old.get("entries") or ())), built(entries)
+    led = account.ledger(before, after)
+    led["lines"] = account.ledger_lines(led, after)
+    return led
 
 
 def _merge_brief(work, report):
