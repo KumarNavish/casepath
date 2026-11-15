@@ -1,15 +1,21 @@
 """Receipts of the episode's measurements hold ids, counts and enums only (quality/scorecard.py, SAFE and guard), and no date;
-and the one diagnostic run on the pilot (deploy/databricks/rehearse.py) does nothing without its confirm phrase.
+the rehearsal times both conditions by one rule and judges edits per part without guessing; and the one diagnostic run on
+the pilot (deploy/databricks/rehearse.py) does nothing without its confirm phrase.
 
-``casepath.rehearsal/1`` is what deploy/preview/rehearse_episode.mjs writes for one developer rehearsal of the D11 episode on
-a synthetic analog (MEASURE §1): label, build, episode, condition, session; per step its time, clicks, decisions and
+``casepath.rehearsal/1`` is what deploy/preview/rehearse_episode.mjs writes for one rehearsal of the D11 episode on a
+synthetic analog (MEASURE §1): label, build, episode, condition, session; per step its time, clicks, decisions and
 confirmations (counted apart, by the rule declared before scoring), text edits, characters typed, context switches,
-documents opened whole and passages opened from a source chip, page and inner scrolls; the declared external steps
-with their time; the word-level edit ratio between the prepared and the approved text with the substantive and stylistic
-changes and the ratio by letter slot; the case's events by kind.
+documents opened whole and passages opened from a source chip, page and inner scrolls; the declared external steps with
+their time; the edits judged per part of the letter (substantive, stylistic or «zu beurteilen», with their reasons; the
+change ratio beside them, deciding nothing); the case's events by kind; the timing rule, every interruption taken out of a
+step as an entry of its own, and any asymmetry between the conditions, stated.
+
+Time is one rule for B0 and N: from the prompt that names a step to the Enter that ends it, silent reading counted in full,
+a declared interruption taken out and listed. Receipts timed by different rules are never compared (``comparable``).
 
 A rehearsal's receipts are checked by this test too: CASEPATH_REHEARSAL_RECEIPTS names a folder whose *.json files must
-each be a valid receipt (skipped when unset).
+each be a valid receipt (skipped when unset). The script's own timing and edit verdicts are checked by running it with
+MODE=selftest (skipped without node).
 
 ``casepath.diagnose/1`` is what the diagnostic run writes (MEASURE §3). Its script is run here against a stand-in for the
 app's API that answers as the episode's interfaces are designed (DESIGN §6, SLICE_A A8, SLICE_C C7), on synthetic data:
@@ -21,6 +27,8 @@ import os
 from pathlib import Path
 import re
 import runpy
+import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -28,6 +36,7 @@ from unittest import mock
 from casepath.quality.scorecard import ScorecardLeak, guard
 
 CELL = Path(__file__).resolve().parents[1] / "deploy" / "databricks" / "rehearse.py"
+REHEARSAL = Path(__file__).resolve().parents[1] / "deploy" / "preview" / "rehearse_episode.mjs"
 
 FORMAT = "casepath.rehearsal/1"
 LABEL = "developer_rehearsal.synthetic_analog.handler_savings_unverified"
@@ -35,6 +44,8 @@ SCRIPTED = "scripted_path.synthetic_analog.no_handler_time"  # the script took t
 CONDITIONS = {"b0", "b1", "n"}
 STEP = {"n", "name", "ms", "clicks", "decisions", "confirmations", "edits", "chars", "switches", "opened_whole", "passages", "scrolls"}
 SLOTS = {"im_fall", "zu_fragen", "empfehlung", "nachzureichen", "other"}
+VERDICTS = {"substantive", "stylistic", "zu_beurteilen"}
+RULES = {"wall_minus_declared_interruptions", "machine"}
 DATE = re.compile(r"\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.\d{2,4}")
 
 
@@ -43,8 +54,8 @@ def check_rehearsal(receipt):
     if not isinstance(receipt, dict) or receipt.get("format") != FORMAT:
         raise ValueError(f"format: {FORMAT}")
     body = {k: v for k, v in receipt.items() if k != "format"}  # the format names itself with a slash
-    keys = {"label", "build", "episode", "condition", "session", "steps", "external", "edit", "events", "duplicate_refused", "wall_ms",
-            "model_tokens"}
+    keys = {"label", "build", "episode", "condition", "session", "steps", "external", "edit", "events", "duplicate_refused", "timing",
+            "wall_ms", "model_tokens"}
     if set(body) != keys:
         raise ValueError(f"fields: {sorted(keys)}, not {sorted(body)}")
     guard(body)
@@ -52,6 +63,16 @@ def check_rehearsal(receipt):
         raise ScorecardLeak("a date is case content: a receipt holds none")
     if body["label"] not in (LABEL, SCRIPTED) or body["condition"] not in CONDITIONS or body["episode"] not in {"e1", "e2"} or body["session"] not in {1, 2}:
         raise ValueError("label, condition (b0, b1, n), episode (e1, e2) and session (1, 2) as declared")
+    timing = body["timing"]
+    if (set(timing) != {"rule", "interruptions", "asymmetry"} or timing["rule"] not in RULES
+            or (timing["rule"] == "machine") != (body["label"] == SCRIPTED)
+            or any(set(x) != {"at", "ms"} or type(x["ms"]) is not int or x["ms"] < 0 for x in timing["interruptions"])
+            or not isinstance(timing["asymmetry"], list)):
+        raise ValueError("timing: rule (machine only for the scripted path, else wall_minus_declared_interruptions), interruptions [{at, ms}], asymmetry")
+    if timing["rule"] == "machine" and "machine_time_not_handler_time" not in timing["asymmetry"]:
+        raise ValueError("timing: a scripted path states that its time is the machine's")
+    if body["condition"] == "b0" and "counts_not_measured_without_a_browser" not in timing["asymmetry"]:
+        raise ValueError("timing: the baseline states that what no browser measures is not counted")
     unmeasured = {"clicks", "edits", "chars", "opened_whole", "passages"} if body["condition"] == "b0" else set()  # no browser in B0
     for i, step in enumerate(body["steps"]):
         if set(step) != STEP or step["n"] != i + 1 or set(step["scrolls"]) != {"page", "inner"}:
@@ -63,14 +84,29 @@ def check_rehearsal(receipt):
     if any(set(x) != {"name", "ms"} for x in body["external"]):
         raise ValueError("external: [{name, ms}]")
     edit = body["edit"]
-    if set(edit) != {"ratio_words", "substantive", "stylistic", "slots"} or set(edit["slots"]) - SLOTS or (
-            body["condition"] != "b0" and None in (edit["ratio_words"], edit["substantive"], edit["stylistic"])):
-        raise ValueError(f"edit: ratio_words, substantive, stylistic and slots by {sorted(SLOTS)}")
+    if set(edit) != {"ratio_words", "substantive", "stylistic", "zu_beurteilen", "parts", "slots"} or set(edit["slots"]) - SLOTS:
+        raise ValueError(f"edit: ratio_words, substantive, stylistic, zu_beurteilen, parts and slots by {sorted(SLOTS)}")
+    if body["condition"] != "b0":
+        if None in (edit["ratio_words"], edit["substantive"], edit["stylistic"], edit["zu_beurteilen"]):
+            raise ValueError("edit: every count is measured with CasePath")
+        if any(set(x) != {"part", "verdict", "reasons"} or x["verdict"] not in VERDICTS for x in edit["parts"]):
+            raise ValueError("edit.parts: [{part, verdict (substantive, stylistic, zu_beurteilen), reasons}]: no text")
+        if any(edit[v] != sum(1 for x in edit["parts"] if x["verdict"] == v) for v in VERDICTS):
+            raise ValueError("edit: the counts are the parts' verdicts")
     if body["duplicate_refused"] not in (True, False, None):
         raise ValueError("duplicate_refused: whether the second drop of the reply was refused (None in the baseline)")
     if body["model_tokens"] != 0:
         raise ValueError("model_tokens: a rehearsal runs scripted, 0 tokens")
     return receipt
+
+
+def comparable(b0, n):
+    """The two conditions' active times, (B0 ms, N ms), only when both are timed by the same rule; ValueError otherwise."""
+    rules = {check_rehearsal(b0)["timing"]["rule"], check_rehearsal(n)["timing"]["rule"]}
+    if rules != {"wall_minus_declared_interruptions"}:
+        raise ValueError(f"not comparable: timed by {sorted(rules)}")
+    total = lambda r: sum(s["ms"] for s in r["steps"]) + sum(x["ms"] for x in r["external"])
+    return total(b0), total(n)
 
 
 def example():
@@ -86,10 +122,26 @@ def example():
                       step(11, "versandt_am", 1100, 1, 0, 1, switches=1)],
             "external": [{"name": "paste_email", "ms": 9000}, {"name": "attach_template", "ms": 12000}, {"name": "send", "ms": 3000},
                          {"name": "paste_note", "ms": 8000}, {"name": "set_diary", "ms": 15000}],
-            "edit": {"ratio_words": 0.04, "substantive": 0, "stylistic": 2, "slots": {"im_fall": 0.0, "zu_fragen": 0.06, "empfehlung": 0.0,
-                                                                                      "nachzureichen": 0.0, "other": 0.02}},
+            "edit": {"ratio_words": 0.04, "substantive": 1, "stylistic": 1, "zu_beurteilen": 1,
+                     "parts": [{"part": "p3", "verdict": "substantive", "reasons": ["state"]},
+                               {"part": "p1", "verdict": "stylistic", "reasons": ["courtesy_or_function_words"]},
+                               {"part": "p6", "verdict": "zu_beurteilen", "reasons": ["content_words_changed"]}],
+                     "slots": {"im_fall": 0.0, "zu_fragen": 0.06, "empfehlung": 0.0, "nachzureichen": 0.0, "other": 0.02}},
             "events": {"action.approved": 1, "bundle.saved": 1, "letter.copied": 1, "action.dispatched": 1, "update.started": 1},
-            "duplicate_refused": True, "wall_ms": 112000, "model_tokens": 0}
+            "duplicate_refused": True, "timing": {"rule": "wall_minus_declared_interruptions", "interruptions": [{"at": "step:5", "ms": 240000}],
+                                                  "asymmetry": []},
+            "wall_ms": 112000, "model_tokens": 0}
+
+
+def baseline():
+    """The same episode's B0 receipt (synthetic numbers): no browser, so its counts are null and the receipt says so."""
+    b0 = example()
+    b0.update(condition="b0", build="none", duplicate_refused=None, events={},
+              edit={"ratio_words": None, "substantive": None, "stylistic": None, "zu_beurteilen": None, "parts": [], "slots": {}},
+              steps=[{**s, "clicks": None, "edits": None, "chars": None, "opened_whole": None, "passages": None,
+                      "scrolls": {"page": None, "inner": None}} for s in example()["steps"]],
+              timing={"rule": "wall_minus_declared_interruptions", "interruptions": [], "asymmetry": ["counts_not_measured_without_a_browser"]})
+    return b0
 
 
 class RehearsalReceiptTests(unittest.TestCase):
@@ -102,31 +154,73 @@ class RehearsalReceiptTests(unittest.TestCase):
         for change in ({"label": "Entwickler-Probe, synthetisch"}, {"build": "D11 Steiner"}, {"events": {"Brief kopieren": 1}},
                        {"steps": [{**example()["steps"][0], "name": "Muss ich weiterhin die volle Miete bezahlen?"}]},
                        {"external": [{"name": "send", "ms": 9000, "to": "kundin@example.ch"}]},
-                       {"steps": [{**example()["steps"][0], "name": "open_2026-11-15"}]}):
+                       {"steps": [{**example()["steps"][0], "name": "open_2026-11-15"}]},
+                       {"edit": {**example()["edit"], "parts": [{"part": "p3", "verdict": "substantive", "reasons": ["state"],
+                                                                 "final": "Das Angebot ist abzulehnen."}]}}):
             with self.assertRaises((ValueError, ScorecardLeak), msg=str(change)):
                 check_rehearsal({**example(), **change})
 
-    def test_the_baseline_leaves_unmeasured_what_no_browser_measures(self):
-        b0 = example()
-        b0.update(condition="b0", build="none", duplicate_refused=None, events={},
-                  edit={"ratio_words": None, "substantive": None, "stylistic": None, "slots": {}},
-                  steps=[{**s, "clicks": None, "edits": None, "chars": None, "opened_whole": None, "passages": None,
-                          "scrolls": {"page": None, "inner": None}} for s in example()["steps"]])
-        check_rehearsal(b0)
+    def test_the_baseline_leaves_unmeasured_what_no_browser_measures_and_says_so(self):
+        check_rehearsal(baseline())
         with self.assertRaises(ValueError):  # with CasePath every count is measured
-            check_rehearsal({**b0, "condition": "n"})
+            check_rehearsal({**baseline(), "condition": "n"})
         with self.assertRaises(ValueError):  # time is measured in the baseline too
-            check_rehearsal({**b0, "steps": [{**b0["steps"][0], "ms": None}]})
+            check_rehearsal({**baseline(), "steps": [{**baseline()["steps"][0], "ms": None}]})
+        with self.assertRaises(ValueError):  # the asymmetry is stated, never hidden
+            check_rehearsal({**baseline(), "timing": {**baseline()["timing"], "asymmetry": []}})
+
+    def test_both_conditions_are_timed_by_one_rule_or_not_compared(self):
+        self.assertEqual(comparable(baseline(), example()), (sum(s["ms"] for s in example()["steps"]) + 47000,) * 2)
+        scripted = {**example(), "label": SCRIPTED, "timing": {"rule": "machine", "interruptions": [],
+                                                               "asymmetry": ["machine_time_not_handler_time", "external_steps_not_taken"]}}
+        check_rehearsal(scripted)
+        with self.assertRaisesRegex(ValueError, "not comparable"):  # a machine's time is never set against a person's
+            comparable(baseline(), scripted)
+        for timing in ({"rule": "machine", "interruptions": [], "asymmetry": ["machine_time_not_handler_time"]},  # a person's rehearsal
+                       {"rule": "active_with_idle_cap", "interruptions": [], "asymmetry": []},  # a rule that caps silent reading
+                       {"rule": "wall_minus_declared_interruptions", "interruptions": [{"at": "step:5"}], "asymmetry": []}):
+            with self.assertRaises(ValueError, msg=str(timing)):
+                check_rehearsal({**example(), "timing": timing})
 
     def test_the_declared_fields_and_enums_are_required(self):
         for change in ({"condition": "with_casepath"}, {"session": 3}, {"model_tokens": 1200},
-                       {"edit": {**example()["edit"], "slots": {"brief": 0.1}}}, {"steps": [{**example()["steps"][0], "n": 2}]}):
+                       {"edit": {**example()["edit"], "slots": {"brief": 0.1}}}, {"steps": [{**example()["steps"][0], "n": 2}]},
+                       {"edit": {**example()["edit"], "substantive": 2}},  # the counts are the parts' verdicts
+                       {"edit": {**example()["edit"], "parts": [{"part": "p3", "verdict": "probably_stylistic", "reasons": []}]}}):
             with self.assertRaises(ValueError, msg=str(change)):
                 check_rehearsal({**example(), **change})
         missing = example()
         del missing["events"]
         with self.assertRaises(ValueError):
             check_rehearsal(missing)
+
+    @unittest.skipUnless(shutil.which("node"), "node is not installed")
+    def test_the_scripts_own_timing_is_symmetric_and_its_edits_are_judged_per_part(self):
+        """deploy/preview/rehearse_episode.mjs with MODE=selftest: its own timing rule and edit adjudication on fixed inputs."""
+        done = subprocess.run(["node", str(REHEARSAL)], env={**os.environ, "MODE": "selftest"}, capture_output=True, text=True, timeout=60)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        out = json.loads(done.stdout)
+        self.assertEqual(out["timing"]["silent_five_minutes"], {"b0": 300000, "n": 300000})  # silent reading counts in full in both
+        self.assertEqual(out["timing"]["interrupted"], {"b0": 180000, "n": 180000})  # a declared interruption leaves both alike
+        verdict = lambda name: (out["edits"][name]["verdict"], out["edits"][name]["reasons"])
+        self.assertEqual(verdict("accept_to_refuse"), ("substantive", ["state"]))  # «anzunehmen» → «abzulehnen»
+        self.assertEqual(verdict("remedied_to_persisting"), ("substantive", ["state"]))  # «behoben» → «fortbestehend»
+        self.assertEqual(verdict("courtesy"), ("stylistic", ["courtesy_or_function_words"]))  # «Vielen Dank» → «Besten Dank»
+        self.assertEqual(verdict("punctuation")[0], "stylistic")
+        for name in ("greeting", "date_notation", "amount_notation"):  # the same recipient, day and amount, written otherwise
+            self.assertEqual(verdict(name)[0], "stylistic", name)
+        for name, reason in (("negation", "negation"), ("date", "date"), ("amount", "amount"), ("recipient", "recipient"),
+                             ("required", "required_part"), ("answer_removed", "answer_added_or_removed"), ("option", "option"),
+                             ("condition", "condition")):
+            self.assertEqual(verdict(name)[0], "substantive", name)
+            self.assertIn(reason, verdict(name)[1], name)
+        self.assertEqual(verdict("content_word"), ("zu_beurteilen", ["content_words_changed"]))  # a person decides, never a guess
+        self.assertEqual(verdict("word_order"), ("zu_beurteilen", ["word_order_changed"]))
+        letter = out["letter"]
+        self.assertEqual((letter["substantive"], letter["stylistic"], letter["zu_beurteilen"]), (1, 1, 0))
+        self.assertEqual(letter["parts"], [{"part": "para.1", "verdict": "stylistic", "reasons": ["courtesy_or_function_words"]},
+                                           {"part": "para.2", "verdict": "substantive", "reasons": ["state"]}])  # ids and reasons, no text
+        self.assertEqual(out["action"], [{"part": "letter", "verdict": "substantive", "reasons": ["action"]}])
 
     @unittest.skipUnless(os.environ.get("CASEPATH_REHEARSAL_RECEIPTS"), "no rehearsal receipts named (CASEPATH_REHEARSAL_RECEIPTS)")
     def test_the_receipts_of_a_rehearsal(self):

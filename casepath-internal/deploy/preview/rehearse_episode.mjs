@@ -1,23 +1,30 @@
-// The D11 episode on the preview, step by step, into a casepath.rehearsal/1 receipt (MEASURE §1): condition N on E1 or E2.
+// The D11 episode on the preview, step by step, into a casepath.rehearsal/1 receipt (MEASURE §1): condition N on E1 or E2,
+// and the baseline B0 of the same episode.
 //   BASE=http://127.0.0.1:8805 EPISODE=e1 SESSION=1 OUT=/some/dir NODE_PATH=$(npm root -g) node deploy/preview/rehearse_episode.mjs
 // MODE=scripted (default): the script takes every step itself, so the receipt holds the path's own clicks, scrolls, decisions
-//   and confirmations as the screens make them. Its times are the machine's: the label says «scripted path», never a
-//   handler's time, and the declared external steps are not taken.
-// MODE=baseline: the baseline B0 of the same rehearsal, without CasePath (the A5 form as a Word template, the files in a
-//   viewer, the module's law passages as the search, a text file for the claims system and the diary): no browser to
-//   measure, so the terminal times each step (Enter at its end) and its declared window counts as a switch; clicks, scrolls
-//   and typing are not measured there (null, never 0).
+//   and confirmations as the screens make them. Its times are the machine's: the label says «scripted path», the receipt
+//   names that asymmetry, and the declared external steps are not taken.
 // MODE=rehearsal: a headed browser for the developer's rehearsal (two sessions, counterbalanced with the baseline B0). The
-//   terminal names each step; the developer takes it and presses Enter. The external steps (paste into the e-mail, attach,
-//   send, paste the note, set the diary) are timed with Enter at their start and end. A stretch of more than 60 s without a
-//   click, a key or a scroll is idle and not counted. The label says «developer rehearsal, synthetic analog; handler
-//   savings unverified».
+//   terminal names each step; the developer takes it and presses Enter.
+// MODE=baseline: B0 without CasePath (the A5 form as a Word template, the files in a viewer, the module's law passages as
+//   the search, a text file for the claims system and the diary), timed in the terminal; what no browser measures there
+//   (clicks, scrolls, typing, passages) is null, never 0, and the receipt names that asymmetry.
+// MODE=selftest: the timing rule and the edit adjudication on fixed inputs, printed as JSON (no browser, no preview).
+// Time, the same rule for B0 and N: a step lasts from the prompt that names it to the Enter that ends it. Silent reading and
+// reasoning count in full; nothing is capped. An interruption the developer declares («u», then Enter when back) is taken
+// out of its step and kept as an entry of its own (timing.interruptions); the external steps are timed the same way.
 // Counting, declared before any scoring: a decision is a click that records a judgment the expert owns ([data-decide],
 // [data-cover-decline], the «Empfehlung» answers, «Freigeben», [data-action-reason], [data-line-reason], a question chip's
 // «übernehmen»); a confirmation records a fact or moves text («Brief kopieren», «Versandt am», «Aktualisieren», the
 // Versandpaket's download, «Aktennotiz kopieren»), counted apart. A passage is a document opened from a source chip;
 // opened whole is a file or a document opened from the rail. A context switch is a change of route, and in a rehearsal
 // each declared external window. A drop of files is one gesture.
+// Edits, judged per edited part of the letter: substantive when it changes a fact (a date, an amount, a number, a legal
+// citation), a polarity or negation, a state word (angenommen/abgelehnt, behoben/fortbestehend, bestätigt, erfüllt …), the
+// recipient, a required part or the action, or adds or removes an answer, a way or a line to send in; stylistic only when
+// nothing but punctuation, case, the notation of a date or an amount, or declared courtesy and function words changed;
+// anything else (a changed word order included) «zu beurteilen» by a person, never guessed. The change ratio is reported and decides nothing. The draft and final text of every edited
+// part are kept in OUT/inside/ (case content: inside only); the receipt holds part ids, verdicts, reasons and counts.
 // A step that needs a part of the episode not built yet (A: the assessment; B: approval, copy and dispatch; C: the import,
 // the duplicate's refusal and the update it starts; the integrator: the copy of E1 dispatched 91 days ago) stops the script
 // with what is missing (exit 2, no receipt). KEEP_GOING=1 notes it, goes on where it can, and still writes no receipt.
@@ -27,47 +34,215 @@ import path from "path";
 import readline from "readline";
 import { fileURLToPath } from "url";
 
-const { chromium } = createRequire(import.meta.url)("playwright");
 const BASE = process.env.BASE || "http://127.0.0.1:8805", OUT = process.env.OUT || "", MODE = process.env.MODE || "scripted";
 const EPISODE = (process.env.EPISODE || "e1").toLowerCase(), SESSION = Number(process.env.SESSION || 1), KEEP_GOING = process.env.KEEP_GOING === "1";
 const TITLES = { e1: /D11-Analogon A\b/, e2: /D11-Analogon B\b/ };
 const DISPATCHED = new RegExp(process.env.DISPATCHED || "D11-Analogon A.*(versandt|91)", "i");  // the copy of E1 dispatched 91 days ago
 const REPLIES = path.join(path.dirname(fileURLToPath(import.meta.url)), "episode", EPISODE.toUpperCase());
 const LABEL = MODE === "scripted" ? "scripted_path.synthetic_analog.no_handler_time" : "developer_rehearsal.synthetic_analog.handler_savings_unverified";
-const IDLE = 60000;
-if (!["scripted", "rehearsal", "baseline"].includes(MODE) || !TITLES[EPISODE] || ![1, 2].includes(SESSION)) {
-  console.error("MODE scripted|rehearsal|baseline, EPISODE e1|e2, SESSION 1|2"); process.exit(2);
+const RULE = MODE === "scripted" ? "machine" : "wall_minus_declared_interruptions";
+const ASYMMETRY = { scripted: ["machine_time_not_handler_time", "external_steps_not_taken"], rehearsal: [],
+                    baseline: ["counts_not_measured_without_a_browser"], selftest: [] }[MODE];
+if (!["scripted", "rehearsal", "baseline", "selftest"].includes(MODE) || !TITLES[EPISODE] || ![1, 2].includes(SESSION)) {
+  console.error("MODE scripted|rehearsal|baseline|selftest, EPISODE e1|e2, SESSION 1|2"); process.exit(2);
 }
-const ask = (q) => new Promise((resolve) => { const rl = readline.createInterface({ input: process.stdin, output: process.stdout }); rl.question(q, () => { rl.close(); resolve(); }); });
 
-// B0: the same episode without CasePath, timed step by step in the terminal; each step's declared window is a switch
+// -- time: one rule for both conditions ----------------------------------------------------------------------------------
+const ask = (q) => new Promise((resolve) => {
+  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+  rl.question(q, (answer) => { rl.close(); resolve(answer || ""); });
+});
+const interruptions = [];
+const activeMs = (start, end, paused) => end - start - paused.reduce((n, p) => n + p, 0);  // nothing capped, nothing guessed
+async function timed(say, at) {  // from the prompt to the Enter that ends it; a declared interruption is an entry of its own
+  const start = Date.now(), paused = [];
+  while ((await ask(`${say} … Enter, wenn erledigt (u + Enter: Unterbrechung) `)).trim().toLowerCase() === "u") {
+    const from = Date.now();
+    await ask("Unterbrechung … Enter, wenn zurück ");
+    paused.push(Date.now() - from);
+    interruptions.push({ at, ms: paused[paused.length - 1] });
+  }
+  return activeMs(start, Date.now(), paused);
+}
+
+// -- edits: judged per part, never by a ratio ---------------------------------------------------------------------------
+const STATE = /^(?:an(?:zu)?nehm|angenommen|ab(?:zu)?lehn|abgelehnt|bestätig|beheb|behob|fortbesteh|besteh|bestand|erfüll|unerfüll|genüg|ungenüg|bezahl|zahl|erhalt|versandt|versend|zugestellt|beigelegt|fehl|vorhanden|gewähr|verweiger|gedeckt|ungedeckt|deckung|anerkann|bestritt|offen|erledigt|abgeschlossen|zugesagt|zusag|widerruf|zurückgezog|aussicht)/;
+const NEGATION = /^(?:nicht|kein|keine|keinen|keinem|keiner|keines|nie|niemals|ohne|weder|nichts)$/;
+const OPTION = /^(?:hinterleg|kündig|herabsetz|reduk|reduz|minder|frist|rüge|mängelrüge|mahn|klage|klag|schlichtung|beseitig|ersatz|ersetz|auszieh|auszug|mandat|vergleich|einsprache|beschwerde|rekurs)/;
+const CONDITION = /^(?:sofern|falls|sobald|soweit|wenn|vorbehalt|vorausgesetzt|bedingt|bedingung)$/;
+const STYLE = new Set(["bitte", "gerne", "gern", "vielen", "besten", "herzlichen", "herzlich", "freundliche", "freundlichen", "dank", "danke", "sehr",
+  "geehrte", "geehrter", "geehrten", "guten", "tag", "grüezi", "liebe", "lieber", "grüsse", "grüssen", "gruss",
+  "nochmals", "höflich", "also", "nun", "ja", "eben", "einfach", "der", "die", "das", "den", "dem", "des", "ein", "eine", "einen", "einem", "einer",
+  "und", "sie", "ihnen", "ihre", "ihr", "ihrer", "wir", "uns", "unsere", "unser", "es", "zu", "für", "mit"]);
+const DATE = /\b\d{1,2}\.\s?\d{1,2}\.\s?\d{2,4}\b|\b\d{1,2}\.\s+(?:Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)\s+\d{4}\b|\b\d{4}-\d{2}-\d{2}\b/g;
+const AMOUNT = /(?:CHF|Fr\.)\s?[\d'’.,]+(?:\.–|\.-)?|[\d'’]+(?:\.\d{2})?\s?(?:CHF|Franken)\b|\b\d[\d'’]*\.–/g;
+const CITATION = /\bArt\.\s?\d+[a-z]?(?:\s(?:Abs\.|lit\.|Ziff\.)\s?\w+)*(?:\s[A-ZÄÖÜ][A-Za-zÄÖÜäöü]*)?/g;
+const tokens = (t) => (t.toLowerCase().match(/[a-zäöüß0-9]+/g) || []);
+const bag = (xs) => xs.reduce((m, x) => m.set(x, (m.get(x) || 0) + 1), new Map());
+const minus = (a, b) => { const out = []; for (const [k, n] of a) for (let i = 0; i < n - (b.get(k) || 0); i += 1) out.push(k); return out; };
+const same = (xs, ys) => xs.length === ys.length && xs.every((x, i) => x === ys[i]);
+const MONTHS = ["januar", "februar", "märz", "april", "mai", "juni", "juli", "august", "september", "oktober", "november", "dezember"];
+const dayOf = (m) => {  // one day however it is written: 30.11.2026, 30.11.26, 30. November 2026 and 2026-11-30 are the same
+  const x = m.replace(/\s+/g, " ").trim();
+  let r = x.match(/^(\d{4})-(\d{2})-(\d{2})$/), d, mo, y;
+  if (r) [y, mo, d] = [r[1], r[2], r[3]];
+  else if ((r = x.match(/^(\d{1,2})\. ?(\d{1,2})\. ?(\d{2,4})$/))) [d, mo, y] = [r[1], r[2], r[3]];
+  else if ((r = x.match(/^(\d{1,2})\. (\S+) (\d{4})$/))) [d, mo, y] = [r[1], String(MONTHS.indexOf(r[2].toLowerCase()) + 1), r[3]];
+  else return x;
+  return `${y.length === 2 ? `20${y}` : y}-${mo.padStart(2, "0")}-${d.padStart(2, "0")}`;
+};
+const amountOf = (m) => {  // one amount however it is written: CHF 85, Fr. 85.–, CHF 85.00 and 85 Franken are the same
+  const x = m.replace(/CHF|Fr\.|Franken/g, "").replace(/[’'\s]/g, "").replace(/\.[–-]$/, "").replace(/[.,]$/, "").replace(/,(\d{2})$/, ".$1").replace(/,/g, "");
+  return Number.isFinite(Number(x)) && x ? String(Math.round(Number(x) * 100)) : x;
+};
+const found = (re, t, norm = (x) => x.replace(/\s+/g, " ")) => (t.match(re) || []).map(norm).sort();
+// the words of a part, its dates, amounts and citations each one word of its value: a change of notation alone changes none
+const plain = (t) => t.replace(DATE, (m) => ` d${dayOf(m).replace(/-/g, "")} `).replace(AMOUNT, (m) => ` a${amountOf(m)} `)
+  .replace(CITATION, (m) => ` c${m.replace(/[^A-Za-z0-9]/g, "").toLowerCase()} `);
+function slotOf(part, text) {
+  const t = String(text || "").trim();
+  if (part === "head" || /^(Sehr geehrte|Guten Tag)/.test(t)) return "head";
+  if (/^In Ihrem Fall/.test(t)) return "im_fall";
+  if (/^(Zu Ihren Fragen|– «)/.test(t)) return "zu_fragen";
+  if (/^Wir empfehlen Ihnen/.test(t)) return "empfehlung";
+  if (/^Bitte reichen Sie uns noch nach/.test(t)) return "nachzureichen";
+  return "other";
+}
+// One edited part: {verdict: substantive | stylistic | zu_beurteilen, reasons}
+function judge(part, draft, final, required = []) {
+  draft = String(draft || ""); final = String(final || "");
+  const reasons = [], slot = slotOf(part, draft || final);
+  if (!same(found(DATE, draft, dayOf), found(DATE, final, dayOf))) reasons.push("date");
+  if (!same(found(AMOUNT, draft, amountOf), found(AMOUNT, final, amountOf))) reasons.push("amount");
+  if (!same(found(CITATION, draft), found(CITATION, final))) reasons.push("citation");
+  const a = tokens(plain(draft)), b = tokens(plain(final)), gone = minus(bag(a), bag(b)), come = minus(bag(b), bag(a));
+  if (!same(a.filter((x) => /^\d+$/.test(x)).sort(), b.filter((x) => /^\d+$/.test(x)).sort()) && !reasons.length) reasons.push("number");
+  if (a.filter((x) => NEGATION.test(x)).length !== b.filter((x) => NEGATION.test(x)).length) reasons.push("negation");
+  if ([...gone, ...come].some((x) => STATE.test(x))) reasons.push("state");
+  if ([...gone, ...come].some((x) => OPTION.test(x))) reasons.push("option");
+  if ([...gone, ...come].some((x) => CONDITION.test(x))) reasons.push("condition");
+  if (slot === "head" && [...gone, ...come].some((x) => !STYLE.has(x))) reasons.push("recipient");
+  if (required.some((m) => draft.includes(m) && !final.includes(m))) reasons.push("required_part");
+  const lines = (t) => t.split("\n").map((l) => l.trim()).filter((l) => /^– /.test(l));
+  if (["zu_fragen", "empfehlung", "nachzureichen"].includes(slot) && lines(draft).length !== lines(final).length) reasons.push("answer_added_or_removed");
+  if (!draft.trim() !== !final.trim() && slot !== "other" && !reasons.includes("answer_added_or_removed")) reasons.push("part_added_or_removed");
+  if (reasons.length) return { verdict: "substantive", reasons };
+  const content = (xs) => xs.filter((x) => !STYLE.has(x));  // stylistic only when the words that carry content stand as they stood
+  if (same(content(a), content(b))) return { verdict: "stylistic", reasons: [gone.length || come.length ? "courtesy_or_function_words" : "punctuation_case_or_notation"] };
+  return { verdict: "zu_beurteilen", reasons: [same([...content(a)].sort(), [...content(b)].sort()) ? "word_order_changed" : "content_words_changed"] };
+}
+// The letter as parts: the case view's parts where it gives them (draft.parts), else its paragraphs (para.<i>)
+const partsOf = (draft, text) => {
+  const given = (draft || {}).parts;
+  if (Array.isArray(given) && given.length) return given.map((p) => Array.isArray(p) ? { part: String(p[0]), text: String(p[1] || "") } : { part: String(p.part || p.id), text: String(p.text || "") });
+  return String(text || "").split(/\n\s*\n/).map((t, i) => ({ part: `para.${i}`, text: t.trim() })).filter((p) => p.text);
+};
+function pairParts(before, after) {  // by part id where the view gives ids; paragraphs by an alignment that keeps unchanged ones in place
+  if (before.every((p) => !p.part.startsWith("para.")) || after.every((p) => !p.part.startsWith("para."))) {
+    const ids = [...new Set([...before.map((p) => p.part), ...after.map((p) => p.part)])];
+    return ids.map((id) => ({ part: id, draft: (before.find((p) => p.part === id) || {}).text || "", final: (after.find((p) => p.part === id) || {}).text || "" }));
+  }
+  const x = before.map((p) => p.text), y = after.map((p) => p.text), n = x.length, m = y.length;
+  const L = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i -= 1) for (let j = m - 1; j >= 0; j -= 1) L[i][j] = x[i] === y[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const out = []; let i = 0, j = 0, gone = [], come = [];
+  const flush = () => { for (let k = 0; k < Math.max(gone.length, come.length); k += 1) out.push({ part: gone[k] != null ? `para.${gone[k]}` : `para.new.${come[k]}`, draft: gone[k] != null ? x[gone[k]] : "", final: come[k] != null ? y[come[k]] : "" }); gone = []; come = []; };
+  while (i < n || j < m) {
+    if (i < n && j < m && x[i] === y[j]) { flush(); out.push({ part: `para.${i}`, draft: x[i], final: y[j] }); i += 1; j += 1; }
+    else if (j < m && (i === n || L[i][j + 1] >= L[i + 1][j])) { come.push(j); j += 1; } else { gone.push(i); i += 1; }
+  }
+  flush();
+  return out;
+}
+const words = (t) => String(t).split(/\s+/).filter(Boolean);
+const lcs = (a, b) => { let prev = new Array(b.length + 1).fill(0);
+  for (const x of a) { const row = [0]; for (let j = 0; j < b.length; j += 1) row.push(x === b[j] ? prev[j] + 1 : Math.max(prev[j + 1], row[j])); prev = row; }
+  return prev[b.length]; };
+const ratio = (a, b) => { const x = words(a), y = words(b); return x.length || y.length ? Math.round((1 - lcs(x, y) / Math.max(x.length, y.length)) * 1000) / 1000 : 0; };
+function adjudicate(pairs, { required = [], formBefore = null, formAfter = null } = {}) {
+  const parts = [];
+  if (formBefore !== formAfter) parts.push({ part: "letter", verdict: "substantive", reasons: ["action"] });
+  for (const p of pairs) if (p.draft !== p.final) parts.push({ part: p.part, ...judge(p.part, p.draft, p.final, required) });
+  const slots = { im_fall: 0, zu_fragen: 0, empfehlung: 0, nachzureichen: 0, other: 0 };
+  for (const slot of Object.keys(slots)) {
+    const mine = pairs.filter((p) => { const s = slotOf(p.part, p.draft || p.final); return s === slot || (slot === "other" && s === "head"); });
+    slots[slot] = ratio(mine.map((p) => p.draft).join("\n"), mine.map((p) => p.final).join("\n"));
+  }
+  const count = (v) => parts.filter((p) => p.verdict === v).length;
+  return { ratio_words: ratio(pairs.map((p) => p.draft).join("\n"), pairs.map((p) => p.final).join("\n")), substantive: count("substantive"),
+           stylistic: count("stylistic"), zu_beurteilen: count("zu_beurteilen"), parts, slots };
+}
+
+if (MODE === "selftest") {
+  const pair = (draft, final) => judge("para.0", draft, final);
+  console.log(JSON.stringify({
+    timing: { silent_five_minutes: { b0: activeMs(0, 300000, []), n: activeMs(0, 300000, []) },
+              interrupted: { b0: activeMs(0, 300000, [120000]), n: activeMs(0, 300000, [120000]) } },
+    edits: {
+      accept_to_refuse: pair("Wir empfehlen Ihnen, das Angebot anzunehmen.", "Wir empfehlen Ihnen, das Angebot abzulehnen."),
+      remedied_to_persisting: pair("Der Mangel ist nach Ihren Angaben behoben.", "Der Mangel ist nach Ihren Angaben fortbestehend."),
+      courtesy: pair("Vielen Dank für Ihre Unterlagen.", "Besten Dank für Ihre Unterlagen."),
+      punctuation: pair("Wir prüfen Ihre Unterlagen und melden uns.", "Wir prüfen Ihre Unterlagen, und melden uns!"),
+      greeting: judge("head", "Sehr geehrte Frau Exempel", "Guten Tag Frau Exempel"),
+      date_notation: pair("Bitte antworten Sie bis 30.11.2026.", "Bitte antworten Sie bis 30. November 2026."),
+      amount_notation: pair("Sie machen Stromkosten von CHF 85 geltend.", "Sie machen Stromkosten von Fr. 85.– geltend."),
+      negation: pair("Der Mangel ist behoben.", "Der Mangel ist nicht behoben."),
+      date: pair("Bitte antworten Sie bis 30.11.2026.", "Bitte antworten Sie bis 07.12.2026."),
+      amount: pair("Sie machen Stromkosten von CHF 85 geltend.", "Sie machen Stromkosten von CHF 58 geltend."),
+      recipient: judge("head", "Sehr geehrte Frau Exempel", "Sehr geehrter Herr Probe"),
+      required: judge("p4", "Wir beurteilen das Vorgehen als aussichtslos, weil …", "Wir haben Ihre Unterlagen geprüft.", ["beurteilen wir das Vorgehen als aussichtslos", "Vorgehen als aussichtslos"]),
+      answer_removed: judge("p4", "Zu Ihren Fragen:\n– «Q1» A1.\n– «Q2» A2.", "Zu Ihren Fragen:\n– «Q1» A1."),
+      content_word: pair("Wir empfehlen Ihnen, der Vermieterschaft zu schreiben.", "Wir empfehlen Ihnen, der Vermieterschaft rasch zu schreiben."),
+      word_order: pair("Wir prüfen zuerst die Rechnung, dann den Vertrag.", "Wir prüfen zuerst den Vertrag, dann die Rechnung."),
+      option: pair("Wir empfehlen Ihnen, eine Frist zur Beseitigung zu setzen.", "Wir empfehlen Ihnen, den Mietzins zu hinterlegen."),
+      condition: pair("Wir empfehlen Ihnen, der Vermieterschaft zu schreiben.", "Wir empfehlen Ihnen, der Vermieterschaft zu schreiben, sofern der Schimmel noch da ist."),
+    },
+    letter: adjudicate(pairParts(partsOf(null, "Sehr geehrte Frau Exempel\n\nVielen Dank für Ihre Unterlagen.\n\nDer Mangel ist behoben."),
+                                 partsOf(null, "Sehr geehrte Frau Exempel\n\nBesten Dank für Ihre Unterlagen.\n\nDer Mangel ist fortbestehend.")),
+                       { formBefore: "A5", formAfter: "A5" }),
+    action: adjudicate([], { formBefore: "A5", formAfter: "A6" }).parts,
+  }, null, 1));
+  process.exit(0);
+}
+
+const steps = [], external = [], started = Date.now();
+const write = (receipt, inside) => {
+  if (!OUT) return null;
+  const name = `rehearsal-${EPISODE}-${receipt.condition}-session${SESSION}${receipt.condition === "n" ? `-${MODE}` : ""}`;
+  fs.mkdirSync(path.join(OUT, "inside"), { recursive: true });
+  fs.writeFileSync(path.join(OUT, `${name}.json`), JSON.stringify(receipt, null, 1) + "\n");
+  if (inside) fs.writeFileSync(path.join(OUT, "inside", `${name}.parts.json`), JSON.stringify(inside, null, 1) + "\n");  // case content: inside only
+  return path.join(OUT, `${name}.json`);
+};
+
+// -- B0: the same episode without CasePath, timed by the same rule; each step's declared window is a switch ----------------
 if (MODE === "baseline") {
   const B0 = [["open_case", "den Fall im Text-Fallsystem öffnen", 1], ["read_reply", "die beiden Antworten im Viewer lesen", 1],
               ["reconstruct", "aus der Akte rekonstruieren, was verlangt, versprochen und beantwortet ist", 0],
               ["deckung", "über die Deckung entscheiden", 0], ["research", "die Gesetzesstellen des Moduls nachschlagen", 1],
               ["empfehlung", "die Empfehlung festlegen", 0], ["write_letter", "die Einschätzung in der Word-Vorlage schreiben", 1],
               ["review", "den Brief prüfen", 0]];
-  const external = [], steps = [], started = Date.now();
   for (const [name, say, window] of B0) {
-    const start = Date.now();
-    await ask(`B0 Schritt ${steps.length + 1}: ${say} … dann Enter `);
-    steps.push({ n: steps.length + 1, name, ms: Date.now() - start, clicks: null, decisions: ["deckung", "empfehlung"].includes(name) ? 1 : 0,
+    const n = steps.length + 1;
+    steps.push({ n, name, ms: await timed(`B0 Schritt ${n}: ${say}`, `step:${n}`), clicks: null, decisions: ["deckung", "empfehlung"].includes(name) ? 1 : 0,
                  confirmations: 0, edits: null, chars: null, switches: window, opened_whole: null, passages: null, scrolls: { page: null, inner: null } });
   }
   for (const [name, say] of [["paste_email", "in die Antwort-E-Mail einfügen"], ["attach_template", "die Vorlage anhängen"], ["send", "senden"],
                              ["paste_note", "die Aktennotiz ins Text-Fallsystem schreiben"], ["set_diary", "die Wiedervorlage setzen"]]) {
     await ask(`Extern: ${say}. Enter zum Beginn `);
-    const start = Date.now();
-    await ask("… Enter, wenn erledigt ");
-    external.push({ name, ms: Date.now() - start });
+    external.push({ name, ms: await timed(`Extern: ${say}`, `external:${name}`) });
   }
   const receipt = { format: "casepath.rehearsal/1", label: LABEL, build: "none", episode: EPISODE, condition: "b0", session: SESSION, steps, external,
-                    edit: { ratio_words: null, substantive: null, stylistic: null, slots: {} }, events: {}, duplicate_refused: null,
-                    wall_ms: Date.now() - started, model_tokens: 0 };
-  if (OUT) { fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, `rehearsal-${EPISODE}-b0-session${SESSION}.json`), JSON.stringify(receipt, null, 1) + "\n"); }
-  console.log(`B0 · ${EPISODE} · session ${SESSION}: ${steps.reduce((n, x) => n + x.ms, 0)} ms in ${steps.length} steps, external ${external.reduce((n, x) => n + x.ms, 0)} ms`);
+                    edit: { ratio_words: null, substantive: null, stylistic: null, zu_beurteilen: null, parts: [], slots: {} }, events: {},
+                    duplicate_refused: null, timing: { rule: RULE, interruptions, asymmetry: ASYMMETRY }, wall_ms: Date.now() - started, model_tokens: 0 };
+  write(receipt, null);
+  console.log(`B0 · ${EPISODE} · session ${SESSION}: ${steps.reduce((n, x) => n + x.ms, 0)} ms in ${steps.length} steps, external `
+              + `${external.reduce((n, x) => n + x.ms, 0)} ms, ${interruptions.length} interruption(s) taken out`);
   process.exit(0);
 }
+
+// -- N: the episode in the preview -------------------------------------------------------------------------------------
+const { chromium } = createRequire(import.meta.url)("playwright");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const get = async (p) => (await fetch(BASE + p)).json();
 
@@ -98,7 +273,6 @@ function recorder({ decisions, confirmations }) {
   addEventListener("input", (ev) => {  // typing in the letter or a field; a file chosen is the drop above
     if (ev.target.type !== "file" && ev.target.closest("[contenteditable], textarea, input")) send({ type: "input", chars: (ev.data || "").length });
   }, true);
-  addEventListener("keydown", () => send({ type: "key" }), true);
   addEventListener("hashchange", () => send({ type: "route" }));
 }
 
@@ -120,31 +294,26 @@ const responses = [];
 page.on("response", (r) => { if (r.request().method() === "POST" && /\/api\/cases\/[^/]+\/files$/.test(r.url())) responses.push(r.status()); });
 let pageErrors = 0;
 page.on("pageerror", (e) => { pageErrors += 1; console.log("page error: " + e.message); });
-
-const steps = [], external = [];
 const visible = async (locator) => (await locator.count()) > 0 && await locator.first().isVisible().catch(() => false);
 const button = (name) => page.getByRole("button", { name });
 
-// One step: its events between start and end; in a rehearsal the developer takes it, the script only names it
+// One step: in a rehearsal the developer takes it and its time is the shared rule's; scripted, the machine's time
 async function step(name, act, say) {
-  const start = Date.now(), from = log.length;
-  if (MODE === "rehearsal") { await ask(`Schritt ${steps.length + 1}: ${say} … dann Enter `); } else { await act(); await sleep(400); }
-  const end = Date.now(), mine = log.slice(from);
-  const marks = [start, ...mine.map((e) => e.at), end];
-  const active = marks.slice(1).reduce((sum, t, i) => sum + Math.min(t - marks[i], IDLE), 0);
-  const clicks = mine.filter((e) => e.type === "click" || e.type === "drop");
-  steps.push({ n: steps.length + 1, name, ms: active, clicks: clicks.length, decisions: clicks.filter((e) => e.decision).length,
+  const n = steps.length + 1, from = log.length, start = Date.now();
+  let ms;
+  if (MODE === "rehearsal") ms = await timed(`Schritt ${n}: ${say}`, `step:${n}`);
+  else { await act(); await sleep(400); ms = Date.now() - start; }
+  const mine = log.slice(from), clicks = mine.filter((e) => e.type === "click" || e.type === "drop");
+  steps.push({ n, name, ms, clicks: clicks.length, decisions: clicks.filter((e) => e.decision).length,
                confirmations: clicks.filter((e) => e.confirmation).length, edits: mine.filter((e) => e.type === "input").length,
-               chars: mine.filter((e) => e.type === "input").reduce((n, e) => n + e.chars, 0), switches: mine.filter((e) => e.type === "route").length,
+               chars: mine.filter((e) => e.type === "input").reduce((k, e) => k + e.chars, 0), switches: mine.filter((e) => e.type === "route").length,
                opened_whole: clicks.filter((e) => e.whole).length, passages: clicks.filter((e) => e.passage).length,
                scrolls: { page: mine.filter((e) => e.type === "scroll" && e.page).length, inner: mine.filter((e) => e.type === "scroll" && !e.page).length } });
 }
-async function outside(name, say) {  // a declared external step: timed in a rehearsal, not taken by the script
+async function outside(name, say) {  // a declared external step: timed by the shared rule in a rehearsal, not taken by the script
   if (MODE !== "rehearsal") return;
   await ask(`Extern: ${say}. Enter zum Beginn `);
-  const start = Date.now();
-  await ask("… Enter, wenn erledigt ");
-  external.push({ name, ms: Date.now() - start });
+  external.push({ name, ms: await timed(`Extern: ${say}`, `external:${name}`) });
 }
 async function click(locator, what) {  // a click as a person makes it: on what is in view, after scrolling to it
   await locator.first().scrollIntoViewIfNeeded();
@@ -175,7 +344,6 @@ const target = await caseOf(TITLES[EPISODE]);
 if (!target) { console.error(`no case «${TITLES[EPISODE]}» in the preview: start it with deploy/preview/preview.py 8805`); await finish(2); }
 const id = target.id;
 const replies = fs.readdirSync(REPLIES).filter((n) => n.endsWith(".eml")).sort().map((n) => path.join(REPLIES, n));
-const started = Date.now();
 await page.goto(`${BASE}/?lang=de#/cases`); await sleep(2000);
 
 await step("open_from_queue", () => click(page.locator(`a[href*="${id}"]`), "open"), "den Fall aus der Liste öffnen");
@@ -208,18 +376,20 @@ await step("empfehlung", async () => {
   const prospects = page.locator("[data-decide='aussichten'][data-value='genügend']");
   if (await visible(prospects)) await click(prospects, "prospects");
 }, "die Empfehlung übernehmen (Aussichten genügend) oder ändern");
-const prepared = await letterText();
+const draftBefore = (await get(`/api/cases/${id}`)).draft || {};  // the prepared letter, by part where the view gives parts
+const textBefore = await letterText();
 await step("edits", async () => {
   const part = page.locator("[data-item='letter:0'] [data-seg='text'], [data-item='letter:0'] [contenteditable]").first();
   if (!(await part.count())) return lacking("the letter's text can be changed in place");
   await part.click(); await page.keyboard.press("End"); await page.keyboard.type(" Vielen Dank für Ihre Geduld."); await sleep(1600);
 }, "den Brief anpassen, wo nötig");
-const approved = await letterText();
+const textAfter = await letterText();
 await step("freigeben", async () => {
   const approve = button(/^Freigeben$/);
   if (await visible(approve)) return click(approve, "approve");
   lacking("B: «Freigeben» stores the approval and the Versandpaket (B3)");
 }, "freigeben");
+const draftAfter = (await get(`/api/cases/${id}`)).draft || {};  // the approved letter (B), by part
 await step("brief_kopieren", async () => {
   const copy = button(/^Brief kopieren$/);
   if (!(await visible(copy))) return lacking("B: «Brief kopieren» after the approval, the letter without a gap (A, B18)");
@@ -251,50 +421,33 @@ await step("a7", async () => {
   }
 }, "Statusanfrage: freigeben, Brief kopieren, Versandt am");
 
+// The edits, judged per part: the prepared letter against the approved one (the server's parts once B stores them)
+const pairs = pairParts(partsOf(draftBefore.parts ? draftBefore : null, textBefore), partsOf(draftAfter.parts ? draftAfter : null, textAfter));
+const edit = adjudicate(pairs, { required: (draftBefore.required || []).map((r) => r.marker).filter(Boolean), formBefore: draftBefore.form || null,
+                                 formAfter: draftAfter.form || null });
+const inside = { note: "INSIDE ONLY: the draft and the final text of every edited part; never part of a receipt",
+                 parts: Object.fromEntries(pairs.filter((p) => p.draft !== p.final).map((p) => [p.part, { draft: p.draft, final: p.final,
+                   ...(edit.parts.find((x) => x.part === p.part) || {}) }])) };
+
 // The receipt: ids, counts and enums only
-const words = (t) => t.split(/\s+/).filter(Boolean);
-const lcs = (a, b) => { let prev = new Array(b.length + 1).fill(0);
-  for (const x of a) { const row = [0]; for (let j = 0; j < b.length; j += 1) row.push(x === b[j] ? prev[j] + 1 : Math.max(prev[j + 1], row[j])); prev = row; }
-  return prev[b.length]; };
-const ratio = (a, b) => { const x = words(a), y = words(b); return x.length || y.length ? Math.round((1 - lcs(x, y) / Math.max(x.length, y.length)) * 1000) / 1000 : 0; };
-const SLOTS = [["im_fall", /^In Ihrem Fall/], ["zu_fragen", /^(Zu Ihren Fragen|– «)/], ["empfehlung", /^Wir empfehlen Ihnen/], ["nachzureichen", /^(Bitte reichen Sie uns noch nach|– )/]];
-const bySlot = (text) => { const out = { im_fall: "", zu_fragen: "", empfehlung: "", nachzureichen: "", other: "" }; let slot = "other";
-  for (const line of text.split("\n")) { const s = SLOTS.find(([, re]) => re.test(line.trim())); slot = s ? s[0] : line.trim() ? (slot === "nachzureichen" && /^– /.test(line.trim()) ? slot : "other") : slot; out[slot] += line + "\n"; }
-  return out; };
-const sentences = (t) => t.split(/(?<=[.?!])\s+|\n+/).map((s) => s.trim()).filter(Boolean);
-const decisive = (s) => (s.match(/\d{1,2}\.\d{1,2}\.\d{4}|CHF\s?[\d'.,–-]+|Art\.\s?\d+\w*(?:\s(?:Abs|lit)\.\s?\w+)*|\b\d+\b|\bnicht\b|\bkein\w*\b|\bnie\b/g) || []).join("|");
-const changed = (a, b) => { const x = sentences(a), y = sentences(b); return { gone: x.filter((s) => !y.includes(s)), come: y.filter((s) => !x.includes(s)) }; };
-let substantive = 0, stylistic = 0;
-for (const [slot, text] of Object.entries(bySlot(approved))) {
-  const { gone, come } = changed(bySlot(prepared)[slot], text);
-  for (let i = 0; i < Math.max(gone.length, come.length); i += 1) {
-    const was = gone[i] || "", now = come[i] || "";
-    const answers = ["zu_fragen", "empfehlung", "nachzureichen"].includes(slot) && (!was || !now);  // an answer, a way or a line added or removed
-    if (answers || decisive(was) !== decisive(now)) substantive += 1; else stylistic += 1;
-  }
-}
 const kinds = {};
 for (const e of (await get(`/api/cases/${id}/events`)).events || []) kinds[e.kind] = (kinds[e.kind] || 0) + 1;
 const build = String((await get("/api/manifest")).source_tree_sha256 || "").slice(0, 12);
-const receipt = { format: "casepath.rehearsal/1", label: LABEL, build, episode: EPISODE, condition: "n", session: SESSION, steps, external,
-  edit: { ratio_words: ratio(prepared, approved), substantive, stylistic,
-          slots: Object.fromEntries(Object.entries(bySlot(prepared)).map(([k, v]) => [k, ratio(v, bySlot(approved)[k])])) },
-  events: kinds, duplicate_refused: duplicateRefused, wall_ms: Date.now() - started, model_tokens: 0 };
+const receipt = { format: "casepath.rehearsal/1", label: LABEL, build, episode: EPISODE, condition: "n", session: SESSION, steps, external, edit,
+  events: kinds, duplicate_refused: duplicateRefused, timing: { rule: RULE, interruptions, asymmetry: ASYMMETRY }, wall_ms: Date.now() - started,
+  model_tokens: 0 };
 const safe = (v) => typeof v !== "string" || (/^(?:[a-z0-9][a-z0-9_.:-]{0,79})$/.test(v) && !/\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.\d{2,4}/.test(v));
 const leaks = JSON.stringify(receipt, (k, v) => (k === "format" || safe(v) ? v : "LEAK")).includes("LEAK");
 const line = (s) => `${String(s.n).padStart(2)} ${s.name.padEnd(22)} ${String(s.ms).padStart(7)} ms · ${s.clicks} click(s) · ${s.decisions} decision(s) · ${s.confirmations} confirmation(s)`
   + `${s.edits ? ` · ${s.edits} input(s), ${s.chars} char(s)` : ""}${s.switches ? ` · ${s.switches} switch(es)` : ""}${s.passages ? ` · ${s.passages} passage(s)` : ""}`
   + `${s.opened_whole ? ` · ${s.opened_whole} opened whole` : ""}${s.scrolls.page + s.scrolls.inner ? ` · scrolls ${s.scrolls.page}/${s.scrolls.inner}` : ""}`;
-console.log([`${LABEL} · ${EPISODE} · session ${SESSION} · build ${build}`, ...steps.map(line),
-  `decisions ${steps.reduce((n, s) => n + s.decisions, 0)} · confirmations ${steps.reduce((n, s) => n + s.confirmations, 0)} (counted apart)`,
-  `edit ratio ${receipt.edit.ratio_words} (substantive ${substantive}, stylistic ${stylistic}) · duplicate refused ${duplicateRefused} · page errors ${pageErrors}`].join("\n"));
+console.log([`${LABEL} · ${EPISODE} · session ${SESSION} · build ${build} · time ${RULE}${ASYMMETRY.length ? ` (asymmetry: ${ASYMMETRY.join(", ")})` : ""}`,
+  ...steps.map(line),
+  `decisions ${steps.reduce((n, s) => n + s.decisions, 0)} · confirmations ${steps.reduce((n, s) => n + s.confirmations, 0)} (counted apart) · interruptions ${interruptions.length}`,
+  `edits: substantive ${edit.substantive}, stylistic ${edit.stylistic}, zu beurteilen ${edit.zu_beurteilen} (change ratio ${edit.ratio_words}, deciding nothing)`
+  + ` · duplicate refused ${duplicateRefused} · page errors ${pageErrors}`].join("\n"));
 if (leaks) { console.log("the receipt holds more than ids, counts and enums: not written"); await finish(2); }
-if (!missing.length && OUT) {
-  fs.mkdirSync(OUT, { recursive: true });
-  const file = path.join(OUT, `rehearsal-${EPISODE}-n-session${SESSION}-${MODE}.json`);
-  fs.writeFileSync(file, JSON.stringify(receipt, null, 1) + "\n");
-  console.log(`receipt: ${file}`);
-}
+if (!missing.length && OUT) console.log(`receipt: ${write(receipt, inside)}`);
 } catch (error) {
   if (!(error instanceof Missing)) throw error;
   console.log(`stopped at the first missing part (KEEP_GOING=1 lists them all)`);
