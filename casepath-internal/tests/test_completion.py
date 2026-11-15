@@ -174,7 +174,7 @@ class Service(unittest.TestCase):
         return r.json()
 
     def dispatch(self, version, day=None, op="op-dispatch-1", expect=200, **body):
-        r = self.client.post(f"/api/cases/{self.case}/actions/dispatch", json={"version": version, "date": day or date.today().isoformat(),
+        r = self.client.post(f"/api/cases/{self.case}/actions/dispatch", json={"version": version, "date": day or completion.swiss_today().isoformat(),
                                                                              "channel": "email", "op_id": op, **body})
         self.assertEqual(r.status_code, expect, r.text)
         return r.json()
@@ -241,9 +241,9 @@ class CopyTests(unittest.TestCase):
 class LegacyServiceTests(Service):
     def test_the_legacy_copys_day_is_allowed_for_versandt_am_and_it_never_fulfils(self):
         draft = self.ready()
-        earlier = date.today() - timedelta(days=2)
+        earlier = completion.swiss_today() - timedelta(days=2)  # the handler's day: Swiss time
         with self.store._lock:  # the case was prepared three days ago, a browser before this release copied its letter two days ago
-            self.store._db.execute("update runs set created_at=? where case_id=? and status='completed'", (f"{date.today() - timedelta(days=3)}T08:00:00+00:00", self.case))
+            self.store._db.execute("update runs set created_at=? where case_id=? and status='completed'", (f"{completion.swiss_today() - timedelta(days=3)}T08:00:00+00:00", self.case))
         logged = self.store.append_case_event(self.case, {"kind": "letter.copied", "form": "A5", "expert": USER})
         with self.store._lock:
             self.store._db.execute("update events set data=? where event_id=?",
@@ -464,7 +464,7 @@ class BundleTests(Service):
         self.assertEqual(len(self.events("bundle.saved")), 1)
         r = self.client.get(f"/api/cases/{self.case}/actions/{draft['version']}/bundle")
         self.assertEqual(r.headers["cache-control"], "private, no-store")
-        self.assertEqual(r.headers["content-disposition"], f'attachment; filename="Versandpaket_{EP.reference}_{date.today():%d.%m.%Y}.zip"')
+        self.assertEqual(r.headers["content-disposition"], f'attachment; filename="Versandpaket_{EP.reference}_{completion.swiss_today():%d.%m.%Y}.zip"')  # the Swiss day
         self.assertEqual(r.content, self.store.blob(out["bundle"]["sha256"]))
         archive = zipfile.ZipFile(io.BytesIO(r.content))
         names = sorted(archive.namelist())
@@ -479,7 +479,7 @@ class BundleTests(Service):
         self.assertIn("Zum Versand freigegeben am", archive.read("Aktennotiz.txt").decode())
         # the follow-up counts from the dispatch: its date for a dispatch on the day of the approval, and the rule
         self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[0],
-                         f"Wiedervorlage 90 Tage nach dem Versand: {date.today() + timedelta(days=90):%d.%m.%Y} bei Versand am {date.today():%d.%m.%Y}")
+                         f"Wiedervorlage 90 Tage nach dem Versand: {completion.swiss_today() + timedelta(days=90):%d.%m.%Y} bei Versand am {completion.swiss_today():%d.%m.%Y}")
         # what the Wiedervorlage awaits is what the letter asks: the lines under «Bitte reichen Sie uns noch nach»
         asked = draft["text"].split("Bitte reichen Sie uns noch nach:\n", 1)[1].split("\n\n", 1)[0].split("\n")
         self.assertTrue(asked and all(line.startswith("– ") for line in asked), asked)
@@ -510,7 +510,7 @@ class DispatchTests(Service):
     def test_dispatch_is_attributed_idempotent_per_recipient_and_writes_the_account_entry_of_its_form(self):
         draft = self.ready()
         self.approve(draft)
-        today = date.today().isoformat()
+        today = completion.swiss_today().isoformat()
         self.dispatch(draft["version"], day=today)
         self.dispatch(draft["version"], day=today, op="op-dispatch-2")  # twice: one entry
         self.dispatch(draft["version"], day=today, op="op-dispatch-1")  # the same operation: its first result
@@ -1008,6 +1008,8 @@ class ApplicabilityTests(Service):
         self.assertEqual((st["stale"], st["bucket"], st["status"]), (["Grundlage in Prüfung"], "urteil", "Freigabe veraltet: Grundlage in Prüfung"))
         self.assertEqual((st["held"][0]["key"], st["held"][0]["mark"]), ("mietmangel-handler:rahmen.conditions", "Frage"))
         self.assertEqual(view["screen"]["head"]["stale"], "Freigabe veraltet: Grundlage in Prüfung")
+        self.assertTrue(view["screen"]["head"]["meaning"].endswith("gilt so nicht mehr: vor dem Versand prüfen und erneut freigeben."))
+        self.assertTrue(view["screen"]["head"]["stale_all"][0].startswith("Voraussetzungen: Frage"))  # the element and the jurist's mark
         self.assertEqual(self.row()["stand"]["text"], "Freigabe veraltet: Grundlage in Prüfung")
         self.assertEqual(st["bar"]["label"], "Erneut freigeben")
         again = self.approve(view["draft"], op="op-approve-2")  # approved again knowing the question: it holds
@@ -1034,6 +1036,8 @@ class ApplicabilityTests(Service):
         self.assertTrue(st["status"].startswith("versandt mit früherem Stand – prüfen: "), st["status"])
         self.assertEqual(st["bucket"], "urteil")
         self.assertEqual(view["screen"]["head"]["reconcile"], draft["version"])
+        self.assertTrue(view["screen"]["head"]["meaning"].startswith("versandt mit früherem Stand – prüfen: "))
+        self.assertRegex(view["screen"]["head"]["meaning_all"][0], r"^Versandt: .+ am \d{2}\.\d{2}\.\d{4}$")
         self.assertEqual(st["bar"]["reconcile"], draft["version"])
         r = self.client.post(f"/api/cases/{self.case}/actions/reconcile", json={"version": draft["version"], "op_id": "op-reconcile-1"})
         self.assertEqual(r.status_code, 200, r.text)

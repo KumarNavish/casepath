@@ -198,7 +198,7 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         awaited = [a["what"] for a in completion.asks(approval.get("form"), approval.get("action_kind"), view.get("items") or [], events, view.get("assessment"),
                                                       approval.get("respond_by"))]
         stage = (((view.get("evaluation") or {}).get("current")) or {}).get("step")
-        day = str(approval.get("at") or "")[:10]
+        day = completion.swiss_day(approval.get("at"))
         look = completion.next_look(view.get("process"), approval.get("form"), stage, day, approval.get("respond_by"))
         days = completion.look_days(view.get("process"), approval.get("form"), stage)
         # the follow-up as the case will count it: the reply date the letter sets; else the clock's days from the dispatch

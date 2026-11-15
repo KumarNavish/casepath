@@ -154,4 +154,5 @@ def file_name(case, approved_at):
     """«Versandpaket_<Referenz oder Fall>_<TT.MM.JJJJ>.zip»."""
     ref = re.search(r"\d{4}\.\d{4}\.\d{4}", f"{(case or {}).get('title', '')} {(case or {}).get('intake', '')}")
     who = ref.group(0) if ref else re.sub(r"[^\w.-]+", "-", str((case or {}).get("title") or (case or {}).get("id") or "Fall"))[:60].strip("-")
-    return f"Versandpaket_{who}_{_day(str(approved_at or '')[:10])}.zip"
+    from ..process.completion import swiss_day
+    return f"Versandpaket_{who}_{_day(swiss_day(approved_at))}.zip"  # the Swiss day of the approval

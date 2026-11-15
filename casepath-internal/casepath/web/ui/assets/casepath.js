@@ -2583,8 +2583,8 @@ function conflictsView(active) {
 function dispatchControl(bar, row, primary, named) {
   const many = named || (bar.recipients || []).filter((r) => !r.dispatched).length > 1;
   const day = row.date || isoToday();
-  const name = `${T("Sent on", "Versandt am")}${many ? ` ${T("to", "an")} ${row.title}` : ""}`;
-  return `<span class="cp-dispatch" data-dispatch-row="${esc(row.to)}"><button class="cp-button ${primary ? "primary" : ""}" data-dispatch="${esc(row.to)}" data-dispatch-version="${esc(bar.version || "")}" aria-label="${esc(`${name} ${dateText(day)}`)}">${esc(name)}</button>
+  const name = T("Sent on", "Versandt am"), to = many ? ` ${T("to", "an")} ${row.title}` : "";
+  return `<span class="cp-dispatch" data-dispatch-row="${esc(row.to)}">${many ? `<span class="cp-dispatch-to">${esc(row.title)}:</span>` : ""}<button class="cp-button ${primary ? "primary" : ""}" data-dispatch="${esc(row.to)}" data-dispatch-version="${esc(bar.version || "")}" aria-label="${esc(`${name} ${dateText(day)}${to}`)}">${esc(name)}</button>
     <input type="date" class="cp-dispatch-date" data-dispatch-date="${esc(row.to)}" value="${esc(day)}" max="${esc(isoToday())}" ${bar.earliest ? `min="${esc(bar.earliest)}"` : ""} aria-label="${T("Day sent", "Versanddatum")}">
     <select class="cp-dispatch-channel" data-dispatch-channel="${esc(row.to)}" aria-label="${T("Channel", "Kanal")}">${CHANNELS.map(([k, w]) => `<option value="${k}" ${k === (row.channel || bar.channel) ? "selected" : ""}>${esc(w)}</option>`).join("")}</select></span>`;
 }
@@ -2599,7 +2599,7 @@ function carryButtons(active, opts) {
     : S.saveState === "saving" ? `<span class="cp-save-state">${T("saving …", "wird gespeichert …")}</span>` : "";
   const failed = S.copyFailed ? `<span class="cp-save-state error" role="status">${T("Copying failed", "Kopieren fehlgeschlagen")}</span>` : "";
   const last = st.last || {}, wentOut = (last.dispatched || [])[0];
-  const sentLine = wentOut ? `<span class="cp-sent" title="${esc(last.title || "")}">${icon("check")}${T("sent", "versandt am")} ${dateText(wentOut.date)}</span>` : "";
+  const sentLine = wentOut ? `<span class="cp-sent">${icon("check")}${esc(last.title ? `${last.title} ` : "")}${T("sent", "versandt am")} ${dateText(wentOut.date)}</span>` : "";
   if (bar.kind === "approve" && st.waits) {
     // the case waits for its date: quiet; the follow-up is prepared for then and can be approved earlier, never pressed for
     return `${sentLine}<span class="cp-waits">${esc(st.waits)}</span><button class="cp-button" id="approve" title="${T("prepared for the follow-up date", "für die Wiedervorlage vorbereitet")}">${T("Approve", "Freigeben")}</button>`;
@@ -2781,7 +2781,10 @@ function bindCarry(on) {
   on("#copy-letter", "click", () => copyLetter(null));
   on("[data-copy-text]", "click", (b) => copyLetter(b.dataset.copyText));
   on("[data-dispatch]", "click", (b) => { b.disabled = true; dispatchTo(b.dataset.dispatch, b.dataset.dispatchVersion || null); });
-  on("[data-dispatch-date]", "change", (el) => { const b = $(`[data-dispatch='${CSS.escape(el.dataset.dispatchDate)}']`); if (b && el.value) b.setAttribute("aria-label", `${b.textContent} ${dateText(el.value)}`); });
+  on("[data-dispatch-date]", "change", (el) => {  // the button's name says the day it confirms
+    const b = $(`[data-dispatch='${CSS.escape(el.dataset.dispatchDate)}']`);
+    if (b && el.value) b.setAttribute("aria-label", b.getAttribute("aria-label").replace(/\d{2}\.\d{2}\.\d{4}/, dateText(el.value)));
+  });
   on("#copy-note-bar", "click", () => copyNote());
   on("[data-head-open]", "click", (b) => { S.headOpen = S.headOpen === b.dataset.headOpen ? null : b.dataset.headOpen; renderCase(); });
   on("[data-reconcile]", "click", async (b) => {

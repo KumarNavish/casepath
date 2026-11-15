@@ -384,7 +384,8 @@ def head_block(changes, assessment, completion, draft=None):
         return None  # a first preparation with nothing changed: the card says it already, no head to read
     if recheck:
         meaning = f"{recheck}; der Brief ging so hinaus, eine Korrektur wäre ein eigener Brief."
-        details = [f"Versandt: {last.get('title') or 'Brief'} am " + ", ".join(d.get("date") or "" for d in last.get("dispatched") or ())]
+        dotted = lambda iso: f"{iso[8:10]}.{iso[5:7]}.{iso[:4]}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(iso or "")) else str(iso or "")
+        details = [f"Versandt: {last.get('title') or 'Brief'} am " + ", ".join(dotted(d.get("date")) for d in last.get("dispatched") or ())]
     elif kind == "resolved":
         came = ", ".join(dict.fromkeys(j["ask"] for j in after.get("judgments") or () if j.get("ask")))
         judged = ", ".join(dict.fromkeys(j["judgment"] for j in after.get("judgments") or () if j.get("judgment")))
@@ -403,7 +404,8 @@ def head_block(changes, assessment, completion, draft=None):
     elif done.get("waits"):
         meaning = f"{done['waits']}; {title} ist danach vorbereitet."
     elif stale:
-        at = str((done.get("approved") or {}).get("at") or "")
+        from .completion import swiss_day
+        at = swiss_day((done.get("approved") or {}).get("at"))
         meaning = (f"{title} freigegeben" + (f" am {at[8:10]}.{at[5:7]}.{at[:4]}" if len(at) >= 10 else "")
                    + ", gilt so nicht mehr: vor dem Versand prüfen und erneut freigeben.")
     elif done.get("state") == "freigegeben":

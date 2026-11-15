@@ -63,6 +63,20 @@ def sha(text):
     return hashlib.sha256(str(text or "").encode()).hexdigest()
 
 
+def swiss_day(at):
+    """The Swiss day of a stored time (UTC, ISO), as YYYY-MM-DD: an approval at 23:30 UTC was given on the next day in
+    Switzerland; the stored day where the zone data is missing or the value is a day already."""
+    from datetime import datetime
+    text = str(at or "")
+    if len(text) <= 10:
+        return text
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.fromisoformat(text).astimezone(ZoneInfo("Europe/Zurich")).date().isoformat()
+    except Exception:  # noqa: BLE001  no zone data, or no time in it
+        return text[:10]
+
+
 def swiss_today():
     """Today in Swiss time (the handler's day: a letter sent at 00:30 is sent «today» there, while the server's clock in
     UTC still says yesterday); the server's day where the zone data is missing."""
@@ -711,10 +725,10 @@ def default_channel(files):
 def earliest(approval, events, form):
     """The first day the approved letter can have gone out: its approval day, a copy of the same text, or a copy of the
     same form by a browser before this release, whichever came first."""
-    days = [str(approval.get("at") or "")[:10]]
-    days += [str(e.get("at") or "")[:10] for e in events or () if e.get("kind") == "letter.copied" and e.get("measure")
+    days = [swiss_day(approval.get("at"))]
+    days += [swiss_day(e.get("at")) for e in events or () if e.get("kind") == "letter.copied" and e.get("measure")
              and e.get("text_sha256") and e.get("text_sha256") == approval.get("text_sha256")]
-    days += [str(e.get("at") or "")[:10] for e in events or () if is_legacy(e) and not e.get("also") and e.get("form") in (None, form)]
+    days += [swiss_day(e.get("at")) for e in events or () if is_legacy(e) and not e.get("also") and e.get("form") in (None, form)]
     return min(d for d in days if d) if any(days) else None
 
 
@@ -864,13 +878,13 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
     elif out["rest"] and out["rest"]["stale"]:
         out.update(bucket="urteil", status=f"Freigabe veraltet: {out['rest']['stale'][0]} (Versand an {rest_to} offen)")
     elif out["rest"]:
-        out.update(bucket="versandbereit", status=f"freigegeben, Versand an {rest_to} offen", date=str(rest.get("at") or "")[:10])
+        out.update(bucket="versandbereit", status=f"freigegeben, Versand an {rest_to} offen", date=swiss_day(rest.get("at")))
     elif out["state"] == "freigegeben" and out["stale"]:
         out.update(bucket="urteil", status=f"Freigabe veraltet: {out['stale'][0]}")
     elif out["state"] == "freigegeben":
-        out.update(bucket="versandbereit", status="freigegeben, Versand offen", date=str(approval.get("at") or "")[:10])
+        out.update(bucket="versandbereit", status="freigegeben, Versand offen", date=swiss_day(approval.get("at")))
     elif out["legacy_copy"]:
-        out.update(bucket="versandbereit", status="kopiert, Versand nicht bestätigt", date=str(out["legacy_copy"]["at"] or "")[:10])
+        out.update(bucket="versandbereit", status="kopiert, Versand nicht bestätigt", date=swiss_day(out["legacy_copy"]["at"]))
     elif current_last and out["last"]["stale"] and meaning.get("kind") != "contradiction":
         out.update(bucket="urteil", status=f"versandt mit früherem Stand – prüfen: {', '.join(out['last']['stale'])}")
     elif current_last and meaning.get("kind") == "contradiction":
@@ -961,7 +975,7 @@ def bar(st, draft, approval, events, files, today):
         done = next((d for d in st["dispatched"] if d["recipient"] == r.get("to")), None)
         rows.append({"to": r.get("to"), "title": r.get("title") or FOLDERS.get(r.get("to"), r.get("to")), "recipient": r.get("recipient"),
                      "dispatched": done, "date": day, "channel": channel})
-    first = earliest(shown, events, st["form"]) if shown else (str(st["legacy_copy"]["at"])[:10] if st["legacy_copy"] else None)
+    first = earliest(shown, events, st["form"]) if shown else (swiss_day(st["legacy_copy"]["at"]) if st["legacy_copy"] else None)
     if st["state"] == "entwurf":
         return {"kind": "approve", "label": "Freigeben", "recipients": rows, "earliest": first, "legacy": st["legacy_copy"], "channel": channel,
                 "decision": st["decision"], "conflicts": len(all_conflicts(draft)), "gaps": gaps(draft), **extra}
@@ -1054,7 +1068,7 @@ def note_lines(events, edits=None, titles=None):
         mine = [d for d in sent if d["version"] == a.get("version")]
         pending = [r for r in a.get("recipients") or () if r.get("to") not in {d["recipient"] for d in mine}]
         if pending and a is approvals(events)[-1]:
-            out.append(f"Zum Versand freigegeben am {_day(a.get('at'))} ({a.get('expert')}): {a.get('title')}")
+            out.append(f"Zum Versand freigegeben am {_day(swiss_day(a.get('at')))} ({a.get('expert')}): {a.get('title')}")
     for d in sent:
         out.append(f"Versandt: {d['title'] or 'Schreiben'} an {TO_WORDS.get(d['recipient'], d['recipient'])} am {_day(d['date'])} "
                    f"({CHANNELS.get(d['channel'], d['channel'])}, {d['by']})")

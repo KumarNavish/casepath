@@ -693,6 +693,7 @@ button.cp-head-text:hover{color:var(--crimson)}
 .cp-dispatch{display:inline-flex;align-items:center;gap:4px;flex:none}
 .cp-dispatch-date,.cp-dispatch-channel{border:1px solid var(--border);border-radius:var(--radius);padding:7px 6px;font-size:13.5px;background:var(--bg)}
 .cp-dispatch-date{width:8.6em}
+.cp-dispatch-to{font-size:13.5px;color:var(--ink-2);margin-right:2px;white-space:nowrap}
 .cp-dispatch .cp-button{padding:9px 12px}
 .cp-bar.cp-carry>.cp-link{flex:none;font-size:13.5px;color:var(--ink-2);text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px;border:0;background:none;padding:0}
 .cp-save-state{font-size:12.5px;color:var(--ink-2);white-space:nowrap}
