@@ -19,6 +19,8 @@ from tests.test_handler_workflow import fact
 FIXTURES = Path(__file__).parent / "fixtures"
 KEY_CASES = {k: v for k, v in json.loads((FIXTURES / "areas" / "key_cases.json").read_text()).items() if not k.startswith("_")}
 CASE_ROW = {"id": "case_k", "title": "Kündigung (synthetisch)", "intake": {}}
+# The reader tags each question with the key points whose rule it asks about (team.py, «about»)
+TAGS = {"Erhalte ich ab Dezember noch Lohn?": ["lohn"], "Ist die Kündigung überhaupt gültig?": ["sperrfrist"]}
 
 
 def run(case):
@@ -28,7 +30,7 @@ def run(case):
     model = ScriptedModel([
         [*[("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
          report("claim_reader", request=case["request"], parties=[{"role": r, "name": n} for r, n in case["parties"]],
-                questions=[{"question": q, "citations": cite(quote)} for q, quote in case["questions"]])],
+                questions=[{"question": q, "citations": cite(quote), "about": TAGS.get(q, [])} for q, quote in case["questions"]])],
         [*[("record_document", {"document": d, "status": "present", "files": ["f1"], "citations": cite(q), "note": ""}) for d, q in case["documents"]],
          report("document_finder")],
         *[[report("result_checker", answer="Vorbereitet.")]] * 3,
@@ -137,8 +139,15 @@ class DismissalTests(unittest.TestCase):
         asked = self.result["brief"]["questions"]
         self.assertEqual([q["question"] for q in asked], ["Erhalte ich ab Dezember noch Lohn?", "Ist die Kündigung überhaupt gültig?"])
         self.assertTrue(all(q["citations"][0]["quote"] for q in asked))
+        self.assertEqual([q["about"] for q in asked], [["lohn"], ["sperrfrist"]])  # the reader's tags
         rows = [i for i in self.items if i["kind"] == "customer_question"]
-        self.assertEqual([r.get("answered_by") for r in rows], ["lohn", "sperrfrist"])  # the salary question by the point on continued pay
+        # changed with the reader's tags (SLICE_A A2, A9): a keyword or a tag alone never answers a question, and an area
+        # without an options file has no intent to answer by; the matching point's sentence (the salary question's: the
+        # point on continued pay) is offered for the handler to take, never stated by itself
+        self.assertEqual([(r["answer_state"], r["reason"], r["row"]) for r in rows], [("pruefen", "Absicht der Frage unklar", 11)] * 2)
+        self.assertEqual([[o["point"] for o in r["offered"]] for r in rows], [["lohn"], ["sperrfrist"]])
+        self.assertTrue(rows[0]["offered"][0]["text"].startswith("Während der Sperrfrist"))
+        self.assertEqual([r.get("answered_by") for r in rows], [None, None])
 
     def test_the_assessment_starts_from_the_points_that_apply_and_answers_the_questions(self):
         wf = self.state["process"]
@@ -148,10 +157,21 @@ class DismissalTests(unittest.TestCase):
         self.assertTrue(in_case.startswith("Eine Kündigung, die während einer Sperrfrist"))
         self.assertIn("(Art. 336c Abs. 2 OR).", in_case.split("\n")[0])
         self.assertIn("[bitte ergänzen: was in diesem Fall sonst vorliegt]", in_case)
+        # a question the area answers by no intent keeps its gap until the handler takes the offered answer (SLICE_A A9)
+        self.assertIn("Zu Ihren Fragen:\n– «Erhalte ich ab Dezember noch Lohn?» [bitte ergänzen: Antwort auf diese Frage]", text)
+        self.assertTrue(text.startswith("Guten Tag Sandra Beispiel"))  # the name known, no salutation stated
+        # taken with one click: the point's sentence, and «Siehe oben» for the point «In Ihrem Fall» already states (only
+        # in an area without an options file, whose «In Ihrem Fall» states the points that apply)
+        taken = [{"kind": "item.corrected", "item_id": f"customer_question:{n}", "point": p, "intent": None, "expert": "Fallbearbeitung"}
+                 for n, p in enumerate(("lohn", "sperrfrist"))]
+        result = {**self.result}
+        items = build_items(self.state, result, None, taken)
+        text, _ = letters.render("A5", wf["forms"], letters.context(CASE_ROW, items, taken, {"due": "2026-12-12"}))
         self.assertIn("Zu Ihren Fragen:\n– «Erhalte ich ab Dezember noch Lohn?» Während der Sperrfrist", text)
         self.assertIn("im ersten Dienstjahr für drei Wochen", text)
         self.assertIn("– «Ist die Kündigung überhaupt gültig?» Siehe oben (Art. 336c Abs. 2 OR).", text)
-        self.assertTrue(text.startswith("Guten Tag Sandra Beispiel"))  # the name known, no salutation stated
+        self.assertEqual([(i["answer_state"], i["reason"]) for i in items if i["kind"] == "customer_question"],
+                         [("beantwortet", "beantwortet (Fallbearbeitung)")] * 2)
 
     def test_a_question_no_point_answers_is_a_marked_gap(self):
         items = [dict(i) for i in self.items]

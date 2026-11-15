@@ -44,9 +44,21 @@ BACKBONE_LETTERS = ("A11_teilablehnung", "A12_mitwirkung_kanzlei")
 HOLIDAYS = "zaehlung.feiertage"
 GROUPS = {"fragen": "Fragen an die Kundschaft", "unterlagen": "Unterlagen", "hinweise": "Hinweise", "kernpunkte": "Kernpunkte",
           "fristen": "Fristen", "rahmen": "Beurteilungsrahmen", "vorlagen": "Vorlagen für die Kundschaft", "berechnung": "Fristberechnung",
+          "empfehlungen": "Empfehlungen", "antworten": "Antworten auf Fragen", "faelle": "Sätze zum Fall", "wortlaut": "Verbindende Sätze",
           "punkte": "Deckungspunkte", "zuordnung": "Zuordnung nach Rechtsgebiet", "ursache": "Datum der Ursache",
           "regeln": "Regeln", "pflichtteile": "Pflichtteile", "schreiben": "Schreiben"}
-AREA_GROUPS = ("fragen", "unterlagen", "hinweise", "kernpunkte", "fristen", "rahmen", "vorlagen", "berechnung")
+# an area's options file (options.py) adds its recommendations, answers, sentences about the case and joining sentences
+AREA_GROUPS = ("fragen", "unterlagen", "hinweise", "kernpunkte", "fristen", "rahmen", "vorlagen", "empfehlungen", "antworten", "faelle",
+               "wortlaut", "berechnung")
+OPTION_STATES = {"geprueft": "geprüft", "aenderung": IN_REVIEW, "frage": "Frage offen"}
+UNREVIEWED = "nicht juristisch geprüft"
+
+
+def state_of(key, current):
+    """An element's review state as a handler sees it beside a recommendation or an answer: «geprüft», «in Prüfung»
+    (Änderung nötig), «Frage offen», or «nicht juristisch geprüft» (never marked, or changed since its mark).
+    ``current``: the marks that hold for the content as it is now (Model.current)."""
+    return OPTION_STATES.get(((current or {}).get(key) or {}).get("mark"), UNREVIEWED)
 COVER_GROUPS = ("punkte", "zuordnung", "ursache", "fragen", "regeln")
 LETTER_GROUPS = ("pflichtteile", "schreiben")
 
@@ -241,13 +253,17 @@ class Model:
 
     def _add(self, file, eid, group, title, lines, data, law=()):
         law = list({(row["cite"], row["passage"]): row for row in law if row}.values())  # each passage once
-        lines = [{"label": row[0], "text": str(row[1]), **({"pre": True} if len(row) > 2 and row[2] else {})} for row in lines if row and row[1]]
+        # a row (label, text, pre, covered): ``pre`` keeps the text's lines; ``covered``: the text shows what the element's
+        # data already holds (a key point's words), so showing it changes nothing a mark holds for
+        lines = [{"label": row[0], "text": str(row[1]), **({"pre": True} if len(row) > 2 and row[2] else {}),
+                  **({"covered": True} if len(row) > 3 and row[3] else {})} for row in lines if row and row[1]]
         key = f"{file}:{eid}"
         self.elements[key] = {
             "key": key, "file": file, "id": eid, "group": group, "title": str(title or eid), "lines": lines, "law": law, "questions": [], "used_in": [],
             # what a mark holds for: the element's data, what the jurist reads of it (the condition in the facts' words; a
             # letter shown with today's date is covered by its data) and the passages it rests on
-            "sha256": digest({"data": data, "title": str(title or eid), "lines": [[l["label"], l["text"]] for l in lines if not l.get("pre")],
+            "sha256": digest({"data": data, "title": str(title or eid),
+                              "lines": [[l["label"], l["text"]] for l in lines if not l.get("pre") and not l.get("covered")],
                               "law": [[r["cite"], r["passage"]] for r in law]})}
         return key
 
@@ -293,7 +309,9 @@ class Model:
             self._add(wid, f"kernpunkt.{p['id']}", "kernpunkte", p["statement"], [
                 ("Solange offen", p["question"]), ("Gilt, wenn", cond(p["when"])), ("Folge", p["follows"]), ("Zu prüfen", p["check"]),
                 ("Erste Anforderung", f"{p['advice']} ({found[0]['cite']})." if p.get("advice") and found else None),
-                ("Stufen", ", ".join(stages.get(s, s) for s in p["stages"])) if p.get("stages") else None], p, found)
+                ("Stufen", ", ".join(stages.get(s, s) for s in p["stages"])) if p.get("stages") else None,
+                # the words a keyword proposal looks for in a customer's question (never an answer by themselves)
+                ("Stichwörter", " · ".join(p.get("answers") or ()), False, True)], p, found)
         for d in m["deadlines"]:
             rule = self.bb["counting"][d.get("counting", "or")]
             party = "die Kundschaft" if d.get("party", "kunde") == "kunde" else "die Gegenpartei"
@@ -321,6 +339,64 @@ class Model:
             self._add(wid, f"vorlage.{c['id']}", "vorlagen", c["title"], [
                 ("An", c["to"]), ("Angeboten, wenn", cond(c["when"])),
                 ("Text", _template_body(customer_letters.render(graph, c, {}, None, None, [], self.today)), True)], c, rows(refs))
+        self._options(m, facts, cond, law, laws)
+
+    WORDING_TITLES = {"wish": "Was die Kundschaft möchte", "replies_all": "Antworten auf alle Fragen", "replies_some": "Antworten auf einen Teil der Fragen",
+                      "claims": "Geltend gemachte Kosten", "claim_amount": "Betrag nach Angaben der Kundschaft", "claim_line": "Nachzureichende Belege",
+                      "join": "Weitere Empfehlung", "conditional": "Antwort, die von einer Angabe abhängt", "discuss": "Vorher besprechen"}
+
+    def _options(self, m, facts, cond, law, laws):
+        """The area's options file (options.py), each element beside its passages: a recommendation with when it applies, its
+        conditions («vorher» or «Anspruch», each with its fact or «nicht geprüft»), what would change it, the documents it
+        needs, its wording, its practice count and whether it is proposed; an answer to a question about a rule; a sentence
+        about the case; a joining sentence."""
+        from . import options
+        data = options.load(m["id"])
+        if not data:
+            return
+        wid, workflow = m["id"], self.area.workflow(m["id"])
+        law = {**law, **data["law"]}
+        rows = lambda refs: self._law(refs, (), law, laws)
+        points = {p["id"]: p for p in m.get("key_points") or ()}
+        intents = {a["intent"]: a for a in data["answers"]}
+        documents = {d["id"]: d["title"] for d in m["documents"]}
+        kind = {"vorher": "vorher", "anspruch": "Anspruch"}
+        for o in data["options"]:
+            when = {"all": [{"fact": o["wish"], "is": True}] + list(o.get("when") or ())}
+            asked = f" und eine Frage der Kundschaft zu «{intents[o['asked']]['stems'][0]}…»" if o.get("asked") else ""
+            conditions = "\n".join(f"{c['text']} ({kind[c['kind']]}: {cond({k: c[k] for k in ('fact', 'is', 'in', 'known') if k in c}) if c.get('fact') else 'nicht geprüft'})"
+                                   for c in o.get("conditions") or ())
+            changes = []
+            for entry in o.get("changes_if") or ():
+                what, _, name = str(entry).partition(":")
+                changes.append(f"«{_short((facts.get(entry) or {}).get('question') or entry)}»" if not name else
+                               documents.get(name, name) if what == "need" else o["conditions"][int(name)]["text"])
+            needs = [documents.get(n["document"], n["document"]) + (" (je geltend gemachte Kosten: «Belege zu: …»)" if n.get("names_claim") else "")
+                     for n in o.get("needs") or ()]
+            refs = [r for part in list(o.get("conditions") or ()) + list(o["advice"]) for r in part.get("law") or ()]
+            self._add(wid, f"empfehlung.{o['id']}", "empfehlungen", o["title"], [
+                ("Gilt, wenn", cond(when) + asked), ("Voraussetzungen", conditions, True), ("Ändert sich, wenn", "; ".join(changes)),
+                ("Unterlagen", "; ".join(needs)), ("Wortlaut", f"Wir empfehlen Ihnen, {options.advice_text(data, workflow, o['id'], template=True)}."),
+                ("Praxis", (o.get("observed") or {}).get("count") or options.NOT_RECORDED),
+                ("Vorschlag", "ja" if o["propose"] else "nur wählbar" + (f" ({o['why_not']})" if o.get("why_not") else ""))],
+                {"option": o, "law": [law.get(k) for k in options._keys(refs)]}, rows(refs))
+        for a in data["answers"]:
+            state = "beantwortet" if a["state"] == "beantwortet" else (
+                "bedingt: vorher besprechen" if (a.get("next") or {}).get("kind") == "discuss" else "bedingt: die Belege, die noch fehlen")
+            refs = [r for part in a["parts"] for r in part.get("law") or ()]
+            self._add(wid, f"antwort.{a['points'][0]}.{a['intent']}", "antworten",
+                      f"{' · '.join(points[p]['statement'] for p in a['points'])}: Frage zu «{a['stems'][0]}…»", [
+                          ("Frage enthält", " · ".join(a["stems"]) + (f" (und: {' · '.join(a['with'])})" if a.get("with") else "")),
+                          ("Stand", state), ("Antwort", options.answer_text(data, workflow, a, template=True))],
+                      {"answer": a, "follows": {p: points[p]["follows"] for p in a["points"]}, "law": [law.get(k) for k in options._keys(refs)]},
+                      rows(refs))
+        for c in data["case_lines"]:
+            self._add(wid, f"fall.{c['id']}", "faelle", c["text"], [
+                ("Gesagt, wenn", cond({k: c[k] for k in ("fact", "is", "in", "known") if k in c}) + " (aus der Akte belegt)")], c)
+        for key, value in data["wording"].items():
+            text = "\n".join(f"{'eine Nachricht' if k == 'one' else 'mehrere'}: {v}" for k, v in value.items()) if isinstance(value, dict) else value
+            self._add(wid, f"wortlaut.{key}", "wortlaut", self.WORDING_TITLES.get(key, key), [("Wortlaut", text, isinstance(value, dict))],
+                      {"key": key, "wording": value})
 
     def _backbone(self):
         area, bb = self.area, self.bb
@@ -459,8 +535,10 @@ class Model:
                 self.elements[k]["used_in"].append(row["id"])
 
     def _questions(self):
+        from . import options
         rows = {r["id"]: r for r in self.rows}
         sources = [(wid, m.get("open_questions") or ()) for wid, m in self.modules.items()]
+        sources += [(wid, (options.load(wid) or {}).get("open_questions") or ()) for wid in self.modules if wid in options.areas()]
         sources += [(BACKBONE, self.bb.get("open_questions") or ()), (COVER, self.cov.get("open_questions") or ())]
         for file, questions in sources:
             for q in questions:
@@ -472,6 +550,10 @@ class Model:
                 for eid in named:
                     if f"{file}:{eid}" in self.elements:
                         self.elements[f"{file}:{eid}"]["questions"].append(q["text"])
+        for wid in self.modules:  # an options file's question linked to an element of the module stands beside that element too
+            for q in (options.load(wid) or {}).get("open_questions") or () if wid in options.areas() else ():
+                if q.get("linked") and f"{wid}:{q['linked']}" in self.elements:
+                    self.elements[f"{wid}:{q['linked']}"]["questions"].append(q["text"])
 
     # Reading the marks ------------------------------------------------------------------------------------------------
 
@@ -573,12 +655,32 @@ class Flags:
         self.graph = graph or {}
         self.wid = self.graph.get("id")
         self.changed = {k for k, m in (current or {}).items() if m.get("mark") == "aenderung"}
+        self.asked = {k for k, m in (current or {}).items() if m.get("mark") == "frage"}
 
     def __bool__(self):
         return bool(self.changed)
 
     def _own(self, eid):
         return f"{self.wid}:{eid}" in self.changed
+
+    def _held(self, eid):
+        """An element of the area's options file marked «Änderung nötig» or «Frage»: not used until the jurist settles it."""
+        return f"{self.wid}:{eid}" in self.changed or f"{self.wid}:{eid}" in self.asked
+
+    def option(self, option_id):
+        return self._held(f"empfehlung.{option_id}")
+
+    def answer(self, point_id, intent):
+        """The answer row of an intent, by the element id it is reviewed under (its first point)."""
+        from . import options
+        row = next((a for a in (options.load(self.wid) or {}).get("answers") or () if a["intent"] == intent), None)
+        return self._held(f"antwort.{(row or {}).get('points', [point_id])[0]}.{intent}")
+
+    def case_line(self, line_id):
+        return self._held(f"fall.{line_id}")
+
+    def wording(self, key):
+        return self._held(f"wortlaut.{key}")
 
     def deadline(self, deadline_id):
         d = next((x for x in self.graph.get("deadlines") or () if x["id"] == deadline_id), None)

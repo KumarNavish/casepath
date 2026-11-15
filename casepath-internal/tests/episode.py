@@ -15,7 +15,8 @@ then silence until the status inquiry (A7), or the receipts arrive. Every name, 
 
 ``analog()`` builds the episode for a claim day ``d0`` (D0 by default: the replies come on 05.09.2026); ``VARIANT_B`` is
 the same shape with other facts (deploy/preview's E2: the reply asks only about the deposit, promises receipts and claims
-nothing yet). No question carries ``about`` and no claim is read yet: Slice A adds them here.
+nothing yet). Each question carries the reader's tags (``about``: the key points whose rule it asks about) and Phase B of
+S-D11A reads one claim: the electricity cost of the drying machine, «CHF 85» as written, with no receipt.
 
 The store-level seeds (``seed_phase_a``, ``update_model``, ``seed_frozen_copy``) serve deploy/preview/preview.py and tests
 of the case service; the core-level ones (``prepared``, ``updated``) tests of the agent core, as tests/test_update.py."""
@@ -33,7 +34,7 @@ from casepath.agents.azure_model import ModelError
 from casepath.process import area
 from casepath.process.items import build_items, items_sha256
 from casepath.read.extract import extract
-from tests.scripted import ScriptedModel, report
+from tests.scripted import ScriptedModel, claim, report
 
 WID = "mietmangel-handler"
 D0 = date(2026, 8, 1)  # the claim; the A1 on d+1, the reply on d+13, the A4 on d+16, the two replies on d+35 (05.09.2026)
@@ -139,9 +140,10 @@ def document(fid, name, quote):
     return ("record_document", {"document": name, "status": "present", "files": [fid], "citations": [{"file": fid, "quote": quote}], "note": ""})
 
 
-def question(fid, text):
-    """A question of the customer as the reader lists it, with the sentence that asks it (Slice A adds ``about``)."""
-    return {"question": text, "citations": [{"file": fid, "quote": text}]}
+def question(fid, text, about=()):
+    """A question of the customer as the reader lists it, with the sentence that asks it and the key points whose rule it
+    asks about (``about``, the reader's tags)."""
+    return {"question": text, "citations": [{"file": fid, "quote": text}], "about": list(about)}
 
 
 def full_turns(entries, facts, documents, request, parties, questions=()):
@@ -152,10 +154,12 @@ def full_turns(entries, facts, documents, request, parties, questions=()):
             [*documents, report("document_finder")], [report("result_checker", answer="Vorbereitet.")]]
 
 
-def update_turns(entries, facts, summary, questions=(), timeline=(), documents=()):
-    """An update: the reader of the new documents (entries, changed facts, what they add) and the document finder."""
+def update_turns(entries, facts, summary, questions=(), timeline=(), documents=(), claims=()):
+    """An update: the reader of the new documents (entries, changed facts, what they add, the questions and the costs
+    claimed they state) and the document finder."""
     return [[("record_steps", {"entries": copy.deepcopy(entries)}), *facts,
-             report("claim_reader", summary=summary, questions=[dict(q) for q in questions], timeline=[dict(t) for t in timeline])],
+             report("claim_reader", summary=summary, questions=[dict(q) for q in questions], timeline=[dict(t) for t in timeline],
+                    claims=copy.deepcopy(list(claims)))],
             [*documents, report("document_finder")]]
 
 
@@ -323,6 +327,9 @@ def analog(d0=D0, names=None, dated_request=False):
         summary_b = ("Die Kundschaft beantwortet die Rückfrage: Der Schimmel besteht, die Verwaltung lehnt weitere Massnahmen ab; sie fragt nach "
                      "dem Mietzins, der Hinterlegung und dem Ersatz der Stromkosten.")
         asked_in = [fb, fb, fc]
+        tags = [["hinterlegung"], ["hinterlegung"], ["schadenersatz"]]  # the reader's tags: the rule each question asks about
+        claims_b = [claim("Stromkosten für den Bautrockner", "Die Stromkosten für den Bautrockner von rund CHF 85 möchte ich ersetzt haben.",
+                          amount="CHF 85", file=fc)]
     else:
         body_1 = (f"Guten Tag\n\nGerne beantworte ich Ihre Rückfrage vom {dotted(day(16))}.\nDer Schimmel ist immer noch da. Auf meine letzte Meldung "
                   "hat die Verwaltung nicht mehr reagiert.\nDen Mietzins zahle ich bisher vollständig. Darf ich die Miete hinterlegen?\n\n"
@@ -346,10 +353,12 @@ def analog(d0=D0, names=None, dated_request=False):
         summary_b = ("Die Kundschaft beantwortet die Rückfrage: Der Schimmel besteht, die Verwaltung reagiert nicht; sie fragt nach der "
                      "Hinterlegung und reicht Quittungen nach.")
         asked_in = [fb]
+        tags = [["hinterlegung"]]
+        claims_b = []  # she claims nothing yet («Ersatz verlange ich vorerst keinen»)
     reply_1 = ("AW Rueckfrage.eml", eml(sender, to, day(35), "09:12", f"AW: Rückfrage zu Ihrem Schadenfall {ref}", body_1))
     reply_2 = ("Nachtrag.eml", eml(sender, to, day(35), "18:40", f"Nachtrag: Rückfrage zu Ihrem Schadenfall {ref}", body_2))
     files_b = [mail_file(fb, *reply_1), mail_file(fc, *reply_2)]
-    questions = [question(f, q) for f, q in zip(asked_in, questions_b)]
+    questions = [question(f, q, about) for f, q, about in zip(asked_in, questions_b, tags)]
     timeline_b = [{"date": dotted(day(35)), "event": "Antwort der Kundschaft auf die Rückfrage",
                    "citations": [{"file": fb, "quote": f"Gerne beantworte ich Ihre Rückfrage vom {dotted(day(16))}."}]}]
 
@@ -361,9 +370,9 @@ def analog(d0=D0, names=None, dated_request=False):
         turns_a=lambda: full_turns(entries_a, facts_a, documents_a, request, parties),
         # Phase B: the two replies of d+35
         replies=[reply_1, reply_2], reply_names={fb: reply_1[0], fc: reply_2[0]}, files_b=files_b, entries_b=entries_b, facts_b=facts_b,
-        questions_b=questions,
+        questions_b=questions, claims_b=claims_b,
         summary_b=summary_b, timeline_b=timeline_b,
-        turns_b=lambda: update_turns(entries_b, facts_b, summary_b, questions, timeline_b),
+        turns_b=lambda: update_turns(entries_b, facts_b, summary_b, questions, timeline_b, claims=claims_b),
     )
     ns.perturbations = perturbations(ns)
     ns.branches = branches(ns)

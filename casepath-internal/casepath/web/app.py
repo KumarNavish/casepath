@@ -627,9 +627,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"new_files": new_files, "arrived": arrived, "update": update, "draft_stale": stale, "changes": changes}, run_now
 
     def _assessment_view(current, completed, listed, files, events, marks):
-        """The decision brief of the prepared action (Slice A: {"assessment": assessment.build(...)}), which the letter and
-        the screen read; nothing so far."""
-        return {}
+        """The decision brief of the prepared action (process/assessment.py), which the letter and the screen read: the
+        customer's wishes and questions with their answers, the rules with their conditions, the ways to proceed with the
+        proposal and its adoption, what would change it, the residual request, what blocks the approval and the premise."""
+        from ..process import assessment
+        return {"assessment": assessment.build(current, (completed or {}).get("result"), listed, files, events, marks)}
 
     def _completion_view(case_id, current, listed, draft, events, files, assessment=None):
         """Where the prepared letter stands after the decision: approved, dispatched, fulfilled (Slice B: {"completion":
@@ -804,6 +806,93 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if body.kind not in {o["kind"] for o in options}:
             raise HTTPException(422, "Diese Handlung gehört nicht zur aktuellen oder einer benachbarten Stufe.")
         return record(case_id, who, "item.corrected", item_id="next_action:0", chosen=body.kind, reason=body.reason_code)
+
+    # The assessment's two decisions on substance (process/assessment.py): the recommendation the handler adopts or
+    # corrects, and a drafted answer to a customer's question the handler takes with one click
+    class RecommendationChoice(BaseModel):
+        model_config = ConfigDict(extra="forbid")
+        chosen: list[str] | Literal["aussichten_nicht_genuegend"]
+        proposal: list[str] = Field(default_factory=list, max_length=12)
+        reason_code: Literal["1", "2", "3", "4", "5", "6", "none"] | None = None
+
+    class AnswerChoice(BaseModel):
+        model_config = ConfigDict(extra="forbid")
+        item_id: str = Field(pattern=r"^customer_question:\d{1,3}$")
+        point: str = Field(pattern=r"^[a-z][a-z0-9_-]{0,60}$")
+        intent: str | None = Field(None, pattern=r"^[a-z][a-z0-9_]{0,60}$")
+
+    def _assessed(case_id):
+        """The case as its view builds it, for a decision on the assessment: (state, items, events, brief); 409 on a study
+        copy and on a case not yet prepared."""
+        from ..process import assessment
+        current = state(case_id)
+        if (current["case"].get("intake") or {}).get("study"):
+            raise HTTPException(409, "In einer Studienkopie wird nichts entschieden.")
+        if not current["run"]:
+            raise HTTPException(409, "Der Fall ist noch nicht vorbereitet.")
+        marks = review_marks()[0]
+        events, files = store.list_case_events(case_id), store.list_files(case_id)
+        listed = build_items(current, current["run"].get("result"), files, events, marks)
+        prepared_action(current, listed, events)
+        return current, listed, events, marks, assessment.build(current, current["run"].get("result"), listed, files, events, marks)
+
+    @app.post("/api/cases/{case_id}/recommendation", status_code=201)
+    def adopt_recommendation(case_id: str, body: RecommendationChoice, who=Depends(user)):
+        """«Empfehlung»: the handler adopts the proposed ways («übernehmen · Aussichten genügend»), picks among the ways
+        that hold («ändern»), or judges the prospects insufficient («Aussichten nicht genügend»: the refusal for lack of
+        prospects is prepared instead). The adoption names the proposal it was made on; it lapses when a chosen way no
+        longer holds or the proposal changes. With the adoption the prospects count as sufficient unless already judged."""
+        from ..process import assessment
+        current, listed, events, marks, brief = _assessed(case_id)
+        if not brief or not brief.get("has_options") or not brief.get("assessment"):
+            raise HTTPException(409, "Für diesen Schritt ist keine Empfehlung vorbereitet.")
+        if brief.get("under_premise"):
+            raise HTTPException(409, "Zuerst entscheiden: Deckung")
+        if list(body.proposal) != list(brief["proposal"]):
+            raise HTTPException(422, "Der Vorschlag hat sich seit dem Laden geändert; bitte neu laden.")
+        low = body.chosen == assessment.PROSPECTS_LOW
+        chosen = assessment.PROSPECTS_LOW if low else list(dict.fromkeys(body.chosen))
+        if not low:
+            holding = {o["id"]: o for o in brief["options"] if o["state"] == "holds" and not o["held"]}
+            titles = {o["id"]: o["title"] for o in brief["options"]}
+            if not chosen:
+                raise HTTPException(422, "Bitte mindestens einen Weg wählen.")
+            wrong = [x for x in chosen if x not in holding]
+            if wrong:
+                raise HTTPException(422, f"«{titles.get(wrong[0], wrong[0])}» trifft nach der Akte nicht zu.")
+        event = record(case_id, who, "item.corrected", item_id=assessment.EMPFEHLUNG, chosen=chosen, proposal=list(brief["proposal"]),
+                       reason=body.reason_code or "none")
+        value = "nicht genügend" if low else "genügend"
+        before = current["facts"].get("aussichten")
+        edit = None
+        if (low and before != value) or (not low and before in (None, "noch nicht beurteilt")):
+            args = {"fact": "aussichten", "value": value}
+            try:
+                casegraph.check_edit(current["process"], {"op": "set_fact", "args": args})
+            except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
+                raise HTTPException(422, f"This change cannot be applied: {error}") from None
+            edit = store.add_edit(case_id, "set_fact", args, who, "mit der Empfehlung übernommen" if not low else "Aussichten nicht genügend")
+            record(case_id, who, "item.corrected", item_id="fact:aussichten", edit_id=edit["id"], op="set_fact", reason="none",
+                   note_present=True, before=before, after=value)
+        return {"event": event, "edit": edit}
+
+    @app.post("/api/cases/{case_id}/answer", status_code=201)
+    def take_answer(case_id: str, body: AnswerChoice, who=Depends(user)):
+        """«übernehmen»: the handler takes the drafted answer to a customer's question (its point, and the intent it
+        answers); the question is then «beantwortet (Fallbearbeitung)» while the point applies. 422 when the point does
+        not apply on the case's facts or the intent is not one of its answers."""
+        from ..process import assessment, options
+        current, listed, events, marks, brief = _assessed(case_id)
+        question = next((i for i in listed if i["item_id"] == body.item_id), None)
+        if question is None:
+            raise HTTPException(404, "Not found.")
+        applying = {p["id"] for p in assessment.applying_points(current, current["run"].get("result"), listed, events, marks)}
+        if body.point not in applying:
+            raise HTTPException(422, "Diese Regel trifft nach der Akte nicht zu.")
+        rows = options.answers_for(options.load((current.get("process") or {}).get("id")), [body.point])
+        if body.intent and body.intent not in {r["intent"] for r in rows}:
+            raise HTTPException(422, "Diese Antwort gehört nicht zu dieser Regel.")
+        return record(case_id, who, "item.corrected", item_id=body.item_id, point=body.point, intent=body.intent)
 
     @app.post("/api/cases/{case_id}/events", status_code=201)
     def add_event(case_id: str, body: EventRequest, who=Depends(user)):

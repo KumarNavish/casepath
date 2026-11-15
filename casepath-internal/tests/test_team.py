@@ -329,7 +329,9 @@ class HandlerFlowTests(unittest.TestCase):
         script = [turn for turn in standard_script(finder_calls=[], result_fields={})
                   if not any(name in {"open_process", "view_knowledge"} or args.get("agent") == "process_builder"
                              for name, args in turn)]
-        script = [t for t in script if not (len(t) == 1 and t[0][0] == "report" and "questions" in t[0][1])]
+        # the process builder's report (questions, no request): the claim reader's report holds questions too since the
+        # reader lists the customer's questions with their tags (tests/scripted.py report defaults), so it is told by its request
+        script = [t for t in script if not (len(t) == 1 and t[0][0] == "report" and "questions" in t[0][1] and "request" not in t[0][1])]
         # one claim-reader delegation: drop the second delegate and fold its fact turn into the first reading
         second = next(i for i, t in enumerate(script) if i > 0 and t == [delegate("claim_reader", "Record the facts.")])
         facts_turn = script.pop(second + 1)

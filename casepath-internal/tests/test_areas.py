@@ -112,6 +112,7 @@ class CompositionTests(unittest.TestCase):
         # names its stage (node, chain), which explains an item and is not hashed
         kept = lambda rows: [{k: i.get(k) for k in HASHED + ("label", "legal_basis", "reason")} for i in rows
                              if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact", "key_point"}]
+        premise_cases = []  # the replied case after its first request, and no other
         for facts, documents in cases:
             result = {"facts": facts, "documents": documents, "brief": {"request": "Schimmel.", "parties": [], "timeline": []}}
             a, b = (build_items(core.evaluate(w, [], [], result, "c", files=looked), result, looked) for w in (old, new))
@@ -121,15 +122,26 @@ class CompositionTests(unittest.TestCase):
             self.assertEqual({i["key"] for i in a if i["kind"] == "hint"} - {i["key"] for i in b if i["kind"] == "hint"}, set())
             self.assertTrue(all(i["stated_as"] == "put_to_handler" for i in advice))
             b = [i for i in b if i not in advice]
-            self.assertEqual(kept(a), kept(b))
+            # the one named change of the next action (SLICE_A A4): a case that went through the first request and was
+            # answered, at «klären» with only the cover open, gets the assessment prepared on the premise of the cover
+            # («unter Vorbehalt der Deckung») where the seed kept it pending (A6)
+            premised = [i for i in b if i["kind"] == "next_action" and i.get("premise")]
+            same_a, same_b = a, b
+            if premised:
+                self.assertEqual((next(i for i in a if i["kind"] == "next_action")["action"], premised[0]["action"], premised[0]["premise"]),
+                                 ("A6", "A5", {"deckung": "bestätigt"}))
+                same_a, same_b = ([i for i in rows if i["kind"] != "next_action"] for rows in (a, b))
+                premise_cases.append(facts)
+            self.assertEqual(kept(same_a), kept(same_b))
             uncovered = lambda rows: [i for i in rows if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact", "key_point"}]
-            self.assertEqual(items_sha256(uncovered(a)), items_sha256(uncovered(b)))
+            self.assertEqual(items_sha256(uncovered(same_a)), items_sha256(uncovered(same_b)))
             for kind in ("A1", "A4", "A6", "A7", "A8", "A12"):  # A10 is now the request of the mandate package (test_package)
                 ctx = letters.context(case, a, [], {"due": "2025-03-01"})
                 if kind == "A1" and not (ctx["liste"] or ctx["fragen"]):  # the named change: a first request with nothing to ask is no letter
                     self.assertEqual(letters.render(kind, new["forms"], ctx), (None, new["forms"]["A1"]["empty"]))
                     continue
                 self.assertEqual(letters.render(kind, old["forms"], ctx), letters.render(kind, new["forms"], ctx), kind)
+        self.assertEqual([[f["fact"] for f in facts if f["fact"].startswith("handlung")] for facts in premise_cases], [["handlung_a1"]])
 
     def test_every_shipped_area_is_valid_draft_cited_and_labelled(self):
         rows = area.shipped()

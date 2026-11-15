@@ -55,13 +55,27 @@ def delegate(agent, instruction="Do your part."):
 
 def report(agent, **fields):
     defaults = {
-        "claim_reader": {"summary": "Read.", "request": "", "parties": [], "timeline": [], "not_enclosed": []},
+        "claim_reader": {"summary": "Read.", "request": "", "parties": [], "timeline": [], "not_enclosed": [], "questions": [], "claims": []},
         "process_builder": {"summary": "Built.", "questions": []},
         "document_finder": {"summary": "Found."},
         "result_checker": {"summary": "Checked.", "answer": "An answer.", "open_points": [],
                            "reply": {"needed": False, "subject": "", "clauses": []}, "learn": [], "case_summary": []},
     }
     return ("report", {**defaults[agent], **fields})
+
+
+def question(text, quote, about=(), file="f1"):
+    """A customer's question as the reader lists it: its words, the sentence that asks it, and the key points whose rule
+    it asks about (``about``, the reader's tags)."""
+    return {"question": text, "citations": [{"file": file, "quote": quote}], "about": list(about)}
+
+
+def claim(what, quote, amount=None, receipt=None, file="f1"):
+    """A cost the customer asks to have compensated, as the reader lists it: a few words of the customer's sentence, the
+    amount as written, that sentence, and the words of a receipt that documents it (a quote of ``file``, or a citation)."""
+    if isinstance(receipt, str):
+        receipt = {"file": file, "quote": receipt}
+    return {"what": what, "amount": amount or "", "citations": [{"file": file, "quote": quote}], "receipt": [receipt] if receipt else []}
 
 
 def learn(**fields):

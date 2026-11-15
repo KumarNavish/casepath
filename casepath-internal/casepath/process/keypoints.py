@@ -73,22 +73,30 @@ def _law_rows(graph, refs):
     return rows
 
 
-def evaluate(graph, facts, stage=None):
+def evaluate(graph, facts, stage=None, failing=False, weak=frozenset()):
     """Every key point of the area that applies or is open, in the module's order: {id, state, text, statement,
-    question, law (the rows of its articles), cite, follows, check, facts, answers, advice, stages, here}; ``here``
-    says whether it helps at ``stage`` (always true without a stage)."""
+    question, law (the rows of its articles), cite, follows, check, facts, answers, advice, stages, here, missing, weak,
+    asks}; ``here`` says whether it helps at ``stage`` (always true without a stage). With ``failing`` a point whose
+    condition fails is listed too, its state «fails». ``missing``: the facts of its condition the file leaves open;
+    ``weak``: those whose value rests on a contradictory or presumed reading (``weak``, fact ids); ``asks``: each condition
+    fact's question for the customer (its customer question, else its question)."""
     out = []
+    defs = {f["id"]: f for f in (graph or {}).get("facts") or ()}
     for p in (graph or {}).get("key_points") or ():
         holds = evaluate_condition(p["when"], facts or {})
-        if holds is False:
+        if holds is False and not failing:
             continue
         rows = _law_rows(graph, p["law"])
-        out.append({"id": p["id"], "state": "applies" if holds else "open", "text": p["statement"] if holds else p["question"],
+        named = sorted(condition_facts(p["when"]))
+        out.append({"id": p["id"], "state": "applies" if holds else "open" if holds is None else "fails",
+                    "text": p["question"] if holds is None else p["statement"],
                     "statement": p["statement"], "question": p["question"], "law": rows, "cite": rows[0]["cite"] if rows else None,
-                    "follows": p["follows"], "check": p["check"], "facts": sorted(condition_facts(p["when"])),
+                    "follows": p["follows"], "check": p["check"], "facts": named,
                     "answers": p.get("answers", []), "advice": p.get("advice") or None, "stages": list(p.get("stages") or STAGES),
                     "refs": list(p["law"] if isinstance(p["law"], list) else [p["law"]]), "observed": observed(p),
-                    "here": stage is None or stage in (p.get("stages") or STAGES)})
+                    "here": stage is None or stage in (p.get("stages") or STAGES),
+                    "missing": [f for f in named if (facts or {}).get(f) is None], "weak": [f for f in named if f in (weak or ())],
+                    "asks": {f: (defs.get(f) or {}).get("customer_question") or (defs.get(f) or {}).get("question") or f for f in named}})
     return out
 
 
@@ -123,11 +131,91 @@ def sentence(point):
 
 def answer_for(question, points):
     """The key point that answers a customer's question: of those that apply, the one whose word in the question is the
-    most specific (the longest; «Krankentaggeld» is about pay, not about being ill), the first on a tie."""
+    most specific (the longest; «Krankentaggeld» is about pay, not about being ill), the first on a tie. A word alone
+    never answers a question (``status``): this is the keyword candidate the guards compare the reader's tags with."""
     q = str(question or "").lower()
     best = max(((max(len(w) for w in p.get("answers", []) if w.lower() in q), -i, p) for i, p in enumerate(points)
                 if p["state"] == "applies" and any(w.lower() in q for w in p.get("answers", []))), default=None, key=lambda x: x[:2])
     return best[2] if best else None
+
+
+# Whether a customer's question is answered, and by what -----------------------------------------------------------------
+# The reader tags each question with the key points whose rule it asks about (``about``); code decides whether the rule
+# answers it. A keyword alone never answers: the tag is checked by deterministic guards that do not trust it (a negation
+# before a word of the point, a point whose wish the customer rejected, a keyword point that disagrees, mixed tags, a weak
+# fact, an intent the area's answers do not know). A question a guard holds is «prüfen» with its drafted answer offered to
+# the handler, never stated in the letter until taken.
+
+NEGATIONS = frozenset({"nicht", "kein", "keine", "keinen", "keiner", "keinem", "nie", "niemals", "ohne"})
+WORDS = re.compile(r"[a-zäöüß]+")
+DISCUSS = "vorher mit uns besprechen"
+
+
+def negated(question, words, carrying=()):
+    """Whether a negation stands within three words before one of ``words`` (a point's keywords, an intent's stems) in
+    the question. A negation that belongs to a word carrying it («nicht zahl», «nicht zahlen») does not count."""
+    q = str(question or "").lower()
+    tokens = [(m.start(), m.end(), m.group()) for m in WORDS.finditer(q)]
+    own = set()
+    for stem in carrying:
+        for m in re.finditer(re.escape(stem), q):
+            own |= {i for i, (s, e, _) in enumerate(tokens) if s < m.end() and e > m.start()}
+    for word in words:
+        for m in re.finditer(re.escape(word), q):
+            at = next((i for i, (s, e, _) in enumerate(tokens) if s <= m.start() < e), None)
+            if at is None:
+                continue
+            if any(tokens[j][2] in NEGATIONS and j not in own for j in range(max(0, at - 3), at)):
+                return True
+    return False
+
+
+def status(question, points, candidate, intent, facts, wishes=None):
+    """Whether a customer's question is answered: {row, state, points, intent, reason, offered, ask, next}. ``question``:
+    the brief's question (its text and ``about``, the reader's tags); ``points``: the area's key points evaluated with
+    ``failing``; ``candidate``: the key point its words name (answer_for); ``intent``: the area's answer row the question
+    asks (options.intent), or None; ``wishes``: {wish fact: its words}. The first row of the table that applies decides
+    (``row``, 1-11): no valid tag (1 a keyword proposes, 2 nothing does), 3 a negation before a word of a tagged point or of
+    the intent, 4 a tagged point's wish is false, 5 a keyword point that applies is not tagged, 6 a tagged point fails, 7
+    one rests on a weak fact, 8 one is open, 9-10 all apply and the intent says «bedingt» or «beantwortet», 11 no intent.
+    ``offered``: the points whose answer the handler may take («prüfen»); ``ask``: the fact an open point waits for."""
+    text = str((question or {}).get("question") or "")
+    by_id = {p["id"]: p for p in points or ()}
+    tagged = [by_id[t] for t in dict.fromkeys((question or {}).get("about") or ()) if t in by_id]
+    cand = candidate if candidate and candidate.get("state") == "applies" else None
+    ids = [p["id"] for p in tagged]
+    applying = [p["id"] for p in tagged if p["state"] == "applies"]
+
+    def out(row, state, reason=None, offered=(), ask=None):
+        return {"row": row, "state": state, "points": ids, "intent": (intent or {}).get("intent"), "reason": reason,
+                "offered": list(dict.fromkeys(offered)), "ask": ask, "next": (intent or {}).get("next") if row == 9 else None}
+    if not tagged:
+        return out(1, "pruefen", "Vorschlag (Stichwort)", [cand["id"]]) if cand else out(2, "offen", "keine Regel des Gebiets")
+    words = [str(w).lower() for p in tagged for w in p.get("answers") or ()] + list((intent or {}).get("stems") or ())
+    carrying = [w for w in words if NEGATIONS & set(WORDS.findall(w))]
+    if negated(text, words, carrying):
+        return out(3, "pruefen", "Verneinung: Zuordnung prüfen", applying)
+    rejected = next((f for p in tagged for f in p["facts"] if f in (wishes or {}) and (facts or {}).get(f) is False), None)
+    if rejected:
+        return out(4, "pruefen", f"Sie möchten {wishes[rejected]} nicht: Zuordnung prüfen", applying)
+    if cand and cand["id"] not in ids:
+        return out(5, "pruefen", "Zuordnung prüfen", applying + [cand["id"]])
+    if any(p["state"] == "fails" for p in tagged):
+        others = applying + ([cand["id"]] if cand else [])
+        return out(6, "pruefen", "Zuordnung prüfen", others) if others else out(6, "offen", "Regel trifft nach der Akte nicht zu")
+    weak = next(((p, f) for p in tagged for f in p.get("weak") or ()), None)
+    if weak:
+        return out(7, "pruefen", f"beruht auf einer widersprüchlichen oder vermuteten Angabe: {weak[0]['asks'].get(weak[1], weak[1])}", applying)
+    opened = next((p for p in tagged if p["state"] == "open"), None)
+    if opened:
+        fact = (opened.get("missing") or [None])[0]
+        asked = opened["asks"].get(fact) if fact else opened["question"]
+        return out(8, "bedingt", asked, ask={"fact": fact, "question": asked, "point": opened["id"]})
+    if intent and intent.get("state") == "bedingt":
+        return out(9, "bedingt", DISCUSS if (intent.get("next") or {}).get("kind") == "discuss" else None)
+    if intent:
+        return out(10, "beantwortet")
+    return out(11, "pruefen", "Absicht der Frage unklar", ids)
 
 
 # The short facts a handler needs at a later stage (the backbone's ``stage_lines``) ------------------------------------

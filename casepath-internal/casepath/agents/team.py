@@ -87,9 +87,13 @@ the files do not speak to: unknown is the default and costs nothing. Quote only 
 sentence, at most about 25 words). Keep the timeline to the dated events that matter for the request (at most twelve) and the summary to three sentences. In the brief, list in not_enclosed
 each document the files mention as existing, attached or sent (a report, a letter, an attachment) that is not among the
 case files, with the sentence that mentions it and where ("E-Mail vom 12.06.2023"); not a document the case merely needs.
-In questions, list each question the customer asks explicitly (at most five, in the customer's words, shortened to one line,
-e.g. "Erhalte ich ab Dezember noch Lohn?"), each with the sentence that asks it; not the request itself and not a question
-of the insurer.
+In questions, list each question the customer asks explicitly (at most five, in the customer's words, one line), each with
+the sentence that asks it; not the request itself and not a question of the insurer. In about, give the ids of the key
+points (process view, key_points) whose rule the question asks about. Judge by meaning, not words: a question that rejects
+a remedy is not about that remedy. If none applies, give [].
+In claims, list each cost or loss the customer asks to have compensated: what (a few words from the customer's own
+sentence), amount as written if any, and that sentence. In receipt, give the words of the receipt or invoice in the files
+that documents that very cost, or nothing.
 Read the customer's claim report and the insurer's claim form first and settle from them every fact that gates a
 document or a step; then the other files. Work in few turns: call record_fact for up to eight facts in the same turn,
 rather than one fact per turn. Rent owed, withheld, reduced or claimed back is a dispute
@@ -508,7 +512,9 @@ def _process_view(work):
             "open_questions": [q["text"] for q in work.graph.get("open_questions", [])],
             "rules": [n["text"] for n in work.graph.get("notes", [])],
             "summary_fields": [{"id": f["id"], "label": f["label"]} for f in work.graph.get("summary", [])],
-            "letters": [{"step": s["id"], **s["produces"]} for s in work.graph["steps"] if s.get("produces")]}
+            "letters": [{"step": s["id"], **s["produces"]} for s in work.graph["steps"] if s.get("produces")],
+            # the area's legal key points: a customer's question names the ones whose rule it asks about (about)
+            "key_points": [{"id": p["id"], "statement": p["statement"], "question": p["question"]} for p in work.graph.get("key_points") or ()]}
 
 
 MAX_STEPS_PER_CALL = 40  # the call itself is never refused for its size: ten per call is guidance, not a limit
@@ -897,11 +903,15 @@ def _dispatch(work, agent, name, args):
 def _report_schema(work, agent):
     files, facts = work.file_ids, list(work.fact_defs)
     if agent == "claim_reader":
+        points = [p["id"] for p in work.graph.get("key_points") or ()]  # a tag names a key point of the case's area, or none
+        about = arr(choice(points), maxItems=2) if points else arr(text(40), maxItems=0)
         return obj(summary=text(800, minLength=1), request=text(500),
                    parties=arr(obj(role=text(80), name=text(120)), maxItems=10),
                    timeline=arr(obj(date=text(40), event=text(300), citations=_citations(files, 2)), maxItems=20),
                    not_enclosed=arr(obj(title=text(160, minLength=1), mentioned=text(120), citations=_citations(files, 1)), maxItems=8),
-                   questions=arr(obj(question=text(200, minLength=1), citations=_citations(files, 1)), maxItems=5))
+                   questions=arr(obj(question=text(200, minLength=1), citations=_citations(files, 1), about=about), maxItems=5),
+                   claims=arr(obj(what=text(120, minLength=1), amount=text(40), citations=_citations(files, 1),
+                                  receipt=_citations(files, 1)), maxItems=5))
     if agent == "process_builder":
         return obj(summary=text(800, minLength=1),
                    questions=arr(obj(fact=choice(facts) if facts else text(80), plain=text(300, minLength=1)), maxItems=40))
@@ -1108,7 +1118,42 @@ def gating_facts(work):
     for kind in work.graph.get("incoming") or ():
         used.add(kind["fact"])
         used |= {f for f in kind.get("earlier", []) if (work.facts.get(f) or {}).get("status") == "established"}
+    # Once the first request went out, the assessment comes next: while the case is at «klären» or «beurteilen», the facts
+    # its ways to proceed and the area's key points rest on (the options' triggers, conditions and what would change them;
+    # the points' conditions) decide too.
+    if (any(str(a.get("code")) == "1" for a in (work.account() or {}).get("actions") or ())
+            or (work.facts.get("handlung_a1") or {}).get("status") == "established") \
+            and ((work.evaluate(checked=False).get("current") or {}).get("step") in ("klaeren", "beurteilen")):
+        from ..process import options
+        used |= options.facts_named(options.load(work.graph.get("id")))
+        for point in work.graph.get("key_points") or ():
+            used |= workflows.condition_facts(point["when"])
     return [f for f in work.graph["facts"] if f["id"] in used]
+
+
+SECOND_READING_BOUND = 8  # an update reads at most this many facts the assessment rests on a second time, beside what changed
+
+
+def read_once(work, bound=SECOND_READING_BOUND):
+    """The facts the ways to proceed of the customer's wishes rest on (their triggers and conditions; an implied fact by
+    the facts that imply it) that one reading alone established: an update reads them a second time with what it changed,
+    at most ``bound``, in the same call. A fact read twice, set by the handler or changed by the update is not among them."""
+    from ..process import options
+    data = options.load(work.graph.get("id"))
+    if not data:
+        return set()
+    accepted = work.accepted_facts()
+    facts = options.implied(accepted, data)
+    named = []
+    for o in data["options"]:
+        if facts.get(o["wish"]) is not True:
+            continue
+        for f in [o["wish"]] + [c["fact"] for c in o.get("when") or ()] + [c["fact"] for c in o.get("conditions") or () if c.get("fact")]:
+            named += options.implied_by(f, accepted, data) or [f]
+    changed, own = set((getattr(work, "updating", None) or {}).get("facts") or ()), work.set_by_hand()
+    out = [f for f in dict.fromkeys(named) if f not in changed and f not in own
+           and (work.facts.get(f) or {}).get("status") == "established" and not (work.facts.get(f) or {}).get("read_twice")]
+    return set(out[:bound])
 
 
 def incoming_item(definition, first, second):
@@ -1180,6 +1225,8 @@ def confirm_facts(model, work, effort="medium", only=None):
             work.emit("source_checker", "fact.conflicting", fact=row["fact"])
             differed += 1
         else:
+            if first["status"] == "established":  # two independent readings agree: the assessment says so («zweimal»)
+                first["read_twice"] = True
             agreed += 1
     summary = {"checked": len(facts), "agreed": agreed, "differed": differed, "added": added}
     work.emit("source_checker", "agent.end", summary=f"Second reading: {agreed} agree, {differed} differ, {added} found only now.",
@@ -1217,7 +1264,8 @@ UPDATE_READ = ("New files came into this case after it was prepared: {files}. Re
                "only where a new document changes a deciding fact or establishes one, quoting that new document; a fact the "
                "new documents do not speak to keeps its value: do not record it, not even as unknown. What came in (eingang_…) "
                "is recorded in its plain fact: code moves the earlier items down. Then report: summary, one sentence on what "
-               "the new documents add; timeline, only their dated events; request and parties empty.")
+               "the new documents add; timeline, only their dated events; questions and claims, only those the new documents "
+               "state, with about; request and parties empty.")
 UPDATE_FIND = ("New files came into this case: {files}. Check only these new files. Still missing: {missing}; record each one a "
                "new file meets, or one a new file of that kind cannot serve as unusable.{present} Record nothing else, and no "
                "need as absent.")
@@ -1432,7 +1480,9 @@ class CaseTeam:
                 with ThreadPoolExecutor(max_workers=len(jobs)) as pool:
                     for future in [pool.submit(job) for job in jobs]:
                         future.result()
-            confirm_facts(self.model, work, self.effort, only=set(work.updating["facts"]))  # what changed, read a second time
+            # what changed, read a second time, and in the same call, within eight, the facts the assessment rests on that one
+            # reading alone established
+            confirm_facts(self.model, work, self.effort, only=set(work.updating["facts"]) | read_once(work))
             if work.unverified():
                 run_source_checker(self.model_for("source_checker"), work, self.effort)
             self._retry_rejected(work, state, only=work.updating)
@@ -1473,13 +1523,36 @@ def _located_brief(work, report):
         located, _ = work.located(entry["citations"])
         if located:
             missing.append({"title": entry["title"], "mentioned": entry.get("mentioned"), "citations": located})
-    asked = []  # the customer's own explicit questions, each with the sentence that asks it
+    from ..process import options
+    asked, dropped = [], 0  # the customer's own explicit questions, each with the sentence that asks it and its tags
+    known = {p["id"] for p in work.graph.get("key_points") or ()}
     for entry in report.get("questions", []):
         located, _ = work.located(entry["citations"])
         if located and entry["question"].strip():
-            asked.append({"question": entry["question"].strip(), "citations": located})
+            tags = list(dict.fromkeys(str(t) for t in entry.get("about") or ()))
+            dropped += sum(1 for t in tags if t not in known)  # a tag naming no key point of the area is dropped, and counted
+            asked.append({"question": entry["question"].strip(), "citations": located, "about": [t for t in tags if t in known]})
+    claims, dropped_amounts = [], 0  # the costs the customer asks to have compensated, each with its sentence
+    for entry in report.get("claims", []):
+        located, _ = work.located(entry.get("citations") or [])
+        what = str(entry.get("what") or "").strip()
+        if not located or not what:
+            continue
+        words = {w for w in re.findall(r"\w{5,}", what.casefold())}
+        quote = located[0]["quote"].casefold()
+        amount = str(entry.get("amount") or "").strip() or None
+        if amount and options.amount_of(amount) not in options.amounts(located[0]["quote"]):
+            amount, dropped_amounts = None, dropped_amounts + 1  # an amount its sentence does not write is not the customer's
+        receipt, _ = work.located(entry.get("receipt") or [])
+        held = receipt[0]["quote"] if receipt else ""
+        claims.append({"what": what, "amount": amount, "citations": located, "receipt": receipt,
+                       # named only when its own words are in its sentence; documented only by a receipt that names it
+                       "checked": any(w in quote for w in words),
+                       "documented": bool(receipt) and (any(w in held.casefold() for w in words)
+                                                        or bool(amount and options.amount_of(amount) in options.amounts(held)))})
     return {"request": report.get("request"), "parties": report.get("parties", []), "timeline": timeline,
-            "summary": report.get("summary"), "not_enclosed": missing, "questions": asked}
+            "summary": report.get("summary"), "not_enclosed": missing, "questions": asked, "claims": claims,
+            "dropped_tags": dropped, "dropped_amounts": dropped_amounts}
 
 
 PERSONAL = re.compile(r"[\w.+-]+@[\w-]+\.[\w.]+|\+?\d[\d ()/.-]{7,}\d|\bCH\d{2}[\d ]{10,}|\b\d{5,}\b")
@@ -1596,6 +1669,10 @@ def _merge_brief(work, report):
         asked = {q["question"] for q in brief.get("questions") or []}
         brief["questions"] = list(brief.get("questions") or []) + [q for q in found["questions"] if q["question"] not in asked]
         brief["not_enclosed"] = list(brief.get("not_enclosed") or []) + found["not_enclosed"]
+        claimed = {c["what"] for c in brief.get("claims") or []}  # a cost once, by its words
+        brief["claims"] = list(brief.get("claims") or []) + [c for c in found["claims"] if c["what"] not in claimed]
+        for key in ("dropped_tags", "dropped_amounts"):
+            brief[key] = (brief.get(key) or 0) + found[key]
     return brief
 
 
