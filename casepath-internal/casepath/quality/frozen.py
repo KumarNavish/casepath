@@ -8,6 +8,7 @@ item field) and with it the hash, which would stop every session of the study.
 
 ``check`` recomputes with this build's code what ``study_mismatch`` computes, for every case with a ``study.frozen``
 event (as a new copy of it is checked) and for every study copy (as a session start checks it): «equal» or «unequal».
+Both are evaluated as study_mismatch evaluates them, by the study's frozen account rules (``case_state(..., study=True)``).
 ``receipt`` adds why (``run_missing``, ``version_differs``, ``items_differ``, ``error``) and the counts, content-free
 (case ids, enums and counts; ``casepath.frozen-check/1``). The deployment's speed trials, which study_mismatch also
 compares, are a setting of the deployment, not of the build, and are not checked here.
@@ -37,9 +38,10 @@ def expected(store, case):
 
 
 def mismatch(store, catalogue, case_id, want):
-    """Why the case's item list no longer matches the frozen one, in study_mismatch's order, or None."""
+    """Why the case's item list no longer matches the frozen one, in study_mismatch's order and by its frozen account rules,
+    or None."""
     try:
-        current = case_state(store, catalogue, case_id)
+        current = case_state(store, catalogue, case_id, study=True)
     except Exception:  # a run named by the study that the store no longer holds, or a build that cannot evaluate it
         return "run_missing" if not want.get("frozen_run_id") else "error"
     run = current.get("run")

@@ -2,8 +2,11 @@
 notebook cell that runs the check for the pilot (deploy/databricks/frozen_check.py) takes the build and a copy of the case
 store from the volume and changes nothing there. Scripted and model-free.
 
-The frozen case is synthetic (tests/fixtures/replay/three_phases.json: its run holds the account's open requests), frozen
-and copied by the app's own routes, as a study is set up."""
+The frozen copy the preview seeds (tests/episode.py seed_frozen_copy: S-D11A with the question back setting a date, so its
+two open requests are dated deadlines whose keys carry the requests' ids), frozen as the service froze it before this
+release; and a synthetic case frozen and copied by the app's own routes (tests/fixtures/replay/three_phases.json: its run
+holds the account's open requests)."""
+from contextlib import closing
 import hashlib
 import json
 import os
@@ -24,7 +27,7 @@ from casepath.config import load_settings
 from casepath.process import account
 from casepath.quality import frozen
 from casepath.web.app import create_app
-from tests import phased
+from tests import episode, phased
 
 ROOT = Path(__file__).resolve().parents[1]
 CELL = ROOT / "deploy" / "databricks" / "frozen_check.py"
@@ -33,13 +36,48 @@ CONTENT = ("Brunner", "Seeblick", "Schimmel", "Mängelrüge", "Thun", "2025")
 
 def phone_notes_ask_nothing(original):
     """A deliberately changed account rule: what the insurer asked on the phone no longer counts as asked."""
-    def build(entries, graph=None):
-        return original([{**e, "asks": []} if e.get("phone") else e for e in entries], graph)
+    def build(entries, graph=None, **kw):
+        return original([{**e, "asks": []} if e.get("phone") else e for e in entries], graph, **kw)
     return build
 
 
 def snapshot(root):
     return {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path(root).rglob("*")) if p.is_file()}
+
+
+class SeededFrozenCopyTests(unittest.TestCase):
+    """The preview's seeded frozen copy (deploy/preview/preview.py seed_episode, tests/episode.py seed_frozen_copy)."""
+
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.client = TestClient(create_app(load_settings({"CASEPATH_DATA_DIR": str(Path(self.directory.name) / "data"),
+                                                           "CASEPATH_DEV_USER": "dev"}), model_factory=lambda: None))
+        self.store, self.runs = self.client.app.state.store, self.client.app.state.runs
+        self.source, self.copy = episode.seed_frozen_copy(self.store, self.runs)
+
+    def tearDown(self):
+        self.runs.shutdown()
+        self.store.close()
+        self.directory.cleanup()
+
+    def test_it_is_equal_under_the_episode_build_and_a_changed_account_rule_makes_it_unequal(self):
+        dated = [i["key"] for i in self.client.get(f"/api/cases/{self.copy['id']}").json()["items"] if i["kind"] == "deadline" and i.get("account")]
+        self.assertEqual(dated, ["konto-r7", "konto-r8"])  # the frozen rules' request ids are in the hashed item list
+        self.assertEqual(frozen.check(self.store, self.runs.catalogue), {self.copy["id"]: "equal", self.source["id"]: "equal"})
+        with mock.patch.object(account, "open_dates", lambda acc: []):  # a changed rule: an open request no longer keeps its date
+            out = frozen.receipt(self.store, self.runs.catalogue, "0123456789ab")
+            self.assertFalse(self.client.get(f"/api/cases/{self.copy['id']}/study-check").json()["ok"])  # the app says the same
+        self.assertEqual(out["cases"], {self.copy["id"]: "unequal", self.source["id"]: "unequal"})
+        self.assertEqual(out["why"], {self.copy["id"]: "items_differ", self.source["id"]: "items_differ"})
+        self.assertEqual(frozen.lines(out)[-1], "deploy: no, fix the difference first")
+
+    def test_the_source_is_checked_by_the_frozen_rules_as_study_mismatch_checks_it(self):
+        """The live source shows the stable request ids (konto-r10.0), which would differ from the frozen hash; the check, as
+        the copy route, evaluates it by the frozen rules, so a further copy can still be made."""
+        live = [i["key"] for i in self.client.get(f"/api/cases/{self.source['id']}").json()["items"] if i["kind"] == "deadline" and i.get("account")]
+        self.assertEqual(live, ["konto-r10.0", "konto-r10.1"])
+        self.assertEqual(frozen.check(self.store, self.runs.catalogue)[self.source["id"]], "equal")
+        self.assertEqual(self.client.post(f"/api/cases/{self.source['id']}/study-copy", json={"expert": "P2"}).status_code, 201)
 
 
 class FrozenCheckTests(unittest.TestCase):
@@ -124,7 +162,7 @@ class FrozenCheckTests(unittest.TestCase):
             build = volume / "casepath-app-abc1234" / "casepath-app"
             shutil.copytree(ROOT / "casepath", build / "casepath", ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
             (build / "app.yaml").write_text("filled in on deploy\n")
-            with sqlite3.connect(Path(self.desk.directory.name) / "casepath.db") as live, sqlite3.connect(volume / "casepath.db") as target:
+            with closing(sqlite3.connect(Path(self.desk.directory.name) / "casepath.db")) as live, closing(sqlite3.connect(volume / "casepath.db")) as target:
                 live.backup(target)
             phrase = f"frozen abc1234 {len(cell['listing'](str(build)))} {cell['tree'](str(build))}"
             source = CELL.read_text(encoding="utf-8").replace('VOLUME = "FILL-IN: /Volumes/<catalog>/<schema>/<volume>"', f"VOLUME = {str(volume)!r}")

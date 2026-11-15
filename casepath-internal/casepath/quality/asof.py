@@ -45,12 +45,14 @@ request, the summary, the customer's questions), Knowledge learned in this case 
 and the agents' process edits from the whole-file run (``agent_edits_applied``).
 
 ``view`` evaluates a case through the product's own path, as GET /api/cases/{id} does: runner.case_state, build_items, the
-clock's follow_up (looked at on a date the party gave) and capped; ``letter`` renders the next action's letter as the case
-view drafts it. ``AsOfStore`` shows that path the rebuilt case. ``surface`` digests what the brief puts on the screen and in
-the letter, for the prefix check of tests/test_asof.py. Model-free.
+clock's follow_up (looked at on a date the party gave) and capped, and the decision brief where the build has one;
+``letter`` renders the next action's letter through letters.draft, as the case view drafts it. ``AsOfStore`` shows that
+path the rebuilt case. ``surface`` digests what the brief puts on the screen and in the letter, for the prefix check of
+tests/test_asof.py. Model-free.
 """
 from datetime import date
 from hashlib import sha256
+import importlib.util
 import json
 import re
 
@@ -370,31 +372,40 @@ def view(store, catalogue, case_id):
                       until=(action or {}).get("until"))
     clock = capped(clock, items, (current.get("process") or {}).get("deadline_margin_days"), files)
     return {"state": current, "items": items, "action": action, "follow_up": clock, "files": files, "texts": texts, "events": events,
-            "forms": forms_of(catalogue, current)}
+            "forms": forms_of(catalogue, current), "assessment": assessment_of(current, run, items, files, events)}
 
 
 def form_of(action):
-    """The form the case view drafts for a next action (web/app.py, get_case): a request is the first request (A1), a
-    closing in silence has its own form (or none); None without an action."""
-    if not action:
+    """The form the case view drafts for a next action (letters.form_kind); None without an action."""
+    return letters.form_kind(action) if action else None
+
+
+def assessment_of(state, run, items, files, events):
+    """The decision brief the case view builds for the letter (web/app.py, _assessment_view), where the build has one; None
+    where it has none, as the case view has none then either. The jurists' marks are not part of a day's state."""
+    if importlib.util.find_spec("casepath.process.assessment") is None:
         return None
-    return "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")
+    from ..process import assessment
+    return assessment.build(state, (run or {}).get("result"), items, files, events, {})
 
 
 def letter(shown):
-    """The next action's letter on the day as the case view drafts it (web/app.py, get_case): {form, title, to, needs, parts,
-    text, none, context}; None without a next action. Its text is case content: only counts and ids of it leave."""
+    """The next action's letter on the day as the case view drafts it (letters.draft, with the decision brief the view
+    builds): its {kind, form, title, to, text, none, needs, required, also}, the form's parts as written (``parts``), the
+    values they were filled with (``context``) and the brief (``assessment``); None without a next action. Its text is case
+    content: only counts and ids of it leave."""
     if not shown or not shown.get("action"):
         return None
     state, forms = shown["state"], shown.get("forms") or letters.SEED_FORMS
-    kind = form_of(shown["action"])
-    ctx = letters.context(state["case"], shown["items"], shown.get("events") or [], shown["follow_up"], shown.get("texts") or shown["files"],
-                          evaluation=state.get("evaluation"), process=state.get("process"))
-    text, none = letters.render(kind, forms, ctx)
-    form = forms.get(kind) or {}
-    return {"form": kind, "title": form.get("title"), "to": form.get("to"), "needs": list(form.get("needs") or []),
-            "parts": [p if isinstance(p, str) else str((p or {}).get("text") or "") for p in form.get("parts") or ()],
-            "text": text, "none": none, "context": ctx}
+    events, files, brief = shown.get("events") or [], shown.get("texts") or shown["files"], shown.get("assessment")
+    drafted = letters.draft(state, shown["items"], events, shown["follow_up"], shown["files"], forms, texts=shown.get("texts"), assessment=brief)
+    if drafted is None:
+        return None
+    ctx = letters.context(state["case"], shown["items"], events, shown["follow_up"], files, evaluation=state.get("evaluation"),
+                          process=state.get("process"), facts=state.get("facts"), assessment=brief)
+    form = forms.get(drafted["form"]) or {}
+    return {**drafted, "parts": [p if isinstance(p, str) else str((p or {}).get("text") or "") for p in form.get("parts") or ()],
+            "context": ctx, "assessment": brief}
 
 
 def renders_brief(drafted):
