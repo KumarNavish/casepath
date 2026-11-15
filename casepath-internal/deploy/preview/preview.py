@@ -16,6 +16,10 @@ from deploy/preview/episode/E1 or E2 on the case: the upload starts the update),
 copied, and a frozen study copy. POST /preview/fault makes the next update fail once (the fault switch).
 
     python deploy/preview/preview.py [port]
+
+With CASEPATH_PREVIEW_DATA=<folder> the preview keeps its data there; started again on a folder that already holds its
+cases, it seeds nothing and starts as a restarted service does (an update it was running is interrupted and, with its
+admitted inputs, resumed once), so «stop the preview mid-update and restart it» can be seen in the browser.
 """
 from datetime import date, timedelta
 from pathlib import Path
@@ -480,9 +484,62 @@ def seed_offer(store, runs):
     return case
 
 
+def update_dispatch(app, store, runs, analogs, pause, otherwise, resumed=()):
+    """«Aktualisieren» in the browser runs the update's script of the case (E1 or E2: their replies of d+35; any other: the
+    fee note's), the fault switch (POST /preview/fault) makes the next one fail once; ``otherwise``: every other run's
+    model; ``resumed``: the cases whose interrupted update the restart started again, served first. Returns the run
+    service's model factory."""
+    from tests import episode
+    asked, fault, waiting = {}, {"update": False}, list(resumed)
+    start_update = runs.update
+
+    def update(case_id, user, token=None, **options):  # options: an upload's auto and budget (agents/runner.py)
+        asked["update"] = case_id
+        return start_update(case_id, user, token, **options)
+    runs.update = update
+
+    @app.post("/preview/fault")
+    def preview_fault(update: bool = True):
+        fault["update"] = update
+        return fault
+
+    def dispatch():
+        if not asked.get("update") and waiting:  # an update the run service started again by itself after a restart
+            asked["update"] = waiting.pop(0)
+        if asked.get("update"):
+            case_id = asked.pop("update")
+            if fault["update"]:
+                fault["update"] = False
+                return episode.Failing()
+            analog = analogs.get(case_id)
+            if analog:  # E1 or E2: the replies of d+35, read by the update's script
+                return episode.update_model(store, case_id, analog.turns_b(), analog.reply_names, pause)
+            return update_script(store, case_id, pause)
+        return otherwise()
+    return dispatch
+
+
+def serve_again(app, store, runs, port, ready, models, pause):
+    """The preview started again on its own data, as a restarted service: nothing is seeded; E1 and E2 are found by their
+    titles, the update the restart interrupted is resumed (agents/runner.py) with the scripts of a first start."""
+    from tests import episode
+    analogs = {}
+    for case in store.list_cases():
+        for names in (episode.VARIANT_A, episode.VARIANT_B):
+            if case["title"] == f"{names['title']} {names['reference']}":
+                analogs[case["id"]] = episode.analog(names=names)
+    models["factory"] = update_dispatch(app, store, runs, analogs, pause, lambda: None, [store.get_run(r)["case_id"] for r in runs.resumed])
+    runs.model_factory = models["factory"]
+    ready.set()
+    print(f"preview on http://127.0.0.1:{port} started again on its data: resumed {runs.resumed or 'nothing'}", flush=True)
+    uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
+
+
 def main():
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 8765
-    data = tempfile.mkdtemp(prefix="cp-preview-")
+    import os
+    data = os.environ.get("CASEPATH_PREVIEW_DATA") or tempfile.mkdtemp(prefix="cp-preview-")
+    again = Path(data).is_dir() and any(Path(data).iterdir())  # a restart on the preview's own data: nothing is seeded
     # The fixture's workflow plus a synthetic intake, so the handler's own workflow (which supersedes the intake) joins too.
     catalogue = Path(tempfile.mkdtemp(prefix="cp-preview-catalogue-"))
     (catalogue / "example-defect.json").write_text(json.dumps(german_example(json.loads((ROOT / "tests" / "fixtures" / "example-defect.json").read_text())),
@@ -492,8 +549,15 @@ def main():
     # The preview starts the update with an upload (CASEPATH_AUTO_UPDATE), as the rehearsal does; the pilot keeps it off.
     settings = load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(catalogue), "CASEPATH_DEV_USER": "N. Kumar",
                               "CASEPATH_AUTO_UPDATE": "1"})
-    app = create_app(settings, model_factory=lambda: None)
+    ready, models = threading.Event(), {"factory": lambda: None}
+
+    def restarted(token=None):  # an update resumed while the app starts waits for the preview's scripts
+        ready.wait(60)
+        return models["factory"]()
+    app = create_app(settings, model_factory=restarted if again else (lambda: None))
     store, runs = app.state.store, app.state.runs
+    if again:
+        return serve_again(app, store, runs, port, ready, models, float(sys.argv[2]) if len(sys.argv) > 2 else 1.5)
 
     def seed(title):
         case = store.create_case(title, {"synthetic": True}, "N. Kumar")
@@ -559,37 +623,9 @@ def main():
     # case C and D last: the newest come first among cases that are equally due, so the case the main path opens is in view
     case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
     case_d = handler_case("Schimmel im Bad, zweite Meldung (synthetisch)")
-    # «Aktualisieren» in the browser runs the update's script; every other run the one case B's live view plays
-    asked = {}
-    start_update = runs.update
-
-    def update(case_id, user, token=None, **options):  # options: an upload's auto and budget (agents/runner.py)
-        asked["update"] = case_id
-        return start_update(case_id, user, token, **options)
-    runs.update = update
-
-    # The fault switch (C3, P-fail): while on, the next update fails as an unreachable model does, once.
-    fault = {"update": False}
-
-    @app.post("/preview/fault")
-    def preview_fault(update: bool = True):
-        fault["update"] = update
-        return fault
-
-    from tests import episode
-
-    def dispatch():
-        if asked.get("update"):
-            case_id = asked.pop("update")
-            if fault["update"]:
-                fault["update"] = False
-                return episode.Failing()
-            analog = episode_cases["analogs"].get(case_id)
-            if analog:  # E1 or E2: the replies of d+35, read by the update's script
-                return episode.update_model(store, case_id, analog.turns_b(), analog.reply_names, pause)
-            return update_script(store, case_id, pause)
-        return factory_b()
-    runs.model_factory = dispatch
+    # «Aktualisieren» in the browser runs the update's script; every other run the one case B's live view plays. The fault
+    # switch (C3, P-fail): while on, the next update fails as an unreachable model does, once.
+    runs.model_factory = update_dispatch(app, store, runs, episode_cases["analogs"], pause, factory_b)
     print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}"
           f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}  account {case_account['id']}"
           f"  update {case_update['id']}  offer {case_offer['id']}  mandate {stages['mandate']['id']}  closed {stages['closed']['id']}"

@@ -1232,10 +1232,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 out.append({"what": key, "before": [x for x in b or () if x not in (a or ())], "after": [x for x in a or () if x not in (b or ())]})
             else:
                 out.append({"what": key, "before": b, "after": a})
+        other_letter = any(c["what"] == "Brief" for c in out)  # another letter altogether: it stands in the card, not as a diff
         for key, what, split in (("text", "Brieftext", "\n\n"), ("note", "Aktennotiz", ". ")):
             b, a = [x.strip() for x in before[key].split(split) if x.strip()], [x.strip() for x in after[key].split(split) if x.strip()]
+            if what == "Brieftext" and other_letter:
+                continue
             if b != a:
-                out.append({"what": what, "before": [x for x in b if x not in a][:4], "after": [x for x in a if x not in b][:4]})
+                gone, came = [x for x in b if x not in a][:3], [x for x in a if x not in b][:3]
+                shown = {y for c in out for side in (c["before"], c["after"]) for y in (side if isinstance(side, list) else [side]) if y}
+                said = lambda x: any(y in x or x in y for y in shown if isinstance(y, str))
+                same = what == "Aktennotiz" and all(said(x) for x in gone + came)  # the note says what is shown above: so marked
+                out.append({"what": what, "before": [] if same else gone, "after": [] if same else came, **({"same": True} if same else {})})
         return out
 
     def _basis(op, args, reason, current, who):
@@ -1360,13 +1367,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         edit = found(store.get_edit, edit_id)
         before = state(edit["case_id"])
         package_before = _package(get_case(edit["case_id"], who)) if before.get("run") else None
+        undone = _basis(edit["op"], edit.get("args") or {}, "", before, edit.get("by") or who).rsplit(" (", 1)[0]  # what is taken back
+        if edit["op"] == "set_fact":  # the value the correction set (the case holds it until now)
+            undone = undone.rsplit(" → ", 1)[0].rsplit(": ", 1)[0] + ": " + undone.rsplit(" → ", 1)[-1]
         store.set_edit_status(edit_id, "undone", who)
         undoes = next((e["event_id"] for e in reversed(store.list_case_events(edit["case_id"])) if e.get("edit_id") == edit_id), None)
         record(edit["case_id"], who, "correction.undone", undoes=undoes, edit_id=edit_id)
         after = state(edit["case_id"])
         changes = _consequences(package_before, _package(get_case(edit["case_id"], who))) if package_before is not None else None
         return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"]),
-                "consequences": {"basis": "Rückgängig gemacht", "changes": changes} if changes is not None else None, "limits": _undo_limits(edit)}
+                "consequences": {"basis": undone, "undone": True, "changes": changes} if changes is not None else None, "limits": _undo_limits(edit)}
 
     # Knowledge
     STAGES = {"lesen": {"reader"}, "prozess": {"router", "process_builder"}, "fakten": {"claim_reader"},

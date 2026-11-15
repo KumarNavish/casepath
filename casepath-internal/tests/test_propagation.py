@@ -182,6 +182,7 @@ class CorrectionTests(Propagation):
         self.assertEqual((rows(undone), dates(undone), undone["items_sha256"]), (rows(before), dates(before), before["items_sha256"]))
         self.assertEqual((undone["draft"] or {}).get("text"), (before["draft"] or {}).get("text"))
         self.assertEqual(again["limits"], [])  # nothing left CasePath in between
+        self.assertEqual((again["consequences"]["basis"], again["consequences"]["undone"]), ("«Besteht der Schimmel weiterhin?»: erledigt", True))
         self.assertEqual(self.edit(case["id"], "settle_request", {"request": "r3.0", "how": "erledigt"}).status_code, 422)  # answered already
         self.assertIn('data-settle="${esc(x.request)}" data-how="nicht_mehr_noetig"', SCRIPT)
 
@@ -236,6 +237,7 @@ class CorrectionTests(Propagation):
         self.assertTrue({("set_fact", "deckung"), ("add_entry", "notiz"), ("set_fact", "mangel_besteht")} <= active)
         undo = self.client.post(f"/api/edits/{made.json()['edit']['id']}/undo").json()
         self.assertEqual({c["what"] for c in undo["consequences"]["changes"]}, {"Brieftext", "Aktennotiz"})
+        self.assertEqual(undo["consequences"]["basis"], "Besteht der Mangel aktuell noch?: nein")  # what is taken back
         back = self.view(case["id"])
         self.assertEqual((back["draft"]["text"], back["file_note"], back["status"], back["items_sha256"]),
                          (before["draft"]["text"], before["file_note"], before["status"], before["items_sha256"]))

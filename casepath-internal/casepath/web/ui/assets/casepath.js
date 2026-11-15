@@ -343,8 +343,8 @@ function renderRail() {
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
       ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text ? `<span class="cp-stand ${esc(st.kind || "")}" data-status>${esc(LANG === "de" ? st.text : STAND_EN[st.kind] || st.text)}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
+    ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
-    ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
     <div class="cp-rail-foot">${unaidedPending() ? "" : moreMenu()}</div>
   </aside>`;
 }
@@ -1737,8 +1737,10 @@ function sideChangeLine() {
 function consequencesBlock(c, head, undo, limits) {
   const rows = (c && c.changes) || [];
   const side = (v) => Array.isArray(v) ? v.map((x) => esc(clip(x, 140))).join("<br>") || "—" : esc(clip(v == null ? "—" : String(v), 140));
-  return `<div class="cp-change cp-consequences" aria-live="polite"><p><b>${head}</b>${c && c.basis ? ` · ${T("because", "weil")}: ${esc(c.basis)}` : ""} ${undo}</p>
-    ${rows.length ? `<dl>${rows.map((r) => `<dt>${esc(r.what)}</dt><dd><span class="cp-before">${side(r.before)}</span> → <span class="cp-after">${side(r.after)}</span></dd>`).join("")}</dl>`
+  const why = c && c.basis ? ` · ${c.undone ? T("taken back", "zurückgenommen") : T("because", "weil")}: ${esc(c.basis)}` : "";
+  return `<div class="cp-change cp-consequences" aria-live="polite"><p><b>${head}</b>${why} ${undo}</p>
+    ${rows.length ? `<dl>${rows.map((r) => `<dt>${esc(r.what)}</dt><dd>${r.same ? `<span class="cp-muted">${T("follows (as above)", "folgt (wie oben)")}</span>`
+      : `<div class="cp-chg-was">${side(r.before)}</div><div class="cp-chg-now">${side(r.after)}</div>`}</dd>`).join("")}</dl>`
       : `<p class="cp-muted">${T("Nothing else in the package changed", "Sonst änderte sich nichts am Paket")}</p>`}
     ${(limits || []).length ? `<p class="cp-limits"><b>${T("Not undone", "Nicht rückgängig")}</b>: ${limits.map(esc).join("; ")}</p>` : ""}</div>`;
 }
