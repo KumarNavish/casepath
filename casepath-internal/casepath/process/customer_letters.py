@@ -246,6 +246,17 @@ def referral(item):
                    else f"; spätestens am {day}." if day else ".")
 
 
+def with_letter(items, events, kind):
+    """The templates that go out with one of the insurer's letters: those offered with it, and one whose sentence was
+    offered as a line of the first request (an area observed in practice) and that the handler ticked."""
+    last = {}
+    for e in events or ():
+        if e.get("kind") == "letter.line" and e.get("item_id"):
+            last[e["item_id"]] = bool(e.get("included"))
+    return [i for i in items or () if i.get("kind") == "customer_letter"
+            and (kind in (i.get("offered_with") or ()) or kind == "A1" and last.get(f"hint:cl-{i['key']}"))]
+
+
 def referrals(items, kind):
     """The sentences for one of the insurer's letters (A1 or A5): one per template offered with it."""
     return [referral(i) for i in items or () if i.get("kind") == "customer_letter" and kind in (i.get("offered_with") or ())]

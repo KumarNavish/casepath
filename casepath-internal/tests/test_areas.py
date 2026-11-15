@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 from casepath.agents import core
-from casepath.process import keypoints, area, cover, letters, workflows
+from casepath.process import area, cover, letters, workflows
 from casepath.process.items import HASHED, build_items, items_sha256
 from casepath.process.workflows import Catalogue, CatalogueError
 from tests.scripted import ScriptedModel, report
@@ -73,7 +73,7 @@ class CompositionTests(unittest.TestCase):
         self.assertEqual(same(composed), same(FROZEN))
         self.assertEqual([{k: v for k, v in r.items() if k not in {"stages", "form"}} for r in composed["clock"] if r["then"] != "A9"],
                          FROZEN["clock"])  # rules now name their stages; plus: a reminder to the other side after its silence
-        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-15.3"))  # stored runs: same id, newer version governs
+        self.assertEqual((composed["id"], composed["version"]), ("mietmangel-handler", "2026-11-15.4"))  # stored runs: same id, newer version governs
         # plus: the nearest thing that does not count, for the reader; the stage a handler's decision belongs to
         unnear = lambda f: {k: v for k, v in f.items() if k not in {"not_this", "stages"}}
         self.assertEqual([unnear(f) for f in composed["facts"] if f["id"] not in self.CHANGED_FACTS],
@@ -111,15 +111,11 @@ class CompositionTests(unittest.TestCase):
         for facts, documents in cases:
             result = {"facts": facts, "documents": documents, "brief": {"request": "Schimmel.", "parties": [], "timeline": []}}
             a, b = (build_items(core.evaluate(w, [], [], result, "c", files=looked), result, looked) for w in (old, new))
-            # the key points' advice in the first request (tested in test_key_points): where it applies it stands for the
-            # area's hint that says the same; nothing else changes
+            # the key points' advice in the first request: in this area observed in practice it is only offered, never
+            # ticked, and no observed hint is replaced (test_practice_lines); nothing else changes
             advice = [i for i in b if i["kind"] == "hint" and i["key"].startswith("kp-")]
-            replaced = {i["key"] for i in a if i["kind"] == "hint"} - {i["key"] for i in b if i["kind"] == "hint"}
-            for key in replaced:
-                hint = next(h for h in new["hints"] if h["id"] == key)
-                self.assertTrue(any(i["stated_as"] == "established" and keypoints.covers(
-                    {"refs": next(p for p in new["key_points"] if p["id"] == i["key_point"])["law"]}, hint) for i in advice), key)
-            a = [i for i in a if not (i["kind"] == "hint" and i["key"] in replaced)]
+            self.assertEqual({i["key"] for i in a if i["kind"] == "hint"} - {i["key"] for i in b if i["kind"] == "hint"}, set())
+            self.assertTrue(all(i["stated_as"] == "put_to_handler" for i in advice))
             b = [i for i in b if i not in advice]
             self.assertEqual(kept(a), kept(b))
             uncovered = lambda rows: [i for i in rows if i["key"] not in self.CHANGED_FACTS | covered and i["kind"] not in {"cover", "check", "contact", "key_point"}]
@@ -168,7 +164,7 @@ class CompositionTests(unittest.TestCase):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             area.main([str(area.AREAS / "vertrag-darlehen.json")])
-        self.assertIn("vertrag-darlehen 2026-11-15.3 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
+        self.assertIn("vertrag-darlehen 2026-11-15.4 · Darlehen · aus dem Gesetz abgeleitet, noch nicht freigegeben", out.getvalue())
         self.assertIn("Rückzahlung des Darlehens ohne vereinbarten Termin (Art. 318 OR)", out.getvalue())
 
 

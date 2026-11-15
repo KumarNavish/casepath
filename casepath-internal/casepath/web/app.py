@@ -29,7 +29,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from ..process import casegraph, knowledge as kb, workflows
 from ..process.clock import capped, follow_up, historic as historic_file, own_deadlines
 from ..agents import core
-from ..process import cover, letters
+from ..process import cover, customer_letters, letters
 from ..process.items import kind_title, build_items, item_changes, items_sha256
 from . import identity, listing
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
@@ -507,7 +507,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                      "also": [{"kind": k, "title": forms[k].get("title"), "text": letters.render(k, forms, ctx)[0], "required": cover.required_for(k, current.get("facts")),
                                **({"set": forms[k]["set"]} if forms[k].get("set") else {})} for k in letters.accompanying(kind, forms, listed)]
                              + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "text": i["text"], "required": [], "template": True}
-                                for i in listed if i["kind"] == "customer_letter" and kind in (i.get("offered_with") or ())]}
+                                for i in customer_letters.with_letter(listed, events, kind)]}
         # Arrival: files added after the last preparation; and after a new preparation, what changed against the one before.
         new_files = [f["name"] for f in files if completed and f.get("created_at", "") > completed.get("created_at", "")]
         changes = None

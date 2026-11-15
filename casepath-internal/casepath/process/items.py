@@ -501,16 +501,24 @@ def build_items(state, result, files=None, events=None):
                 f = next(x for x in graph["facts"] if x["id"] == fid)
                 add("letter_question", fid, value=f.get("customer_question") or f["question"], stated_as="put_to_handler", verdict=None,
                     evidence=[], node=here.get("id"), origin="workflow", chain=True, label=f.get("customer_question") or f["question"], ask="now")
-        if planned and planned.get("kind") == "A1" and action and action[0] == "A1":
+        # In an area observed in practice (its lines carry counts), the first request's ticked lines are exactly those
+        # practice supports: a line from another mechanism (a key point's advice, a template for the customer's letter, a
+        # cover question) is offered unless the area's data cites practice for it, and an observed hint is never rewritten
+        # or replaced. In an area written from the law alone, advice is ticked when its condition holds.
+        practiced = bool((graph.get("area") or {}).get("practice"))
+        first_request = bool(planned and planned.get("kind") == "A1" and action and action[0] == "A1")
+        if first_request:
             for f in graph["facts"]:
                 # a trigger date is asked only while a deadline it starts applies: offered while that depends on an open fact
                 trigger = trigger_question(graph, f["id"], known)
                 if f.get("ask_customer") and known.get(f["id"]) is None and trigger:
                     asked = f.get("customer_question") or f["question"]
                     # a question's default follows practice: "offered" ones Protekta rarely asks wait unticked
+                    # in an area observed in practice, a question practice does not show (a cover question) is offered
                     add("letter_question", f["id"], value=asked, stated_as="put_to_handler", verdict=None, evidence=[],
                         node=here.get("id"), origin="workflow", chain=True, label=asked,
-                        ask="proposed" if trigger == "offer" or f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers else "now")
+                        ask="proposed" if trigger == "offer" or f["ask_customer"] == "offered" and f["id"] not in unsettled_triggers
+                        or practiced and not keypoints.observed(f) else "now")
             asked_ids = {i["key"] for i in items if i["kind"] == "letter_question"}
             for d in missing_triggers:  # a trigger date the area does not ask the customer by itself: offered with its deadline
                 if d["trigger"] not in asked_ids and d.get("question") and known.get(d["trigger"]) is None:
@@ -520,9 +528,11 @@ def build_items(state, result, files=None, events=None):
             # A key point that is advice the customer can act on now goes into the first request with its article: ticked when
             # its condition holds, offered while it depends on an open fact. Where it applies, it stands for the area's hint
             # that says the same (every article of the hint is one of the point's); where it is open and such a hint is in
-            # the letter already, the hint says it.
+            # the letter already, the hint says it. In an area observed in practice the observed hint always stays as it is,
+            # an advice point that says the same is not added, and other advice is offered unless practice shows it.
             advice = [p for p in keypoints.evaluate(graph, known) if p.get("advice")]
-            replaced = {h["id"] for p in advice if p["state"] == "applies" for h in graph.get("hints", []) if keypoints.covers(p, h)}
+            replaced = set() if practiced else \
+                {h["id"] for p in advice if p["state"] == "applies" for h in graph.get("hints", []) if keypoints.covers(p, h)}
             given = set()
             for hint in graph.get("hints", []):
                 if evaluate_condition(hint["when"], known) is not True and hint["when"] is not True or hint["id"] in replaced:
@@ -538,10 +548,11 @@ def build_items(state, result, files=None, events=None):
                     add("hint", hint["id"], value=hint["text"], stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
                         origin="workflow", chain=True, label=hint["text"], legal_basis=hint.get("legal_basis"))
             for p in advice:
-                if p["state"] == "open" and any(keypoints.covers(p, h) for h in graph.get("hints", []) if h["id"] in given):
+                if (p["state"] == "open" or practiced) and any(keypoints.covers(p, h) for h in graph.get("hints", []) if h["id"] in given):
                     continue
                 line = keypoints.advice_line(p)
-                add("hint", f"kp-{p['id']}", value=line, stated_as="established" if p["state"] == "applies" else "put_to_handler", verdict=None,
+                ticked = p["state"] == "applies" and (not practiced or p.get("observed"))
+                add("hint", f"kp-{p['id']}", value=line, stated_as="established" if ticked else "put_to_handler", verdict=None,
                     evidence=[], node=here.get("id"), origin="law", chain=True, label=line, key_point=p["id"], with_basis=True)
         # the cover points, the checks a prescribed letter rests on, and the first contact (cover.py)
         # a historic file never shows a first contact, nor does a case whose letter went out (cover.first_contact)
@@ -596,10 +607,21 @@ def build_items(state, result, files=None, events=None):
         # Letters the customer sends in his own name, whose condition holds (customer_letters.py): offered with the
         # assessment, and with the first request when the customer's own deadline is close
         deadlines = [i for i in items if i["kind"] == "deadline"]
+        rows_by_id = {c["id"]: c for c in graph.get("customer_letters") or ()}
         for t in customer_letters.evaluate(graph, known_facts, deadlines, insured, known_facts.get("gegenpartei"), as_of(files)):
+            offered_with = t["offered_with"]
+            if practiced and "A1" in offered_with and not keypoints.observed(rows_by_id.get(t["id"])):
+                # practice does not show this template in a first request: its sentence is offered there, the template
+                # goes with the letter only when the handler ticks that line
+                offered_with = [k for k in offered_with if k != "A1"]
+                if first_request:
+                    line = customer_letters.referral({"template_kind": t["kind"], "label": {"de": t["heading"]}, "to": t["to"],
+                                                      "to_dative": t["to_dative"], "due": t["due"]})
+                    add("hint", f"cl-{t['id']}", value=line, stated_as="put_to_handler", verdict=None, evidence=[], node=here.get("id"),
+                        origin="template", chain=True, label=line, customer_letter=t["id"])
             add("customer_letter", t["id"], value="applies", stated_as="established", verdict=None, evidence=[], node=here.get("id"),
                 origin="law", chain=False, label=t["heading"], legal_basis=", ".join(t["cites"]), title=t["title"], text=t["text"],
-                to=t["to"], to_dative=t["to_dative"], template_kind=t["kind"], short=t["short"], due=t["due"], offered_with=t["offered_with"])
+                to=t["to"], to_dative=t["to_dative"], template_kind=t["kind"], short=t["short"], due=t["due"], offered_with=offered_with)
     brief = result.get("brief") or {}
     applying = keypoints.evaluate(graph, state.get("facts") or {}) if graph and ev else []
     for i, q in enumerate(brief.get("questions") or []):  # the customer's own questions, answered by a key point where one matches

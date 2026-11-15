@@ -9,7 +9,10 @@ prüfen»), and optionally words a customer's question about it would contain (`
 
 Each point names whether it is advice the customer can act on now (``advice``: the sentence for the first request, or
 false): such a point goes into the first letter as a hint line with its article, ticked when its condition holds and
-offered while it depends on an open fact. Each point names the stages at which it helps (``stages``, by default
+offered while it depends on an open fact. In an area observed in practice (its lines carry counts) the first request's
+ticked lines are those practice supports: advice is offered unticked unless the point names a practice reference
+(``source_refs``, «practice#…»), and where an observed hint says the same the hint stays as observed and the advice is
+not added. Each point names the stages at which it helps (``stages``, by default
 clarifying and assessing); at a later stage the card shows only the points for that stage, or none.
 
 A point whose condition holds on the case's facts applies; one whose condition is open is shown as its question, never
@@ -53,6 +56,8 @@ def validate(module, law, where, stages=None):
         advice = p.get("advice")
         if advice is not False and not (isinstance(advice, str) and 20 <= len(advice) <= 300 and not advice.rstrip().endswith(".")):
             raise CatalogueError(f"{name}: advice is the sentence the customer can act on (its article is added), or false")
+        if "source_refs" in p and (not isinstance(p["source_refs"], list) or not all(str(r).startswith("practice#") for r in p["source_refs"])):
+            raise CatalogueError(f"{name}: source_refs name what practice shows of the point («practice#…»)")
         if "stages" in p and (not isinstance(p["stages"], list) or not p["stages"] or (stages is not None and set(p["stages"]) - set(stages))):
             raise CatalogueError(f"{name}: stages must name stages of the backbone")
     return points
@@ -82,7 +87,7 @@ def evaluate(graph, facts, stage=None):
                     "statement": p["statement"], "question": p["question"], "law": rows, "cite": rows[0]["cite"] if rows else None,
                     "follows": p["follows"], "check": p["check"], "facts": sorted(condition_facts(p["when"])),
                     "answers": p.get("answers", []), "advice": p.get("advice") or None, "stages": list(p.get("stages") or STAGES),
-                    "refs": list(p["law"] if isinstance(p["law"], list) else [p["law"]]),
+                    "refs": list(p["law"] if isinstance(p["law"], list) else [p["law"]]), "observed": observed(p),
                     "here": stage is None or stage in (p.get("stages") or STAGES)})
     return out
 
@@ -92,6 +97,11 @@ def shown(points, limit=SHOWN):
     most ``limit``."""
     here = [p for p in points if p.get("here", True)]
     return ([p for p in here if p["state"] == "applies"] + [p for p in here if p["state"] == "open"])[:limit]
+
+
+def observed(row):
+    """Whether practice shows a line (a hint, a fact's question, a key point, a template): it cites a practice count."""
+    return any(str(r).startswith("practice#") for r in (row or {}).get("source_refs") or ())
 
 
 def advice_line(point):
