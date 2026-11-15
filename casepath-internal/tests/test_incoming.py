@@ -6,7 +6,7 @@ import json
 import unittest
 
 from casepath.agents import core
-from casepath.process import area, letters
+from casepath.process import area, incoming, letters
 from casepath.process.clock import capped, follow_up, own_deadlines
 from casepath.process.items import build_items
 from casepath.process.workflows import CatalogueError
@@ -135,8 +135,9 @@ class IncomingTests(unittest.TestCase):
         self.assertNotIn("incoming", prepared(own, history="A1 2024-01-10; A8 2024-04-20; A9 2024-05-14")[2])  # answered
 
     def test_f_the_customers_statutory_deadline_still_leads_while_an_incoming_item_is_open(self):
-        facts = [("rechtsgebiet", "Mietrecht / Kündigung"), ("kuendigung_erhalten", "2026-11-03"), CLAIM]
-        state, items, nxt, files = prepared(facts, history=None, as_of="2026-11-14", wid="miete-kuendigung")
+        claim = ("eingang_kostenforderung", "Kanzlei Muster: Kostenvorschuss vom 2026-11-10 über CHF 1'200", "Kostenvorschuss von CHF 1'200")
+        facts = [("rechtsgebiet", "Mietrecht / Kündigung"), ("kuendigung_erhalten", "2026-11-03"), claim]
+        state, items, nxt, files = prepared(facts, history="A1 2026-11-05", as_of="2026-11-14", wid="miete-kuendigung")  # it came after our request
         self.assertEqual(nxt["action"], "A11")
         own = own_deadlines(items, files)
         self.assertEqual((own[0]["key"], own[0]["value"]), ("anfechtung", "2026-12-03"))
@@ -178,6 +179,125 @@ class IncomingTests(unittest.TestCase):
             change(bb)
             with self.assertRaises(CatalogueError):
                 area.validate_backbone(bb)
+
+
+VOUCHER = ("eingang_angebot", "Sonnenweit Reisen AG: Reisegutschein über CHF 1'820, einlösbar bis 2027-09-30, E-Mail vom 2026-09-23",
+           "Sie erhalten von uns einen Reisegutschein im Wert von CHF 1'820.–")
+
+
+def fresh(facts, created="2026-11-03", history=None, wid="allgemein", segments=None):
+    """A case as it comes in: its files added on the day it was reported, no cut, the facts as a reader would record them."""
+    rows = [fact(*f) for f in facts] + ([fact("bisherige_handlungen", history)] if history else [])
+    files = [{"id": "f1", "name": "Meldung.pdf", "created_at": f"{created}T09:00:00+00:00", "extraction": {"segments": segments or []}}]
+    result = {"facts": rows, "documents": [], "brief": {"request": "Reise annulliert.", "parties": [], "timeline": []}}
+    state = core.evaluate(area.workflow(wid), [], [], result, "c", files=files)
+    items = build_items(state, result, files)
+    return state, items, {i["item_id"]: i for i in items}
+
+
+class IncomingOrderTests(unittest.TestCase):
+    """An item calls for an action only when it came after the insurer's last own step, or after the report while the
+    insurer has taken none; before that it is a fact of the case, and at intake the stage's own action leads."""
+
+    def test_a_voucher_the_other_side_gave_before_the_report_is_a_fact_of_the_case_and_the_first_request_stands(self):
+        base = fresh([("rechtsgebiet", "Übriges Recht")])[2]["next_action:0"]
+        state, items, by = fresh([("rechtsgebiet", "Übriges Recht"), VOUCHER])
+        nxt = by["next_action:0"]
+        self.assertEqual((nxt["action"], nxt["value"]), (base["action"], base["value"]))
+        self.assertEqual(nxt["action"], "A1")  # the first request, never «answer the other side's offer»
+        self.assertNotIn("incoming", nxt)
+        self.assertNotIn("then", nxt)
+        line = by["stand:eingang:eingang_angebot"]  # shown in «Der Fall», with its source
+        self.assertEqual((line["label"]["de"], line["open"]), ("Angebot der Gegenpartei", False))
+        self.assertTrue(line["value"].startswith("vom 23.09.2026 liegt vor – Sonnenweit Reisen AG: Reisegutschein über CHF 1'820"))
+        self.assertTrue(line["value"].endswith("(vor der Meldung des Falls am 03.11.2026)"))
+        self.assertEqual(line["evidence"][0]["quote"], VOUCHER[2])
+        self.assertIn("Angebot der Gegenpartei: vom 23.09.2026 liegt vor", letters.file_note(CASE, items, [], None))  # and in the file note
+        # the same in another area: a deduction the administrator announced before the report, even if read as an offer
+        announced = ("eingang_angebot", "Lötscher Immobilien GmbH: Abrechnung folgt, sobald die Rechnung vorliegt, Schreiben vom 2026-06-12",
+                     "Sobald die Rechnung vorliegt, erhalten Sie eine Abrechnung")
+        base = fresh([("rechtsgebiet", "Mietrecht / Kaution und Rückgabe")], created="2026-10-02", wid="miete-kaution")[2]["next_action:0"]
+        nxt = fresh([("rechtsgebiet", "Mietrecht / Kaution und Rückgabe"), announced], created="2026-10-02", wid="miete-kaution")[2]["next_action:0"]
+        self.assertEqual((nxt["action"], "incoming" in nxt, "then" in nxt), (base["action"], False, False))
+        self.assertEqual(nxt["action"], "A1")
+
+    def test_old_letters_of_the_other_side_in_a_file_read_mid_course_never_replace_the_stages_action(self):
+        history = "A1 2024-01-10; A5 2024-03-01"  # our first request and assessment; the other side's e-mails lie long before
+        own = [("rechtsgebiet", "Mietrecht / Mangel"), ("deckung", "bestätigt"), ("vorgehen", "Selbst führen")]
+        base = prepared(own, history=history)[2]
+        old = ("eingang_angebot", "Verwaltung: Entschädigung nur auf schriftliches Gesuch mit Betrag, E-Mail vom 2023-11-02", "nur auf schriftliches Gesuch")
+        state, items, nxt, _ = prepared(own + [old], history=history)
+        self.assertEqual((nxt["action"], nxt.get("form")), (base["action"], base.get("form")))
+        self.assertNotIn("incoming", nxt)
+        line = {i["item_id"]: i for i in items}["stand:eingang:eingang_angebot"]
+        self.assertIn("(vor dem letzten Schritt von Protekta, A5 vom 01.03.2024)", line["value"])
+        undated = ("eingang_angebot", "Verwaltung: Kosten und Reduktion werden geprüft, sobald die Ursache bekannt ist", "sobald die Ursache bekannt ist")
+        state, items, nxt, _ = prepared(own + [undated], history=history)  # no date of its own, none of its document: order unknown
+        self.assertEqual(nxt["action"], base["action"])
+        line = {i["item_id"]: i for i in items}["stand:eingang:eingang_angebot"]
+        self.assertEqual((line["open"], line["value"].endswith("(Zeitpunkt prüfen)")), (True, True))
+        later = ("eingang_angebot", "Anwalt der Vermieterin: Vergleichsangebot CHF 1'500 per Saldo, Schreiben vom 2024-05-10", "CHF 1'500 per Saldo")
+        self.assertEqual(prepared(own + [later], history=history)[2]["action"], "A9")  # after our last step: it calls for its action
+        self.assertEqual(incoming.read_item(VOUCHER[1])[0].isoformat(), "2026-09-23")  # its own date, not the date it is valid until
+
+    def test_at_intake_the_assessment_leads_and_an_offer_that_came_after_our_request_follows_it_and_is_named_in_it(self):
+        from tests.test_stage_rules import COMPLETE, DEFECT, view
+        offer = ("eingang_angebot", "Vermieterin: Mietzinsreduktion von CHF 200 für drei Monate, Schreiben vom 2024-02-01", "Reduktion von CHF 200")
+        wants = DEFECT + [("deckung", "bestätigt"), ("weiteres_vorgehen", True), offer]
+        state, listed, nxt = view(wants, "A1 2024-01-10", COMPLETE)
+        self.assertEqual((state["evaluation"]["current"]["step"], nxt["action"]), ("beurteilen", "A5"))  # the assessment is prepared
+        self.assertNotIn("incoming", nxt)
+        self.assertEqual([(t["kind"], t["date"], t["action"]) for t in nxt["then"]],
+                         [("angebot", "2024-02-01", "Antwort auf das Angebot der Gegenpartei")])  # «danach»
+        text = letters.render("A5", area.workflow("mietmangel-handler")["forms"], letters.context(CASE, list(listed.values()), [], {}))[0]
+        self.assertIn("In Ihrem Fall: Angebot der Gegenpartei vom 01.02.2024 liegt vor: Vermieterin: Mietzinsreduktion von CHF 200 für drei Monate", text)
+        self.assertNotIn("stand:eingang:eingang_angebot", listed)  # it calls for an action: not a mere fact
+        state, listed, nxt = view(wants, "A1 2024-01-10; A5 2024-01-20", COMPLETE)  # the assessment went out before it: it leads now
+        self.assertEqual((nxt["action"], nxt["incoming"]["kind"]), ("A9", "angebot"))
+        state, listed, nxt = view(DEFECT + [("deckung", "bestätigt"), ("weiteres_vorgehen", True)], "A1 2024-01-10", COMPLETE)
+        self.assertNotIn("then", nxt)
+
+    def test_the_running_account_says_when_the_case_was_reported_and_whom_an_item_was_addressed_to(self):
+        entry = lambda n, day, frm, to, kind="andere": {"n": n, "date": day, "from": frm, "to": to, "kind": kind}
+        offer = lambda day: {"date": day, "kind": {"from": ["gegenpartei"]}}
+        ledger = {"entries": [entry(1, "2026-09-23", "gegenpartei", "kunde", "angebot"), entry(2, "2026-11-03", "kunde", "versicherer", "meldung")]}
+        ref = incoming.reference({}, ledger)
+        self.assertEqual((ref["kind"], ref["date"].isoformat()), ("report", "2026-11-03"))
+        self.assertEqual(incoming.timing(offer("2026-09-23"), ref, ledger), "fact")  # before the report
+        self.assertEqual(incoming.timing(offer("2026-11-03"), ref, ledger), "unknown")  # the same day: order not established
+        later = {"entries": ledger["entries"] + [entry(3, "2026-11-08", "gegenpartei", "kunde", "angebot")]}
+        self.assertEqual(incoming.timing(offer("2026-11-08"), ref, later), "unknown")  # addressed to the customer, not sent in
+        sent = {"entries": later["entries"] + [entry(4, "2026-11-09", "kunde", "versicherer", "unterlagen")]}
+        self.assertEqual(incoming.timing(offer("2026-11-08"), ref, sent), "call")  # the customer sent it in as new
+        to_us = {"entries": ledger["entries"] + [entry(3, "2026-11-08", "gegenpartei", "versicherer", "angebot")]}
+        self.assertEqual(incoming.timing(offer("2026-11-08"), ref, to_us), "call")  # addressed to the insurer
+        step = incoming.reference({"bisherige_handlungen": "A1 2026-11-05"}, ledger)  # once the insurer acted, its last step counts
+        self.assertEqual((step["kind"], incoming.timing(offer("2026-11-04"), step, ledger), incoming.timing(offer("2026-11-08"), step, later)),
+                         ("step", "fact", "call"))
+        self.assertIsNone(incoming.reference({}, None, [], None))  # nothing to go by: every item's order is unknown
+        self.assertEqual(incoming.timing(offer("2026-11-08"), None), "unknown")
+
+    def test_what_counts_as_each_kind_reaches_the_reader_and_the_checker_with_the_nearest_thing_that_does_not(self):
+        from casepath.agents import team
+        for w in area.shipped():
+            defs = {f["id"]: f for f in w["facts"]}
+            for kind in w["incoming"]:
+                for fid in incoming.slots(kind):
+                    self.assertTrue(defs[fid].get("not_this"), fid)
+                    self.assertEqual(team.fact_view(defs[fid])["not_this"], defs[fid]["not_this"])  # the reader's and the second reading's view
+        defs = {f["id"]: f for f in area.workflow("allgemein")["facts"]}
+        offer = defs["eingang_angebot"]
+        self.assertIn("eine bestimmte Leistung (Betrag, Handlung oder Termin), die die Kundschaft so annehmen kann", offer["question"])
+        for word in ("Einladung, ein Gesuch zu stellen", "Forderung zu beziffern", "Versprechen, die Sache zu prüfen", "Bedingung", "Ablehnung", "Eingangsbestätigung"):
+            self.assertIn(word, offer["not_this"])
+            self.assertIn(word, defs["eingang_angebot_2"]["not_this"])
+        self.assertIn("Zahlungsaufforderung mit Betrag oder eine Honorarnote", defs["eingang_kostenforderung"]["question"])
+        self.assertIn("Ankündigung, dass Kosten entstehen", defs["eingang_kostenforderung_3"]["not_this"])
+        self.assertIn("nicht geliefert oder Tatsachen verschwiegen", defs["eingang_mitwirkung"]["question"])
+        self.assertIn("Unterlagen noch ausstehen", defs["eingang_mitwirkung"]["not_this"])
+        self.assertIn("tatsächlich bezahlt", defs["eingang_zahlung"]["question"])
+        self.assertIn("Versprechen", defs["eingang_zahlung_2"]["not_this"])
+        self.assertIn("Eingangsbestätigung", defs["eingang_bericht"]["not_this"])
 
 
 if __name__ == "__main__":

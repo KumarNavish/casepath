@@ -11,7 +11,15 @@ items up to that date), or the case's history shows an action of a kind that ans
 action answers one item, the oldest before it. An item read without a date of its own takes the date of the document
 its quote is in (``document_dates``). An open item outranks the stage's own action and the clock, the oldest of the
 most urgent kind first; the stage itself does not move, except that an open cost claim keeps the case from closing
-(the derived fact ``kosten_offen``). Model-free.
+(the derived fact ``kosten_offen``).
+
+An item calls for an action only when it reached the case after the insurer's last own step, or, while the insurer has
+taken no step yet, after the case was reported (``reference``; with the running account: an item addressed to the
+insurer, or one the customer sent in after the report). An item that lies before that point is a fact of the case: it
+is shown with the case and can feed a key point or the assessment, but it never replaces the stage's own action; when
+its order cannot be established it is shown with «Zeitpunkt prüfen» and calls for nothing (``timing``). At the stages the
+backbone names (``incoming_lead``: intake, clarifying, assessing), the stage's own action leads while it is due, and an
+open item that calls for an action follows it («danach»). Model-free.
 """
 import re
 
@@ -30,6 +38,9 @@ def validate(backbone):
     done = backbone.get("incoming_done")
     if backbone.get("incoming") and (facts.get(done) or {}).get("type") != "date":
         raise CatalogueError("backbone: incoming_done must name a date fact the handler sets")
+    lead = (backbone.get("incoming_lead") or {}).get("stages", [])
+    if not isinstance(lead, list) or set(lead) - {s["id"] for s in backbone.get("steps", [])}:
+        raise CatalogueError("backbone: incoming_lead.stages must name stages of the backbone")
     for kind in backbone.get("incoming", []):
         where = f"backbone: incoming kind {kind.get('id')!r}"
         for field in ("id", "fact", "title", "what", "from", "priority", "action", "answered_by", "note", "source_refs"):
@@ -75,11 +86,17 @@ def _value(facts, fact):
 ANSWERED = re.compile(r"\b(?:beglichen|bezahlt|beantwortet|erledigt)\s+(?:am\s+)?(\d{4}-\d{2}-\d{2})", re.I)
 
 
+DUE = re.compile(r"(?:\bbis|\bab|spätestens|frist|gültig|einlösbar|fällig|zahlbar|innert)\b[^,;]{0,12}$", re.I)
+DAY = re.compile(r"\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.\d{4}")
+
+
 def read_item(value):
     """(its own date, the date the file shows it answered): the item's date is the first date of the reading that is not
-    the answered mark ("…; beglichen 2024-05-20"). Either is None when the reading does not state it."""
+    the answered mark ("…; beglichen 2024-05-20") and not a date it names as due or valid until ("einlösbar bis
+    2027-09-30", "zahlbar bis …"); the first date when every date is such. Either is None when the reading does not state it."""
     answered = ANSWERED.search(value)
-    own = parse_date(ANSWERED.sub(" ", value))
+    rest = ANSWERED.sub(" ", value)
+    own = next((parse_date(m.group(0)) for m in DAY.finditer(rest) if not DUE.search(rest[:m.start()])), None) or parse_date(rest)
     return own, parse_date(answered.group(1)) if answered else None
 
 
@@ -125,7 +142,50 @@ def document_dates(workflow, rows, files):
     return out
 
 
-def items(workflow, facts, dated=None):
+INSURER, CUSTOMER = "versicherer", "kunde"
+ACCOUNT_PARTY = {"gericht": "behoerde"}  # the incoming kinds' senders as the running account names them
+
+
+def reference(facts, ledger=None, files=None, created=None):
+    """The point an incoming item must come after to call for an action: {date, kind, text}, or None when the case gives
+    none. The insurer's last own step (its dated history, the running account's actions included: kind «step»); while it
+    has taken none, the day the case was reported (kind «report»): the account's report entry, else the customer's first
+    entry to the insurer, else the day the case came in as the product knows it (cover.report_date)."""
+    steps = sorted((d, code) for code, days in done_actions(facts or {}).items() for x in days if (d := parse_date(x)))
+    if steps:
+        day, code = steps[-1]
+        return {"date": day, "kind": "step", "text": f"vor dem letzten Schritt von Protekta, A{code} vom {day.strftime('%d.%m.%Y')}"}
+    entries = (ledger or {}).get("entries") or []
+    reported = [d for e in entries if e.get("kind") == "meldung" and (d := parse_date(e.get("date")))] or \
+        [d for e in entries if e.get("from") == CUSTOMER and e.get("to") == INSURER and (d := parse_date(e.get("date")))]
+    if reported:
+        day = min(reported)
+    else:
+        from .cover import report_date
+        day = report_date(files, created)[0]
+    return {"date": day, "kind": "report", "text": f"vor der Meldung des Falls am {day.strftime('%d.%m.%Y')}"} if day else None
+
+
+def timing(row, ref, ledger=None):
+    """Whether an item calls for an action («call»), is a fact of the case («fact»: it lies before the reference point), or
+    its order cannot be established («unknown»: no date, no reference point, the same day, or, before any step of the
+    insurer, an item the account shows addressed to someone else that the customer did not send in after it)."""
+    day = parse_date(row["date"]) if row.get("date") else None
+    if day is None or ref is None or day == ref["date"]:
+        return "unknown"
+    if day < ref["date"]:
+        return "fact"
+    entries = (ledger or {}).get("entries") or []
+    if ref["kind"] == "report" and entries:
+        senders = {ACCOUNT_PARTY.get(p, p) for p in row["kind"]["from"]}
+        entry = next((e for e in entries if e.get("date") == row["date"] and e.get("from") in senders), None)
+        sent_in = any(e.get("from") == CUSTOMER and e.get("to") == INSURER and (d := parse_date(e.get("date"))) and d >= day for e in entries)
+        if entry and entry.get("to") != INSURER and not sent_in:
+            return "unknown"
+    return "call"
+
+
+def items(workflow, facts, dated=None, order=None):
     """Every incoming item the case's facts record, each its own entry: {kind, fact, value, date, dated_by, open,
     answered, action, decided}, in priority order and, within a kind, oldest first.
 
@@ -133,7 +193,9 @@ def items(workflow, facts, dated=None):
     (``incoming_done``), or by one action of the history of a kind that answers it, dated after it. Each such action
     answers one item only, the oldest open one before it, so a single payment does not settle two claims; a kind
     answered by "any" action (a report) uses none up. ``dated``: the document dates of items read without their own
-    (``document_dates``)."""
+    (``document_dates``). ``order``: {ref, ledger} (``reference``): each item's ``timing``; without it every item calls
+    for its action, as before the rule. An item before the reference point still calls for its action when a later step
+    of the insurer answered another item of its kind and so left this one over."""
     done = done_actions(facts)
     dated = dated or {}
     marked = parse_date(facts.get(workflow.get("incoming_done") or ""))
@@ -174,14 +236,44 @@ def items(workflow, facts, dated=None):
             hit = None
         if hit:
             unused.remove(hit)
+            row["answered_on"] = hit[0]
     for row in rows:
         row["open"] = row["answered"] is None
+        row["timing"] = timing(row, order.get("ref"), order.get("ledger")) if order is not None else "call"
+        day = parse_date(row["date"]) if row["date"] else None
+        if row["open"] and row["timing"] == "fact" and any(o is not row and o["kind"] is row["kind"] and o.get("answered_on") and o["answered_on"] > day for o in rows):
+            # a later step of the insurer that answered another item of this kind (a payment of the other claim) did not deal
+            # with this one: it is left over and still calls for its action
+            row["timing"] = "call"
     return sorted(rows, key=lambda r: (r["kind"]["priority"], r["date"] is None, r["date"] or ""))
 
 
-def pending(workflow, facts, dated=None):
-    """The open items, the first to act on first: by the kind's priority, then the oldest."""
-    return [r for r in items(workflow, facts, dated) if r["open"]]
+def pending(workflow, facts, dated=None, order=None):
+    """The open items that call for an action, the first to act on first: by the kind's priority, then the oldest."""
+    return [r for r in items(workflow, facts, dated, order) if r["open"] and r["timing"] == "call"]
+
+
+def case_facts(workflow, facts, dated=None, order=None):
+    """The open items that are facts of the case, not actions: those before the reference point and those whose order
+    cannot be established, each once."""
+    return [r for r in items(workflow, facts, dated, order) if r["open"] and r["timing"] != "call"]
+
+
+def fact_line(row, ref=None):
+    """An item that is a fact of the case, as «Der Fall» shows it: {label, text, open}; open (to check) when its order
+    cannot be established."""
+    day = parse_date(row["date"]) if row["date"] else None
+    when = f"vom {day.strftime('%d.%m.%Y')} " if day else ""
+    value = shown(row["value"], day if row.get("dated_by") == "item" else None)
+    where = ref["text"] if row["timing"] == "fact" and ref else "Zeitpunkt prüfen"
+    return {"label": row["kind"]["title"], "text": f"{when}liegt vor – {value} ({where})", "open": row["timing"] == "unknown"}
+
+
+def assessment_line(row):
+    """The item in the assessment's «In Ihrem Fall»: «Angebot der Gegenpartei vom 23.09.2026 liegt vor: …»."""
+    day = parse_date(row["date"]) if row.get("date") else None
+    value = shown(row["value"], day if row.get("dated_by") == "item" else None)
+    return f"{row['kind']['title']}" + (f" vom {day.strftime('%d.%m.%Y')}" if day else "") + f" liegt vor: {value}."
 
 
 def cost_open(workflow, facts, dated=None):

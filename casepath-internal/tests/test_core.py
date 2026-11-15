@@ -80,6 +80,54 @@ class CoreContractTests(unittest.TestCase):
         with self.assertRaises(core.JobError):
             core.prepare({"format": "something else"}, None, None)
 
+    def test_a_case_pinned_to_a_version_no_longer_shipped_runs_under_the_current_version_and_says_so(self):
+        events = []
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(json.loads(json.dumps(job(workflow_version="2025-01-01"))), script(), core.DirectoryBlobs(blobs),
+                                   on_event=events.append)
+        self.assertEqual((outcome["status"], outcome["workflow"]["id"], outcome["workflow"]["version"]), ("completed", "example-defect", "2026-01-01"))
+        self.assertEqual((outcome["routing"]["status"], outcome["routing"]["pinned_version"], outcome["routing"]["governing_version"]),
+                         ("selected", "2025-01-01", "2026-01-01"))  # the run records that it ran under the current version
+        decided = next(e for e in events if e.get("kind") == "routing.decided")
+        self.assertEqual((decided["version"], decided["pinned_version"]), ("2026-01-01", "2025-01-01"))
+        self.assertGreater(sum(u.get("input_tokens", 0) for u in outcome["result"]["usage"]), 0)  # it did the work
+        with tempfile.TemporaryDirectory() as blobs:  # the shipped version itself: nothing to say
+            same = core.prepare(json.loads(json.dumps(job(workflow_version="2026-01-01"))), script(), core.DirectoryBlobs(blobs))
+        self.assertNotIn("pinned_version", same["routing"])
+
+    def test_a_case_pinned_to_a_workflow_that_is_gone_fails_with_a_reason_the_handler_reads_and_spends_nothing(self):
+        model = ScriptedModel([])  # any call would fail the script: none is made
+        with tempfile.TemporaryDirectory() as blobs:
+            outcome = core.prepare(json.loads(json.dumps(job(workflow_id="no-longer-shipped", workflow_version="2025-01-01"))), model,
+                                   core.DirectoryBlobs(blobs))
+        self.assertEqual(outcome["status"], "failed")  # never «completed» with nothing done
+        self.assertEqual(outcome["error"], "workflow_missing: Der gewählte Prozess ist nicht mehr vorhanden; bitte neu wählen.")
+        self.assertEqual((outcome["result"], outcome["workflow"], model.inputs), (None, None, []))
+        with self.assertRaises(core.TeamError):  # the routing itself never answers «unmapped» for a chosen workflow that is gone
+            core.route(model, Catalogue.load(FIXTURES), {"title": "x", "workflow_id": "no-longer-shipped"}, [], lambda e: None)
+        ui = (Path(core.__file__).parents[1] / "web" / "ui" / "assets" / "casepath.js").read_text()
+        self.assertIn('workflow_missing: T("the chosen process no longer exists; please choose again", '
+                      '"Der gewählte Prozess ist nicht mehr vorhanden; bitte neu wählen")', ui)  # shown on the case in plain words
+
+    def test_the_run_service_saves_a_missing_workflow_as_a_failed_run(self):
+        from casepath.agents.runner import RunService
+
+        class Store:
+            runs = {}
+
+            def interrupt_unfinished(self):
+                pass
+
+            def update_run(self, run_id, **fields):
+                self.runs.setdefault(run_id, {}).update(fields)
+        store = Store()
+        service = RunService(store, Catalogue.load(FIXTURES), lambda: None)
+        try:
+            service.save("r1", "case_1", core._outcome(status="failed", error=f"workflow_missing: {core.WORKFLOW_MISSING}"))
+        finally:
+            service.shutdown()
+        self.assertEqual((store.runs["r1"]["status"], store.runs["r1"]["error"].split(":")[0]), ("failed", "workflow_missing"))
+
 
 if __name__ == "__main__":
     unittest.main()

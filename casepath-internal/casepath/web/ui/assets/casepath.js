@@ -265,6 +265,7 @@ function runError(error) {
     delegation_limit: T("the case needed more steps than allowed", "Der Fall brauchte mehr Schritte als erlaubt"),
     turn_limit: T("an agent did not finish in time", "Ein Agent wurde nicht rechtzeitig fertig"),
     no_files: T("the case has no files", "Der Fall hat keine Dokumente"),
+    workflow_missing: T("the chosen process no longer exists; please choose again", "Der gewählte Prozess ist nicht mehr vorhanden; bitte neu wählen"),
     transport: T("the model could not be reached; please try again", "Das Modell war nicht erreichbar; bitte erneut versuchen"),
     schema_mismatch: T("the model gave an unusable answer; please try again", "Das Modell gab eine unbrauchbare Antwort; bitte erneut versuchen"),
     max_output_tokens: T("the page was too long for one answer", "die Seite war zu lang für eine Antwort"),
@@ -1631,7 +1632,9 @@ function preparedView(ev, st) {
   const early = !act || ["request", "A0", "A1", "A4"].includes(act.action) || ["eingang", "klaeren"].includes(stageNow) || !act.reason;
   const weil = came ? cameLine : [act && act.reason ? esc(act.reason) : "",
     claimFile && early ? `<button class="cp-link" data-cite-file="${esc(claimFile.id)}" data-page="">${T("claim received", "Schadenmeldung eingegangen")}</button>` : "",
-    missing && early ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`${missing} document(s) missing`, `${missing} Unterlage${missing > 1 ? "n" : ""} fehl${missing > 1 ? "en" : "t"}`)}</a>` : ""].filter(Boolean).join(" · ");
+    missing && early ? `<a class="cp-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`${missing} document(s) missing`, `${missing} Unterlage${missing > 1 ? "n" : ""} fehl${missing > 1 ? "en" : "t"}`)}</a>` : "",
+    // an open item that came in waits behind the stage's own action (the first request or the assessment goes out first)
+    act && (act.then || []).length ? `${T("then", "danach")}: ${(act.then || []).map((t) => esc(`${t.action}${t.date ? ` (${t.title} vom ${dateText(t.date)})` : ""}`)).join(" · ")}` : ""].filter(Boolean).join(" · ");
   const options = (S.data.action_options || []).filter((o) => !act || o.kind !== act.action);
   const title = act ? T(act.label.en, act.label.de) : T("No prepared step", "Kein vorbereiteter Schritt");
   const f = S.data.follow_up, due = f && f.due;

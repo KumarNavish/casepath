@@ -215,15 +215,22 @@ def _both_ends(evidence, file_id, limit):
     return {**head, "text": head["text"] + f"\n\n[… pages {head['next_page']}–{first_tail - 1} not shown …]\n\n" + tail["text"]}
 
 
+WORKFLOW_MISSING = "Der gewählte Prozess ist nicht mehr vorhanden; bitte neu wählen."
+
+
 def route(model, catalogue, case, files, on_event):
     """The case worker's chosen workflow, or the routing facts read from the files with exact quotes, decided by the catalogue."""
     if case.get("workflow_id"):
-        workflow = catalogue.get(case["workflow_id"], case.get("workflow_version"))
+        # A case pinned to a version that is no longer shipped runs under the current version of the same workflow, and
+        # says so; a workflow whose id is gone is never run silently as "nothing to do": the run fails with a reason the
+        # handler reads on the case.
+        pinned = case.get("workflow_version")
+        workflow = catalogue.get(case["workflow_id"], pinned) or catalogue.get(case["workflow_id"])
         if workflow is None:
-            return {"status": "unmapped", "workflow": None, "candidates": [], "needs": [],
-                    "reason": "The selected workflow is no longer in the catalogue."}, None
+            raise TeamError("workflow_missing", WORKFLOW_MISSING)
         return {"status": "selected", "workflow": workflows.ref(workflow), "candidates": [], "needs": [],
-                "selected_by": case.get("workflow_selected_by")}, workflow
+                "selected_by": case.get("workflow_selected_by"),
+                **({"pinned_version": pinned, "governing_version": workflow["version"]} if pinned and pinned != workflow["version"] else {})}, workflow
     facts = catalogue.routing_facts()
     if not facts:
         decision = workflows.route(catalogue, {})
@@ -320,6 +327,8 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, shou
             raise TeamError("no_files", "The case has no files to read.")
         if model is None:
             raise ModelError("model_not_configured", "No model deployment is configured for this workspace.")
+        if job["case"].get("workflow_id") and not job.get("resume") and catalogue_of(job).get(job["case"]["workflow_id"]) is None:
+            raise TeamError("workflow_missing", WORKFLOW_MISSING)  # before any file is read: nothing is spent on a run that cannot go on
         usage = []  # reading and routing; the team records its own
         model = _Budget(model, options.get("token_budget"))
         if options.get("read_scans", True):
@@ -339,7 +348,8 @@ def prepare(job, model, blobs, on_event=lambda e: None, on_extraction=None, shou
         else:
             decision, workflow = route(_Counted(model, "router", usage), catalogue_of(job), job["case"], files, on_event)
         if workflow:  # shown at once, before any agent reads the case, with "anderer Prozess" beside it
-            on_event({"agent": "lead", "kind": "routing.decided", "workflow": workflow["id"], "title": workflow["title"], "version": workflow["version"]})
+            on_event({"agent": "lead", "kind": "routing.decided", "workflow": workflow["id"], "title": workflow["title"], "version": workflow["version"],
+                      **({"pinned_version": decision["pinned_version"]} if decision.get("pinned_version") else {})})
         if workflow is None:
             return _outcome(routing=decision, result={"assessment": None, "routing": decision, "usage": usage},
                             extractions=storage.extractions)

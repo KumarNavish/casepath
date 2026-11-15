@@ -173,6 +173,11 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     listed = request_list(items, events, evaluation, process) if evaluation else [f"– {label(i)}" for i in docs]
     points = [i for i in items if i["kind"] == "key_point" and i.get("value") == "applies"]
     in_case = [f"{i['follows'].rstrip('.')} ({i['legal_basis']})." for i in points[:3]] + dates  # what applies, each with its article
+    # what came in from others and is a fact of the case («Angebot der Gegenpartei vom … liegt vor: …»), and an open item
+    # that waits behind the stage's own action; never a line that it was answered
+    after = (next((i for i in items if i["kind"] == "next_action"), None) or {}).get("then") or []
+    in_case += [i["incoming"]["line"] for i in items if i["kind"] == "stand" and (i.get("incoming") or {}).get("line")]
+    in_case += [t["line"] for t in after if t.get("line")]
     stated = {i["key"] for i in points[:3]}
     questions_asked = [i for i in items if i["kind"] == "customer_question" and i.get("value")]
     came = (next((i for i in items if i["kind"] == "next_action"), None) or {}).get("incoming") or {}  # what came in, as read

@@ -3,6 +3,7 @@ import contextlib
 import io
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 
@@ -65,6 +66,33 @@ class ScoreSavedTests(unittest.TestCase):
         total = next(line for line in text.splitlines() if line.startswith("total"))
         self.assertEqual(total.split(), ["total", "2/2", "2/2", "2/3", "1", "1", "1/2", "0/1", "0/0", "71.5", "2000/500"])
         self.assertNotIn("Darlehen zurück", text)  # ids and counts only
+
+    def test_an_assessment_whose_only_gaps_are_the_handlers_is_ok_with_its_gaps_named_apart_from_an_incomplete_one(self):
+        from casepath.process import area, letters
+        assess = {**NOISE, "action": "A5", "ask_now": []}
+        own = handler.letter_form(assess)["handler_gaps"]
+        self.assertEqual(set(own), {"rights", "im_fall", "empfehlung"})  # the reasons (here the legal basis too) and the recommendation
+        self.assertEqual(set(handler.letter_form({**assess, "area": "mietmangel-handler"})["handler_gaps"]), {"im_fall", "empfehlung"})
+        # the letter the product renders carries exactly those gaps: the form's declaration and the letter agree
+        items = [{"item_id": "key_point:x", "kind": "key_point", "key": "x", "value": "applies", "follows": "Ein Anspruch besteht.",
+                  "legal_basis": "Art. 1 OR", "label": {"de": "x"}}]
+        text = letters.render("A5", area.workflow("allgemein")["forms"], letters.context({"id": "c", "title": "t", "intake": {}}, items, [], {}))[0]
+        gaps = re.findall(r"\[bitte ergänzen: ([^\]]+)\]", text)
+        self.assertTrue(gaps and all(any(g in v for v in own.values()) for g in gaps), gaps)
+        row = {"case": "X02", "workflow": "allgemein", "action": "A5", "now": [], "letter_lines": 9, "deadlines": []}
+        ok = handler.score_row(assess, {**row, "letter_gap_texts": gaps})
+        self.assertEqual((ok["letter"], ok["letter_why"], ok["letter_own_gaps"]), ("handler", [], len(gaps)))
+        self.assertEqual(handler.score_row(assess, {**row, "letter_gaps": 2})["letter"], "handler")  # a count within the declared places
+        odd = handler.score_row(assess, {**row, "letter_gap_texts": gaps + ["Antwort auf diese Frage"]})
+        self.assertEqual((odd["letter"], odd["letter_why"], odd["letter_own_gaps"]), (False, ["1 gap"], len(gaps)))  # an unexpected gap
+        self.assertEqual(handler.score_row(assess, {**row, "letter_gaps": 4})["letter_why"], ["4 gaps"])  # more than its places: not read as its own
+        empty = handler.score_row(assess, {**row, "letter_lines": 0, "letter_gaps": 2})
+        self.assertEqual((empty["letter"], empty["letter_why"]), (False, ["0 lines"]))  # no lines is never ok
+        cases = [{**c, "truth_handler": assess if c["id"].startswith("X02") else c["truth_handler"]} for c in self.cases]
+        out = handler.render(handler.score_saved([RESULTS[0], {**row, "letter_gap_texts": gaps}], cases))
+        self.assertIn(f"X02 area ok action ok documents 0/0 extra 0 present asked 0 letter ok, {len(gaps)} gaps for the handler deadline -", out)
+        self.assertIn("allgemein: none", out)
+        self.assertEqual(handler.score_row(NOISE, {**RESULTS[1], "letter_gaps": 1})["letter"], False)  # a first request declares none
 
     def test_a_case_without_a_row_and_dates_where_the_trigger_is_missing(self):
         text = handler.render(handler.score_saved(RESULTS[1:], self.cases))

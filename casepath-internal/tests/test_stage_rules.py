@@ -162,10 +162,16 @@ class UndatedItemTests(unittest.TestCase):
         _, _, nxt = view(MANDATE + [self.undated(3)], HISTORY + "; A11 2024-05-10", segments=self.SEGMENTS)
         self.assertEqual(nxt["incoming"]["date"], "2024-05-20")  # between 02.05. and 20.05.: only an action after 20.05. answers it
         self.assertNotIn("incoming", view(MANDATE + [self.undated(3)], HISTORY + "; A11 2024-05-25", segments=self.SEGMENTS)[2])
-        nowhere = view(MANDATE + [self.undated(None)], HISTORY + "; A11 2024-06-01", segments=self.SEGMENTS)[2]
-        self.assertIsNone(nowhere["incoming"]["date"])  # no page, no date: no action answers it
+        state, listed, nowhere = view(MANDATE + [self.undated(None)], HISTORY + "; A11 2024-06-01", segments=self.SEGMENTS)
+        self.assertNotIn("incoming", nowhere)  # no page, no date: its order is unknown, it calls for nothing and no action answers it
+        line = listed["stand:eingang:eingang_kostenforderung"]
+        self.assertEqual((line["label"]["de"], line["open"]), ("Kostenforderung", True))
+        self.assertIn("(Zeitpunkt prüfen)", line["value"])  # shown with the case, its order to check
+        self.assertTrue(state["facts"]["kosten_offen"])  # and the case does not close over it
         marked = [{"id": "e1", "op": "set_fact", "status": "active", "args": {"fact": "eingang_erledigt_bis", "value": "2024-06-01"}}]
-        self.assertNotIn("incoming", view(MANDATE + [self.undated(None)], HISTORY, segments=self.SEGMENTS, edits=marked)[2])
+        state, listed, _ = view(MANDATE + [self.undated(None)], HISTORY, segments=self.SEGMENTS, edits=marked)
+        self.assertNotIn("stand:eingang:eingang_kostenforderung", listed)
+        self.assertFalse(state["facts"]["kosten_offen"])
 
 
 class DeadEndTests(unittest.TestCase):
@@ -283,8 +289,9 @@ class SecondReadingTests(unittest.TestCase):
                          ["eingang_angebot", "eingang_bericht", "eingang_kostenforderung", "eingang_mitwirkung", "eingang_zahlung"])
         row = next(f for f in outcome["result"]["facts"] if f["fact"] == "eingang_kostenforderung")
         self.assertEqual(row["status"], "conflicting")
-        state = core.evaluate(area.workflow("mietmangel-handler"), [], [], outcome["result"], "case_k")
-        nxt = {i["item_id"]: i for i in build_items(state, outcome["result"])}["next_action:0"]
+        result = {**outcome["result"], "facts": outcome["result"]["facts"] + [fact("bisherige_handlungen", "A1 2024-04-10")]}  # it came after our request
+        state = core.evaluate(area.workflow("mietmangel-handler"), [], [], result, "case_k")
+        nxt = {i["item_id"]: i for i in build_items(state, result)}["next_action:0"]
         self.assertEqual(nxt["action"], "A11")  # a disagreement never hides what came in
         self.assertIn("eine zweite Lesung der Akte ergab «Kanzlei Muster: Honorarnote vom 2024-06-02», bitte prüfen", nxt["reason"])
 
@@ -294,7 +301,7 @@ class StoredRunTests(unittest.TestCase):
         rows = Catalogue(tuple(area.shipped()))
         self.assertIsNone(rows.get("mietmangel-handler", "2026-11-14.1"))
         governing = rows.get("mietmangel-handler", "2026-11-14.1") or rows.get("mietmangel-handler")  # as runner.case_state falls back
-        self.assertEqual((governing["version"], governing["area"]["backbone"]), ("2026-11-15.2", "2026-11-15.2"))
+        self.assertEqual((governing["version"], governing["area"]["backbone"]), ("2026-11-15.3", "2026-11-15.3"))
         stored = {"facts": [fact(*f) for f in MANDATE] + [fact("bisherige_handlungen", HISTORY),
                                                          fact("eingang_kostenforderung", "Kanzlei Muster: Honorarnote vom 2024-05-02", "Honorarnote")],
                   "documents": [], "brief": {"request": "x", "parties": [], "timeline": []}}

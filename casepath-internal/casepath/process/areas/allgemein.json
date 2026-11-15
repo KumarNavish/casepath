@@ -1,8 +1,8 @@
 {
  "format": "casepath.area/1",
  "id": "allgemein",
- "version": "2026-11-15.2",
- "backbone": "2026-11-15.2",
+ "version": "2026-11-15.3",
+ "backbone": "2026-11-15.3",
  "short_title": "Allgemein",
  "title": "Allgemeiner Rechtsschutzfall: was jeder Fall braucht (aus dem Gesetz abgeleitet)",
  "status": "draft",
@@ -44,7 +44,7 @@
   {"id": "beweis", "statement": "Beweislast bei der Kundschaft: Belege sichern", "question": "Was ist geschehen? Dann Belege sichern", "when": {"fact": "sachverhalt", "known": true}, "law": ["law#zgb-8"], "follows": "Wer aus einer Tatsache Rechte ableitet, muss sie beweisen; bitte bewahren Sie alle Belege und Nachrichten auf.", "check": "welche Belege die geschilderten Tatsachen zeigen und welche fehlen", "answers": ["beweis", "beleg"], "advice": "Bitte bewahren Sie alle Belege, Verträge und Nachrichten zum Fall auf; wer aus einer Tatsache Rechte ableitet, muss sie beweisen"}
  ],
  "assessment": {
-  "rights": {"text": "Grundsätzlich richten sich Ihre Ansprüche nach dem Vertrag oder Entscheid, um den es geht, und nach dem anwendbaren Recht: [bitte ergänzen: Rechtsgrundlage und Ansprüche]."},
+  "rights": {"text": "Grundsätzlich richten sich Ihre Ansprüche nach dem Vertrag oder Entscheid, um den es geht, und nach dem anwendbaren Recht: [bitte ergänzen: Rechtsgrundlage und Ansprüche].", "handler_gaps": ["Rechtsgrundlage und Ansprüche"]},
   "conditions": {"text": "Voraussetzung ist, dass die Tatsachen, aus denen Sie Rechte ableiten, bewiesen werden können (Art. 8 ZGB)."},
   "demand": {"text": "Wir fordern Sie auf, bis {frist} zur Sache Stellung zu nehmen, und behalten uns alle weiteren Rechte ausdrücklich vor."}
  },

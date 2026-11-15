@@ -172,6 +172,14 @@ def check_forms(forms, where="backbone"):
             named = {n for p in form.get("parts", []) for n in re.findall(r"\{([a-z_]+)\}", p)}
             if not asks or set(asks) - named or not str(form.get("empty") or "").strip():
                 raise CatalogueError(f"{where}: form {kind} asks for placeholders of its parts and says why there is no draft without them (empty)")
+        gaps = form.get("handler_gaps")  # the marked gaps the handler fills in (the reasons, the recommendation), by place
+        if gaps is not None:
+            parts = form.get("parts", [])
+            named = {n for p in parts for n in re.findall(r"\{([a-z_]+)\}", p)} | {p[1:] for p in parts if p.startswith("@")}
+            literal = lambda texts: all(f"[bitte ergänzen: {x}]" in "\n".join(parts) for x in texts)  # a gap the part itself holds
+            if not isinstance(gaps, dict) or not gaps or not all(isinstance(v, list) and v and all(isinstance(x, str) and x for x in v) for v in gaps.values()) \
+                    or any(k not in named and not literal(v) for k, v in gaps.items()):
+                raise CatalogueError(f"{where}: form {kind} names its handler's gaps by its places (a placeholder or a part), each with the gap texts")
 
 
 def check_stage_work(backbone):
@@ -390,6 +398,10 @@ def compose(backbone, module):
         if kind in bb["action_kinds"]:
             form["needs"] = list(bb["action_kinds"][kind]["depends_on"])
         if "parts" in form:
+            # a part of the module's assessment that leaves a gap for the handler (the legal basis in the general area) declares it
+            own = {p[1:]: m["assessment"][p[1:]]["handler_gaps"] for p in form["parts"] if p.startswith("@") and m["assessment"][p[1:]].get("handler_gaps")}
+            if own:
+                form["handler_gaps"] = {**(form.get("handler_gaps") or {}), **own}
             form["parts"] = [m["assessment"][p[1:]]["text"] if p.startswith("@") else p for p in form["parts"]]
     try:
         check_forms(forms, "forms")  # every form of the area, the cover's and the module's too, never renders empty
@@ -421,6 +433,8 @@ def compose(backbone, module):
                 "deadlines": [{**d, "counting": d.get("counting", "or"), "counting_rule": bb["counting"][d.get("counting", "or")]} for d in m["deadlines"]],
                 "stage_actions": True,  # a stage with an action is left only once it is done or a way out says it is not needed
                 "incoming": bb.get("incoming", []), "incoming_done": bb.get("incoming_done"),
+                # the stages whose own action, while due, leads over an open incoming item (incoming.py)
+                "incoming_lead": (bb.get("incoming_lead") or {}).get("stages", []),
                 "settled": {"when": m.get("settled_when"), "claims_open_when": m.get("claims_open_when")},
                 "law": {**{k: v for k, v in bb["law"].items()}, **m["law"]}, "laws": {**bb["laws"], **m.get("laws", {})}}
     try:

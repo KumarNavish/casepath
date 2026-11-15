@@ -392,9 +392,19 @@ def build_items(state, result, files=None, events=None):
                        "next_in_days": 10, "follow_up": "A11", "skip_if": None,
                        "reason": f"vereinbart ({account._source(owed)}): {account._terms_text(owed)}; keine Zahlung in den Akten",
                        "owed": {k: owed.get(k) for k in ("amount", "what", "payer", "by", "date")}}
-        # What came in and is still unanswered outranks the stage's own action and the clock (the customer's own statutory
-        # deadline still leads the card and caps the follow-up); the others wait, in priority order.
-        open_items = incoming.pending(graph, known_facts, incoming.document_dates(graph, result.get("facts"), files))
+        # What came in after the insurer's last own step (or after the report, before any step) and is still unanswered
+        # outranks the stage's own action and the clock (the customer's own statutory deadline still leads the card and caps
+        # the follow-up); the others wait, in priority order. What lies before that point is a fact of the case, shown in
+        # «Der Fall», never an action. At intake, clarifying and assessing (``incoming_lead``) the stage's own action leads
+        # while it is due, and the open items follow it («danach»): the first request or the assessment goes out first.
+        order = {"ref": incoming.reference(known_facts, ledger, files, created), "ledger": ledger}
+        dated_in = incoming.document_dates(graph, result.get("facts"), files)
+        open_items = incoming.pending(graph, known_facts, dated_in, order)
+        in_case = incoming.case_facts(graph, known_facts, dated_in, order)
+        due_here = bool(planned) and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], known_facts))
+        after = []
+        if open_items and here.get("id") in (graph.get("incoming_lead") or ()) and due_here and not quiet and not owed:
+            after, open_items = open_items, []
         if open_items:
             act = open_items[0]["action"]
             disputed = next((f for f in result.get("facts", []) if f.get("fact") == open_items[0]["fact"]), {})
@@ -439,6 +449,8 @@ def build_items(state, result, files=None, events=None):
                                  "value": open_items[0]["value"], **({"dated_by": "document"} if open_items[0]["dated_by"] == "document" else {})},
                     "then": [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"]}
                              for r in open_items[1:]]} if open_items else {}),
+                **({"then": [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"],
+                              "line": incoming.assessment_line(r)} for r in after]} if after else {}),
                 value=action[1], stated_as="established", verdict=None,
                 evidence=_evidence((rows.get(open_items[0]["fact"]) or {}).get("citations")) if open_items else [], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
@@ -517,6 +529,16 @@ def build_items(state, result, files=None, events=None):
                 continue
             add("stage_line", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
                 node=here.get("id"), origin="workflow", chain=False, label=line["text"], facts=line["facts"], shown=True)
+        # What came in before the insurer's last step or before the report: a fact of the case, in «Der Fall» with its source
+        for row in in_case:
+            line = incoming.fact_line(row, order["ref"])
+            second = next((f for f in result.get("facts", []) if f.get("fact") == row["fact"]), {})
+            if second.get("status") == "conflicting" and second.get("second_value"):  # a disagreement never hides it
+                line["text"] += f"; eine zweite Lesung der Akte ergab «{second['second_value']}», bitte prüfen"
+            add("stand", f"eingang:{row['fact']}", value=line["text"], stated_as="established", verdict=None,
+                evidence=_evidence((rows.get(row["fact"]) or {}).get("citations")), node=None, origin="claim_reader", chain=False,
+                label=line["label"], open=line["open"], entries=[], incoming={"kind": row["kind"]["id"], "fact": row["fact"], "date": row["date"],
+                                                                               "timing": row["timing"], "line": incoming.assessment_line(row)})
         # The running account: «Stand» in «Der Fall» and one row per document in the Verlauf (a run before it has none)
         for line in account.stand(ledger, look, graph):
             add("stand", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),

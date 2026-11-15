@@ -15,7 +15,11 @@ workflow, action, now, offered, letter_lines, letter_gaps, follow_up, deadlines:
 {non_cached, output}}, optionally letter_none (the product's reason for no draft), letter_missing (the parts of the
 form the draft lacks) and key_points (the points the card shows: ids, or {id, state} where only state «applies»
 counts). It prints one line per case, a table, totals and the failed checks grouped by area: ids and counts only, no
-case content. A first request that is incomplete says why: 0 lines, gaps, a missing part, no draft.
+case content. A first request that is incomplete says why: 0 lines, gaps, a missing part, no draft. A letter whose form
+declares the marked gaps the handler fills in (``handler_gaps``: in the assessment the reasons and the recommendation) is
+scored too: when its only gaps are those, it is «ok, n gaps for the handler», distinct from a letter with an unexpected
+gap or no lines. The row names its gaps' texts in ``letter_gap_texts`` (the words inside «[bitte ergänzen: …]»); a row
+with a count only is read as the handler's gaps while the count does not exceed the form's declared places.
 
 ``self-check`` evaluates each case with the product's rules as if the reading were perfect (the truth's facts, its
 present documents and the part of an open-ended need it calls offered) together with the practice rules a fresh
@@ -122,17 +126,32 @@ def points_verdict(truth, row):
             "extra": [p for p in shown if p not in expected]}
 
 
-def score_row(truth, row):
-    """The checks of one case: {check: verdict} plus the counts the table shows."""
+def letter_form(truth, workflows=None):
+    """The form of the case's next action in its area ({} when none): where a letter is scored, the gaps it declares."""
+    workflow = (workflows or {}).get(truth.get("area"))
+    if workflow is None:
+        from ..process import area
+        try:
+            workflow = area.workflow(truth.get("area"))
+        except Exception:  # an area the shipped catalogue does not hold: no form to read
+            workflow = {}
+    return (workflow.get("forms") or {}).get(truth.get("action")) or {}
+
+
+def score_row(truth, row, workflows=None):
+    """The checks of one case: {check: verdict} plus the counts the table shows. ``letter``: True (complete), "handler"
+    (complete but for the gaps its form declares as the handler's), False (incomplete, ``letter_why`` says why), None (no
+    letter scored for this action)."""
     asked, expected = set(row.get("now") or []), set(truth.get("ask_now", []))
     neutral = set(truth.get("depends", {})) | set(truth.get("offered", []))
     present = set(truth.get("present", []))
     given = {d.get("id"): d.get("date") for d in row.get("deadlines") or []}
     verdicts = [deadline_verdict(d, given) for d in truth.get("deadline", [])]
-    letter, why = None, []
-    if truth.get("action") == "A1":  # only a first request has a letter to complete
-        why = letter_faults(row)
-        letter = not why
+    letter, why, own = None, [], 0
+    form = letter_form(truth, workflows)
+    if truth.get("action") == "A1" or form.get("handler_gaps"):  # a first request, and a letter with the handler's gaps declared
+        why, own = letter_faults(row, form.get("handler_gaps"))
+        letter = False if why else "handler" if own else True
     tokens = row.get("tokens") or {}
     points = points_verdict(truth, row)
     return {
@@ -140,7 +159,7 @@ def score_row(truth, row):
         "action": row.get("action") == truth["action"],
         "hit": sorted(asked & expected), "expected": len(expected),
         "extra": sorted(asked - expected - neutral - present), "present_asked": sorted(asked & present),
-        "letter": letter, "letter_why": why,
+        "letter": letter, "letter_why": why, "letter_own_gaps": own,
         "deadline": None if not verdicts else "wrong" if "wrong" in verdicts else "missing" if "missing" in verdicts else "right",
         "deadline_failed": [d["id"] for d, v in zip(truth.get("deadline", []), verdicts) if v != "right"],
         "points": points, "points_ok": None if points is None else len(points["hit"]) >= points["want"] and not points["extra"],
@@ -148,18 +167,31 @@ def score_row(truth, row):
     }
 
 
-def letter_faults(row):
-    """Why a saved first request is incomplete, as short ids: "0 lines", "<n> gaps", "missing <part>" for each part the
-    row names as missing (``letter_missing``), "no draft" when the product gave a reason instead (``letter_none``)."""
+def letter_faults(row, handler_gaps=None):
+    """Why a saved letter is incomplete, as short ids, and how many of its gaps are the handler's: (faults, own). Faults:
+    "0 lines", "<n> gaps" (gaps its form does not declare as the handler's: ``handler_gaps``, by placeholder), "missing
+    <part>" for each part the row names as missing (``letter_missing``), "no draft" when the product gave a reason instead
+    (``letter_none``)."""
     out = []
     if row.get("letter_none"):
         out.append("no draft")
     if not (row.get("letter_lines") or 0):
         out.append("0 lines")
-    if row.get("letter_gaps"):
-        out.append(f"{row['letter_gaps']} gap{'' if row['letter_gaps'] == 1 else 's'}")
+    texts = [str(x).strip() for x in row.get("letter_gap_texts") or ()]
+    count = len(texts) if texts else int(row.get("letter_gaps") or 0)
+    own = 0
+    if handler_gaps and count:
+        slot = {x: k for k, v in handler_gaps.items() for x in v}
+        if texts:
+            mine = [x for x in texts if x in slot]
+            own = len(mine) if len({slot[x] for x in mine}) == len(mine) else 0  # each place of the form once
+        else:
+            own = count if count <= len(handler_gaps) else 0  # a count only: at most one gap per declared place
+    unexpected = count - own
+    if unexpected:
+        out.append(f"{unexpected} gap{'' if unexpected == 1 else 's'}")
     out += [f"missing {part}" for part in row.get("letter_missing") or ()]
-    return out
+    return out, own
 
 
 def failures(case_id, s):
@@ -177,14 +209,14 @@ def failures(case_id, s):
     return out
 
 
-def score_saved(rows, cases):
+def score_saved(rows, cases, workflows=None):
     """[(case id, area, score or None)] in suite order; a case without a saved row scores None."""
     by_case = {str(r.get("case")): r for r in rows}
     scored = []
     for case in cases:
         truth, cid = case["truth_handler"], short_id(case)
         row = by_case.get(cid)
-        s = score_row(truth, row) if row is not None else None
+        s = score_row(truth, row, workflows) if row is not None else None
         if s is not None:
             s["missed"] = sorted(set(truth.get("ask_now", [])) - set(s["hit"]))
             s["failed"] = failures(cid, s)
@@ -194,6 +226,14 @@ def score_saved(rows, cases):
 
 def _mark(value):
     return "-" if value is None else "ok" if value is True else "FAIL" if value is False else str(value)
+
+
+def _letter(s):
+    """«ok», «ok, 2 gaps for the handler», «FAIL» or «-»."""
+    if s["letter"] == "handler":
+        n = s["letter_own_gaps"]
+        return f"ok, {n} gap{'' if n == 1 else 's'} for the handler"
+    return _mark(s["letter"])
 
 
 def render(scored):
@@ -207,17 +247,17 @@ def render(scored):
             continue
         docs = f"{len(s['hit'])}/{s['expected']}"
         lines.append(f"{cid} area {_mark(s['area'])} action {_mark(s['action'])} documents {docs} extra {len(s['extra'])} "
-                     f"present asked {len(s['present_asked'])} letter {_mark(s['letter'])}"
+                     f"present asked {len(s['present_asked'])} letter {_letter(s)}"
                      + (f" ({', '.join(s['letter_why'])})" if s["letter"] is False else "") + f" deadline {_mark(s['deadline'])}"
                      + ("" if s["points"] is None else f" key points {points(s)}"))
         table.append((cid, _mark(s["area"]), _mark(s["action"]), docs, str(len(s["extra"])), str(len(s["present_asked"])),
-                      _mark(s["letter"]), _mark(s["deadline"]), points(s), _mark(s["seconds"]), f"{_mark(s['non_cached'])}/{_mark(s['output'])}"))
+                      _letter(s), _mark(s["deadline"]), points(s), _mark(s["seconds"]), f"{_mark(s['non_cached'])}/{_mark(s['output'])}"))
     done = [s for _, _, s in scored if s is not None]
     count = lambda key, value=True: sum(1 for s in done if s[key] == value)
     hits, expected = sum(len(s["hit"]) for s in done), sum(s["expected"] for s in done)
     total = ("total", f"{count('area')}/{len(done)}", f"{count('action')}/{len(done)}", f"{hits}/{expected}",
              str(sum(len(s["extra"]) for s in done)), str(sum(len(s["present_asked"]) for s in done)),
-             f"{count('letter')}/{sum(1 for s in done if s['letter'] is not None)}",
+             f"{count('letter') + count('letter', 'handler')}/{sum(1 for s in done if s['letter'] is not None)}",
              f"{count('deadline', 'right')}/{sum(1 for s in done if s['deadline'] is not None)}",
              f"{count('points_ok')}/{sum(1 for s in done if s['points_ok'] is not None)}",
              str(round(sum(s["seconds"] or 0 for s in done), 1)),
@@ -314,4 +354,4 @@ def main(command, paths, catalogue=None):
     cases = load_suite(paths[1])
     for case in cases:
         check_truth(case, workflows)
-    print(render(score_saved(rows, cases)))
+    print(render(score_saved(rows, cases, workflows)))
