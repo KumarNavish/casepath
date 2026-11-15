@@ -106,22 +106,37 @@ def historic(files, created=None, events=(), today=None):
     return None
 
 
-def follow_up(next_in_days, files, events, today=None, since=None, until=None):
+def last_dispatch(events):
+    """The latest letter the handler confirmed as sent and did not undo: {date, at, form, respond_by}, or None."""
+    from .completion import sent_letters
+    sent = sent_letters(events)
+    return max(sent, key=lambda s: (str(s.get("date") or ""), str(s.get("at") or ""))) if sent else None
+
+
+def follow_up(next_in_days, files, events, today=None, since=None, until=None, step=None):
     """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date.
     ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from.
     ``until``: a date the party waited for gave itself («Unterlagen folgen bis …»): the case is looked at again then.
-    A cut counts from its «Stand am», never from an older document or action."""
+    ``step``: the prepared action's kind; a date a person set for another step, or before the latest dispatch, lapses
+    with it. After a dispatch the date counts from the dispatch day; a letter that set the customer a date (its frozen
+    ``respond_by``) is looked at again on that date. A cut counts from its «Stand am», never from an older document or
+    action."""
     ref = parse_date(since) if since and parse_date(since) else reference_day(files, today)
     cut = cut_day(files)
     if cut and ref < cut:
         ref = cut
-    set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date")]
+    sent = last_dispatch(events)
+    set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date")
+                   and (step is None or e.get("step") in (None, step)) and (not sent or str(e.get("at") or "") > str(sent.get("at") or ""))]
     if set_by_hand:
         return {"due": set_by_hand[-1]["date"], "reference": ref.isoformat(), "set_by": set_by_hand[-1].get("expert")}
     if until and parse_date(until):
         return {"due": parse_date(until).isoformat(), "reference": ref.isoformat(), "set_by": None, "awaits": True}
     if not next_in_days:
         return None
+    if sent and since and parse_date(since) == parse_date(sent.get("date")) and parse_date(sent.get("respond_by")):
+        # what is prepared counts from the letter that went out, and that letter told the customer by when: then
+        return {"due": parse_date(sent["respond_by"]).isoformat(), "reference": ref.isoformat(), "set_by": None, "respond_by": True}
     return {"due": (ref + timedelta(days=int(next_in_days))).isoformat(), "reference": ref.isoformat(), "set_by": None}
 
 

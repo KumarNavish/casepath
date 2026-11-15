@@ -236,20 +236,25 @@ def letter_title(draft):
 
 
 def documents(draft, events, since=None):
-    """What goes out, each its own tab, with a tick once copied since the case was last prepared."""
+    """What goes out, each its own tab, with its state: «Entwurf», «freigegeben» or «versandt am …» (the approval and the
+    dispatch of its recipient, as completion.state left them in ``draft['tabs']``); ``copied``: its text copied since the
+    case was last prepared (measurement only, never a sending)."""
     if not draft:
         return []
     copied = {(e.get("also") or e.get("form")) for e in events or () if e.get("kind") == "letter.copied" and str(e.get("at") or "") >= str(since or "")}
+    tabs = draft.get("tabs") or {}
+    state = lambda kind: tabs.get(kind) or {"state": "entwurf", "label": "Entwurf"}
     out = []
     if draft.get("text"):
-        out.append({"kind": draft.get("form") or draft.get("kind"), "main": True, "title": letter_title(draft),
-                    "copied": (draft.get("form") or draft.get("kind")) in copied})
+        kind = draft.get("form") or draft.get("kind")
+        out.append({"kind": kind, "main": True, "title": letter_title(draft), "copied": kind in copied, **state(kind)})
     for a in draft.get("also") or ():
         if a.get("text"):
             title = a["title"]
             if a.get("template"):
                 title = re.sub(r"^Vorlage für Ihr Schreiben an ", "Vorlage an ", title)
-            out.append({"kind": a["kind"], "main": False, "title": title, "name": a.get("name"), "copied": a["kind"] in copied, "template": bool(a.get("template"))})
+            out.append({"kind": a["kind"], "main": False, "title": title, "name": a.get("name"), "copied": a["kind"] in copied, "template": bool(a.get("template")),
+                        **state(a["kind"])})
     twins = {t for t in (o["title"] for o in out) if sum(1 for o in out if o["title"] == t) > 1}
     for row in out:  # two templates to the same addressee: each by what it is («Vorlage: Einsprache gegen die Kündigung»)
         if row.get("template") and row.get("name") and row["title"] in twins:
@@ -290,10 +295,68 @@ def cover_line(items, stage, decided_by=None):
     return {"text": summary["value"].replace("Deckung: ", ""), "state": "open"}
 
 
+CHANGED_CHARS = 90  # «Was sich geändert hat» in one line
+AFTER = {"Deckung": "dem Deckungsentscheid", "Empfehlung": "dem Entscheid zur Empfehlung", "Erfolgsaussichten": "dem Entscheid zu den Erfolgsaussichten"}
+
+
+def _one_line(lines, limit=CHANGED_CHARS):
+    """As many lines as fit in one line of ``limit`` characters, joined by « · »; the first one cut if it alone is longer."""
+    out = ""
+    for line in lines:
+        line = re.sub(r"\s+", " ", str(line)).strip()
+        if not line:
+            continue
+        joined = f"{out} · {line}" if out else line
+        if len(joined) <= limit:
+            out = joined
+        elif not out:
+            return line[:limit - 1].rstrip() + "…"
+        else:
+            break
+    return out or None
+
+
+def head_block(changes, assessment, completion, draft=None):
+    """The case head between «Weil» and the decision: what changed, what it means, and an approval that no longer holds;
+    None when there is nothing to say. Shown while the prepared run is newer than the case's last approval or dispatch
+    (``completion['fresh']``), or while the approval is stale.
+
+    - ``changed``: «Was sich geändert hat: …», one line of at most 90 characters, the account's ledger lines first
+      (``changes['ledger']``), then the new entries and what the preparation changed; ``changed_all``: every line.
+    - ``meaning``: «Was das bedeutet: …», from the assessment's summary (questions answered, conditional, open), the
+      decision still open and the letter's state; ``meaning_all``: the details.
+    - ``stale``: «Freigabe veraltet: <Grund>»."""
+    done = completion or {}
+    stale = f"Freigabe veraltet: {done['stale'][0]}" if done.get("stale") and done.get("state") == "freigegeben" else None
+    if not (done.get("fresh") or stale):
+        return None
+    ch = changes or {}
+    every = list(ch.get("ledger") or []) + list(ch.get("entries") or []) + [f"neu: {x}" for x in ch.get("added") or ()] \
+        + [f"geändert: {x}" for x in ch.get("changed") or ()] + [f"nicht mehr: {x}" for x in ch.get("removed") or ()]
+    summary = (assessment or {}).get("summary") or {}
+    counts = [f"{summary[k]} {w}" for k, w in (("answered", "Frage beantwortet" if summary.get("answered") == 1 else "Fragen beantwortet"),
+                                                ("conditional", "bedingt"), ("open", "offen"), ("check", "zu prüfen")) if summary.get(k)]
+    title = (draft or {}).get("title") or "Brief"
+    title = "Einschätzung" if str((draft or {}).get("kind") or "") == "A5" else title
+    if done.get("waits"):
+        meaning = f"{done['waits']}; {title} ist danach vorbereitet."
+    elif done.get("state") == "freigegeben" and not stale:
+        meaning = f"{title} freigegeben, Versand offen."
+    else:
+        gaps = (done.get("bar") or {}).get("gaps") or 0
+        then = (f"kann nach {AFTER.get(done['decision'], 'dem Entscheid: ' + done['decision'])} freigegeben werden" if done.get("decision")
+                else f"noch {gaps} Lücke{'' if gaps == 1 else 'n'} zu füllen" if gaps else "kann freigegeben werden")
+        meaning = f"{title} vorbereitet" + (f" ({', '.join(counts)})" if counts else "") + f"; {then}."
+    details = [f"Vorschlag: {' · '.join(summary['proposal'])}"] if summary.get("proposal") else []
+    details += [f"Noch nachzureichen: {summary['residual']}"] if summary.get("residual") else []
+    return {"changed": _one_line(every), "changed_all": every, "meaning": meaning, "meaning_all": details, "stale": stale}
+
+
 def build(items, draft, events, look, rule, stage=None, via=None, routing=None, since=None, decided_by=None, assessment=None, completion=None):
     """The screen model of one case: the card head and «Der Fall», each thing said once. ``assessment``: the decision brief
     (assessment.build), which the decision reads; ``completion``: where the prepared letter stands after the decision
-    (completion.state); not read yet."""
+    (completion.state), whose head (head_block: what changed, what it means, an approval that no longer holds) is the
+    card's ``head``."""
     act = next((i for i in items if i["kind"] == "next_action"), None) or {}
     head_lead = lead(items, look, rule, stage)
     reason = without_date(weil(items, via), (head_lead or {}).get("date")) or None
@@ -311,6 +374,7 @@ def build(items, draft, events, look, rule, stage=None, via=None, routing=None, 
     return {"title": (act.get("label") or {}).get("de") or act.get("value"), "weil": reason,
             "danach": [t.get("action") or t.get("title") for t in act.get("then") or () if t.get("action") or t.get("title")],
             "lead": head_lead, "decision": decision(items, draft, stage, routing, assessment=assessment), "progress": progress(items),
+            "head": (completion or {}).get("head"),
             "documents": documents(draft, events, since), "fristen": rows, "fristen_elsewhere": bool(head_lead or carried),
             "stand": stand, "lines": lines, "points": key_points(items, letter),
             "cover": cover_line(items, stage, decided_by),

@@ -54,6 +54,11 @@ create table if not exists workspace_events(
   event_id text primary key, seq integer not null, at text not null, data text not null);
 create table if not exists labels(
   case_id text primary key references cases(id), data text not null, saved_by text not null, saved_at text not null);
+create table if not exists drafts(
+  id text not null, case_id text not null references cases(id), form text not null, part text not null,
+  base_sha256 text not null, base text not null, text text not null, parent_id text, by text not null, at text not null,
+  op_id text, primary key(id, part));
+create index if not exists drafts_case on drafts(case_id, form);
 """
 REVIEW_MARKS = ("geprueft", "aenderung", "frage")
 ACTIVE = ("queued", "running")
@@ -312,7 +317,10 @@ class CaseStore:
             for run_id in runs:
                 self._db.execute("delete from feedback where run_id=?", (run_id,))
                 self._db.execute("delete from run_events where run_id=?", (run_id,))
-            for table in ("runs", "case_edits", "knowledge_uses", "files", "events", "labels"):
+            # the Versandpakete the case's approvals stored (bundle.saved): its own record, deleted with it
+            bundles = {json.loads(r["data"]).get("sha256") for r in self._all("select data from events where case_id=?", case_id)
+                       if json.loads(r["data"]).get("kind") == "bundle.saved"}
+            for table in ("runs", "case_edits", "knowledge_uses", "files", "events", "labels", "drafts"):
                 self._db.execute(f"delete from {table} where case_id=?", (case_id,))
             for row in self._all("select id, data from knowledge"):
                 item = json.loads(row["data"])
@@ -331,6 +339,10 @@ class CaseStore:
                     (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
             for digest in images:  # page images of the case's files, unless another file still points to them
                 if not self._one("select 1 as used from files where extraction like ?", f"%{digest}%"):
+                    (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
+            for digest in bundles - {None}:  # its Versandpakete, unless a file or another case's package is the same bytes
+                if not self._one("select 1 as used from files where sha256=?", digest) and \
+                        not self._one("select 1 as used from events where data like ?", f"%{digest}%"):
                     (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
         return removed
 
@@ -483,5 +495,59 @@ class CaseStore:
     # -- assessment (Slice A) ----------------------------------------------------------------------------------------------
 
     # -- completion (Slice B): the drafts per letter part, numbered edits, the dispatch ---------------------------------------
+    def add_draft(self, case_id, form, parts, user, parent_id=None, op_id=None):
+        """One save of the handler's text of a letter or an enclosure (``form``): one row per part {part, base_sha256, base,
+        text} under one id, never updated. Refused (Conflict, its ``latest`` the save {id, by, at} it missed) when
+        ``parent_id`` is not the form's latest save; an ``op_id`` already stored returns that first save. Returns {id, by,
+        at, parts, repeated}."""
+        with self._lock:
+            self.get_case(case_id)
+            if op_id:
+                done = self._all("select * from drafts where case_id=? and form=? and op_id=? order by rowid", case_id, form, op_id)
+                if done:
+                    return {"id": done[0]["id"], "by": done[0]["by"], "at": done[0]["at"], "repeated": True,
+                            "parts": [{k: r[k] for k in ("part", "base_sha256", "base", "text")} for r in done]}
+            latest = self._one("select id, by, at from drafts where case_id=? and form=? order by rowid desc limit 1", case_id, form)
+            if (latest or {}).get("id") != (parent_id or None):
+                error = Conflict(f"Inzwischen von {(latest or {}).get('by') or 'einer anderen Person'} geändert: neu laden")
+                error.latest = latest or {}
+                raise error
+            draft_id, at = new_id("dr"), now()
+            for p in parts:
+                self._db.execute("insert into drafts(id,case_id,form,part,base_sha256,base,text,parent_id,by,at,op_id) values(?,?,?,?,?,?,?,?,?,?,?)",
+                                 (draft_id, case_id, form, p["part"], p["base_sha256"], p["base"], p["text"], parent_id, user, at, op_id))
+            self._db.execute("update cases set updated_at=? where id=?", (at, case_id))
+        return {"id": draft_id, "by": user, "at": at, "parts": [dict(p) for p in parts], "repeated": False}
+
+    def latest_drafts(self, case_id):
+        """The handler's text of each letter and enclosure as last saved: {form: {"id": the latest save, "by", "at", "parts":
+        {part: {id, base_sha256, base, text, by, at}}}}, each part's latest row (a part saved earlier keeps its row)."""
+        out = {}
+        for r in self._all("select rowid, * from drafts where case_id=? order by rowid", case_id):
+            form = out.setdefault(r["form"], {"parts": {}})
+            form.update(id=r["id"], by=r["by"], at=r["at"])
+            form["parts"][r["part"]] = {k: r[k] for k in ("id", "base_sha256", "base", "text", "by", "at")}
+        return out
+
+    def add_numbered_edit(self, case_id, op, args, user, reason):
+        """An edit that carries the next number of the handler's entries and the dispatches (account.next_number), drawn
+        and written under the store lock, so two writers never share a number. ``args``: the edit's arguments without
+        «n», or a function of the number that returns them."""
+        from ..process.account import next_number
+        with self._lock:
+            n = next_number(self.list_edits(case_id, active_only=False))
+            return self.add_edit(case_id, op, args(n) if callable(args) else {**args, "n": n}, user, reason)
+
+    def dispatch_once(self, case_id, version, recipient, args, user, reason, event):
+        """One approved version dispatched to one recipient, once: an active «add_dispatch» edit of that version and
+        recipient is returned as it is, (edit, None); otherwise the numbered edit and its event (``event`` with the edit's
+        id: «action.dispatched») are written under one lock, (edit, event)."""
+        with self._lock:
+            same = next((e for e in self.list_edits(case_id) if e["op"] == "add_dispatch" and (e.get("args") or {}).get("version") == version
+                         and (e.get("args") or {}).get("recipient") == recipient), None)
+            if same:
+                return same, None
+            edit = self.add_numbered_edit(case_id, "add_dispatch", dict(args), user, reason)
+            return edit, self.append_case_event(case_id, {**event, "edit_id": edit["id"]})
 
     # -- arrival (Slice C): files by their content -----------------------------------------------------------------------

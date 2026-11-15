@@ -90,7 +90,8 @@ class OwnAnswer(BaseModel):
 
 SERVER_KINDS = {"run.discarded", "study.frozen", "study.copied", "unaided.saved", "unaided.frozen", "reveal", "item.propagated", "item.corrected", "item.dismissed", "item.added",
                 "item.confirmed", "correction.undone", "point.settled", "case.renamed", "case.historic",
-                "entry.added", "entry.changed", "entry.removed"}  # written by the server only
+                "entry.added", "entry.changed", "entry.removed",
+                "action.approved", "bundle.saved", "action.dispatched"}  # written by the server only (the approval, its package, a dispatch)
 
 
 class EventRequest(BaseModel):
@@ -509,10 +510,54 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"run": completed, "files": case_files, "new_files": len(core.unread(case_files, completed)) if completed else 0,
                 "run_status": row.get("run_status"), "run_kind": None}
 
+    def _carry(case_id, current, listed, events, files, assessment=None, draft=None, changes=None):
+        """Where the prepared letter stands after the decision (completion.state), for the case view and the case list
+        alike: the draft merged with the handler's saved text (``draft`` in place; rendered here when not given), its
+        version, the approval and its validity, the dispatches, the evidence after them, the tabs' state and the head."""
+        from ..process import completion
+        from ..process.clock import parse_date as parse_day
+        study = (current["case"].get("intake") or {}).get("study")
+        action, _, forms = prepared_action(current, listed, events)
+        clock = follow_up(action.get("next_in_days") if action else None, files, events, since=(action or {}).get("since"),
+                          until=(action or {}).get("until"), step=(action or {}).get("action"))
+        clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), files)
+        if draft is None:
+            stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
+            texts = store.list_files(case_id, with_text=True) if stage in {"mandat", "abwicklung"} else None
+            draft = letters.draft(current, listed, events, clock, files, forms, texts=texts, held=reviews.flags(current.get("process"), review_marks()[0]),
+                                  assessment=assessment)
+        completion.prepare(draft, {} if study else store.latest_drafts(case_id), listed)
+        prepared = store.latest_run(case_id, "completed")
+        look = as_of(files)
+        unread = core.unread(files, prepared) if prepared and not study else []
+        st = completion.state(current["case"], listed, draft, events, store.list_edits(case_id, active_only=False), account=current.get("account"),
+                              assessment=assessment, files=files, today=look, facts=current.get("facts"), process=current.get("process"), unread=unread,
+                              result=(current.get("run") or {}).get("result"), prepared_at=(prepared or {}).get("created_at"), follow_up=clock)
+        due = parse_day((clock or {}).get("due"))
+        st["waits"] = (f"wartet auf {listing.waiting_for(action)} bis {due.strftime('%d.%m.%Y')}"
+                       if action and due and due > look and listing.waits(action) and st["state"] == "entwurf" else None)
+        latest = max([str(a.get("at") or "") for a in completion.approvals(events)] + [str(d.get("at") or "") for d in completion.dispatches(events)], default="")
+        st["fresh"] = bool(prepared) and str(prepared.get("created_at") or "") > latest
+        st["premise_now"] = completion.premise(draft, current.get("facts"), assessment) if draft else {}
+        st["decisions"] = completion.open_decisions(draft, current.get("facts"), assessment, current.get("process")) if draft else []
+        st["study"] = bool(study)
+        if study:
+            st["bar"] = {"kind": "study"}  # the frozen expert study: its letter is copied and measured as frozen, never approved or sent
+        draft["tabs"] = completion.tab_states(st, events)  # each tab's state: «Entwurf», «freigegeben», «versandt am …»
+        st["head"] = screen.head_block(changes, assessment, st, draft)
+        return st, draft
+
     def _list_completion(row, current, listed, events, files):
-        """Where the prepared letter of a row stands after the decision, for its status (Slice B: completion.state(...));
-        None so far."""
-        return None
+        """Where the prepared letter of a row stands after the decision, for its status (completion.state, as the case
+        view computes it); None for a row without a prepared action."""
+        if current is None or not any(i["kind"] == "next_action" for i in listed):
+            return None
+        try:
+            approved = any(e.get("kind") == "action.approved" for e in events)
+            assessment = _assessment_view(current, current.get("run"), listed, files, events, review_marks()[0]).get("assessment") if approved else None
+            return _carry(row["id"], current, listed, events, files, assessment)[0]
+        except Exception:  # noqa: BLE001  a case whose letter cannot be prepared still lists, by its prepared step
+            return None
 
     @app.get("/api/cases")
     def list_cases(who=Depends(user)):
@@ -536,7 +581,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                          None if (row.get("intake") or {}).get("study") else marks)
                     action = prepared_action(current, listed, events)[0]
                     clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]),
-                                      since=(action or {}).get("since"), until=(action or {}).get("until"))
+                                      since=(action or {}).get("since"), until=(action or {}).get("until"), step=(action or {}).get("action"))
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
                     row["follow_up"] = clock and clock["due"]
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
@@ -631,10 +676,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         the screen read; nothing so far."""
         return {}
 
-    def _completion_view(case_id, current, listed, draft, events, files, assessment=None):
-        """Where the prepared letter stands after the decision: approved, dispatched, fulfilled (Slice B: {"completion":
-        completion.state(...)}), which the status and the screen read; nothing so far."""
-        return {}
+    def _completion_view(case_id, current, listed, draft, events, files, assessment=None, changes=None):
+        """Where the prepared letter stands after the decision: approved, dispatched, fulfilled ({"completion":
+        completion.state(...)}), which the status and the screen read. The draft is merged with the handler's saved text
+        in place (its text, parts, conflicts and version); ``changes``: what the last preparation changed, for the head."""
+        if not draft or current.get("run") is None:
+            return {}
+        return {"completion": _carry(case_id, current, listed, events, files, assessment, draft=draft, changes=changes)[0]}
 
     @app.get("/api/cases/{case_id}")
     def get_case(case_id: str, who=Depends(user)):
@@ -652,7 +700,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         held = reviews.flags(current.get("process"), marks)
         action, options, forms = prepared_action(current, listed, store.list_case_events(case_id))
         clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id),
-                          since=(action or {}).get("since"), until=(action or {}).get("until"))  # a date the party gave: looked at then
+                          since=(action or {}).get("since"), until=(action or {}).get("until"), step=(action or {}).get("action"))  # a date the party gave: looked at then
         clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(case_id))  # before a statutory deadline
         events, files = store.list_case_events(case_id), store.list_files(case_id)
         assessed = _assessment_view(current, completed, listed, files, events, marks)
@@ -667,7 +715,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         shown_case["parties"] = listing.parties_line(listed) if completed else None
         historic = historic_file(files, current["case"].get("created_at"), events)
         closed = any(e["kind"] == "case.closed" for e in events)
-        done = _completion_view(case_id, current, listed, draft, events, files, assessed.get("assessment"))
+        done = _completion_view(case_id, current, listed, draft, events, files, assessed.get("assessment"), changes=arrival.get("changes"))
         status = listing.stand(closed=closed, run_status=(run_now or {}).get("status"), new_files=len(arrival["arrived"]) if prepared else 0,
                                items=listed if (run_now or {}).get("status") == "completed" else [], follow_up=(clock or {}).get("due"),
                                events=events, completed_at=(prepared or {}).get("created_at"), files=files, historic=historic,
@@ -1002,9 +1050,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         outside the file). It counts at once, without a model: the account, «Stand», the dates and the next action are
         recomputed from it. Kept as an edit of the case and logged like every handler gesture."""
         form = entry_form(case_id, body)
-        with entries_lock:
-            n = account.next_handler_number(store.list_edits(case_id, active_only=False))
-            edit = store.add_edit(case_id, "add_entry", {**form, "n": n}, who, "Eintrag der Fallbearbeitung")
+        edit = store.add_numbered_edit(case_id, "add_entry", form, who, "Eintrag der Fallbearbeitung")  # one sequence with the dispatches
+        n = edit["args"]["n"]
         record(case_id, who, "entry.added", item_id=f"entry:{n}", edit_id=edit["id"], **entry_event(form))
         return {"entry": account.handler_entry(form, n, by=who, at=edit["at"], edit=edit["id"]), "edit": edit}
 
@@ -1327,6 +1374,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(422, "Bitte sagen Sie, was zu ändern oder zu klären ist.")
         row = store.add_review(file, element, target["sha256"], body.mark, comment, suggestion, who)
         return {"mark": row, "element": model.view(target["key"], store.latest_reviews())}
+
+    # The decision carried through: the handler's text per part, «Freigeben» with its Versandpaket, «Versandt am» (actions.py)
+    from . import actions
+    actions.register(app, store, catalogue, mirror, record, state, user, case_view=get_case, parity_sha=parity_sha)
 
     if UI.is_dir():
         page = (UI / "index.html").read_text()

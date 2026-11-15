@@ -278,18 +278,33 @@ def _context_substance(case, items, events, files, day, evaluation=None, process
     }
 
 
+INSURER_WORDS = re.compile(r"protekta|rechtsschutz|versicher", re.I)
+
+
 def _context_contact(case, items, events, files, day, evaluation=None, process=None, facts=None, assessment=None):
-    """The contact so far (Slice B: from the dispatches and ``facts``): a letter's opening after earlier contact
-    («Vielen Dank für Ihre Nachricht», ``wahren_eingang``) and the day of our last contact (``letzter_kontakt``). So far
-    from our actions' dates as the items hold them (``sent``) and any letter copied."""
+    """The contact so far, from the case's facts (``facts``: the actions taken, the account's or the dispatches') and the
+    log: a letter's opening after earlier contact («Vielen Dank für Ihre Nachricht», ``wahren_eingang``: an action of
+    ours, a dispatch, or a copy by a browser before this release) and the day of the last contact either way
+    (``letzter_kontakt``): the account's last contact, else the latest of the dispatches, our actions and the dated
+    documents sent to us."""
+    from .completion import contacted, dispatches
     rows = {i["key"]: i for i in items if i["kind"] == "fact"}
-    sent = [d for d in (parse_date((rows.get(f"handlung_a{n}") or {}).get("value")) for n in (1, 4, 5, 6, 7)) if d]
-    written_before = bool(sent) or any(e.get("kind") == "letter.copied" for e in events or ())
+    acts = facts if facts is not None else {k: r.get("value") for k, r in rows.items()}
+    sent = [d for d in (parse_date((acts or {}).get(f"handlung_a{n}") or (rows.get(f"handlung_a{n}") or {}).get("value")) for n in (1, 4, 5, 6, 7)) if d]
+    written_before = bool(sent) or contacted(events)
     ref = _reference(case)
     registered = (f"Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz {ref.group(0)} provisorisch registriert."
                   if ref else "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist bei uns provisorisch registriert.")
+    kontakt = next((i for i in items if i["kind"] == "stand" and i.get("key") == "kontakt"), None)  # the account's last contact
+    last = parse_date((kontakt or {}).get("value"))
+    if not last:
+        received = [d for f in files or () for s in ((f.get("extraction") or {}).get("segments") or ())
+                    if INSURER_WORDS.search(str(s.get("recipient") or "")) and not INSURER_WORDS.search(str(s.get("sender") or ""))
+                    and (d := parse_date(s.get("date")))]
+        latest = sent + [d for d in (parse_date(x["date"]) for x in dispatches(events)) if d] + received
+        last = max(latest) if latest else None
     return {"wahren_eingang": "Vielen Dank für Ihre Nachricht." if written_before else registered,
-            "letzter_kontakt": max(sent).strftime("%d.%m.%Y") if sent else "…"}
+            "letzter_kontakt": last.strftime("%d.%m.%Y") if last else "…"}
 
 
 def _context_parties(case, items, events, files, day, evaluation=None, process=None, facts=None, assessment=None):
@@ -380,8 +395,15 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
     action = next((i for i in listed if i["kind"] == "next_action"), None)
     if not (action and forms):
         return None
+    from .completion import frozen_respond_by
     held = held if held is not None else reviews.flags(current.get("process"), None)
     kind = form_kind(action)  # a closing in silence has its own (no) letter
+    # a letter that sets the customer a date ({frist}) keeps the date its approval froze while that approval is open, so a
+    # letter approved today is the same letter tomorrow (completion.frozen_respond_by)
+    dated = "{frist}" in " ".join((forms.get(kind) or {}).get("parts") or ())
+    frozen = frozen_respond_by(events, kind, as_of(files)) if dated else None
+    if frozen:
+        clock = {**(clock or {}), "due": frozen}
     ctx = context(current["case"], listed, events, clock, texts or files, evaluation=current["evaluation"], process=current["process"],
                   facts=current.get("facts"), assessment=assessment)
     text, none = render(kind, forms, ctx)
@@ -391,12 +413,15 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
     return {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "to": (forms.get(kind) or {}).get("to"), "text": text, "none": none,
             "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
             "required": required(kind),
+            # the letter by part (the handler's text is kept per part, completion.merge) and the date it sets the customer
+            "base_parts": render_parts(kind, forms, ctx) if text is not None else [], "respond_by": (clock or {}).get("due") if dated else None,
             # what goes out with it, each opened and copied on its own: the mandate package, the fee-note letters, and a
             # template for the customer's own letter (marked as the customer's, never sent by the insurer)
             "also": [{"kind": k, "title": forms[k].get("title"), "text": render(k, forms, ctx)[0], "required": required(k),
-                      **({"set": forms[k]["set"]} if forms[k].get("set") else {})} for k in accompanying(kind, forms, listed)]
+                      "base_parts": render_parts(k, forms, ctx), **({"set": forms[k]["set"]} if forms[k].get("set") else {})}
+                     for k in accompanying(kind, forms, listed)]
                     + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "name": i.get("title"), "text": i["text"], "required": [], "template": True,
-                        **({"review": i["review"]} if i.get("review") else {})}
+                        "base_parts": [("text", i["text"])], **({"review": i["review"]} if i.get("review") else {})}
                        for i in customer_letters.with_letter(listed, events, kind)]}
 
 
@@ -408,26 +433,54 @@ def accompanying(kind, forms, items=()):
             and (not f.get("with_item") or f["with_item"] in have)]
 
 
+def _adoption(events, process=None):
+    """The recommendation the handler adopted (SLICE_A: «item.corrected» on «point:empfehlung»), in words, or None."""
+    undone = {e.get("undoes") for e in events or () if e.get("kind") == "correction.undone"}
+    row = next((e for e in reversed(events or ()) if e.get("kind") == "item.corrected" and e.get("item_id") == "point:empfehlung"
+                and e.get("chosen") and e.get("event_id") not in undone), None)
+    if not row or row["chosen"] == "aussichten_nicht_genuegend":
+        return None
+    titles = row.get("titles")
+    if not titles:
+        try:  # the options' titles, from the area's options file where one is shipped (SLICE_A)
+            from . import options as area_options
+            data = area_options.load((process or {}).get("id") or "mietmangel-handler") or {}
+            named = {o["id"]: o.get("title") for o in data.get("options") or ()}
+            titles = [named.get(x) or x for x in row["chosen"]]
+        except Exception:  # noqa: BLE001  no options file: the ids as recorded
+            titles = list(row["chosen"])
+    return " · ".join(str(t) for t in titles)
+
+
 def file_note(case, items, events, follow_up, files=(), runs_done=None, package=None):
     """One paragraph for the case system: received, decided and why, sent, awaited. Only from what is stored.
-    ``package``: the titles of the letters that go out together (the mandate package), each copied on its own."""
+    ``package``: the titles of the letters that go out together (the mandate package), each with its state («freigegeben»,
+    «versandt am …»). Received and entered since the last Versandpaket saved (the file note of that version is in it);
+    «Versandt» only from a dispatch the handler confirmed, never from a copy."""
+    from .completion import approvals, note_lines, sent_letters
     label = lambda i: (i.get("label") or {}).get("de") or i["key"]
-    received = [f.get("name") for f in files or () if f.get("name")]
+    since = max((str(e.get("at") or "") for e in events or () if e.get("kind") == "bundle.saved"), default="")
+    received = [f.get("name") for f in files or () if f.get("name") and (not since or str(f.get("created_at") or "") > since)]
     decided = []
+    adopted = _adoption(events)
     for i in items:
-        if i["kind"] == "fact" and i.get("verdict") == "set_by_handler":
+        if i["kind"] == "fact" and i.get("verdict") == "set_by_handler" and not (adopted and i["key"] == "aussichten"):
             decided.append(f"{label(i)}: {_value(i.get('value'))} (durch die Fallbearbeitung)")
+    if adopted:
+        prospects = next((i.get("value") for i in items if i["kind"] == "fact" and i["key"] == "aussichten"), None)
+        decided.append(f"Empfehlung übernommen: {adopted}" + (f"; Aussichten {prospects}" if prospects else ""))
     unticked = [label(i) for i in items if i["kind"] == "document" and line_state(events).get(i["item_id"]) is False]
     action = next((i for i in items if i["kind"] == "next_action"), None)
     reason = (action or {}).get("reason")
-    sent = [e for e in events or () if e.get("kind") == "letter.copied"]
+    sent = sent_letters(events)
     docs = asked(items, events, "document")
     due = _day((follow_up or {}).get("due"))
     parts = []
     if received:
         parts.append(f"Eingegangen: {', '.join(received)}.")
-    # what the handler entered (a call, a conversation, a note) since the file note was last copied: it is not in the files
-    copied_at = max((str(e.get("at") or "") for e in events or () if e.get("kind") == "filenote.copied"), default="")
+    # what the handler entered (a call, a conversation, a note) since the file note was last copied or saved with a
+    # Versandpaket: it is not in the files
+    copied_at = max([str(e.get("at") or "") for e in events or () if e.get("kind") == "filenote.copied"] + [since])
     own = [i for i in items if i["kind"] == "entry" and i.get("handler") and str(i["handler"].get("at") or "") > copied_at]
     if own:
         parts.append("Erfasst durch die Fallbearbeitung: " + "; ".join(handler_line(i) for i in own) + ".")
@@ -443,17 +496,30 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
                      + (f" vom {max(last).strftime('%d.%m.%Y')}" if last else "") + " angekündigt; kein weiteres Schreiben.")
     if unticked:
         parts.append(f"Nicht verlangt (von der Fallbearbeitung gestrichen): {', '.join(unticked)}.")
-    if package and len(package) > 1:  # every letter of the package, and which of them were copied
-        copied = {e.get("also") or e.get("form") for e in events or () if e.get("kind") == "letter.copied"}
+    if package and len(package) > 1:  # every letter of the package, and where each stands: approved, sent to its recipient
+        latest = (approvals(events) or [{}])[-1]
+        approved = {k for r in latest.get("recipients") or () for k in r.get("forms") or ()}
+        went = {}
+        for s in sent:
+            for r in next((a.get("recipients") for a in approvals(events) if a.get("version") == s["version"]), None) or ():
+                if r.get("to") == s["recipient"]:
+                    for k in r.get("forms") or ():
+                        went[k] = s["date"]
         facts = {i["key"]: i.get("value") for i in items if i["kind"] == "fact"}
         scope, row = mandate.scope(facts)
         amount = mandate.amount_text(facts.get("kostengutsprache_betrag"))
         named = [f"{title}" + (f" (Umfang: {row['text']}; " + (f"begrenzt auf CHF {amount})" if amount else "nach den bekannten Modalitäten, ohne Betrag)")
-                               if kind == "A10_kostengutsprache" else "") + (" – kopiert" if kind in copied else "") for kind, title in package]
+                               if kind == "A10_kostengutsprache" else "")
+                 + (f" – versandt am {_day(went[kind])}" if kind in went else " – freigegeben" if kind in approved else "") for kind, title in package]
         parts.append(f"Paket ({len(package)} Schreiben, je einzeln): {'; '.join(named)}.")
-    if sent:
-        parts.append(f"Versandt: Schreiben vom {_day(sent[-1].get('at'))}" + (" (angepasst)" if sent[-1].get("edited") else "") + ".")
-    if docs or due:
+    parts += [f"{line}." for line in note_lines(events)]
+    last = sent[-1] if sent else None
+    asked_then = next((e.get("asks") for e in reversed(events or ()) if e.get("kind") == "action.dispatched" and last
+                       and e.get("version") == last["version"] and e.get("asks")), None)
+    if last and asked_then:  # what the letter that went out asked, by its date or the follow-up
+        until = f" bis {_day(last['respond_by'])}" if last.get("respond_by") else f"; Wiedervorlage {due}" if due else ""
+        parts.append(f"Erwartet: {', '.join(asked_then)}{until}.")
+    elif not last and (docs or due):
         parts.append("Erwartet: " + (", ".join(label(i) for i in docs) if docs else "Rückmeldung") + (f" bis {due}" if due else "") + ".")
     return " ".join(parts)
 

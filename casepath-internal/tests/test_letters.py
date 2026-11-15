@@ -68,15 +68,22 @@ class LetterTests(unittest.TestCase):
         self.assertNotIn(f"Erwartet: {title}", note)
 
     def test_the_file_note_is_the_same_paragraph_every_time(self):
+        # Rewritten for SLICE_B B13: a copy of the letter (measured or by an older browser) is no sending, so it writes no
+        # «Versandt»; only the handler's attributed dispatch does, with the letter, its recipient, day, channel and person.
+        from tests.test_completion import approved, saved, sent
         state, items = prepared()
         events = [{"kind": "letter.copied", "at": "2024-03-12T10:00:00+00:00", "edited": True}]
         note = letters.file_note(CASE, items, events, {"due": "2024-04-02"}, files=[{"name": "Schadenmeldung.pdf"}])
         self.assertEqual(note, letters.file_note(CASE, items, events, {"due": "2024-04-02"}, files=[{"name": "Schadenmeldung.pdf"}]))
         self.assertTrue(note.startswith("Eingegangen: Schadenmeldung.pdf."))
-        self.assertIn("Versandt: Schreiben vom 12.03.2024 (angepasst).", note)
         self.assertEqual(note, "Eingegangen: Schadenmeldung.pdf. Nächster Schritt: Dossier pendent halten mit Frist, weil keine Antwort "
-                               "seit unserer Anforderung vom 12.03.2024 (39 Tage). Versandt: Schreiben vom 12.03.2024 (angepasst). "
-                               "Erwartet: Mietvertrag, Fotos des Mangels bis 02.04.2024.")
+                               "seit unserer Anforderung vom 12.03.2024 (39 Tage). Erwartet: Mietvertrag, Fotos des Mangels bis 02.04.2024.")
+        dispatched = events + [approved("A6", at="2024-03-12T10:05:00+00:00", title="Dossier pendent halten mit Frist", respond_by="2024-04-02"),
+                               saved(at="2024-03-12T10:05:01+00:00"), sent(day="2024-03-12", at="2024-03-12T10:10:00+00:00", asks=["Rückmeldung"])]
+        note = letters.file_note(CASE, items, dispatched, {"due": "2024-04-02"}, files=[{"name": "Schadenmeldung.pdf", "created_at": "2024-03-01T08:00:00"}])
+        self.assertEqual(note, "Nächster Schritt: Dossier pendent halten mit Frist, weil keine Antwort seit unserer Anforderung vom 12.03.2024 "
+                               "(39 Tage). Versandt: Dossier pendent halten mit Frist an die Kundschaft am 12.03.2024 (E-Mail, N. Kumar). "
+                               "Erwartet: Rückmeldung bis 02.04.2024.")  # received before the Versandpaket: in its own note
 
 
 if __name__ == "__main__":

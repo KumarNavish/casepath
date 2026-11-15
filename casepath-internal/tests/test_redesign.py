@@ -108,10 +108,18 @@ class FristWahrenTests(unittest.TestCase):
         self.assertEqual((lead["date"], lead["word"]), ("16.11.2026", "abgelaufen"))  # the card says it passed
 
     def test_done_once_its_letter_and_the_template_went_out_then_the_first_request(self):
-        copied = [{"kind": "letter.copied", "form": "A13", "deadline": "deadline:einsprache_strafbefehl"}]
+        # Rewritten for SLICE_B B9: «Frist wahren» is done once its letter is dispatched with the template in the same
+        # approved version; copies (of the letter and the template) are no sending and leave it prepared.
+        from tests.test_completion import approved, saved, sent
+        deadline = "deadline:einsprache_strafbefehl"
+        copied = [{"kind": "letter.copied", "form": "A13", "deadline": deadline},
+                  {"kind": "letter.copied", "also": "vorlage:einsprache", "deadline": deadline}]
         state, items, listed, _ = view("verkehr", TRAFFIC, "2026-11-15", events=copied)
-        self.assertEqual(listed["next_action:0"]["action"], "A13")  # the template has not gone out yet
-        both = copied + [{"kind": "letter.copied", "also": "vorlage:einsprache", "deadline": "deadline:einsprache_strafbefehl"}]
+        self.assertEqual(listed["next_action:0"]["action"], "A13")  # copied, not sent
+        alone = [approved("A13", version="v1", deadline=deadline), saved("v1"), sent("v1")]
+        state, items, listed, _ = view("verkehr", TRAFFIC, "2026-11-15", events=alone)
+        self.assertEqual(listed["next_action:0"]["action"], "A13")  # the template has not gone out with it
+        both = [approved("A13", version="v2", deadline=deadline, also=("vorlage:einsprache",)), saved("v2"), sent("v2")]
         state, items, listed, _ = view("verkehr", TRAFFIC, "2026-11-15", events=both)
         self.assertEqual(listed["next_action:0"]["action"], "A1")
 
@@ -362,14 +370,27 @@ class ScreenTests(unittest.TestCase):
         self.assertEqual(screen.without_date("Die Meldung ist eingegangen", "30.11.2026"), "Die Meldung ist eingegangen")
 
     def test_what_goes_out_is_tabs_named_by_whom_it_goes_to_each_ticked_once_copied(self):
+        # Rewritten for SLICE_B B9: a tab's state is its version's, «Entwurf», «freigegeben» or «versandt am …» (the
+        # approval and the recipient's dispatch); a copy since the preparation is still marked, for measurement only.
+        from tests.test_completion import approved, sent
+        from casepath.process import completion
         twin = "Vorlage für Ihr Schreiben an die Arbeitgeberin"
         draft_ = {"form": "A1", "to": "Kundschaft", "title": "Unterlagen und Angaben anfordern", "text": "Brief",
                   "also": [{"kind": "vorlage:einsprache", "title": twin, "name": "Einsprache gegen die Kündigung", "text": "a", "template": True},
                            {"kind": "vorlage:begruendung", "title": twin, "name": "Begründung der Kündigung verlangen", "text": "b", "template": True}]}
         events = [{"kind": "letter.copied", "form": "A1", "at": "2026-11-15T10:00:00"}, {"kind": "letter.copied", "also": "vorlage:einsprache", "at": "2026-11-14T10:00:00"}]
         tabs = screen.documents(draft_, events, since="2026-11-15T09:00:00")
-        self.assertEqual([(t["title"], t["copied"]) for t in tabs], [("Brief an die Kundschaft", True), ("Vorlage: Einsprache gegen die Kündigung", False),
-                                                                      ("Vorlage: Begründung der Kündigung verlangen", False)])  # a copy before the preparation does not count
+        self.assertEqual([(t["title"], t["copied"], t["label"]) for t in tabs],
+                         [("Brief an die Kundschaft", True, "Entwurf"), ("Vorlage: Einsprache gegen die Kündigung", False, "Entwurf"),
+                          ("Vorlage: Begründung der Kündigung verlangen", False, "Entwurf")])  # a copy before the preparation does not count
+        approval = approved("A1", also=("vorlage:einsprache", "vorlage:begruendung"))
+        approval["recipients"][0]["forms"] = ["A1", "vorlage:einsprache", "vorlage:begruendung"]
+        st = {"approved": {"version": "v1"}, "dispatched": [], "stale": []}
+        tabs = screen.documents({**draft_, "tabs": completion.tab_states(st, [approval])}, events)
+        self.assertEqual([t["label"] for t in tabs], ["freigegeben"] * 3)
+        st = {"approved": {"version": "v1"}, "dispatched": [{"recipient": "kunde", "date": "2026-11-15"}], "stale": []}
+        tabs = screen.documents({**draft_, "tabs": completion.tab_states(st, [approval, sent()])}, events)
+        self.assertEqual([t["label"] for t in tabs], ["versandt am 15.11.2026"] * 3)
         alone = screen.documents({**draft_, "to": "Anwaltskanzlei", "also": draft_["also"][:1]}, [])
         self.assertEqual([t["title"] for t in alone], ["Brief an die Kanzlei", "Vorlage an die Arbeitgeberin"])
 
@@ -382,13 +403,24 @@ class ScreenTests(unittest.TestCase):
         self.assertEqual(len(screen.key_points([point], "Guten Tag")), 1)
 
     def test_the_status_counts_the_copy_of_the_step_now_prepared(self):
+        # Rewritten for SLICE_B B8: listing.step_copied is gone; the row reads where the letter prepared now stands
+        # (completion.state): a copy leaves it prepared, its approval makes it «Versandbereit», its dispatch «Wartet», and
+        # a copy by a browser before this release of the step prepared now, after the preparation, is «kopiert, Versand
+        # nicht bestätigt» (one before the preparation is not).
+        from tests.test_completion import approved, saved, sent
+        from casepath.process import completion
         since = "2026-11-15T09:00:00"
-        done = [{"kind": "letter.copied", "form": "A13", "at": "2026-11-15T10:00:00"}, {"kind": "letter.copied", "also": "vorlage:einsprache", "at": "2026-11-15T10:01:00"}]
-        self.assertTrue(listing.step_copied({"kind": "next_action", "action": "A13", "form": "A13"}, done, since))
-        first = {"kind": "next_action", "action": "A1"}  # «Frist wahren» went out; the first request now prepared has not
-        self.assertFalse(listing.step_copied(first, done, since))
-        self.assertTrue(listing.step_copied(first, done + [{"kind": "letter.copied", "form": "A1", "at": "2026-11-15T10:02:00"}], since))
-        self.assertFalse(listing.step_copied(first, [{"kind": "letter.copied", "form": "A1", "at": "2026-11-14T10:00:00"}], since))  # before it was prepared
+        first = [{"kind": "next_action", "key": "0", "item_id": "next_action:0", "action": "A1", "label": {"de": "Unterlagen anfordern"}}]
+        draft_ = {"form": "A1", "kind": "A1", "text": "Brief", "version": "v1", "needs": [], "recipients": [{"to": "kunde", "recipient": "Sehr geehrte Damen und Herren · kunde"}]}
+        row = lambda events: listing.stand(closed=False, run_status="completed", new_files=0, items=first, follow_up="2026-12-06", events=events,
+                                           completed_at=since, files=[], today=date(2026, 11, 15),
+                                           completion=completion.state({}, first, draft_, events, [], today=date(2026, 11, 15), prepared_at=since))
+        copied = [{"kind": "letter.copied", "form": "A1", "at": "2026-11-15T10:02:00", "measure": True}]
+        self.assertEqual(row(copied)["text"], "vorbereitet")
+        self.assertEqual(row([{**copied[0], "measure": None}])["text"], "kopiert, Versand nicht bestätigt")
+        self.assertEqual(row([{"kind": "letter.copied", "form": "A1", "at": "2026-11-14T10:00:00"}])["text"], "vorbereitet")  # before it was prepared
+        self.assertEqual(row([approved("A1", text="Brief"), saved()])["text"], "freigegeben, Versand offen")
+        self.assertEqual(row([approved("A1", text="Brief"), saved(), sent()])["text"], "wartet auf Kundschaft bis 06.12.2026")
 
     def test_the_case_is_named_by_what_it_is_about_and_the_newest_comes_first(self):
         request = "Rita Exempel hat die Kündigung seiner Wohnung angefochten und ist zur Schlichtungsverhandlung am 10. Dezember 2026 vorgeladen."

@@ -221,8 +221,11 @@ def apply_edit(graph, edit):
             check_form(args)
         except FormError as error:
             raise EditError(str(error)) from None
-    elif op == "add_dispatch":  # Slice B fills this: a dispatch is an entry of the account, not a change to the process
-        raise EditError(f"unknown edit {op!r}")  # refused, as before, until then
+    elif op == "add_dispatch":  # a letter dispatched to one recipient: an entry of the account (account.dispatch_entries), not
+        # a change to the process; written only by the store's dispatch_once (the edits route refuses it, Slice C)
+        from .account import PARTIES, _iso
+        if not isinstance(args.get("n"), int) or not _iso(args.get("date")) or not args.get("version") or args.get("to") not in PARTIES:
+            raise EditError("a dispatch needs its number, its day, the approved version and its recipient")
     elif op == "settle_request":  # Slice C fills this: a request settled by the handler (account.apply_corrections)
         raise EditError(f"unknown edit {op!r}")
     elif op == "set_party":  # Slice C fills this: a party as the handler names it (the party items, letters and title)

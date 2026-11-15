@@ -121,13 +121,23 @@ class MandatePackageTests(unittest.TestCase):
         self.assertEqual(rows["Parteien"][0]["text"], "nicht in der Akte festgestellt")
 
     def test_the_file_note_records_all_four_and_which_were_copied(self):
+        # Rewritten for SLICE_B B13: each letter of the package carries the state of its approved version («freigegeben»,
+        # «versandt am …» for the recipient whose dispatch the handler confirmed), never a copy («– kopiert»).
+        from tests.test_completion import approved, saved, sent
         ctx = context(self.items, self.files)
         package = [("A10", FORMS["A10"]["title"])] + [(k, FORMS[k]["title"]) for k in letters.accompanying("A10", FORMS, self.items)]
-        events = [{"kind": "letter.copied", "form": "A10"}, {"kind": "letter.copied", "also": "A10_kostengutsprache"}]
-        note = letters.file_note(CASE, self.items, events, {"due": "2026-12-14"}, self.files, package=package)
-        self.assertIn("Paket (4 Schreiben, je einzeln): Mandatsanfrage an die Kanzlei – kopiert; Kostengutsprache (Umfang: Abklärung der Sach- und "
-                      "Rechtslage sowie aussergerichtliche Bemühungen; nach den bekannten Modalitäten, ohne Betrag) – kopiert; "
+        copies = [{"kind": "letter.copied", "form": "A10"}, {"kind": "letter.copied", "also": "A10_kostengutsprache"}]
+        note = letters.file_note(CASE, self.items, copies, {"due": "2026-12-14"}, self.files, package=package)
+        self.assertIn("Paket (4 Schreiben, je einzeln): Mandatsanfrage an die Kanzlei; Kostengutsprache (Umfang: Abklärung der Sach- und "
+                      "Rechtslage sowie aussergerichtliche Bemühungen; nach den bekannten Modalitäten, ohne Betrag); "
                       "Zusammenfassung für die Kanzlei; Information der Kundschaft zum Mandat.", note)
+        forms = {"kanzlei": ["A10", "A10_kostengutsprache", "A10_zusammenfassung"], "kunde": ["A10_kunde"]}
+        approval = approved("A10", to=("kanzlei", "kunde"), forms=forms, title=FORMS["A10"]["title"])
+        events = copies + [approval, saved(), sent(recipient="kanzlei", day="2026-11-16")]
+        note = letters.file_note(CASE, self.items, events, {"due": "2026-12-14"}, self.files, package=package)
+        self.assertIn("Paket (4 Schreiben, je einzeln): Mandatsanfrage an die Kanzlei – versandt am 16.11.2026; Kostengutsprache (Umfang: Abklärung "
+                      "der Sach- und Rechtslage sowie aussergerichtliche Bemühungen; nach den bekannten Modalitäten, ohne Betrag) – versandt am "
+                      "16.11.2026; Zusammenfassung für die Kanzlei – versandt am 16.11.2026; Information der Kundschaft zum Mandat – freigegeben.", note)
         self.assertTrue(ctx["zusammenfassung"])
 
 
@@ -164,9 +174,17 @@ class SettlementTests(unittest.TestCase):
         text = letters.render("A11_iban", FORMS, context(items, files))[0]
         self.assertIn("Immo Verwaltung AG bezahlt CHF 800.00 bis 15.12.2026.", text)
         self.assertIn("IBAN: ____", text)
-        asked = [{"kind": "letter.copied", "form": "A11_iban"}]
+        # Rewritten for SLICE_B B10: a copy asks nothing; the request dispatched waits for the IBAN instead of being sent
+        # again, and the payout comes only once the customer's IBAN is in the file or the account.
+        from tests.test_completion import approved, sent
+        copied = [{"kind": "letter.copied", "form": "A11_iban"}]
+        listed, items, files = self.step(events=copied, hand={"vergleich_bestaetigt": "ja"})
+        self.assertEqual((listed["next_action:0"]["form"], listed["next_action:0"]["reason"]),
+                         ("A11_iban", "Einigung festgehalten; die Bankverbindung der Kundschaft fehlt in der Akte"))
+        asked = [approved("A11_iban", at="2026-11-10T09:00:00+00:00"), sent(day="2026-11-10")]
         listed, items, files = self.step(events=asked, hand={"vergleich_bestaetigt": "ja"})
-        self.assertEqual(listed["next_action:0"]["form"], "A11_auszahlung")  # asked once: never proposed again
+        nxt = listed["next_action:0"]
+        self.assertEqual((nxt["form"], nxt["reason"], nxt["since"]), ("A11_iban", "Bankverbindung erfragt am 10.11.2026 bis 24.11.2026", "2026-11-10"))
         self.assertIn("[bitte ergänzen: IBAN der Kundschaft]", letters.render("A11_auszahlung", FORMS, context(items, files))[0])
         with_iban = TEXT + f"\n[page 6]\nMein Konto: IBAN {IBAN}, lautend auf Lea Beispiel\n"
         listed, items, files = self.step(text=with_iban, hand={"vergleich_bestaetigt": "ja"})
@@ -186,17 +204,29 @@ class SettlementTests(unittest.TestCase):
         self.assertIsNone(settlement.customer_iban([{"extraction": {"text": "[page 1]\nIBAN CH93 0076 2011 6238 5295 8"}}], "Lea Beispiel"))  # checksum
 
     def test_payout_receipt_and_closing_follow_and_a_step_done_is_not_proposed_again(self):
-        done = [{"kind": "letter.copied", "form": "A11_iban"}, {"kind": "letter.copied", "form": "A11_auszahlung"}]
-        listed, items, files = self.step(events=done, hand={"vergleich_bestaetigt": "ja"})
+        # Rewritten for SLICE_B B10: each step completes from evidence, never from a copy: the IBAN in the file, the payout
+        # announced by a dispatched letter, the receipt confirmed by a dispatched letter once the payment is shown; three
+        # letters dispatched without a payment never close the case.
+        from tests.test_completion import approved, sent
+        with_iban = TEXT + f"\n[page 6]\nMein Konto: IBAN {IBAN}, lautend auf Lea Beispiel\n"
+        letter = lambda form, day, edit: [approved(form, version=form, at=f"{day}T09:00:00+00:00"), sent(version=form, day=day, edit=edit)]
+        done = letter("A11_auszahlung", "2026-11-10", "e1")
+        listed, items, files = self.step(events=done, text=with_iban, hand={"vergleich_bestaetigt": "ja"})
         self.assertEqual(listed["next_action:0"]["form"], "A11_eingang")
         self.assertIn("Bitte bestätigen Sie uns kurz, dass der Betrag auf Ihrem Konto eingegangen ist.", letters.render("A11_eingang", FORMS, context(items, files))[0])
+        copies = [{"kind": "letter.copied", "form": "A11_auszahlung"}, {"kind": "letter.copied", "form": "A11_eingang"}]
+        self.assertEqual(self.step(events=copies, text=with_iban, hand={"vergleich_bestaetigt": "ja"})[0]["next_action:0"]["form"], "A11_auszahlung")
         paid = [("eingang_zahlung", "Immo Verwaltung AG: Zahlung CHF 800.00 am 2026-12-10", 7, "CHF 800.00 überwiesen")]
-        listed, items, files = self.step(facts=paid, events=done[:1], hand={"vergleich_bestaetigt": "ja", "eingang_erledigt_bis": "2026-11-06"})
+        listed, items, files = self.step(facts=paid, hand={"vergleich_bestaetigt": "ja", "eingang_erledigt_bis": "2026-11-06"})
         nxt = listed["next_action:0"]
         self.assertEqual((nxt["action"], nxt["form"]), ("A11", "A11_eingang"))  # the payment came in: confirm it, no payout letter
         self.assertIn("die Zahlung über CHF 800.00 am 10.12.2026 eingegangen ist", letters.render("A11_eingang", FORMS, context(items, files))[0])
-        listed, _, _ = self.step(events=done + [{"kind": "letter.copied", "form": "A11_eingang"}], hand={"vergleich_bestaetigt": "ja"})
-        self.assertEqual((listed["next_action:0"]["action"], listed["next_action:0"]["form"]), ("A12", "A12_erledigt"))
+        confirmed = done + letter("A11_eingang", "2026-11-12", "e2")
+        nxt = self.step(events=confirmed, text=with_iban, hand={"vergleich_bestaetigt": "ja"})[0]["next_action:0"]
+        self.assertEqual((nxt["action"], nxt["form"]), ("A11", "A11_eingang"))  # confirmed to the customer, no payment shown: no closing
+        paid_before = [("eingang_zahlung", "Immo Verwaltung AG: Zahlung CHF 800.00 am 2026-11-05", 7, "CHF 800.00 überwiesen")]
+        nxt = self.step(facts=paid_before, events=confirmed, text=with_iban, hand={"vergleich_bestaetigt": "ja", "eingang_erledigt_bis": "2026-11-06"})[0]["next_action:0"]
+        self.assertEqual((nxt["action"], nxt["form"], nxt["reason"]), ("A12", "A12_erledigt", "Zahlungseingang bestätigt"))
 
     def test_under_a_mandate_the_firm_handles_the_payout(self):
         self.assertFalse(settlement.applies("abwicklung", {"vorgehen": "Mandat an Anwaltskanzlei"}))

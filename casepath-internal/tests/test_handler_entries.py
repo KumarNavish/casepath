@@ -103,11 +103,19 @@ class AgreementByPhoneTests(unittest.TestCase):
         self.assertIn({"kind": "agreed", "text": "vereinbart: Gegenpartei zahlt CHF 2'500 (Einigung) bis 30.12.2026", "open": True}, own["notes"])
 
     def test_the_file_note_names_what_the_handler_entered_since_it_was_last_copied(self):
+        # Rewritten for SLICE_B B13: since the later of the file note copied and the last Versandpaket saved (its note holds
+        # what was entered before)
         note = letters.file_note({"title": "x"}, self.items, [], None, looked_at(self.files))
         self.assertIn("Erfasst durch die Fallbearbeitung: Telefon mit der Gegenpartei (Herr Muster) am 15.11.2026: Einigung CHF 2'500, "
                       "Zahlung bis 30.12 (vereinbart: Gegenpartei zahlt CHF 2'500 (Einigung) bis 30.12.2026).", note)
         later = letters.file_note({"title": "x"}, self.items, [{"kind": "filenote.copied", "at": "2026-11-15T11:00:00+00:00"}], None, looked_at(self.files))
         self.assertNotIn("Erfasst durch die Fallbearbeitung", later)
+        packed = letters.file_note({"title": "x"}, self.items, [{"kind": "bundle.saved", "at": "2026-11-15T11:00:00+00:00", "version": "v1"}], None,
+                                   looked_at(self.files))
+        self.assertNotIn("Erfasst durch die Fallbearbeitung", packed)
+        before = letters.file_note({"title": "x"}, self.items, [{"kind": "bundle.saved", "at": "2026-11-15T09:00:00+00:00", "version": "v1"}], None,
+                                   looked_at(self.files))
+        self.assertIn("Erfasst durch die Fallbearbeitung", before)  # entered after the package: in this note
 
 
 class PromiseByPhoneTests(unittest.TestCase):
@@ -142,6 +150,11 @@ class PromiseByPhoneTests(unittest.TestCase):
         self.assertEqual(clock["due"], "2026-12-15")
         self.assertEqual(follow_up(nxt.get("next_in_days"), looked_at(self.files), [{"kind": "followup.set", "date": "2026-12-01"}],
                                    until=nxt.get("until"))["due"], "2026-12-01")  # a date the handler set still governs
+        # Rewritten for SLICE_B B12: a date set for this step governs; one set for another step lapses with it
+        hand = [{"kind": "followup.set", "date": "2026-12-01", "step": "A6"}]
+        self.assertEqual(follow_up(nxt.get("next_in_days"), looked_at(self.files), hand, until=nxt.get("until"), step="A6")["due"], "2026-12-01")
+        self.assertEqual(follow_up(nxt.get("next_in_days"), looked_at(self.files), [{**hand[0], "step": "A1"}], until=nxt.get("until"),
+                                   step="A6")["due"], "2026-12-15")
         self.assertTrue(self.state["facts"]["anruf_offen"])  # «Vielen Dank für das Telefongespräch» in the pending letter
 
 
