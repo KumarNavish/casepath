@@ -68,6 +68,8 @@ class ScoreSavedTests(unittest.TestCase):
         self.assertNotIn("Darlehen zurück", text)  # ids and counts only
 
     def test_an_assessment_whose_only_gaps_are_the_handlers_is_ok_with_its_gaps_named_apart_from_an_incomplete_one(self):
+        """Where the truth names neither a recommendation nor answers. Where it names them, the assessment is expected to give
+        them and its declared gaps no longer make it «ok» (MEASURE §2: the substantive part is not the handler's by default)."""
         from casepath.process import area, letters
         assess = {**NOISE, "action": "A5", "ask_now": []}
         own = handler.letter_form(assess)["handler_gaps"]
@@ -93,6 +95,20 @@ class ScoreSavedTests(unittest.TestCase):
         self.assertIn(f"X02 area ok action ok documents 0/0 extra 0 present asked 0 letter ok, {len(gaps)} gaps for the handler deadline -", out)
         self.assertIn("allgemein: none", out)
         self.assertEqual(handler.score_row(NOISE, {**RESULTS[1], "letter_gaps": 1})["letter"], False)  # a first request declares none
+        # the truth names what a complete assessment gives: the same gaps are gaps like any other, and the line says why
+        for named, reason in (({"recommendation": ["frist_beseitigung", "schadenersatz"]}, "the truth names recommendation"),
+                              ({"answers": 2}, "the truth names answers"),
+                              ({"recommendation": ["frist_beseitigung"], "answers": 1}, "the truth names recommendation and answers")):
+            scored = handler.score_row({**assess, **named}, {**row, "letter_gap_texts": gaps})
+            self.assertEqual((scored["letter"], scored["letter_why"], scored["letter_own_gaps"]), (False, [f"{len(gaps)} gaps", reason], 0))
+        self.assertEqual(handler.score_row({**assess, "answers": 0}, {**row, "letter_gap_texts": gaps})["letter"], "handler")  # no question to answer
+        self.assertEqual(handler.score_row({**assess, "recommendation": ["frist_beseitigung"]}, {**row, "letter_gaps": 0})["letter"], True)
+        workflows = handler.areas()
+        for bad in ({"recommendation": []}, {"recommendation": ["Frist setzen"]}, {"answers": -1}, {"answers": "zwei"}):
+            with self.assertRaises(BenchmarkError):
+                handler.check_truth({"id": "X09-x", "truth_handler": {**NOISE, **bad}}, workflows)
+        self.assertEqual(handler.check_truth({"id": "X09-x", "truth_handler": {**NOISE, "recommendation": ["frist_beseitigung"], "answers": 2}},
+                                             workflows)["answers"], 2)
 
     def test_a_case_without_a_row_and_dates_where_the_trigger_is_missing(self):
         text = handler.render(handler.score_saved(RESULTS[1:], self.cases))
@@ -134,6 +150,41 @@ class ScoreSavedTests(unittest.TestCase):
         self.assertIn("X01 area ok action ok documents 1/2 extra 1 present asked 1 letter ok deadline wrong key points 0/1!", text)
         self.assertIn("X01 key point not shown ohne_termin, X01 key point shown beweis", text)
         self.assertEqual(next(line for line in text.splitlines() if line.startswith("total")).split()[8], "0/1")
+
+
+class ExpertEditTests(unittest.TestCase):
+    """The benchmark's expert corrections (quality/evaluate.py, expert_edits) activate shared Knowledge only after a replay of
+    its current version, as a person must (docs/HANDLER_BAR.md, L3); the activation is never asked of the edit form."""
+
+    class Api:
+        def __init__(self, replay=None):
+            self.calls, self.replay = [], replay
+
+        def call(self, method, path, body=None):
+            from casepath.quality.evaluate import ApiError
+            self.calls.append((path, body))
+            if path.endswith("/edits"):
+                return {"knowledge": {"id": "know-1", "status": "candidate"} if body.get("use_for_similar") else None}
+            if path.endswith("/replay") and self.replay:
+                raise ApiError(self.replay, "refused")
+            return {"status": "active"} if path.endswith("/activate") else {"replayed": True}
+
+    def test_a_correction_to_activate_is_posted_as_a_candidate_replayed_then_activated(self):
+        from casepath.quality.evaluate import expert_edits
+        edit = {"op": "add_document", "args": {"title": "Lüftungsprotokoll"}, "reason": "", "use_for_similar": True, "activate": True}
+        api = self.Api()
+        self.assertEqual(expert_edits(api, "case_1", [edit]), [{"op": "add_document", "accepted": True, "knowledge": "active", "replayed": True}])
+        self.assertEqual([p for p, _ in api.calls], ["/api/cases/case_1/edits", "/api/knowledge/know-1/replay", "/api/knowledge/know-1/activate"])
+        self.assertNotIn("activate", api.calls[0][1])
+        before_gate = self.Api(replay=404)  # a deployment without the replay route: activated directly, and said so
+        self.assertEqual(expert_edits(before_gate, "case_1", [edit])[0]["replayed"], False)
+        refused = self.Api(replay=500)
+        self.assertEqual(expert_edits(refused, "case_1", [edit])[0]["accepted"], False)  # never activated without its replay
+        self.assertNotIn("/api/knowledge/know-1/activate", [p for p, _ in refused.calls])
+        plain = self.Api()
+        self.assertEqual(expert_edits(plain, "case_1", [{**edit, "use_for_similar": False, "activate": False}]),
+                         [{"op": "add_document", "accepted": True, "knowledge": None}])
+        self.assertEqual(len(plain.calls), 1)
 
 
 class SelfCheckTests(unittest.TestCase):
