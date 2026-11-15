@@ -429,7 +429,33 @@ def check(raw, locate, kinds, elsewhere=None, issues=None, page_text=None):
                 row["request"] = element["request"]  # the row it answers, by the id case_so_far gave it (C8)
             kept.append(row)
         entry[key] = kept
+    receipt = _receipt_record(raw.get("receipt"), locate, elsewhere, n, issues)  # what a receipt in this document records (C10c)
+    if receipt is not None:
+        entry["receipt"] = receipt
+    elif isinstance(raw.get("receipt"), dict):
+        dropped += 1
     return (_on_its_pages(entry, page_text) if page_text else entry), dropped
+
+
+def _receipt_record(raw, locate, elsewhere, n, issues):
+    """A reader's record of a receipt or bill in the entry's document (Slice A's reading, C10c): {expense, party, payer,
+    period {from, to}, transaction, amount, role, citations}. Kept only with its quote located there; its amount only when
+    the quote writes it, its days only when written there, its role only one of RECEIPT_ROLES. None otherwise."""
+    if not isinstance(raw, dict):
+        return None
+    hit = locate(raw.get("quote")) or (elsewhere(raw.get("quote")) if elsewhere else None)
+    if not hit:
+        issues.append({"n": n, "kind": "receipt", "reason": "not_found", "kept": False})
+        return None
+    quote = str(hit.get("quote") or raw.get("quote") or "")
+    period = raw.get("period") if isinstance(raw.get("period"), dict) else {}
+    written = written_dates(quote)
+    days = {k: _iso(period.get(k)) for k in ("from", "to") if _iso(period.get(k)) in written}
+    number = amount(raw.get("amount"))
+    return {"expense": _clip(raw.get("expense"), 80) or None, "party": _clip(raw.get("party"), 80) or None,
+            "payer": _clip(raw.get("payer"), 80) or None, "period": days or None, "transaction": _clip(raw.get("transaction"), 40) or None,
+            "amount": _clip(raw.get("amount"), 40) if number is not None and number in money(quote) else None,
+            "role": raw.get("role") if raw.get("role") in RECEIPT_ROLES else None, "citations": [hit]}
 
 
 # -- coverage: pages of the file with no entry ------------------------------------------------------------------------
@@ -753,14 +779,8 @@ def _same_documents(entries, kinds, phone_code):
     out, seen, merged = [], {}, []
     dispatches = [e for e in entries if e.get("dispatch")]
     for e in entries:
-        own = ((e.get("citations") or [{}])[0] or {}).get("quote")
-        key = (e.get("date"), e["from"], e["to"], e.get("kind"), own)
-        if own and not e.get("handler") and key in seen:
-            merged.append({"n": e["n"], "into": seen[key], "why": "same"})
-            continue
-        if own:
-            seen.setdefault(key, e["n"])
-        if e["from"] == INSURER and not e.get("handler") and not e.get("dispatch") and e.get("date"):
+        read = not e.get("handler") and not e.get("dispatch")  # a reader's entry; a person's entry or a dispatch is its own
+        if read and e["from"] == INSURER and e.get("date"):
             mine = set(code_of(e, kinds, False, phone_code)) - {phone_code}
             day = parse_date(e["date"])
             sent = next((d for d in dispatches if d["to"] == e["to"] and d.get("date") and mine
@@ -771,6 +791,13 @@ def _same_documents(entries, kinds, phone_code):
                 sent.setdefault("quoted", []).append(e["n"])
                 merged.append({"n": e["n"], "into": sent["n"], "why": "dispatch"})
                 continue
+        own = ((e.get("citations") or [{}])[0] or {}).get("quote")
+        key = (e.get("date"), e["from"], e["to"], e.get("kind"), own)
+        if own and read and key in seen:
+            merged.append({"n": e["n"], "into": seen[key], "why": "same"})
+            continue
+        if own and read:
+            seen.setdefault(key, e["n"])
         out.append(e)
     return out, merged
 
@@ -850,11 +877,12 @@ def _build_checked(entries, graph=None):
                         prior["answered"] = None  # asked again after an answer: the answer did not settle it
                     i += 1
                     continue
+                named = {k: a[k] for k in ("kind", "key", "ref") if a.get(k) is not None}  # a dispatch's ask (Slice B): what it asks
                 requests.append({"id": f"r{e['n']}.{i}", "by": asker, "of": a["of"], "what": what, "first": e.get("date"), "last": e.get("date"),
                                  "due": a.get("by"), "times": 1, "warned": int(bool(a.get("warns"))), "entries": [e["n"]], "citations": list(a["citations"]),
                                  "answered": None, "phone": bool(e.get("phone")), "due_n": e["n"] if a.get("by") else None, "due_text": a.get("by_text"),
                                  "due_computed": bool(a.get("by_computed")), **({"third": True} if a.get("third") else {}),
-                                 **({"by_check": True} if a.get("by_check") else {})})
+                                 **({"by_check": True} if a.get("by_check") else {}), **({"ask": named} if named else {})})
                 i += 1
         for j, x in enumerate(e.get("answers") or ()):
             open_ = [r for r in requests if r["of"] == e["from"] and r["answered"] is None and r["entries"][0] != e["n"]]
@@ -886,7 +914,7 @@ def _build_checked(entries, graph=None):
                                          "handler": {"kind": e["handler"].get("kind")} if e.get("handler") else None})
                     if part.get("by"):
                         row.update(due=part["by"], due_n=e["n"], due_text=None, due_computed=False)
-                elif found >= 0.5 or (named and len(ranked) == 1):
+                elif found >= 0.5 or (named and len(ranked) == 1):  # a letter-level answer to a one-row entry: its evidence is checked (held)
                     row["answered"] = {**mark, "how": how if found < 0.5 or named else "code", "file": e.get("file"), "from": e["from"],
                                        **({"elsewhere": x["elsewhere"]} if x.get("elsewhere") else {}), "confirmed": found >= 0.5, "score": round(found, 2)}
                     row.pop("partial", None)
@@ -1482,25 +1510,203 @@ def _seconds(value):
         return None
 
 
-def held(row, files, findings=None, claims=None, need=None, entries=None):
-    """C10c: the file that holds what a row of the account asked (a document need or a claim line), among the files of the
-    entry that answered it (answering_files): {file, how}, or None. A file holds a need when a document of it (its title or
-    kind) or its name names the need's first word («segment», «name»), or an accepted finding of the document finder for
-    that need cites it («finding»); it holds a claim line («Belege zu: …») when the claim's receipt is located in it
-    («receipt»). ``need``: the process's document need the row asks, else the row's own words name it. What the answer
-    says alone never delivers. Dispatch rows (Slice B) are rows like any other."""
+# -- claims and their receipts (C10c): a shared word or amount is a candidate, never proof ---------------------------------
+#
+# A receipt delivers a claim line («Belege zu: Stromkosten für den Bautrockner») only when what the reading records about
+# it agrees with the claim: the expense, the party, the period, the transaction, and the role of its amount (requested,
+# promised, disputed, paid, refunded). The reading's own records serve where they exist (a claim's ``expense``, ``party``,
+# ``period``, ``transaction``, ``role``; an entry's ``receipt`` record, Slice A); otherwise the reader's line on the
+# document, its file's name and documents, and the values its located quotes write. Deterministic, no model call.
+
+RECEIPT_ROLES = ("requested", "promised", "disputed", "paid", "refunded")
+DOCUMENTING = {"requested", "paid"}  # billed to the customer or paid: the cost was incurred
+ROLE_WORDS = (("refunded", re.compile(r"vergüt|zurück\s?erstatt|rückerstatt|\berstatte[tn]?\b|gutschrift|gutgeschrieben|zurückbezahlt|rückzahlung", re.I)),
+              ("disputed", re.compile(r"bestreit|bestritten|beanstand|nicht einverstanden|strittig|einsprache", re.I)),
+              ("promised", re.compile(r"nachreich|\bfolgt\b|\bfolgen\b|\bwerde\b|später|demnächst|sobald", re.I)),
+              ("paid", re.compile(r"bezahlt|beglichen|überwiesen|quittung|kassenbon|zahlungsbestätigung|abgebucht|lastschrift|\bbar\b", re.I)),
+              ("requested", re.compile(r"rechnung|abrechnung|zahlbar|fällig|\bbetrag\b|forderung|mahnung", re.I)))
+ROLE_KINDS = {"kostenforderung": "requested", "zahlungsbestaetigung": "paid", "zahlung": "paid"}
+ROLE_TEXT = {"requested": "verlangt", "promised": "angekündigt", "disputed": "bestritten", "paid": "bezahlt", "refunded": "erstattet"}
+COST_WORDS = ("abrechnungen", "abrechnung", "rechnungen", "rechnung", "quittungen", "quittung", "belege", "beleg", "kosten", "gebühren",
+              "gebühr", "betrag", "verbrauch", "auslagen", "spesen")
+NOT_EXPENSE = set(COST_WORDS) | {"zusatz", "total", "chf", "franken", "mwst", "ersatz", "betreff", "zahlung", "nummer", "datum", "anbei",
+                                 "stand", "summe", "pdf", "txt", "eml", "png", "jpg", "zähler", "monat", "monate", "tage", "seite"}
+SAME_EXPENSE = (("energ", "strom"), ("elektri", "strom"), ("kwh", "strom"))  # one expense, other words: by its first letters
+MONEY = re.compile(r"(?:CHF|Fr\.|SFr\.?|EUR)\s*(\d{1,3}(?:[’' ]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d{1,2})?)|"
+                   r"(\d{1,3}(?:[’' ]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d{1,2})?)\s*(?:CHF|Franken|\.–|\.-)", re.I)
+ROUGH = re.compile(r"\b(?:rund|ca\.?|circa|etwa|ungefähr|ungefaehr|knapp|gut)\b", re.I)
+
+
+def expense_stems(text):
+    """The words that name what a cost is for, each cut to its first letters: «Stromkosten für den Bautrockner» →
+    {strom, bautro}, «Abrechnung Energieverbrauch» → {strom}; the words of billing (Kosten, Rechnung, Beleg …) left out."""
+    out = set()
+    for raw in re.findall(r"[A-Za-zÄÖÜäöüß]{3,}", str(text or "")):
+        w = raw.lower()
+        if w in STOP or w in FUNCTION_WORDS or w in NOT_EXPENSE:
+            continue
+        for part in COST_WORDS:
+            if w.endswith(part) and len(w) - len(part) >= 3:
+                w = w[:-len(part)]
+                w = w[:-1] if w.endswith(("ungs", "heits", "keits", "ions", "tats")) else w
+                break
+        if w in NOT_EXPENSE or len(w) < 3:
+            continue
+        w = next((same for head, same in SAME_EXPENSE if w.startswith(head)), w)
+        out.add(w[:6])
+    return out
+
+
+def _covered(stem, stems):
+    return any(stem == t or (len(stem) >= 4 and len(t) >= 4 and (stem.startswith(t) or t.startswith(stem))) for t in stems)
+
+
+def money(text):
+    """The amounts a text writes as money («CHF 85.40», «Fr. 1'200.–», «85.– »); without a currency, every amount."""
+    found = set()
+    for m in MONEY.finditer(str(text or "")):
+        try:
+            found.add(float(re.sub(r"[’' ]", "", m.group(1) or m.group(2)).replace(",", ".")))
+        except ValueError:
+            continue
+    return found or written_amounts(text)
+
+
+def role_of(text, kind=None):
+    """The role an amount has where it is written: refunded, disputed, promised, paid or requested (billed); None."""
+    return next((role for role, pattern in ROLE_WORDS if pattern.search(str(text or ""))), None) or ROLE_KINDS.get(kind)
+
+
+def _period(value):
+    if isinstance(value, dict) and (value.get("from") or value.get("to")):
+        return (_iso(value.get("from")) or _iso(value.get("to")), _iso(value.get("to")) or _iso(value.get("from")))
+    return None
+
+
+def claim_profile(claim):
+    """What the reading records about a claim: its expense (``expense``, else its words), amount and whether it is
+    rounded («rund CHF 85»), party, period, transaction and the role of its amount (a claim asks: requested)."""
+    quote = " ".join(str(c.get("quote") or "") for c in claim.get("citations") or ())
+    number = amount(claim.get("amount"))
+    return {"stems": expense_stems(claim.get("expense") or claim.get("what")), "expense": claim.get("expense") or claim.get("what"),
+            "amount": number, "rough": bool(ROUGH.search(f"{quote} {claim.get('amount') or ''}")), "party": claim.get("party"),
+            "period": _period(claim.get("period")), "transaction": claim.get("transaction"), "role": claim.get("role") or "requested"}
+
+
+def receipt_profile(entry, f=None):
+    """What the reading records about a receipt in a file: the entry's own ``receipt`` record where the reader made one
+    (Slice A), else the reader's line on the document (``what``), its file's name and documents, and the values its
+    located quotes write (money, days, the role of the amount, from its words or its kind). None without anything."""
+    entry = entry or {}
+    rec = entry.get("receipt") if isinstance(entry.get("receipt"), dict) else {}
+    quotes = " ".join([str(c.get("quote") or "") for c in entry.get("citations") or ()]
+                      + [_quote(x) for k in ELEMENTS for x in entry.get(k) or ()] + ([_quote(rec)] if rec else []))
+    titles = [str((f or {}).get("name") or "")] + [str(s.get("title") or "") for s in ((f or {}).get("extraction") or {}).get("segments") or ()
+                                                   if not entry.get("page") or not s.get("first_page") or s["first_page"] <= entry["page"] <= (s.get("last_page") or s["first_page"])]
+    described = rec.get("expense") or " ".join([str(entry.get("what") or "")] + titles)
+    if not described.strip() and not quotes.strip():
+        return None
+    recorded = {amount(rec["amount"])} if rec.get("amount") and amount(rec.get("amount")) is not None else set()
+    amounts = recorded or (money(quotes) | {amount(x.get("amount")) for k in ("paid", "terms") for x in entry.get(k) or ()
+                                            if x.get("amount") and not x.get("amount_check")})
+    days = sorted(written_dates(quotes))
+    return {"stems": expense_stems(described), "expense": rec.get("expense") or str(entry.get("what") or "") or titles[0],
+            "amounts": {a for a in amounts if a is not None}, "party": rec.get("party"), "payer": rec.get("payer"),
+            "period": _period(rec.get("period")) or ((days[0], days[-1]) if days else None), "transaction": rec.get("transaction"),
+            "role": rec.get("role") if rec.get("role") in RECEIPT_ROLES else role_of(quotes, entry.get("kind")) or ("paid" if entry.get("paid") else None),
+            "to": entry.get("to"), "file": entry.get("file") or (f or {}).get("id"), "n": entry.get("n")}
+
+
+def receipt_agrees(claim, receipt):
+    """Whether a receipt documents a claim (C10c): {agrees, candidate, why}. A candidate shares an expense word or an
+    amount with the claim; it agrees only when the claim's expense is named whole and nothing recorded contradicts it: the
+    amount (within its rounding), the role of the receipt's amount (billed or paid, never refunded, disputed or only
+    announced), the period, the party, the transaction, and its addressee (the customer's side)."""
+    c, r = claim_profile(claim), receipt
+    why, shared = [], {s for s in c["stems"] if _covered(s, r["stems"])}
+    tolerance = (lambda a: max(1.0, 0.05 * a)) if c["rough"] else (lambda a: max(0.5, 0.01 * a))
+    same_amount = c["amount"] is not None and any(abs(a - c["amount"]) <= tolerance(c["amount"]) for a in r["amounts"])
+    candidate = bool(shared) or same_amount
+    if not c["stems"] or shared != c["stems"]:
+        why.append(f"andere Ausgabe: {_clip(r['expense'], 60)}" if not shared else
+                   f"Ausgabe nur teilweise: {_clip(r['expense'], 60)}")
+    if c["amount"] is not None and r["amounts"] and not same_amount:
+        why.append(f"Betrag weicht ab: CHF {_chf(sorted(r['amounts'], key=lambda a: abs(a - c['amount']))[0])} statt CHF {_chf(c['amount'])}")
+    if r["role"] and r["role"] not in DOCUMENTING:
+        why.append(f"Betrag {ROLE_TEXT[r['role']]}, nicht belegt")
+    if c["period"] and r["period"] and (r["period"][1] < c["period"][0] or c["period"][1] < r["period"][0]):
+        why.append(f"anderer Zeitraum: {day(r['period'][0])} bis {day(r['period'][1])}")
+    if c["party"] and r["party"] and not (expense_stems(c["party"]) & expense_stems(r["party"])):
+        why.append(f"andere Partei: {_clip(r['party'], 40)}")
+    if c["transaction"] and r["transaction"] and re.sub(r"\W", "", str(c["transaction"])).lower() != re.sub(r"\W", "", str(r["transaction"])).lower():
+        why.append(f"andere Nummer: {_clip(r['transaction'], 30)}")
+    payer = r["payer"] if r.get("payer") in PARTIES else r.get("to") if r.get("to") in PARTIES else None  # billed to whom (a party)
+    if payer and payer not in CUSTOMER_SIDE:
+        why.append(f"an {TO[payer]} gerichtet")
+    return {"agrees": candidate and not why, "candidate": candidate, "why": why}
+
+
+def claim_of(row, claims):
+    """The claim a row asks the receipts of: the one its ask names (a dispatch's ask «claim» with its index, Slice B), else
+    the claim whose expense the row's words name whole («Belege zu: Stromkosten für den Bautrockner»). (index, claim) or
+    None."""
+    claims = list(claims or ())
+    ask = row.get("ask") or {}
+    ref = row.get("claim", ask.get("ref") if ask.get("kind") == "claim" else None)
+    if isinstance(ref, int) and 0 <= ref < len(claims):
+        return ref, claims[ref]
+    asked = expense_stems(re.sub(r"^\s*(?:Belege|Quittungen|Rechnungen|Nachweise?)\s+(?:zu|für|von|der|des)\s*:?\s*", "", str(row.get("what") or ""), flags=re.I))
+    best = [(i, c) for i, c in enumerate(claims) if claim_profile(c)["stems"] and claim_profile(c)["stems"] <= {s[:6] for s in asked}]
+    return best[0] if best else None
+
+
+def receipts_in(file_ids, files, entries=None):
+    """The receipts the reading recorded in these files: one per entry of the file (a dossier holds several), else one
+    for the file itself (its name and documents)."""
+    by_id = {f["id"]: f for f in files or ()}
+    out = []
+    for fid in file_ids:
+        mine = [e for e in entries or () if e.get("file") == fid and not e.get("handler") and not e.get("dispatch")]
+        for e in mine or [{"file": fid}]:
+            profile = receipt_profile(e, by_id.get(fid))
+            if profile:
+                out.append(profile)
+    return out
+
+
+def documented(claim, files, entries=None, file_ids=None, why=None):
+    """A claim's receipt among the case's files (or ``file_ids``): {file, how: «receipt», n, basis} for the first receipt
+    whose recorded details agree with the claim (receipt_agrees), else None; ``why`` collects each candidate set aside
+    with its reasons ([{file, n, expense, why}]). For Slice A's residual and Slice B's fulfilment alike."""
+    ids = list(file_ids) if file_ids is not None else [f["id"] for f in files or ()]
+    for r in receipts_in(ids, files, entries):
+        check = receipt_agrees(claim, r)
+        if check["agrees"]:
+            return {"file": r["file"], "how": "receipt", "n": r.get("n"),
+                    "basis": {"expense": r["expense"], "amounts": sorted(r["amounts"]), "role": r["role"], "period": r["period"]}}
+        if check["candidate"] and why is not None:
+            why.append({"file": r["file"], "n": r.get("n"), "expense": r["expense"], "why": check["why"]})
+    return None
+
+
+def held(row, files, findings=None, claims=None, need=None, entries=None, why=None):
+    """C10c: the file that holds what a row of the account asked (a document need or a claim line): {file, how}, or None.
+    The files looked in are those of the entry that answered the row (answering_files); a row without an answer (a
+    dispatch's ask, Slice B) is looked for in the files given. A claim line is held only by a receipt whose recorded
+    details agree with the claim (documented: a shared word or amount is a candidate, never proof; ``why`` collects the
+    candidates set aside). A file holds a document need when a document of it (its title or kind) or its name names the
+    need's first word («segment», «name»), or an accepted finding of the document finder for that need cites it
+    («finding»). ``need``: the process's document need the row asks (else the row's own ``need`` and ``title``, else its
+    words). What the answer says alone never delivers. Dispatch rows (Slice B) are rows like any other."""
     files = list(files or ())
-    ids = answering_files(row, files, entries)
+    ids = answering_files(row, files, entries) if (row or {}).get("answered") else [f["id"] for f in files]
     if not ids:
         return None
     by_id = {f["id"]: f for f in files}
-    for claim in claims or ():  # a claim line: the claim's own receipt, located in one of these files
-        receipt = claim.get("receipt")
-        cites = receipt if isinstance(receipt, list) else [receipt] if isinstance(receipt, dict) else []
-        if content(claim.get("what")) and content(claim.get("what")) <= content(row.get("what")):
-            hit = next((c.get("file") for c in cites if c and c.get("file") in ids), None)
-            if hit:
-                return {"file": hit, "how": "receipt"}
+    claimed = claim_of(row, claims) if claims else None
+    if claimed is not None:  # a claim line: a receipt that agrees with the claim, nothing less
+        return documented(claimed[1], files, entries, ids, why)
+    need = need or ({"id": row.get("need"), "title": row.get("title")} if row.get("need") else None)
     title = (need or {}).get("title") or row.get("what")
     head = _head(re.sub(r"^\s*(?:Belege|Kopie|Kopien)\s+(?:zu|von|der|des)\s*:?\s*", "", str(title or ""), flags=re.I)) or _head(title)
     found = findings.values() if isinstance(findings, dict) else findings or ()
@@ -1510,7 +1716,7 @@ def held(row, files, findings=None, claims=None, need=None, entries=None):
         if head and any(_alike(head, w) for text in named for w in words(text)):
             return {"file": fid, "how": "name" if any(_alike(head, w) for w in words(f.get("name"))) else "segment"}
         for row_found in found:
-            if (need and row_found.get("document") != need.get("id")) or row_found.get("verdict") not in ("accepted", None) \
+            if (need and need.get("id") and row_found.get("document") != need.get("id")) or row_found.get("verdict") not in ("accepted", None) \
                     or row_found.get("status") not in ("present", None) or row_found.get("account"):
                 continue
             if fid in (row_found.get("files") or []) or any(c.get("file") == fid for c in row_found.get("citations") or ()):
@@ -1523,7 +1729,8 @@ def delivered(acc, needs, files=None, findings=None, claims=None):
     answered by an entry whose words name the need (its first word), with that answer's quote. {need id: finding}, in the
     shape of the document finder's accepted findings; an open-ended need («Sämtliche …») is never settled this way. A
     checked account (C10c) delivers a need only when a file of the answering entry holds it (held): otherwise the need
-    stays missing, and the row says «laut Antwort vom … beigelegt, nicht in der Akte» (``answered.unheld``)."""
+    stays missing, and the row says «laut Antwort vom … beigelegt, nicht in der Akte» (``answered.unheld``); a claim line
+    answered is marked held by its receipt, or not held with the candidates set aside and why."""
     if (acc or {}).get("checked"):
         return _delivered_held(acc, needs, files or (), findings, claims)
     out = {}
@@ -1546,14 +1753,25 @@ def _delivered_held(acc, needs, files, findings, claims):
     for r in acc["requests"]:
         if r["answered"] is None or r["of"] != "kunde" or r["by"] not in OWED_TO_US or r["answered"].get("settled"):
             continue
+        sent = f"laut Antwort vom {day(r['answered'].get('date')) or 'ohne Datum'} beigelegt, nicht in der Akte"
+        if claims and claim_of(r, claims) is not None:  # a claim line: its receipt, checked against the claim
+            aside = []
+            got = held(r, files, findings, claims, entries=acc["entries"], why=aside)
+            if got:
+                r["answered"]["held"] = got
+            else:
+                r["answered"]["unheld"] = f"{sent}: {r['what']}"
+                if aside:
+                    r["answered"]["aside"] = aside
+            continue
         said = words(f"{r['answered'].get('what') or ''} {r['what']}")
         for d in needs or ():
             head = _head(d.get("title"))
             if not head or d["id"] in out or re.match(r"\s*(sämtlich|alle|bisherig)", str(d.get("title") or ""), re.I) or head not in said:
                 continue
-            got = held(r, files, findings, claims, need=d, entries=acc["entries"])
+            got = held(r, files, findings, None, need=d, entries=acc["entries"])
             if got is None:  # a word in the answer alone never delivers: the need stays missing
-                r["answered"]["unheld"] = f"laut Antwort vom {day(r['answered'].get('date')) or 'ohne Datum'} beigelegt, nicht in der Akte: {d.get('title')}"
+                r["answered"]["unheld"] = f"{sent}: {d.get('title')}"
                 continue
             r["answered"]["held"] = got
             cites = list(r["answered"].get("citations") or [])[:1]
