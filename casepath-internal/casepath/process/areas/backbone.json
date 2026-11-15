@@ -1,7 +1,7 @@
 {
  "format": "casepath.backbone/1",
  "id": "fallbearbeitung",
- "version": "2026-11-15.4",
+ "version": "2026-11-15.5",
  "title": "Fallbearbeitung Rechtsschutz: Stufen, Handlungen, Entscheide, Uhr und Formulare",
  "sources": [
   {"id": "practice", "kind": "process_guidance", "title": "Praxis: Handlungen der Fallbearbeitung in 7 Hackathon-Dossiers (Mietmangel), allgemein zusammengefasst"}
@@ -99,7 +99,7 @@
   "A11_kosten": {"title": "Kostenforderung prüfen und begleichen", "none": "für eine Bestätigung an die Kanzlei ist kein Formular hinterlegt; geprüft und bezahlt wird im Zahlungssystem"},
   "A2_bericht": {"title": "Aktennotiz zum Bericht der Kanzlei", "none": "die Aktennotiz schreibt die Fallbearbeitung; die Kundschaft wird nur informiert, wenn der Bericht es verlangt"},
   "A12_mitwirkung_entscheid": {"title": "Leistungen einstellen?", "none": "erst nach Ihrem Entscheid «Leistungen einstellen?»", "needs": ["leistungen_einstellen"]},
-  "A12_mitwirkung_kanzlei": {"title": "Leistungseinstellung wegen fehlender Mitwirkung", "to": "Kundschaft", "needs": ["leistungen_einstellen"], "parts": ["Die von Ihnen beauftragte Kanzlei hat uns mit Schreiben vom {eingang_datum} mitgeteilt, dass Sie bei der Bearbeitung Ihres Falles nicht mitgewirkt haben: {vorenthalten}", "Damit haben Sie Ihre Pflicht zur Mitwirkung gemäss den Allgemeinen Versicherungsbedingungen ({avb_ziffer}) verletzt. Wir stellen unsere Leistungen in diesem Fall daher ein und schliessen Ihr Dossier."]},
+  "A12_mitwirkung_kanzlei": {"title": "Leistungseinstellung wegen fehlender Mitwirkung", "to": "Kundschaft", "needs": ["leistungen_einstellen"], "parts": ["Die von Ihnen beauftragte Kanzlei hat uns mit Schreiben vom {eingang_datum} mitgeteilt, dass für die Bearbeitung Ihres Falles folgende Unterlagen oder Angaben trotz Aufforderung nicht eingegangen sind:\n{vorenthalten}", "Damit haben Sie Ihre Pflicht zur Mitwirkung gemäss den Allgemeinen Versicherungsbedingungen ({avb_ziffer}) verletzt. Wir stellen unsere Leistungen in diesem Fall daher ein und schliessen Ihr Dossier."]},
   "vorgehen": {"title": "Wie soll vorgegangen werden?", "none": "die Fallbearbeitung entscheidet: «Selbst führen» oder «Mandat an Anwaltskanzlei»; danach ist der Brief der gewählten Stufe vorbereitet", "needs": ["vorgehen"]},
   "vorgehen_neu": {"title": "Weiteres Vorgehen festlegen", "none": "das Mandat ist beendet und die Leistungen laufen weiter; wie es weitergeht (selbst führen, neu mandatieren oder abschliessen), entscheidet die Fallbearbeitung", "needs": ["vorgehen"]}
 ,
@@ -192,7 +192,7 @@
  },
  "cooperation": {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": ["protekta", "rechtsschutz"], "source": "Mitwirkung fehlt erst, wenn mindestens zwei Anforderungen mit Frist ohne Antwort blieben; eine Rückfrage (A4) zählt nicht"},
  "incoming": [
-  {"id": "mitwirkung", "fact": "eingang_mitwirkung", "title": "Meldung der Kanzlei: Kundschaft wirkt nicht mit", "what": "Die beauftragte Kanzlei meldet, dass die Kundschaft Unterlagen trotz Aufforderung nicht geliefert oder Tatsachen verschwiegen hat, oder sie beendet deshalb das Mandat; nicht: Unterlagen stehen noch aus", "from": ["kanzlei"], "priority": 1, "handler_decision": true,
+  {"id": "mitwirkung", "fact": "eingang_mitwirkung", "title": "Meldung der Kanzlei: Kundschaft wirkt nicht mit", "what": "Die beauftragte Kanzlei meldet, dass die Kundschaft Unterlagen trotz Aufforderung nicht geliefert oder Tatsachen verschwiegen hat, oder sie beendet deshalb das Mandat; nicht: Unterlagen stehen noch aus", "from": ["kanzlei"], "priority": 1, "handler_decision": true, "about_customer": true,
    "action": {"kind": "A12", "title": "Leistungen einstellen?", "form": "A12_mitwirkung_entscheid", "next_in_days": null}, "answered_by": ["12"],
    "decision": {"fact": "leistungen_einstellen",
                 "yes": {"kind": "A12", "title": "Leistungseinstellung wegen fehlender Mitwirkung mitteilen", "form": "A12_mitwirkung_kanzlei", "next_in_days": null, "answered_by": ["12"]},

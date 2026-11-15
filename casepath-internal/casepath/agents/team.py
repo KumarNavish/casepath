@@ -52,18 +52,22 @@ announcing closure, A8 letter to the other side, A9 negotiation, A10 mandate to 
 A12 closing or end of benefits. """
 
 # … or the running account: one entry per document, from which code derives the actions, the requests and the agreement.
-RECORD = """For the record, call record_steps with one entry per document of the files, phone notes included (list_files
-shows each file's documents with their first page; a file without a document list is one document): n, its number in
-date order; the file and the document's first page; its date; from and to (kunde = the customer, VN; versicherer = us;
-kanzlei = the mandated firm, RA/AK; gegenpartei = the other side or its lawyer, GP; behoerde = a court or authority);
-kind; phone (true for a phone note); what, one line; quote, words of that document that show it (date line or subject).
-Then only what the document states, each element with its own quote from that document: asks (what, of whom, by when;
-repeats: the n of an earlier entry asking the same; warns: it says what follows if not done); answers (what it delivers
-or answers; answers: the n of the entry it answers); terms (what is offered or agreed, the amount as written, who pays,
-by when; agreed: accepted, or «verbleiben so, dass …»); paid (amount, who paid, date); next (the next step it states,
-by whom, by when, as «schliessen Dossier, wenn bis … nichts»). In a phone note the outcome and the next step matter
-most. Up to ten entries per call and two calls per turn, texts short. The record holds our own earlier actions: do not
-record handlung_ facts or the history list. """
+RECORD = """For the record, call record_steps with one entry per document of the files, phone notes included. The
+record is per document, not per stored segment: list_files shows each file's segments with their pages, and a segment
+(or a range «nicht gegliedert») may hold several documents; every letter, e-mail, phone or file note, invoice and
+decision gets its own entry with its own first page. Go through each file by its pages, so that every page lies in an
+entry's document; a file without a document list is read by its pages the same way. Each entry: n, its number in date
+order; the file and the document's own first page; its date (null for an undated note); from and to (kunde = the
+customer, VN; versicherer = us; kanzlei = the mandated firm, RA/AK; gegenpartei = the other side or its lawyer, GP;
+behoerde = a court or authority; to null for a file note); kind; phone (true for a phone note); what, one line; quote,
+words of that document that show it (date line or subject). Then only what the document states, each element with its
+own quote from that document: asks (what, of whom, by: by when as written, by_date: that date as YYYY-MM-DD when the
+document gives one; repeats: the n of an earlier entry asking the same; warns: it says what follows if not done);
+answers (what it delivers or answers; answers: the n of the entry it answers); terms (each thing offered or agreed, the
+amount as written, who pays, by and by_date; agreed: accepted, or «verbleiben so, dass …»); paid (amount, who paid,
+date); next (the next step it states, by whom, by and by_date, as «schliessen Dossier, wenn bis … nichts»). In a phone
+note the outcome and the next step matter most. About ten entries per call and two calls per turn, texts short. The
+record holds our own earlier actions: do not record handlung_ facts or the history list. """
 
 
 def reader_instructions(record):
@@ -221,7 +225,8 @@ class CaseWork:
                       for f in files]
         self.file_ids = list(self.evidence.files)
         self.total_chars = sum(len(t) for f in self.evidence.files.values() for _, t in f["pages_read"])  # what a model reads
-        self.record = {"entries": [], "dropped": 0}  # the running account's entries, each located (account.py)
+        self.record = {"entries": [], "dropped": 0, "elsewhere": 0, "issues": []}  # the running account's entries, each located (account.py)
+        self.coverage_given = None  # the page ranges given back to the reader once (coverage_round)
         if not self.file_ids:
             raise TeamError("no_files", "The case has no files to read.")
         self.facts, self.documents, self.events, self.usage = {}, {}, [], []
@@ -361,6 +366,48 @@ class CaseWork:
             return page, page
         return None, None
 
+    def page_range(self, file_id, page, firsts):
+        """The pages of the document an entry starting on ``page`` holds, as far as code can know it: from that page to the
+        next entry's first page in the same file (``firsts``), within the segment the page belongs to; (None, None) for an
+        entry that names no page (the whole file)."""
+        if page is None:
+            return None, None
+        _, end = self.document_of(file_id, page)
+        if end is None:  # a file without segments: up to its last page
+            end = max([p for p, _ in (self.evidence.files.get(file_id) or {}).get("pages_text") or () if p is not None] or [page])
+        later = [p for p in firsts if p > page]
+        return page, max(page, min([end] + later[:1]))
+
+    def pages(self):
+        return {fid: list(f["pages_text"]) for fid, f in self.evidence.files.items()}
+
+    def coverage_round(self, can_record):
+        """After the reader's entries (when it reports): the page ranges of the files with no entry (account.gaps) are given
+        back once, while it still has a turn to record them: the message for the reader, or None."""
+        if self.coverage_given is not None or not can_record:
+            return None
+        found = account.gaps(self.record["entries"], self.pages())
+        self.coverage_given = {"gaps": found, "entries": len(self.record["entries"])}
+        if not found:
+            return None
+        names = {fid: f.get("name") or fid for fid, f in self.evidence.files.items()}
+        listed = "; ".join(f"{names[g['file']]} (file {g['file']}): pages {g['from']}–{g['to']} have no entry" for g in found[:8])
+        self.emit("claim_reader", "record.coverage", gaps=found)
+        return (f"{listed}. A stored segment or a range «nicht gegliedert» may hold several documents: record the documents there "
+                "with record_steps, one entry per letter, e-mail, note, invoice and decision, each with its own first page; then call "
+                "report again.")
+
+    def coverage(self):
+        """Pages covered against pages of the files, and what giving gaps back did: {pages, covered, gaps, given_back,
+        given_back_pages, covered_after, added}."""
+        out = account.coverage(self.record["entries"], self.pages())
+        given = (self.coverage_given or {}).get("gaps") or []
+        left = {(g["file"], p) for g in out["gaps"] for p in range(g["from"], g["to"] + 1)}
+        pages = {fid: {p for p, t in rows if p is not None and str(t or "").strip()} for fid, rows in self.pages().items()}
+        back = [(g["file"], p) for g in given for p in range(g["from"], g["to"] + 1) if p in pages.get(g["file"], ())]
+        return {**out, "given_back": given, "given_back_pages": len(back), "covered_after": sum(1 for x in back if x not in left),
+                "added": len(self.record["entries"]) - (self.coverage_given or {}).get("entries", len(self.record["entries"]))}
+
     def findings(self):
         return {k: v for k, v in self.documents.items() if v["status"] in {"present", "unusable"} and v["verdict"] == "accepted"}
 
@@ -461,6 +508,88 @@ def _process_view(work):
             "letters": [{"step": s["id"], **s["produces"]} for s in work.graph["steps"] if s.get("produces")]}
 
 
+MAX_STEPS_PER_CALL = 40  # the call itself is never refused for its size: ten per call is guidance, not a limit
+
+
+def steps_entry(work):
+    """One entry of record_steps. What a model meets: a document's own fields, nullable where a document may lack them
+    (an undated note, a file note to no one, an element whose party is not named); texts bounded generously and cut by
+    code with a mark rather than refused (fit_steps); a by-when as written («innert 14 Tagen ab Erhalt») beside a separate
+    date field; lists as long as a real settlement or reminder needs."""
+    parties, kinds = list(account.PARTIES), list(account.kinds_of(work.graph))
+    party = {"type": ["string", "null"], "enum": parties + [None]}
+    quote = text(600, minLength=8)
+    day = {"type": ["string", "null"], "maxLength": 40}
+    by = {"type": ["string", "null"], "maxLength": 200}
+    number = {"type": ["integer", "null"], "minimum": 1, "maximum": 9999}
+    money = {"type": ["string", "null"], "maxLength": 80}
+    return obj(n=number, file=choice(work.file_ids), page={"type": ["integer", "null"]}, date=day,
+               **{"from": party}, to=party, kind=choice(kinds), phone={"type": "boolean"}, what=text(300), quote=quote,
+               asks=arr(obj(what=text(300), of=party, by=by, by_date=day, repeats=number, warns={"type": "boolean"}, quote=quote), maxItems=12),
+               answers=arr(obj(what=text(300), answers=number, quote=quote), maxItems=12),
+               terms=arr(obj(what=text(300), amount=money, payer=party, by=by, by_date=day, agreed={"type": "boolean"}, quote=quote), maxItems=12),
+               paid=arr(obj(amount=money, payer=party, date=day, quote=quote), maxItems=8),
+               next=arr(obj(what=text(300), who=party, by=by, by_date=day, quote=quote), maxItems=6))
+
+
+def _boolean(value):
+    if isinstance(value, str):
+        return value.strip().lower() in {"true", "ja", "yes", "1"}
+    return bool(value)
+
+
+def _integer(value):
+    if isinstance(value, str) and value.strip().isdigit():
+        return int(value.strip())
+    return value if type(value) is int else None
+
+
+def fit_steps(work, args):
+    """record_steps' arguments as the tool accepts them, with what was changed: near words mapped to the closed lists (a
+    party, a kind), numbers given as text read as numbers, booleans as text read as booleans, missing fields empty,
+    unknown fields dropped, a text or list longer than allowed cut by code (each cut named in the reply). Only an entry
+    that still does not fit is refused, by itself, with the field and what is allowed."""
+    if not isinstance(args, dict) or not isinstance(args.get("entries"), list):
+        raise ValueError("$.entries: a list of entries is required; allowed: {\"entries\": [entry, …]}")
+    schema, kinds, changes = steps_entry(work), account.kinds_of(work.graph), []
+    names = {(f.get("name") or "").lower(): fid for fid, f in work.evidence.files.items()}
+    out = []
+    for i, raw in enumerate(args["entries"]):
+        if not isinstance(raw, dict):
+            out.append(raw)
+            continue
+        raw = dict(raw)
+        for key in ("n", "page"):
+            raw[key] = _integer(raw.get(key))
+        if raw.get("file") not in work.file_ids and str(raw.get("file") or "").lower() in names:  # the file's name for its id
+            raw["file"] = names[str(raw["file"]).lower()]
+        raw["phone"] = _boolean(raw.get("phone"))
+        if raw.get("kind") not in kinds:
+            raw["kind"] = account.kind_of(raw.get("kind"), kinds)
+        for key in ("from", "to"):
+            raw[key] = None if raw.get(key) in (None, "") else account.party_of(raw[key])
+        for key, field in (("asks", "of"), ("terms", "payer"), ("paid", "payer"), ("next", "who")):
+            items = raw.get(key) if isinstance(raw.get(key), list) else []
+            fixed = []
+            for element in items:
+                if isinstance(element, dict):
+                    element = dict(element)
+                    element[field] = None if element.get(field) in (None, "") else account.party_of(element[field])
+                    for flag in ("warns", "agreed"):
+                        if flag in element:
+                            element[flag] = _boolean(element[flag])
+                    for ref in ("repeats", "answers"):
+                        if ref in element and not isinstance(element[ref], list):
+                            element[ref] = _integer(element[ref])
+                fixed.append(element)
+            raw[key] = fixed
+        cut = []
+        out.append(fit_to_schema(raw, schema, f"$.entries[{i}]", cut))
+        changes += [{"field": path[2:], "change": what, "from": before, "to": after} for path, what, before, after in cut
+                    if what in {"text cut", "items cut"}]
+    return {"entries": out}, changes
+
+
 def _tool_specs(work, names):
     files, facts = work.file_ids, list(work.fact_defs)
     documents = list(work.document_defs)
@@ -486,22 +615,10 @@ def _tool_specs(work, names):
                                         # what a present file shows, item by item, where a need lists what it must show
                                         **({"shows": arr(obj(item=text(200), citations=_citations(files, 2)), maxItems=12)}
                                            if any(d.get("must_show") for d in work.graph["documents"]) else {})))
-    record = work.graph.get("record")
-    if record:
-        parties, kinds, quote = list(account.PARTIES), list(record["kinds"]), text(300, minLength=8)
-        day = {"type": ["string", "null"], "maxLength": 10}
-        number = {"type": ["integer", "null"], "minimum": 1, "maximum": 999}
-        entry = obj(n={"type": "integer", "minimum": 1, "maximum": 999}, file=choice(files), page={"type": ["integer", "null"]}, date=day,
-                    **{"from": choice(parties)}, to=choice(parties), kind=choice(kinds), phone={"type": "boolean"}, what=text(160), quote=quote,
-                    asks=arr(obj(what=text(120), of=choice(parties), by=day, repeats=number, warns={"type": "boolean"}, quote=quote), maxItems=4),
-                    answers=arr(obj(what=text(120), answers=number, quote=quote), maxItems=4),
-                    terms=arr(obj(what=text(120), amount={"type": ["string", "null"], "maxLength": 40}, payer=choice(parties), by=day,
-                                  agreed={"type": "boolean"}, quote=quote), maxItems=2),
-                    paid=arr(obj(amount={"type": ["string", "null"], "maxLength": 40}, payer=choice(parties), date=day, quote=quote), maxItems=2),
-                    next=arr(obj(what=text(120), who=choice(parties), by=day, quote=quote), maxItems=1))
-        specs["record_steps"] = (f"Record the running account: one entry per document of the files (phone notes included), at most "
+    if work.graph.get("record"):
+        specs["record_steps"] = (f"Record the running account: one entry per document of the files (phone notes included), about "
                                  f"{account.MAX_ENTRIES_PER_CALL} per call; each element with a quote from that document.",
-                                 obj(entries=arr(entry, minItems=1, maxItems=account.MAX_ENTRIES_PER_CALL)))
+                                 obj(entries=arr(steps_entry(work), minItems=1, maxItems=MAX_STEPS_PER_CALL)))
     condition = arr(obj(fact=choice(facts), value=text(200)), maxItems=4) if facts else arr(obj(fact=text(80), value=text(200)), maxItems=0)
     specs["propose_change"] = ("Adapt this case's process: add a document need (attached to `step`), a question, or a step "
                                "(inserted before `step`), with its basis: quotes from the files or an applied Knowledge item, "
@@ -541,25 +658,69 @@ def _record_fact(work, agent, args):
     return {"accepted": True, "status": args["status"], "located_quotes": len(located), "missed_quotes": missed}
 
 
-def _record_steps(work, agent, args):
-    """The reader's entries for the running account: each located in its own document, or dropped and counted."""
-    kinds = account.kinds_of(work.graph)
-    kept = dropped = whole = 0
-    for raw in args["entries"]:
-        first, last = work.document_of(raw["file"], raw.get("page"))
-        entry, lost = account.check(raw, lambda quote: work.evidence.locate(raw["file"], quote, first, last), kinds)
+def _record_steps(work, agent, args, fitted=()):
+    """The reader's entries for the running account. Each entry is checked by itself: one that does not fit is refused
+    with its field and what is allowed, the others are kept. An entry's number names it within the record: a number
+    already used for another document gets the next free one (and what this call refers to by it follows). Each entry is
+    located within its document's page range (from its first page to the next entry's first page); an element found only
+    elsewhere in the file is kept and marked, one found nowhere is dropped; each such element is recorded with its kind
+    and reason (``issues``)."""
+    kinds, schema = account.kinds_of(work.graph), steps_entry(work)
+    rows, invalid = [], []
+    for i, raw in enumerate(args["entries"]):
+        try:
+            validate_result(raw, schema, f"entries[{i}]")
+        except ValueError as error:
+            invalid.append({"entry": i, "n": raw.get("n") if isinstance(raw, dict) else None, "error": str(error)})
+            continue
+        rows.append(raw)
+    same = lambda e, raw: (e["file"] == raw["file"] and e.get("page") == raw.get("page") and e.get("date") == account._iso(raw.get("date"))
+                           and e["from"] == account.party_of(raw.get("from")))
+    taken = {e["n"] for e in work.record["entries"]}
+    renumbered = {}
+    for raw in rows:
+        again = next((e for e in work.record["entries"] if same(e, raw)), None)
+        n = again["n"] if again else raw.get("n")
+        if again is None and (n is None or n in taken):
+            n = max(taken | {0}) + 1
+        if raw.get("n") is not None and n != raw["n"]:
+            renumbered[raw["n"]] = n
+        raw["n"] = n
+        taken.add(n)
+    for raw in rows:  # what this call refers to by a number it gave another
+        for key, ref in (("asks", "repeats"), ("answers", "answers")):
+            for element in raw.get(key) or ():
+                if element.get(ref) in renumbered:
+                    element[ref] = renumbered[element[ref]]
+    firsts = {}
+    for e in work.record["entries"] + rows:
+        if isinstance(e.get("page"), int):
+            firsts.setdefault(e["file"], set()).add(e["page"])
+    kept = dropped = whole = elsewhere = 0
+    issues = []
+    for raw in rows:
+        first, last = work.page_range(raw["file"], raw.get("page"), sorted(firsts.get(raw["file"], ())))
+        before = len(issues)
+        entry, lost = account.check(raw, lambda quote: work.evidence.locate(raw["file"], quote, first, last), kinds,
+                                    elsewhere=lambda quote: work.evidence.locate(raw["file"], quote), issues=issues)
+        elsewhere += sum(1 for x in issues[before:] if x["kept"])
         dropped += lost
         if entry is None:
             whole += 1
             continue
-        entry["page"] = first if first is not None else entry["page"]
-        same = lambda e: e["n"] == entry["n"] or (e["file"] == entry["file"] and first is not None and e["page"] == first)
-        work.record["entries"] = [e for e in work.record["entries"] if not same(e)] + [entry]  # read again: the later reading counts
+        work.record["entries"] = [e for e in work.record["entries"] if e["n"] != entry["n"]] + [entry]  # read again: the later reading counts
         kept += 1
     work.record["dropped"] += dropped
-    work.emit(agent, "record.recorded", entries=kept, dropped=dropped, dropped_entries=whole)
-    return {"accepted": kept, "dropped_entries": whole, "dropped_quotes": dropped,
-            **({"note": "an element is kept only with a quote found word for word in that same document"} if dropped else {})}
+    work.record["elsewhere"] = work.record.get("elsewhere", 0) + elsewhere
+    work.record.setdefault("issues", []).extend(issues)
+    work.emit(agent, "record.recorded", entries=kept, dropped=dropped, dropped_entries=whole, elsewhere=elsewhere, invalid=len(invalid),
+              issues=[{k: x.get(k) for k in ("n", "kind", "reason", "page")} for x in issues])
+    return {"accepted": kept, "dropped_entries": whole, "dropped_quotes": dropped, "kept_elsewhere": elsewhere,
+            **({"renumbered": {str(k): v for k, v in renumbered.items()}} if renumbered else {}),
+            **({"not_accepted": invalid, "fix": "send only these entries again with the field corrected"} if invalid else {}),
+            **({"cut": list(fitted)[:10]} if fitted else {}),
+            **({"note": "an element is kept only with a quote found word for word in that same file; one found outside its "
+                        "document's pages is kept and marked"} if dropped or elsewhere else {})}
 
 
 def _record_document(work, agent, args):
@@ -670,7 +831,7 @@ def _dispatch(work, agent, name, args):
     if name == "record_document":
         return _record_document(work, agent, args)
     if name == "record_steps":
-        return _record_steps(work, agent, args)
+        return _record_steps(work, agent, args, args.pop("_fitted", ()))
     if name == "propose_change":
         return _propose_change(work, agent, args)
     return {"error": "unknown tool"}
@@ -719,8 +880,11 @@ class TeamStopped(Exception):
 SHORTER = "Your last turn was longer than the output limit and was lost. Do the same work in shorter turns: at most eight tool calls per turn, short quotes."
 
 
-def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12, given=()):
-    """``given``: tools the lead runs itself and hands over in the opening, so the agent needs no turn for them."""
+def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12, given=(), task=None, after_first_turn=None, role=None):
+    """``given``: tools the lead runs itself and hands over in the opening, so the agent needs no turn for them.
+    ``task``: a message after the opening, so two conversations with the same opening share its cached prefix.
+    ``after_first_turn``: called once the first turn is back (the second conversation starts then).
+    ``role``: "facts" when a second conversation records the running account (the speed trial «record_apart»)."""
     spec = AGENTS[agent]
     tools = _tool_specs(work, [t for t in spec["tools"] if t not in given])
     tools.append({"name": "report", "description": f"Report back to the lead. Ends your task as {spec['title']}.",
@@ -738,6 +902,8 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
             agent == "result_checker" and "result_without_files" in getattr(work, "trials", ())):  # trial: it may still open a file
         opening["files_text"] = {fid: work.evidence.read(fid, limit=SMALL_CASE_CHARS)["text"] for fid in work.file_ids}
     conversation = [{"role": "user", "content": json.dumps(opening, ensure_ascii=False)}]
+    if task:
+        conversation.append({"role": "user", "content": task})
     nudged = False
     for number in range(max_turns):
         if getattr(work, "should_stop", lambda: False)():
@@ -757,6 +923,8 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
             continue
         work.usage.append({"agent": agent, **turn.usage})
         conversation.extend(turn.output)
+        if after_first_turn and number == 0:
+            after_first_turn()
         if not turn.calls:
             if nudged:
                 raise TeamError("no_report", f"The {spec['title'].lower()} stopped without reporting.")
@@ -764,34 +932,50 @@ def run_agent(model, work, agent, instruction, *, effort="medium", max_turns=12,
             work.emit(agent, "turn.no_call", text_chars=len(turn.text or ""))  # a turn of plain text: output spent, nothing done
             conversation.append({"role": "user", "content": "Continue with your tools, then call report."})
             continue
-        report = None
+        report = report_call = None
         for call in turn.calls:
             definition = by_name.get(call["name"])
             if definition is None or call["arguments"] is None:
                 result = {"error": "unknown tool or unreadable arguments"}
             else:
                 try:
-                    if call["name"] == "report":  # a rejected report costs a whole rewritten turn: fit what can be fitted
+                    if call["name"] == "record_steps":  # never refused for a cut text or a near word: fitted, each change named
+                        call["arguments"], fitted = fit_steps(work, call["arguments"])
+                        if fitted:
+                            work.emit(agent, "record.fitted", changes=fitted[:20])
+                            call["arguments"]["_fitted"] = [f"{c['field']}: {c['change']} ({c['from']} → {c['to']})" for c in fitted]
+                    elif call["name"] == "report":  # a rejected report costs a whole rewritten turn: fit what can be fitted
                         changes = []
                         call["arguments"] = fit_to_schema(call["arguments"], definition["parameters"], changes=changes)
                         if changes:
                             work.emit(agent, "report.fitted", changes=[{"field": p, "change": c, "original": o, "kept": k} for p, c, o, k in changes])
                             work.fitted = getattr(work, "fitted", []) + [p for p, c, _, _ in changes if c in {"text cut", "items cut"}]
-                    validate_result(call["arguments"], definition["parameters"])
+                    if call["name"] != "record_steps":  # record_steps: each entry is checked by itself (_record_steps)
+                        validate_result(call["arguments"], definition["parameters"])
                 except ValueError as error:
                     result = {"error": f"arguments do not match the tool: {error}"}
                     work.emit(agent, "tool.invalid", tool=call["name"], error=str(error)[:300])  # a turn spent on a malformed call
                 else:
                     if call["name"] == "report":
-                        report = call["arguments"]
+                        report, report_call = call["arguments"], call
                         continue
                     args = call["arguments"]
                     work.emit(agent, "tool", tool=call["name"], file=args.get("file"), page=args.get("from_page"), query=args.get("query"),
                               target=args.get("fact") or args.get("document"))
-                    with TOOL_LOCK:  # the reading and the document search may run side by side on one case
-                        result = _dispatch(work, agent, call["name"], call["arguments"])
+                    if role == "facts" and call["name"] == "record_steps":
+                        result = {"accepted": 0, "reason": "a second reader records the running account in this run; record the facts only"}
+                    else:
+                        with TOOL_LOCK:  # the reading and the document search may run side by side on one case
+                            result = _dispatch(work, agent, call["name"], call["arguments"])
             conversation.append({"type": "function_call_output", "call_id": call["call_id"],
                                  "output": json.dumps(result, ensure_ascii=False, default=str)})
+        if report is not None and "record_steps" in by_name and role != "facts":
+            # the record's coverage, once: pages with no entry go back to the reader while it still has a turn to record them
+            back = work.coverage_round(can_record=number < max_turns - 2)
+            if back:
+                conversation.append({"type": "function_call_output", "call_id": report_call["call_id"],
+                                     "output": json.dumps({"accepted": False, "reason": back}, ensure_ascii=False)})
+                continue
         if report is not None:
             work.emit(agent, "agent.end", summary=report["summary"])
             return report
@@ -943,6 +1127,26 @@ def confirm_facts(model, work, effort="medium"):
     return summary
 
 
+def record_turns(work):
+    """The turns a dossier's record takes beyond the reader's twelve: one per twenty documents (ten entries per call, two
+    calls per turn), the documents counted as the larger of the stored segments and the pages with text divided by three
+    (a few large segments, or none, hide documents). The coverage give-back uses these turns, never one more."""
+    if not work.graph.get("record"):
+        return 0
+    pages = sum(1 for rows in work.pages().values() for p, t in rows if p is not None and str(t or "").strip())
+    segments = sum(len([s for s in f.get("segments") or () if not s.get("unsegmented")]) or 1 for f in work.evidence.files.values())
+    return max(segments, pages // 3) // 20
+
+
+# The speed trial «record_apart»: a second reader conversation records the running account beside the fact reading. Both
+# open with the same instructions, tools and opening (the files), so the provider's prompt cache serves the second; the
+# task follows the opening. The second starts once the first conversation's first turn is back (its prefix is cached).
+FACTS_ONLY = ("A second reader records the running account (record_steps) in this run at the same time: do not call "
+              "record_steps. Do the rest of the instruction: the brief and the facts.")
+RECORD_ONLY = ("Your task in this conversation is the running account only: call record_steps for every document of the files as "
+               "described, then call report with a one-line summary. Record no facts; the brief is written elsewhere.")
+
+
 class CaseTeam:
     def __init__(self, model, *, effort="medium", max_delegations=12, voice=None, should_stop=None, edits_now=None, speed_trials=()):
         self.model, self.effort, self.max_delegations, self.voice = model, effort, max_delegations, voice or {}
@@ -954,7 +1158,7 @@ class CaseTeam:
         """The model an agent runs on: its own deployment when one is configured, otherwise the case's model."""
         return (getattr(self.model, "agents", None) or {}).get(agent, self.model)
 
-    def _delegate(self, work, state, agent, instruction):
+    def _delegate(self, work, state, agent, instruction, task=None, after_first_turn=None, role=None):
         if self.should_stop():
             raise TeamStopped()
         if state["delegations"] >= self.max_delegations:
@@ -966,10 +1170,10 @@ class CaseTeam:
         if agent == "result_checker" and work.unverified():
             run_source_checker(self.model_for("source_checker"), work, self.effort)
         given = ("open_process", "evaluate", "get_findings") if agent == "result_checker" and getattr(self, "handler_flow", False) else ()
-        # a dossier's record takes a turn per twenty documents more (ten entries per call, two calls per turn)
-        more = len(work.dated_documents()) // 20 if agent == "claim_reader" and work.graph.get("record") else 0
-        report = run_agent(self.model_for(agent), work, agent, instruction, effort=self.effort, given=given, max_turns=12 + more)
-        if agent == "claim_reader" and work.brief is None:
+        more = record_turns(work) if agent == "claim_reader" and role != "facts" else 0
+        report = run_agent(self.model_for(agent), work, agent, instruction, effort=self.effort, given=given, max_turns=12 + more,
+                           task=task, after_first_turn=after_first_turn, role=role)
+        if agent == "claim_reader" and work.brief is None and role != "record":
             work.brief = _located_brief(work, report)
         if agent == "process_builder":
             work.process_report = report
@@ -986,7 +1190,9 @@ class CaseTeam:
             work.facts = {f["fact"]: f for f in resume.get("facts") or [] if f["fact"] not in work.set_by_hand()}
             work.documents = {d["document"]: d for d in resume.get("documents") or []}
             work.usage = list(resume.get("usage") or [])
-            work.record = {"entries": list((resume.get("record") or {}).get("entries") or []), "dropped": (resume.get("record") or {}).get("dropped", 0)}
+            kept = resume.get("record") or {}
+            work.record = {"entries": list(kept.get("entries") or []), "dropped": kept.get("dropped", 0), "elsewhere": kept.get("elsewhere", 0),
+                           "issues": list(kept.get("issues") or [])}
         for row in routed:
             if row["fact"] in work.fact_defs and row.get("citations") and row.get("value") is not None:
                 work.facts[row["fact"]] = {"fact": row["fact"], "status": "established", "value": row["value"],
@@ -1022,14 +1228,33 @@ class CaseTeam:
                     if a == "result_checker" else (a, i) for a, i in plan]
         if handler_flow:  # the reading and the document search do not depend on each other: run them side by side
             reading, finding = plan[0], next(p for p in plan if p[0] == "document_finder")
-            read = lambda: self._step(work, state, "reading", lambda: self._delegate(work, state, *reading))
+            apart = "record_apart" in self.speed_trials and bool(work.graph.get("record"))
+            started, failed = threading.Event(), threading.Event()
+
+            def read():
+                try:
+                    self._step(work, state, "reading", lambda: self._delegate(
+                        work, state, *reading, **({"task": FACTS_ONLY, "role": "facts", "after_first_turn": started.set} if apart else {})))
+                except BaseException:
+                    failed.set()
+                    raise
+                finally:
+                    started.set()
             find = lambda: self._step(work, state, "finding", lambda: self._delegate(work, state, *finding))
+
+            def record():  # the second conversation, after the first one's first turn (its cached prefix); merged when both end
+                started.wait()
+                if failed.is_set():
+                    return
+                self._step(work, state, "recording", lambda: self._delegate(work, state, reading[0], reading[1], task=RECORD_ONLY, role="record"))
+            jobs = [read, record, find] if apart else [read, find]
             if getattr(self.model, "sequential", False):  # a scripted model hands out its turns in order
-                read()
-                find()
+                for job in jobs:
+                    job()
             else:
-                with ThreadPoolExecutor(max_workers=2) as pool:
-                    for future in [pool.submit(read), pool.submit(find)]:
+                with ThreadPoolExecutor(max_workers=len(jobs)) as pool:
+                    futures = [pool.submit(job) for job in jobs]
+                    for future in futures:
                         future.result()
             self._step(work, state, "confirm", lambda: confirm_facts(self.model, work, self.effort))
             plan = [p for p in plan if p not in (reading, finding)]
@@ -1137,7 +1362,8 @@ def finalize(work):
             "documents": list(work.documents.values()), "evaluation": evaluation,
             # the running account's entries, each element located in its document; what was dropped, counted
             **({"record": {**work.record, "entries": sorted(work.record["entries"], key=lambda e: (e.get("date") or "9999", e["n"])),
-                           "documents": len(work.dated_documents()), "hygiene": work.evidence.hygiene}} if work.graph.get("record") else {}),
+                           "documents": len(work.dated_documents()), "hygiene": work.evidence.hygiene,
+                           "coverage": work.coverage()}} if work.graph.get("record") else {}),
             "summary": result["summary"], "answer": result["answer"], "open_points": result["open_points"],
             "fitted": getattr(work, "fitted", []),
             "case_summary": [{"field": row["field"], "label": next(f["label"] for f in work.graph.get("summary", []) if f["id"] == row["field"]),

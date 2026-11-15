@@ -6,6 +6,7 @@ ponytail: the later pages' bytes stay inside the file (a viewer never shows them
 """
 import re
 
+from .evidence import complete_segments
 from .pdfread import Document, Name, PdfError, Ref, Stream
 
 
@@ -99,8 +100,14 @@ def cut_extraction(extraction, keep):
         if isinstance(extraction.get(key), dict):
             out[key] = {k: v for k, v in extraction[key].items() if int(k) in kept}
     if extraction.get("segments") is not None:
-        out["segments"] = [{**s, "last_page": max(p for p in kept if s["first_page"] <= p <= s["last_page"])}
-                           for s in extraction["segments"] if s["first_page"] in kept]
+        # a segment keeps its kept pages, also when its first page was cut away; kept pages of no segment are «nicht gegliedert»
+        rows = []
+        for s in extraction["segments"]:
+            pages = [p for p in kept if s["first_page"] <= p <= (s.get("last_page") or s["first_page"])]
+            if pages and not s.get("unsegmented"):
+                rows.append({**s, "first_page": min(pages), "last_page": max(pages), **({"cut_before": True} if min(pages) != s["first_page"] else {})})
+        numbered = [int(n) for n, body in blocks if int(n) in kept and body.strip()]
+        out["segments"] = complete_segments(rows, numbered) if rows or len(numbered) >= 3 else rows
     return out
 
 

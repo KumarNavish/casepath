@@ -103,8 +103,12 @@ class IncomingTests(unittest.TestCase):
         self.assertEqual(state["evaluation"]["outcome"]["id"], "mitwirkung")
         text, none = draft(nxt, items)
         self.assertIsNone(none)
-        self.assertIn("Die von Ihnen beauftragte Kanzlei hat uns mit Schreiben vom 15.05.2024 mitgeteilt, dass Sie bei der Bearbeitung Ihres "
-                      f"Falles nicht mitgewirkt haben: «{REPORT[2]}»", text)  # what the report says was withheld, in its words
+        # the letter to the customer never quotes the firm's words about its client; without an account it asks the handler
+        self.assertIn("Die von Ihnen beauftragte Kanzlei hat uns mit Schreiben vom 15.05.2024 mitgeteilt, dass für die Bearbeitung Ihres "
+                      "Falles folgende Unterlagen oder Angaben trotz Aufforderung nicht eingegangen sind:\n[bitte ergänzen: was trotz "
+                      "Aufforderung nicht eingegangen ist]", text)
+        self.assertNotIn(REPORT[2], text)
+        self.assertNotIn("Vorstrafe", text)
         # the clause by the edition of the conditions (private 01.2026 unless the handler says otherwise, cover.py)
         self.assertIn("Damit haben Sie Ihre Pflicht zur Mitwirkung gemäss den Allgemeinen Versicherungsbedingungen (Art. M Ziff. 1 und 4) verletzt.", text)
         other = [{"id": "e9", "op": "set_fact", "args": {"fact": "avb_ausgabe", "value": "andere Ausgabe"}, "status": "active"}]

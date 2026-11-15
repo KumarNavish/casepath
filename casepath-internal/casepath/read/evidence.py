@@ -19,6 +19,29 @@ def normalise(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
+UNSEGMENTED = "nicht gegliedert"
+
+
+def complete_segments(segments, pages):
+    """Every page of a file in a segment: the stored segments, and for each run of pages no segment covers (a window the
+    segmentation lost, the part of a cut before its first kept segment) one explicit range «nicht gegliedert» with its
+    page numbers, which may hold several documents. ``pages``: the file's page numbers. Segments as given otherwise."""
+    rows = [dict(s) for s in segments or () if isinstance(s, dict) and s.get("first_page") is not None and not s.get("unsegmented")]
+    covered = {p for s in rows for p in range(s["first_page"], (s.get("last_page") or s["first_page"]) + 1)}
+    loose = sorted({p for p in pages if p is not None and p not in covered})
+    runs = []
+    for page in loose:
+        if runs and page == runs[-1][1] + 1:
+            runs[-1][1] = page
+        else:
+            runs.append([page, page])
+    rows += [{"first_page": a, "last_page": b, "kind": UNSEGMENTED, "date": None, "sender": None, "recipient": None,
+              "title": f"Seiten {a}–{b} nicht gegliedert" if b > a else f"Seite {a} nicht gegliedert",
+              "summary": "Nicht in Dokumente gegliedert: kann mehrere Dokumente enthalten; jedes Dokument ist ein eigener Eintrag.",
+              "unsegmented": True} for a, b in runs]
+    return sorted(rows, key=lambda s: s["first_page"])
+
+
 def _fold(text):
     return text.casefold().replace("ß", "ss")
 
@@ -39,6 +62,9 @@ class Evidence:
                 raws.append((None, raw))
             pages = [(page, normalise(chunk)) for page, chunk in raws]
             self.files[row["id"]] = {**{k: v for k, v in row.items() if k != "text"}, "pages_text": pages, "pages_raw": raws}
+            numbered = [p for p, t in pages if p is not None and t]
+            if numbered and (row.get("segments") or (isinstance(row.get("segments"), list) and len(numbered) >= 3)):
+                self.files[row["id"]]["segments"] = complete_segments(row.get("segments"), numbered)
         # What a model reads: text repeated across the documents left out (hygiene.py). Quotes are still located in the
         # original (pages_text), never in this.
         read, self.hygiene = clean(self.files)
@@ -50,7 +76,8 @@ class Evidence:
                  "pages": f.get("pages"), "pages_without_text": len(f.get("pages_without_text") or []),
                  **({"contains_text_addressed_to_an_ai": True} if f.get("instruction_like") else {}),
                  "note": f.get("note"),
-                 **({"documents": [{k: s.get(k) for k in ("first_page", "last_page", "kind", "date", "sender", "recipient", "title", "summary")}
+                 **({"documents": [{k: s.get(k) for k in ("first_page", "last_page", "kind", "date", "sender", "recipient", "title", "summary")
+                                    if s.get(k) is not None or k in ("first_page", "last_page")}
                                    for s in f["segments"]]} if f.get("segments") else {})} for fid, f in self.files.items()]
 
     def read(self, file_id, from_page=None, to_page=None, limit=24000):

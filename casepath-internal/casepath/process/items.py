@@ -255,6 +255,24 @@ def pair_set_dates(items):
             break
 
 
+def account_dates(items, ledger, graph=None):
+    """The dates by which someone must act that the running account holds (an ask, an offer, a next step) and that are
+    still open, as «Fristen» lines in the same shape as a date others set (what is due, who set it, for whom, in which
+    letter); a date the file's set-date reading already gives for the same obligation is not added twice."""
+    given = [i for i in items if i["kind"] == "deadline" and parse_date(i.get("value"))]
+    for d in account.open_dates(ledger):
+        if any(parse_date(i["value"]) == parse_date(d["date"]) and (not i.get("what") or account.overlap(i.get("what"), d["what"]) >= 0.34
+                                                                     or i.get("unnamed")) for i in given):
+            continue  # the same date, read once as a set date: one line
+        set_by, for_ = account.PARTY_TITLES[d["set_by"]], account.PARTY_TITLES.get(d["for"], "Dritte")
+        items.append({"item_id": f"deadline:{d['key']}", "kind": "deadline", "key": d["key"], "system": "casepath",
+                      "label": {"de": d["what"], "en": d["what"]}, "value": d["date"], "stated_as": "computed" if d["computed"] else "established",
+                      "verdict": "accepted", "evidence": _evidence(d["citations"]), "node": None, "origin": "account", "chain": False,
+                      "what": d["what"], "by": set_by, "for": for_, "party": d["for"], "source": d["source"], "account": True,
+                      "set_by_others": d["set_by"] != account.INSURER, **({"due_text": d["text"]} if d.get("text") else {}),
+                      **({"stated": d["text"], "rule": f"{d['text']} ab {d['source']}, nach Kalendertagen berechnet"} if d["computed"] else {})})
+
+
 def build_items(state, result, files=None, events=None):
     """``events``: the case's log, for what a person did outside the facts (a letter copied, a case moved into or out of
     the historic files)."""
@@ -377,6 +395,7 @@ def build_items(state, result, files=None, events=None):
                     legal_basis=d["basis"], missed=d["missed"], direction=d.get("direction", "bis"), party=d.get("party", "kunde"),
                     possible=True, missing=True, starts=starts, trigger=d["trigger"], due_text="Datum fehlt",
                     **({"condition": d["when_text"]} if holds is None and d.get("when_text") else {}))
+        account_dates(items, state.get("account"), graph)  # a date the account holds for an ask, an offer or a next step, still open
         pair_set_dates(items)  # a date the file sets for the same obligation stands beside the computed one
         asked =[i for i in items if i["kind"] == "document" and i["ask"] == "now"]
         lines = len([i for i in asked if not i["part_of"] or i["part_of"] not in {a["key"] for a in asked}])
@@ -453,7 +472,7 @@ def build_items(state, result, files=None, events=None):
                            if disputed.get("status") == "conflicting" and disputed.get("second_value") else "")}
             if settling and open_items[0]["kind"]["id"] == "zahlung":  # the payment came in: the receipt step's letter
                 planned = {**planned, "form": "A11_eingang", "settlement": "eingang"}
-        planned = cover.adjust(planned, known_facts, here.get("id"))  # prescribed letters: refusal for lack of prospects, demand before an ending
+        planned = cover.adjust(planned, known_facts, here.get("id"), ledger)  # prescribed letters: refusal for lack of prospects, demand before an ending
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]
             action = (planned["kind"], title, {"de": title, "en": title})
@@ -480,6 +499,7 @@ def build_items(state, result, files=None, events=None):
         if action:
             add("next_action", "0", **({"closing": closing} if closing else {}), **({"next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
                                         **({"reason": planned["reason"]} if planned.get("reason") else {}),
+                                        **({"because": planned["because"]} if planned.get("because") else {}),
                                         **({"since": planned["since"]} if planned.get("since") else {}),
                                         **({"owed": planned["owed"]} if planned.get("owed") else {}),
                                         **({"choices": planned["choices"]} if planned.get("choices") else {}),
@@ -489,7 +509,7 @@ def build_items(state, result, files=None, events=None):
                     "then": [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"]}
                              for r in open_items[1:]]} if open_items else {}),
                 **({"then": [{"kind": r["kind"]["id"], "fact": r["fact"], "title": r["kind"]["title"], "date": r["date"], "action": r["action"]["title"],
-                              "line": incoming.assessment_line(r)} for r in after]} if after else {}),
+                              "line": customer_line(r)} for r in after]} if after else {}),
                 value=action[1], stated_as="established", verdict=None,
                 evidence=_evidence((rows.get(open_items[0]["fact"]) or {}).get("citations")) if open_items else [], node=(ev.get("current") or {}).get("step"),
                 origin="workflow", chain=True, label=action[2], action=action[0])
@@ -557,7 +577,7 @@ def build_items(state, result, files=None, events=None):
         # the cover points, the checks a prescribed letter rests on, and the first contact (cover.py)
         # a historic file never shows a first contact, nor does a case whose letter went out (cover.first_contact)
         items += cover.items(graph, known_facts, result, files, planned if action and planned and action[0] == planned.get("kind") else None, here.get("id"),
-                             created=created, historic=bool(old) or contacted)
+                             created=created, historic=bool(old) or contacted, ledger=ledger)
         # The legal key points of the area: those that apply, and those whose condition the file leaves open (as questions);
         # the card shows those that help at the case's stage
         points = keypoints.evaluate(graph, known_facts, here.get("id"))
@@ -594,16 +614,24 @@ def build_items(state, result, files=None, events=None):
             add("stand", f"eingang:{row['fact']}", value=line["text"], stated_as="established", verdict=None,
                 evidence=_evidence((rows.get(row["fact"]) or {}).get("citations")), node=None, origin="claim_reader", chain=False,
                 label=line["label"], open=line["open"], entries=[], incoming={"kind": row["kind"]["id"], "fact": row["fact"], "date": row["date"],
-                                                                               "timing": row["timing"], "line": incoming.assessment_line(row)})
+                                                                               "timing": row["timing"], "line": customer_line(row)})
         # The running account: «Stand» in «Der Fall» and one row per document in the Verlauf (a run before it has none)
         for line in account.stand(ledger, look, graph):
             add("stand", line["id"], value=line["text"], stated_as="established", verdict=None, evidence=_evidence(line["citations"]),
                 node=None, origin="account", chain=False, label=line["label"], open=line["open"], entries=line["entries"],
-                **({"detail": line["detail"]} if line.get("detail") else {}))
+                **({"detail": line["detail"]} if line.get("detail") else {}),
+                **({"rows": [{"text": r["text"], "evidence": _evidence(r["citations"]), "entries": r["entries"]} for r in line["rows"]],
+                    "more": line["more"], "party": line["party"]} if line.get("rows") else {}))
         for row in account.rows(ledger, graph):
             add("entry", str(row["n"]), value=row["what"], stated_as="established", verdict=None, evidence=_evidence(row["citations"]),
                 node=None, origin="claim_reader", chain=False, label=row["kind_title"],
-                **{k: row[k] for k in ("date", "from", "to", "from_title", "to_title", "phone", "notes", "open")}, step_kind=row["kind"])
+                **{k: row[k] for k in ("date", "from", "to", "from_title", "to_title", "phone", "notes", "open", "open_of")}, step_kind=row["kind"])
+        if ledger:  # part of the file with no entry is said, never silent: «S. 26–79 ohne Eintrag» above the Verlauf
+            for gap in account.gaps(ledger["entries"], account.pages_of(files)):
+                name = next((f.get("name") for f in files or () if f.get("id") == gap["file"]), None)
+                add("record_gap", f"{gap['file']}:{gap['from']}", value=account.gap_text(gap), stated_as="computed", verdict=None, evidence=[],
+                    node=None, origin="account", chain=False, label=account.gap_text(gap) + (f" ({name})" if name else ""),
+                    file=gap["file"], pages=[gap["from"], gap["to"]])
         # Letters the customer sends in his own name, whose condition holds (customer_letters.py): offered with the
         # assessment, and with the first request when the customer's own deadline is close
         deadlines = [i for i in items if i["kind"] == "deadline"]
@@ -668,6 +696,12 @@ def build_items(state, result, files=None, events=None):
                 if isinstance(i.get(field), str) and placeholder(i[field]):
                     i[field] = plain(i[field]) or "Angabe klären"
     return items
+
+
+def customer_line(row):
+    """The incoming item as a letter to the customer may state it; None for a third party's statement about the customer
+    (the firm's report that the customer does not cooperate): its words stay in «Der Fall» and the Verlauf."""
+    return None if row["kind"].get("about_customer") else incoming.assessment_line(row)
 
 
 SHOWN_KINDS = {"next_action", "key_point", "stage_line", "deadline", "contact", "check"}

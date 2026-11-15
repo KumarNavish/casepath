@@ -429,7 +429,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     contact = next((i for i in listed if i["kind"] == "contact"), None)  # the first contact the insurer promises (cover.py)
                     row["first_contact"] = contact and {"due": contact["value"], "late": contact.get("late"), "rule": contact.get("rule")}
                     # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
-                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and i.get("direction") != "ab" and i.get("party") != "gegenpartei" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
+                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and i.get("direction") != "ab" and i.get("party") != "gegenpartei"
+                                       and not (i.get("account") and i.get("party") not in ("kunde", "versicherer")) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
                     # The customer's own statutory deadline that set the follow-up before it is what the list shows.
                     own = own_deadlines(listed, store.list_files(row["id"])) if (clock or {}).get("capped") else []
                     dates = [own[0]["value"]] if own else [d for d in [row["follow_up"], deadlines[0] if deadlines else None] if d]

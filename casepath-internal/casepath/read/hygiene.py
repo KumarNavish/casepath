@@ -42,7 +42,8 @@ def documents(files):
     out = []
     for fid, f in files.items():
         pages = [p for p, _ in f.get("pages_raw") or ()]
-        segments = [s for s in f.get("segments") or () if s.get("first_page") is not None]
+        # a range «nicht gegliedert» is no document: its pages count one each, as pages no segment names
+        segments = [s for s in f.get("segments") or () if s.get("first_page") is not None and not s.get("unsegmented")]
         if segments and all(p is not None for p in pages):
             covered = set()
             for s in segments:

@@ -134,7 +134,7 @@ def set_date_line(item, today=None):
     """A date a court, an authority or the other side set for the customer, as the first letter mentions it; None when
     it has passed or is not such a date."""
     day = parse_date(item.get("value"))
-    if not item.get("set_by_others") or not day or day < (today or date.today()):
+    if not item.get("set_by_others") or item.get("account") or not day or day < (today or date.today()):  # a date the account holds stays on the screen
         return None
     by = item.get("by")
     source = item.get("source")
@@ -181,7 +181,6 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
     stated = {i["key"] for i in points[:3]}
     questions_asked = [i for i in items if i["kind"] == "customer_question" and i.get("value")]
     came = (next((i for i in items if i["kind"] == "next_action"), None) or {}).get("incoming") or {}  # what came in, as read
-    came_quote = next((e["quote"] for e in (facts.get(came.get("fact")) or {}).get("evidence") or () if e.get("quote")), None)
     return {
         "referenz": ref.group(0) if ref else case.get("id", "")[-8:].upper(),
         "referenz_kopf": f"Unsere Referenz: {ref.group(0)}\n\n" if ref else "",
@@ -210,14 +209,17 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         "anlass": "das Telefongespräch" if (facts.get("anruf_offen") or {}).get("value") is True else "Ihre Nachricht",
         "erwartet": ("die noch fehlenden Unterlagen: " + ", ".join(label(i) for i in docs)) if docs else "Ihre Rückmeldung",
         "letzter_kontakt": max(sent).strftime("%d.%m.%Y") if sent else "…",
-        "verlangt": "\n".join(f"– {label(i)}" for i in missing) or "– (Unterlagen gemäss unserem Schreiben)",
+        "verlangt": "\n".join(cover.missing_lines(items, "versicherer", fallback=False) or [f"– {label(i)}" for i in missing])
+                    or "– (Unterlagen gemäss unserem Schreiben)",
         "vorhanden": ", ".join(label(i) for i in present) or "gemäss Akten",
         "gegenpartei": next((p["value"] for p in parties if p.get("value") and "mieter" not in str(p.get("label") or "").lower()), "…"),
         "heute": day.strftime("%d.%m.%Y"),
         # an end of benefits on the mandated firm's report: its date and its own words on what was withheld, as read; the
         # clause of the general conditions is the handler's to fill in, never invented
         "eingang_datum": _day(came.get("date")) or gap("Datum der Meldung der Kanzlei"),
-        "vorenthalten": f"«{came_quote}»" if came_quote else gap("was die Kanzlei als verweigert oder verschwiegen meldet"),
+        # what was asked and not delivered, in neutral words from the requests ledger with the date first asked; never the
+        # firm's own words about its client (they stay in «Der Fall» and the Verlauf)
+        "vorenthalten": "\n".join(cover.missing_lines(items, fallback=False)) or gap("was trotz Aufforderung nicht eingegangen ist"),
         "avb_ziffer": gap("Ziffer der AVB"),
         # the clause by the edition of the conditions that applies, the parts only the handler can write (cover.py)
         **cover.letter_context(items),

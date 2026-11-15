@@ -22,7 +22,7 @@ class SettingsError(ValueError):
 
 # Speed changes that alter what a model is asked: each is tried on the development cuts and kept only if no scoreboard
 # line gets worse. Off by default.
-SPEED_TRIALS = {"second_reading_unquoted", "result_without_files", "finder_stage_only"}
+SPEED_TRIALS = {"second_reading_unquoted", "result_without_files", "finder_stage_only", "record_apart"}
 
 @dataclass(frozen=True)
 class ModelSettings:

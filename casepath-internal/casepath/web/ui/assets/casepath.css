@@ -453,6 +453,9 @@ body.dragging .cp-drop{border-color:var(--crimson);color:var(--crimson)}
 .cp-acct-label{color:var(--ink-2)}
 .cp-acct-line.open .cp-acct-label{color:var(--crimson)}
 .cp-acct .cp-quiet-link{font-size:12.5px;justify-self:start}
+.cp-acct-item{padding-left:10px}
+.cp-acct-line .cp-quiet-link{padding:0 0 0 10px}
+.cp-account-gap{margin:0 0 8px;font-size:13.5px}
 .cp-account{padding:18px 22px;max-width:1100px;margin-bottom:22px}
 .cp-account-head{display:flex;align-items:baseline;gap:14px;margin-bottom:6px}
 .cp-account-head h2{margin:0}

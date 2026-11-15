@@ -22,6 +22,7 @@ from pathlib import Path
 import re
 import sys
 
+from . import account
 from .clock import as_of, parse_date
 from .workflows import CatalogueError, done_actions
 
@@ -453,7 +454,7 @@ def _item(kind, key, label, **fields):
             "verdict": None, "node": None, "chain": False, "origin": "cover", **fields}
 
 
-def items(graph, facts, result, files, action=None, stage=None, today=None, created=None, historic=False):
+def items(graph, facts, result, files, action=None, stage=None, today=None, created=None, historic=False, ledger=None):
     """The cover points (kind "cover", key = the point's id), the checks a prescribed letter rests on (kind "check") and the
     first contact (kind "contact"). Hashed like every item: kind, key, value (the state) and stated_as."""
     rows = (result or {}).get("facts") or []
@@ -467,7 +468,7 @@ def items(graph, facts, result, files, action=None, stage=None, today=None, crea
                          source=p["source"], state_text=p["state_text"], text=p["text"], aid=p["aid"], note=p["note"], lookup=p["lookup"],
                          clauses=p["clauses"], legal_basis=cite_list(p["clauses"]), tick=p["tick"], tick_value=p["tick_value"],
                          date_fact=p["date_fact"], date_value=facts.get(p["date_fact"]) if p["date_fact"] else None, facts=p["facts"]))
-    out += checks(graph, facts, rows, action, stage)
+    out += checks(graph, facts, rows, action, stage, ledger)
     contact = first_contact(facts, files, today, created, historic)
     if contact:
         out.append(_item("contact", "erstkontakt", "Erstkontakt mit der Kundschaft", value=contact["due"], stated_as="computed", evidence=[],
@@ -480,12 +481,42 @@ def law_row(key):
     return {"cite": row["cite"], "passage": row["passage"], "verified": row["verified"]}
 
 
-def warned(facts):
-    """The written demand with the consequences stated, as the file shows it: (its date or None, the reading) or None."""
+def warned(facts, ledger=None):
+    """The insurer's own written demand with the consequences stated, as the file shows it: (its date or None, the
+    reading) or None. From the running account where it holds one (the latest), else from the fact read."""
+    own = [w for w in account.warnings(ledger) if w["own"]]
+    if own:
+        w = own[-1]
+        return parse_date(w["date"]), _warning_text(w)
     value = facts.get("mahnung_androhung")
     if not value or str(value).strip().lower() in {"keine", "nein", "-", "none"}:
         return None
     return parse_date(str(value)), str(value)
+
+
+def _warning_text(w):
+    """«Kanzlei, Schreiben vom 12.03.2025: Belege der Reparaturkosten bis 26.03.2025»."""
+    due = f" bis {day_text(parse_date(w['due']))}" if w.get("due") else f" ({w['due_text']})" if w.get("due_text") else ""
+    when = f"Schreiben vom {day_text(parse_date(w['date']))}" if w.get("date") else "Schreiben ohne Datum"
+    return f"{'Protekta' if w['own'] else w['by_title']}, {when}: {w.get('what') or 'Aufforderung'}{due}"
+
+
+def warning_state(facts, ledger=None):
+    """What the file holds before an end of benefits: (value, lines, evidence). «vorhanden»: the insurer's own written
+    demand with the consequences; «andere»: only one by someone else (the mandated firm), shown as such with «ob das
+    genügt: prüfen», which does not count as the insurer's own; «fehlt»: none in the file."""
+    all_ = account.warnings(ledger)
+    own = warned(facts, ledger)
+    others = [w for w in all_ if not w["own"]]
+    lines = ([_warning_text(w) for w in all_ if w["own"]] or ([own[1]] if own else [])) + \
+            [f"{_warning_text(w)} · Aufforderung durch {'die Kanzlei' if w['by'] == 'kanzlei' else w['by_title']}, nicht durch Protekta · ob das genügt: prüfen"
+             for w in others]
+    evidence = [{"file": c.get("file"), "page": c.get("page"), "quote": c.get("quote")} for w in all_ for c in w["citations"]]
+    if own:
+        return "vorhanden", lines, evidence
+    if others:
+        return "andere", lines, evidence
+    return "fehlt", ["nicht in der Akte: zuerst die Aufforderung mit Frist und Androhung"], evidence
 
 
 def is_ending(action, stage):
@@ -496,7 +527,7 @@ def is_ending(action, stage):
     return form in rule["endings"] or (action.get("kind") == "A12" and stage == rule["ending_stage"] and form in (None, "A12", rule["warned_ending_form"]))
 
 
-def checks(graph, facts, rows, action, stage):
+def checks(graph, facts, rows, action, stage, ledger=None):
     """What a prescribed letter rests on, shown before it: the written demand with its consequences before an end of
     benefits (with the note that a disadvantage needs fault and causal effect), consent before a settlement when an offer
     is open, and the decision on prospects at the assessment."""
@@ -505,10 +536,15 @@ def checks(graph, facts, rows, action, stage):
     form, kind = (action or {}).get("form"), (action or {}).get("kind")
     demand = _data()["cooperation"]["demand"]
     if is_ending(action, stage) or form == demand["form"]:
-        found = warned(facts)
+        state, lines, evidence = warning_state(facts, ledger)
+        own = [w for w in account.warnings(ledger) if w["own"]]
         out.append(_item("check", "androhung", "Schriftliche Aufforderung mit Androhung der Säumnisfolgen vor der Leistungseinstellung",
-                         value="vorhanden" if found else "fehlt", stated_as="computed", evidence=_evidence(rows, "mahnung_androhung"),
-                         text=(found[1] if found else "nicht in der Akte: zuerst die Aufforderung mit Frist und Androhung"),
+                         value=state, stated_as="computed", evidence=evidence or _evidence(rows, "mahnung_androhung"),
+                         text="; ".join(lines), lines=lines,
+                         warnings=[{k: w[k] for k in ("by", "by_title", "date", "due", "what", "own")} for w in account.warnings(ledger)],
+                         own_date=(own[-1]["date"] if own else None),
+                         # what is asked of the customer and not delivered, from the requests ledger, in neutral words
+                         open_requests=account.open_items(ledger, "kunde"),
                          legal_basis=law_row("vvg-39.2.2")["cite"], law=[law_row("vvg-39.2.2")],
                          note={"text": "Ein Nachteil wegen verletzter Obliegenheit tritt nur bei Verschulden und Einfluss auf das Ereignis "
                                        "oder die Leistung ein: als Prüfung, nicht als Schluss.", "law": law_row("vvg-45.1")},
@@ -528,7 +564,7 @@ def checks(graph, facts, rows, action, stage):
 
 # The prepared action -----------------------------------------------------------------------------------------------------
 
-def adjust(planned, facts, stage):
+def adjust(planned, facts, stage, ledger=None):
     """The prepared action, where a prescribed letter changes it: the assessment becomes the refusal for lack of prospects
     when the handler judged them insufficient; an end of benefits for lack of cooperation is preceded by the written demand
     with the consequences stated (Art. 39 Abs. 2 Ziff. 2 VVG) unless the file shows one or the handler decided to end the
@@ -540,36 +576,54 @@ def adjust(planned, facts, stage):
         return {**planned, "form": "A5_aussichtslos", "title": _data()["forms"]["A5_aussichtslos"]["title"]}
     if planned.get("skip_if") is True or not is_ending(planned, stage):
         return planned
-    if warned(facts) is None and facts.get("leistungen_einstellen") is not True:
-        reason = "vor einer Leistungseinstellung fehlt in der Akte die schriftliche Aufforderung mit Frist und Androhung der Säumnisfolgen (Art. 39 Abs. 2 Ziff. 2 VVG)"
+    if warned(facts, ledger) is None and facts.get("leistungen_einstellen") is not True:
+        others = warning_state(facts, ledger)[0] == "andere"
+        reason = ("vor einer Leistungseinstellung fehlt die schriftliche Aufforderung mit Frist und Androhung der Säumnisfolgen durch Protekta; "
+                  "die Akte hat nur eine Aufforderung der Kanzlei (Art. 39 Abs. 2 Ziff. 2 VVG)" if others else
+                  "vor einer Leistungseinstellung fehlt in der Akte die schriftliche Aufforderung mit Frist und Androhung der Säumnisfolgen (Art. 39 Abs. 2 Ziff. 2 VVG)")
         return {**rule["demand"], "follow_up": None, "skip_if": None, "demand_for": planned.get("form") or "A12",
+                # why this step, for the card's reason line: the step exists because something is missing
+                "because": "schriftliche Aufforderung mit Androhung durch Protekta fehlt (nur durch die Kanzlei)" if others
+                else "schriftliche Aufforderung mit Androhung fehlt",
                 "reason": f"{planned['reason']}; {reason}" if planned.get("reason") else reason[0].upper() + reason[1:]}
-    if planned.get("kind") == "A12" and stage == rule["ending_stage"] and planned.get("form") in (None, "A12") and warned(facts):
+    if planned.get("kind") == "A12" and stage == rule["ending_stage"] and planned.get("form") in (None, "A12") and warned(facts, ledger):
         return {**planned, "form": rule["warned_ending_form"]}
     return planned
 
 
 # Letters -----------------------------------------------------------------------------------------------------------------
 
+def missing_lines(items, by=None, fallback=True):
+    """What is asked of the customer and not delivered, in neutral words from the requests ledger, each with the date it
+    was first asked for: ["– Belege der Reparaturkosten (erstmals verlangt am 01.03.2025)"]. Without an account, the
+    documents the case still needs. Never a third party's statement about the customer: that stays in «Der Fall»."""
+    check = next((i for i in items if i["kind"] == "check" and i["key"] == "androhung"), None) or {}
+    asked = [f"– {r['what']}" + (f" (erstmals verlangt am {day_text(parse_date(r['first']))})" if r.get("first") else "")
+             for r in check.get("open_requests") or () if by is None or r.get("by") == by]
+    if asked or not fallback:
+        return asked
+    return [f"– {(i.get('label') or {}).get('de') or i['key']}" for i in items if i["kind"] == "document" and (i.get("ask") == "now" or i.get("required") == "yes")
+            and i.get("status") != "present" and not i.get("part_of")]  # at an ending nothing is asked any more: what is required
+
+
 def letter_context(items):
     """The placeholders the cover forms use: clauses by edition, the gaps only the handler can fill, the demand's date."""
     facts = {i["key"]: i.get("value") for i in items if i["kind"] == "fact"}
     ed = edition(facts)
-    found = warned(facts)
+    check = next((i for i in items if i["kind"] == "check" and i["key"] == "androhung"), None) or {}
+    found = (parse_date(check["own_date"]), None) if check.get("own_date") else warned(facts)
     came = (next((i for i in items if i["kind"] == "next_action"), None) or {}).get("incoming") or {}
-    quote = next((e["quote"] for i in items if i["kind"] == "fact" and i["key"] == came.get("fact") for e in i.get("evidence") or () if e.get("quote")), None)
-    missing = [(i.get("label") or {}).get("de") or i["key"] for i in items if i["kind"] == "document" and (i.get("ask") == "now" or i.get("required") == "yes")
-               and i.get("status") != "present" and not i.get("part_of")]  # at an ending nothing is asked any more: what is required
+    firm = came.get("kind") == "mitwirkung"  # the firm's report: only what the ledger shows was asked; else a gap the handler fills
+    missing = missing_lines(items, None, fallback=False) if firm else missing_lines(items, account.INSURER)
     asked = [d for n in (1, 4, 6, 7) if (d := parse_date(facts.get(f"handlung_a{n}")))]
-    if came.get("kind") == "mitwirkung":
-        anlass = (f"Die von Ihnen beauftragte Kanzlei hat uns mitgeteilt"
+    listed = "\n".join(missing) if missing else f"– {gap('was noch fehlt')}"
+    if firm:  # the firm's report: what is missing in neutral words, never the firm's own words
+        anlass = ("Die von Ihnen beauftragte Kanzlei hat uns mitgeteilt"
                   + (f" (Schreiben vom {day_text(parse_date(came.get('date')))})" if came.get("date") else "")
-                  + f", dass folgende Unterlagen oder Angaben fehlen: «{quote}»" if quote else
-                  f"Die von Ihnen beauftragte Kanzlei hat uns mitgeteilt, dass Unterlagen oder Angaben fehlen: {gap('was fehlt')}")
+                  + ", dass für die Bearbeitung Ihres Falles folgende Unterlagen oder Angaben fehlen:\n" + listed)
     else:
         anlass = ((f"Mit Schreiben vom {day_text(max(asked))} haben wir Sie um folgende Unterlagen und Angaben gebeten:" if asked
-                   else "Wir haben Sie um folgende Unterlagen und Angaben gebeten:")
-                  + "\n" + ("\n".join(f"– {m}" for m in missing) if missing else f"– {gap('was noch fehlt')}"))
+                   else "Wir haben Sie um folgende Unterlagen und Angaben gebeten:") + "\n" + listed)
     return {
         "avb_ziffer": letter_clause("mitwirkung", ed),
         "avb_mitwirkung": letter_clause("mitwirkung", ed),

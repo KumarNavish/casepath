@@ -83,16 +83,24 @@ class SelfConductedCaseTests(unittest.TestCase):
         cls.state, cls.items, cls.by_id = view(cls.case, cls.result)
         cls.acc = cls.state["account"]
 
-    def test_a_every_document_has_its_entry_and_an_element_whose_quote_is_not_in_its_document_is_dropped_and_counted(self):
+    def test_a_every_document_has_its_entry_and_an_element_whose_quote_is_not_in_its_document_is_dropped_or_marked(self):
         record = self.result["record"]
         self.assertEqual([e["n"] for e in record["entries"]], list(range(1, 9)))
-        self.assertEqual(record["dropped"], self.case["dropped"])  # a payment the note never states; a quote from another document
+        # a payment the note never states is dropped; a quote from another document of the file is kept and marked
+        self.assertEqual((record["dropped"], record["elsewhere"]), (self.case["dropped"] - 1, 1))
+        self.assertEqual(record["issues"], [{"n": 6, "kind": "paid", "reason": "not_found", "kept": False},
+                                            {"n": 8, "kind": "answers", "reason": "elsewhere", "kept": True, "page": 2}])
         self.assertEqual(record["entries"][5]["paid"], [])
-        self.assertEqual([a["what"] for a in record["entries"][7]["answers"]], ["IBAN für die Zahlung"])
+        self.assertEqual([(a["what"], a.get("elsewhere")) for a in record["entries"][7]["answers"]],
+                         [("IBAN für die Zahlung", None), ("Mietvertrag", {"page": 2})])
+        self.assertEqual(account._where(record["entries"][7]["answers"][1]), " · andere Stelle, S. 2")  # as the Verlauf marks it
+        self.assertEqual(record["coverage"]["covered"], record["coverage"]["pages"])  # every page lies in an entry's document
         self.assertEqual(sum(e["phone"] for e in record["entries"]), 3)
         for e in record["entries"]:  # each element is located in its own document (its page)
             for key in account.ELEMENTS:
                 for element in e[key]:
+                    if element.get("elsewhere"):
+                        continue
                     self.assertEqual({c["page"] for c in element["citations"][:1]}, {e["page"]})
         self.assertIn("record_steps", self.model.tools[0])
 
@@ -154,7 +162,7 @@ class SelfConductedCaseTests(unittest.TestCase):
         lines = [(i["key"], i["label"]["de"], i["value"]) for i in self.items if i["kind"] == "stand"]
         self.assertEqual(lines, [
             ("vereinbart", "Vereinbart", "CHF 3'000 von der Gegenpartei bis 30.04.2025 · überfällig"),
-            ("offen_versicherer", "Offen bei uns", "Kann ich den Mietzins reduzieren? (Frage der Kundschaft vom 10.01.2025)"),
+            ("offen_versicherer", "Offen bei uns", "Kann ich den Mietzins reduzieren? · Frage der Kundschaft vom 10.01.2025"),
             ("kontakt", "Letzter Kontakt", "28.03.2025 · Unterlagen zugestellt von der Kundschaft")])
         for i in self.items:
             if i["kind"] == "stand":
@@ -189,7 +197,7 @@ class LedgerTests(unittest.TestCase):
         self.assertEqual([(r["by"], r["of"], r["what"], r["times"], r["warned"], r["due"], r["answered"]) for r in rows],
                          [("kanzlei", "kunde", "Belege der Reparaturkosten", 3, 1, "2025-04-24", None)])
         self.assertEqual(by_id["stand:offen_kunde"]["value"],
-                         "Belege der Reparaturkosten (Kanzlei, seit 01.03.2025, 3× verlangt, 1× mit Folgen gewarnt)")
+                         "Belege der Reparaturkosten · seit 01.03.2025 · 3× verlangt von der Kanzlei · mit Androhung")
         self.assertEqual(state["facts"]["bisherige_handlungen"], "A10 2025-02-10")  # what the firm asks is not the insurer's request
         self.assertEqual(state["facts"]["anforderungen"], "0")
 

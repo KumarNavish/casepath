@@ -56,33 +56,39 @@ def validate_result(value, schema, path="$"):
                "string": isinstance(value, str), "boolean": type(value) is bool, "integer": type(value) is int,
                "number": type(value) in (int, float)}
     if not any(matches[t] for t in types):
-        raise ValueError(f"{path}: type differs from schema")
+        given = "null" if value is None else {"str": "string", "bool": "boolean", "int": "integer", "float": "number", "dict": "object",
+                                              "list": "array"}.get(type(value).__name__, type(value).__name__)
+        raise ValueError(f"{path}: {given} given; allowed: {' or '.join(types)}")
     if "enum" in schema and value not in schema["enum"]:
-        raise ValueError(f"{path}: value outside enum")
+        allowed = ", ".join("null" if v is None else str(v) for v in schema["enum"])
+        raise ValueError(f"{path}: {json.dumps(value, ensure_ascii=False)[:60]} is not allowed; allowed: {allowed}")
     if "const" in schema and value != schema["const"]:
         raise ValueError(f"{path}: value differs from constant")
     if value is None:
         return
     if isinstance(value, dict):
         if set(value) != set(schema["properties"]):
-            raise ValueError(f"{path}: properties differ from closed schema")
+            missing, extra = sorted(set(schema["properties"]) - set(value)), sorted(set(value) - set(schema["properties"]))
+            raise ValueError(f"{path}: " + "; ".join(x for x in (f"missing {', '.join(missing)}" if missing else "",
+                                                                 f"not allowed {', '.join(extra)}" if extra else "") if x)
+                             + f"; allowed: {', '.join(schema['properties'])}")
         for key, child in value.items():
             validate_result(child, schema["properties"][key], f"{path}.{key}")
     elif isinstance(value, list):
         if not schema.get("minItems", 0) <= len(value) <= schema.get("maxItems", 10_000):
-            raise ValueError(f"{path}: array length outside bounds")
+            raise ValueError(f"{path}: {len(value)} items; allowed: {schema.get('minItems', 0)} to {schema.get('maxItems', 'any number')}")
         for index, child in enumerate(value):
             validate_result(child, schema["items"], f"{path}[{index}]")
     elif isinstance(value, str):
         if not schema.get("minLength", 0) <= len(value) <= schema.get("maxLength", 1_000_000):
-            raise ValueError(f"{path}: text length outside bounds")
+            raise ValueError(f"{path}: {len(value)} characters; allowed: {schema.get('minLength', 0)} to {schema.get('maxLength', 'any')}")
         if "pattern" in schema and re.search(schema["pattern"], value) is None:
-            raise ValueError(f"{path}: text does not match pattern")
+            raise ValueError(f"{path}: text does not match the pattern {schema['pattern']}")
     elif type(value) in (int, float):
         if not Decimal(str(value)).is_finite():
             raise ValueError(f"{path}: number is not finite")
         if value < schema.get("minimum", value) or value > schema.get("maximum", value):
-            raise ValueError(f"{path}: number outside bounds")
+            raise ValueError(f"{path}: {value}; allowed: {schema.get('minimum', 'any')} to {schema.get('maximum', 'any')}")
 
 
 def obj(**properties):

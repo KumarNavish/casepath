@@ -30,7 +30,7 @@ import re
 import threading
 
 from ..agents.azure_model import ModelError
-from .evidence import Evidence
+from .evidence import Evidence, complete_segments
 from ..agents.schema import arr, obj, text
 
 OCR_INSTRUCTIONS = """Transcribe each page image exactly as written, line by line, in its original language. Mark
@@ -219,7 +219,8 @@ def segment(model, file_row, *, workers=1):
             hit = evidence.locate(file_row["id"], row["quote"])
             segments.append({**{k: row[k] for k in ("first_page", "last_page", "kind", "date", "sender", "recipient", "title", "summary")},
                              "anchored": bool(hit and hit["page"] == row["first_page"])})
-    return segments
+    # pages no answer covered (a window that failed, documents the model left out) stay visible as «nicht gegliedert»
+    return complete_segments(segments, [n for n, _ in pages])
 
 
 INSTRUCTION_LIKE = re.compile("|".join([

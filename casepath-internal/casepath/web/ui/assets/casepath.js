@@ -1333,11 +1333,11 @@ function coverBlock(blocking) {
 function checkRows() {
   return (S.data.items || []).filter((i) => i.kind === "check" && i.key !== "aussichten").map((c) => {
     const law = (c.law || c.clauses || []);
-    const missing = c.key === "androhung" && c.value === "fehlt";
-    const override = missing && c.decided !== true ? `<span class="cp-point-actions"><button class="cp-button cp-small" data-decide="leistungen_einstellen" data-value="ja">${T("End benefits all the same", "Leistungen trotzdem einstellen")}</button></span>` : "";
+    const missing = c.key === "androhung" && c.value === "fehlt", others = c.key === "androhung" && c.value === "andere";
+    const override = (missing || others) && c.decided !== true ? `<span class="cp-point-actions"><button class="cp-button cp-small" data-decide="leistungen_einstellen" data-value="ja">${T("End benefits all the same", "Leistungen trotzdem einstellen")}</button></span>` : "";
     const note = c.note ? `<br><span class="cp-muted cp-cover-note">${esc(c.note.text)} ${clauseTag(`${c.item_id}:note`, [c.note.law])}</span>` : "";
-    return `<dt>${T("Before", "Vorher")}</dt><dd data-item="${esc(c.item_id)}">${esc(plainQuestion((c.label || {}).de))}: <b class="${missing ? "cp-flag" : ""}">${esc(c.key === "androhung" ? (missing ? T("missing", "fehlt") : T("in the file", "in der Akte")) : "")}</b>
-      ${clauseTag(c.item_id, law)}<br><span class="cp-muted">${esc(c.text || "")}</span>${note}${override}</dd>`;
+    return `<dt>${T("Before", "Vorher")}</dt><dd data-item="${esc(c.item_id)}">${esc(plainQuestion((c.label || {}).de))}: <b class="${missing || others ? "cp-flag" : ""}">${esc(c.key === "androhung" ? (missing ? T("missing", "fehlt") : others ? T("only by others", "nur durch Dritte") : T("in the file", "in der Akte")) : "")}</b>
+      ${clauseTag(c.item_id, law)}${(c.lines || [c.text || ""]).map((l) => `<br><span class="cp-muted">${esc(l)}</span>`).join("")}${sourceChips(c.evidence)}${note}${override}</dd>`;
   }).join("");
 }
 function contactLine(c) {
@@ -1365,7 +1365,11 @@ function sourceChips(evidence) {
 function standLines() {
   const lines = (S.data.items || []).filter((i) => i.kind === "stand");
   if (!lines.length) return "";
-  return `<div class="cp-acct">${lines.map((l) => `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}</div>`).join("")}
+  const line = (l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}</div>`
+    // one open item per line: what, since when, how often asked, «mit Androhung»; at most three, then «… n weitere»
+    : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((r) =>
+        `<div class="cp-acct-item">${esc(r.text)}${sourceChips(r.evidence)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`;
+  return `<div class="cp-acct">${lines.map(line).join("")}
     <a class="cp-link cp-quiet-link" href="#/case/${esc(S.route.id)}/history">${T("Course of the case", "Verlauf")}</a></div>`;
 }
 // The case beside the letter: what blocks the action (only when something does), then the case itself.
@@ -1384,11 +1388,16 @@ function sideView(ev) {
   // no date; "Frist möglich … Datum fehlt" while the date that starts one is not in the file.
   const dated = (i) => /^\d{4}-\d{2}-\d{2}/.test(String(i.value || ""));
   // a date the file set for the same obligation stands in the computed deadline's row: «gesetzlich: …» and «im Schreiben vom … gesetzt: …»
-  const deadlines = (S.data.items || []).filter((i) => i.kind === "deadline" && !i.concerns).sort((a, b) => (dated(b) - dated(a)) || String(a.value).localeCompare(String(b.value)));
+  const ours = (i) => i.account && ["kunde", "versicherer"].includes(i.party) && daysTo(i.value) >= 0;  // still open, ours or the customer's to meet
+  const deadlines = (S.data.items || []).filter((i) => i.kind === "deadline" && !i.concerns).sort((a, b) => (ours(b) - ours(a)) || (dated(b) - dated(a)) || String(a.value).localeCompare(String(b.value)));
   const fristRow = (d) => {
     const title = esc(plainQuestion((d.label || {}).de || d.key)), basis = d.legal_basis ? ` <span class="cp-muted">· ${esc(d.legal_basis)}</span>` : "";
     const cond = d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : "";
     if (d.set_date) return `<div class="cp-frist ${d.set_date.later ? "check" : ""}" title="${esc(d.rule || "")}">${cond}${d.set_date.lines.map((l, n) => n ? `<br><span class="cp-muted">${esc(l)}</span>` : `<b>${esc(l)}</b>`).join("")}<br>${title}${basis}</div>`;
+    if (d.account && dated(d)) {  // a date the running account holds: what is due, who set it, for whom, in which letter
+      const n = daysTo(d.value), src = (d.evidence || []).find((e) => e.file);
+      return `<div class="cp-frist ${n < 0 || quiet() ? "" : n <= 14 ? "soon" : ""}" data-item="${esc(d.item_id)}"><b>${dateText(d.value)}</b> · ${title} <span class="cp-muted">· ${T("for", "für")} ${esc(d.for || "")} · ${T("set by", "gesetzt von")} ${esc(d.by || "")}${d.source ? `, ${esc(d.source)}` : ""}${d.due_text ? ` («${esc(d.due_text)}»)` : ""} · ${n < 0 ? T("passed", "abgelaufen") : T("open", "offen")}</span>${cite(src)}</div>`;
+    }
     if (d.party === "gegenpartei") return `<div class="cp-frist other" title="${esc(d.rule || "")}">${cond}<b>${dated(d) ? dateText(d.value) : T("check", "prüfen")}</b> <span class="cp-muted">· ${T("date of the other side", "Termin der Gegenpartei")}${dated(d) && daysTo(d.value) < 0 ? ` · ${T("passed", "abgelaufen")}` : ""}</span><br>${title}${basis}</div>`;
     if ((d.set_by_others || d.unnamed) && dated(d)) {  // a date a court, an authority or the other side set, or one the file gives without what it was for
       const n = daysTo(d.value), src = (d.evidence || []).find((e) => e.file);
@@ -1642,13 +1651,14 @@ function preparedView(ev, st) {
   const f = S.data.follow_up, due = f && f.due;
   // The customer's own statutory deadline, or a date a court, an authority or the other side set for the customer, leads
   // the card: the earliest still open, else the last one passed (a set date then says what it was and «abgelaufen»).
-  const own = (S.data.items || []).filter((i) => i.kind === "deadline" && (i.origin === "law" || i.set_by_others) && (i.party || "kunde") === "kunde" && i.direction !== "ab"
+  const own = (S.data.items || []).filter((i) => i.kind === "deadline" && (i.origin === "law" || i.set_by_others || i.account)
+    && (i.account ? ["kunde", "versicherer"].includes(i.party) : (i.party || "kunde") === "kunde") && i.direction !== "ab"
     && /^\d{4}-\d{2}-\d{2}/.test(String(i.value || ""))).sort((a, b) => String(a.value).localeCompare(String(b.value)));
   const lead = own.find((i) => daysTo(i.value) >= 0) || own[own.length - 1];
   const leadDays = lead ? daysTo(lead.value) : null;
   const leadSrc = lead && (lead.evidence || []).find((e) => e.file);
-  const leadLine = lead && !c ? (lead.set_by_others
-    ? `<p class="cp-lead-frist ${leadDays < 0 ? "past" : leadDays <= 14 ? "soon" : ""}" data-item="${esc(lead.item_id)}">${T("Date", "Termin")} <b>${dateText(lead.value)}</b> · ${esc(lead.what || "")}${lead.source ? ` · ${T("according to", "laut")} ${esc(lead.source)}` : lead.by ? ` · ${esc(lead.by)}` : ""} · ${
+  const leadLine = lead && !c ? (lead.set_by_others || lead.account
+    ? `<p class="cp-lead-frist ${leadDays < 0 ? "past" : leadDays <= 14 ? "soon" : ""}" data-item="${esc(lead.item_id)}">${T("Date", "Termin")} <b>${dateText(lead.value)}</b> · ${esc(lead.what || "")}${lead.account && lead.for ? ` · ${T("for", "für")} ${esc(lead.for)}` : ""}${lead.source ? ` · ${T("according to", "laut")} ${esc(lead.source)}` : lead.by ? ` · ${esc(lead.by)}` : ""} · ${
         leadDays < 0 ? T("passed", "abgelaufen") : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}${leadSrc ? ` <button class="cp-source-chip" data-cite-file="${esc(leadSrc.file)}" data-page="${leadSrc.page || ""}" title="${esc(leadSrc.quote || "")}">${leadSrc.page ? `${T("p.", "S.")} ${leadSrc.page}` : T("source", "Quelle")}</button>` : ""}</p>`
     : `<p class="cp-lead-frist ${quiet() ? "" : leadDays < 0 ? "late" : leadDays <= 14 ? "soon" : ""}">${T("Deadline", "Frist")} <b>${dateText(lead.value)}</b> · ${esc((lead.label || {}).de || lead.key)}${lead.condition ? ` (${esc(lead.condition)})` : ""} · ${esc(lead.legal_basis || "")} · ${
     leadDays < 0 ? T(`passed ${-leadDays} days ago`, `seit ${-leadDays} Tagen abgelaufen`) : leadDays === 0 ? T("today", "heute") : T(`${leadDays} days left`, `noch ${leadDays} Tag${leadDays === 1 ? "" : "e"}`)}</p>`) : "";
@@ -1671,8 +1681,9 @@ function preparedView(ev, st) {
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because:`, `Stattdessen: ${esc(S.pickAction.title)}, weil:`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
       : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
     ${leadLine}${pairLine}${points}${contactLine(c)}
-    ${weil && !c ? (points && !S.weilOpen ? `<p class="cp-weil"><button class="cp-link" id="weil-open" aria-expanded="false">${T("Why this step", "Warum dieser Schritt")}</button></p>`
-      : `<p class="cp-weil">${T("Because", "Weil")}: ${weil}</p>`) : ""}
+    ${act && act.because && !c ? `<p class="cp-weil cp-because">${T("Because", "Weil")}: <b>${esc(act.because)}</b></p>` : ""}
+    ${weil && !c ? (points && !S.weilOpen ? `<p class="cp-weil"><button class="cp-link" id="weil-open" aria-expanded="false">${act && act.because ? T("More on why", "Mehr zum Grund") : T("Why this step", "Warum dieser Schritt")}</button></p>`
+      : `<p class="cp-weil">${act && act.because ? "" : `${T("Because", "Weil")}: `}${weil}</p>`) : ""}
     <div class="cp-letter" data-item="letter:0">${letter ? letterView(letter, editable) : `<p class="cp-muted">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step.", "Für diesen Schritt kein Brief."))}</p>`}
       ${(draft.required || []).length ? `<p class="cp-required">${T("Required", "Pflichtteile")}: ${draft.required.map((r) => `${esc(r.title)} <span class="cp-muted">(${esc(r.basis)})</span>`).join(" · ")}</p>` : ""}
       ${alsoLines(draft, editable)}
@@ -1685,12 +1696,15 @@ function preparedView(ev, st) {
 function accountTable() {
   const all = (S.data.items || []).filter((i) => i.kind === "entry");
   if (!all.length) return "";
-  const rows = S.onlyOpen ? all.filter((r) => r.open) : all;
+  const party = S.onlyOpen && S.openParty;  // «… n weitere» in «Stand»: that party's open items
+  const rows = S.onlyOpen ? all.filter((r) => r.open && (!party || (r.open_of || []).includes(party))) : all;
+  const gaps = (S.data.items || []).filter((i) => i.kind === "record_gap");
   const open = all.filter((r) => r.open).length;
   const note = (n) => `<div class="cp-entry-note ${n.open ? "open" : ""} ${n.kind}">${esc(n.text)}</div>`;
   return `<section class="cp-card cp-account"><header class="cp-account-head"><h2 class="cp-section">${T("Course of the case", "Verlauf der Akte")}</h2>
       <span class="cp-muted">${all.length} ${T("documents", "Dokumente")}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>
-      <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${T("only open", "nur Offenes")}</label></header>
+      <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${party ? esc(T(`only open with ${party}`, `nur Offenes ${({ kunde: "bei der Kundschaft", versicherer: "bei uns", kanzlei: "bei der Kanzlei", gegenpartei: "bei der Gegenpartei", behoerde: "bei Gericht/Behörde" })[party] || ""}`)) : T("only open", "nur Offenes")}</label></header>
+    ${gaps.length ? `<p class="cp-flag cp-account-gap">${gaps.map((g) => esc((g.label || {}).de || g.value)).join(" · ")}</p>` : ""}
     <table class="cp-table cp-account-table"><thead><tr><th>${T("No.", "Nr.")}</th><th>${T("Date", "Datum")}</th><th>${T("From → to", "Von → an")}</th><th>${T("What", "Was")}</th><th>${T("Asked, answered, agreed", "Verlangt, beantwortet, vereinbart")}</th></tr></thead>
     <tbody>${rows.map((r) => `<tr class="${r.open ? "open" : ""}" data-item="${esc(r.item_id)}"><td>${esc(r.key)}</td><td class="cp-nowrap">${dateText(r.date)}</td>
       <td class="cp-nowrap">${esc(r.from_title)} → ${esc(r.to_title)}</td>
@@ -1987,7 +2001,9 @@ async function renderCase() {
   const undo = $("#undo");
   if (undo) undo.addEventListener("click", async () => { await api(`/api/edits/${S.lastEdit.edit.id}/undo`, { method: "POST" }); S.lastEdit = null; await loadCase(); });
   const onlyOpen = $("#only-open");
-  if (onlyOpen) onlyOpen.addEventListener("change", () => { S.onlyOpen = onlyOpen.checked; renderCase(); });
+  if (onlyOpen) onlyOpen.addEventListener("change", () => { S.onlyOpen = onlyOpen.checked; S.openParty = null; renderCase(); });
+  for (const b of document.querySelectorAll("[data-open-party]")) b.addEventListener("click", () => {
+    S.onlyOpen = true; S.openParty = b.dataset.openParty; location.hash = `#/case/${S.route.id}/history`; });
   bindEdit();
   bindOverview();
   fitCard();
