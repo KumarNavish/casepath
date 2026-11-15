@@ -1676,32 +1676,55 @@ function partiesHtml() {
   return (S.data.items || []).filter((i) => i.kind === "party").map((p) => `${redacted(p.value) ? `<i>${T("name redacted", "Name geschwärzt")}</i>` : esc(p.value)} <span class="cp-muted">· ${esc(role(T(p.label.en, p.label.de)))}</span>`).join("<br>")
     || (brief.parties || []).map((p) => `${esc(p.name)} <span class="cp-muted">· ${esc(String(p.role || "").replace(/\s*\((VN|GP)\)/g, ""))}</span>`).join("<br>");
 }
-function sideView() {
-  const r = result() || {}, brief = r.brief || {}, sc = scr(), items = S.data.items || [];
+// «Der Fall» is built from parts, each one slice's, so each changes its own: the request (sideAnliegen), the customer's
+// questions (sideQuestions), «Als Nächstes» from the account (sideAccount), the line after a correction with its undo
+// (sideChangeLine) and what changed with the last preparation (sideChanges).
+function sideAnliegen() {
+  const r = result() || {}, brief = r.brief || {}, items = S.data.items || [];
   const summary = items.find((i) => i.kind === "summary" && i.value);
   const anliegen = (summary && summary.value) || brief.request || r.answer || "";
-  const asks = items.filter((i) => i.kind === "customer_question" && i.value);
+  const long = anliegen.length > 95;  // about two lines: more opens on a click
+  return `<dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${long ? `<button class="cp-anliegen ${S.anliegenOpen ? "open" : ""}" id="anliegen-open" aria-expanded="${Boolean(S.anliegenOpen)}">${esc(anliegen)}</button>` : esc(anliegen) || "—"}</dd>`;
+}
+function sideQuestions() {
+  const asks = (S.data.items || []).filter((i) => i.kind === "customer_question" && i.value);
+  return asks.length ? `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${asks.map((q) => `<div data-item="${esc(q.item_id)}">«${esc(q.value)}»</div>`).join("")}</dd>` : "";
+}
+function sideAccount() {
+  const sc = scr();
   const stand = sc.stand || [];  // the account's lines as the server words them for this screen (screen.account_lines)
   const stageLines = sc.lines || [];  // the stage's short lines, without what the card head states (screen.py)
   const next = stand.map((l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}${handlerTag(l.handler)}</div>`
     : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
     .concat(stageLines.map((l) => `<div class="cp-acct-line" data-item="${esc(l.item_id)}">${esc(l.value || "")}${sourceChips(l.evidence)}</div>`)).join("");
+  return next ? `<dt>${T("Next", "Als Nächstes")}</dt><dd><div class="cp-acct">${next}</div></dd>` : "";
+}
+function sideChangeLine() {
+  return S.lastEdit && !S.lastEdit.op ? `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : "";
+}
+function sideChanges() {
+  const ch = S.data.changes || {}, any = (ch.added || []).length + (ch.changed || []).length + (ch.removed || []).length + (ch.entries || []).length;
+  return !running() && any ? `<details class="cp-mine"><summary class="cp-link cp-quiet-link">${T("What changed", "Was sich geändert hat")} · ${any}</summary>
+        ${[["added", T("new", "neu")], ["changed", T("changed", "geändert")], ["removed", T("no longer", "nicht mehr")]].filter(([k]) => (ch[k] || []).length)
+          .map(([k, w]) => `<p><span class="cp-muted">${w}:</span> ${(ch[k] || []).map(esc).join(" · ")}</p>`).join("")}
+        ${(ch.entries || []).length ? `<ul class="cp-new-entries">${ch.entries.map((x) => `<li>${esc(isoDay(x))}</li>`).join("")}</ul>` : ""}</details>` : "";
+}
+function sideView() {
+  const sc = scr();
   const fristen = (sc.fristen || []).map((d) => `<div class="cp-frist ${quiet() ? "" : d.late ? "late" : d.soon ? "soon" : ""}" data-item="${esc(d.item_id)}" title="${esc([d.basis, d.rule].filter(Boolean).join(" · "))}">${d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : ""}<b>${esc(d.date || d.state)}</b> · ${esc(d.title)}${d.date ? ` <span class="cp-muted">· ${esc(d.state)}</span>` : ""}${d.who ? ` <span class="cp-muted">· ${esc(d.who)}</span>` : ""}${(d.pair || []).length ? `<br><span class="cp-muted">${d.pair.map(esc).join(" · ")}</span>` : ""}${sourceChip(d.source)}</div>`).join("");
   const docs = sc.missing && !sc.missing_in_letter ? `<dt>${T("Documents", "Unterlagen")}</dt><dd><a class="cp-link cp-quiet-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></dd>` : "";
   const points = (sc.points || []).map((p) => `<div class="cp-point-line ${p.open ? "open" : ""}" data-item="${esc(p.item_id)}"><button class="cp-link cp-point-text" data-key-point="${esc(String(p.item_id).replace(/^key_point:/, ""))}" aria-expanded="${S.keyPoint === String(p.item_id).replace(/^key_point:/, "")}">${esc(p.text)}</button> <span class="cp-muted">· ${esc(p.basis || "")}</span>
       ${S.keyPoint === String(p.item_id).replace(/^key_point:/, "") ? `<div class="cp-passage">${passages(p.law)}${p.follows ? `<div>${T("Follows", "Folge")}: ${esc(p.follows)}</div>` : ""}${p.check ? `<div>${T("To check", "Zu prüfen")}: ${esc(p.check)}</div>` : ""}</div>` : ""}</div>`).join("");
   const flagged = (S.data.files || []).filter((f) => ((f.extraction || {}).instruction_like || []).length);
   const unread = (S.data.files || []).filter((f) => Object.keys((f.extraction || {}).unread_reasons || {}).length);
-  const ch = S.data.changes || {}, any = (ch.added || []).length + (ch.changed || []).length + (ch.removed || []).length + (ch.entries || []).length;
   const cover = sc.cover && (sc.decision || {}).key !== "deckung" ? sc.cover : null;
-  const long = anliegen.length > 95;  // about two lines: more opens on a click
   return `<aside class="cp-side">
     <section class="cp-card cp-case"><h3>${T("The case", "Der Fall")}</h3>
       <dl class="cp-casefacts">
-        <dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${long ? `<button class="cp-anliegen ${S.anliegenOpen ? "open" : ""}" id="anliegen-open" aria-expanded="${Boolean(S.anliegenOpen)}">${esc(anliegen)}</button>` : esc(anliegen) || "—"}</dd>
-        ${asks.length ? `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${asks.map((q) => `<div data-item="${esc(q.item_id)}">«${esc(q.value)}»</div>`).join("")}</dd>` : ""}
+        ${sideAnliegen()}
+        ${sideQuestions()}
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${partiesHtml() || "—"}</dd>
-        ${next ? `<dt>${T("Next", "Als Nächstes")}</dt><dd><div class="cp-acct">${next}</div></dd>` : ""}
+        ${sideAccount()}
         ${docs}
         ${S.data.screen && (fristen || !sc.fristen_elsewhere) ? `<dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen || `<span class="cp-muted">${T("none in the file", "keine in der Akte")}</span>`}</dd>` : ""}
         ${cover ? `<dt>${T("Cover", "Deckung")}</dt><dd data-item="cover:summary" class="cp-cover-state ${esc(cover.state)}">${esc(cover.text)}</dd>` : ""}
@@ -1712,11 +1735,8 @@ function sideView() {
       <p class="cp-case-tools">${S.data.file_note ? `<button class="cp-button cp-small" id="copy-note">${S.noteCopied ? T("File note copied", "Aktennotiz kopiert") : T("Copy file note", "Aktennotiz kopieren")}</button>` : ""}
         <button class="cp-link cp-quiet-link" id="add-note" aria-expanded="${Boolean(S.noting)}">${T("Add note", "Notiz hinzufügen")}</button></p>
       ${S.noting && !S.entryEdit ? entryForm() : ""}
-      ${S.lastEdit && !S.lastEdit.op ? `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : ""}
-      ${!running() && any ? `<details class="cp-mine"><summary class="cp-link cp-quiet-link">${T("What changed", "Was sich geändert hat")} · ${any}</summary>
-        ${[["added", T("new", "neu")], ["changed", T("changed", "geändert")], ["removed", T("no longer", "nicht mehr")]].filter(([k]) => (ch[k] || []).length)
-          .map(([k, w]) => `<p><span class="cp-muted">${w}:</span> ${(ch[k] || []).map(esc).join(" · ")}</p>`).join("")}
-        ${(ch.entries || []).length ? `<ul class="cp-new-entries">${ch.entries.map((x) => `<li>${esc(isoDay(x))}</li>`).join("")}</ul>` : ""}</details>` : ""}
+      ${sideChangeLine()}
+      ${sideChanges()}
     </section></aside>`;
 }
 
@@ -2496,3 +2516,10 @@ async function route() {
   window.addEventListener("hashchange", route);
   route();
 })();
+
+// Each slice's own functions go in its section below (function declarations: the start above runs after the whole script).
+// ---------- assessment: the decision brief, the customer's questions and the recommendation (Slice A) ----------
+
+// ---------- completion: approval, the Versandpaket, dispatch and the queue (Slice B) ----------
+
+// ---------- arrival: what came in, the update, corrections and the account's checks (Slice C) ----------

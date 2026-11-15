@@ -217,6 +217,21 @@ class LedgerTests(unittest.TestCase):
         self.assertNotIn("bisherige_handlungen", state["facts"])
         self.assertNotIn("einigung", state["facts"])
 
+    def test_a_back_dated_entry_keeps_the_request_ids(self):
+        graph = area.workflow("mietmangel-handler")
+        entries = stored(CASES["selbst"])["record"]["entries"]
+        ids = lambda acc: {r["what"]: r["id"] for r in acc["requests"]}
+        before = ids(account.build(entries, graph))
+        self.assertEqual(before, {"Kann ich den Mietzins reduzieren?": "r1.0", "Mietvertrag und Mängelrüge an die Verwaltung": "r2.0", "IBAN": "r7.0"})
+        # the handler enters a call made two days after the report, before our first request, in which a document was asked
+        call = {"id": "e1", "op": "add_entry", "status": "active", "args": {"kind": "telefon", "party": "kunde", "date": "2025-01-12", "n": 9001,
+                                                                            "said": "Kundin angerufen.", "asked": {"what": "Police der Hausratversicherung"}}}
+        after = ids(account.build(account.with_handler(entries, [call]), graph))
+        self.assertEqual({k: after[k] for k in before}, before)  # every request keeps its id: its asking entry and its place there
+        self.assertEqual(after["Police der Hausratversicherung"], "r9001.0")
+        frozen = lambda edits: ids(account.build(account.with_handler(entries, edits), graph, checked=False))  # a frozen study copy's rules
+        self.assertEqual((frozen([])["IBAN"], frozen([call])["IBAN"]), ("r3", "r4"))  # by place in time order, ids move
+
     def test_silence_reads_the_ledger_only_the_party_asked_ends_it(self):
         graph = area.workflow("mietmangel-handler")
         entries = stored(CASES["selbst"])["record"]["entries"][:2]  # the report and the first request, nothing since

@@ -150,9 +150,10 @@ def fact_question(items, fact):
     return re.sub(r"\s*\((Entscheid|CasePath)[^)]*\)?", "", label(row)).strip()
 
 
-def decision(items, draft, stage, routing=None):
+def decision(items, draft, stage, routing=None, assessment=None):
     """The one open decision that blocks this step, with its answers, or None. A decision the stage already settles is
-    never asked again (cover at the mandate, the way to proceed once the case is past it); the cover check never at intake."""
+    never asked again (cover at the mandate, the way to proceed once the case is past it); the cover check never at intake.
+    ``assessment``: the prepared action's decision brief (assessment.build); not read yet."""
     act = next((i for i in items if i["kind"] == "next_action"), None) or {}
     needs = list((draft or {}).get("needs") or ())
     other = (routing or {}).get("other_topic")
@@ -289,8 +290,10 @@ def cover_line(items, stage, decided_by=None):
     return {"text": summary["value"].replace("Deckung: ", ""), "state": "open"}
 
 
-def build(items, draft, events, look, rule, stage=None, via=None, routing=None, since=None, decided_by=None):
-    """The screen model of one case: the card head and «Der Fall», each thing said once."""
+def build(items, draft, events, look, rule, stage=None, via=None, routing=None, since=None, decided_by=None, assessment=None, completion=None):
+    """The screen model of one case: the card head and «Der Fall», each thing said once. ``assessment``: the decision brief
+    (assessment.build), which the decision reads; ``completion``: where the prepared letter stands after the decision
+    (completion.state); not read yet."""
     act = next((i for i in items if i["kind"] == "next_action"), None) or {}
     head_lead = lead(items, look, rule, stage)
     reason = without_date(weil(items, via), (head_lead or {}).get("date")) or None
@@ -307,7 +310,7 @@ def build(items, draft, events, look, rule, stage=None, via=None, routing=None, 
     gone = missing(items, events)
     return {"title": (act.get("label") or {}).get("de") or act.get("value"), "weil": reason,
             "danach": [t.get("action") or t.get("title") for t in act.get("then") or () if t.get("action") or t.get("title")],
-            "lead": head_lead, "decision": decision(items, draft, stage, routing), "progress": progress(items),
+            "lead": head_lead, "decision": decision(items, draft, stage, routing, assessment=assessment), "progress": progress(items),
             "documents": documents(draft, events, since), "fristen": rows, "fristen_elsewhere": bool(head_lead or carried),
             "stand": stand, "lines": lines, "points": key_points(items, letter),
             "cover": cover_line(items, stage, decided_by),

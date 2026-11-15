@@ -10,6 +10,11 @@ in every area, the mandate package, a fee note, a settlement whose payout is cha
 a case where new files arrived, a run that failed and one to prepare live. The area cases were written for 15.11.2026;
 on another day their dates move with it, so a deadline is as close as it was then.
 
+The episode «a reply arrives → the assessment is prepared → the decision is carried through» (seed_episode): E1 and E2,
+the synthetic analogs of a development dossier prepared as they stood the day before the replies came (drop the replies
+from deploy/preview/episode/E1 or E2 on the case: the upload starts the update), a case whose letter an earlier browser
+copied, and a frozen study copy. POST /preview/fault makes the next update fail once (the fault switch).
+
     python deploy/preview/preview.py [port]
 """
 from datetime import date, timedelta
@@ -412,6 +417,35 @@ def seed_update(store, runs):
     return case
 
 
+EPISODE_FILES = Path(__file__).parent / "episode"  # the replies of d+35 to drop on E1 and E2 (written by tests/episode.py)
+
+
+def seed_episode(store, runs):
+    """The episode «a reply arrives → the assessment is prepared → the decision is carried through» on its synthetic
+    analogs (tests/episode.py): E1 «D11-Analogon A» (S-D11A) and E2 «D11-Analogon B» (the reply asks only about the
+    deposit, promises receipts, claims nothing), each prepared as its file stood on d+34, their replies to drop in
+    deploy/preview/episode/E1 and E2; a case whose letter a browser before this release copied (a «letter.copied» without
+    «measure»: contact only); a frozen expert-study copy whose run holds a dated account request. Returns the cases and
+    {case id: episode} for the updates the replies start."""
+    from casepath.agents.runner import case_state
+    from casepath.process import letters
+    from casepath.process.items import build_items
+    from tests import episode
+    e1_ns, e2_ns = episode.EPISODE, episode.analog(names=episode.VARIANT_B)
+    e1 = episode.seed_phase_a(store, runs, e1_ns)
+    e2 = episode.seed_phase_a(store, runs, e2_ns)
+    areas = moved(json.loads((ROOT / "tests" / "fixtures" / "areas" / "cases.json").read_text()))
+    copied = renamed(areas["mietmangel-handler"], {"Anna Beispiel": "Eva Muster", "Musterweg 1": "Lärchenweg 8", "Verwaltung Beispiel AG": "Lärche Immobilien AG"})
+    legacy = prepare_area_case(store, runs, copied, "Mietmangel, Brief kopiert (synthetisch)")
+    current = case_state(store, runs.catalogue, legacy["id"])
+    action = next((i for i in build_items(current, (current["run"] or {}).get("result"), store.list_files(legacy["id"]))
+                   if i["kind"] == "next_action"), None) or {}
+    time.sleep(1.05)  # copied after the run was prepared: a later second than its start (times are kept to the second)
+    log_event(store, legacy["id"], "letter.copied", form=letters.form_kind(action), edited=False, change_ratio=0)  # no «measure»: a legacy copy
+    frozen, study_copy = episode.seed_frozen_copy(store, runs)
+    return {"e1": e1, "e2": e2, "legacy": legacy, "frozen": frozen, "study_copy": study_copy, "analogs": {e1["id"]: e1_ns, e2["id"]: e2_ns}}
+
+
 def update_script(store, case_id, pause):
     """The scripted update of the mandated case: the fee note's entry and the cost claim it brings, cited from the file the
     handler added (one without the note's words gives the update nothing to record)."""
@@ -455,7 +489,9 @@ def main():
                                                                ensure_ascii=False))
     from tests.test_handler_workflow import intake
     (catalogue / "osm-mold.json").write_text(json.dumps(intake()))
-    settings = load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(catalogue), "CASEPATH_DEV_USER": "N. Kumar"})
+    # The preview starts the update with an upload (CASEPATH_AUTO_UPDATE), as the rehearsal does; the pilot keeps it off.
+    settings = load_settings({"CASEPATH_DATA_DIR": data, "CASEPATH_WORKFLOW_CATALOGUE": str(catalogue), "CASEPATH_DEV_USER": "N. Kumar",
+                              "CASEPATH_AUTO_UPDATE": "1"})
     app = create_app(settings, model_factory=lambda: None)
     store, runs = app.state.store, app.state.runs
 
@@ -518,6 +554,7 @@ def main():
     case_account = seed_account(store, runs)
     case_update = seed_update(store, runs)
     case_offer = seed_offer(store, runs)
+    episode_cases = seed_episode(store, runs)
     stages = seed_stages(store, runs)
     # case C and D last: the newest come first among cases that are equally due, so the case the main path opens is in view
     case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
@@ -531,15 +568,35 @@ def main():
         return start_update(case_id, user, token)
     runs.update = update
 
+    # The fault switch (C3, P-fail): while on, the next update fails as an unreachable model does, once.
+    fault = {"update": False}
+
+    @app.post("/preview/fault")
+    def preview_fault(update: bool = True):
+        fault["update"] = update
+        return fault
+
+    from tests import episode
+
     def dispatch():
         if asked.get("update"):
-            return update_script(store, asked.pop("update"), pause)
+            case_id = asked.pop("update")
+            if fault["update"]:
+                fault["update"] = False
+                return episode.Failing()
+            analog = episode_cases["analogs"].get(case_id)
+            if analog:  # E1 or E2: the replies of d+35, read by the update's script
+                return episode.update_model(store, case_id, analog.turns_b(), analog.reply_names, pause)
+            return update_script(store, case_id, pause)
         return factory_b()
     runs.model_factory = dispatch
     print(f"preview on http://127.0.0.1:{port}  case A {case_a['id']}  case B {case_b['id']}  case C {case_c['id']}  case D {case_d['id']}  cost note {case_k['id']}"
           f"  dismissal {keyed['kuendigung-sperrfrist']['id']}  hearing {keyed['miete-schlichtung']['id']}  historic {historic['id']}  account {case_account['id']}"
           f"  update {case_update['id']}  offer {case_offer['id']}  mandate {stages['mandate']['id']}  closed {stages['closed']['id']}"
-          f"  arrived {stages['arrived']['id']}  failed {stages['failed']['id']}", flush=True)
+          f"  arrived {stages['arrived']['id']}  failed {stages['failed']['id']}"
+          f"  E1 {episode_cases['e1']['id']}  E2 {episode_cases['e2']['id']}  legacy copy {episode_cases['legacy']['id']}"
+          f"  frozen {episode_cases['frozen']['id']}  study copy {episode_cases['study_copy']['id']}"
+          f"  replies to drop: {EPISODE_FILES}/E1, {EPISODE_FILES}/E2  fault switch: POST /preview/fault (?update=false turns it off)", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 
 

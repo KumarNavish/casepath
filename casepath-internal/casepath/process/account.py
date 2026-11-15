@@ -9,8 +9,9 @@ what was paid, and the next step it states with its date. Every element carries 
 is dropped whole.
 
 From the entries, by code (``build``):
-- the requests ledger: each thing asked, by whom, of whom, first and last asked, by when, how often, whether
-  answered, by which entry, and whether the answer matches what was asked (``confirmed``);
+- the requests ledger: each thing asked (its id «r<n>.<i>»: the entry that first asks it and the ask's place there), by
+  whom, of whom, first and last asked, by when, how often, whether answered, by which entry, and whether the answer
+  matches what was asked (``confirmed``);
 - the agreement as it stands: the latest agreed terms, earlier terms and offers kept as history, and whether paid;
 - who owes what now: open requests by the party asked, and an agreed payment not made;
 - the insurer's actions taken (A1 … A12 with their dates), which replace the action facts read one by one (``facts``);
@@ -188,15 +189,31 @@ def handler_entries(edits):
     return out
 
 
-def next_handler_number(edits):
-    """The number of the handler's next entry: after every number a handler's entry of the case ever had."""
-    used = [(e.get("args") or {}).get("n") for e in edits or () if e.get("op") == "add_entry"]
+NUMBERED = ("add_entry", "add_dispatch")  # the handler's entries and the dispatches draw their numbers from one sequence
+
+
+def next_number(edits):
+    """The number of the next handler's entry or dispatch: after every number either ever had in the case (a removed or
+    replaced one's included), from HANDLER_BASE."""
+    used = [(e.get("args") or {}).get("n") for e in edits or () if e.get("op") in NUMBERED]
     return max([n for n in used if isinstance(n, int)] + [HANDLER_BASE]) + 1
+
+
+def next_handler_number(edits):
+    """The number of the handler's next entry (next_number)."""
+    return next_number(edits)
 
 
 def with_handler(entries, edits):
     """A run's entries with the handler's entries in force (their own numbers: none can meet a reader's)."""
     return list(entries or ()) + handler_entries(edits)
+
+
+def dispatch_facts(edits, graph=None):
+    """For a run prepared before the account (from_result is None): the action facts the dispatches in force set,
+    {handlung_a<code>: the dispatch date}, which core.evaluate merges, so the clock and the last contact move from them.
+    Nothing until Slice B records dispatches."""
+    return {}
 
 
 # -- checking the reader's entries --------------------------------------------------------------------------------
@@ -506,9 +523,11 @@ def promised(requests, e, x):
     return open_ if open_ and (len(open_) == 1 or words(x.get("what")) & GENERIC_DOCUMENTS) else []
 
 
-def build(entries, graph=None):
+def build(entries, graph=None, checked=True):
     """The account from the located entries: {entries, requests, terms, agreement, paid, owes, actions, last_contact}.
-    None without entries."""
+    None without entries. A request's id is stable, «r<n>.<i>»: the entry that first asks it and the ask's place among
+    that entry's asks, so a later or back-dated entry never renumbers it. ``checked`` False: the rules a frozen study
+    copy was frozen with (ids by position in time order, «r1», «r2» …)."""
     entries = sorted([_stored_entry(e) for e in entries or () if e.get("n") is not None], key=_key)
     if not entries:
         return None
@@ -517,7 +536,7 @@ def build(entries, graph=None):
     by_n = {e["n"]: e for e in entries}
     requests = []
     for e in entries:
-        for a in e.get("asks") or ():
+        for i, a in enumerate(e.get("asks") or ()):
             prior = None
             if a.get("repeats") in by_n:  # the reader names the entry it repeats
                 same = [r for r in requests if a["repeats"] in r["entries"] and r["of"] == a["of"]]
@@ -538,8 +557,8 @@ def build(entries, graph=None):
                 if prior["answered"] is not None and a.get("repeats") is not None:
                     prior["answered"] = None  # asked again after an answer: the answer did not settle it
                 continue
-            requests.append({"id": f"r{len(requests) + 1}", "by": e["from"], "of": a["of"], "what": a["what"], "first": e.get("date"),
-                             "last": e.get("date"), "due": a.get("by"), "times": 1, "warned": int(bool(a.get("warns"))),
+            requests.append({"id": f"r{e['n']}.{i}" if checked else f"r{len(requests) + 1}", "by": e["from"], "of": a["of"], "what": a["what"],
+                             "first": e.get("date"), "last": e.get("date"), "due": a.get("by"), "times": 1, "warned": int(bool(a.get("warns"))),
                              "entries": [e["n"]], "citations": list(a["citations"]), "answered": None, "phone": bool(e.get("phone")),
                              "due_n": e["n"] if a.get("by") else None, "due_text": a.get("by_text"), "due_computed": bool(a.get("by_computed"))})
         for x in e.get("answers") or ():
@@ -616,12 +635,13 @@ def build(entries, graph=None):
             "paid": paid, "payment": payment, "owes": owes, "actions": actions, "last_contact": contacts[-1] if contacts else None}
 
 
-def from_result(result, graph=None, edits=()):
+def from_result(result, graph=None, edits=(), checked=True):
     """The account of a stored run, with the handler's entries in force (``edits``); None for a run made before the
-    account: the handler's entries then wait for a full preparation, and nothing is invented."""
+    account: the handler's entries then wait for a full preparation, and nothing is invented. ``checked`` False: a frozen
+    study copy's account, by the rules it was frozen with (build)."""
     if not kept(result):
         return None
-    return build(with_handler(entries_of(result), edits), graph)
+    return build(with_handler(entries_of(result), edits), graph, checked=checked)
 
 
 # -- the account in the process: action history, agreement facts, silence -------------------------------------------
@@ -924,10 +944,10 @@ OWED_TO_US = ("versicherer", "kanzlei")  # who may ask the customer for somethin
 
 
 def open_items(acc, party, askers=None):
-    """What is asked of a party and not delivered, from the ledger: [{what, first, by, times, warned}] in the order asked.
-    ``askers``: only what these parties asked (a letter to the customer takes what the insurer or the mandated firm asked,
-    never a claim of the other side against the customer)."""
-    return [{"what": r["what"], "first": r["first"], "by": r["by"], "times": r["times"], "warned": r["warned"]}
+    """What is asked of a party and not delivered, from the ledger: [{what, first, by, times, warned, request}] in the
+    order asked, ``request`` the row's id. ``askers``: only what these parties asked (a letter to the customer takes what
+    the insurer or the mandated firm asked, never a claim of the other side against the customer)."""
+    return [{"what": r["what"], "first": r["first"], "by": r["by"], "times": r["times"], "warned": r["warned"], "request": r["id"]}
             for r in (acc or {}).get("requests") or () if r["of"] == party and r["answered"] is None and r["by"] != party
             and (askers is None or r["by"] in askers)]
 
@@ -935,6 +955,12 @@ def open_items(acc, party, askers=None):
 def _head(title):
     """The first word that names a document need («Mietvertrag inkl. …» → «mietve»), as ``words`` cuts it."""
     return next((w.lower()[:6] for w in WORD.findall(str(title or "")) if w.lower() not in STOP), None)
+
+
+def held(row, files, findings=None, claims=None):
+    """The file that holds what a row of the account asked (a need or a claim line), among the files of the entry that
+    answered it: {file, how}, or None. Nothing is held until Slice C reads it from the files (C10c)."""
+    return None
 
 
 def delivered(acc, needs):

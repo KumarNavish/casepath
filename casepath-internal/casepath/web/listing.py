@@ -196,10 +196,13 @@ def step_copied(action, events, completed_at):
     return False
 
 
-def stand(*, closed, run_status, new_files, items, follow_up, events, completed_at, files, today=None, historic=None):
+def stand(*, closed, run_status, new_files, items, follow_up, events, completed_at, files, today=None, historic=None, run_kind=None,
+          completion=None):
     """Where a case stands, in the handler's words, with the rank by which the list orders it (what needs the handler
     first) and the date that goes with it: {kind, text, rank, date}. A historic file (``historic``: clock.historic) is
-    looked at as of its own day, the cut's «Stand am» or its newest document, so nothing in it is overdue."""
+    looked at as of its own day, the cut's «Stand am» or its newest document, so nothing in it is overdue. ``run_kind``:
+    the kind of the run ``run_status`` is of (full or update); ``completion``: where the prepared letter stands after the
+    decision (completion.state); neither is read yet."""
     ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or date.today()
     row = lambda kind, text, rank, day=None: {"kind": kind, "text": text, "rank": rank, "date": day.isoformat() if day else None}
     if run_status in {"queued", "running"}:
