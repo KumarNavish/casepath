@@ -22,6 +22,8 @@ DELEGATED = {
     "synthetic": ("quality.synthetic", "main", "make and judge synthetic cases inside Mobiliar"),
     "example": ("quality.examples", "main", "add the made-up example case to a case store"),
     "replay": ("quality.replay", "main", "apply a Knowledge version to the stored runs, without a model, and show what changes"),
+    "labels-template": ("quality.points", "template_main", "a case file's documents in time order, for labelling its decision points (inside only)"),
+    "replay-points": ("quality.points", "main", "each labelled decision point replayed from one stored run, without a model: a content-free table"),
     "drawio": ("process.drawio", "main", "turn a draw.io process diagram into a draft workflow"),
     "areas": ("process.area", "main", "validate the handler's area modules and show what each contains"),
     "cover": ("process.cover", "main", "check the cover points and the passages of the conditions and the law they cite"),

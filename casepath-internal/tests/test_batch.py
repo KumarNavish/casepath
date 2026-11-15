@@ -66,12 +66,15 @@ class TraceTests(unittest.TestCase):
             store.select_workflow(case["id"], "example-defect", "2026-01-01", "dev")
             app.state.runs.model_factory = lambda: ScriptedModel(team_script(added["id"], finder_calls=[
                 finder(added["id"], "customer_message", "Ich habe den Vermieter am 2. März schriftlich informiert.")]))
-            server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=8792, log_level="error"))
+            with socket.socket() as probe:  # a free port: a fixed one held by a run side by side left this loop spinning
+                probe.bind(("127.0.0.1", 0))
+                port = probe.getsockname()[1]
+            server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=port, log_level="error"))
             thread = threading.Thread(target=server.run, daemon=True)
             thread.start()
             while not server.started:
                 pass
-            url = "http://127.0.0.1:8792"
+            url = f"http://127.0.0.1:{port}"
             with mock.patch("sys.stdout") as out:
                 batch.run_next(url, poll=0.05)
                 batch.trace(url, case["id"][-8:])

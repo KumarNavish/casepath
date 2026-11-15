@@ -44,6 +44,8 @@ create table if not exists events(
 create index if not exists events_case on events(case_id, seq);
 create table if not exists deletions(
   case_id text primary key, deleted_at text not null, deleted_by text not null, reason text not null, removed text not null);
+create table if not exists labels(
+  case_id text primary key references cases(id), data text not null, saved_by text not null, saved_at text not null);
 """
 ACTIVE = ("queued", "running")
 
@@ -286,7 +288,7 @@ class CaseStore:
             for run_id in runs:
                 self._db.execute("delete from feedback where run_id=?", (run_id,))
                 self._db.execute("delete from run_events where run_id=?", (run_id,))
-            for table in ("runs", "case_edits", "knowledge_uses", "files", "events"):
+            for table in ("runs", "case_edits", "knowledge_uses", "files", "events", "labels"):
                 self._db.execute(f"delete from {table} where case_id=?", (case_id,))
             for row in self._all("select id, data from knowledge"):
                 item = json.loads(row["data"])
@@ -360,6 +362,24 @@ class CaseStore:
 
     def list_case_events(self, case_id):
         return [json.loads(r["data"]) for r in self._all("select data from events where case_id=? order by seq", case_id)]
+
+    # The insurer's own decision points in a case file (casepath.labels/1, quality/points.py): one set per case, replaced whole
+    def save_labels(self, case_id, labels, user):
+        self.get_case(case_id)
+        with self._lock:
+            self._db.execute("insert into labels values(?,?,?,?) on conflict(case_id) do update set data=excluded.data, "
+                             "saved_by=excluded.saved_by, saved_at=excluded.saved_at",
+                             (case_id, json.dumps(labels, ensure_ascii=False), user, now()))
+        return self.get_labels(case_id)
+
+    def get_labels(self, case_id):
+        row = self._one("select data from labels where case_id=?", case_id)
+        if row is None:
+            raise NotFound(case_id)
+        return json.loads(row["data"])
+
+    def list_labels(self):
+        return [json.loads(r["data"]) for r in self._all("select data from labels order by case_id")]
 
     # Edits to a case's process
     def add_edit(self, case_id, op, args, user, reason):
