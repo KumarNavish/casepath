@@ -151,7 +151,7 @@ function renderTop() {
   }
   const other = LANG === "de" ? "en" : "de";
   $("#top").innerHTML = `${wordmark}<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
-    <div class="cp-top-right">${route.view === "case" ? `<a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
+    <div class="cp-top-right">${measureToggle()}${route.view === "case" ? `<a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
       <a class="cp-link" href="?lang=${other}${esc(location.hash)}" lang="${other}">${other.toUpperCase()}</a></div>`;
 }
 // Wissen and Auswertung are for the people named to review the legal content (CASEPATH_REVIEWERS; with none named, for
@@ -2404,6 +2404,36 @@ async function loadCase() {
   await renderCase();
 }
 
+// The person's own active time on a case, measured only where the deployment allows it and the person switched it on
+// for this browser session (shown in the top bar while it runs): the case opened, a minute without input or the window
+// hidden or the case left (idle), the return. Nothing is recorded otherwise.
+const MEASURE = { allowed: false, on: false, caseId: null, active: false, timer: null };
+try { MEASURE.on = sessionStorage.getItem("cp-measure") === "1"; } catch (error) { /* storage blocked: the measurement stays off */ }
+function measureSend(caseId, kind) {
+  if (!caseId) return;
+  fetch(`/api/cases/${caseId}/events`, { method: "POST", keepalive: true, headers: { "content-type": "application/json" }, body: JSON.stringify({ kind, item_id: null, fields: {} }) }).catch(() => {});
+}
+function measureIdle() {
+  clearTimeout(MEASURE.timer);
+  if (MEASURE.active) { MEASURE.active = false; measureSend(MEASURE.caseId, "idle.started"); }
+}
+function measureTouch() {  // the person is at work on the case shown
+  if (!MEASURE.allowed || !MEASURE.on || S.route.view !== "case" || document.hidden || ((S.data || {}).case || {}).id !== S.route.id) return;
+  if (((S.data.case || {}).intake || {}).study) return;  // a study copy has its own session measurement
+  if (MEASURE.caseId !== S.route.id) { measureIdle(); MEASURE.caseId = S.route.id; MEASURE.active = true; measureSend(MEASURE.caseId, "case.opened"); }
+  else if (!MEASURE.active) { MEASURE.active = true; measureSend(MEASURE.caseId, "idle.ended"); }
+  clearTimeout(MEASURE.timer);
+  MEASURE.timer = setTimeout(measureIdle, 60000);
+}
+function measureLeave() { measureIdle(); MEASURE.caseId = null; }
+for (const kind of ["keydown", "pointerdown", "wheel"]) document.addEventListener(kind, measureTouch, { passive: true, capture: true });
+document.addEventListener("visibilitychange", () => { if (document.hidden) measureIdle(); else measureTouch(); });
+window.addEventListener("pagehide", measureIdle);
+function measureToggle() {
+  if (!MEASURE.allowed) return "";
+  return `<button class="cp-link cp-measure ${MEASURE.on ? "on" : ""}" id="measure-toggle" aria-pressed="${MEASURE.on}" title="${T("Measures your own active time on a case, for this browser session, only while you leave it switched on.",
+    "Misst Ihre eigene aktive Zeit an einem Fall, für diese Browser-Sitzung und nur, solange Sie es eingeschaltet lassen.")}">${MEASURE.on ? `● ${T("Time is measured", "Zeitmessung läuft")}` : T("Measure time", "Zeit messen")}</button>`;
+}
 // A run the reader started and left: the browser keeps asking (cheaply, statuses only) and says when it is done, in
 // the tab's title and in one quiet line that opens the case. Opening the case takes the notice away.
 const WATCH = { runs: {}, done: [], timer: null };
@@ -2480,6 +2510,7 @@ async function renderCase() {
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
   watchRun(S.data.run, S.data.case);
   showNotices();
+  if (MEASURE.on && MEASURE.caseId !== S.route.id) measureTouch();  // the case is on the screen: its measured span begins
   for (const t of typing) {
     const el = document.getElementById(t.id);
     if (!el || el.value || el.type === "file") continue;
@@ -2751,6 +2782,7 @@ function bindReview() {
 // ---------- routing ----------
 async function route() {
   const next = parseRoute();
+  if (next.view !== "case" || next.id !== MEASURE.caseId) measureLeave();  // the case is left: its measured span ends
   if (next.view !== "case" || next.id !== S.route.id) Object.assign(S, { data: null, pages: {}, file: null, step: null, editing: false, lastEdit: null, events: [], follow: true, message: "", shown: new Set(), litKey: null });
   S.route = next;
   renderTop();
@@ -2768,7 +2800,14 @@ async function route() {
 }
 
 (async () => {
-  try { const me = await api("/api/me"); S.me = me.user; S.mayReview = Boolean(me.may_review); } catch (error) { S.me = ""; S.mayReview = false; }
+  try { const me = await api("/api/me"); S.me = me.user; S.mayReview = Boolean(me.may_review); MEASURE.allowed = Boolean(me.time_measure); } catch (error) { S.me = ""; S.mayReview = false; }
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest || !event.target.closest("#measure-toggle")) return;
+    MEASURE.on = !MEASURE.on;
+    try { sessionStorage.setItem("cp-measure", MEASURE.on ? "1" : ""); } catch (error) { /* this session only, in memory */ }
+    if (MEASURE.on) measureTouch(); else measureLeave();
+    renderTop();
+  });
   try { S.canUpload = (await api("/api/health")).uploads !== false; } catch (error) { S.canUpload = true; }
   window.addEventListener("hashchange", route);
   route();

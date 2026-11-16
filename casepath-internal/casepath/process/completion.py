@@ -1180,6 +1180,17 @@ def frozen_meaning(draft, listed, events, assessment=None):
     return out
 
 
+def changed_words(draft):
+    """How much of the approved letter is the handler's own wording: {total, changed}, the words of the final text and
+    those among them that the prepared text (each part's base) did not have in that place (inserted or replaced; words
+    only taken out count as one each). Counted by word, so a long sentence replaced by one of the same length counts."""
+    import difflib
+    base = " ".join(str(p.get("base") or "") for p in draft.get("parts") or ()).split()
+    final = " ".join(str(p.get("text") or "") for p in draft.get("parts") or ()).split()
+    changed = sum(max(i2 - i1, j2 - j1) for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, base, final, autojunk=False).get_opcodes() if tag != "equal")
+    return {"total": len(final), "changed": changed}
+
+
 def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=None, op_id=None, deadline=None, relies=(), marks=None,
                     file_ids=None, meaning=None, addresses=None):
     """The fields of «action.approved»: the version and what it consists of, the premise (``premise_``: premise() now),
@@ -1187,6 +1198,7 @@ def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=
     as they stand (``marks``: the marks that hold now), the files of the case it was given on (``file_ids``) and what it
     means per recipient (``meaning``: frozen_meaning), which its dispatch records."""
     return {"version": draft["version"], "form": draft.get("form") or draft.get("kind"), "action_kind": draft.get("kind"), "title": draft.get("title"),
+            "words": changed_words(draft),
             # ``addresses``: the mail address shown beside «Freigeben» per recipient (found in the file or set by the handler)
             "recipients": [{**{k: r[k] for k in ("to", "recipient", "title", "forms", "titles")},
                             **({"address": str(addresses.get(r["to"]) or "")} if addresses is not None else {})} for r in draft.get("recipients") or ()],

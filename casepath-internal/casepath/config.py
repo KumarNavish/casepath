@@ -87,6 +87,10 @@ class Settings:
     # Who may open a case (CASEPATH_CASE_ACCESS): «team», everyone signed in (the pilot group); «owner», only its owner,
     # the deputy and the reviewers, a colleague after a logged «Vertretung übernehmen». Examples are open to everyone.
     case_access: str = "team"
+    # Whether a person may switch on the measurement of their own active time on a case (CASEPATH_TIME_MEASURE): «off»,
+    # nobody, nothing is recorded; «session», each person may switch it on for their browser session, visibly, for an
+    # agreed observed session. Never recorded without the person's own switch.
+    time_measure: str = "off"
     volume: str | None = None
     speed_trials: tuple = ()  # named speed changes under trial (CASEPATH_SPEED_TRIALS); empty = today's behaviour
     # The bounded update an upload starts by itself (CASEPATH_AUTO_UPDATE): off unless the deployment turns it on; only
@@ -98,6 +102,13 @@ class Settings:
     update_token_budget: int = 200_000
     mail_subject: str | None = None  # the subject line shown beside a letter (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
     reference_pattern: str = r"\d{4}\.\d{4}\.\d{4}"  # how a reference number looks in a file (CASEPATH_REFERENCE_PATTERN)
+
+
+def _one_of(value, default, allowed, message):
+    value = (value or default).strip().lower()
+    if value not in allowed:
+        raise SettingsError(message)
+    return value
 
 
 def _case_access(value):
@@ -177,4 +188,5 @@ def load_settings(env=None):
         allowed_users=frozenset(u.strip().lower() for u in env.get("CASEPATH_ALLOWED_USERS", "").split(",") if u.strip()),
         reviewers=frozenset(u.strip().lower() for u in env.get("CASEPATH_REVIEWERS", "").split(",") if u.strip()),
         case_access=_case_access(env.get("CASEPATH_CASE_ACCESS")),
+        time_measure=_one_of(env.get("CASEPATH_TIME_MEASURE"), "off", {"off", "session"}, "CASEPATH_TIME_MEASURE is off or session"),
     )

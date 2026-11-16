@@ -31,3 +31,15 @@ His session is also the rehearsal of the experts' session: if anything in the pr
 | an Anmerkung on something missing | added if it belongs to the case's chain; otherwise listed for later |
 
 Changes are made on days 7 to 9; the list of what changed and what deliberately did not goes into the study record. Nothing he notes about this one case becomes a rule unless it holds for the process.
+
+## Measuring time, once, with the person's consent
+
+Nothing so far says how long a handler needs with CasePath or without it. One observed session can show it or refute it; this is its protocol, fixed before the session so the result cannot be read to taste.
+
+**What is measured.** The person's active time on a case, by CasePath itself: the case opened, a minute without input or the window hidden or the case left (idle), the return (`quality/auswertung.py`, «handling_seconds»). And the share of each approved letter that is the person's own wording, counted by word at the approval («letter_changed_ratio»). The measurement runs only where the deployment allows it (`CASEPATH_TIME_MEASURE=session`; the default is off, and then the server refuses the events) and only while the person has switched it on for the browser session («Zeit messen» in the top bar, which then reads «● Zeitmessung läuft»). It is not a monitoring of work: it is for this session, agreed with the person beforehand, and switched off afterwards.
+
+**The comparison.** Two tasks of the same kind on synthetic or redacted files the person has not seen: one done the way it is done today, timed by the observer with a stopwatch from opening the file to the letter being ready to send and the note written; one done with CasePath, timed by CasePath from opening the case to «Versandt am». Which task is done which way is decided by a coin before the session; a second person gets the other order. Reading time counts on both sides. Waiting for a preparation is noted separately (the person may do something else meanwhile) and reported beside the active time, not hidden in it.
+
+**The rule, fixed in advance.** CasePath counts as faster on a task only if its active time is below the time of today's way on the task of the same kind, for both persons. A letter of which more than a fifth is the person's own wording counts as not prepared: its time is reported, and the task counts against CasePath. One session with two persons shows a direction, not a saving: the numbers are reported as they are, with the two tasks named, and no percentage is derived from them.
+
+**What is not claimed.** Nothing about cases of other legal areas, nothing about a whole working day, and nothing about quality: a letter's legal content is judged by a jurist, not by a stopwatch.

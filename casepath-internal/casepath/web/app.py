@@ -561,7 +561,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     @app.get("/api/me")
     def me(who=Depends(user)):
         # may_review: the person may mark the legal content and sees «Verwaltung» (Wissen, Auswertung)
-        return {"user": who, "may_review": may_review(who)}
+        return {"user": who, "may_review": may_review(who), **({"time_measure": True} if settings.time_measure == "session" else {})}
 
     @app.get("/api/workflows")
     def list_workflows(who=Depends(user)):
@@ -1234,6 +1234,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if body.kind not in EVENT_KINDS or body.kind in SERVER_KINDS:
             raise HTTPException(422, "Unknown event kind, or one only the server writes.")
         study = (store.get_case(case_id).get("intake") or {}).get("study")
+        if body.kind in ("case.opened", "idle.started", "idle.ended") and not study and settings.time_measure != "session":
+            # a person's active time on a live case is recorded only where the deployment allows the person's own switch
+            raise HTTPException(409, "Die Zeitmessung ist für diese Installation nicht eingeschaltet.")
         if body.kind == "session.started" and study and not os.environ.get("CASEPATH_SCORECARD_SALT"):
             raise HTTPException(409, "Eine Studiensitzung braucht ein festes Pseudonym-Salz (CASEPATH_SCORECARD_SALT).")
         if body.kind == "session.started" and study and (reason := study_mismatch(case_id, study)):

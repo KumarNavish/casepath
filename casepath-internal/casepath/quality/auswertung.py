@@ -17,18 +17,37 @@ def _seconds(a, b):
 
 
 def _handling(events):
-    """Seconds from the case's first opening to its closing (or last event), idle spans excluded."""
-    opened = next((e["at"] for e in events if e["kind"] == "case.opened"), None)
-    if not opened:
-        return None
-    end = next((e["at"] for e in events if e["kind"] == "case.closed"), events[-1]["at"])
-    idle, since = 0.0, None
+    """The person's active seconds on the case, where they switched the measurement on: the sum of the spans from an
+    opening of the case (or a return from idle) to the next idle start (a minute without input, the window hidden, the
+    case left). A span that was never ended (the browser was closed) ends at the last thing recorded in it, so a night
+    between two openings is never counted. None where nothing was measured."""
+    total, start, last, any_ = 0.0, None, None, False
     for e in events:
-        if e["kind"] == "idle.started":
-            since = e["at"]
-        elif e["kind"] == "idle.ended" and since:
-            idle, since = idle + _seconds(since, e["at"]), None
-    return max(0, round(_seconds(opened, end) - idle))
+        kind = e["kind"]
+        if kind in ("case.opened", "idle.ended"):
+            if start is not None and last is not None:  # the span before was never ended: it ends at its last event
+                total += max(0.0, _seconds(start, last))
+            start, last, any_ = e["at"], e["at"], True
+        elif kind == "idle.started":
+            if start is not None:
+                total += max(0.0, _seconds(start, e["at"]))
+            start, last = None, None
+        elif start is not None:
+            last = e["at"]
+    if start is not None and last is not None:
+        total += max(0.0, _seconds(start, last))
+    return round(total) if any_ else None
+
+
+def _letter_change(events):
+    """The share of the latest approved letter that is the handler's own wording (words changed of words, counted at the
+    approval); for a letter copied without approval (the frozen study) the measure its copy recorded."""
+    approved = [e for e in events if e["kind"] == "action.approved" and (e.get("words") or {}).get("total")]
+    if approved:
+        words = approved[-1]["words"]
+        return round(words["changed"] / words["total"], 3)
+    letters = [e for e in events if e["kind"] == "letter.copied"]
+    return letters[-1].get("change_ratio") if letters else None
 
 
 def _run_seconds(run):
@@ -45,7 +64,6 @@ def case_card(store, case, salt, corrected_before):
     fixes = [e for e in events if e["kind"] in CORRECTIONS and e.get("item_id")]
     exposed = {e["item_id"] for e in events if e["kind"] == "item.exposed" and e.get("item_id")}
     unchanged = Counter(i.split(":")[0] for i in exposed - {e["item_id"] for e in fixes})
-    letters = [e for e in events if e["kind"] == "letter.copied"]
     run = store.latest_run(case["id"], "completed") or {}
     usage = (run.get("result") or {}).get("usage") or []
     same_again = sum(1 for e in fixes if e["item_id"] in corrected_before)
@@ -54,7 +72,7 @@ def case_card(store, case, salt, corrected_before):
             "accepted_unchanged": dict(unchanged), "interventions": len(fixes),
             "interventions_by_kind": dict(Counter(e["item_id"].split(":")[0] for e in fixes)),
             "interventions_by_reason": dict(Counter(str(e.get("reason") or "none") for e in fixes)),
-            "letter_changed_ratio": letters[-1].get("change_ratio") if letters else None,
+            "letter_changed_ratio": _letter_change(events),
             "handling_seconds": _handling(events) if events else None,
             "sources_opened": sum(1 for e in events if e["kind"] == "source.opened"),
             "same_correction_again": same_again,
