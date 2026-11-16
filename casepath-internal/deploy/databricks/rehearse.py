@@ -136,6 +136,11 @@ def parse(phrase):
 def find(api):
     """D11's case id and labels, from the replay's content-free table: exactly one case labelled D11."""
     cases = sorted({r["case"] for r in api.call("GET", "/api/replay-points").get("rows") or () if r.get("dossier") == DOSSIER})
+    if len(cases) > 1:
+        # a base case a run kept carries D11's labels too (step 6): a case cut from another labelled case is not the dossier
+        cuts = [c for c in cases if any((((f.get("extraction") or {}).get("cut_of") or {}).get("case")) in cases
+                                        for f in api.call("GET", f"/api/cases/{c}").get("files") or ())]
+        cases = [c for c in cases if c not in cuts]
     if len(cases) != 1:
         raise Stop("find", "no_labelled_case" if not cases else "several_labelled_cases")
     return cases[0], api.call("GET", f"/api/cases/{cases[0]}/labels")

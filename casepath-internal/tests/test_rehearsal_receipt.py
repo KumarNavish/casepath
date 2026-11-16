@@ -288,6 +288,7 @@ class FakeApp:
         self.calls, self.full_usage, self.duplicate, self.auto, self.tree = [], full_usage, duplicate, auto, tree
         self.uploads, self.template = [], template or TEMPLATE
         self.latest = None  # the base case's latest run, as the case view gives it («run»)
+        self.base_labelled = False  # the run labels its base case (step 6): a kept one is then a second case labelled D11
 
     def run(self, run_id, kind, usage):
         return {"id": run_id, "kind": kind, "status": "completed", "created_at": "2026-11-15T10:00:00+00:00", "finished_at": "2026-11-15T10:03:05+00:00",
@@ -304,7 +305,8 @@ class FakeApp:
         if path == "/api/manifest":
             return {"source_tree_sha256": self.tree + "0" * 52}
         if path == "/api/replay-points":
-            return {"rows": [{"dossier": "D11", "case": "case_d11", "n": 3}, {"dossier": "D3", "case": "case_d3", "n": 1}]}
+            return {"rows": [{"dossier": "D11", "case": "case_d11", "n": 3}, {"dossier": "D3", "case": "case_d3", "n": 1}]
+                    + ([{"dossier": "D11", "case": "case_base", "n": 3}] if self.base_labelled else [])}
         if path == "/api/cases/case_d11/labels":
             return copy.deepcopy(LABELS)
         if path == "/api/cases/case_d11":
@@ -329,7 +331,9 @@ class FakeApp:
         if path == "/api/cases/case_base":
             if method == "DELETE":
                 return {"deleted": "case_base"}
-            return {"run": self.latest, "items": [{"kind": "next_action", "action": "A5"}], "draft": {"text": "Brief ohne Lücke."},
+            return {"run": self.latest, "files": [{"id": "file_b", "name": "Akte.pdf", "kind": "pdf",
+                                                  "extraction": {"pages": 20, "cut_of": {"case": "case_d11", "file": "file_1", "as_of": "2026-09-08"}}}],
+                    "items": [{"kind": "next_action", "action": "A5"}], "draft": {"text": "Brief ohne Lücke."},
                     "assessment": {"questions": [{"item_id": "customer_question:0", "state": "beantwortet", "about": ["hinterlegung"], "intent": "weiter_zahlen"},
                                                  {"item_id": "customer_question:1", "state": "bedingt", "about": ["hinterlegung"], "intent": "hinterlegen"},
                                                  {"item_id": "customer_question:2", "state": "prüfen", "about": ["schadenersatz"], "intent": "ersatz",
@@ -338,6 +342,7 @@ class FakeApp:
                                    "proposal": ["frist_beseitigung", "schadenersatz"],
                                    "residual": [{"key": "residual:claim.0", "line": "Belege zu: Stromkosten für den Bautrockner"}]}}
         if path == "/api/cases/case_base/edits" or path == "/api/cases/case_base/labels":
+            self.base_labelled = self.base_labelled or path.endswith("/labels")
             return {}
         if path == "/api/replay-points?case=case_base":
             return {"rows": [{"dossier": "D11", "case": "case_base", "n": 3, "kind": "A5", "kind_ok": True, "ready": False,
@@ -599,6 +604,26 @@ class DiagnoseRunTests(unittest.TestCase):
             with self.assertRaises(self.cell["Stop"]) as stop:
                 self.cell["plan"](LABELS, {"documents": changed}, pdf)
             self.assertEqual(stop.exception.args, ("cut", reason))
+
+    def test_k_a_kept_base_case_is_not_taken_for_the_dossier(self):
+        """A run that keeps its base case leaves a second case labelled D11 (the run labels it to replay the point). The
+        dossier is the labelled case that is no cut of another labelled one; two that are both originals still stop."""
+        app = FakeApp()
+        with mock.patch("sys.stdout", new_callable=io.StringIO):
+            self.cell["diagnose"](app, self.volume.name, TREE, labels_hash(LABELS)[:12], self.cell["sealed"](self.cut), True, poll=0)
+            self.assertTrue(app.base_labelled)
+            self.assertEqual(self.cell["hashes"](app)["case"], "case_d11")  # read again afterwards: the original, not its cut
+
+        class Two(FakeApp):
+            def call(self, method, path, body=None):
+                if path == "/api/replay-points":
+                    return {"rows": [{"dossier": "D11", "case": "case_d11", "n": 3}, {"dossier": "D11", "case": "case_other", "n": 3}]}
+                if path == "/api/cases/case_other":
+                    self.calls.append((method, path))
+                    return {"files": [{"id": "file_9", "name": "Akte.pdf", "kind": "pdf", "extraction": {"pages": 28}}]}
+                return super().call(method, path, body)
+        with self.assertRaisesRegex(AssertionError, "several_labelled_cases: nothing done"):
+            self.cell["hashes"](Two())
 
 
 CONSOLE = Path(__file__).resolve().parents[1] / "deploy" / "databricks" / "rehearse_console.js"
@@ -962,6 +987,21 @@ class ConsoleDiagnoseTests(unittest.TestCase):
         for word in ("Stromkosten", "Bautrockner", "Lücke", "Verneinung", "Brief ohne", "Akte.pdf", "CHF"):
             self.assertNotIn(word, text)
         self.assertEqual({m for m, _ in served.app.calls[before:]}, {"GET"})
+
+    def test_o_after_a_kept_run_every_phrase_still_finds_the_dossier(self):
+        served = Served(FakeApp())
+        self.addCleanup(served.close)
+        first = self.node("run", self.phrase + " keep", served)["result"]
+        self.assertTrue(served.app.base_labelled)  # two cases are labelled D11 now
+        self.assertEqual(self.node("run", "hashes D11", served)["result"]["case"], "case_d11")
+        self.assertEqual(self.node("run", "shape D11", served)["result"]["pages"], 28)
+        self.assertEqual(self.node("run", "detail D11", served)["result"]["base"], "case_base")
+        self.assertEqual(self.node("run", self.phrase + " keep", served)["result"], first)  # and its own phrase: already run
+
+    def test_p_the_file_is_ascii_so_a_paste_cannot_change_it(self):
+        raw = CONSOLE.read_bytes()
+        self.assertEqual([b for b in raw if b > 126 or (b < 32 and b not in (9, 10))], [])
+        self.assertIn(b"replace(/[\\u007f-\\uffff]/g", raw)  # the escapes written out, not the characters
 
     def test_g_the_script_calls_only_the_page_it_is_pasted_into_and_names_no_address_or_identity(self):
         text = CONSOLE.read_text()

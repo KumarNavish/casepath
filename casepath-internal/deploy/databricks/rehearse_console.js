@@ -9,7 +9,7 @@
 //   await casepathDiagnose("continue D11 <tree hash> <labels sha256> <plan>")    after a run stopped because its preparation
 //       passed the stop threshold and its base case was kept: the arrival, the one update, the decisions and the reading
 //       on that base case. The preparation is not made again. A decision of its own, with its own approval of its tokens
-//       (the update is capped by the deployment, CASEPATH_UPDATE_TOKEN_BUDGET); the receipt then says «continued_after».
+//       (the update is capped by the deployment, CASEPATH_UPDATE_TOKEN_BUDGET); the receipt then says "continued_after".
 //   await casepathDiagnose("diagnose D11 <tree hash> <labels sha256> <plan>")    the run, on exactly that build, labels and cut
 //   await casepathDiagnose("diagnose D11 <tree hash> <labels sha256> <plan> keep")   the same, keeping the base case
 // Anything else: nothing happens, no request is made. The phrase is the approval of this run's steps only; the
@@ -17,31 +17,33 @@
 // The steps, their order, the stops and the receipt (casepath.diagnose/1: ids, counts and enums only) are the notebook
 // cell's; tests/test_rehearsal_receipt.py runs both against one stand-in and requires the same receipt. Two differences,
 // both forced by the browser:
-//   - the receipt is kept in this origin's localStorage («casepath.diagnose/D11-<labels>») instead of on the volume; it
+//   - the receipt is kept in this origin's localStorage ("casepath.diagnose/D11-<labels>") instead of on the volume; it
 //     marks the run as made in this browser profile: no second run without removing that entry and a new approval;
 //   - a GET that fails on the network or at the proxy (502, 503, 504) is tried again (up to three times); a POST never is;
-//   - a tab can be lost. While a run's receipt reads «started», typing the same phrase again (after pasting the file
+//   - a tab can be lost. While a run's receipt reads "started", typing the same phrase again (after pasting the file
 //     again) takes that run up where it stands: no step is repeated, a run the app already holds is waited for and
-//     never started a second time, and the receipt then says «resumed». A sign-in that ran out (401, 403) or a server
-//     fault (5xx) leaves the run «started» for that reason, where the cell would end it. A run that is done or stopped
+//     never started a second time, and the receipt then says "resumed". A sign-in that ran out (401, 403) or a server
+//     fault (5xx) leaves the run "started" for that reason, where the cell would end it. A run that is done or stopped
 //     is never taken up again.
 // The tab should stay open until the receipt is printed: the run's later steps are taken from here.
+// The whole file is ASCII: other characters are written as \uXXXX in the code and spelled out in the comments, so that a
+// paste through a remote desktop cannot change it.
 (() => {
   const FORMAT = "casepath.diagnose/1", DOSSIER = "D11";
   const STOP_AFTER_PREPARE = 200000;  // non-cached input of the full preparation past which the run stops: a stop, never a budget
   const ARRIVAL_PAGES = 20, ARRIVALS = 2;
-  const ESTIMATE = "about 100-155k non-cached input and 23-33k output tokens, plus the page readings if any, as MEASURE §3 estimates";
+  const ESTIMATE = "about 100-155k non-cached input and 23-33k output tokens, plus the page readings if any, as MEASURE \u00a73 estimates";
   const SAFE = /^(?:[a-z0-9][a-z0-9_.:-]{0,79}|h_[0-9a-f]{12})$/;
   const DATE = /\d{4}-\d{2}-\d{2}|\d{1,2}\.\d{1,2}\.\d{2,4}/;
-  const GAP = "[bitte ergänzen: ";
-  const ROWS = [[3, "Verneinung"], [4, "Sie möchten"], [1, "Vorschlag (Stichwort)"], [2, "keine Regel des Gebiets"], [6, "Regel trifft nach der Akte"],
-                [7, "beruht auf einer widersprüchlichen"], [11, "Absicht der Frage unklar"], [5, "Zuordnung prüfen"]];
+  const GAP = "[bitte erg\u00e4nzen: ";
+  const ROWS = [[3, "Verneinung"], [4, "Sie m\u00f6chten"], [1, "Vorschlag (Stichwort)"], [2, "keine Regel des Gebiets"], [6, "Regel trifft nach der Akte"],
+                [7, "beruht auf einer widerspr\u00fcchlichen"], [11, "Absicht der Frage unklar"], [5, "Zuordnung pr\u00fcfen"]];
   const GUARD_ROWS = new Set([1, 3, 4, 5, 6, 7, 11]);
 
   class Stop extends Error { constructor(step, reason) { super(`${step}: ${reason}`); this.step = step; this.reason = reason; } }
   class ApiError extends Error { constructor(status) { super(`HTTP ${status}`); this.status = status; } }
   class Refused extends Error {}  // nothing done: the phrase, the build, the labels or the cut is not the approved one
-  class Interrupted extends Error {}  // the run stays «started»: the same phrase takes it up again
+  class Interrupted extends Error {}  // the run stays "started": the same phrase takes it up again
 
   // Python's truth of a value (an empty list, an empty object, "" and 0 are false), where the cell relies on it
   const truthy = (v) => (Array.isArray(v) ? v.length > 0 : v && typeof v === "object" ? Object.keys(v).length > 0 : Boolean(v));
@@ -50,7 +52,7 @@
   // json.dumps as Python writes it: keys sorted; ``compact`` False gives ", " and ": " with non-ASCII escaped (the plan's
   // seal), True gives "," and ":" with non-ASCII kept (the labels' hash)
   const dumps = (v, compact) => {
-    const text = (s) => (compact ? JSON.stringify(s) : JSON.stringify(s).replace(/[\u007f-￿]/g, (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0")));
+    const text = (s) => (compact ? JSON.stringify(s) : JSON.stringify(s).replace(/[\u007f-\uffff]/g, (c) => "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0")));
     if (v === null || v === undefined) return "null";
     if (typeof v === "string") return text(v);
     if (typeof v === "number" || typeof v === "boolean") return String(v);
@@ -89,7 +91,7 @@
         return text ? JSON.parse(text) : null;
       },
       async raw(path) { return (await send("GET", path, {}, 3)).arrayBuffer(); },
-      async upload(caseId, files) {  // [[name, bytes]] in one request (field «files»): [status, answer]
+      async upload(caseId, files) {  // [[name, bytes]] in one request (field "files"): [status, answer]
         const form = new FormData();
         for (const [name, data] of files) form.append("files", new Blob([data], { type: "application/pdf" }), name);
         try {
@@ -129,9 +131,24 @@
     return { mode: "diagnose", tree: m[1], wanted: m[2], plan: m[3], keep: Boolean(m[4]), onward: false };
   }
 
-  async function find(api) {
+  // The cases labelled D11 that are the dossier itself: a base case a run kept carries D11's labels too (step 6), and a
+  // case cut from another labelled case is not the dossier
+  async function labelled(api) {
     const rows = (await api.call("GET", "/api/replay-points")).rows || [];
-    const cases = [...new Set(rows.filter((r) => r.dossier === DOSSIER).map((r) => r.case))].sort(byText);
+    let cases = [...new Set(rows.filter((r) => r.dossier === DOSSIER).map((r) => r.case))].sort(byText);
+    if (cases.length > 1) {
+      const cuts = [];
+      for (const id of cases) {
+        const files = (await api.call("GET", `/api/cases/${id}`)).files || [];
+        if (files.some((f) => cases.includes((((f.extraction || {}).cut_of) || {}).case))) cuts.push(id);
+      }
+      cases = cases.filter((id) => !cuts.includes(id));
+    }
+    return cases;
+  }
+
+  async function find(api) {
+    const cases = await labelled(api);
     if (cases.length !== 1) throw new Stop("find", cases.length ? "several_labelled_cases" : "no_labelled_case");
     return [cases[0], await api.call("GET", `/api/cases/${cases[0]}/labels`)];
   }
@@ -208,7 +225,7 @@
 
   const sealed = async (cut) => (await sha256(dumps({ point: cut.n3.n, as_of: cut.n3.date, base: cut.base, arrival: cut.arrival, later: cut.later }, false))).slice(0, 12);
 
-  function spans(pages) {  // [1, 2, 3, 7] → «1-3,7», as the cut route reads pages
+  function spans(pages) {  // [1, 2, 3, 7] -> "1-3,7", as the cut route reads pages
     const out = [];
     let start = null;
     pages.forEach((p, i) => {
@@ -220,7 +237,7 @@
 
   async function planLines(cut, tree, labels) {
     const arriving = cut.arrival.reduce((n, a) => n + a.length, 0);
-    return [`The D11 diagnostic, its plan (nothing done but reading): build ${tree} · labels ${labels} · plan ${await sealed(cut)}`,
+    return [`The D11 diagnostic, its plan (nothing done but reading): build ${tree} \u00b7 labels ${labels} \u00b7 plan ${await sealed(cut)}`,
             ...(cut.newest_first ? ["  the file lists its documents latest first: the earlier state is its later pages, what is left out its first"] : []),
             `  the earlier state: pages ${spans(cut.base)} (${cut.rows.base} rows of the labels template), looked at on the day of point ${cut.n3.n}`,
             `  one full preparation of it; the run stops if it failed or its non-cached input passed ${STOP_AFTER_PREPARE.toLocaleString("en-US")} tokens: a stop, never a budget or an allowance`,
@@ -230,7 +247,7 @@
             `  needs, besides the confirm phrase, Navish's separate typed approval of the deployment of build ${tree} to the pilot and of this run's tokens: ${ESTIMATE}`];
   }
 
-  // The run once it ended; one that has not ended in time is stopped («Anhalten») and returned as it stands
+  // The run once it ended; one that has not ended in time is stopped ("Anhalten") and returned as it stands
   async function wait(api, runId, timeout, poll, beat = () => {}) {
     const started = Date.now();
     const going = (r) => r.status === "queued" || r.status === "running";
@@ -266,7 +283,7 @@
              pages_read: (usage.reader || {}).calls || 0, usage, non_cached: total("non_cached"), output: total("output") };
   }
 
-  const stateOf = (q) => String(q.state || q.answer_state || "").replace(/ü/g, "ue") || null;
+  const stateOf = (q) => String(q.state || q.answer_state || "").replace(/\u00fc/g, "ue") || null;
   const rowOf = (q) => {
     if (Number.isInteger(q.row)) return q.row;
     const reason = String(q.reason || "");
@@ -346,7 +363,7 @@
   }
 
   // The run (steps 1 to 7) on exactly the approved build, labels and cut; the receipt, also when it stops. A run whose
-  // receipt reads «started» is taken up where it stands (``progress``: the runs it started and whether the arrival went
+  // receipt reads "started" is taken up where it stands (``progress``: the runs it started and whether the arrival went
   // in, kept beside the receipt); the app's own record of the base case's runs decides where the two disagree.
   async function diagnose(api, store, say, tree, wanted, approvedPlan, keep, poll = 10000, stale = 60000, onward = false, prepareTimeout = 2700, updateTimeout = 1800) {
     const manifest = await api.call("GET", "/api/manifest");
@@ -535,11 +552,10 @@
   }
 
   // Read only, for the case where no plan can be made: the shape of D11's labels and labels template as the cut sees
-  // them. Page numbers, flags and where each date lies among the labelled points' days («<p1», «=p2», «p2..p3», «>p4»,
-  // «not_iso»): never a date, a name or a text. Four GETs, nothing kept.
+  // them. Page numbers, flags and where each date lies among the labelled points' days ("<p1", "=p2", "p2..p3", ">p4",
+  // "not_iso"): never a date, a name or a text. Four GETs, nothing kept.
   async function shape(api, say) {
-    const rows = (await api.call("GET", "/api/replay-points")).rows || [];
-    const ids = [...new Set(rows.filter((r) => r.dossier === DOSSIER).map((r) => r.case))];
+    const ids = await labelled(api);
     if (ids.length !== 1) { const none = { labelled_cases: ids.length }; say(dumps(none, false)); return none; }
     const labels = await api.call("GET", `/api/cases/${ids[0]}/labels`), detail = await api.call("GET", `/api/cases/${ids[0]}`);
     const template = await api.call("GET", `/api/cases/${ids[0]}/labels-template`);
@@ -574,7 +590,7 @@
   // Read only: the base case of the run made in this browser profile, in codes. What the receipt counts, one by one:
   // each customer question with its row, state, the key points it is tagged with and the intent matched; each claim,
   // each request of the account, each line the letter leaves to the handler, each part of the letter with its gaps.
-  // Ids, enums, counts and flags only; anything else becomes «text», and the receipt's own guard refuses the rest.
+  // Ids, enums, counts and flags only; anything else becomes "text", and the receipt's own guard refuses the rest.
   async function detail(api, store, say) {
     const [, labels] = await located(api);
     const held = store.getItem(`casepath.diagnose/${DOSSIER}-${(await labelsSha256(labels)).slice(0, 12)}`);
