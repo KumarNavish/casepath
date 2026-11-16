@@ -262,6 +262,16 @@ SEGMENTS = [(1, "2019-04-01", "Immo Muster AG"), (6, "2026-07-31", "Lea Exempel"
             (30, "2026-12-28", "Protekta Rechtsschutz")]
 SEGMENT_TEMPLATE = {"documents": [{"n": None, "date": d, "from": f, "page": p, "file": "Akte.pdf", "insurer": f == "Protekta Rechtsschutz",
                                    "entry": False} for p, d, f in SEGMENTS]}
+# D11's file as the pilot's stored reading gives it (the shape the console's «shape D11» printed there; synthetic here, the
+# labels' own days): printed with the newest on top. The status inquiry, the assessment with an undated enclosure, the two
+# replies of one day, the question back, the first reply with an older paper sent along, the first answer not recognised
+# as the insurer's, the claim last; 15 segments on 28 pages, no account entry, every sender as written.
+REVERSED = [(1, "2026-12-29", "Protekta Rechtsschutz"), (3, "2026-09-08", "Protekta Rechtsschutz"), (5, None, "Lea Exempel"),
+            (6, "2026-09-05", "Lea Exempel"), (8, "2026-09-05", "Lea Exempel"), (11, "2026-08-17", "Protekta Rechtsschutz"), (12, None, "Lea Exempel"),
+            (13, "2026-08-14", "Lea Exempel"), (15, "2026-07-20", "Immo Muster AG"), (16, None, "Lea Exempel"), (17, "2026-08-02", "Schadenteam"),
+            (18, None, "Lea Exempel"), (19, None, "Baumarkt Beispiel"), (20, None, "Lea Exempel"), (21, "2026-08-01", "Lea Exempel")]
+REVERSED_TEMPLATE = {"documents": [{"n": None, "date": d, "from": f, "page": p, "file": "Akte.pdf", "insurer": f == "Protekta Rechtsschutz",
+                                    "entry": False} for p, d, f in REVERSED]}
 SEGMENT_LABELS = {**LABELS, "points": [{**point, "date": day} for point, day in
                                        zip(LABELS["points"], ("2026-08-01", "2026-08-16", "2026-09-07", "2026-12-28"))]}
 
@@ -557,6 +567,39 @@ class DiagnoseRunTests(unittest.TestCase):
                 self.cell["plan"](SEGMENT_LABELS, {"documents": changed}, pdf)
             self.assertEqual(stop.exception.args, ("cut", reason))
 
+    def test_j_a_file_printed_with_the_newest_on_top_gives_the_cut_from_its_later_pages(self):
+        """D11's stored file lists its documents latest first. Read as oldest first, every next document was «older than
+        the one it follows», so an enclosure of it: one document of the whole file, and no reply found. Latest first, every
+        dated row is its own document; the earlier state is the later pages; and the replies must be followed at once by
+        the question they answer, since a date cannot tell their own enclosure from an older document there."""
+        pdf = {"name": "Akte.pdf", "extraction": {"pages": 28}}
+        rows = REVERSED_TEMPLATE["documents"]
+        self.assertTrue(self.cell["newest_first"](rows))
+        self.assertFalse(self.cell["newest_first"](TEMPLATE["documents"]))
+        self.assertFalse(self.cell["newest_first"](SEGMENT_TEMPLATE["documents"]))
+        cut = self.cell["plan"](LABELS, REVERSED_TEMPLATE, pdf)
+        self.assertEqual((cut["later"], cut["arrival"], cut["base"]), ([1, 2, 3, 4, 5], [[6, 7], [8, 9, 10]], list(range(11, 29))))
+        self.assertEqual((cut["entries"], cut["rows"], cut["newest_first"]), ([None, None], {"base": 10, "arrival": 2, "later": 3}, True))
+        self.assertFalse(self.cut["newest_first"])
+        self.assertIn("  the file lists its documents latest first: the earlier state is its later pages, what is left out its first",
+                      self.cell["plan_lines"](cut, TREE, "0" * 12))
+        self.assertNotIn("latest first", "\n".join(self.cell["plan_lines"](self.cut, TREE, "0" * 12)))
+        app = FakeApp(template=REVERSED_TEMPLATE)  # the run on it: the earlier state is cut from the later pages
+        with mock.patch("sys.stdout", new_callable=io.StringIO):
+            receipt = self.cell["diagnose"](app, self.volume.name, TREE, labels_hash(LABELS)[:12], self.cell["sealed"](cut), False, poll=0)
+        self.assertEqual((receipt["status"], app.cut, receipt["cut"]), ("done", {"pages": "11-28", "as_of": "2026-09-08", "file": "file_1"},
+                                                                       {"point": 3, "pages": 18, "left_out": 5}))
+        self.assertIn(("GET", "/api/files/file_1/original?pages=6-7"), app.calls)
+        self.assertIn(("GET", "/api/files/file_1/original?pages=8-10"), app.calls)
+        between = copy.deepcopy(rows)
+        between.insert(5, {"n": None, "date": "2026-07-01", "from": "Immo Muster AG", "page": 10, "file": "Akte.pdf", "insurer": False, "entry": False})
+        undated = copy.deepcopy(rows)
+        undated[4]["date"] = None  # the earlier reply's day not read: it rides with the later one, one reply where D11 has two
+        for reason, changed in (("arrival_not_followed_by_its_question", between), ("arrival_not_as_in_the_outline", undated)):
+            with self.assertRaises(self.cell["Stop"]) as stop:
+                self.cell["plan"](LABELS, {"documents": changed}, pdf)
+            self.assertEqual(stop.exception.args, ("cut", reason))
+
 
 CONSOLE = Path(__file__).resolve().parents[1] / "deploy" / "databricks" / "rehearse_console.js"
 # Runs the console script outside a browser: the stand-in's address as its base, a file as its localStorage, no waiting
@@ -670,13 +713,15 @@ class ConsoleDiagnoseTests(unittest.TestCase):
 
     def both(self, phrase=None, keep=False, **kw):
         """(the cell's receipt and its stand-in, the console's answer and its stand-in), each on a fresh stand-in."""
+        plan = self.cell["sealed"](self.cell["plan"](LABELS, kw.get("template") or TEMPLATE, {"name": "Akte.pdf", "extraction": {"pages": 28}}))
         theirs = FakeApp(**kw)
         with tempfile.TemporaryDirectory() as volume, mock.patch("sys.stdout", new_callable=io.StringIO) as printed:
-            receipt = self.cell["diagnose"](theirs, volume, TREE, labels_hash(LABELS)[:12], self.plan, keep, poll=0)
+            receipt = self.cell["diagnose"](theirs, volume, TREE, labels_hash(LABELS)[:12], plan, keep, poll=0)
         self.printed = printed.getvalue()
         served = Served(FakeApp(**kw))
         self.addCleanup(served.close)
-        answer = self.node("run", (phrase or self.phrase) + (" keep" if keep else ""), served, store=f"store-{len(os.listdir(self.folder.name))}.json")
+        answer = self.node("run", (phrase or f"diagnose D11 {TREE} {labels_hash(LABELS)[:12]} {plan}") + (" keep" if keep else ""), served,
+                           store=f"store-{len(os.listdir(self.folder.name))}.json")
         return receipt, theirs, answer, served.app
 
     def test_a_the_run_is_the_cells_request_for_request_and_its_receipt_the_same(self):
@@ -691,13 +736,21 @@ class ConsoleDiagnoseTests(unittest.TestCase):
 
     def test_b_every_branch_of_the_run_ends_as_the_cell_ends_it(self):
         for kw, keep in (({"auto": "gestartet"}, False), ({"full_usage": 230_000}, False), ({"duplicate": 201, "auto": "gestartet"}, True),
-                         ({"duplicate": 201}, False)):
+                         ({"duplicate": 201}, False), ({"template": REVERSED_TEMPLATE}, True)):
             receipt, theirs, answer, ours = self.both(keep=keep, **kw)
-            self.assertEqual((answer.get("error"), answer["result"], ours.calls), (None, receipt, theirs.calls), kw)
+            self.assertEqual((answer.get("error"), answer["result"], ours.calls), (None, receipt, theirs.calls), sorted(kw))
+            if "template" in kw:  # the file printed newest first: the plan says so, word for word as the cell's, and cuts the later pages
+                self.assertEqual((answer["said"][0], ours.cut["pages"], receipt["status"]), (self.printed.strip().split("\n{")[0], "11-28", "done"))
+                self.assertIn("latest first", answer["said"][0])
 
     def test_c_the_plan_and_its_seal_are_the_cells_for_entries_and_for_segments(self):
         pdf30 = {"name": "Akte.pdf", "extraction": {"pages": 30}}
-        for labels, template, pdf in ((LABELS, TEMPLATE, {"name": "Akte.pdf", "extraction": {"pages": 28}}), (SEGMENT_LABELS, SEGMENT_TEMPLATE, pdf30)):
+        pdf28 = {"name": "Akte.pdf", "extraction": {"pages": 28}}
+        between = copy.deepcopy(REVERSED_TEMPLATE["documents"])
+        between.insert(5, {"n": None, "date": "2026-07-01", "from": "Immo Muster AG", "page": 10, "file": "Akte.pdf", "insurer": False, "entry": False})
+        answer = self.node("plan", json.dumps({"labels": LABELS, "template": {"documents": between}, "pdf": pdf28}))
+        self.assertEqual(answer.get("stop"), ["cut", "arrival_not_followed_by_its_question"])
+        for labels, template, pdf in ((LABELS, TEMPLATE, pdf28), (SEGMENT_LABELS, SEGMENT_TEMPLATE, pdf30), (LABELS, REVERSED_TEMPLATE, pdf28)):
             cut = self.cell["plan"](labels, template, pdf)
             answer = self.node("plan", json.dumps({"labels": labels, "template": template, "pdf": pdf}))
             self.assertEqual((answer["result"]["cut"], answer["result"]["sealed"]), (cut, self.cell["sealed"](cut)))
@@ -825,6 +878,15 @@ class ConsoleDiagnoseTests(unittest.TestCase):
             self.assertNotIn(word, text)
         self.assertEqual({m for m, _ in served.app.calls}, {"GET"})
         self.assertFalse(os.path.exists(Path(self.folder.name) / "store.json"))
+        newest = Served(FakeApp(template=REVERSED_TEMPLATE))  # the pilot's shape: the same codes in the same order, and now documents
+        self.addCleanup(newest.close)
+        seen = self.node("run", "shape D11", newest)["result"]
+        self.assertEqual([r[1:] for r in seen["rows"]],
+                         [["segment", "=p4", True, "text"], ["segment", "=p3", True, "text"], ["segment", None, False, "text"], ["segment", "p2..p3", False, "text"],
+                          ["segment", "p2..p3", False, "text"], ["segment", "=p2", True, "text"], ["segment", None, False, "text"], ["segment", "p1..p2", False, "text"],
+                          ["segment", "<p1", False, "text"], ["segment", None, False, "text"], ["segment", "=p1", False, "text"], ["segment", None, False, "text"],
+                          ["segment", None, False, "text"], ["segment", None, False, "text"], ["segment", "<p1", False, "text"]])
+        self.assertEqual((seen["newest_first"], len(seen["documents"]), shape["newest_first"]), (True, 9, False))
         segments = Served(FakeApp(template=SEGMENT_TEMPLATE))  # senders as written: «text», never the words
         self.addCleanup(segments.close)
         rows = self.node("run", "shape D11", segments)["result"]["rows"]

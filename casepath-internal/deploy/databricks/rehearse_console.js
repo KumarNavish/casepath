@@ -127,14 +127,24 @@
     return [cases[0], await api.call("GET", `/api/cases/${cases[0]}/labels`)];
   }
 
+  const inPageOrder = (rows) => rows.filter((r) => Number.isInteger(r.page)).map((r, i) => [r, i])
+    .sort(([a, i], [b, j]) => a.page - b.page || Number(a.n == null) - Number(b.n == null) || i - j).map(([r]) => r);
+  // Whether the file lists its documents latest first (the cell's newest_first()): of its dated rows in page order,
+  // more step back in time than forward
+  function newestFirst(rows) {
+    const days = inPageOrder(rows).filter((r) => truthy(r.date)).map((r) => r.date);
+    let back = 0, forward = 0;
+    for (let i = 1; i < days.length; i += 1) { if (days[i] < days[i - 1]) back += 1; else if (days[i] > days[i - 1]) forward += 1; }
+    return back > forward;
+  }
+
   // The PDF's documents in page order, from the labels template's rows (the cell's documents())
   function documents(rows, pages) {
-    const docs = [];
-    const ordered = rows.filter((r) => Number.isInteger(r.page)).map((r, i) => [r, i])
-      .sort(([a, i], [b, j]) => a.page - b.page || Number(a.n == null) - Number(b.n == null) || i - j).map(([r]) => r);
+    const docs = [], reverse = newestFirst(rows);
+    const ordered = inPageOrder(rows);
     for (const r of ordered) {
       const last = docs[docs.length - 1];
-      const dated = truthy(r.date), older = Boolean(truthy(r.date) && last && truthy(last.date) && r.date < last.date);
+      const dated = truthy(r.date), older = Boolean(!reverse && truthy(r.date) && last && truthy(last.date) && r.date < last.date);
       if (!last || ((r.n != null || dated) && !older)) {
         if (!last || last.first !== r.page) {
           docs.push({ date: r.date == null ? null : r.date, insurer: truthy(r.insurer) || r.from === "versicherer", first: r.page, n: r.n == null ? null : r.n, rows: 0 });
@@ -163,16 +173,22 @@
     const before = points.filter((p) => p.date < n3.date);
     const since = before.length ? before[before.length - 1].date : "0000-00-00";
     const pages = Math.trunc(Number((pdf.extraction || {}).pages || 0));
-    const docs = documents((template.documents || []).filter((r) => r.file == null || r.file === pdf.name), pages);
+    const rows = (template.documents || []).filter((r) => r.file == null || r.file === pdf.name);
+    const docs = documents(rows, pages), reverse = newestFirst(rows);
     const replies = docs.filter((d) => !d.insurer && truthy(d.date) && since < d.date && d.date < n3.date);
     if (replies.length !== ARRIVALS) throw new Stop("cut", replies.length ? "arrival_not_as_in_the_outline" : "no_reply_found");
+    if (reverse) {  // latest first: the replies stand together and are followed at once by the document of the day they answer
+      const at = replies.map((r) => docs.indexOf(r)).sort(byNumber);
+      const after = at[at.length - 1] + 1 < docs.length ? docs[at[at.length - 1] + 1] : null;
+      if (at.some((n, i) => n !== at[0] + i) || (after !== null && after.date !== since)) throw new Stop("cut", "arrival_not_followed_by_its_question");
+    }
     const first = replies.map((r) => r.date).reduce((a, b) => (a < b ? a : b));
     const later = docs.filter((d) => !replies.includes(d) && truthy(d.date) && d.date >= first);
     if (later.some((d) => d.date < n3.date || (d.date === n3.date && !d.insurer))) throw new Stop("cut", "another_document_before_the_assessment");
     const earlier = docs.filter((d) => !replies.includes(d) && !later.includes(d));
     const sum = (list) => list.reduce((n, d) => n + d.rows, 0);
     const cut = { n3, base: earlier.flatMap((d) => d.pages).sort(byNumber), arrival: replies.map((d) => d.pages),
-                  later: later.flatMap((d) => d.pages).sort(byNumber), entries: replies.map((d) => d.n),
+                  later: later.flatMap((d) => d.pages).sort(byNumber), entries: replies.map((d) => d.n), newest_first: reverse,
                   rows: { base: sum(earlier), arrival: sum(replies), later: sum(later) } };
     const all = [...cut.base, ...cut.later, ...cut.arrival.flat()].sort(byNumber);
     if (all.length !== pages || all.some((p, i) => p !== i + 1)) throw new Stop("cut", "pages_not_in_exactly_one_part");
@@ -196,6 +212,7 @@
   async function planLines(cut, tree, labels) {
     const arriving = cut.arrival.reduce((n, a) => n + a.length, 0);
     return [`The D11 diagnostic, its plan (nothing done but reading): build ${tree} · labels ${labels} · plan ${await sealed(cut)}`,
+            ...(cut.newest_first ? ["  the file lists its documents latest first: the earlier state is its later pages, what is left out its first"] : []),
             `  the earlier state: pages ${spans(cut.base)} (${cut.rows.base} rows of the labels template), looked at on the day of point ${cut.n3.n}`,
             `  one full preparation of it; the run stops if it failed or its non-cached input passed ${STOP_AFTER_PREPARE.toLocaleString("en-US")} tokens: a stop, never a budget or an allowance`,
             `  the arrival, as the labels template lists it: ${cut.arrival.length} documents not the insurer's, pages ${cut.arrival.map(spans).join(", ")} (${arriving} pages) as one import, then one of them again`,
@@ -515,7 +532,7 @@
     const paged = mine.filter((r) => Number.isInteger(r.page)).map((r, i) => [r, i]).sort(([a, i], [b, j]) => a.page - b.page || i - j).map(([r]) => r);
     const out = {
       points: points.map((p, i) => ({ n: p.n, kind: p.kind, iso: iso(p.date), same_day_as_previous: i > 0 && p.date === points[i - 1].date })),
-      assessment_point: n3 ? n3.n : null, decisions: (labels.decisions || []).length,
+      assessment_point: n3 ? n3.n : null, decisions: (labels.decisions || []).length, newest_first: newestFirst(mine),
       files: (detail.files || []).length, pdfs: pdfs.length, pages, rows_all: all.length, rows_of_this_pdf: mine.length, rows_without_page: mine.length - paged.length,
       rows: paged.map((r) => [r.page, r.n != null ? "entry" : "segment", where(r.date), truthy(r.insurer), who(r.from)]),
       documents: n3 && pdfs.length === 1 ? documents(mine, pages).map((d) => [d.first, d.pages.length, d.rows, d.insurer, where(d.date), d.n != null ? "entry" : "segment"]) : [],

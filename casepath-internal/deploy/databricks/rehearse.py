@@ -9,7 +9,8 @@
 # sha256 of the cut the plan prints. The plan is D11's earlier state and its two arrivals as the labels template lists the
 # file's documents: every page of the file in exactly one of the earlier state, the arrival (the two documents not the
 # insurer's dated between the question back and the assessment: D11's two customer e-mails of one day) and what is left out
-# (from the replies' day on). It reads the template as the stored reading gives it, with or without account entries.
+# (from the replies' day on). It reads the template as the stored reading gives it, with or without account entries, and
+# with the file's documents oldest first or latest first (D11's file is printed with the newest on top).
 # The confirm phrase is the approval of this run's steps only. The run also needs Navish's separate typed approval of the
 # deployment of the build to the pilot and of the run's tokens; the plan says so, and this cell checks neither.
 # The run, in this order, each step only if the one before succeeded; no retry, no second run (its receipt on the volume
@@ -140,17 +141,27 @@ def find(api):
     return cases[0], api.call("GET", f"/api/cases/{cases[0]}/labels")
 
 
+def newest_first(rows):
+    """Whether the file lists its documents latest first (a dossier printed with the newest on top, as D11's is): of its
+    dated rows in page order, more step back in time than forward."""
+    days = [r["date"] for r in sorted((r for r in rows if isinstance(r.get("page"), int) and r.get("date")), key=lambda r: (r["page"], r.get("n") is None))]
+    return sum(1 for a, b in zip(days, days[1:]) if b < a) > sum(1 for a, b in zip(days, days[1:]) if b > a)
+
+
 def documents(rows, pages):
     """The PDF's documents in page order, from the labels template's rows (each with its first page: an account entry, or
     a segment of the reading the entries do not cover; a reading without entries gives segments only). An entry or a dated
     segment starts a document, a second one of the same day too (D11's two e-mails of one day); an undated segment (a
     photo, a receipt) and anything dated before the document it follows (a lease or an older letter sent along) belong to
-    that document, as an enclosure no later than its letter does in quality/points.py. Each runs to the next one's first
-    page and counts the template rows it holds; an undated document takes the later of the days around it, as
-    quality/asof.py bounds an undated page."""
-    docs = []
+    that document, as an enclosure no later than its letter does in quality/points.py. In a file that lists its documents
+    latest first (newest_first) every next document is older than the one before it, so a date tells no enclosure from
+    the next document there: every dated row starts a document, and only an undated one rides with the document before
+    it. Each runs to the next one's first page and counts the template rows it holds; an undated document takes the
+    later of the days around it, as quality/asof.py bounds an undated page."""
+    docs, reverse = [], newest_first(rows)
     for r in sorted((r for r in rows if isinstance(r.get("page"), int)), key=lambda r: (r["page"], r.get("n") is None)):
-        dated, older = bool(r.get("date")), bool(r.get("date") and docs and docs[-1]["date"] and r["date"] < docs[-1]["date"])
+        dated = bool(r.get("date"))
+        older = bool(not reverse and r.get("date") and docs and docs[-1]["date"] and r["date"] < docs[-1]["date"])
         if not docs or ((r.get("n") is not None or dated) and not older):
             if not docs or docs[-1]["first"] != r["page"]:  # a second document on the same first page: the page's first governs
                 docs.append({"date": r.get("date"), "insurer": bool(r.get("insurer")) or r.get("from") == "versicherer",
@@ -180,17 +191,26 @@ def plan(labels, template, pdf):
     before = [p for p in points if p["date"] < n3["date"]]
     since = before[-1]["date"] if before else "0000-00-00"  # the insurer's last action before the assessment (the question back)
     pages = int((pdf.get("extraction") or {}).get("pages") or 0)
-    docs = documents([r for r in template.get("documents") or () if r.get("file") in (None, pdf.get("name"))], pages)
+    rows = [r for r in template.get("documents") or () if r.get("file") in (None, pdf.get("name"))]
+    docs, reverse = documents(rows, pages), newest_first(rows)
     replies = [d for d in docs if not d["insurer"] and d["date"] and since < d["date"] < n3["date"]]
     if len(replies) != ARRIVALS:
         raise Stop("cut", "no_reply_found" if not replies else "arrival_not_as_in_the_outline")
+    if reverse:
+        # latest first, a date cannot tell a reply's own enclosure from an older document that follows it: the replies must
+        # stand together and be followed at once by the document of the day they answer (the insurer's question back), so
+        # that no page between them and it is of unknown standing
+        at = sorted(docs.index(r) for r in replies)
+        after = docs[at[-1] + 1] if at[-1] + 1 < len(docs) else None
+        if at != list(range(at[0], at[0] + len(at))) or (after is not None and after["date"] != since):
+            raise Stop("cut", "arrival_not_followed_by_its_question")
     first = min(r["date"] for r in replies)
     later = [d for d in docs if d not in replies and d["date"] and d["date"] >= first]
     if any(d["date"] < n3["date"] or (d["date"] == n3["date"] and not d["insurer"]) for d in later):
         raise Stop("cut", "another_document_before_the_assessment")
     earlier = [d for d in docs if d not in replies and d not in later]
     cut = {"n3": n3, "base": sorted(p for d in earlier for p in d["pages"]), "arrival": [d["pages"] for d in replies],
-           "later": sorted(p for d in later for p in d["pages"]), "entries": [d["n"] for d in replies],
+           "later": sorted(p for d in later for p in d["pages"]), "entries": [d["n"] for d in replies], "newest_first": reverse,
            "rows": {"base": sum(d["rows"] for d in earlier), "arrival": sum(d["rows"] for d in replies), "later": sum(d["rows"] for d in later)}}
     if sorted(cut["base"] + cut["later"] + [p for a in cut["arrival"] for p in a]) != list(range(1, pages + 1)):
         raise Stop("cut", "pages_not_in_exactly_one_part")
@@ -207,7 +227,8 @@ def sealed(cut):
 
 def plan_lines(cut, tree, labels):
     """The plan as the notebook prints it before the run does anything: pages and counts, no content."""
-    return [f"The D11 diagnostic, its plan (nothing done but reading): build {tree} · labels {labels} · plan {sealed(cut)}",
+    return [f"The D11 diagnostic, its plan (nothing done but reading): build {tree} · labels {labels} · plan {sealed(cut)}"] + \
+           (["  the file lists its documents latest first: the earlier state is its later pages, what is left out its first"] if cut.get("newest_first") else []) + [
             f"  the earlier state: pages {spans(cut['base'])} ({cut['rows']['base']} rows of the labels template), looked at on the day of point {cut['n3']['n']}",
             f"  one full preparation of it; the run stops if it failed or its non-cached input passed {STOP_AFTER_PREPARE:,} tokens:"
             " a stop, never a budget or an allowance",
