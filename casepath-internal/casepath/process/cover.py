@@ -578,6 +578,9 @@ def adjust(planned, facts, stage, ledger=None):
     if not planned:
         return planned
     rule = _data()["cooperation"]
+    from . import refusal
+    if refusal.applies(facts) and stage == rule["ending_stage"] and planned.get("kind") == "A12":
+        return refusal.planned(planned)  # a refused cover is told as such, never as missing cooperation (process/refusal.py)
     if planned.get("kind") == "A5" and planned.get("skip_if") is not True and facts.get("aussichten") == "nicht genügend":
         return {**planned, "form": "A5_aussichtslos", "title": _data()["forms"]["A5_aussichtslos"]["title"]}
     if planned.get("skip_if") is True or not is_ending(planned, stage):

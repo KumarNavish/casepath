@@ -46,7 +46,7 @@ GROUPS = {"fragen": "Fragen an die Kundschaft", "unterlagen": "Unterlagen", "hin
           "fristen": "Fristen", "rahmen": "Beurteilungsrahmen", "vorlagen": "Vorlagen für die Kundschaft", "berechnung": "Fristberechnung",
           "empfehlungen": "Empfehlungen", "antworten": "Antworten auf Fragen", "faelle": "Sätze zum Fall", "wortlaut": "Verbindende Sätze",
           "punkte": "Deckungspunkte", "zuordnung": "Zuordnung nach Rechtsgebiet", "ursache": "Datum der Ursache",
-          "regeln": "Regeln", "pflichtteile": "Pflichtteile", "schreiben": "Schreiben"}
+          "regeln": "Regeln", "pflichtteile": "Pflichtteile", "schreiben": "Schreiben", "ablehnung": "Deckungsablehnung (Schreiben)"}
 # an area's options file (options.py) adds its recommendations, answers, sentences about the case and joining sentences
 AREA_GROUPS = ("fragen", "unterlagen", "hinweise", "kernpunkte", "fristen", "rahmen", "vorlagen", "empfehlungen", "antworten", "faelle",
                "wortlaut", "berechnung")
@@ -59,7 +59,7 @@ def state_of(key, current):
     (Änderung nötig), «Frage offen», or «nicht juristisch geprüft» (never marked, or changed since its mark).
     ``current``: the marks that hold for the content as it is now (Model.current)."""
     return OPTION_STATES.get(((current or {}).get(key) or {}).get("mark"), UNREVIEWED)
-COVER_GROUPS = ("punkte", "zuordnung", "ursache", "fragen", "regeln")
+COVER_GROUPS = ("punkte", "zuordnung", "ursache", "fragen", "regeln", "ablehnung")
 LETTER_GROUPS = ("pflichtteile", "schreiben")
 
 
@@ -471,6 +471,10 @@ class Model:
                 lines.append(("Hinweis", "Ein Nachteil tritt nur bei Verschulden und Einfluss auf das Ereignis oder die Leistung ein: prüfen, nicht folgern."))
                 law += self._cover_law(["vvg-45.1"])
             self._add(COVER, f"punkt.{p['id']}", "punkte", p["title"], lines, {"point": p, **({"public": public} if p["id"] == "wartefrist" else {})}, law)
+        from . import refusal
+        for p in refusal.data()["parts"]:  # the letter that tells a refused cover: approved only once every part is «geprüft»
+            self._add(COVER, f"{refusal.PREFIX}{p['id']}", "ablehnung", f"Deckungsablehnung: {p['title']}", [
+                ("Gesagt, wenn", "die Fallbearbeitung die Deckung abgelehnt hat"), ("Wortlaut", self._show(p["text"]) if "{" not in p["text"] else p["text"])], {"part": p})
         for a in cov["areas"]:
             label = a.get("label") and a["label"] + (f"; Unternehmen: {a['label_unternehmen']}" if a.get("label_unternehmen") else "")
             law = self._clauses(a.get("eigenschaft"), "Eigenschaft") + self._clauses(a.get("rechtsgebiet"), "Rechtsgebiet") + self._clauses(a.get("grenzen"), "Grenzen")
@@ -575,6 +579,11 @@ class Model:
                 for eid in named:
                     if f"{file}:{eid}" in self.elements:
                         self.elements[f"{file}:{eid}"]["questions"].append(q["text"])
+        from . import refusal
+        for q in refusal.data().get("open_questions") or ():  # the refusal letter's own open questions, beside their part
+            key = f"{COVER}:{refusal.PREFIX}{q['part']}"
+            if key in self.elements:
+                self.elements[key]["questions"].append(q["question"])
         for wid in self.modules:  # an options file's question linked to an element of the module stands beside that element too
             for q in (options.load(wid) or {}).get("open_questions") or () if wid in options.areas() else ():
                 if q.get("linked") and f"{wid}:{q['linked']}" in self.elements:

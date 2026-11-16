@@ -1,0 +1,20 @@
+{
+ "format": "casepath.live-form/1",
+ "version": "2026-11-16.1",
+ "note": "Die Mitteilung einer abgelehnten Deckung. Gilt für laufende Fälle; die eingefrorene Studie lädt diese Datei nicht. Aus den Allgemeinen Bedingungen abgeleitet, nicht juristisch geprüft: ein Brief in dieser Form wird erst freigegeben, wenn jeder Baustein «geprüft» ist.",
+ "form": "A12_deckung",
+ "title": "Deckungsablehnung mitteilen",
+ "to": "Kundschaft",
+ "closing": "Deckung abgelehnt",
+ "parts": [
+  {"id": "eingang", "title": "Eingang und Prüfung", "text": "Vielen Dank für die Anmeldung Ihres Anliegens. Wir haben geprüft, ob dafür Versicherungsschutz besteht."},
+  {"id": "entscheid", "title": "Entscheid mit dem massgebenden Punkt", "text": "Für dieses Anliegen können wir leider keinen Versicherungsschutz gewähren, weil folgende Voraussetzung der Deckung nicht erfüllt ist: {deckung_punkt}."},
+  {"id": "begruendung", "title": "Begründung im Einzelfall", "text": "Im Einzelnen: {deckung_begruendung}"},
+  {"id": "erneut", "title": "Erneute Prüfung auf neue Unterlagen", "text": "Verfügen Sie über Unterlagen oder Angaben, aus denen sich etwas anderes ergibt, stellen Sie uns diese bitte zu; wir prüfen Ihr Anliegen dann erneut."},
+  {"id": "fristen", "title": "Hinweis auf laufende Fristen", "text": "Bitte beachten Sie, dass Sie für die Einhaltung allfällig laufender Fristen selbst zuständig sind."}
+ ],
+ "open_questions": [
+  {"part": "erneut", "question": "Welche Hinweise auf Rechtsbehelfe gehören in eine Deckungsablehnung (erneute Prüfung, Ombudsstelle, Schiedsverfahren nach den Allgemeinen Bedingungen)?"},
+  {"part": "entscheid", "question": "Genügt der Verweis auf die Ziffer der Allgemeinen Bedingungen, oder ist die Bestimmung im Wortlaut wiederzugeben?"}
+ ]
+}

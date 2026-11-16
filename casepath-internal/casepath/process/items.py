@@ -552,7 +552,9 @@ def build_items(state, result, files=None, events=None, review=None):
         if action and action[0] in {"A12", "close"}:  # a closing names its reason once: «keine Rückmeldung», «Sache erledigt»
             stage_title = str(here.get("title") or "")
             outcome_title = str((ev.get("outcome") or {}).get("title") or "")
-            closing = next((t.split(": ", 1)[1] for t in (stage_title, outcome_title) if t.startswith("Abschluss: ")), None) or \
+            from . import refusal
+            closing = (refusal.data()["closing"] if (planned or {}).get("form") == refusal.FORM else None) or \
+                next((t.split(": ", 1)[1] for t in (stage_title, outcome_title) if t.startswith("Abschluss: ")), None) or \
                 {"A12_still": "keine Rückmeldung", "A12_erledigt": "Sache erledigt"}.get((planned or {}).get("form") or "") or \
                 ("fehlende Mitwirkung" if "mitwirkung" in str((planned or {}).get("form") or "") or here.get("id") == "abschluss_mitwirkung" else outcome_title or None)
         if action:

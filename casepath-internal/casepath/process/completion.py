@@ -379,6 +379,9 @@ def relied_elements(draft, assessment=None, process=None, listed=(), events=()):
             out.append(f"{COVER}:schreiben.{x['kind']}.{r.get('id')}")
     if form in ("A11_teilablehnung", "A12_mitwirkung_kanzlei"):
         out.append(f"{BACKBONE}:schreiben.{form}")
+    from . import refusal
+    if form == refusal.FORM:  # the refusal of cover rests on each of its own parts
+        out += refusal.element_ids()
     for ask in asks(form, draft.get("kind"), listed, events, assessment):
         if ask.get("kind") == "document" and ask.get("ref"):
             own(f"unterlage.{ask['ref']}")

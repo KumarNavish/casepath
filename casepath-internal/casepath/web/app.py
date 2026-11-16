@@ -657,6 +657,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                           if held_keys and draft.get("text") and st["state"] != "versandt" and not study else [])
         for h in st["held_now"]:
             h["blocks"] = h["mark"] == completion.HELD_MARKS["aenderung"]
+        from ..process import refusal
+        if draft.get("form") == refusal.FORM and draft.get("text") and st["state"] != "versandt" and not study:
+            # the refusal of cover goes out only on wording a jurist released: every part «geprüft» (process/refusal.py)
+            st["held_now"] += [{**u, "mark": "noch nicht freigegeben", "blocks": True, "reviewer": None, "at": None}
+                               for u in refusal.unreleased(marks) if u["key"] not in {h["key"] for h in st["held_now"]}]
         if study:
             st["bar"] = {"kind": "study"}  # the frozen expert study: its letter is copied and measured as frozen, never approved or sent
         draft["tabs"] = completion.tab_states(st, events)  # each tab's state: «Entwurf», «freigegeben», «versandt am …»
