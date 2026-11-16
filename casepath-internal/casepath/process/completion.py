@@ -372,7 +372,9 @@ def relied_elements(draft, assessment=None, process=None, listed=(), events=()):
         if not x.get("text"):
             continue
         if x.get("template"):
-            own(f"vorlage.{str(x['kind']).split(':', 1)[-1]}")
+            tid = str(x["kind"]).split(":", 1)[-1]
+            if f"{wid}:nachtrag.vorlage.{tid}" not in (a.get("elements") or ()):  # the follow-on's own template is its element
+                own(f"vorlage.{tid}")
         for r in x.get("required") or ():
             out.append(f"{COVER}:schreiben.{x['kind']}.{r.get('id')}")
     if form in ("A11_teilablehnung", "A12_mitwirkung_kanzlei"):

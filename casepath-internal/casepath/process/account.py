@@ -1438,6 +1438,8 @@ def stand(acc, look, graph=None):
             what = f"{FORM_KINDS[last['handler']['kind']]} mit {WITH[last['to']]}"
         elif last.get("phone"):
             what = f"Telefon mit {WITH[last['to'] if last['from'] == INSURER else last['from']]}"
+        elif last.get("dispatch") and last.get("what"):  # a letter the handler confirmed as sent: under its own title
+            what = f"{last['what']} an {TO[last['to']]}"
         elif last["from"] == INSURER:
             what = f"{kinds_title(last.get('kind'), graph) or 'Schreiben'} an {TO[last['to']]}"
         else:
