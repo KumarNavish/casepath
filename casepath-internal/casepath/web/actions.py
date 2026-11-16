@@ -180,7 +180,8 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
                 relies = completion.relied_elements(draft, view.get("assessment"), view.get("process"), view.get("items") or [], events)
                 fields = completion.approval_record(draft, done.get("premise_now") or {}, view.get("assessment"), run_id=(prepared or {}).get("id"),
                                                     files_digest=store.files_digest(case_id), op_id=body.op_id, deadline=act.get("deadline"),
-                                                    relies=relies, marks=marks_now(), file_ids=[f["id"] for f in store.list_files(case_id)])
+                                                    relies=relies, marks=marks_now(), file_ids=[f["id"] for f in store.list_files(case_id)],
+                                                    meaning=completion.frozen_meaning(draft, view.get("items") or [], events, view.get("assessment")))
                 existing = record(case_id, who, "action.approved", **fields)
             saved = completion._bundle(store.list_case_events(case_id), existing)
             if saved is None:  # the Versandpaket, from the same state: the exact text, enclosures, note and next date
@@ -248,7 +249,9 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
             args = completion.dispatch_args(approval, role, body.date, body.channel, view.get("items") or [], events, view.get("assessment"))
             # the questions the letter took up, conditional answers included: the file note and «Als Nächstes» no longer
             # list them as open at the insurer once it went out
-            answered = completion.addressed(approval.get("action_kind"), args["form"], view.get("assessment"), events) if args["form"] == approval.get("form") else []
+            frozen = (approval.get("meaning") or {}).get(role)
+            answered = (list(frozen.get("addressed") or ()) if frozen is not None else
+                        completion.addressed(approval.get("action_kind"), args["form"], view.get("assessment"), events) if args["form"] == approval.get("form") else [])
             event = {"schema": "casepath.study.event/1", "session_id": None, "expert": who, "case_copy": case_id, "source_case": None,
                      "frozen_run_id": (prepared or {}).get("id"), "kind": "action.dispatched", "parity_sha": parity_sha, "item_id": None,
                      "version": body.version, "recipient": role, "date": body.date, "channel": body.channel, "op_id": body.op_id,

@@ -769,6 +769,39 @@ class CorrectionTests(Episode):
         self.assertGreater(completion.gaps(view["draft"]), 0)
         self.approve(case, op="op-approve-held", expect=422)
 
+    def test_the_version_that_went_out_keeps_what_it_asked_when_a_later_draft_drops_it(self):
+        """Approved asking the receipts, then the handler takes that line out of the new draft, then confirms the older
+        version went out (a stale warning, as it was): the letter, the Versandpaket, the dispatch's asks and answers, the
+        note and the account all say what that version asked; the new draft keeps the correction; the receipts stay owed
+        and a later reply with the bill fulfils them."""
+        case, today = self.cases["e1"], completion.swiss_today()
+        self.ready(case)
+        old = self.approve(case)["approval"]
+        self.assertEqual([a["what"] for a in old["meaning"]["kunde"]["asks"]], [RECEIPTS])  # frozen with the approval
+        self.post(f"/api/cases/{case}/events", {"kind": "letter.line", "item_id": "residual:claim.0", "fields": {"included": False, "reason": "3"}}, 201)
+        view = self.view(case)
+        self.assertEqual((asked_lines(view["draft"]["text"]), view["draft"]["version"] != old["version"]), ([], True))  # the correction holds
+        self.dispatch(case, old["version"])
+        sent = next(e for e in self.store.list_edits(case) if e["op"] == "add_dispatch")["args"]
+        event = self.events(case, "action.dispatched")[0]
+        self.assertEqual(([a["what"] for a in sent["asks"]], event["asks"], event["stale"]), ([RECEIPTS], [RECEIPTS], ["Text geändert"]))
+        self.assertEqual([a["what"] for a in sent["answers"]], ["Muss ich weiterhin die volle Miete bezahlen?"])
+        self.assertEqual([q["what"] for q in event["answered"]], ["Muss ich weiterhin die volle Miete bezahlen?", self.Q2, Q3])
+        archive = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{case}/actions/{old['version']}/bundle").content))
+        self.assertEqual(asked_lines(versandpaket.text_of(archive.read("Kundschaft/Brief.docx"))), [RECEIPTS])
+        self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[1], f"Erwartet: {RECEIPTS}")
+        view = self.view(case)
+        self.assertTrue(view["file_note"].endswith(f"Erwartet: {RECEIPTS}; Wiedervorlage {day(today + timedelta(days=90))}."), view["file_note"])
+        owed = [r["text"] for line in view["screen"]["stand"] if line.get("party") == "kunde" for r in line.get("rows") or ()]
+        self.assertTrue(any(t.startswith(RECEIPTS) for t in owed), owed)  # still owed by the customer
+        # the bill comes (a reply of the dispatch day that answers it): the request the old version asked is met
+        rec = EP.branches["B-receipts"]
+        self.upload(case, rec.files(came=today))
+        self.update(case, rec.turns(self.first_free(case), self.dispatched_n(case), a5_day=today, came=today),
+                    {"fs": "Belege Stromkosten.eml", "ft": episode.BILL})
+        last = self.view(case)["completion"]["last"]
+        self.assertEqual((last["acknowledged"], last["fulfilled"], last["met"]), (True, True, [RECEIPTS]))
+
     def test_a_sent_version_is_kept_and_reconciled_never_unsent(self):
         case = self.cases["e1"]
         self.ready(case)

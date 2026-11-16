@@ -1079,11 +1079,25 @@ def refusal(case, draft, version, decisions=(), draft_stale=False):
     return None
 
 
+def frozen_meaning(draft, listed, events, assessment=None):
+    """What an approved version means per recipient, frozen with it: {to: {asks, answers, addressed}}: what its letter asks
+    (each with the judgment it waits for), the questions it answers and those it takes up (completion.addressed), as
+    dispatch_args would record them now. A dispatch of this version records these, whatever a later draft asks."""
+    form, kind, out = draft.get("form") or draft.get("kind"), draft.get("kind"), {}
+    for r in draft.get("recipients") or ():
+        main = form in (r.get("forms") or [form])
+        out[r["to"]] = {"asks": asks(form, kind, listed, events, assessment, draft.get("respond_by"), r["to"]) if main else [],
+                        "answers": answers(kind, form, assessment, events) if main else [],
+                        "addressed": addressed(kind, form, assessment, events) if main else []}
+    return out
+
+
 def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=None, op_id=None, deadline=None, relies=(), marks=None,
-                    file_ids=None):
+                    file_ids=None, meaning=None):
     """The fields of «action.approved»: the version and what it consists of, the premise (``premise_``: premise() now),
     the options chosen, the reviewed legal content it rests on (``relies``: relied_elements) with the jurists' marks on it
-    as they stand (``marks``: the marks that hold now), and the files of the case it was given on (``file_ids``)."""
+    as they stand (``marks``: the marks that hold now), the files of the case it was given on (``file_ids``) and what it
+    means per recipient (``meaning``: frozen_meaning), which its dispatch records."""
     return {"version": draft["version"], "form": draft.get("form") or draft.get("kind"), "action_kind": draft.get("kind"), "title": draft.get("title"),
             "recipients": [{k: r[k] for k in ("to", "recipient", "title", "forms", "titles")} for r in draft.get("recipients") or ()],
             "respond_by": draft.get("respond_by"), "premise": premise_,
@@ -1091,6 +1105,7 @@ def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=
             "text_sha256": sha(draft.get("text")), "also": [{"kind": a["kind"], "sha256": sha(a["text"])} for a in draft.get("also") or () if a.get("text")],
             "parts": [[p["part"], sha(p["text"])] for p in draft.get("parts") or ()], "run_id": run_id, "files_digest": files_digest, "op_id": op_id,
             "relies": list(relies or ()), "relies_marks": marks_of(relies, marks), **({"file_ids": list(file_ids)} if file_ids is not None else {}),
+            **({"meaning": meaning} if meaning is not None else {}),
             **({"deadline": deadline} if deadline else {})}
 
 
@@ -1125,12 +1140,19 @@ def next_look(process, form, stage, day, respond_by=None):
 
 def dispatch_args(approval, recipient, date_, channel, listed, events, assessment=None):
     """The «add_dispatch» edit of one recipient of an approved version: the account's entry of its form, what it asks and
-    which questions it answers (its number is drawn by the store)."""
+    which questions it answers (its number is drawn by the store): as the version was approved (its ``meaning``), never
+    as a later draft has it; an approval recorded before that field is read from the case as it stands."""
     row = next((r for r in approval.get("recipients") or () if r.get("to") == recipient), None) or {}
     forms = row.get("forms") or [approval.get("form")]
     form = approval.get("form") if approval.get("form") in forms else forms[0]
     _, kind, code = record_of(form)
     main = form == approval.get("form")
+    frozen = (approval.get("meaning") or {}).get(recipient)
+    if frozen is not None:
+        return {"version": approval.get("version"), "form": form, "recipient": recipient, "to": recipient if recipient in PARTIES else "andere",
+                "date": date_, "channel": channel, "kind": kind, "code": code if code != "11" else None,
+                "title": approval.get("title") if main else (row.get("titles") or {}).get(form) or form, "line": row.get("recipient"),
+                "asks": list(frozen.get("asks") or ()), "answers": list(frozen.get("answers") or ())}
     return {"version": approval.get("version"), "form": form, "recipient": recipient, "to": recipient if recipient in PARTIES else "andere",
             "date": date_, "channel": channel, "kind": kind, "code": code if code != "11" else None,
             "title": approval.get("title") if main else (row.get("titles") or {}).get(form) or form, "line": row.get("recipient"),
