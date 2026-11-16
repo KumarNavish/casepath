@@ -1611,19 +1611,33 @@ function preparedView(st) {
         <summary class="cp-button" aria-label="${T("more options", "weitere Möglichkeit")}">▾</summary><div class="cp-menu up"><input id="reservation" maxlength="2000" placeholder="${T("Reservation (optional)", "Vorbehalt (freiwillig)")}">
         <button class="cp-button" data-close="erledigt_mit_vorbehalt">${T("Done, with a reservation", "mit Vorbehalt")}</button></div></details></span>`}`;
   const options = (S.data.action_options || []).filter((o) => !act || o.kind !== act.action);
-  const title = sc.title || (act ? T(act.label.en, act.label.de) : T("No prepared step", "Kein vorbereiteter Schritt"));
+  const nextTitle = sc.title || (act ? T(act.label.en, act.label.de) : T("No prepared step", "Kein vorbereiteter Schritt"));
+  // At rest: the letter went out and the case waits for its date. The card says so; the letter prepared for that day
+  // waits folded behind one line and is never the thing to act on now.
+  const waits = completionOf().waits, lastSent = completionOf().last || {}, went = (lastSent.dispatched || [])[0];
+  const resting = Boolean(waits) && !c && !asFrozen && !dec && st === "prepared" && !stale && Boolean(went) && !(completionOf().bar || {}).rest;
+  const folded = resting && S.restOpen !== S.route.id;
+  const title = resting ? waits.charAt(0).toUpperCase() + waits.slice(1) : nextTitle;
+  const restLine = !resting ? "" : `<p class="cp-rest"><span class="cp-sent">${icon("check")}${esc(lastSent.title ? `${lastSent.title} ` : "")}${T("sent", "versandt am")} ${dateText(went.date)}</span>
+      <span class="cp-muted">· ${T("nothing to do until then", "bis dahin nichts zu tun")}</span>
+      ${lastSent.version ? `<a class="cp-link cp-quiet-link" href="/api/cases/${esc(S.route.id)}/actions/${esc(lastSent.version)}/bundle">${T("what went out", "was hinausging")}</a>` : ""}</p>
+    <p class="cp-rest-next"><button class="cp-link cp-quiet-link" id="rest-open" type="button" aria-expanded="${!folded}">${folded ? "▸ " : "▾ "}${T("Prepared for then", "Für dann vorbereitet")}: ${esc(nextTitle)}</button></p>`;
   const tabs = docs.length > 1 || (docs[0] && docs[0].state && docs[0].state !== "entwurf") ? `<div class="cp-doc-tabs" role="tablist" aria-label="${T("What goes out", "Was hinausgeht")}">${docs.map((d) => `<button role="tab" class="cp-doc-tab ${d.state === "versandt" ? "copied" : ""}" data-doc-tab="${esc(d.kind)}" aria-selected="${d.kind === (active || {}).kind}">${esc(d.title)}${tabState(d)}</button>`).join("")}</div>` : "";
   const body = text ? (active.main ? letterView(text, editable) : alsoView(active, editable))
     : `<p class="cp-muted cp-noletter">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step", "Für diesen Schritt kein Brief"))}</p>`;
   const required = active && active.main && (draft.required || []).length ? `<p class="cp-required">${T("Required", "Pflichtteile")}: ${draft.required.map((r) => `${esc(r.title)} <span class="cp-muted">(${esc(r.basis)})</span>`).join(" · ")}</p>` : "";
-  return `<section class="cp-card cp-prepared ${sc.urgency === "dringend" && !c ? "urgent" : ""}">
-    <header class="cp-prep-head"><h2>${esc(title)}</h2>${!c && editable && options.length ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
+  const head = `<section class="cp-card cp-prepared ${sc.urgency === "dringend" && !c ? "urgent" : ""}">
+    <header class="cp-prep-head"><h2>${esc(title)}</h2>${!c && editable && options.length && !folded ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because`, `Stattdessen: ${esc(S.pickAction.title)}, weil`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
       : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
-    ${c ? "" : `${weilLine(act)}${headBlock()}${leadLine(sc.lead)}${dec ? decisionLine(dec, decisionPrimary) : progressLine(sc.progress)}`}${tabs}
+    ${restLine}`;
+  if (folded) return `${head}<footer class="cp-bar cp-carry">${whenAfter || when}</footer></section>`;
+  return `${head}
+    ${c ? "" : `${resting ? "" : weilLine(act)}${resting ? "" : headBlock()}${leadLine(sc.lead)}${dec ? decisionLine(dec, decisionPrimary) : progressLine(sc.progress)}`}${tabs}
     ${stale && text ? `<p class="cp-stale-note">${T("Draft from before the new files", "Entwurf vor den neuen Dateien")} <button class="cp-link cp-quiet-link" id="use-anyway" type="button">${T("use anyway", "trotzdem verwenden")}</button></p>` : ""}
     ${c || asFrozen ? "" : conflictsView(active)}
     <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${esc((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>
+    ${asFrozen || c || !text ? "" : handoverLine()}
     <footer class="cp-bar ${asFrozen || c ? "" : "cp-carry"}">${bar}</footer>
   </section>`;
 }
@@ -2101,6 +2115,7 @@ function bindOverview() {
     await loadCase();
   });
   on("#change-action", "click", () => { S.changing = !S.changing; S.pickAction = null; renderCase(); });
+  on("#rest-open", "click", () => { S.restOpen = S.restOpen === S.route.id ? null : S.route.id; renderCase(); });
   on("[data-pick-action]", "click", (b) => { S.pickAction = (S.data.action_options || []).find((x) => x.kind === b.dataset.pickAction); renderCase(); });
   on("[data-action-reason]", "click", async (b) => {  // "andere Handlung": one reason; the draft and the date follow
     const kind = S.pickAction.kind; S.pickAction = null; S.changing = false; S.docTab = null; S.feeAnswer = null;
@@ -2834,6 +2849,27 @@ function carryButtons(active, opts) {
   if (bar.kind === "dispatched") return `<span class="cp-sent">${icon("check")}${esc(bar.line || "")}</span>${docx}${pack}${opts.when}`;
   return opts.when || "";
 }
+// The way out, above the bar: per recipient the mail address (found in the file with its line, or set by the handler)
+// and the subject. Before «Freigeben» they are shown, so the approval records the address; after it each copies on a
+// click. No program is assumed for the sending.
+function handoverLine() {
+  const st = completionOf(), rows = st.handover || [], bar = st.bar || {};
+  if (!rows.length || !["approve", "dispatch", "stale"].includes(bar.kind) || st.waits) return "";
+  const approved = bar.kind === "dispatch", id = S.route.id, many = rows.length > 1;
+  const row = (r) => {
+    const a = r.address || {}, editing = S.addrEdit === r.to;
+    const from = a.source ? T(`from ${a.source.name}: ${a.source.line}`, `aus ${a.source.name}: ${a.source.line}`) : a.set_by ? T(`set by ${a.set_by}`, `eingetragen von ${a.set_by}`) : "";
+    const address = editing ? `<input type="email" class="cp-ho-input" data-ho-input="${esc(r.to)}" value="${esc(a.value || "")}" placeholder="name@beispiel.ch" aria-label="${T("Mail address", "E-Mail-Adresse")}">
+        <button class="cp-button cp-small" data-ho-save="${esc(r.to)}">${T("Save", "Speichern")}</button>`
+      : a.value ? `${approved ? `<button class="cp-ho-chip" data-ho-copy="${esc(a.value)}" title="${esc(from)}">${S.hoCopied === a.value ? icon("tick") : ""}${esc(a.value)}</button>` : `<span class="cp-ho-value" title="${esc(from)}">${esc(a.value)}</span>`}
+        <button class="cp-link cp-quiet-link" data-ho-edit="${esc(r.to)}">${T("change", "ändern")}</button>`
+      : `<span class="cp-muted">${T("no address in the file", "keine Adresse in der Akte")}</span> <button class="cp-link cp-quiet-link" data-ho-edit="${esc(r.to)}">${T("enter", "eintragen")}</button>`;
+    const subject = approved ? `<button class="cp-ho-chip" data-ho-copy="${esc(r.subject)}">${S.hoCopied === r.subject ? icon("tick") : ""}${esc(r.subject)}</button>` : `<span class="cp-ho-value">${esc(r.subject)}</span>`;
+    return `<p class="cp-ho-row" data-ho="${esc(r.to)}">${many ? `<b>${esc(r.title)}</b> ` : ""}<span class="cp-ho-label">${T("To", "An")}</span> ${address}
+      <span class="cp-ho-label">${T("Subject", "Betreff")}</span> ${subject}</p>`;
+  };
+  return `<div class="cp-handover" data-handover>${rows.map(row).join("")}</div>`;
+}
 // A package sent to some of its recipients while the plan moved on: the others keep their «Versandt am» on the version
 // approved, whatever is prepared now (completion.state ``rest``).
 function restButtons() {
@@ -2937,6 +2973,23 @@ async function approve() {
   await loadCase();
 }
 // A copy to the clipboard: awaited; refused or without a clipboard the text is selected and nothing is recorded.
+// The approved text as the same paragraphs in HTML: a blank line ends a paragraph, a line break stays one.
+function letterHtml(text) {
+  const inner = String(text || "").replace(/^\n+|\n+$/g, "").split(/\n\s*\n/).filter((p) => p.trim())
+    .map((p) => `<p style="margin:0 0 12px 0">${p.split("\n").map(esc).join("<br>")}</p>`).join("");
+  return `<div style="font-family:Arial, Helvetica, sans-serif;font-size:11pt;line-height:1.35;color:#000">${inner}</div>`;
+}
+// A letter on the clipboard as formatted text and as plain text, so a mail keeps its paragraphs; plain text where the
+// browser cannot write both.
+async function letterToClipboard(text, select) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([letterHtml(text)], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]);
+      return true;
+    }
+  } catch (error) { /* plain text below */ }
+  return toClipboard(text, select);
+}
 async function toClipboard(text, select) {
   try {
     if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error("no clipboard");
@@ -2955,7 +3008,7 @@ async function copyLetter(kind) {
   if (!kind && (st.approved || {}).text_sha256 && (await sha256(text)) !== st.approved.text_sha256) {
     S.message = T("The text changed since the approval: please approve again", "Der Text hat sich seit der Freigabe geändert: bitte erneut freigeben"); S.messageOk = false; renderCase(); return;
   }
-  const ok = await toClipboard(text, $(kind ? `[data-also-text='${CSS.escape(kind)}']` : "[data-item='letter:0']"));
+  const ok = await letterToClipboard(text, $(kind ? `[data-also-text='${CSS.escape(kind)}']` : "[data-item='letter:0']"));
   if (!ok) { S.copyFailed = true; renderCase(); return; }
   S.copyFailed = false; S.justCopied = kind || "letter";
   const act = item("next_action", "0") || {};
@@ -2991,6 +3044,20 @@ function bindCarry(on) {
     if (b && el.value) b.setAttribute("aria-label", b.getAttribute("aria-label").replace(/\d{2}\.\d{2}\.\d{4}/, dateText(el.value)));
   });
   on("#copy-note-bar", "click", () => copyNote());
+  on("[data-ho-copy]", "click", async (b) => {
+    if (await toClipboard(b.dataset.hoCopy, b)) { S.hoCopied = b.dataset.hoCopy; renderCase(); setTimeout(() => { S.hoCopied = null; if (S.route.view === "case") renderCase(); }, 1800); }
+  });
+  on("[data-ho-edit]", "click", (b) => { S.addrEdit = b.dataset.hoEdit; renderCase(); const el = $("[data-ho-input]"); if (el) el.focus(); });
+  const saveAddress = async (to) => {
+    const el = $(`[data-ho-input='${CSS.escape(to)}']`);
+    try {
+      await api(`/api/cases/${S.route.id}/handover/address`, { method: "POST", body: JSON.stringify({ to, address: (el || {}).value || "" }) });
+      S.addrEdit = null; S.message = "";
+    } catch (error) { S.message = error.message; S.messageOk = false; }
+    await loadCase();
+  };
+  on("[data-ho-save]", "click", (b) => saveAddress(b.dataset.hoSave));
+  on("[data-ho-input]", "keydown", (el, event) => { if (event.key === "Enter") { event.preventDefault(); saveAddress(el.dataset.hoInput); } if (event.key === "Escape") { S.addrEdit = null; renderCase(); } });
   on("[data-head-open]", "click", (b) => { S.headOpen = S.headOpen === b.dataset.headOpen ? null : b.dataset.headOpen; renderCase(); });
   on("[data-reconcile]", "click", async (b) => {
     b.disabled = true;

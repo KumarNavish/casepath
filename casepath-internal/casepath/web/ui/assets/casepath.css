@@ -764,3 +764,13 @@ h3.cp-bucket{font-size:14px;margin:12px 0 4px}
 .cp-consequences .cp-chg-now::before{content:"→ ";font-weight:400;color:var(--ink-2)}
 .cp-acct-item:not(:hover):not(:focus-within) .cp-settle{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cp-limits{margin:6px 0 0;color:var(--crimson)}
+.cp-rest{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:6px 24px 2px}
+.cp-rest-next{margin:2px 24px 10px}
+.cp-handover{margin:0 22px;padding:8px 0 2px;border-top:1px solid var(--line)}
+.cp-ho-row{display:flex;align-items:baseline;gap:6px 8px;flex-wrap:wrap;margin:0 0 6px;font-size:13.5px}
+.cp-ho-label{color:var(--ink-2);margin-left:6px}
+.cp-ho-row .cp-ho-label:first-child,.cp-ho-row b + .cp-ho-label{margin-left:0}
+.cp-ho-chip{font:inherit;border:1px solid var(--line);border-radius:6px;background:var(--bg-2,#f6f6f4);padding:2px 8px;cursor:pointer;max-width:100%;text-align:left;display:inline-flex;align-items:center;gap:4px}
+.cp-ho-chip:hover{border-color:var(--ink-2)}
+.cp-ho-chip .cp-icon{width:14px;height:14px}
+.cp-ho-input{font:inherit;padding:2px 6px;min-width:240px}

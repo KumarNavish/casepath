@@ -28,6 +28,33 @@
     "title": "ActionChoice",
     "type": "object"
    },
+   "Address": {
+    "additionalProperties": false,
+    "properties": {
+     "address": {
+      "maxLength": 254,
+      "title": "Address",
+      "type": "string"
+     },
+     "to": {
+      "enum": [
+       "kunde",
+       "gegenpartei",
+       "kanzlei",
+       "behoerde",
+       "andere"
+      ],
+      "title": "To",
+      "type": "string"
+     }
+    },
+    "required": [
+     "to",
+     "address"
+    ],
+    "title": "Address",
+    "type": "object"
+   },
    "AgreedPart": {
     "additionalProperties": false,
     "properties": {
@@ -2092,6 +2119,54 @@
      }
     },
     "summary": "Freeze"
+   }
+  },
+  "/api/cases/{case_id}/handover/address": {
+   "post": {
+    "description": "The mail address a letter of this case goes to, for one recipient, as the handler sets it: it replaces the one\nfound in the file (or none) from now on, attributed. Empty takes the address away. Nothing is sent.",
+    "operationId": "set_address_api_cases__case_id__handover_address_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/Address"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Set Address"
    }
   },
   "/api/cases/{case_id}/historic": {

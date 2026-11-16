@@ -33,7 +33,7 @@ from ..agents import core
 from ..process import account, letters, review as reviews, screen, verlauf
 from ..process.clock import as_of
 from ..process.items import ITEM_KINDS, SCREEN_KINDS, kind_title, build_items, item_changes, items_sha256
-from . import identity, listing
+from . import identity, listing, outbox
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
 from .. import parity
@@ -535,6 +535,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 action.pop(k, None)  # what led to the prepared action does not lead to the one picked instead
         return action, options, forms
 
+    def _clock(current, action, listed, files, events):
+        """The case's follow-up date (clock.follow_up): from the prepared action's days, a date the party gave or a person
+        set; after a dispatch, the date that letter's Versandpaket filed (one date in the package, the note and the case);
+        never later than an own statutory deadline less the margin."""
+        from ..process import completion
+        stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
+        clock = follow_up(action.get("next_in_days") if action else None, files, events, since=(action or {}).get("since"),
+                          until=(action or {}).get("until"), step=(action or {}).get("action"),
+                          filed_days=completion.filed_days(current.get("process"), events, stage))
+        return capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), files)
+
     def _list_run_inputs(row):
         """A row of the case list and its runs: the run its items are built from (``run``: the latest completed run, also
         when a later run failed, was interrupted or runs, so the row keeps «Als Nächstes», «Fällig» and its new files;
@@ -555,9 +566,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         from ..process.clock import parse_date as parse_day
         study = (current["case"].get("intake") or {}).get("study")
         action, _, forms = prepared_action(current, listed, events)
-        clock = follow_up(action.get("next_in_days") if action else None, files, events, since=(action or {}).get("since"),
-                          until=(action or {}).get("until"), step=(action or {}).get("action"))
-        clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), files)
+        clock = _clock(current, action, listed, files, events)
         if draft is None:
             stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
             texts = store.list_files(case_id, with_text=True) if stage in {"mandat", "abwicklung"} else None
@@ -686,9 +695,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                     listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events,
                                          None if (row.get("intake") or {}).get("study") else marks)
                     action = prepared_action(current, listed, events)[0]
-                    clock = follow_up(action.get("next_in_days") if action else None, store.list_files(row["id"]), store.list_case_events(row["id"]),
-                                      since=(action or {}).get("since"), until=(action or {}).get("until"), step=(action or {}).get("action"))
-                    clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
+                    clock = _clock(current, action, listed, store.list_files(row["id"]), store.list_case_events(row["id"]))
                     row["follow_up"] = clock and clock["due"]
                     row["overdue_on"] = listing.overdue_day(listed, clock)
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
@@ -796,13 +803,39 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         from ..process import assessment
         return {"assessment": assessment.build(current, (completed or {}).get("result"), listed, files, events, marks)}
 
+    mail_blocks = {}  # file id → the mail headers in its text (a file's content never changes)
+
+    def _mail_headers(case_id):
+        out = []
+        for f in store.list_files(case_id):
+            if f["id"] not in mail_blocks:
+                if len(mail_blocks) > 4000:
+                    mail_blocks.clear()
+                mail_blocks[f["id"]] = outbox.mail_headers([store.get_file(f["id"], with_text=True)])
+            out += mail_blocks[f["id"]]
+        return out
+
+    def handover(case_id, approval, listed, events):
+        """What the handler carries out of CasePath for a version (web/outbox.py): per recipient the address the file
+        holds or the handler set, and the subject. ``approval``: the «action.approved» event, or the prepared draft."""
+        from ..process import completion
+        ref = letters._reference(store.get_case(case_id))
+        return outbox.rows(approval, _mail_headers(case_id), events, ref.group(0) if ref else None, settings.mail_subject,
+                           lambda role: completion._party_name(listed, role))
+
     def _completion_view(case_id, current, listed, draft, events, files, assessment=None, changes=None):
         """Where the prepared letter stands after the decision: approved, dispatched, fulfilled ({"completion":
         completion.state(...)}), which the status and the screen read. The draft is merged with the handler's saved text
         in place (its text, parts, conflicts and version); ``changes``: what the last preparation changed, for the head."""
         if not draft or current.get("run") is None:
             return {}
-        return {"completion": _carry(case_id, current, listed, events, files, assessment, draft=draft, changes=changes)[0]}
+        from ..process import completion
+        st = _carry(case_id, current, listed, events, files, assessment, draft=draft, changes=changes)[0]
+        if not st.get("study") and draft.get("text"):  # the way out, where a letter is prepared or approved
+            shown = next((a for a in reversed(completion.approvals(events)) if st.get("approved") and a.get("event_id") == st["approved"].get("event")), None)
+            st["handover"] = handover(case_id, shown or {"form": draft.get("form") or draft.get("kind"), "title": draft.get("title"),
+                                                         "recipients": draft.get("recipients") or []}, listed, events)
+        return {"completion": st}
 
     @app.get("/api/cases/{case_id}")
     def get_case(case_id: str, who=Depends(user)):
@@ -819,9 +852,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         listed = build_items(current, (completed or {}).get("result"), texts or store.list_files(case_id), logged, marks)  # everything the case's screens and exports assert
         held = reviews.flags(current.get("process"), marks)
         action, options, forms = prepared_action(current, listed, store.list_case_events(case_id))
-        clock = follow_up(action.get("next_in_days") if action else None, store.list_files(case_id), store.list_case_events(case_id),
-                          since=(action or {}).get("since"), until=(action or {}).get("until"), step=(action or {}).get("action"))  # a date the party gave: looked at then
-        clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(case_id))  # before a statutory deadline
+        clock = _clock(current, action, listed, store.list_files(case_id), store.list_case_events(case_id))
         events, files = store.list_case_events(case_id), store.list_files(case_id)
         assessed = _assessment_view(current, completed, listed, files, events, marks)
         # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
@@ -1795,7 +1826,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     # The decision carried through: the handler's text per part, «Freigeben» with its Versandpaket, «Versandt am» (actions.py)
     from . import actions
-    actions.register(app, store, catalogue, mirror, record, state, user, case_view=get_case, parity_sha=parity_sha, marks=lambda: review_marks()[0])
+    actions.register(app, store, catalogue, mirror, record, state, user, case_view=get_case, parity_sha=parity_sha, marks=lambda: review_marks()[0],
+                     handover=handover)
 
     if UI.is_dir():
         page = (UI / "index.html").read_text()

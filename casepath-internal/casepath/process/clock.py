@@ -127,14 +127,16 @@ def _set_counts(event, step, sent, events):
     return at > max(before, default="")
 
 
-def follow_up(next_in_days, files, events, today=None, since=None, until=None, step=None):
+def follow_up(next_in_days, files, events, today=None, since=None, until=None, step=None, filed_days=None):
     """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date.
     ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from.
     ``until``: a date the party waited for gave itself («Unterlagen folgen bis …»): the case is looked at again then.
     ``step``: the prepared action's kind; a date a person set for another step, or before the latest dispatch, lapses
     with it, except one set for the step that went out: its Versandpaket filed that date, and the wait keeps it. After a dispatch the date counts from the dispatch day; a letter that set the customer a date (its frozen
     ``respond_by``) is looked at again on that date. A cut counts from its «Stand am», never from an older document or
-    action."""
+    action. ``filed_days``: the days after its dispatch the Versandpaket of the letter that went out filed as its
+    Wiedervorlage (completion.filed_days); the wait counted from that dispatch keeps that date, so the case says the day
+    the handler entered in the claims system."""
     ref = parse_date(since) if since and parse_date(since) else reference_day(files, today)
     cut = cut_day(files)
     if cut and ref < cut:
@@ -150,6 +152,8 @@ def follow_up(next_in_days, files, events, today=None, since=None, until=None, s
     if sent and since and parse_date(since) == parse_date(sent.get("date")) and parse_date(sent.get("respond_by")):
         # what is prepared counts from the letter that went out, and that letter told the customer by when: then
         return {"due": parse_date(sent["respond_by"]).isoformat(), "reference": ref.isoformat(), "set_by": None, "respond_by": True}
+    if sent and filed_days and since and parse_date(since) == parse_date(sent.get("date")):
+        return {"due": (parse_date(sent["date"]) + timedelta(days=int(filed_days))).isoformat(), "reference": ref.isoformat(), "set_by": None, "filed": True}
     return {"due": (ref + timedelta(days=int(next_in_days))).isoformat(), "reference": ref.isoformat(), "set_by": None}
 
 

@@ -91,6 +91,7 @@ class Settings:
     auto_update: bool = False
     auto_update_max_pages: int = 20
     update_token_budget: int = 200_000
+    mail_subject: str | None = None  # the subject of a letter's mail draft (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
 
 
 def _flag(env, name, default):
@@ -151,6 +152,7 @@ def load_settings(env=None):
         auto_update=_flag(env, "CASEPATH_AUTO_UPDATE", False),
         auto_update_max_pages=int(env.get("CASEPATH_AUTO_UPDATE_MAX_PAGES", "20")),
         update_token_budget=int(env.get("CASEPATH_UPDATE_TOKEN_BUDGET", "200000")),
+        mail_subject=env.get("CASEPATH_MAIL_SUBJECT") or None,
         organisation=env.get("CASEPATH_ORGANISATION") or None,
         writing_language=env.get("CASEPATH_WRITING_LANGUAGE") or None,
         identity_format=identity_format,

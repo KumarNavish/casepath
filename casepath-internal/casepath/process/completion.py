@@ -1181,13 +1181,15 @@ def frozen_meaning(draft, listed, events, assessment=None):
 
 
 def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=None, op_id=None, deadline=None, relies=(), marks=None,
-                    file_ids=None, meaning=None):
+                    file_ids=None, meaning=None, addresses=None):
     """The fields of «action.approved»: the version and what it consists of, the premise (``premise_``: premise() now),
     the options chosen, the reviewed legal content it rests on (``relies``: relied_elements) with the jurists' marks on it
     as they stand (``marks``: the marks that hold now), the files of the case it was given on (``file_ids``) and what it
     means per recipient (``meaning``: frozen_meaning), which its dispatch records."""
     return {"version": draft["version"], "form": draft.get("form") or draft.get("kind"), "action_kind": draft.get("kind"), "title": draft.get("title"),
-            "recipients": [{k: r[k] for k in ("to", "recipient", "title", "forms", "titles")} for r in draft.get("recipients") or ()],
+            # ``addresses``: the mail address shown beside «Freigeben» per recipient (found in the file or set by the handler)
+            "recipients": [{**{k: r[k] for k in ("to", "recipient", "title", "forms", "titles")},
+                            **({"address": str(addresses.get(r["to"]) or "")} if addresses is not None else {})} for r in draft.get("recipients") or ()],
             "respond_by": draft.get("respond_by"), "premise": premise_,
             "chosen": (assessment or {}).get("chosen"), "options_sha256": (assessment or {}).get("options_sha256"),
             "text_sha256": sha(draft.get("text")), "also": [{"kind": a["kind"], "sha256": sha(a["text"])} for a in draft.get("also") or () if a.get("text")],
@@ -1215,6 +1217,18 @@ def look_days(process, form, stage):
     code = record_of(form)[2]
     rule = next((r for r in (process or {}).get("clock") or () if code and code in r.get("after", ()) and (r.get("stages") is None or stage in r["stages"])), None)
     return int(rule["days"]) if rule else None
+
+
+def filed_days(process, events, stage):
+    """The days after its dispatch that the Versandpaket of the latest letter sent filed as the Wiedervorlage (expected:
+    the clock's rule of its code at the stage of its action kind, else at ``stage``), or None: a letter that set a reply
+    date, or one the clock has no rule for. The wait after the dispatch keeps this (clock.follow_up)."""
+    from .clock import last_dispatch
+    sent = last_dispatch(events)
+    if not sent or sent.get("respond_by"):
+        return None
+    own = (((process or {}).get("action_kinds") or {}).get(sent.get("action_kind")) or {}).get("stage")
+    return look_days(process, sent.get("form"), own or stage)
 
 
 def next_look(process, form, stage, day, respond_by=None):

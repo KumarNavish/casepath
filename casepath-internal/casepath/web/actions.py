@@ -26,7 +26,7 @@ from fastapi.responses import Response
 from pydantic import BaseModel, ConfigDict, Field
 
 from ..process import completion, letters
-from . import bundle as versandpaket
+from . import bundle as versandpaket, outbox
 from .store import Conflict, NotFound
 
 STUDY = "Eine Studienkopie wird nicht bearbeitet: sie zeigt den eingefrorenen Lauf."
@@ -76,7 +76,13 @@ class Dispatch(BaseModel):
     op_id: str = Field(pattern=OP)
 
 
-def register(app, store, catalogue, mirror, record, state, user, case_view=None, parity_sha=None, marks=None):
+class Address(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    to: Literal["kunde", "gegenpartei", "kanzlei", "behoerde", "andere"]
+    address: str = Field(max_length=254)  # empty: no address (the proposal is taken away)
+
+
+def register(app, store, catalogue, mirror, record, state, user, case_view=None, parity_sha=None, marks=None, handover=None):
     """The routes above, on ``app``. ``case_view``: the case view (web/app.py get_case), so the draft, its version and its
     state are exactly what the handler sees; ``record``: one event in the case's log, as every route writes it;
     ``marks``: the jurists' marks that hold now (web/app.py review_marks)."""
@@ -181,7 +187,8 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
                 fields = completion.approval_record(draft, done.get("premise_now") or {}, view.get("assessment"), run_id=(prepared or {}).get("id"),
                                                     files_digest=store.files_digest(case_id), op_id=body.op_id, deadline=act.get("deadline"),
                                                     relies=relies, marks=marks_now(), file_ids=[f["id"] for f in store.list_files(case_id)],
-                                                    meaning=completion.frozen_meaning(draft, view.get("items") or [], events, view.get("assessment")))
+                                                    meaning=completion.frozen_meaning(draft, view.get("items") or [], events, view.get("assessment")),
+                                                    addresses={r["to"]: r["address"]["value"] for r in done.get("handover") or ()})
                 existing = record(case_id, who, "action.approved", **fields)
             saved = completion._bundle(store.list_case_events(case_id), existing)
             if saved is None:  # the Versandpaket, from the same state: the exact text, enclosures, note and next date
@@ -287,6 +294,19 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
                         relies_marks=completion.marks_of(approval.get("relies"), marks_now()), op_id=body.op_id)
         sync()
         return {"reconciled": logged}
+
+    @app.post("/api/cases/{case_id}/handover/address", status_code=201)
+    def set_address(case_id: str, body: Address, who=Depends(user)):
+        """The mail address a letter of this case goes to, for one recipient, as the handler sets it: it replaces the one
+        found in the file (or none) from now on, attributed. Empty takes the address away. Nothing is sent."""
+        row = case(case_id)
+        refuse_study(row)
+        value = body.address.strip()
+        if value and not outbox.valid_address(value):
+            raise HTTPException(422, "Bitte eine E-Mail-Adresse eingeben.")
+        logged = record(case_id, who, "handover.address", to=body.to, address=value)
+        sync()
+        return {"address": logged}
 
     def stored(case_id, version):
         events = store.list_case_events(case_id)
