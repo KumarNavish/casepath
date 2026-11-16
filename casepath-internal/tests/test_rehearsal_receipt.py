@@ -892,6 +892,55 @@ class ConsoleDiagnoseTests(unittest.TestCase):
         rows = self.node("run", "shape D11", segments)["result"]["rows"]
         self.assertEqual({r[4] for r in rows}, {"text", None})
 
+    def test_l_a_run_stopped_at_the_threshold_is_continued_from_its_kept_base_case_without_a_second_preparation(self):
+        """The preparation passed its stop threshold and the run stopped, as it must. Whether the arrival and the update
+        are still made on the base case that was kept is a decision of its own, with its own phrase: «continue D11 …»."""
+        onward = self.phrase.replace("diagnose", "continue", 1)
+        served = Served(FakeApp(full_usage=230_000))
+        self.addCleanup(served.close)
+        stopped = self.node("run", self.phrase + " keep", served)["result"]
+        self.assertEqual((stopped["status"], stopped["stopped"], stopped["kept"]), ("stopped", {"step": "prepare", "reason": "past_the_stop_threshold"}, True))
+        self.assertEqual(self.node("run", self.phrase + " keep", served)["result"], stopped)  # its own phrase again: already run
+        before = len(served.app.calls)
+        answer = self.node("run", onward, served)
+        receipt = answer["result"]
+        self.assertEqual(answer.get("error"), None)
+        self.assertEqual((receipt["status"], receipt["stopped"], receipt["continued_after"], receipt["base"]), ("done", None, "past_the_stop_threshold", "case_base"))
+        self.assertIn("the preparation is not made again", answer["said"][1])
+        self.assertEqual([r["kind"] for r in receipt["runs"]], ["full", "update"])
+        self.assertEqual(receipt["runs"][0], stopped["runs"][0])  # the preparation as it was recorded: not run again
+        self.assertEqual((receipt["case"]["next_action"], receipt["duplicate_refused"], receipt["decisions"]), ("a5", True, ["deckung"]))
+        made = [path for method, path in served.app.calls[before:] if method != "GET"]
+        self.assertEqual(made, ["/api/cases/case_base/files", "/api/cases/case_base/files", "/api/cases/case_base/update", "/api/cases/case_base/edits",
+                                "/api/cases/case_base/labels"])  # the arrival, its second upload, one update, the decision, the labels: no cut, no preparation, no removal
+        self.assertEqual([p for m, p in served.app.calls if p in ("/api/cases/case_d11/cut", "/api/cases/case_base/runs")],
+                         ["/api/cases/case_d11/cut", "/api/cases/case_base/runs"])
+        guard({k: v for k, v in receipt.items() if k != "format"})
+        self.assertEqual(self.node("run", onward, served)["result"], receipt)  # continued once: a done run is not continued again
+        self.assertEqual([p for m, p in served.app.calls if m == "POST" and p == "/api/cases/case_base/update"], ["/api/cases/case_base/update"])
+
+    def test_m_nothing_else_is_continued_and_a_continuation_that_loses_its_tab_is_taken_up(self):
+        onward = self.phrase.replace("diagnose", "continue", 1)
+        empty = Served(FakeApp())
+        self.addCleanup(empty.close)
+        self.assertIn("no run was made here", self.node("run", onward, empty, store="none.json")["refused"])
+        self.assertEqual({m for m, _ in empty.app.calls}, {"GET"})
+        done = self.node("run", self.phrase, empty, store="done.json")["result"]
+        self.assertEqual(self.node("run", onward, empty, store="done.json"), {"said": [], "refused": "the run made here did not stop at the preparation's threshold on this plan: nothing done"}, done["status"])
+        gone = Served(FakeApp(full_usage=230_000))  # stopped at the threshold, its base case not kept: it was deleted
+        self.addCleanup(gone.close)
+        self.node("run", self.phrase, gone, store="gone.json")
+        self.assertIn("base case was not kept", self.node("run", onward, gone, store="gone.json")["refused"])
+        lost = Served(FakeApp(full_usage=230_000))
+        self.addCleanup(lost.close)
+        self.node("run", self.phrase + " keep", lost, store="lost.json")
+        self.assertIsNone(self.node("run", onward, lost, store="lost.json", DIE="GET /api/runs/run_update"))  # the tab is lost while the update runs
+        answer = self.node("run", onward, lost, store="lost.json")
+        self.assertEqual((answer["result"]["status"], answer["result"]["continued_after"], answer["result"]["resumed"]), ("done", "past_the_stop_threshold", 1))
+        posts = [p for m, p in lost.app.calls if m == "POST"]
+        self.assertEqual((posts.count("/api/cases/case_base/update"), posts.count("/api/cases/case_base/runs"), lost.app.uploads),
+                         (1, 1, [["Antwort-1.pdf", "Antwort-2.pdf"], ["Antwort-1.pdf"]]))
+
     def test_g_the_script_calls_only_the_page_it_is_pasted_into_and_names_no_address_or_identity(self):
         text = CONSOLE.read_text()
         self.assertNotRegex(text, r"https?://")  # no address: relative requests on the page's own origin

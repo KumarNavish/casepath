@@ -4,6 +4,10 @@
 // model itself. Paste the file, then type one of:
 //   await casepathDiagnose("hashes D11")                                        read only: the plan and the approving phrase
 //   await casepathDiagnose("shape D11")                                         read only: why a plan cannot be made (see shape())
+//   await casepathDiagnose("continue D11 <tree hash> <labels sha256> <plan>")    after a run stopped because its preparation
+//       passed the stop threshold and its base case was kept: the arrival, the one update, the decisions and the reading
+//       on that base case. The preparation is not made again. A decision of its own, with its own approval of its tokens
+//       (the update is capped by the deployment, CASEPATH_UPDATE_TOKEN_BUDGET); the receipt then says «continued_after».
 //   await casepathDiagnose("diagnose D11 <tree hash> <labels sha256> <plan>")    the run, on exactly that build, labels and cut
 //   await casepathDiagnose("diagnose D11 <tree hash> <labels sha256> <plan> keep")   the same, keeping the base case
 // Anything else: nothing happens, no request is made. The phrase is the approval of this run's steps only; the
@@ -115,9 +119,11 @@
     phrase = String(phrase || "").trim();
     if (phrase === `hashes ${DOSSIER}`) return { mode: "hashes" };
     if (phrase === `shape ${DOSSIER}`) return { mode: "shape" };
+    const again = new RegExp(`^continue ${DOSSIER} ([0-9a-f]{12}) ([0-9a-f]{12,64}) ([0-9a-f]{12})$`).exec(phrase);
+    if (again) return { mode: "diagnose", tree: again[1], wanted: again[2], plan: again[3], keep: true, onward: true };
     const m = new RegExp(`^diagnose ${DOSSIER} ([0-9a-f]{12}) ([0-9a-f]{12,64}) ([0-9a-f]{12})( keep)?$`).exec(phrase);
     if (!m) throw new Refused(`confirm must read: diagnose ${DOSSIER} <tree hash> <labels sha256> <plan> [keep], or hashes ${DOSSIER}`);  // (or shape D11)
-    return { mode: "diagnose", tree: m[1], wanted: m[2], plan: m[3], keep: Boolean(m[4]) };
+    return { mode: "diagnose", tree: m[1], wanted: m[2], plan: m[3], keep: Boolean(m[4]), onward: false };
   }
 
   async function find(api) {
@@ -339,7 +345,7 @@
   // The run (steps 1 to 7) on exactly the approved build, labels and cut; the receipt, also when it stops. A run whose
   // receipt reads «started» is taken up where it stands (``progress``: the runs it started and whether the arrival went
   // in, kept beside the receipt); the app's own record of the base case's runs decides where the two disagree.
-  async function diagnose(api, store, say, tree, wanted, approvedPlan, keep, poll = 10000, stale = 60000, prepareTimeout = 2700, updateTimeout = 1800) {
+  async function diagnose(api, store, say, tree, wanted, approvedPlan, keep, poll = 10000, stale = 60000, onward = false, prepareTimeout = 2700, updateTimeout = 1800) {
     const manifest = await api.call("GET", "/api/manifest");
     if (!String(manifest.source_tree_sha256 || "").startsWith(tree)) throw new Refused("the running build is not the one approved: nothing done");
     const [caseId, labels] = await located(api);
@@ -347,13 +353,31 @@
     if (!signed.startsWith(wanted)) throw new Refused("D11's labels are not the ones approved: nothing done");
     const key = `casepath.diagnose/${DOSSIER}-${signed.slice(0, 12)}`;
     const held = store.getItem(key);
-    let receipt = null, progress = {};
+    let receipt = null, progress = {}, continuedNow = false;
+    if (onward && !held) throw new Refused("no run was made here that could be continued: nothing done");
     if (held) {
       receipt = JSON.parse(held);
-      if (receipt.status !== "started") {
+      const passed = receipt.status === "stopped" && (receipt.stopped || {}).step === "prepare" && (receipt.stopped || {}).reason === "past_the_stop_threshold";
+      if (onward && receipt.status !== "started" && receipt.continued_after) {
+        say(`already continued: ${key} holds its receipt; nothing done`);
+        return receipt;
+      }
+      if (onward && receipt.status !== "started") {
+        // only a run that stopped at the threshold, with its preparation completed and its base case kept, is continued
+        if (!passed || receipt.plan !== approvedPlan) throw new Refused("the run made here did not stop at the preparation's threshold on this plan: nothing done");
+        if (!receipt.kept || !receipt.base) throw new Refused("the run's base case was not kept: nothing to continue; nothing done");
+        if (receipt.runs.length !== 1 || receipt.runs[0].status !== "completed") throw new Refused("the run's preparation is not a completed one: nothing done");
+        continuedNow = true;
+        receipt.continued_after = receipt.stopped.reason;
+        receipt.status = "started";
+        receipt.stopped = null;
+        store.setItem(`${key}#progress`, JSON.stringify({ full: receipt.runs[0].id, beat: 0 }));
+        store.setItem(key, JSON.stringify(receipt));
+      } else if (receipt.status !== "started") {
         say(`already run: ${key} holds its receipt; nothing done`);
         return receipt;
       }
+      if (onward && !receipt.continued_after) throw new Refused("the run started here is not a continued one: type its own phrase; nothing done");
       progress = JSON.parse(store.getItem(`${key}#progress`) || "{}");
       if (receipt.plan !== approvedPlan || receipt.kept !== keep) throw new Refused("the run started here was approved with another phrase: nothing done");
       if (Date.now() - (progress.beat || 0) < stale) throw new Refused("this run is being taken in another tab, or stopped a moment ago: wait a minute and type the phrase again; nothing done");
@@ -362,7 +386,9 @@
     const [pdf, cut] = await cutOf(api, caseId, labels);
     say((await planLines(cut, tree, signed.slice(0, 12))).join("\n"));
     if (await sealed(cut) !== approvedPlan) throw new Refused("the cut is not the approved plan: nothing done");
-    if (resumed) {
+    if (continuedNow) {
+      say(`continuing the run that stopped at the preparation's threshold (base ${receipt.base}): the arrival, one update, the decisions and the reading; the preparation is not made again`);
+    } else if (resumed) {
       receipt.resumed = (receipt.resumed || 0) + 1;
       say(`taking up the run started here (base ${receipt.base || "not made yet"}, ${receipt.runs.length} of its runs recorded): no step is repeated`);
     } else {
@@ -410,7 +436,8 @@
           save();
         }
         if (full.status !== "completed") throw new Stop("prepare", ["failed", "interrupted", "discarded"].includes(full.status) ? "failed" : "not_finished");
-        if (receipt.runs[0].non_cached > STOP_AFTER_PREPARE) throw new Stop("prepare", "past_the_stop_threshold");
+        // (a continued run passed the threshold once and was stopped for it; its continuation was approved knowing that)
+        if (receipt.runs[0].non_cached > STOP_AFTER_PREPARE && !receipt.continued_after) throw new Stop("prepare", "past_the_stop_threshold");
         // 4 the arrival: the replies' pages as one import, then one of them again
         let update;
         if (receipt.runs.length >= 2) {
@@ -543,13 +570,13 @@
 
   // The console's one command. ``options`` is for the tests only: {base, store, say, poll, stale}.
   globalThis.casepathDiagnose = async (phrase, options = {}) => {
-    const { mode, tree, wanted, plan: approvedPlan, keep } = parse(phrase);  // refuses before any request
+    const { mode, tree, wanted, plan: approvedPlan, keep, onward } = parse(phrase);  // refuses before any request
     const api = Api(options.base || "");
     const say = options.say || ((line) => console.log(line));
     if (mode === "hashes") return hashes(api, say);
     if (mode === "shape") return shape(api, say);
     const receipt = await diagnose(api, options.store || globalThis.localStorage, say, tree, wanted, approvedPlan, keep,
-                                   options.poll === undefined ? 10000 : options.poll, options.stale === undefined ? 60000 : options.stale);
+                                   options.poll === undefined ? 10000 : options.poll, options.stale === undefined ? 60000 : options.stale, onward);
     say(dumps(receipt, false));
     return receipt;
   };
