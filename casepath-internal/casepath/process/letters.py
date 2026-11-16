@@ -247,10 +247,19 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
 
 
 def _context_substance(case, items, events, files, day, evaluation=None, process=None, facts=None, assessment=None):
-    """What the assessment letter says about the case (Slice A: from ``assessment``): «In Ihrem Fall» (``im_fall``), the
-    answers to the customer's questions (``zu_fragen``), the recommendation (``empfehlung``), what is still to be sent
-    (``nachzureichen``) and the hint to the customer's own templates (``vorlage_hinweis``). So far from the key points that
-    apply, the dates others set, what came in and the documents still asked."""
+    """What the assessment letter says about the case: «In Ihrem Fall» (``im_fall``), the answers to the customer's
+    questions (``zu_fragen``), the recommendation (``empfehlung``), what is still to be sent (``nachzureichen``) and the
+    hint to the customer's own templates (``vorlage_hinweis``). In an area with an options file, from the decision brief
+    (``assessment.letter``, assessment.py): the wish, the replies, the facts the recommendation rests on and the costs
+    claimed, each answer by its rule and intent, the recommendation proposed or adopted, the residual request. Otherwise,
+    and for a run without the account's residual, as before: the key points that apply, the dates others set, what came
+    in, the documents still asked; the recommendation stays the handler's gap."""
+    letter = (assessment or {}).get("letter")
+    if letter:
+        before = _context_substance(case, items, events, files, day, evaluation, process, facts) if letter.get("nachzureichen") is None or not letter.get("im_fall") else {}
+        return {"im_fall": letter["im_fall"] or before["im_fall"], "zu_fragen": letter["zu_fragen"], "empfehlung": letter["empfehlung"],
+                "nachzureichen": before["nachzureichen"] if letter.get("nachzureichen") is None else letter["nachzureichen"],
+                "vorlage_hinweis": " ".join(customer_letters.referrals(items, "A5"))}
     summary = _summary(items)
     docs = asked(items, events, "document")
     # a point a jurist marked «Änderung nötig» (review) is not stated by itself: the handler writes it in the gap if it holds

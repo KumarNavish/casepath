@@ -840,6 +840,13 @@ def main(argv=None):
                 wrong = [k for k, ok in found.items() if ok != module["law"][k]["verified"]]
                 print(f"  am amtlichen Text: {sum(found.values())} von {len(found)} Passagen gefunden"
                       + (f"; Kennzeichnung «verified» stimmt nicht bei {', '.join(wrong)}" if wrong else ""))
+                from . import options  # the area's options file cites rows of its own: each checked the same way
+                data = options.load(module["id"]) if module.get("id") in options.areas() else None
+                if data:
+                    found = options.verify(data, texts)
+                    wrong = [k for k, ok in found.items() if ok != data["law"][k]["verified"]]
+                    print(f"  Optionen {data['version']} am amtlichen Text: {sum(found.values())} von {len(found)} Passagen gefunden"
+                          + (f"; Kennzeichnung «verified» stimmt nicht bei {', '.join(wrong)}" if wrong else ""))
     except (CatalogueError, json.JSONDecodeError) as error:
         sys.exit(f"area invalid: {error}")
 

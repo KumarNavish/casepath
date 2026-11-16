@@ -289,7 +289,7 @@ def worded(deadline):
 ITEM_KINDS = frozenset({"step", "document", "fact", "deadline", "next_action", "letter_question", "hint", "key_point", "stage_line",
                         "stand", "entry", "record_gap", "customer_letter", "customer_question", "party", "timeline", "open_point",
                         "answer", "summary", "reply", "cover", "check", "contact"})
-SCREEN_KINDS = frozenset({"letter", "point", "followup"})  # beside the list: the letter, a point to settle first, the follow-up date
+SCREEN_KINDS = frozenset({"letter", "point", "followup", "residual"})  # beside the list: the letter, a point to settle first, the follow-up date, a line of what is still to send
 
 
 def build_items(state, result, files=None, events=None, review=None):
@@ -436,6 +436,9 @@ def build_items(state, result, files=None, events=None, review=None):
         variant = next((v for v in (planned or {}).get("instead", []) if evaluate_condition(v["when"], state.get("facts") or {}) is True), None)
         if variant:  # a situation the stage answers differently (after a call: keep it pending with a deadline)
             planned = {**planned, **{k: v for k, v in variant.items() if k != "when"}, "skip_if": None}
+        elif planned and not state.get("study"):  # the customer answered and only the handler's own decision keeps the
+            from .assessment import premise_assessment  # assessment back: it is prepared on that decision's premise
+            planned = premise_assessment(graph, ev, here, state.get("facts") or {}) or planned  # (assessment.py); a study's rules never
         known_facts = state.get("facts") or {}
         floor = stage_floor(graph, known_facts)
         done = done_actions(known_facts)
@@ -556,6 +559,7 @@ def build_items(state, result, files=None, events=None, review=None):
                                                            "terms": bool(((settling or {}).get("terms") or {}).get("amount")),
                                                            "iban": bool(((settling or {}).get("iban") or {}).get("holder"))}} if settling or owed else {}),
                                         **({"choices": planned["choices"]} if planned.get("choices") else {}),
+                                        **({"premise": planned["premise"]} if planned.get("premise") else {}),
                                         **({"until": awaited["date"], "awaits": awaited} if awaited else {}),
                                         **({"deadline": planned["deadline"], "urgency": urgent.urgency(pressing, look, rule)} if pressing else {}),
                                         **({"template": planned["template"]} if pressing and planned.get("template") else {}),
@@ -725,12 +729,20 @@ def build_items(state, result, files=None, events=None, review=None):
                 **({"deadline": t["deadline"]} if t.get("deadline") else {}), **({"posted": True} if t.get("posted") else {}),
                 **marked(held))
     brief = result.get("brief") or {}
-    applying = [p for p in keypoints.evaluate(graph, state.get("facts") or {}) if not flagged.key_point(p["id"])] if graph and ev else []
-    for i, q in enumerate(brief.get("questions") or []):  # the customer's own questions, answered by a key point where one matches
-        point = keypoints.answer_for(q.get("question"), applying)
+    # the customer's own questions: each answered by the rule its tags name and the intent its words ask, held for the
+    # handler where a guard does not trust the tag, open where no rule of the area answers it (assessment.py)
+    from .assessment import evaluate_questions
+    evaluated = evaluate_questions(state, result, items, events, review, files=files) if graph and ev else []
+    for i, q in enumerate(brief.get("questions") or []):
+        row = evaluated[i] if i < len(evaluated) else {"state": "offen", "reason": "keine Regel des Gebiets", "about": list(q.get("about") or [])}
+        stated = row.get("state") in ("beantwortet", "bedingt") and row.get("answer")
         add("customer_question", str(i), value=q.get("question"), stated_as="established", verdict=None, evidence=_evidence(q.get("citations")),
             node=None, origin="claim_reader", chain=False, label=q.get("question"),
-            **({"answered_by": point["id"], "answer": keypoints.sentence(point)} if point else {}))
+            **({"answered_by": row["answered_by"]} if row.get("answered_by") else {}), **({"answer": row["answer"]} if stated else {}),
+            answer_state=row.get("state"), about=row.get("about") or [], points=row.get("points") or [], intent=row.get("intent"),
+            reason=row.get("reason"), offered=row.get("offered") or [], row=row.get("row"), waits=row.get("ask"), next=row.get("next"),
+            taken=bool(row.get("taken")), wants=bool(row.get("wants")), evidence_in=row.get("evidence_in") or [])
+        # none of these fields is hashed (HASHED: «ask» is a document's, never set here)
     needs = {re.split(r"\W+", str((i.get("label") or {}).get("de") or "").lower())[0] for i in items if i["kind"] == "document"}
     for i, doc in enumerate(brief.get("not_enclosed") or []):  # mentioned in the file but not in it: offered as such
         head = re.split(r"\W+", doc["title"].lower())[0]

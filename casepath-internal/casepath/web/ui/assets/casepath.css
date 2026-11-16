@@ -663,6 +663,32 @@ mark.cp-gap{background:var(--yellow);color:inherit;border-radius:2px;padding:0 2
 .cp-bar>.cp-date.cp-then{flex:1 1 auto}
 /* Each slice's own rules go in its block below. */
 /* assessment */
+mark.cp-hit.chosen{background:var(--crimson-tint);box-shadow:0 0 0 2px var(--crimson-track)}
+.cp-a-chip{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:11.5px;line-height:1.6;border:1px solid var(--border);color:var(--ink-2);white-space:nowrap;vertical-align:baseline}
+.cp-a-chip.s-beantwortet,.cp-a-chip.s-taken,.cp-a-chip.s-erfüllt{border-color:var(--green);color:var(--green-ink)}
+.cp-a-chip.s-bedingt,.cp-a-chip.s-vermutet,.cp-a-chip.s-offen,.cp-a-chip.s-nicht-geprüft{border-style:dashed}
+.cp-a-chip.s-pruefen,.cp-a-chip.s-widersprüchlich,.cp-a-chip.s-nicht-erfüllt{border-color:var(--crimson);color:var(--crimson)}
+.cp-a-q+.cp-a-q,.cp-a-fact+.cp-a-fact,.cp-a-ask+.cp-a-ask{margin-top:6px}
+.cp-a-why{color:var(--ink-2);font-size:12.5px;line-height:1.35;margin-top:1px}
+.cp-a-tag{display:inline-block;padding:0 6px;border-radius:3px;background:var(--crimson-wash);color:var(--crimson);font-size:11.5px;font-weight:600}
+.cp-a-tag.own{background:var(--notice);color:var(--notice-ink)}
+.cp-a-fix{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.cp-a-fix .cp-chip,.cp-a-offers .cp-chip{cursor:pointer;background:none;font:inherit;font-size:12px}
+.cp-a-fix .cp-chip:hover,.cp-a-offers .cp-chip:hover,.cp-a-fix .cp-chip[aria-pressed=true]{border-color:var(--crimson);color:var(--crimson)}
+.cp-a-offers{margin-top:3px}
+.cp-a-ask.done{color:var(--green-ink)}
+.cp-brief{font-size:13px}
+.cp-a-head{margin:6px 0 2px;font-weight:600;color:var(--ink)}
+.cp-a-head:first-child{margin-top:0}
+.cp-a-list{margin:0;padding-left:16px}
+.cp-a-list ul{margin:2px 0 4px;padding-left:16px}
+.cp-a-list li+li{margin-top:2px}
+.cp-rec-pick{display:grid;gap:6px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.cp-rec-pick fieldset{border:0;margin:0;padding:0}
+.cp-rec-pick legend{font-weight:600;padding:0;margin-bottom:2px}
+.cp-rec-pick label{display:block;cursor:pointer}
+.cp-rec-pick .cp-button{justify-self:start}
+@media (max-height:760px){.cp-decide-more:has(.cp-brief){max-height:170px}}  /* a short window keeps the letter in view */
 
 /* completion */
 

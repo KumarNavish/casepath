@@ -1,0 +1,152 @@
+{
+ "format": "casepath.options/1",
+ "area": "mietmangel-handler",
+ "version": "2026-11-15.2",
+ "status": "draft",
+ "label": "aus Gesetz und Praxis abgeleitet, noch nicht freigegeben",
+ "law": {
+  "259g-voll": {"cite": "Art. 259g Abs. 1 OR", "sr": "220", "article": "259g", "passage": "Verlangt der Mieter einer unbeweglichen Sache vom Vermieter die Beseitigung eines Mangels, so muss er ihm dazu schriftlich eine angemessene Frist setzen und kann ihm androhen, dass er bei unbenütztem Ablauf der Frist Mietzinse, die künftig fällig werden, bei einer vom Kanton bezeichneten Stelle hinterlegen wird. Er muss die Hinterlegung dem Vermieter schriftlich ankündigen.", "verified": true},
+  "259g-2": {"cite": "Art. 259g Abs. 2 OR", "sr": "220", "article": "259g", "passage": "Mit der Hinterlegung gelten die Mietzinse als bezahlt.", "verified": true},
+  "259h-voll": {"cite": "Art. 259h OR", "sr": "220", "article": "259h", "passage": "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat. Der Vermieter kann bei der Schlichtungsbehörde die Herausgabe der zu Unrecht hinterlegten Mietzinse verlangen, sobald ihm der Mieter die Hinterlegung angekündigt hat.", "verified": true},
+  "257d-1": {"cite": "Art. 257d Abs. 1 OR", "sr": "220", "article": "257d", "passage": "Ist der Mieter nach der Übernahme der Sache mit der Zahlung fälliger Mietzinse oder Nebenkosten im Rückstand, so kann ihm der Vermieter schriftlich eine Zahlungsfrist setzen und ihm androhen, dass bei unbenütztem Ablauf der Frist das Mietverhältnis gekündigt werde.", "verified": true},
+  "259b-a": {"cite": "Art. 259b lit. a OR", "sr": "220", "article": "259b", "passage": "Kennt der Vermieter einen Mangel und beseitigt er ihn nicht innert angemessener Frist, so kann der Mieter: a. fristlos kündigen, wenn der Mangel die Tauglichkeit einer unbeweglichen Sache zum vorausgesetzten Gebrauch ausschliesst oder erheblich beeinträchtigt", "verified": true},
+  "259d-voll": {"cite": "Art. 259d OR", "sr": "220", "article": "259d", "passage": "Wird die Tauglichkeit der Sache zum vorausgesetzten Gebrauch beeinträchtigt oder vermindert, so kann der Mieter vom Vermieter verlangen, dass er den Mietzins vom Zeitpunkt, in dem er vom Mangel erfahren hat, bis zur Behebung des Mangels entsprechend herabsetzt.", "verified": true}
+ },
+ "implies": [
+  {"when": {"fact": "maengelruege_schriftlich", "is": true}, "then": {"fact": "mangel_gemeldet", "is": true}}
+ ],
+ "wishes": [
+  {"fact": "will_beseitigung", "text": "die Beseitigung des Mangels", "stems": ["beseitig", "beheb", "entfern", "reparier", "sanier"]},
+  {"fact": "will_reduktion", "text": "eine Herabsetzung des Mietzinses", "stems": ["reduktion", "herabsetz", "reduzier", "minderung"]},
+  {"fact": "will_schadenersatz", "text": "den Ersatz Ihrer Kosten und Schäden", "stems": ["ersatz", "ersetz", "erstatt", "vergüt", "entschädig"]},
+  {"fact": "will_auszug", "text": "einen vorzeitigen Auszug", "stems": ["auszieh", "auszug", "kündig"]}
+ ],
+ "asks": {
+  "mangel_besteht": {"frage": "Besteht der Mangel heute noch?", "ob": "ob der Mangel heute noch besteht"},
+  "reaktion_vermieter": {"frage": "Wie hat die Vermieterschaft auf Ihre Meldung reagiert?", "ob": "wie die Vermieterschaft auf Ihre Meldung reagiert hat"},
+  "maengelruege_schriftlich": {"frage": "Haben Sie der Vermieterschaft den Mangel schriftlich gemeldet, und wenn ja, wann?", "ob": "ob und wann Sie der Vermieterschaft den Mangel schriftlich gemeldet haben"},
+  "mangel_gemeldet": {"frage": "Haben Sie der Vermieterschaft den Mangel gemeldet, und wenn ja, wann und wie?", "ob": "ob, wann und wie Sie der Vermieterschaft den Mangel gemeldet haben"},
+  "will_beseitigung": {"frage": "Möchten Sie, dass die Vermieterschaft den Mangel beseitigt?", "ob": "ob Sie möchten, dass die Vermieterschaft den Mangel beseitigt"},
+  "will_reduktion": {"frage": "Möchten Sie eine Herabsetzung des Mietzinses verlangen?", "ob": "ob Sie eine Herabsetzung des Mietzinses verlangen möchten"},
+  "will_schadenersatz": {"frage": "Möchten Sie Ersatz für Kosten oder Schäden verlangen, die Ihnen der Mangel verursacht hat?", "ob": "ob Sie Ersatz für Kosten oder Schäden verlangen möchten, die Ihnen der Mangel verursacht hat"},
+  "will_auszug": {"frage": "Möchten Sie die Wohnung wegen des Mangels vorzeitig verlassen?", "ob": "ob Sie die Wohnung wegen des Mangels vorzeitig verlassen möchten"}
+ },
+ "case_lines": [
+  {"id": "ruege", "fact": "maengelruege_schriftlich", "is": true, "text": "Sie haben den Mangel der Vermieterschaft schriftlich gemeldet."},
+  {"id": "ruege_fehlt", "fact": "maengelruege_schriftlich", "is": false, "text": "Sie haben den Mangel der Vermieterschaft bisher nicht schriftlich gemeldet."},
+  {"id": "seit", "fact": "mangel_seit", "known": true, "text": "Der Mangel besteht nach Ihren Angaben seit {wert}."},
+  {"id": "besteht", "fact": "mangel_besteht", "is": true, "text": "Der Mangel war nach Ihren Angaben vom {datum} nicht behoben."},
+  {"id": "behoben", "fact": "mangel_besteht", "is": false, "text": "Der Mangel war nach Ihren Angaben vom {datum} behoben."},
+  {"id": "abgelehnt", "fact": "reaktion_vermieter", "is": "Abgelehnt / offene Punkte", "text": "Nach Ihren Angaben hat die Vermieterschaft weitere Massnahmen abgelehnt oder Punkte offen gelassen."},
+  {"id": "still", "fact": "reaktion_vermieter", "is": "Keine Reaktion", "text": "Nach Ihren Angaben hat die Vermieterschaft auf Ihre Meldung nicht reagiert."},
+  {"id": "fachperson", "fact": "fachperson_beigezogen", "is": true, "text": "Sie haben eine Fachperson beigezogen."}
+ ],
+ "wording": {
+  "wish": "Sie möchten {wuensche}.",
+  "replies_all": {"one": "Mit Ihrer Nachricht vom {daten} haben Sie unsere Fragen beantwortet.", "many": "Mit Ihren Nachrichten vom {daten} haben Sie unsere Fragen beantwortet."},
+  "replies_some": {"one": "Mit Ihrer Nachricht vom {daten} haben Sie zu unseren Fragen Stellung genommen.", "many": "Mit Ihren Nachrichten vom {daten} haben Sie zu unseren Fragen Stellung genommen."},
+  "claims": "Sie machen folgende Kosten geltend: {posten}.",
+  "claim_amount": " (nach Ihren Angaben {betrag})",
+  "claim_line": "Belege zu: {posten}",
+  "join": "Zudem empfehlen wir Ihnen, ",
+  "conditional": "Das hängt noch von einer Angabe ab; bitte teilen Sie uns mit: {frage}",
+  "discuss": "Wir empfehlen Ihnen, das vorher mit uns zu besprechen.",
+  "changes": "Unsere Empfehlung beruht darauf, dass {bedingung}; ändert sich daran etwas, teilen Sie uns das bitte mit.",
+  "open_wish": "Bitte teilen Sie uns zudem mit, {frage}; davon hängt ab, ob wir Ihnen empfehlen, {folge}.",
+  "open_only": "uns mitzuteilen, {frage}; davon hängt ab, ob wir Ihnen empfehlen, {folge}"
+ },
+ "sofern": {
+  "mangel_besteht": "der Mangel weiterhin besteht",
+  "maengelruege_schriftlich": "Sie den Mangel schriftlich gemeldet haben",
+  "mangel_gemeldet": "Sie den Mangel der Vermieterschaft gemeldet haben",
+  "reaktion_vermieter": "die Vermieterschaft den Mangel nicht behoben hat",
+  "will_beseitigung": "Sie das weiterhin möchten",
+  "will_reduktion": "Sie das weiterhin möchten",
+  "will_schadenersatz": "Sie das weiterhin möchten",
+  "will_auszug": "Sie das weiterhin möchten"
+ },
+ "answers": [
+  {"points": ["hinterlegung"], "intent": "hinterlegen", "stems": ["hinterleg"], "state": "bedingt", "next": {"kind": "discuss"}, "parts": [
+   {"text": "Eine Hinterlegung des Mietzinses setzt voraus, dass Sie der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung des Mangels setzen und ihr dabei androhen, die künftig fällig werdenden Mietzinse bei der vom Kanton bezeichneten Stelle zu hinterlegen, und dass Sie die Hinterlegung nach unbenütztem Ablauf der Frist schriftlich ankündigen", "law": ["law#259g-voll"], "requires": ["schriftlich", "angemessene Frist", "androhen", "künftig fällig", "vom Kanton bezeichneten Stelle", "schriftlich ankündigen"]},
+   {"text": "Innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses müssen Sie Ihre Ansprüche bei der Schlichtungsbehörde geltend machen, sonst fallen die hinterlegten Mietzinse der Vermieterschaft zu", "law": ["law#259h-voll"], "requires": ["30 Tagen", "Schlichtungsbehörde"]},
+   {"text": "Fehlt eine dieser Voraussetzungen, gilt der Mietzins nicht als bezahlt, und bei einem Zahlungsrückstand kann die Vermieterschaft eine Zahlungsfrist setzen und das Mietverhältnis kündigen", "law": ["law#259g-2", "law#257d-1"], "requires": ["als bezahlt", "rückstand", "zahlungsfrist", "kündig"]},
+   {"text": "Die beigelegte Vorlage setzt der Vermieterschaft eine Frist zur Beseitigung; eine Hinterlegung droht sie nicht an.", "plain": true, "with_template": "maengelruege"},
+   {"text": "Wir empfehlen Ihnen, eine Hinterlegung vorher mit uns zu besprechen.", "basis": "prudence"}]},
+  {"points": ["hinterlegung"], "intent": "weiter_zahlen", "stems": ["weiterhin", "weiter", "volle", "vollen", "ganze"], "with": ["miete", "mietzins", "zahl"], "state": "beantwortet", "parts": [
+   {"text": "Wir empfehlen Ihnen, den Mietzins bis auf Weiteres vollständig zu bezahlen.", "basis": "prudence"},
+   {"text": "Zahlen Sie weniger als geschuldet, kann die Vermieterschaft Ihnen bei einem Zahlungsrückstand eine Zahlungsfrist setzen und das Mietverhältnis kündigen", "law": ["law#257d-1"], "requires": ["rückstand", "zahlungsfrist", "kündig"]},
+   {"text": "Eine Herabsetzung verlangen Sie von der Vermieterschaft; eine Hinterlegung ist nur unter strengen Voraussetzungen wirksam", "law": ["law#259d", "law#259g-voll"], "requires": ["verlangen", "herabsetzt", "hinterlegen"]}]},
+  {"points": ["hinterlegung", "reduktion"], "intent": "zurueckbehalten", "stems": ["kürz", "zurückbehalt", "zurückhalt", "weniger zahl", "einstell", "nicht zahl", "nicht mehr zahl"], "state": "beantwortet", "parts": [
+   {"text": "Wir empfehlen Ihnen, den Mietzins nicht eigenmächtig zu kürzen oder zurückzubehalten.", "basis": "prudence"},
+   {"text": "Bei einem Zahlungsrückstand kann die Vermieterschaft Ihnen eine Zahlungsfrist setzen und das Mietverhältnis kündigen", "law": ["law#257d-1"], "requires": ["rückstand", "zahlungsfrist", "kündig"]},
+   {"text": "Eine Herabsetzung verlangen Sie von der Vermieterschaft", "law": ["law#259d"], "requires": ["verlangen", "herabsetzt"]}]},
+  {"points": ["reduktion"], "intent": "herabsetzung", "stems": ["reduktion", "herabsetz", "reduzier", "minderung"], "state": "beantwortet", "parts": [
+   {"follows": "reduktion", "law": ["law#259d"], "requires": ["herabsetz", "behebung"]},
+   {"text": "Die Herabsetzung verlangen Sie von der Vermieterschaft", "law": ["law#259d"], "requires": ["verlangen"]},
+   {"text": "Wir empfehlen Ihnen, den Mietzins bis dahin nicht eigenmächtig zu kürzen.", "basis": "prudence"}]},
+  {"points": ["schadenersatz"], "intent": "ersatz", "stems": ["ersetz", "ersatz", "erstatt", "vergüt", "entschädig", "übernimmt", "übernommen"], "state": "bedingt", "next": {"kind": "residual", "option": "schadenersatz"}, "parts": [
+   {"text": "Hat Ihnen der Mangel einen Schaden verursacht, muss die Vermieterschaft Ihnen dafür Ersatz leisten, wenn sie nicht beweist, dass sie kein Verschulden trifft", "law": ["law#259e"], "requires": ["schaden", "ersatz", "verschulden"]},
+   {"text": "Wir empfehlen Ihnen, die Kosten mit Belegen nachzuweisen; welche uns noch fehlen, steht unten.", "basis": "prudence", "with_residual": true},
+   {"text": "Die Belege zu Ihren Kosten liegen uns vor.", "plain": true, "with_documented": true}]},
+  {"points": ["meldung"], "intent": "melden", "stems": ["meld", "rüge", "rügen", "mitteil", "informier"], "state": "beantwortet", "parts": [
+   {"follows": "meldung", "law": ["law#257g"], "requires": ["melden"]}]},
+  {"points": ["kuendigung"], "intent": "ausziehen", "stems": ["auszieh", "kündig", "auszug"], "state": "bedingt", "next": {"kind": "discuss"}, "parts": [
+   {"text": "Fristlos kündigen können Sie nur, wenn die Vermieterschaft den ihr bekannten Mangel nicht innert angemessener Frist beseitigt und er die Tauglichkeit der Wohnung ausschliesst oder erheblich beeinträchtigt", "law": ["law#259b-a"], "requires": ["angemessener frist", "fristlos kündigen", "erheblich beeinträchtigt"]},
+   {"text": "Wir empfehlen Ihnen, vor einem Auszug das Vorgehen mit uns zu besprechen.", "basis": "prudence"}]}
+ ],
+ "options": [
+  {"id": "frist_beseitigung", "title": "Frist zur Beseitigung setzen", "wish": "will_beseitigung", "when": [{"fact": "mangel_besteht", "is": true}],
+   "conditions": [
+    {"text": "Die Vermieterschaft kennt den Mangel", "kind": "vorher", "fact": "mangel_gemeldet", "is": true, "law": ["law#259b"], "requires": ["Kennt der Vermieter"]},
+    {"text": "Sie hat ihn nicht beseitigt", "kind": "vorher", "fact": "reaktion_vermieter", "in": ["Abgelehnt / offene Punkte", "Keine Reaktion"], "law": ["law#259b"], "requires": ["nicht innert angemessener Frist"]}],
+   "advice": [
+    {"text": "der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung des Mangels zu setzen", "law": ["law#259g-voll"], "requires": ["schriftlich", "angemessene Frist"]},
+    {"text": " und den Mietzins bis auf Weiteres vollständig zu bezahlen", "basis": "prudence"},
+    {"text": "; die beigelegte Vorlage setzt diese Frist", "plain": true, "with_template": "maengelruege"}],
+   "needs": [], "changes_if": ["mangel_besteht", "reaktion_vermieter"], "observed": null, "propose": true},
+  {"id": "frist_androhung", "title": "Frist mit Androhung der Hinterlegung setzen", "wish": "will_beseitigung", "when": [{"fact": "mangel_besteht", "is": true}], "asked": "hinterlegen",
+   "conditions": [
+    {"text": "Die Vermieterschaft kennt den Mangel", "kind": "vorher", "fact": "mangel_gemeldet", "is": true, "law": ["law#259b"], "requires": ["Kennt der Vermieter"]},
+    {"text": "Sie hat ihn nicht beseitigt", "kind": "vorher", "fact": "reaktion_vermieter", "in": ["Abgelehnt / offene Punkte", "Keine Reaktion"], "law": ["law#259b"], "requires": ["nicht innert angemessener Frist"]}],
+   "advice": [
+    {"text": "der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung des Mangels zu setzen und ihr dabei anzudrohen, dass Sie bei unbenütztem Ablauf der Frist die künftig fällig werdenden Mietzinse bei der vom Kanton bezeichneten Stelle hinterlegen", "law": ["law#259g-voll"], "requires": ["schriftlich", "angemessene Frist", "androhen", "künftig fällig", "vom Kanton bezeichneten Stelle"]},
+    {"text": ", und den Mietzins bis zum Ablauf der Frist vollständig zu bezahlen", "basis": "prudence"},
+    {"text": "; ergänzen Sie dazu die beigelegte Vorlage nach dem Satz mit der Frist um den Satz «Bei unbenütztem Ablauf der Frist werde ich die künftig fällig werdenden Mietzinse bei der vom Kanton bezeichneten Stelle hinterlegen.»", "plain": true, "with_template": "maengelruege"}],
+   "needs": [], "changes_if": ["mangel_besteht", "reaktion_vermieter"], "observed": {"count": "0 von 7", "from": "stages.gegenpartei.suggestions[0]"}, "propose": false,
+   "why_not": "Ob die Vorlage die Hinterlegung androhen soll, ist eine offene Frage der Prüfung"},
+  {"id": "hinterlegung", "title": "Mietzins hinterlegen", "wish": "will_beseitigung", "when": [{"fact": "mangel_besteht", "is": true}],
+   "conditions": [
+    {"text": "Frist mit Androhung der Hinterlegung schriftlich gesetzt und unbenützt abgelaufen", "kind": "vorher", "law": ["law#259g-voll"], "requires": ["androhen", "unbenütztem Ablauf"]}],
+   "advice": [
+    {"text": "nach unbenütztem Ablauf der mit Androhung gesetzten Frist die Hinterlegung schriftlich anzukündigen, die künftig fällig werdenden Mietzinse bei der vom Kanton bezeichneten Stelle zu hinterlegen und Ihre Ansprüche innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend zu machen", "law": ["law#259g-voll", "law#259h-voll"], "requires": ["schriftlich ankündigen", "künftig fällig", "vom Kanton bezeichneten Stelle", "30 Tagen", "Schlichtungsbehörde"]}],
+   "needs": [], "changes_if": ["condition:0"], "observed": {"count": "0 von 7", "from": "stages.gegenpartei.suggestions[1]"}, "propose": true},
+  {"id": "schadenersatz", "title": "Kosten belegen und Ersatz verlangen", "wish": "will_schadenersatz", "when": [],
+   "conditions": [
+    {"text": "Schaden durch den Mangel", "kind": "anspruch", "law": ["law#259e"], "requires": ["Schaden"]},
+    {"text": "kein Entlastungsbeweis der Vermieterschaft", "kind": "anspruch", "law": ["law#259e"], "requires": ["Verschulden"]},
+    {"text": "Kosten mit Belegen nachgewiesen", "kind": "anspruch", "evidence": "claims", "law": ["law#259e"], "requires": ["Schaden"]}],
+   "advice": [
+    {"text": "Ihre Kosten mit Belegen zu beziffern, damit der Ersatz bei der Vermieterschaft verlangt werden kann", "basis": "prudence"},
+    {"text": "; die Vermieterschaft muss Ihnen den Schaden aus dem Mangel ersetzen, wenn sie nicht beweist, dass sie kein Verschulden trifft", "law": ["law#259e"], "requires": ["Schaden", "Verschulden"]}],
+   "needs": [{"document": "quittungen", "names_claim": true}], "changes_if": ["will_schadenersatz"], "observed": {"count": "2 von 7", "from": "stages.beurteilen.suggestions[1]"}, "propose": true},
+  {"id": "reduktion", "title": "Herabsetzung verlangen", "wish": "will_reduktion", "when": [],
+   "conditions": [
+    {"text": "Die Vermieterschaft kennt den Mangel", "kind": "vorher", "fact": "mangel_gemeldet", "is": true, "law": ["law#259d-voll"], "requires": ["erfahren"]},
+    {"text": "Der Gebrauch ist beeinträchtigt", "kind": "anspruch", "law": ["law#259d-voll"], "requires": ["beeinträchtigt"]}],
+   "advice": [
+    {"text": "die Herabsetzung des Mietzinses, soweit der Mangel den Gebrauch der Wohnung beeinträchtigt, ab dem Zeitpunkt zu verlangen, in dem die Vermieterschaft vom Mangel erfahren hat, und den Mangel bis zur Behebung fortlaufend zu dokumentieren", "law": ["law#259d-voll"], "requires": ["beeinträchtigt", "verlangen", "Behebung"]}],
+   "needs": [{"document": "fotos"}], "changes_if": ["mangel_besteht", "maengelruege_schriftlich"], "observed": {"count": "3 von 7", "from": "stages.beurteilen.suggestions[0]"}, "propose": true},
+  {"id": "kuendigung", "title": "Vor einem Auszug das Vorgehen klären", "wish": "will_auszug", "when": [],
+   "conditions": [
+    {"text": "schwerer Mangel", "kind": "anspruch", "law": ["law#259b-a"], "requires": ["erheblich beeinträchtigt"]},
+    {"text": "angemessene Frist unbenützt abgelaufen", "kind": "anspruch", "law": ["law#259b-a"], "requires": ["angemessener Frist"]}],
+   "advice": [
+    {"text": "vor einem Auszug das Vorgehen mit uns zu besprechen", "basis": "prudence"},
+    {"text": "; fristlos kündigen können Sie nur, wenn die Vermieterschaft den ihr bekannten Mangel nicht innert angemessener Frist beseitigt und er die Tauglichkeit der Wohnung ausschliesst oder erheblich beeinträchtigt", "law": ["law#259b-a"], "requires": ["angemessener Frist", "erheblich beeinträchtigt"]}],
+   "needs": [], "changes_if": ["will_auszug"], "observed": null, "propose": true}
+ ],
+ "open_questions": [
+  {"text": "Ist die Reihenfolge der Wege je Wunsch richtig (Praxiszahlen, sonst Dateireihenfolge)?", "about": "gebiet"},
+  {"text": "Soll bei einer Frage nach der Hinterlegung die Frist mit Androhung vorgeschlagen werden? (siehe die Frage zur Vorlage «Mängelrüge»: Soll eine wiederholte Mängelrüge auch die Hinterlegung des Mietzinses androhen?)", "about": "empfehlung.frist_androhung", "linked": "vorlage.maengelruege"}
+ ]
+}
