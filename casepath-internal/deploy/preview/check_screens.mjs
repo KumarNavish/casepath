@@ -40,6 +40,8 @@ const LEXICON = [
 ];
 const lexicon = (text) => {
   const hits = [];
+  // a mail address is data of the case's file (the recipient's, shown beside the letter), never CasePath's own words
+  text = String(text || "").replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, " ");
   for (const [name, source] of LEXICON) for (const m of String(text || "").matchAll(new RegExp(source, name === "osm" || name === "Englisch" ? "gi" : "g"))) hits.push(`${name}: ${m[0]}`);
   return hits;
 };

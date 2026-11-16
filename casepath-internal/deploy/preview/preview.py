@@ -83,9 +83,9 @@ def script(email, letter, knowledge_id=None):
                 questions=[{"fact": "legal_area", "plain": "Geht es um einen Mangel der Mietsache?"}, {"fact": "landlord_notified", "plain": "Wurde die Vermieterschaft informiert?"}])],
         [delegate("claim_reader", "Record the facts the process asks about.")],
         [("search", {"query": "Verwaltung informiert"})],
-        [("record_fact", {"part": None, "fact": "legal_area", "status": "established", "value": "Mietmangel",
+        [("record_fact", {"fact": "legal_area", "status": "established", "value": "Mietmangel",
                           "citations": [{"file": email, "quote": "Im Badezimmer meiner Wohnung bildet sich seit Dezember schwarzer Schimmel."}]})],
-        [("record_fact", {"part": None, "fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": email, "quote": TOLD}]}),
+        [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": email, "quote": TOLD}]}),
          report("claim_reader", summary="Beide Angaben mit wörtlichen Zitaten festgehalten.")],
         [delegate("document_finder", "Match each document need to a file.")],
         [("open_process", {})],
@@ -145,7 +145,7 @@ def area_script(case, file_id):
     routing = [{"fact": "rechtsgebiet", "value": case["routing"][0], "citations": cite(case["routing"][1])}] if case["routing"] else []
     signed = re.search(r"([A-ZÄÖÜ][a-zäöüé]+ [A-ZÄÖÜ][a-zäöüé]+)\s*$", case["text"])  # the customer signs the report
     return ScriptedModel([
-        [*[("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
+        [*[("record_fact", {"fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
          report("claim_reader", request=request(case["text"]), parties=[{"role": "Kundschaft (VN)", "name": signed.group(1)}] if signed else [])],
         [report("document_finder")],
         *[[report("result_checker", answer="Die erste Anforderung ist vorbereitet.")]] * 3,
@@ -268,7 +268,7 @@ def key_script(case, file_id):
     quotes, and a brief with the parties and the customer's own questions."""
     cite = lambda quote: [{"file": file_id, "quote": quote}]
     return ScriptedModel([
-        [*[("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
+        [*[("record_fact", {"fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case["facts"]],
          report("claim_reader", request=case["request"], parties=[{"role": r, "name": n} for r, n in case["parties"]],
                 questions=[{"question": q, "citations": cite(quote)} for q, quote in case["questions"]])],
         [*[("record_document", {"document": d, "status": "present", "files": [file_id], "citations": cite(q), "note": ""}) for d, q in case["documents"]],
@@ -336,7 +336,7 @@ def seed_cost_note(store, runs):
         {"first_page": 1, "last_page": 1, "kind": "Honorarnote", "date": "05.11.2026", "sender": "Kanzlei Muster", "recipient": "Protekta", "title": "Zwischenhonorar", "summary": ""}]
     file_id = store.add_file(case["id"], "Akte Kanzlei.txt", row["media_type"], row["kind"], COST_NOTE.encode(), row, "N. Kumar")["id"]
     cite = lambda quote: [{"file": file_id, "quote": quote}]
-    record = lambda f, v, q: ("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)})
+    record = lambda f, v, q: ("record_fact", {"fact": f, "status": "established", "value": v, "citations": cite(q)})
     runs.model_factory = lambda: ScriptedModel([
         [record("handlung_a1", "2026-09-10", "Protekta Rechtsschutz an Frau Lea Beispiel, 10. September 2026"),
          record("bisherige_handlungen", "A1 2026-09-10; A10 2026-10-01", "Wir erteilen Ihnen Kostengutsprache für die Abklärung der Sach- und Rechtslage"),
@@ -371,7 +371,7 @@ def seed_account(store, runs):
     runs.model_factory = lambda: ScriptedModel([
         [("list_files", {})],
         [("record_steps", {"entries": entries[:5]}), ("record_steps", {"entries": entries[5:]})]
-        + [("record_fact", {"part": None, "fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case_data["facts"]],
+        + [("record_fact", {"fact": f, "status": "established", "value": v, "citations": cite(q)}) for f, v, q in case_data["facts"]],
         [report("claim_reader", request="Sandra Keller verlangt wegen der ausfallenden Heizung eine Entschädigung von der Verwaltung.",
                 parties=[{"role": "Mieterin (VN)", "name": "Frau Sandra Keller"}, {"role": "Verwaltung (GP)", "name": "Muster Immobilien AG"}])],
         [report("document_finder")],

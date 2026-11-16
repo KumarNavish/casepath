@@ -413,7 +413,9 @@ function identityLine(c) {
     : p ? `<span class="cp-ref cp-ref-proposed" title="${esc(T(`from ${p.name}`, `aus ${p.name}`))}">${esc(p.value)}</span> <button class="cp-link cp-quiet-link" id="id-accept" data-reference="${esc(p.value)}">${T("take as reference", "als Referenz übernehmen")}</button>`
     : `<button class="cp-link cp-quiet-link" id="id-edit-ref">${T("enter a reference", "Referenz eintragen")}</button>`;
   const who = c.owner ? `${esc(c.owner)}${c.deputy ? ` · ${T("deputy", "Stv.")} ${esc(c.deputy)}` : ""}` : "";
-  return `<p class="cp-identity">${ref}${who ? ` <span class="cp-muted">· ${who}</span>` : ""} <button class="cp-link cp-quiet-link" id="id-edit" aria-label="${T("Change reference and responsibility", "Referenz und Zuständigkeit ändern")}">${T("change", "ändern")}</button></p>`;
+  // one way into the editor: «Referenz eintragen» where there is none, «ändern» otherwise
+  const change = c.reference || p ? ` <button class="cp-link cp-quiet-link" id="id-edit" aria-label="${T("Change reference and responsibility", "Referenz und Zuständigkeit ändern")}">${T("change", "ändern")}</button>` : "";
+  return `<p class="cp-identity">${ref}${who ? ` <span class="cp-muted">· ${who}</span>` : ""}${change}</p>`;
 }
 async function saveIdentity(fields) {
   try {
