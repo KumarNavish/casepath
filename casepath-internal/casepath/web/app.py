@@ -1051,6 +1051,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         rows = options.answers_for(options.load((current.get("process") or {}).get("id")), [body.point])
         if body.intent and body.intent not in {r["intent"] for r in rows}:
             raise HTTPException(422, "Diese Antwort gehört nicht zu dieser Regel.")
+        if body.intent and reviews.flags(current.get("process"), marks).answer(body.point, body.intent):
+            # a jurist's current mark holds this answer: it is not taken until the mark is resolved
+            raise HTTPException(409, "Diese Antwort ist in Prüfung durch die Rechtsabteilung; bitte die Antwort selbst formulieren.")
         return record(case_id, who, "item.corrected", item_id=body.item_id, point=body.point, intent=body.intent)
 
     @app.post("/api/cases/{case_id}/events", status_code=201)

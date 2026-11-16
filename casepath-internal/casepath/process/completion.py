@@ -618,7 +618,8 @@ def _entry_files(entry, files):
 
 def fulfilment(entry, acc, files, result=None, process=None, held=None):
     """How a dispatch (its account entry) stands after it, from evidence only: {acknowledged, replies, met, open, unbelegt,
-    refused, promised, evidence, fulfilled, partial}. Per ask, against the entries of its addressee dated after it: a
+    refused, promised, evidence, fulfilled, partial}. Per ask, against the entries of its addressee after it (dated after
+    it, or dated its day and answering it by its number: account.replies_to): a
     claim line is met when the claim is documented by a receipt located in a file of such an entry; a document when
     account.held names such a file; a fact when it is established with a quote from such a file; a request carried over
     when its row is closed and, for a document, held as above; a reply by any such entry with its file. An ask whose row
@@ -627,8 +628,9 @@ def fulfilment(entry, acc, files, result=None, process=None, held=None):
     from . import account
     held = held or account.held
     result = result or {}
-    later = [e for e in (acc or {}).get("entries") or () if e.get("from") == entry.get("to") and e.get("date") and e["date"] > entry.get("date", "")
-             and not e.get("dispatch")]
+    # after the dispatch: dated after it, or dated its day and answering it by its number (account.replies_to)
+    later = [e for e in (acc or {}).get("entries") or () if e.get("from") == entry.get("to") and not e.get("dispatch")
+             and account.replies_to(e, entry.get("date"), entry.get("n"))]
     reply_files = set().union(*[_entry_files(e, files) for e in later]) if later else set()
     later_n = {e["n"] for e in later}
     rows = {r["id"]: r for r in (acc or {}).get("requests") or ()}

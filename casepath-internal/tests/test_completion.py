@@ -57,6 +57,16 @@ def sent(version="v1", day="2026-11-15", recipient="kunde", channel="email", edi
             "edit_id": edit, "date": day, "channel": channel, **fields}
 
 
+def bill_entry(n=17, day="2026-09-28"):
+    """The bill attached to the reply as the reader records it on its own entry: what it is for, its amount and the words
+    that state it. A file's name alone never documents a claim (account.receipt_agrees)."""
+    quote = "Energieverbrauch Bautrockner, Betrag: CHF 85.40"
+    return {"n": n, "date": day, "from": "andere", "to": "kunde", "kind": "andere", "file": "ft", "citations": [{"file": "ft", "quote": quote}],
+            "asks": [], "answers": [], "terms": [], "paid": [], "next": [], "what": "Stromabrechnung Bautrockner",
+            "receipt": {"expense": "Energieverbrauch Bautrockner", "amount": "CHF 85.40", "role": "billed", "quote": quote,
+                        "citations": [{"file": "ft", "quote": quote}]}}
+
+
 def copied(form, at="2026-11-15T10:00:00+00:00", measure=True, **fields):
     return {"kind": "letter.copied", "event_id": f"ev-co-{form}-{at}", "expert": USER, "at": at, "form": form,
             **({"measure": True, "text_sha256": fields.pop("text_sha256", "0" * 64)} if measure else {}), **fields}
@@ -649,7 +659,7 @@ class FulfilmentTests(unittest.TestCase):
         answer = {"n": 16, "date": "2026-09-28", "from": "kunde", "to": "versicherer", "kind": "antwort", "file": "fs", "citations": [{"file": "fs"}],
                   "asks": [], "answers": [{"what": reply, "answers": 9001, "citations": [{"file": "fs"}]}], "terms": [], "paid": [],
                   "next": [], "what": "Antwort"}
-        acc = account.build([dispatch, answer] if reply is not None else [dispatch], WF)
+        acc = account.build([dispatch, answer, bill_entry()] if reply is not None else [dispatch], WF)
         return next(e for e in acc["entries"] if e.get("dispatch")), acc
 
     def test_fulfilment_needs_evidence_in_a_reply_file(self):
@@ -1172,7 +1182,7 @@ class ConsequenceTests(unittest.TestCase):
         reply = {"n": 16, "date": "2026-09-28", "from": "kunde", "to": "versicherer", "kind": "antwort", "file": "fs", "citations": [{"file": "fs"}],
                  "asks": [], "answers": [{"what": w, "answers": 9001, "citations": [{"file": "fs"}]} for w in answers], "terms": [], "paid": [],
                  "next": [], "what": "Antwort"}
-        acc = account.build([dispatch, reply], WF)
+        acc = account.build([dispatch, reply, bill_entry()], WF)  # the bill read on its own entry (in FILES; NO_BILL leaves it out)
         for r in acc["requests"]:  # slice C marks a refusal on its row (account C10b); simulated here
             if refused and r["what"] == refused:
                 r.update(refused={"n": 16, "what": refused}, answered=None)

@@ -2631,6 +2631,7 @@ function aBlocks(blocks) {
 function briefSide(b) {
   const states = (q) => (q.taken ? T("answered (case handling)", "beantwortet (Fallbearbeitung)") : T(...(A_STATE[q.state] || [q.state, q.state])));
   const why = (q) => {
+    if (q.adopted && q.reason) return `${T("your answer of", "Ihre Antwort vom")} ${dateText(String(q.adopted.at || "").slice(0, 10))}: ${q.reason}`;  // taken, then marked by a jurist
     if (q.taken || !q.reason) return "";
     if (q.state === "bedingt") return q.row === 8 ? `${T("ask", "Rückfrage")}: ${q.reason}` : (q.next || {}).kind === "residual" || /^Belege/.test(q.reason) ? `${T("waits for", "wartet auf")}: ${q.reason}` : q.reason;
     return q.reason;

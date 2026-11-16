@@ -1201,9 +1201,23 @@ def merge(facts_in, acc, graph):
     return out
 
 
-def _after(acc, day, party):
-    """Whether an entry from this party is dated after a day."""
-    return any(e["from"] == party and e.get("date") and parse_date(e["date"]) > day for e in acc["entries"])
+def answers_entry(e, n):
+    """Whether an entry says it answers the entry numbered ``n`` (the reader names the letter it replies to)."""
+    return n is not None and any(a.get("answers") == n for a in e.get("answers") or ())
+
+
+def replies_to(e, day, n=None):
+    """Whether an entry dated ``day`` or later comes after the letter of that day: dated after it, or dated the same day
+    and answering that letter by its number ``n`` (it can name it only once the letter is in the account). A same-day
+    entry that answers nothing of it, or one dated before it, never does."""
+    when = parse_date(e.get("date"))
+    day = parse_date(day) if isinstance(day, str) else day
+    return bool(when and day) and (when > day or (when == day and answers_entry(e, n)))
+
+
+def _after(acc, day, party, n=None):
+    """Whether an entry from this party came after a day (replies_to; ``n``: the letter of that day it may answer)."""
+    return any(e["from"] == party and replies_to(e, day, n) for e in acc["entries"])
 
 
 def silence(acc, rules, look, stage=None):
@@ -1217,7 +1231,7 @@ def silence(acc, rules, look, stage=None):
         return None
     sent, code, n = max(mine, key=lambda x: (x[0], x[2]))
     to = next((e["to"] for e in acc["entries"] if e["n"] == n), "kunde")
-    if _after(acc, sent, to) or (to == INSURER):
+    if _after(acc, sent, to, n) or (to == INSURER):
         return None
     rule = next((r for r in rules if code in r["after"] and (stage is None or r.get("stages") is None or stage in r["stages"])), None)
     if rule and (look - sent).days > rule["days"]:
@@ -1234,7 +1248,7 @@ def derived(acc, kind, rules, look):
         n = len(asks)
         return "0" if n == 0 else "1" if n == 1 else "2+"
     if kind == "replied_since_request":
-        return bool(asks) and _after(acc, asks[-1][0], "kunde")
+        return bool(asks) and _after(acc, asks[-1][0], "kunde", asks[-1][1].get("n"))
     if kind == "silent_after_requests":  # asked at least twice, the last date passed, nothing from the customer since
         days = rules["requests"].get("1", REQUEST_DAYS)
         for r in acc["requests"]:
@@ -1644,11 +1658,15 @@ def receipt_profile(entry, f=None):
     described = rec.get("expense") or " ".join([str(entry.get("what") or "")] + titles)
     if not described.strip() and not quotes.strip():
         return None
+    # what the content says the cost is for: the receipt record, the reader's line and the reading's own titles of an
+    # entry, the passages it located; never the file's name, which only locates a candidate
+    own = rec.get("expense") or " ".join([str(entry.get("what") or "")] + (titles[1:] if entry.get("n") is not None else []))
+    grounded = expense_stems(own) | expense_stems(quotes)
     recorded = {amount(rec["amount"])} if rec.get("amount") and amount(rec.get("amount")) is not None else set()
     amounts = recorded or (money(quotes) | {amount(x.get("amount")) for k in ("paid", "terms") for x in entry.get(k) or ()
                                             if x.get("amount") and not x.get("amount_check")})
     days = sorted(written_dates(quotes))
-    return {"stems": expense_stems(described), "expense": rec.get("expense") or str(entry.get("what") or "") or titles[0],
+    return {"stems": expense_stems(described), "grounded": grounded, "expense": rec.get("expense") or str(entry.get("what") or "") or titles[0],
             "amounts": {a for a in amounts if a is not None}, "party": rec.get("party"), "payer": rec.get("payer"),
             "period": _period(rec.get("period")) or ((days[0], days[-1]) if days else None), "transaction": rec.get("transaction"),
             "role": rec.get("role") if rec.get("role") in RECEIPT_ROLES else role_of(quotes, entry.get("kind")) or ("paid" if entry.get("paid") else None),
@@ -1656,18 +1674,25 @@ def receipt_profile(entry, f=None):
 
 
 def receipt_agrees(claim, receipt):
-    """Whether a receipt documents a claim (C10c): {agrees, candidate, why}. A candidate shares an expense word or an
-    amount with the claim; it agrees only when the claim's expense is named whole and nothing recorded contradicts it: the
-    amount (within its rounding), the role of the receipt's amount (billed or paid, never refunded, disputed or only
-    announced), the period, the party, the transaction, and its addressee (the customer's side)."""
+    """Whether a receipt documents a claim (C10c): {agrees, candidate, why, same_amount, by_name}. A candidate shares an
+    expense word or an amount with the claim (the file's name may locate it); it agrees only when its content names the
+    claim's expense whole (the receipt record, the reader's line, the located passages: never the file's name alone),
+    states an amount, and nothing recorded contradicts it: the amount (within its rounding), the role of the receipt's
+    amount (billed or paid, never refunded, disputed or only announced), the period, the party, the transaction, and its
+    addressee (the customer's side)."""
     c, r = claim_profile(claim), receipt
     why, shared = [], {s for s in c["stems"] if _covered(s, r["stems"])}
+    named = {s for s in c["stems"] if _covered(s, r.get("grounded", r["stems"]))}
     tolerance = (lambda a: max(1.0, 0.05 * a)) if c["rough"] else (lambda a: max(0.5, 0.01 * a))
     same_amount = c["amount"] is not None and any(abs(a - c["amount"]) <= tolerance(c["amount"]) for a in r["amounts"])
     candidate = bool(shared) or same_amount
     if not c["stems"] or shared != c["stems"]:
         why.append(f"andere Ausgabe: {_clip(r['expense'], 60)}" if not shared else
                    f"Ausgabe nur teilweise: {_clip(r['expense'], 60)}")
+    elif named != c["stems"]:  # the cost is named only by the file's name: a candidate, never proof
+        why.append(f"Ausgabe nur im Dateinamen: {_clip(r['expense'], 60)}")
+    if not r["amounts"]:  # a receipt states what was billed or paid; without an amount in its content it documents nothing
+        why.append("kein Betrag im Beleg")
     if c["amount"] is not None and r["amounts"] and not same_amount:
         why.append(f"Betrag weicht ab: CHF {_chf(sorted(r['amounts'], key=lambda a: abs(a - c['amount']))[0])} statt CHF {_chf(c['amount'])}")
     if r["role"] and r["role"] not in DOCUMENTING:
@@ -1681,7 +1706,8 @@ def receipt_agrees(claim, receipt):
     payer = r["payer"] if r.get("payer") in PARTIES else r.get("to") if r.get("to") in PARTIES else None  # billed to whom (a party)
     if payer and payer not in CUSTOMER_SIDE:
         why.append(f"an {TO[payer]} gerichtet")
-    return {"agrees": candidate and not why, "candidate": candidate, "why": why, "same_amount": same_amount}
+    return {"agrees": candidate and not why, "candidate": candidate, "why": why, "same_amount": same_amount,
+            "by_name": bool(shared) and shared == c["stems"] and named != c["stems"]}
 
 
 def claim_of(row, claims):
@@ -1724,7 +1750,7 @@ def documented(claim, files, entries=None, file_ids=None, why=None):
                     "basis": {"expense": r["expense"], "amounts": sorted(r["amounts"]), "role": r["role"], "period": r["period"]}}
         if check["candidate"] and why is not None:
             why.append({"file": r["file"], "n": r.get("n"), "expense": r["expense"], "why": check["why"], "recorded": r.get("recorded", False),
-                        "same_amount": check["same_amount"]})
+                        "same_amount": check["same_amount"], "by_name": check["by_name"]})
     return None
 
 

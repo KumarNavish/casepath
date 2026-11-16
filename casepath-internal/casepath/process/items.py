@@ -749,7 +749,8 @@ def build_items(state, result, files=None, events=None, review=None):
             **({"answered_by": row["answered_by"]} if row.get("answered_by") else {}), **({"answer": row["answer"]} if stated else {}),
             answer_state=row.get("state"), about=row.get("about") or [], points=row.get("points") or [], intent=row.get("intent"),
             reason=row.get("reason"), offered=row.get("offered") or [], row=row.get("row"), waits=row.get("ask"), next=row.get("next"),
-            taken=bool(row.get("taken")), wants=bool(row.get("wants")), evidence_in=row.get("evidence_in") or [])
+            taken=bool(row.get("taken")), wants=bool(row.get("wants")), evidence_in=row.get("evidence_in") or [],
+            **({"adopted": row["adopted"]} if row.get("adopted") else {}))
         # none of these fields is hashed (HASHED: «ask» is a document's, never set here)
     needs = {re.split(r"\W+", str((i.get("label") or {}).get("de") or "").lower())[0] for i in items if i["kind"] == "document"}
     for i, doc in enumerate(brief.get("not_enclosed") or []):  # mentioned in the file but not in it: offered as such

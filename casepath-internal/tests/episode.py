@@ -431,11 +431,11 @@ def branches(ns):
     v, k, ref = ns.names, ns.names["kunde"], ns.reference
     sender, to = f"{k} <{v['mail']}>", f"Protekta Rechtsschutz <{INSURER_MAIL}>"
 
-    def receipts(a5_day=None):
+    def receipts(a5_day=None, came=None):
         """B-receipts: the customer's reply with the electricity bill attached and the A5 quoted below it, as saved from the
-        mailbox: [(name, bytes)] (the upload makes the bill a file of its own)."""
+        mailbox: [(name, bytes)] (the upload makes the bill a file of its own); ``came``: its day (A5 + 20 by default)."""
         a5_day = a5_day or ns.a5_day
-        came = a5_day + timedelta(days=RECEIPTS_DAYS)
+        came = came or a5_day + timedelta(days=RECEIPTS_DAYS)
         body = (f"Guten Tag\n\nStromabrechnung anbei.\n\nFreundliche Grüsse\n{k}\n\n-----Ursprüngliche Nachricht-----\nVon: Protekta Rechtsschutz\n"
                 f"Gesendet: {sent_line(a5_day, '14:05')}\nAn: {k}\nBetreff: Rechtliche Einschätzung {ref}\n\n> Bitte reichen Sie uns noch nach:\n"
                 "> – Belege zu: Stromkosten für den Bautrockner")
@@ -452,14 +452,15 @@ def branches(ns):
         attached["extraction"]["attached_to"] = name
         return [mail_file("fs", name, data), attached]
 
-    def receipts_turns(first, answers_n, a5_day=None):
-        """B-receipts read by an update: the reply (answering the entry ``answers_n``, the A5's dispatch), the A5 as quoted
-        below it (an entry of Protekta dated the dispatch day), and the bill attached as its own file."""
+    def receipts_turns(first, answers_n, a5_day=None, came=None):
+        """B-receipts read by an update: the reply (answering the entry ``answers_n``, the A5's dispatch; None: the reader
+        links it to nothing), the A5 as quoted below it (an entry of Protekta dated the dispatch day), and the bill attached
+        as its own file; ``came``: the reply's day (A5 + 20 by default)."""
         a5_day = a5_day or ns.a5_day
-        came = a5_day + timedelta(days=RECEIPTS_DAYS)
+        came = came or a5_day + timedelta(days=RECEIPTS_DAYS)
         return update_turns([
             entry(first, "fs", None, came, "kunde", "versicherer", "unterlagen", "Stromabrechnung zugestellt", f"Subject: AW: Rechtliche Einschätzung {ref}",
-                  answers=[answer("Stromabrechnung", answers_n, "Stromabrechnung anbei.")]),
+                  answers=[answer("Stromabrechnung", answers_n, "Stromabrechnung anbei.")] if answers_n is not None else []),
             entry(first + 1, "fs", None, a5_day, "versicherer", "kunde", "einschaetzung", "Rechtliche Einschätzung (zitiert)",
                   f"Betreff: Rechtliche Einschätzung {ref}",
                   asks=[ask("Belege zu: Stromkosten für den Bautrockner", "kunde", "> – Belege zu: Stromkosten für den Bautrockner")]),

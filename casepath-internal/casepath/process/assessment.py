@@ -256,9 +256,10 @@ def need_lines(data, option_id, claims, items, events=None):
 
 def _mistakable(row):
     """Whether a candidate the rule set aside could pass for the claim's receipt, so the brief says why it does not: a
-    receipt the reading recorded as one, or one with the claimed amount. A message that only shares a word with the cost
-    (the customer's own mails about it) is no receipt and is not shown."""
-    return bool(row.get("recorded") or row.get("same_amount"))
+    receipt the reading recorded as one, one with the claimed amount, or a file whose name names the cost (a blank form
+    named «Stromkosten …» is no receipt). A message that only shares a word with the cost (the customer's own mails about
+    it) is no receipt and is not shown."""
+    return bool(row.get("recorded") or row.get("same_amount") or row.get("by_name"))
 
 
 def _set_aside(row, items):
@@ -432,6 +433,14 @@ def evaluate_questions(state, result, items, events, marks=None, files=None):
                # the question asks for what its intent names (not a negation of it, not a wish the customer rejected)
                "wants": bool(intent_row) and st["row"] != 4 and wants_intent(text, intent_row)}
         took = taken.get(item_id)
+        if took and (by_id.get(took["point"]) or {}).get("state") == "applies" and took.get("intent") and flagged.answer(took["point"], took["intent"]):
+            # a jurist's current mark on the answer the handler took reopens it, as it does the drafted answer: the letter
+            # keeps a gap («in Prüfung») and cannot be approved until the mark is resolved or the handler writes the
+            # answer; the adoption stays in the history and is named beside the question
+            row.update(state="pruefen", reason="Antwort in Prüfung", held=True,
+                       adopted={"point": took["point"], "intent": took["intent"], "by": took.get("expert"), "at": took.get("at")})
+            out.append(row)
+            continue
         if took and (by_id.get(took["point"]) or {}).get("state") == "applies":  # the handler took an answer: it stays while its point applies
             chosen = _answer_row(data, took.get("intent")) if took.get("intent") else None
             row.update(state="beantwortet", reason=TAKEN, row=None, taken=True, answered_by=took["point"], ask=None, next=None,
@@ -581,7 +590,7 @@ def build(state, result, items, files, events, marks):
                               "answer": q.get("answer"), "offered": q.get("offered") or [], "evidence": q.get("evidence") or [],
                               "taken": bool(q.get("taken")), "entry": (req or {}).get("entries", [None])[0] if req else None,
                               "request": (req or {}).get("id"), "waits_for": waits, "next": q.get("next"), "ask": q.get("waits"),
-                              "evidence_in": q.get("evidence_in") or []})
+                              "evidence_in": q.get("evidence_in") or [], **({"adopted": q["adopted"]} if q.get("adopted") else {})})
     for extra in account_questions(acc, out_questions):
         out_questions.append({"item_id": None, "text": extra["what"], "state": "offen", "reason": "nicht beantwortet", "row": None,
                               "about": [], "points": [], "intent": None, "answer": None, "offered": [], "evidence": _evidence(extra["citations"]),

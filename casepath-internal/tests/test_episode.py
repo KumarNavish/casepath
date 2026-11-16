@@ -475,6 +475,68 @@ class ArrivalTests(Episode):
         self.assertTrue(any(n.startswith("zitiert in Nr. ") for n in notes), notes)
         self.assertTrue(any(n.startswith(f"verlangt von der Kundschaft: {RECEIPTS} · beantwortet") for n in notes), notes)
 
+    def receipts_on(self, case, ns, came, linked=True):
+        """B-receipts on another day: the reply dated ``came``, answering the A5's dispatch by its number or (``linked``
+        False) linked to nothing by the reader."""
+        rec = ns.branches["B-receipts"]
+        self.upload(case, rec.files(came=came))
+        return self.update(case, rec.turns(self.first_free(case), self.dispatched_n(case) if linked else None, came=came),
+                           {"fs": "Belege Stromkosten.eml", "ft": episode.BILL})
+
+    def test_a_reply_on_the_dispatch_day_that_answers_the_letter_prepares_the_judgment(self):
+        """The reply dated the dispatch day that answers the A5 by its number moves the case as a later one does: it can
+        name the letter only once the letter is in the account."""
+        case, ns = self.cases["d21"], self.ns["d21"]
+        self.receipts_on(case, ns, ns.a5_day)
+        view = self.view(case)
+        q3 = next(q for q in view["assessment"]["questions"] if q["text"] == Q3)
+        last = view["completion"]["last"]
+        self.assertEqual((q3["state"], last["acknowledged"], last["fulfilled"]), ("beantwortet", True, True))
+        self.assertEqual(self.row(case)["stand"]["text"], "erfüllt: Einschätzung vorbereitet")
+
+    def test_a_mail_of_the_dispatch_day_that_answers_nothing_or_one_dated_before_it_leaves_the_wait(self):
+        """Not a reply to the letter: a mail of its day the reader links to nothing, or one dated before it that names it.
+        The dispatch is neither acknowledged nor fulfilled and the case keeps waiting (an unconditional «same day or
+        later» would count both). The bill itself is in the case, so the brief shows it as the claim's evidence."""
+        for name, came, linked in (("unlinked, same day", 0, False), ("linked, dated the day before", -1, True)):
+            with self.subTest(name):
+                self.tearDown()
+                self.setUp()
+                case, ns = self.cases["d21"], self.ns["d21"]
+                self.receipts_on(case, ns, ns.a5_day + timedelta(days=came), linked=linked)
+                view = self.view(case)
+                last = view["completion"]["last"]
+                self.assertEqual((last["acknowledged"], last["fulfilled"], self.action(view)["action"]), (False, False, "A7"))
+                self.assertEqual(self.row(case)["stand"]["bucket"], "wartet")
+
+    def blank_reply(self, case, ns, name):
+        """The customer answers the A5 with a blank form attached (no bill, no amount); the reader records the mail only."""
+        mail, data = self.reply(ns, "Belege.eml", "Anbei die Belege für den Strom.", [(name, "Dies ist eine leere Vorlage ohne Rechnung.".encode())])
+        self.upload(case, [(mail, data)])
+        self.update(case, episode.update_turns([
+            episode.entry(self.first_free(case), "fs", None, ns.a5_day + timedelta(days=20), "kunde", "versicherer", "unterlagen", "Belege zugestellt",
+                          "Anbei die Belege für den Strom.", answers=[episode.answer("Belege", self.dispatched_n(case), "Anbei die Belege für den Strom.")])],
+            [], "Die Kundschaft reicht Belege ein."), {"fs": mail})
+        return next(f["id"] for f in self.store.list_files(case) if f["name"] == name)
+
+    def test_a_blank_form_named_like_the_cost_is_no_receipt(self):
+        """A file's name locates a candidate, never a receipt: a blank form named «Stromkosten Bautrockner» is set aside
+        («kein Betrag im Beleg») exactly as the same bytes named «Scan_0042»; the letter never says the receipts are in."""
+        for name in ("Stromkosten Bautrockner.txt", "Scan_0042.txt"):
+            with self.subTest(name):
+                self.tearDown()
+                self.setUp()
+                case, ns = self.cases["d21"], self.ns["d21"]
+                blank = self.blank_reply(case, ns, name)
+                view = self.view(case)
+                q3 = next(q for q in view["assessment"]["questions"] if q["text"] == Q3)
+                self.assertEqual((q3["state"], view["completion"]["last"]["fulfilled"]), ("bedingt", False))
+                self.assertEqual(self.row(case)["stand"]["text"], "Antwort ohne Beleg – prüfen")  # answered, nothing documents it
+                self.assertNotIn("liegen uns vor", (view.get("draft") or {}).get("text") or "")
+                line = view["assessment"]["residual"][0]
+                if name.startswith("Stromkosten"):  # named like the cost: shown beside the line with why it is no receipt
+                    self.assertIn("kein Betrag im Beleg", next(x for x in line["set_aside"] if x["file"] == blank)["why"])
+
     def test_an_unrelated_attachment_leaves_the_wait_quiet_and_prepares_no_letter(self):
         case, ns = self.cases["d21"], self.ns["d21"]
         photo = "Foto Schlafzimmer.txt"
@@ -664,6 +726,48 @@ class CorrectionTests(Episode):
         self.assertEqual((view["completion"]["valid"], view["completion"]["status"]), (False, "Freigabe veraltet: Grundlage in Prüfung"))
         self.assertEqual(self.row(case)["stand"]["bucket"], "urteil")
         self.assertNotIn("Zum Versand freigegeben", view["file_note"])
+
+    HELD = "/api/review/mietmangel-handler/antwort.hinterlegung.hinterlegen"  # the drafted answer to «Darf ich die Miete hinterlegen?»
+    Q2 = "Darf ich die Miete hinterlegen?"
+
+    def question(self, view, text):
+        return next(q for q in view["assessment"]["questions"] if q["text"] == text)
+
+    def test_a_jurist_mark_on_an_answer_the_handler_took_reopens_it_and_no_approval_carries_it(self):
+        """The handler took the drafted answer to Q2; a jurist then marks that answer «Änderung nötig». The question is
+        open for review again (as the drafted answer is without the adoption), the letter keeps a gap, «Freigeben» is
+        refused and the answer cannot be taken again while the mark holds; the adoption stays in the history; Q1's answer
+        is untouched. «geprüft» resolves it: the answer the handler took is the letter's again."""
+        case = self.cases["e1"]
+        self.ready(case)
+        self.post(f"/api/cases/{case}/answer", {"item_id": "customer_question:1", "point": "hinterlegung", "intent": "hinterlegen"}, 201)
+        approved = self.approve(case, op="op-approve-before")["approval"]  # approved with the answer taken
+        self.post(self.HELD, {"mark": "aenderung", "comment": "Hinterlegung so nicht empfehlen", "suggestion": ""}, 201)
+        view = self.view(case)
+        q2, q1 = self.question(view, self.Q2), self.question(view, "Muss ich weiterhin die volle Miete bezahlen?")
+        self.assertEqual((q2["state"], q2["reason"], q2["adopted"]["intent"], q1["state"]), ("pruefen", "Antwort in Prüfung", "hinterlegen", "beantwortet"))
+        self.assertGreater(completion.gaps(view["draft"]), 0)
+        self.assertNotIn("Eine Hinterlegung des Mietzinses setzt voraus", view["draft"]["text"])
+        self.assertFalse(view["completion"]["valid"])  # the approval given before no longer holds
+        self.assertNotEqual(view["draft"]["version"], approved["version"])
+        self.approve(case, op="op-approve-held", expect=422)  # and no new one carries the held answer
+        self.post(f"/api/cases/{case}/answer", {"item_id": "customer_question:1", "point": "hinterlegung", "intent": "hinterlegen"}, 409)
+        self.assertEqual(len([e for e in self.events(case, "item.corrected") if e.get("item_id") == "customer_question:1"]), 1)  # kept, once
+        # reviewed: the mark resolved, the answer taken is the letter's again
+        self.post(self.HELD, {"mark": "geprueft", "comment": ""}, 201)
+        view = self.view(case)
+        self.assertEqual((self.question(view, self.Q2)["state"], self.question(view, self.Q2)["taken"]), ("beantwortet", True))
+        self.assertIn("Eine Hinterlegung des Mietzinses setzt voraus", view["draft"]["text"])
+        self.approve(case, op="op-approve-reviewed")
+
+    def test_the_drafted_answer_under_a_mark_is_held_the_same_way(self):
+        case = self.cases["e1"]
+        self.ready(case)
+        self.post(self.HELD, {"mark": "aenderung", "comment": "Hinterlegung so nicht empfehlen", "suggestion": ""}, 201)
+        view = self.view(case)
+        self.assertEqual(self.question(view, self.Q2)["state"], "pruefen")
+        self.assertGreater(completion.gaps(view["draft"]), 0)
+        self.approve(case, op="op-approve-held", expect=422)
 
     def test_a_sent_version_is_kept_and_reconciled_never_unsent(self):
         case = self.cases["e1"]
