@@ -425,6 +425,10 @@ class Model:
 
     def _backbone(self):
         area, bb = self.area, self.bb
+        from . import partial
+        for p in partial.data()["parts"]:  # the question back after a partial answer (process/partial.py)
+            self._add(BACKBONE, f"{partial.PREFIX}{p['id']}", "schreiben", f"Rückfrage nach einer Teilantwort: {p['title']}", [
+                ("Gesagt, wenn", "die Kundschaft einen Teil des Verlangten geliefert hat und etwas davon noch offen ist"), ("Wortlaut", p["text"])], {"part": p})
         law, laws = bb["law"], bb["laws"]
         words = {"start": "Beginn", "days": "Tage", "weeks": "Wochen", "months": "Monate", "end": "Letzter Tag", "standstill": "Stillstand",
                  "ferien": "Betreibungsferien"}

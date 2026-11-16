@@ -275,9 +275,13 @@ class EquivalenceTests(unittest.TestCase):
         self.assertEqual(rows["Mietvertrag"]["answered"]["n"], 3)
         self.assertEqual(rows["Mängelrüge an die Verwaltung"]["answered"]["n"], 3)
         self.assertIsNone(rows["Fotos des Mangels"]["answered"])
-        # before: nobody answered our request (the clock); after: the customer answered, the case waits for the photos
+        # before: nobody answered our request (the clock); after: the customer answered in part, and the question back asks
+        # exactly the photos (it was the pending letter with its closing date, whatever had come)
         self.assertEqual((before["action"], before["reason"]), ("A6", "keine Antwort seit unserer Anforderung vom 05.10.2026 (41 Tage)"))
-        self.assertEqual((after["action"], after["value"], after.get("reason")), ("A6", "Dossier pendent halten mit Frist", None))
+        self.assertEqual((after["action"], after["value"], after.get("reason")),
+                         ("A4", "Rückfrage zu einem Punkt", "Kundschaft hat teilweise geantwortet: 1 Punkt noch offen"))
+        self.assertEqual([o["what"] for o in after["partial"]["open"]], ["Fotos des Mangels"])
+        self.assertEqual(sorted(r["what"] for r in after["partial"]["received"]), ["Mietvertrag", "Mängelrüge an die Verwaltung"])
         self.assertEqual(sorted(result["update"]["documents"]), ["maengelruege", "mietvertrag"])
 
     def test_a_letter_with_an_offer_after_our_last_step_becomes_an_open_incoming_item(self):

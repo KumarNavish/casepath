@@ -424,7 +424,9 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
             return None
         forms = {**forms, FOLLOW_ON: {"title": follow["title"], "to": (forms.get("A5") or {}).get("to") or "Kundschaft",
                                       "parts": [p["text"] for p in follow["parts"]]}}
-    from . import refusal
+    from . import partial, refusal
+    if kind == "A4" and action.get("partial") and forms.get("A4"):  # a partial answer: what came, what is still open
+        forms = {**forms, "A4": partial.form(forms["A4"], action["partial"])}
     if kind == refusal.FORM:  # the refusal of cover: its own form, with the point that decides it (process/refusal.py)
         forms = {**forms, refusal.FORM: refusal.form(current.get("facts"))}
     # a letter that sets the customer a date ({frist}) keeps the date its approval froze while that approval is open, so a

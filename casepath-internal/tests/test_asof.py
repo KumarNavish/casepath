@@ -120,7 +120,7 @@ class PrefixTests(unittest.TestCase):
             print(f"cut {k} · measured {len(same)}/{len(MEASURED)} · surface {len(differ)}/{len(asof.SURFACE)}")
             self.assertEqual(same, list(MEASURED), [(f, mine[f], theirs[f]) for f in MEASURED if f not in same])
             self.assertEqual(differ, self.SURFACE_DIFFERS[k])
-        self.assertEqual([asof.measure(shown)["action"] for _, shown, _ in self.arms], ["A1", "A6", "A5", "A7"])
+        self.assertEqual([asof.measure(shown)["action"] for _, shown, _ in self.arms], ["A1", "A4", "A5", "A7"])  # a partial answer: the question back
 
     def test_b_a_party_named_only_later_is_dropped_and_counted_and_the_parties_then_agree(self):
         on_cut, shown, rebuilt = self.arms[0]

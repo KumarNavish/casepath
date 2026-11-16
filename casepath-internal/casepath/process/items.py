@@ -440,6 +440,16 @@ def build_items(state, result, files=None, events=None, review=None):
         elif planned and not state.get("study"):  # the customer answered and only the handler's own decision keeps the
             from .assessment import premise_assessment  # assessment back: it is prepared on that decision's premise
             planned = premise_assessment(graph, ev, here, state.get("facts") or {}) or planned  # (assessment.py); a study's rules never
+        # The customer answered our request in part (the ledger: something asked came, something asked is still open): the
+        # question back that names exactly what is open, never the assessment on half a file and never a blanket letter
+        # (account.partial_reply). A study's rules never.
+        part = (account.partial_reply(state.get("account")) if planned and not variant and not state.get("study") and here.get("id") == "klaeren"
+                and (state.get("account") or {}).get("checked") else None)
+        if part:
+            n = len(part["open"])
+            planned = {"kind": "A4", "form": "A4", "title": "Rückfrage zu den offenen Punkten" if n > 1 else "Rückfrage zu einem Punkt",
+                       "next_in_days": 14, "follow_up": "A6", "skip_if": None, "partial": part,
+                       "reason": f"Kundschaft hat teilweise geantwortet: {n} Punkt{'e' if n > 1 else ''} noch offen"}
         known_facts = state.get("facts") or {}
         floor = stage_floor(graph, known_facts)
         done = done_actions(known_facts)
@@ -465,6 +475,12 @@ def build_items(state, result, files=None, events=None, review=None):
             quiet = None if ev.get("outcome") else account.silence(ledger, graph.get("clock"), look, stage=here.get("id"))
         else:
             quiet = None if ev.get("outcome") else silence(graph.get("clock"), known_facts, files, stage=here.get("id"))  # nobody answered our last letter
+        if quiet and quiet.get("due_today"):
+            # due today, and the stage already shows that very step as its follow-up, dated from the letter that went
+            # out: it stays as it is (the same step, «fällig» today); the clock's step takes over only where it differs
+            shown = (planned or {}).get("follow_up") if (planned or {}).get("skip_if") else (planned or {}).get("kind")
+            if shown == quiet["then"]:
+                quiet = None
         # The insurer conducts the case and a settlement is reached: agreement, bank details once, payout, receipt, closing
         # (settlement.py); where the case has a running account, the agreement as it stands is read from it (amount, who pays,
         # by when, paid or not), otherwise from the offer and payment the file shows.
@@ -564,6 +580,7 @@ def build_items(state, result, files=None, events=None, review=None):
                                         **({"since": planned["since"]} if planned.get("since") else {}),
                                         **({"fell_due": planned["fell_due"]} if planned.get("fell_due") else {}),
                                         **({"consequence": planned["consequence"]} if planned.get("consequence") else {}),
+                                        **({"partial": planned["partial"]} if planned.get("partial") else {}),
                                         **({"owed": planned["owed"]} if planned.get("owed") else {}),
                                         **({"settlement": {"step": (settling or {}).get("step", ("",))[0], "done": list((settling or {}).get("done") or []),
                                                            "terms": bool(((settling or {}).get("terms") or {}).get("amount")),

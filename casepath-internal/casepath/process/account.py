@@ -1284,10 +1284,35 @@ def silence(acc, rules, look, stage=None):
     if _after(acc, sent, to, n) or (to == INSURER):
         return None
     rule = next((r for r in rules if code in r["after"] and (stage is None or r.get("stages") is None or stage in r["stages"])), None)
-    if rule and (look - sent).days > rule["days"]:
+    # the follow-up is due on the day the rule's days are over: the case is looked at that day and the next step is prepared
+    # for it (a handler acts on the due day, not the day after); the frozen study keeps its rule (the day after)
+    silent = (look - sent).days
+    if rule and (silent >= rule["days"] if acc.get("checked") else silent > rule["days"]):
         return {**rule, "last": f"A{code}", "since": sent.isoformat(), "as_of": look.isoformat(), "silent_days": (look - sent).days,
-                "ledger": True}
+                "ledger": True, **({"due_today": True} if silent == rule["days"] else {})}
     return None
+
+
+def partial_reply(acc):
+    """The customer answered our last request in part, from the ledger: {date, n, received [what], open [{what, request,
+    kind, ref, key, first}]}. Something we (or the mandated firm) asked of the customer was delivered by an entry that
+    came after our last asking letter, and something we asked is still open. None otherwise: nothing came, everything
+    came, or what came answers nothing we asked. The question back then names exactly what is still open."""
+    if not acc:
+        return None
+    asking = [e for e in acc["entries"] if e["from"] == INSURER and e.get("date") and any(a["of"] == "kunde" for a in e.get("asks") or ())]
+    if not asking:
+        return None
+    last = max(asking, key=lambda e: (e["date"], e["n"]))
+    ours = [r for r in acc["requests"] if r["of"] == "kunde" and r["by"] in OWED_TO_US]
+    came = [r for r in ours if r["answered"] is not None and not r["answered"].get("settled")
+            and (str(r["answered"].get("date") or ""), r["answered"].get("n") or 0) > (last["date"], last["n"])]
+    open_ = [r for r in ours if r["answered"] is None]
+    if not came or not open_:
+        return None
+    reply = max(came, key=lambda r: (str(r["answered"].get("date") or ""), r["answered"].get("n") or 0))["answered"]
+    return {"date": reply.get("date"), "n": reply.get("n"), "received": [{"what": r["what"], "request": r["id"]} for r in came],
+            "open": [{"what": r["what"], "request": r["id"], "first": r["first"], **(r.get("ask") or {})} for r in open_]}
 
 
 def derived(acc, kind, rules, look):
@@ -1989,14 +2014,16 @@ def ledger_lines(led, acc=None):
     return lines
 
 
-SETTLE = {"erledigt": "erledigt", "nicht_mehr_noetig": "nicht mehr nötig", "beantwortet": "beantwortet"}
+SETTLE = {"erledigt": "erledigt", "nicht_mehr_noetig": "nicht mehr nötig", "beantwortet": "beantwortet", "offen": "noch offen"}
 
 
 def apply_corrections(entries, edits):
     """The handler's settlements of open requests in force (edit op «settle_request» {request: «r<n>.<i>», how: erledigt |
-    nicht_mehr_noetig | beantwortet, entry?}), carried by the entry that first asked the row, for build to apply: the row
-    is closed by the handler («erledigt», «nicht mehr nötig», «beantwortet durch Nr. n»), unless it is asked again after
-    the settlement. Undone with the edit, like every correction."""
+    nicht_mehr_noetig | beantwortet | offen, entry?}), carried by the entry that first asked the row, for build to apply:
+    the row is closed by the handler («erledigt», «nicht mehr nötig», «beantwortet durch Nr. n»), unless it is asked
+    again after the settlement; «offen» is the other way round: a row the reading took as answered is open again (what
+    was read as delivered was not it), until something that came after the handler's correction answers it. Undone with
+    the edit, like every correction."""
     settled = {}
     for e in edits or ():
         if e.get("op") != "settle_request" or e.get("status", "active") != "active":
@@ -2017,6 +2044,12 @@ def _settle(requests, entries, by_n):
     for e in entries:
         for s in e.get("settled") or ():
             r = rows.get(s["request"])
+            if s["how"] == "offen":  # read as answered, and it was not: open again, unless an answer came after the correction
+                was = (r or {}).get("answered")
+                if was is not None and not was.get("settled") and str(was.get("date") or "") <= str(s.get("at") or "")[:10]:
+                    r["answered"] = None
+                    r["reopened"] = {"by": s.get("by"), "at": s.get("at"), "edit": s.get("edit"), "was": {"n": was.get("n"), "date": was.get("date")}}
+                continue
             if r is None or r["answered"] is not None or (r.get("last") and str(s.get("at") or "")[:10] < r["last"]):
                 continue
             answer = by_n.get(s.get("entry")) if s["how"] == "beantwortet" else None

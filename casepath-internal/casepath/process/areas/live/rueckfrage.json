@@ -1,0 +1,10 @@
+{
+ "format": "casepath.live-form/1",
+ "version": "2026-11-16.1",
+ "note": "Die Rückfrage nach einer Teilantwort: was eingegangen ist und was genau noch offen ist. Gilt für laufende Fälle; die eingefrorene Studie lädt diese Datei nicht. Nicht juristisch geprüft.",
+ "form": "A4",
+ "parts": [
+  {"id": "erhalten", "title": "Dank mit dem, was eingegangen ist", "text": "Vielen Dank für Ihre Nachricht vom {datum}. Erhalten haben wir: {erhalten}."},
+  {"id": "offen", "title": "Was noch offen ist", "text": "Damit wir weiterfahren können, benötigen wir noch:\n{offen}"}
+ ]
+}

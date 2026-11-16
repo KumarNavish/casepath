@@ -1606,6 +1606,14 @@ function gapCount(doc) {
   return (text.match(GAP_RE) || []).length;
 }
 // «Weil: …», one line: what led to this step; its source (and, for what came in, «bereits erledigt») when opened.
+// After a partial answer: what the reading took as delivered, each with «doch offen» for the one that was not it (the
+// request is open again and the letter asks it), so the handler corrects the reading where its consequence is shown.
+function partialLine(act) {
+  const part = act && act.partial;
+  if (!part || !(part.received || []).length) return "";
+  return `<p class="cp-partial" data-partial><span class="cp-head-label">${T("Received", "Eingegangen")}:</span> ${part.received.map((r) =>
+    `<span class="cp-partial-item">${esc(r.what)} <button class="cp-link cp-quiet-link" data-settle="${esc(r.request)}" data-how="offen" title="${T("It did not come: ask for it again", "Das ist nicht eingegangen: nochmals verlangen")}">${T("still open", "doch offen")}</button></span>`).join(" · ")}</p>`;
+}
 function weilLine(act) {
   const sc = scr(), text = sc.weil || (act && act.reason);
   if (!text) return "";
@@ -1743,7 +1751,7 @@ function preparedView(st) {
     ${restLine}`;
   if (folded) return `${head}<footer class="cp-bar cp-carry">${whenAfter || when}</footer></section>`;
   return `${head}
-    ${c ? "" : `${resting ? "" : weilLine(act)}${resting ? "" : headBlock()}${leadLine(sc.lead)}${dec ? decisionLine(dec, decisionPrimary) : progressLine(sc.progress)}`}${tabs}
+    ${c ? "" : `${resting ? "" : weilLine(act)}${resting ? "" : partialLine(act)}${resting ? "" : headBlock()}${leadLine(sc.lead)}${dec ? decisionLine(dec, decisionPrimary) : progressLine(sc.progress)}`}${tabs}
     ${stale && text ? `<p class="cp-stale-note">${T("Draft from before the new files", "Entwurf vor den neuen Dateien")} <button class="cp-link cp-quiet-link" id="use-anyway" type="button">${T("use anyway", "trotzdem verwenden")}</button></p>` : ""}
     ${c || asFrozen ? "" : conflictsView(active)}
     <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${esc((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>

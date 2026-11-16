@@ -379,9 +379,11 @@ def relied_elements(draft, assessment=None, process=None, listed=(), events=()):
             out.append(f"{COVER}:schreiben.{x['kind']}.{r.get('id')}")
     if form in ("A11_teilablehnung", "A12_mitwirkung_kanzlei"):
         out.append(f"{BACKBONE}:schreiben.{form}")
-    from . import refusal
+    from . import partial, refusal
     if form == refusal.FORM:  # the refusal of cover rests on each of its own parts
         out += refusal.element_ids()
+    if form == "A4" and (next((i for i in listed or () if i.get("kind") == "next_action"), None) or {}).get("partial"):
+        out += partial.element_ids()
     for ask in asks(form, draft.get("kind"), listed, events, assessment):
         if ask.get("kind") == "document" and ask.get("ref"):
             own(f"unterlage.{ask['ref']}")
@@ -557,6 +559,10 @@ def asks(form, kind, listed, events, assessment=None, respond_by=None, role="kun
         return [{"what": a.get("what"), "of": role, "by": respond_by, "kind": a.get("kind"), "ref": a.get("ref"), "key": a.get("key"),
                  **({"blocks": b} if (b := blocks_of(a, assessment)) else {})}
                 for a in (assessment or {}).get("asks") or () if a.get("what")]
+    act = next((i for i in listed or () if i.get("kind") == "next_action"), None) or {}
+    if form == "A4" and act.get("partial"):  # the question back after a partial answer asks exactly what is still open
+        from . import partial
+        return partial.asks(act["partial"], role, respond_by)
     if form in ("A1", "A4") or assessing:  # an assessment without one asks, like the first request, the documents still missing
         docs = [{"what": (i.get("label") or {}).get("de") or i.get("value"), "of": role, "by": respond_by, "kind": "document", "ref": i["key"]}
                 for i in letters.asked(listed, events, "document")] if form == "A1" or assessing else []

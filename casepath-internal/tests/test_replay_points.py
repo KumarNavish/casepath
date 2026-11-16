@@ -340,9 +340,9 @@ class ReplyAssessmentTests(unittest.TestCase):
 
     def test_a_the_narrow_score_of_the_four_points(self):
         self.assertEqual([(r["label"], r["kind"], r["ready"]) for r in self.table["rows"]],
-                         [("A1", "A1", False), ("A4", "A6", False), ("A5", "A5", False), ("A7", "A7", True)])
+                         [("A1", "A1", False), ("A4", "A4", True), ("A5", "A5", False), ("A7", "A7", True)])  # the partial answer gets its question back
         self.assertEqual(self.rows[3]["documents"]["missed"], ["other:stromkosten"])  # the narrow rule never hits another document
-        self.assertIn("historische Handlung (eng; Wiedervorlage ±7 Tage, keine Frist-Toleranz): Handlungsart 3/4 · bereit 1/4", self.table["lines"])
+        self.assertIn("historische Handlung (eng; Wiedervorlage ±7 Tage, keine Frist-Toleranz): Handlungsart 4/4 · bereit 2/4", self.table["lines"])
 
     def test_b_the_assessment_is_accepted_by_its_own_rules(self):
         accept = self.rows[3]["accept"]
@@ -377,14 +377,14 @@ class ReplyAssessmentTests(unittest.TestCase):
 
     def test_d_a_table_before_and_after_names_each_point_whose_kind_or_ready_changed(self):
         after = copy.deepcopy(self.table)
-        after["rows"][1].update(kind="A5", kind_ok=False)  # the question back: a different action prepared
+        after["rows"][1].update(kind="A5", kind_ok=False, ready=False)  # the question back: a different action prepared
         after["rows"][2]["ready"] = True
         after["summary"]["ready"] = 2
         self.assertEqual(points.change_lines(self.table, after), [
-            f"S-D11A {self.case_id} #2 A4: kind A6 → A5, ready no → no",
+            f"S-D11A {self.case_id} #2 A4: kind A4 → A5, ready yes → no",
             f"S-D11A {self.case_id} #3 A5: kind A5 → A5, ready no → yes",
-            "2 of 4 points changed kind or ready · ready (letters) 1/4 before, 2/4 after"])
-        self.assertEqual(points.change_lines(self.table, self.table)[-1], "0 of 4 points changed kind or ready · ready (letters) 1/4 before, 1/4 after")
+            "2 of 4 points changed kind or ready · ready (letters) 2/4 before, 2/4 after"])
+        self.assertEqual(points.change_lines(self.table, self.table)[-1], "0 of 4 points changed kind or ready · ready (letters) 2/4 before, 2/4 after")
         with tempfile.TemporaryDirectory() as folder:
             paths = [Path(folder) / "before.json", Path(folder) / "after.json"]
             for path, out in zip(paths, (self.table, after)):

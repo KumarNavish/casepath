@@ -1685,8 +1685,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(422, str(error)) from None
         except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
             raise HTTPException(422, f"This change cannot be applied: {error}") from None
-        if body.op == "settle_request" and not any(r["id"] == body.args.get("request") and r["answered"] is None
-                                                   for r in (before.get("account") or {}).get("requests") or ()):
+        reopening = body.op == "settle_request" and body.args.get("how") == "offen"
+        if reopening and not any(r["id"] == body.args.get("request") and r["answered"] is not None and not r["answered"].get("settled")
+                                 for r in (before.get("account") or {}).get("requests") or ()):
+            raise HTTPException(422, "Diese Anforderung gilt nicht als beantwortet.")
+        if body.op == "settle_request" and not reopening and not any(r["id"] == body.args.get("request") and r["answered"] is None
+                                                                     for r in (before.get("account") or {}).get("requests") or ()):
             raise HTTPException(422, "Diese Anforderung ist nicht mehr offen.")
         package_before = _package(get_case(case_id, who)) if before.get("run") else None
         edit = store.add_edit(case_id, body.op, body.args, who, reason_text)

@@ -257,8 +257,8 @@ def apply_edit(graph, edit):
     elif op == "settle_request":  # a request of the account the handler settles: an entry correction (account.apply_corrections)
         if not re.fullmatch(r"r\d+\.\d+", str(args.get("request") or "")):
             raise EditError("a request is named by its id («r3.0»)")
-        if args.get("how") not in ("erledigt", "nicht_mehr_noetig", "beantwortet"):
-            raise EditError("settled as erledigt, nicht_mehr_noetig or beantwortet")
+        if args.get("how") not in ("erledigt", "nicht_mehr_noetig", "beantwortet", "offen"):
+            raise EditError("settled as erledigt, nicht_mehr_noetig or beantwortet, or open again (offen)")
         if args.get("how") == "beantwortet" and not isinstance(args.get("entry"), int):
             raise EditError("«beantwortet» names the entry that answered it")
     elif op == "set_claim":  # an unclear statement about a claimed cost, settled by the handler (claims.effective)
