@@ -35,6 +35,12 @@ env:
   # Scanned pages are read from images; 1400 px on the long side keeps typed text legible at fewer tokens per page.
   - name: CASEPATH_PAGE_IMAGE_SIDE
     value: "1400"
+  # Update on arrival: files added to a prepared case are read by themselves, a bounded update (only while the unread
+  # files have at most CASEPATH_AUTO_UPDATE_MAX_PAGES pages, default 20; larger arrivals wait for «Aktualisieren»). It
+  # spends tokens without a click, so it is "false" here and switched on in the deploy cell (AUTO_UPDATE) only after
+  # the diagnostic run on a real later arrival has been reviewed.
+  - name: CASEPATH_AUTO_UPDATE
+    value: "false"
   # A run stops with a stated reason once it has used this many tokens (input not read from the cache, and output);
   # 0 means no limit.
   - name: CASEPATH_RUN_TOKEN_BUDGET

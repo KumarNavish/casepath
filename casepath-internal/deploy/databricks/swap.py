@@ -15,6 +15,9 @@ SALT = ""  # for a study only: a fixed secret typed here (never in Git); it keep
 # Who may release shared rules, mark the legal content, read the evaluation and delete a colleague's case: comma-separated
 # e-mail addresses, typed here only. Empty: nobody (the app names no reviewer by default).
 REVIEWERS = ""
+# Update on arrival (files added to a prepared case are read by themselves, bounded by pages): True only once the owner
+# has reviewed the diagnostic run on a real later arrival and said so. It spends tokens without a click.
+AUTO_UPDATE = False
 assert re.fullmatch(r"[A-Za-z0-9_.@+, -]*", REVIEWERS), "REVIEWERS holds e-mail addresses separated by commas"
 assert re.fullmatch(r"[A-Za-z0-9_-]*", SALT), "SALT may hold only letters, digits, - and _"
 confirm = dbutils.widgets.get("confirm").strip()  # noqa: F821  (Databricks provides dbutils)
@@ -53,6 +56,7 @@ else:
     text = re.sub(r'(- name: CASEPATH_SPEED_TRIALS\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + (match.group(5) or "") + '"', text)
     text = re.sub(r'(- name: CASEPATH_SCORECARD_SALT\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + SALT + '"', text)
     text = re.sub(r'(- name: CASEPATH_REVIEWERS\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + REVIEWERS + '"', text)
+    text = re.sub(r'(- name: CASEPATH_AUTO_UPDATE\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + ("true" if AUTO_UPDATE else "false") + '"', text)
     open(N + "/app.yaml", "w").write(text)
     shutil.rmtree(O, ignore_errors=True)
     shutil.copytree(D, O)
