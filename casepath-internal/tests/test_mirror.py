@@ -22,6 +22,8 @@ def fake_volume():
         if kind == "files" and request.method == "PUT":
             files[path] = request.content
             return httpx.Response(204)
+        if kind == "files" and request.method == "DELETE":
+            return httpx.Response(204) if files.pop(path, None) is not None else httpx.Response(404)
         if kind == "files":
             return httpx.Response(200, content=files[path]) if path in files else httpx.Response(404)
         children = {p[len(path) + 1:].split("/")[0] for p in files if p.startswith(path + "/")}
@@ -49,6 +51,43 @@ class MirrorTests(unittest.TestCase):
             self.assertEqual([c["title"] for c in restored.list_cases()], ["Schimmel"])
             self.assertEqual(restored.file_bytes(restored.list_files(case["id"])[0]["id"])[0], b"Mietzins")
             self.assertEqual(fresh.restore(), 0)  # a store that is already there is never overwritten
+
+
+    def test_a_deleted_case_is_gone_from_the_volume_too_and_does_not_come_back(self):
+        files, transport = fake_volume()
+        host = "https://adb.example.azuredatabricks.net"
+        with tempfile.TemporaryDirectory() as first, tempfile.TemporaryDirectory() as second, tempfile.TemporaryDirectory() as third:
+            store = CaseStore(first)
+            kept = store.create_case("Bleibt", {}, "anna")
+            store.add_file(kept["id"], "a.txt", "text/plain", "text", b"bleibt hier", {"text": "bleibt hier"}, "anna")
+            gone = store.create_case("Wird geloescht", {}, "anna")
+            secret = b"GEHEIMER-INHALT-DES-GELOESCHTEN-FALLS " * 400
+            store.add_file(gone["id"], "b.txt", "text/plain", "text", secret, {"text": secret.decode()}, "anna")
+            store.append_case_event(gone["id"], {"kind": "note.added", "text": "GEHEIMER-INHALT-DES-GELOESCHTEN-FALLS im Verlauf"})
+            mirror = VolumeMirror(first, VOLUME, host, lambda: "t", transport=transport)
+            mirror.sync()
+            blobs = lambda: sorted(p for p in files if "/files/" in p)
+            self.assertEqual(len(blobs()), 2)
+            self.assertIn(b"GEHEIMER-INHALT", files[f"{VOLUME}/casepath.db"])
+            store.delete_case(gone["id"], "anna")
+            self.assertEqual(mirror.sync().get("removed"), 1)  # the file's bytes leave the volume with the case
+            self.assertEqual(len(blobs()), 1)
+            self.assertNotIn(b"GEHEIMER-INHALT", files[f"{VOLUME}/casepath.db"])  # and its text is not in the copied database
+            self.assertEqual((mirror.status()["ok"], bool(mirror.status()["last_copy"])), (True, True))
+            store.close()
+            # a copy made before the deletion reached the volume (a crash between the two): the orphan comes back with a
+            # restore, the store removes what no case refers to, and the next copy removes it from the volume
+            orphan = "ab" * 32
+            files[f"{VOLUME}/files/{orphan[:2]}/{orphan}"] = b"verwaist"
+            fresh = VolumeMirror(second, VOLUME, host, lambda: "t", transport=transport)
+            self.assertEqual(fresh.restore(), 2)
+            restored = CaseStore(second)
+            self.addCleanup(restored.close)
+            self.assertEqual(restored.sweep_blobs(), 1)
+            self.assertEqual(fresh.sync().get("removed"), 1)
+            self.assertEqual(len(blobs()), 1)
+            self.assertEqual(restored.file_bytes(restored.list_files(kept["id"])[0]["id"])[0], b"bleibt hier")
+            del third
 
 
 class ImportTests(unittest.TestCase):

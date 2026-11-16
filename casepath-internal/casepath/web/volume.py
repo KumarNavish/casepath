@@ -1,4 +1,4 @@
-"""A Databricks Unity Catalog volume through the workspace Files API: list a folder, read and write a file."""
+"""A Databricks Unity Catalog volume through the workspace Files API: list a folder, read, write and delete a file."""
 from urllib.parse import quote
 
 import httpx
@@ -41,3 +41,7 @@ class VolumeClient:
 
     def put(self, path, data):
         self._call("PUT", "files", path, params={"overwrite": "true"}, content=data)
+
+    def delete(self, path):
+        """Remove a file; one that is not there is not an error."""
+        self._call("DELETE", "files", path)

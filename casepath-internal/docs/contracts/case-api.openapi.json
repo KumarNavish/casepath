@@ -1225,6 +1225,7 @@
   },
   "/api/cases/{case_id}": {
    "delete": {
+    "description": "Delete a case with everything derived from it: its owner, the deputy or a reviewer; a content-free record\nstays (who, when, how much).",
     "operationId": "delete_case_api_cases__case_id__delete",
     "parameters": [
      {
@@ -2697,6 +2698,44 @@
      }
     },
     "summary": "Study Copy"
+   }
+  },
+  "/api/cases/{case_id}/takeover": {
+   "post": {
+    "description": "«Vertretung übernehmen»: a colleague opens a case that is not theirs by becoming its deputy, attributed in the\ncase's log where its owner sees it. The owner stays the owner.",
+    "operationId": "take_over_api_cases__case_id__takeover_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Take Over"
    }
   },
   "/api/cases/{case_id}/title": {

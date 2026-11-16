@@ -181,6 +181,10 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
                 why = completion.refusal(row, draft, body.version, done.get("decisions") or [], bool(view.get("draft_stale")))
                 if why:
                     raise HTTPException(*why)
+                held = [h for h in done.get("held_now") or () if h.get("blocks")]
+                if held:  # a jurist asks for a change to what this letter rests on: no approval before that is settled
+                    raise HTTPException(422, "In Prüfung, bitte mit der Prüferin oder dem Prüfer klären: "
+                                        + ", ".join(f"{h['title']} ({h['mark']})" for h in held[:3]))
                 act = next((i for i in view.get("items") or () if i["kind"] == "next_action"), None) or {}
                 prepared = store.latest_run(case_id, "completed")
                 relies = completion.relied_elements(draft, view.get("assessment"), view.get("process"), view.get("items") or [], events)

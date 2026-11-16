@@ -6,10 +6,14 @@ env:
     value: X-Forwarded-Email
   - name: CASEPATH_ALLOWED_USERS
     value: "FILL-IN: comma-separated e-mail addresses of the pilot group"
-  # Who may mark the legal content (Wissen → Rechtsgebiete) and sees «Verwaltung»: e-mail addresses, filled in the
-  # deployed copy only. Empty: every signed-in member of the pilot group.
+  # Who may mark the legal content (Wissen → Rechtsgebiete), release shared rules, read the evaluation and delete a
+  # colleague's case: e-mail addresses, filled in the deployed copy only (the deploy cell's REVIEWERS). Empty: nobody.
   - name: CASEPATH_REVIEWERS
     value: ""
+  # Who may open a case: "team" (every member of the pilot group) or "owner" (its owner, the deputy and the reviewers;
+  # a colleague after a logged «Vertretung übernehmen»). Examples are open to everyone.
+  - name: CASEPATH_CASE_ACCESS
+    value: "team"
   # The model, from the workspace's Unity Gateway, signed in as the app's own service principal; sparing by design.
   - name: CASEPATH_MODEL_PROVIDER
     value: databricks

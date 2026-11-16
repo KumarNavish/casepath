@@ -12,6 +12,10 @@ import shutil
 USERS, MODEL, VOLUME = "FILL-IN: pilot e-mail addresses", "FILL-IN: the gateway model's exact name", "FILL-IN: /Volumes/<catalog>/<schema>/<volume>"
 assert not any(v.startswith("FILL-IN") for v in (USERS, MODEL, VOLUME)), "fill in USERS, MODEL and VOLUME in this cell first"
 SALT = ""  # for a study only: a fixed secret typed here (never in Git); it keeps the pseudonyms stable across restarts
+# Who may release shared rules, mark the legal content, read the evaluation and delete a colleague's case: comma-separated
+# e-mail addresses, typed here only. Empty: nobody (the app names no reviewer by default).
+REVIEWERS = ""
+assert re.fullmatch(r"[A-Za-z0-9_.@+, -]*", REVIEWERS), "REVIEWERS holds e-mail addresses separated by commas"
 assert re.fullmatch(r"[A-Za-z0-9_-]*", SALT), "SALT may hold only letters, digits, - and _"
 confirm = dbutils.widgets.get("confirm").strip()  # noqa: F821  (Databricks provides dbutils)
 # An optional " agents=<agent>=<model>,…" sets CASEPATH_AGENT_MODELS for an experiment; without it every agent uses MODEL.
@@ -48,6 +52,7 @@ else:
     text = re.sub(r'(- name: CASEPATH_AGENT_MODELS\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + agents + '"', text)
     text = re.sub(r'(- name: CASEPATH_SPEED_TRIALS\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + (match.group(5) or "") + '"', text)
     text = re.sub(r'(- name: CASEPATH_SCORECARD_SALT\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + SALT + '"', text)
+    text = re.sub(r'(- name: CASEPATH_REVIEWERS\n\s+value: )"[^"]*"', lambda m: m.group(1) + '"' + REVIEWERS + '"', text)
     open(N + "/app.yaml", "w").write(text)
     shutil.rmtree(O, ignore_errors=True)
     shutil.copytree(D, O)

@@ -169,6 +169,8 @@ async function renderCases() {
   // the handler owns or deputises for («Meine»); both stay as set while the handler works
   const q = (S.listQuery || "").trim().toLowerCase(), mineOnly = Boolean(S.listMine);
   const hay = (c) => [c.reference, c.headline, c.display_title, c.title, c.parties, (c.next_action || {}).text, standText(c), c.owner, c.deputy].filter(Boolean).join(" ").toLowerCase();
+  const lockedRows = cases.cases.filter((c) => c.locked);  // cases of colleagues (need-to-know): the number and the owner only
+  cases.cases = cases.cases.filter((c) => !c.locked);
   const shownCases = cases.cases.filter((c) => (!mineOnly || c.mine) && (!q || q.split(/\s+/).every((w) => hay(c).includes(w))));
   const anyMine = cases.cases.some((c) => c.mine) && cases.cases.some((c) => !c.mine);
   const ordered = orderedCases(shownCases);
@@ -190,6 +192,9 @@ async function renderCases() {
     ${S.message ? `<p class="cp-error">${esc(S.message)}</p>` : ""}
     ${examples.length ? `<h2 class="cp-section cp-muted">${T("Examples", "Beispiele")}</h2>${bucketTables(examples, table, 3)}` : ""}
     ${historic.length ? `<h2 class="cp-section cp-muted">${T("Historic files", "Historische Akten")}</h2>${table(historic)}` : ""}
+    ${lockedRows.length ? `<h2 class="cp-section cp-muted">${T("Colleagues' cases", "Fälle von Kolleginnen und Kollegen")}</h2><table class="cp-table cp-locked"><tbody>${lockedRows
+      .filter((c) => !q || [c.reference, c.owner].filter(Boolean).join(" ").toLowerCase().includes(q)).map((c) => `<tr><td><span class="cp-ref">${esc(c.reference || T("no reference", "ohne Referenz"))}</span></td>
+        <td class="cp-muted">${esc(c.owner || "")}</td><td><button class="cp-button cp-small" data-takeover="${esc(c.id)}">${T("Deputise", "Vertretung übernehmen")}</button></td></tr>`).join("")}</tbody></table>` : ""}
     ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
       ${imports.files.length ? `<table class="cp-table"><tbody>${imports.files.map((f) =>
         `<tr><td><b>${esc(f.title || f.name)}</b>${f.title && f.title !== f.name ? `<br><small class="cp-muted">${esc(f.name)}</small>` : ""}</td>
@@ -202,6 +207,11 @@ async function renderCases() {
   if (search) {
     search.addEventListener("input", () => { S.listQuery = search.value; clearTimeout(S.listTimer); S.listTimer = setTimeout(() => { if (S.route.view === "cases") renderCases().then(() => { const el = $("#list-search"); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }); }, 180); });
   }
+  for (const b of document.querySelectorAll("[data-takeover]")) b.addEventListener("click", async () => {
+    b.disabled = true;
+    try { await api(`/api/cases/${b.dataset.takeover}/takeover`, { method: "POST" }); location.hash = `#/case/${b.dataset.takeover}/overview`; }
+    catch (error) { S.message = error.message; renderCases(); }
+  });
   const mine = $("#list-mine");
   if (mine) mine.addEventListener("change", () => { S.listMine = mine.checked; try { localStorage.setItem("cp-list-mine", mine.checked ? "1" : ""); } catch (error) { /* a per-person convenience only */ } renderCases(); });
   for (const button of document.querySelectorAll("[data-import]")) button.addEventListener("click", async () => {
@@ -2876,6 +2886,10 @@ function carryButtons(active, opts) {
   const failed = S.copyFailed ? `<span class="cp-save-state error" role="status">${T("Copying failed", "Kopieren fehlgeschlagen")}</span>` : "";
   const last = st.last || {}, wentOut = (last.dispatched || [])[0];
   const sentLine = wentOut ? `<span class="cp-sent">${icon("check")}${esc(last.title ? `${last.title} ` : "")}${T("sent", "versandt am")} ${dateText(wentOut.date)}</span>` : "";
+  // what the letter rests on that a jurist holds: «Änderung nötig» blocks the approval, a «Frage» is shown beside it
+  const heldNow = (st.held_now || []).find((h) => h.blocks) || (st.held_now || [])[0], heldBlocks = Boolean(heldNow && heldNow.blocks);
+  const heldText = heldNow ? T(`Under legal review: ${heldNow.title} (${heldNow.mark})`, `In Prüfung: ${heldNow.title} (${heldNow.mark})`) : "";
+  const heldNote = heldNow ? `<span class="cp-stale-bar" data-held-now>${esc(heldText)}</span>` : "";
   if (bar.kind === "approve" && st.waits) {
     // the case waits for its date: quiet; the follow-up is prepared for then and can be approved earlier, never pressed for
     return `${sentLine}<span class="cp-waits">${esc(st.waits)}</span><button class="cp-button" id="approve" title="${T("prepared for the follow-up date", "für die Wiedervorlage vorbereitet")}">${T("Approve", "Freigeben")}</button>`;
@@ -2883,9 +2897,10 @@ function carryButtons(active, opts) {
   if (bar.kind === "approve") {
     if (opts.gaps) return `${gapsButton}${saving}${opts.whenAfter || opts.when}`;
     if ((bar.conflicts || 0) > 0) return `<button class="cp-button" id="to-conflicts">${T("Check paragraph", "Absatz prüfen")}</button>${saving}`;
-    const blocked = bar.decision ? T(`Decide first: ${bar.decision}`, `Zuerst entscheiden: ${bar.decision}`) : opts.stale ? T("New files are not read yet", "Neue Unterlagen sind noch nicht gelesen.") : "";
+    const blocked = bar.decision ? T(`Decide first: ${bar.decision}`, `Zuerst entscheiden: ${bar.decision}`) : opts.stale ? T("New files are not read yet", "Neue Unterlagen sind noch nicht gelesen.")
+      : heldBlocks ? heldText : "";
     const legacy = bar.legacy ? `<span class="cp-muted cp-legacy">${T("copied", "kopiert")} ${dateText(bar.legacy.at)}, ${T("sending not confirmed", "Versand nicht bestätigt")}</span>` : "";
-    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${T("Approve", "Freigeben")}</button>${legacy}${saving}${opts.whenAfter || opts.when}`;
+    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${T("Approve", "Freigeben")}</button>${heldNote}${legacy}${saving}${opts.whenAfter || opts.when}`;
   }
   const rows = (bar.recipients || []).filter((r) => !r.dispatched);
   const copied = copiedApproved();
@@ -2894,7 +2909,7 @@ function carryButtons(active, opts) {
   const pack = bar.version && (st.approved || {}).bundle ? `<a class="cp-link" id="bundle-download" href="/api/cases/${esc(id)}/actions/${esc(bar.version)}/bundle" aria-label="${packName}" title="${packName}">${T("Package", "Versandpaket")}</a>` : "";
   const note = "";  // «Aktennotiz kopieren» stands in «Der Fall», beside the note it copies
   if (bar.kind === "stale") {
-    return `<span class="cp-stale-bar" title="${esc((bar.reasons || []).join(", "))}">${esc(bar.stale)}</span><button class="cp-button ${opts.primary ? "primary" : ""}" id="approve">${T("Approve again", "Erneut freigeben")}</button>
+    return `<span class="cp-stale-bar" title="${esc((bar.reasons || []).join(", "))}">${esc(bar.stale)}</span><button class="cp-button ${opts.primary && !heldBlocks ? "primary" : ""}" id="approve" ${heldBlocks ? `disabled title="${esc(heldText)}"` : ""}>${T("Approve again", "Erneut freigeben")}</button>${heldBlocks ? heldNote : ""}
       ${rows.map((r) => dispatchControl(bar, r, false)).join("")}${saving}`;
   }
   if (bar.kind === "dispatch") {

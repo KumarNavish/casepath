@@ -109,7 +109,7 @@ class AppTests(unittest.TestCase):
                               CASEPATH_IDENTITY_USER_CLAIM="preferred_username", CASEPATH_IDENTITY_ROLES_CLAIM="realm_access.roles",
                               CASEPATH_REQUIRED_ROLE="casepath-user")
         allowed = {"x-identity": token({"preferred_username": "u123", "realm_access": {"roles": ["casepath-user"]}})}
-        self.assertEqual(gateway.get("/api/me", headers=allowed).json(), {"user": "u123", "may_review": True})
+        self.assertEqual(gateway.get("/api/me", headers=allowed).json(), {"user": "u123", "may_review": False})  # no reviewer is named: nobody is one
         other = {"x-identity": token({"preferred_username": "u456", "realm_access": {"roles": ["other"]}})}
         self.assertEqual(gateway.get("/api/cases", headers=other).status_code, 403)
         self.assertEqual(gateway.get("/api/cases", headers={"x-identity": "not a token"}).status_code, 401)
@@ -120,7 +120,11 @@ class AppTests(unittest.TestCase):
     def test_a_pilot_is_open_to_its_named_group_only(self):
         pilot = self.client(CASEPATH_DEV_USER="", CASEPATH_IDENTITY_HEADER="X-Forwarded-Email",
                             CASEPATH_ALLOWED_USERS="anna.muster@example.ch, Beat.Beispiel@example.ch")
-        self.assertEqual(pilot.get("/api/me", headers={"X-Forwarded-Email": "beat.beispiel@example.ch"}).json(), {"user": "beat.beispiel@example.ch", "may_review": True})
+        # a deployment with sign-in that names no reviewers has none (nothing is open by default); a named one is
+        self.assertEqual(pilot.get("/api/me", headers={"X-Forwarded-Email": "beat.beispiel@example.ch"}).json(), {"user": "beat.beispiel@example.ch", "may_review": False})
+        named = self.client(CASEPATH_DEV_USER="", CASEPATH_IDENTITY_HEADER="X-Forwarded-Email", CASEPATH_REVIEWERS="Beat.Beispiel@example.ch")
+        self.assertTrue(named.get("/api/me", headers={"X-Forwarded-Email": "beat.beispiel@example.ch"}).json()["may_review"])
+        self.assertFalse(named.get("/api/me", headers={"X-Forwarded-Email": "anna.muster@example.ch"}).json()["may_review"])
         self.assertEqual(pilot.get("/api/cases", headers={"X-Forwarded-Email": "someone.else@example.ch"}).status_code, 403)
 
     def test_learning_reuse_and_edits_across_cases(self):

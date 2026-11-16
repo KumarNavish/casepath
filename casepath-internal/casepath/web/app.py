@@ -22,7 +22,7 @@ from typing import Literal
 from urllib.parse import quote
 
 from fastapi import Depends, Query, FastAPI, File, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse, HTMLResponse, Response
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, ConfigDict, Field
@@ -274,6 +274,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     if mirror is not None:
         mirror.restore()  # before the store opens its database
     store = store or CaseStore(settings.data_dir)
+    if mirror is not None:
+        store.sweep_blobs()  # bytes of a deleted case that came back with the volume's copy: removed here, then there
     catalogue = catalogue or workflows.Catalogue.load(settings.catalogue_dir)
     kb.seed(store, {w["id"] for w in catalogue.workflows})
     runs = RunService(store, catalogue, model_factory or default_model_factory(settings), max_workers=settings.run_workers,
@@ -349,7 +351,53 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return (review_model().current(latest), latest) if latest else ({}, {})
 
     def may_review(who):
-        return not settings.reviewers or str(who).lower() in settings.reviewers
+        """Whether the person is a reviewer: named in CASEPATH_REVIEWERS. A deployment with sign-in that names nobody has
+        no reviewer (nothing is open by default); without sign-in the development user is one."""
+        if settings.reviewers:
+            return str(who).lower() in settings.reviewers
+        return not settings.identity_header
+
+    def reviewer(who):
+        if not may_review(who):
+            raise HTTPException(403, "Das ist den Prüferinnen und Prüfern vorbehalten.")
+        return who
+
+    def may_open(row, who):
+        """Whether the person may open the case under CASEPATH_CASE_ACCESS «owner»: its owner, the deputy, a reviewer;
+        an example and a study copy are open to everyone signed in."""
+        intake = row.get("intake") or {}
+        return (settings.case_access != "owner" or intake.get("synthetic") or intake.get("study") or may_review(who)
+                or who in (row.get("owner") or row.get("created_by"), row.get("deputy")))
+
+    def case_of_path(path):
+        """The case a request is about, from its path (a case's own routes, or a run, a file or an edit of one); None for
+        a route about no case, or an id that does not exist (the route then answers 404 itself)."""
+        m = re.match(r"^/api/(cases|runs|files|edits)/([A-Za-z0-9_-]+)", path)
+        if not m:
+            return None
+        kind, ident = m.groups()
+        try:
+            if kind == "cases":
+                return store.get_case(ident)
+            row = store.get_run(ident) if kind == "runs" else store.get_file(ident) if kind == "files" else store.get_edit(ident)
+            return store.get_case(row["case_id"])
+        except (NotFound, KeyError):
+            return None
+
+    @app.middleware("http")
+    async def need_to_know(request: Request, call_next):
+        if settings.case_access == "owner" and not request.url.path.endswith("/takeover"):
+            row = case_of_path(request.url.path)
+            if row is not None:
+                try:
+                    who = user(request)
+                except HTTPException as error:
+                    return JSONResponse({"detail": error.detail}, status_code=error.status_code)
+                if not may_open(row, who):
+                    owner = row.get("owner") or row.get("created_by")
+                    return JSONResponse({"detail": f"Dieser Fall gehört {owner}. Mit «Vertretung übernehmen» öffnen Sie ihn; das wird im Fall vermerkt.",
+                                         "locked": True}, status_code=403)
+        return await call_next(request)
 
     def area_review(process, latest):
         """The handler's line on the area's review: «aus dem Gesetz abgeleitet, noch nicht freigegeben», «in Prüfung
@@ -367,7 +415,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 "imports": files is not None, "uploads": uploads,
                 "pdf_text": "pypdf" if importlib.util.find_spec("pypdf") else "builtin",
                 "scanned_pages": "rendered" if importlib.util.find_spec("pypdfium2") and importlib.util.find_spec("PIL") else "embedded images",
-                "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none"}
+                "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none",
+                # the copy on the volume that survives a restart: whether the latest one succeeded, and when one last did
+                **({"copy": mirror.status()} if mirror is not None and hasattr(mirror, "status") else {})}
 
     incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
 
@@ -600,6 +650,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         st["premise_now"] = completion.premise(draft, current.get("facts"), assessment, current.get("process")) if draft else {}
         st["decisions"] = completion.open_decisions(draft, current.get("facts"), assessment, current.get("process")) if draft else []
         st["study"] = bool(study)
+        # what the letter prepared now rests on that a jurist holds, whatever kind of element it is (a frame text, a wording,
+        # a prescribed part) and whenever the mark was set: «Änderung nötig» refuses the approval until it is settled; a
+        # «Frage» is shown beside «Freigeben» and recorded with the approval (its relies_marks)
+        st["held_now"] = (completion.held_marks(completion.relied_elements(draft, assessment, current.get("process"), listed, events), marks, None, titles)
+                          if held_keys and draft.get("text") and st["state"] != "versandt" and not study else [])
+        for h in st["held_now"]:
+            h["blocks"] = h["mark"] == completion.HELD_MARKS["aenderung"]
         if study:
             st["bar"] = {"kind": "study"}  # the frozen expert study: its letter is copied and measured as frozen, never approved or sent
         draft["tabs"] = completion.tab_states(st, events)  # each tab's state: «Entwurf», «freigegeben», «versandt am …»
@@ -687,7 +744,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def list_cases(who=Depends(user)):
         rows = store.list_cases()
         marks = review_marks()[0]  # the jurists' marks: what is only offered while «in Prüfung»
+        # a case the reader may not open (CASEPATH_CASE_ACCESS «owner») is listed by its number and owner only
+        rows = [r if may_open(r, who) else {"id": r["id"], "locked": True, "intake": {}, "title": "", "created_at": r["created_at"],
+                                            **{k: v for k, v in _identity(r, who).items() if k in ("reference", "owner", "deputy", "mine")}} for r in rows]
         for row in rows:  # the next date a case is to be looked at: the list sorts by it
+            if row.get("locked"):
+                continue
             row.update(_identity(row, who))
             events = store.list_case_events(row["id"])
             row["closed"] = any(e["kind"] == "case.closed" for e in events)
@@ -760,6 +822,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         renamed = found(store.rename_case, case_id, title)
         record(case_id, who, "case.renamed", text=title[:300])  # a person's title stands over the one the case gives itself
         return renamed
+
+    @app.post("/api/cases/{case_id}/takeover")
+    def take_over(case_id: str, who=Depends(user)):
+        """«Vertretung übernehmen»: a colleague opens a case that is not theirs by becoming its deputy, attributed in the
+        case's log where its owner sees it. The owner stays the owner."""
+        row = found(store.get_case, case_id)
+        if who in (row.get("owner") or row.get("created_by"), row.get("deputy")):
+            return {"case": {**row, **_identity(row, who)}}
+        saved = store.set_identity(case_id, deputy=who)
+        record(case_id, who, "case.assigned", owner=saved.get("owner") or saved.get("created_by"), deputy=who, taken_over=True,
+               before=row.get("deputy"))
+        return {"case": {**saved, **_identity(saved, who)}}
 
     @app.put("/api/cases/{case_id}/identity")
     def set_identity(case_id: str, body: CaseIdentity, who=Depends(user)):
@@ -1034,6 +1108,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.delete("/api/cases/{case_id}")
     def delete_case(case_id: str, who=Depends(user)):
+        """Delete a case with everything derived from it: its owner, the deputy or a reviewer; a content-free record
+        stays (who, when, how much)."""
+        row = found(store.get_case, case_id)
+        if who not in (row.get("owner") or row.get("created_by"), row.get("deputy")) and not may_review(who):
+            raise HTTPException(403, f"Diesen Fall löscht nur {row.get('owner') or row.get('created_by')}, die Stellvertretung oder eine Prüferin, ein Prüfer.")
         try:
             return {"deleted": case_id, **store.delete_case(case_id, who)}
         except NotFound:
@@ -1735,6 +1814,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     @app.get("/api/auswertung")
     def evaluation_page(who=Depends(user)):
         """Content-free and pseudonymous: counts, ratios and durations from the event log, tied to the manifest."""
+        reviewer(who)
         man = parity.manifest(settings, knowledge=store.list_knowledge())
         return auswertung(store, auswertung_salt, hashlib.sha256(json.dumps(man, sort_keys=True).encode()).hexdigest())
 
@@ -1812,12 +1892,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def replay_knowledge(knowledge_id: str, who=Depends(user)):
         """«Nachspielen»: the item's current version applied to every prepared case without a model; what it would change
         is kept on the item, and only then can it be activated («Freigeben»)."""
+        reviewer(who)
         return store.save_knowledge(replayed(found(store.get_knowledge, knowledge_id), who))
 
     @app.post("/api/knowledge/{knowledge_id}/activate")
     def activate(knowledge_id: str, body: StatusChange, who=Depends(user)):
         """«Freigeben»: only an item whose replay is of its current version and, for a refinement, of the version of the
         item it refines as it is now; it then applies exactly the transformation the replay applied (activation)."""
+        reviewer(who)  # a rule for every open case of the area: a reviewer's release, never any signed-in person's
         item = found(store.get_knowledge, knowledge_id)
         played = item.get("replay") or {}
         if played.get("version") != item.get("version"):
@@ -1831,6 +1913,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.post("/api/knowledge/{knowledge_id}/retire")
     def retire(knowledge_id: str, body: StatusChange, who=Depends(user)):
+        reviewer(who)
         item = found(store.get_knowledge, knowledge_id)
         return store.save_knowledge(kb.set_status(item, "retired", by=who, reason=body.reason))
 
@@ -1844,6 +1927,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     @app.get("/api/review/export")
     def review_export(format: Literal["json", "md"] = "json", who=Depends(user)):
         """The requested changes and questions for the developers: element id, mark, comment, suggested wording. No case content."""
+        reviewer(who)
         rows = review_model().changes(store.latest_reviews())
         if format == "md":
             return Response(reviews.changes_markdown(rows), media_type="text/markdown; charset=utf-8",

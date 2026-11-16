@@ -41,7 +41,7 @@ The case API is fixed in `docs/contracts/case-api.openapi.json`. `tests/test_app
 | Persistence | SQLite plus files (`casepath/web/store.py`) | The case service's database, behind the same API contract | The case service, not the agents |
 | Workflow catalogue | JSON files in `CASEPATH_WORKFLOW_CATALOGUE` | Same files, shipped with the release | None |
 | Retention | `python -m casepath purge --older-than-days N` | The same rule in the case service's scheduled job | Schedule |
-| Deletion | `DELETE /api/cases/{id}` removes the case and everything derived from it, and keeps a content-free deletion record | Same contract | None |
+| Deletion | `DELETE /api/cases/{id}` (its owner, the deputy or a reviewer) removes the case and everything derived from it, and keeps a content-free deletion record. The volume copy follows at its next write: the files' bytes are removed there, the database is copied without its freed pages, and bytes no case refers to are swept at start | Same contract | None |
 | Logs | Run errors and events are stored with the run, not logged | Same; access logs carry ids only | None |
 
 ## One container for a pilot
@@ -66,7 +66,7 @@ Splitting the agent core from the case service, as described above, comes after 
 The same application runs as a Databricks App. `deploy/databricks/package.sh <dir>` assembles the folder the app runs
 from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `requirements.txt`. In `app.yaml`:
 
-- **Sign-in:** Databricks signs people in and passes their e-mail in `X-Forwarded-Email`. `CASEPATH_ALLOWED_USERS` admits only the named pilot group. App permissions in Databricks should match that list. `CASEPATH_REVIEWERS` names the jurists who may mark the legal content and see «Verwaltung» (Wissen, Auswertung); empty, every member of the group may (docs/AREAS.md, Review by a jurist).
+- **Sign-in:** Databricks signs people in and passes their e-mail in `X-Forwarded-Email`. `CASEPATH_ALLOWED_USERS` admits only the named pilot group. App permissions in Databricks should match that list. `CASEPATH_REVIEWERS` names who may mark the legal content, release shared rules (Wissen: «Nachspielen», «Freigeben», «Zurückziehen»), read the evaluation and the review export, and delete a colleague's case; the server checks it on each of these routes. Empty, nobody may in a deployment with sign-in (the deploy cell's `REVIEWERS` fills it; docs/AREAS.md, Review by a jurist). `CASEPATH_CASE_ACCESS` is `team` (every member of the group opens every case) or `owner` (a case opens for its owner, the deputy and the reviewers; a colleague sees its number and owner in the list and opens it with «Vertretung übernehmen», which the case's log records); examples are open to everyone. A case is deleted by its owner, the deputy or a reviewer.
 - **Model:** `CASEPATH_MODEL_PROVIDER=databricks` calls a model in the workspace, such as one from its gateway, through its OpenAI-compatible chat API. The app signs in as its own service principal. `casepath/agents/chat_model.py` translates the agents' messages, tool calls, structured answers and page images, so nothing else changes.
 - **Storage:** the app's own disk does not survive a restart. With `CASEPATH_VOLUME` naming a Unity Catalog volume, the case store is restored from the volume at start and copied there every 30 seconds and at shutdown (`casepath/web/mirror.py`). One app instance writes a volume.
 - **Packages:** the app needs nothing beyond the platform's web packages.
@@ -102,7 +102,10 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
   - On the DSW, 2 tests fail for reasons of that environment, not of the code: the font tests (its virtual
     environment's pip cannot install the fonts) and `FaxTests` (it has Pillow 9.2). The same 2 fail there on older
     builds. They are not skipped; they pass where the packages are current.
-- **Not yet checked:** the real workspace, its model and its volume.
+- **Checked on the pilot:** the workspace, its gateway model and its volume (docs/history/UI_RECEIPT.md, «Real model pass»). **Not yet
+  checked there:** what was added after the build the pilot runs (approval, Versandpaket and dispatch, the update on arrival, deletion
+  reaching the volume, the reviewer and case-access checks); these are proven by the unit tests against a scripted reader and a fake
+  Files API only.
 
 ## Before an operated deployment
 

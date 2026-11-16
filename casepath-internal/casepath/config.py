@@ -81,7 +81,12 @@ class Settings:
     identity_roles_claim: str = "roles"
     required_role: str | None = None
     allowed_users: frozenset = frozenset()
-    reviewers: frozenset = frozenset()  # who may mark the legal content (CASEPATH_REVIEWERS); empty: every signed-in user
+    # Who may mark the legal content, release shared rules, read the evaluation and delete a colleague's case
+    # (CASEPATH_REVIEWERS). Empty: nobody in a deployment with sign-in; the development user where there is none.
+    reviewers: frozenset = frozenset()
+    # Who may open a case (CASEPATH_CASE_ACCESS): «team», everyone signed in (the pilot group); «owner», only its owner,
+    # the deputy and the reviewers, a colleague after a logged «Vertretung übernehmen». Examples are open to everyone.
+    case_access: str = "team"
     volume: str | None = None
     speed_trials: tuple = ()  # named speed changes under trial (CASEPATH_SPEED_TRIALS); empty = today's behaviour
     # The bounded update an upload starts by itself (CASEPATH_AUTO_UPDATE): off unless the deployment turns it on; only
@@ -93,6 +98,13 @@ class Settings:
     update_token_budget: int = 200_000
     mail_subject: str | None = None  # the subject line shown beside a letter (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
     reference_pattern: str = r"\d{4}\.\d{4}\.\d{4}"  # how a reference number looks in a file (CASEPATH_REFERENCE_PATTERN)
+
+
+def _case_access(value):
+    value = (value or "team").strip().lower()
+    if value not in {"team", "owner"}:
+        raise SettingsError("CASEPATH_CASE_ACCESS is team or owner")
+    return value
 
 
 def _flag(env, name, default):
@@ -164,4 +176,5 @@ def load_settings(env=None):
         volume=env.get("CASEPATH_VOLUME") or None,
         allowed_users=frozenset(u.strip().lower() for u in env.get("CASEPATH_ALLOWED_USERS", "").split(",") if u.strip()),
         reviewers=frozenset(u.strip().lower() for u in env.get("CASEPATH_REVIEWERS", "").split(",") if u.strip()),
+        case_access=_case_access(env.get("CASEPATH_CASE_ACCESS")),
     )

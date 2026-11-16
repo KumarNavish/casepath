@@ -97,6 +97,7 @@ class CaseStore:
         self._db.row_factory = sqlite3.Row
         self._db.execute("pragma journal_mode=wal")
         self._db.execute("pragma foreign_keys=on")
+        self._db.execute("pragma secure_delete=on")  # what is deleted is overwritten, not left in the file's freed pages
         self._db.executescript(SCHEMA)
         self._lock = threading.RLock()
         # a store made before updates: its runs are full preparations
@@ -348,6 +349,7 @@ class CaseStore:
             rows = self._all("select sha256, extraction from files where case_id=?", case_id)
             digests = [r["sha256"] for r in rows]
             images = {d for r in rows for d in (json.loads(r["extraction"]).get("page_images") or {}).values()}
+            images |= {json.loads(r["extraction"]).get("photo_image") for r in rows} - {None}
             removed = {"runs": len(runs), "files": len(digests), "knowledge": 0, "knowledge_quotes": 0}
             for run_id in runs:
                 self._db.execute("delete from feedback where run_id=?", (run_id,))
@@ -379,6 +381,23 @@ class CaseStore:
                 if not self._one("select 1 as used from files where sha256=?", digest) and \
                         not self._one("select 1 as used from events where data like ?", f"%{digest}%"):
                     (self.root / "files" / digest[:2] / digest).unlink(missing_ok=True)
+        return removed
+
+    def sweep_blobs(self):
+        """Remove stored bytes no case refers to any more (a file, a page image or a Versandpaket whose case was deleted
+        while its removal did not complete, or a copy restored from the volume after it); returns how many. A file is
+        kept whenever its SHA-256 stands anywhere in a file's row or a case's log."""
+        import re
+        with self._lock:
+            kept = {r["sha256"] for r in self._all("select sha256 from files")}
+            for table, column in (("files", "extraction"), ("events", "data")):
+                for r in self._all(f"select {column} as text from {table}"):
+                    kept.update(re.findall(r"[0-9a-f]{64}", r["text"] or ""))
+            removed = 0
+            for path in (self.root / "files").glob("*/*"):
+                if path.suffix != ".part" and path.name not in kept:
+                    path.unlink(missing_ok=True)
+                    removed += 1
         return removed
 
     def deletions(self):
