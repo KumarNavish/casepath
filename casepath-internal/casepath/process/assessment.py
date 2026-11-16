@@ -245,13 +245,20 @@ def need_lines(data, option_id, claims, items, events=None):
                         lines.append({"key": f"residual:claim.{c['i']}", "line": data["wording"]["claim_line"].replace("{posten}", c["what"]),
                                       "kind": "claim", "ref": c["i"], "evidence": _evidence(c.get("citations")), "wording": "claim_line",
                                       "blocks": {"question": None, "option": option_id, "condition": evidence_condition(data, option_id)},
-                                      **({"set_aside": [_set_aside(x, items) for x in c["set_aside"]]} if c.get("set_aside") else {})})
+                                      **({"set_aside": shown} if (shown := [_set_aside(x, items) for x in c.get("set_aside") or () if _mistakable(x)]) else {})})
                 continue
         if not present and doc is not None:
             lines.append({"key": f"residual:document.{need['document']}", "line": (doc.get("label") or {}).get("de") or need["document"],
                           "kind": "document", "ref": need["document"], "evidence": [],
                           "blocks": {"question": None, "option": option_id, "condition": None}})
     return lines
+
+
+def _mistakable(row):
+    """Whether a candidate the rule set aside could pass for the claim's receipt, so the brief says why it does not: a
+    receipt the reading recorded as one, or one with the claimed amount. A message that only shares a word with the cost
+    (the customer's own mails about it) is no receipt and is not shown."""
+    return bool(row.get("recorded") or row.get("same_amount"))
 
 
 def _set_aside(row, items):

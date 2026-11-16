@@ -1652,7 +1652,7 @@ def receipt_profile(entry, f=None):
             "amounts": {a for a in amounts if a is not None}, "party": rec.get("party"), "payer": rec.get("payer"),
             "period": _period(rec.get("period")) or ((days[0], days[-1]) if days else None), "transaction": rec.get("transaction"),
             "role": rec.get("role") if rec.get("role") in RECEIPT_ROLES else role_of(quotes, entry.get("kind")) or ("paid" if entry.get("paid") else None),
-            "to": entry.get("to"), "file": entry.get("file") or (f or {}).get("id"), "n": entry.get("n")}
+            "to": entry.get("to"), "file": entry.get("file") or (f or {}).get("id"), "n": entry.get("n"), "recorded": bool(rec)}
 
 
 def receipt_agrees(claim, receipt):
@@ -1681,7 +1681,7 @@ def receipt_agrees(claim, receipt):
     payer = r["payer"] if r.get("payer") in PARTIES else r.get("to") if r.get("to") in PARTIES else None  # billed to whom (a party)
     if payer and payer not in CUSTOMER_SIDE:
         why.append(f"an {TO[payer]} gerichtet")
-    return {"agrees": candidate and not why, "candidate": candidate, "why": why}
+    return {"agrees": candidate and not why, "candidate": candidate, "why": why, "same_amount": same_amount}
 
 
 def claim_of(row, claims):
@@ -1723,7 +1723,8 @@ def documented(claim, files, entries=None, file_ids=None, why=None):
             return {"file": r["file"], "how": "receipt", "n": r.get("n"),
                     "basis": {"expense": r["expense"], "amounts": sorted(r["amounts"]), "role": r["role"], "period": r["period"]}}
         if check["candidate"] and why is not None:
-            why.append({"file": r["file"], "n": r.get("n"), "expense": r["expense"], "why": check["why"]})
+            why.append({"file": r["file"], "n": r.get("n"), "expense": r["expense"], "why": check["why"], "recorded": r.get("recorded", False),
+                        "same_amount": check["same_amount"]})
     return None
 
 
