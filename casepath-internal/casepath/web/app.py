@@ -7,7 +7,7 @@ gateway authenticates the employee and passes the identity in a trusted header
 The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 import os
 import re
@@ -285,11 +285,25 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                       auto_update=settings.auto_update, auto_update_max_pages=settings.auto_update_max_pages,
                       update_token_budget=settings.update_token_budget, model_as_user=bool(settings.model and settings.model.auth == "user"))
 
+    ticking = threading.Event()
+
+    def tick_loop():
+        first = True
+        while not ticking.wait(20 if first else settings.tick_minutes * 60):
+            first = False
+            try:
+                app.state.tick()
+            except Exception as error:  # noqa: BLE001  the next pass tries again; /api/health says what failed
+                app.state.tick_error = type(error).__name__
+
     @asynccontextmanager
     async def lifespan(_):
         if mirror is not None:
             mirror.start()
+        if settings.tick_minutes:
+            threading.Thread(target=tick_loop, name="casepath-tick", daemon=True).start()
         yield
+        ticking.set()
         runs.shutdown()
         if mirror is not None:
             mirror.stop()
@@ -417,7 +431,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 "scanned_pages": "rendered" if importlib.util.find_spec("pypdfium2") and importlib.util.find_spec("PIL") else "embedded images",
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none",
                 # the copy on the volume that survives a restart: whether the latest one succeeded, and when one last did
-                **({"copy": mirror.status()} if mirror is not None and hasattr(mirror, "status") else {})}
+                **({"copy": mirror.status()} if mirror is not None and hasattr(mirror, "status") else {}),
+                # the daily pass: when every open case was last looked at again, and how many moved by time alone
+                "tick": {**tick_state, "error": getattr(app.state, "tick_error", None), "every_minutes": settings.tick_minutes}}
 
     incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
 
@@ -602,7 +618,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
         clock = follow_up(action.get("next_in_days") if action else None, files, events, since=(action or {}).get("since"),
                           until=(action or {}).get("until"), step=(action or {}).get("action"),
-                          filed_days=completion.filed_days(current.get("process"), events, stage))
+                          # only while the case waits on that letter: a step a reply made possible is due now, not then
+                          filed_days=completion.filed_days(current.get("process"), events, stage)
+                          if action and listing.waits(action) and not action.get("consequence") else None)
         return capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), files)
 
     def _list_run_inputs(row):
@@ -747,10 +765,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/cases")
     def list_cases(who=Depends(user)):
+        return {"cases": case_rows(who)}
+
+    def case_rows(who, system=False):
+        """The case list's rows as a reader sees them; ``system``: as the daily pass reads them (every case, nobody's)."""
         rows = store.list_cases()
         marks = review_marks()[0]  # the jurists' marks: what is only offered while «in Prüfung»
         # a case the reader may not open (CASEPATH_CASE_ACCESS «owner») is listed by its number and owner only
-        rows = [r if may_open(r, who) else {"id": r["id"], "locked": True, "intake": {}, "title": "", "created_at": r["created_at"],
+        rows = [r if system or may_open(r, who) else {"id": r["id"], "locked": True, "intake": {}, "title": "", "created_at": r["created_at"],
                                             **{k: v for k, v in _identity(r, who).items() if k in ("reference", "owner", "deputy", "mine")}} for r in rows]
         for row in rows:  # the next date a case is to be looked at: the list sorts by it
             if row.get("locked"):
@@ -800,7 +822,75 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                          completion=_list_completion(row, current, listed, events, case_files), overdue_on=row.get("overdue_on"))
             row["due"] = listing.due(listed, row.get("follow_up"), case_files, row["historic"], closed=row["stand"]["kind"] == "closed",
                                      overdue_on=row.get("overdue_on"))
-        return {"cases": rows}
+        return rows
+
+    # The daily pass: every open case looked at again without a model. What moved by time alone since the pass before (a
+    # follow-up fell due, a wait ran out, a deadline came near; nobody touched the case and no run finished) is written
+    # into the case's own log as CasePath's, with what it read before and after, so «Heute» can say what happened while
+    # nobody looked. It prepares nothing new and sends nothing: the row is what the list would show anyway.
+    tick_state = {"at": None, "cases": 0, "moved": 0, "error": None}
+    SYSTEM = "CasePath"
+
+    def tick():
+        looked = moved = 0
+        for row in case_rows(None, system=True):
+            if (row.get("intake") or {}).get("study") or row.get("closed"):
+                continue
+            state_now = {"stand": (row.get("stand") or {}).get("text"), "kind": (row.get("stand") or {}).get("kind"), "bucket": (row.get("stand") or {}).get("bucket"),
+                         "next": (row.get("next_action") or {}).get("text"), "due": (row.get("due") or {}).get("date")}
+            digest = hashlib.sha256(json.dumps(state_now, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+            before = store.get_tick(row["id"])
+            looked += 1
+            if before and before["digest"] == digest:
+                continue
+            if before:
+                events = store.list_case_events(row["id"])
+                latest = store.latest_run(row["id"], exclude="discarded") or {}
+                touched = max([str(e.get("at") or "") for e in events if e.get("expert") != SYSTEM]
+                              + [str(latest.get("finished_at") or latest.get("created_at") or "")], default="")
+                if touched < before["at"]:  # nobody acted and nothing was read since: it moved by time (or by a rule)
+                    record(row["id"], SYSTEM, "system.moved", before=before["state"], after=state_now, trigger="tick")
+                    moved += 1
+            store.set_tick(row["id"], digest, state_now)
+        tick_state.update(at=datetime.now(timezone.utc).isoformat(timespec="seconds"), cases=looked, moved=moved, error=None)
+        return dict(tick_state)
+
+    app.state.tick = tick
+
+    @app.post("/api/tick")
+    def run_tick(who=Depends(user)):
+        """The daily pass, now (a reviewer's gesture; it otherwise runs by itself every CASEPATH_TICK_MINUTES)."""
+        reviewer(who)
+        return tick()
+
+    @app.get("/api/today")
+    def today(since: str | None = Query(None, max_length=40), who=Depends(user)):
+        """What happened on the reader's cases since they last looked (``since``, kept by the reader's own browser), newest
+        first: what CasePath noticed by itself (the daily pass), a preparation or an update that finished, and what a
+        colleague did. {since, events [{case, reference, title, what, by, at}], tick}. Only cases the reader may open; the
+        reader's own (owner or deputy) where any case is theirs."""
+        rows = [r for r in case_rows(who) if not r.get("locked") and not (r.get("intake") or {}).get("study")]
+        own = [r for r in rows if r.get("mine")] or rows
+        mark = since if since and re.fullmatch(r"\d{4}-\d{2}-\d{2}T[0-9:.+Z-]{8,}", since) else None
+        out = []
+        for r in own if mark else ():
+            name = r.get("headline") or r.get("display_title") or r.get("title")
+            base = {"case": r["id"], "reference": r.get("reference"), "title": name}
+            for e in store.list_case_events(r["id"]):
+                at, kind = str(e.get("at") or ""), e.get("kind")
+                if at <= mark or e.get("expert") == who:
+                    continue
+                if kind == "system.moved":
+                    out.append({**base, "what": f"{(e.get('before') or {}).get('stand') or '—'} → {(e.get('after') or {}).get('stand') or '—'}", "by": SYSTEM, "at": at})
+                elif kind in ("action.approved", "action.dispatched", "case.assigned", "case.closed"):
+                    words = {"action.approved": "freigegeben", "action.dispatched": "als versandt bestätigt", "case.assigned": "Zuständigkeit geändert",
+                             "case.closed": "abgeschlossen"}
+                    out.append({**base, "what": words[kind], "by": e.get("expert"), "at": at})
+            run = store.latest_run(r["id"], "completed")
+            if run and str(run.get("finished_at") or "") > mark:
+                out.append({**base, "what": "aktualisiert" if run.get("kind") == "update" else "fertig vorbereitet", "by": SYSTEM, "at": run["finished_at"]})
+        out.sort(key=lambda x: x["at"], reverse=True)
+        return {"since": mark, "events": out[:30], "more": max(0, len(out) - 30), "tick": dict(tick_state)}
 
     def area_title(process):
         """The area's short name a prepared case's title starts with («Darlehen»)."""

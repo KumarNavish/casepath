@@ -791,3 +791,12 @@ h3.cp-bucket{font-size:14px;margin:12px 0 4px}
 .cp-measure.on{color:var(--crimson);font-weight:600}
 .cp-partial{margin:2px 22px 6px;font-size:13.5px;line-height:1.5}
 .cp-partial-item{white-space:nowrap}
+.cp-today{border:1px solid var(--line);border-radius:8px;padding:14px 18px 10px;margin:0 0 18px;max-width:1260px;box-sizing:border-box}
+.cp-today h2{font-size:17px;margin:0 0 8px;font-weight:600}
+.cp-today-counts{display:flex;gap:26px;flex-wrap:wrap;margin:0 0 8px}
+.cp-today-count{text-decoration:none;color:var(--ink);font-size:14.5px}
+.cp-today-count b{font-size:22px;font-weight:600;margin-right:4px;color:var(--crimson)}
+.cp-today-count.zero b{color:var(--ghost)}
+.cp-today-since ul{margin:2px 0 8px;padding-left:18px;font-size:14px;line-height:1.6}
+.cp-today-since p{margin:6px 0 0;font-size:13.5px}
+.cp-today-note{font-size:12.5px;margin:4px 0 0}

@@ -91,6 +91,9 @@ class Settings:
     # nobody, nothing is recorded; «session», each person may switch it on for their browser session, visibly, for an
     # agreed observed session. Never recorded without the person's own switch.
     time_measure: str = "off"
+    # The daily pass (CASEPATH_TICK_MINUTES): every so many minutes each open case is looked at again without a model,
+    # and what moved by time alone (a follow-up fell due, a deadline came near) is written into its log. 0: never.
+    tick_minutes: int = 60
     volume: str | None = None
     speed_trials: tuple = ()  # named speed changes under trial (CASEPATH_SPEED_TRIALS); empty = today's behaviour
     # The bounded update an upload starts by itself (CASEPATH_AUTO_UPDATE): off unless the deployment turns it on; only
@@ -189,4 +192,5 @@ def load_settings(env=None):
         reviewers=frozenset(u.strip().lower() for u in env.get("CASEPATH_REVIEWERS", "").split(",") if u.strip()),
         case_access=_case_access(env.get("CASEPATH_CASE_ACCESS")),
         time_measure=_one_of(env.get("CASEPATH_TIME_MEASURE"), "off", {"off", "session"}, "CASEPATH_TIME_MEASURE is off or session"),
+        tick_minutes=max(0, int(env.get("CASEPATH_TICK_MINUTES", "60"))),
     )

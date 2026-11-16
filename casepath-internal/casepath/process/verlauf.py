@@ -12,7 +12,7 @@ from .clock import parse_date
 GESTURES = {"item.corrected", "item.dismissed", "item.added", "correction.undone", "letter.copied", "letter.line", "followup.set",
             "case.closed", "note.added", "filenote.copied", "case.historic", "case.renamed", "letter.unblocked", "point.settled",
             "entry.changed", "entry.removed", "run.discarded", "action.approved", "bundle.saved", "action.dispatched", "case.reopened",
-            "entry.corrected", "case.reference", "case.assigned", "handover.address"}
+            "entry.corrected", "case.reference", "case.assigned", "handover.address", "system.moved"}
 CHANNELS = {"post": "Post", "email": "E-Mail", "portal": "Portal", "andere": "andere"}
 RECIPIENTS = {"kunde": "die Kundschaft", "gegenpartei": "die Gegenpartei", "kanzlei": "die Kanzlei", "behoerde": "die Behörde", "andere": "Dritte"}
 REASON_WORDS = {"1": "steht anders in den Akten", "2": "steht nicht in den Akten", "3": "hier nicht relevant", "4": "gilt generell so",
@@ -52,6 +52,8 @@ def gesture(e, items, process, edits, events=()):
                 f"({CHANNELS.get(e.get('channel'), e.get('channel'))})"), stale, undo
     if kind == "case.reopened":
         return "Wieder geöffnet: neue Unterlagen", None, None
+    if kind == "system.moved":  # the daily pass: what moved by time alone, as the list read before and after
+        return f"CasePath: {(e.get('before') or {}).get('stand') or '—'} → {(e.get('after') or {}).get('stand') or '—'}", None, None
     if kind == "case.reference":
         return (f"Referenz: {e['text']}" if e.get("text") else "Referenz entfernt"), None, None
     if kind == "case.assigned":

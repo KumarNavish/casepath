@@ -180,8 +180,33 @@ function orderedCases(cases) {
   const rank = (c) => (c.stand || {}).rank ?? 5;
   return [...cases].sort((a, b) => rank(a) - rank(b) || ((a.stand || {}).date || (a.due || {}).date || "9999").localeCompare((b.stand || {}).date || (b.due || {}).date || "9999"));
 }
+// «Heute»: the day at a glance above the list. How many cases need the reader's judgment, are ready to send, fall due
+// today or wait; and what happened on the reader's cases since they last looked (what CasePath noticed by itself, a
+// preparation that finished, what a colleague did). The last visit is this browser's own note, kept nowhere else.
+let visitFrom = null;
+try { visitFrom = localStorage.getItem("cp-last-visit"); } catch (error) { /* without it «Heute» shows the counts only */ }
+function todayPanel(rows, today, since) {
+  const open = rows.filter((c) => standOf(c) !== "closed" && !c.historic);
+  if (!open.length) return "";
+  const n = (bucket) => open.filter((c) => bucketOf(c) === bucket).length;
+  const due = open.filter((c) => c.due && c.due.date <= today && !c.as_of).length;
+  const count = (k, text, bucket) => `<a class="cp-today-count ${k ? "" : "zero"}" href="#/cases" data-today-bucket="${bucket}"><b>${k}</b> ${text}</a>`;
+  const events = (since && since.events) || [];
+  const day = (iso) => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? "" : `${dateText(iso)} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
+  const tick = (since && since.tick) || {};
+  return `<section class="cp-today" data-today aria-label="${T("Today", "Heute")}"><h2>${T("Today", "Heute")} · ${dateText(today)}</h2>
+    <p class="cp-today-counts">${count(n("urteil"), T("need your judgment", "brauchen Ihr Urteil"), "urteil")}${count(n("versandbereit"), T("ready to send", "versandbereit"), "versandbereit")}
+      ${count(due, T("due today or overdue", "heute fällig oder überfällig"), "urteil")}${count(n("wartet"), T("waiting", "warten"), "wartet")}</p>
+    ${events.length ? `<div class="cp-today-since"><p class="cp-muted">${T("Since your last visit", "Seit Ihrem letzten Besuch")} (${day(since.since)}):</p><ul>${events.slice(0, 6).map((e) =>
+      `<li><a href="#/case/${esc(e.case)}/overview">${e.reference ? `<span class="cp-ref">${esc(e.reference)}</span> ` : ""}${esc(e.title || "")}</a> · ${esc(e.what)} <span class="cp-muted">· ${esc(e.by || "")} · ${day(e.at)}</span></li>`).join("")}
+      ${events.length + (since.more || 0) > 6 ? `<li class="cp-muted">${T(`and ${events.length + (since.more || 0) - 6} more`, `und ${events.length + (since.more || 0) - 6} weitere`)}</li>` : ""}</ul></div>` : ""}
+    <p class="cp-muted cp-today-note">${T("Only cases that are in CasePath.", "Nur Fälle, die in CasePath liegen.")}${tick.at ? ` ${T("Dates checked", "Termine geprüft")}: ${day(tick.at)}.` : ""}</p></section>`;
+}
 async function renderCases() {
-  const [cases, workflows, health] = await Promise.all([api("/api/cases"), api("/api/workflows"), api("/api/health")]);
+  const sinceMark = visitFrom;
+  const [cases, workflows, health, since] = await Promise.all([api("/api/cases"), api("/api/workflows"), api("/api/health"),
+    api(`/api/today${sinceMark ? `?since=${encodeURIComponent(sinceMark)}` : ""}`).catch(() => null)]);
+  try { localStorage.setItem("cp-last-visit", new Date().toISOString()); } catch (error) { /* a convenience only */ }
   const imports = health.imports ? await api("/api/imports").catch(() => null) : null;
   S.workflows = workflows.workflows;
   const today = isoToday();
@@ -220,6 +245,7 @@ async function renderCases() {
   $("#app").innerHTML = `<main class="cp-main cp-list"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
       ${S.canUpload === false ? "" : `<span class="cp-list-new">${any ? `<span class="cp-muted">${T("or drop files here", "oder Dateien hierher ziehen")}</span>` : ""}
         <label class="cp-button primary">${icon("plus")}${T("New case", "Neuer Fall")}<input type="file" id="new-files" multiple hidden></label></span>`}</div>
+    ${todayPanel(cases.cases.filter((c) => !mineOnly || c.mine), today, since)}
     ${tools}${(q || mineOnly) && !ordered.length ? `<p class="cp-muted cp-list-none">${T("No case matches.", "Kein Fall passt.")}</p>` : ""}
     ${real.length ? bucketTables(real, table, 2) : ""}
     ${S.canUpload === false || any ? "" : `<div class="cp-drop" id="drop">${S.creating ? T("Creating the case…", "Der Fall wird angelegt …") : T("Drop files here and CasePath prepares the case", "Dateien hierher ziehen, CasePath bereitet den Fall vor")}</div>`}
@@ -237,6 +263,10 @@ async function renderCases() {
           : `<button class="cp-button" data-import="${esc(f.path)}">${icon("plus")}${T("Import", "Importieren")}</button>`}</td></tr>`).join("")}</tbody></table>`
         : `<p class="cp-muted">${T("No files there yet.", "Noch keine Dateien dort.")}</p>`}` : ""}</main>`;
   S.message = "";
+  for (const a of document.querySelectorAll("[data-today-bucket]")) a.addEventListener("click", (event) => {  // to that group of the list
+    const head = document.querySelector(`[data-bucket='${a.dataset.todayBucket}']`);
+    if (head) { event.preventDefault(); head.scrollIntoView({ block: "start", behavior: "smooth" }); }
+  });
   const search = $("#list-search");
   if (search) {
     search.addEventListener("input", () => { S.listQuery = search.value; clearTimeout(S.listTimer); S.listTimer = setTimeout(() => { if (S.route.view === "cases") renderCases().then(() => { const el = $("#list-search"); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }); }, 180); });

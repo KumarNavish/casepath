@@ -4008,6 +4008,69 @@
     "summary": "Study Plan"
    }
   },
+  "/api/tick": {
+   "post": {
+    "description": "The daily pass, now (a reviewer's gesture; it otherwise runs by itself every CASEPATH_TICK_MINUTES).",
+    "operationId": "run_tick_api_tick_post",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Run Tick"
+   }
+  },
+  "/api/today": {
+   "get": {
+    "description": "What happened on the reader's cases since they last looked (``since``, kept by the reader's own browser), newest\nfirst: what CasePath noticed by itself (the daily pass), a preparation or an update that finished, and what a\ncolleague did. {since, events [{case, reference, title, what, by, at}], tick}. Only cases the reader may open; the\nreader's own (owner or deputy) where any case is theirs.",
+    "operationId": "today_api_today_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "since",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "maxLength": 40,
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Since"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Today"
+   }
+  },
   "/api/workflows": {
    "get": {
     "operationId": "list_workflows_api_workflows_get",

@@ -59,6 +59,8 @@ create table if not exists drafts(
   base_sha256 text not null, base text not null, text text not null, parent_id text, by text not null, at text not null,
   op_id text, primary key(id, part));
 create index if not exists drafts_case on drafts(case_id, form);
+create table if not exists case_ticks(
+  case_id text primary key references cases(id), digest text not null, state text not null, at text not null);
 """
 REVIEW_MARKS = ("geprueft", "aenderung", "frage")
 ACTIVE = ("queued", "running")
@@ -365,7 +367,7 @@ class CaseStore:
             # the Versandpakete the case's approvals stored (bundle.saved): its own record, deleted with it
             bundles = {json.loads(r["data"]).get("sha256") for r in self._all("select data from events where case_id=?", case_id)
                        if json.loads(r["data"]).get("kind") == "bundle.saved"}
-            for table in ("runs", "case_edits", "knowledge_uses", "files", "events", "labels", "drafts"):
+            for table in ("runs", "case_edits", "knowledge_uses", "files", "events", "labels", "drafts", "case_ticks"):
                 self._db.execute(f"delete from {table} where case_id=?", (case_id,))
             for row in self._all("select id, data from knowledge"):
                 item = json.loads(row["data"])
@@ -457,6 +459,15 @@ class CaseStore:
             if unless and unless(existing):
                 return None
             return [self.append_case_event(case_id, r) for r in records]
+
+    # The daily pass's memory of a case (web/app.py tick): how its row read when it was last looked at
+    def get_tick(self, case_id):
+        row = self._one("select digest, state, at from case_ticks where case_id=?", case_id)
+        return {**row, "state": json.loads(row["state"])} if row else None
+
+    def set_tick(self, case_id, digest, state):
+        with self._lock:
+            self._db.execute("insert or replace into case_ticks values(?,?,?,?)", (case_id, digest, json.dumps(state, ensure_ascii=False), now()))
 
     def list_case_events(self, case_id):
         return [json.loads(r["data"]) for r in self._all("select data from events where case_id=? order by seq", case_id)]
