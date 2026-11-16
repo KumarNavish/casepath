@@ -3591,7 +3591,7 @@
   },
   "/api/runs/{run_id}/draft.docx": {
    "get": {
-    "description": "The result checker's reply draft of a full preparation; an update inherited it (409).",
+    "description": "The result checker's reply draft of a full preparation; an update inherited it (409). Once the letter the case\nshows is approved, that approved letter itself (the Versandpaket's own Brief.docx).",
     "operationId": "draft_docx_api_runs__run_id__draft_docx_get",
     "parameters": [
      {

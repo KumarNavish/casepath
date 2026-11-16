@@ -588,6 +588,35 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         st["head"] = screen.head_block(changes, assessment, st, draft)
         return st, draft
 
+    def _holds(st, assessment):
+        """Whether the latest approval and the adopted recommendation still hold, for the file note (letters.file_note):
+        a correction that made either lapse leaves no «Zum Versand freigegeben» or «Empfehlung übernommen» in it."""
+        adopted = (assessment or {}).get("adopted")
+        return {"approval_holds": bool((st or {}).get("valid")) if (st or {}).get("approved") else None,
+                "adoption_holds": bool(adopted.get("valid")) if isinstance(adopted, dict) else None}
+
+    def _awaited(draft, st, listed, events, assessment, current, clock, files):
+        """The file note's «Erwartet» for the prepared letter while it is not sent (completion.expected): approved, what its
+        Versandpaket's Wiedervorlage says (its asks, its day); a draft while nothing of ours went out, the same for a
+        dispatch today. None otherwise: the note then says what the letter that went out still awaits."""
+        from ..process import completion
+        from . import bundle as versandpaket
+        st = st or {}
+        if not draft or st.get("state") == "versandt":
+            return None
+        approval = st.get("approved") if st.get("state") == "freigegeben" and st.get("valid") else None  # an approval that holds
+        if not approval and completion.sent_letters(events):
+            return None
+        source = approval or {"form": draft.get("form") or draft.get("kind"), "respond_by": draft.get("respond_by")}
+        stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
+        day = completion.swiss_day(approval.get("at")) if approval else as_of(files, completion.swiss_today()).isoformat()  # the view's day
+        # approved: the package's own date (its fallback, the case's follow-up, included); a draft: the date its dispatch sets
+        awaited, follow = completion.expected(source.get("form"), draft.get("kind"), listed, events, assessment, current.get("process"), stage, day,
+                                              source.get("respond_by"), fallback=(clock or {}).get("due") if approval else None)
+        if not approval and not awaited:  # a draft that asks nothing: the note as before
+            return None
+        return {"what": awaited, "when": versandpaket.when_line(source.get("respond_by"), follow), "approved": bool(approval)}
+
     def _list_completion(row, current, listed, events, files):
         """Where the prepared letter of a row stands after the decision, for its status (completion.state, as the case
         view computes it); None for a row without a prepared action."""
@@ -792,7 +821,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 "verlauf": verlauf.rows(listed, files, events if logged is not None else [], store.list_edits(case_id, active_only=False),
                                         current.get("process")),
                 "file_note": letters.file_note(current["case"], listed, events, clock, files, package=[(draft["form"], draft["title"])] + [(a["kind"], a["title"]) for a in draft["also"]]
-                                               if draft and draft.get("also") else None) if completed else None,
+                                               if draft and draft.get("also") else None, awaited=_awaited(draft, done.get("completion"), listed, events,
+                                                                                                         assessed.get("assessment"), current, clock, files),
+                                               **_holds(done.get("completion"), assessed.get("assessment")))
+                if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},
                 "case": shown_case, "files": store.list_files(case_id),
                 "run": completed if (current["case"].get("intake") or {}).get("study") else store.latest_run(case_id),
@@ -1294,9 +1326,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     def _report_package(case_id, view):
         """The approved package the exports serve once the letter is approved ({title, to, text, by, at}): the letter of the
-        latest approval whose Versandpaket is stored (actions.approved_letter), never a run's stored reply; None before."""
+        latest approval of the letter the case shows whose Versandpaket is stored (actions.approved_letter), never a run's
+        stored reply; None before, and None once a correction changed the letter after its approval."""
         from . import actions
-        found = actions.approved_letter(store, case_id)
+        found = actions.approved_letter(store, case_id, version=(view.get("draft") or {}).get("version") if view.get("draft") else None)
         return {"title": found["title"], "to": found["to"], "text": found["text"], "by": found["approved_by"], "at": found["approved_at"]} if found else None
 
     @app.get("/api/cases/{case_id}/report.docx")
@@ -1317,11 +1350,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/runs/{run_id}/draft.docx")
     def draft_docx(run_id: str, who=Depends(user)):
-        """The result checker's reply draft of a full preparation; an update inherited it (409). Once a letter is approved,
-        the approved letter itself (the Versandpaket's own Brief.docx)."""
+        """The result checker's reply draft of a full preparation; an update inherited it (409). Once the letter the case
+        shows is approved, that approved letter itself (the Versandpaket's own Brief.docx)."""
         run = found(store.get_run, run_id)
         from . import actions
-        approved = actions.approved_letter(store, run["case_id"])
+        shown = (get_case(run["case_id"], who).get("draft") or {}) if state(run["case_id"]).get("run") else {}  # the letter the case shows now
+        approved = actions.approved_letter(store, run["case_id"], version=shown.get("version") if shown else None)
         if approved:
             return Response(approved["docx"], media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                             headers={"Content-Disposition": f"attachment; filename*=UTF-8''{quote(approved['name'])}", "Cache-Control": "private, no-store"})

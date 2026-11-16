@@ -465,17 +465,22 @@ def _adoption(events, process=None):
     return " · ".join(str(t) for t in titles)
 
 
-def file_note(case, items, events, follow_up, files=(), runs_done=None, package=None):
+def file_note(case, items, events, follow_up, files=(), runs_done=None, package=None, awaited=None, approval_holds=None, adoption_holds=None):
     """One paragraph for the case system: received, decided and why, sent, awaited. Only from what is stored.
     ``package``: the titles of the letters that go out together (the mandate package), each with its state («freigegeben»,
     «versandt am …»). Received and entered since the last Versandpaket saved (the file note of that version is in it);
-    «Versandt» only from a dispatch the handler confirmed, never from a copy."""
+    «Versandt» only from a dispatch the handler confirmed, never from a copy. ``awaited``: {what: [asks in words], when:
+    the Wiedervorlage's line} of the prepared letter while it is not sent (completion.expected, bundle.when_line): once it
+    is approved, or while nothing of ours went out, «Erwartet» says what that letter asks, as its Wiedervorlage does.
+    ``approval_holds`` / ``adoption_holds``: False once a correction made the approval or the adopted recommendation lapse
+    (completion.state, the assessment's ``adopted.valid``): the note then never says «Zum Versand freigegeben» or
+    «Empfehlung übernommen» of them; None where the caller does not know (as before)."""
     from .completion import approvals, note_lines, sent_letters
     label = lambda i: (i.get("label") or {}).get("de") or i["key"]
     since = max((str(e.get("at") or "") for e in events or () if e.get("kind") == "bundle.saved"), default="")
     received = [f.get("name") for f in files or () if f.get("name") and (not since or str(f.get("created_at") or "") > since)]
     decided = []
-    adopted = _adoption(events)
+    adopted = _adoption(events) if adoption_holds is not False else None  # a lapsed adoption is no decision any more
     for i in items:
         if i["kind"] == "fact" and i.get("verdict") == "set_by_handler" and not (adopted and i["key"] == "aussichten"):
             decided.append(f"{label(i)}: {_value(i.get('value'))} (durch die Fallbearbeitung)")
@@ -510,7 +515,7 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
     if unticked:
         parts.append(f"Nicht verlangt (von der Fallbearbeitung gestrichen): {', '.join(unticked)}.")
     if package and len(package) > 1:  # every letter of the package, and where each stands: approved, sent to its recipient
-        latest = (approvals(events) or [{}])[-1]
+        latest = (approvals(events) or [{}])[-1] if approval_holds is not False else {}
         approved = {k for r in latest.get("recipients") or () for k in r.get("forms") or ()}
         went = {}
         for s in sent:
@@ -525,7 +530,7 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
                                if kind == "A10_kostengutsprache" else "")
                  + (f" – versandt am {_day(went[kind])}" if kind in went else " – freigegeben" if kind in approved else "") for kind, title in package]
         parts.append(f"Paket ({len(package)} Schreiben, je einzeln): {'; '.join(named)}.")
-    parts += [f"{line}." for line in note_lines(events)]
+    parts += [f"{line}." for line in note_lines(events) if approval_holds is not False or not line.startswith("Zum Versand freigegeben")]
     last = sent[-1] if sent else None
     went = next((e for e in reversed(events or ()) if e.get("kind") == "action.dispatched" and last and e.get("version") == last["version"]
                  and e.get("asks")), None)
@@ -534,7 +539,9 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
     if asked_then and entry is not None:  # what the account still shows open of it: a partial reply leaves only the rest awaited
         still = [n.get("text") or "" for n in entry.get("notes") or () if n.get("kind") == "asked" and n.get("open")]
         asked_then = [a for a in asked_then if any(a in text for text in still)]
-    if last and asked_then:  # what the letter that went out asked and is still awaited, by its date or the follow-up
+    if awaited is not None and (not last or awaited.get("approved")):  # the letter about to go out: what it asks, as its Wiedervorlage
+        parts.append("Erwartet: " + (", ".join(awaited.get("what") or ()) or "Rückmeldung") + (f"; {awaited['when']}" if awaited.get("when") else "") + ".")
+    elif last and asked_then:  # what the letter that went out asked and is still awaited, by its date or the follow-up
         until = f" bis {_day(last['respond_by'])}" if last.get("respond_by") else f"; Wiedervorlage {due}" if due else ""
         parts.append(f"Erwartet: {', '.join(asked_then)}{until}.")
     elif not last and (docs or due):

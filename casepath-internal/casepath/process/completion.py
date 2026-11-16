@@ -507,9 +507,13 @@ def blocks_of(ask, assessment=None):
     residual and the option needing it; a missing fact from the conditional answer that asks it and the option
     conditions that name it; a document from the adopted option needing it. None for a request carried over (it waits
     for itself)."""
-    if ask.get("blocks"):
-        return ask["blocks"]
     a = assessment or {}
+    if ask.get("blocks"):  # slice A names the customer's question by its item id: the dispatch keeps its words and the id
+        given = dict(ask["blocks"])
+        q = next((q for q in a.get("questions") or () if q.get("item_id") and q.get("item_id") == given.get("question")), None)
+        option = next((o for o in a.get("options") or () if o.get("id") and o.get("id") == given.get("option")), None)
+        return {**given, **({"question": q.get("text"), "question_id": q["item_id"]} if q and q.get("text") else {}),
+                **({"option_title": option.get("title")} if option and option.get("title") and not given.get("option_title") else {})}
     kind, ref = ask.get("kind"), ask.get("ref")
     waiting = [q for q in a.get("questions") or () if q.get("state") == "bedingt"]
     chosen = [o for o in a.get("options") or () if o.get("chosen") or o.get("id") in (a.get("chosen") or [] if isinstance(a.get("chosen"), list) else [])]
@@ -1050,6 +1054,16 @@ def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=
             "parts": [[p["part"], sha(p["text"])] for p in draft.get("parts") or ()], "run_id": run_id, "files_digest": files_digest, "op_id": op_id,
             "relies": list(relies or ()), "relies_marks": marks_of(relies, marks), **({"file_ids": list(file_ids)} if file_ids is not None else {}),
             **({"deadline": deadline} if deadline else {})}
+
+
+def expected(form, kind, listed, events, assessment, process, stage, day, respond_by=None, fallback=None):
+    """What the letter ``form`` (action ``kind``) asks, in words, and when the case looks at it again once it goes out on
+    ``day`` (the approval's day): (awaited, follow_up), the follow-up {due, days, if_sent} counted from the dispatch, the
+    reply date the letter sets, else ``fallback`` (the case's follow-up). The Versandpaket's Wiedervorlage and the file
+    note's «Erwartet» are both written from it, so both say what the letter asks."""
+    awaited = [a["what"] for a in asks(form, kind, listed, events, assessment, respond_by)]
+    look, days = next_look(process, form, stage, day, respond_by), look_days(process, form, stage)
+    return awaited, ({"due": look, "days": days, "if_sent": day} if look and not respond_by and days else look or fallback)
 
 
 def look_days(process, form, stage):

@@ -13,7 +13,8 @@ on another day their dates move with it, so a deadline is as close as it was the
 The episode «a reply arrives → the assessment is prepared → the decision is carried through» (seed_episode): E1 and E2,
 the synthetic analogs of a development dossier prepared as they stood the day before the replies came (drop the replies
 from deploy/preview/episode/E1 or E2 on the case: the upload starts the update), a case whose letter an earlier browser
-copied, and a frozen study copy. POST /preview/fault makes the next update fail once (the fault switch).
+copied, a frozen study copy, and the copy of E1 whose assessment went out 91 days ago (its status inquiry due). POST
+/preview/fault makes the next update fail once (the fault switch).
 
     python deploy/preview/preview.py [port]
 
@@ -424,12 +425,14 @@ def seed_update(store, runs):
 EPISODE_FILES = Path(__file__).parent / "episode"  # the replies of d+35 to drop on E1 and E2 (written by tests/episode.py)
 
 
-def seed_episode(store, runs):
+def seed_episode(store, runs, app=None):
     """The episode «a reply arrives → the assessment is prepared → the decision is carried through» on its synthetic
     analogs (tests/episode.py): E1 «D11-Analogon A» (S-D11A) and E2 «D11-Analogon B» (the reply asks only about the
     deposit, promises receipts, claims nothing), each prepared as its file stood on d+34, their replies to drop in
     deploy/preview/episode/E1 and E2; a case whose letter a browser before this release copied (a «letter.copied» without
-    «measure»: contact only); a frozen expert-study copy whose run holds a dated account request. Returns the cases and
+    «measure»: contact only); a frozen expert-study copy whose run holds a dated account request; with ``app``, the copy of
+    E1 whose A5 went out 91 days ago («D11-Analogon A, versandt vor 91 Tagen»: B-silence, its status inquiry due), decided,
+    approved and dispatched through the routes on its A5's day (episode.seed_dispatched). Returns the cases and
     {case id: episode} for the updates the replies start."""
     from casepath.agents.runner import case_state
     from casepath.process import letters
@@ -447,7 +450,9 @@ def seed_episode(store, runs):
     time.sleep(1.05)  # copied after the run was prepared: a later second than its start (times are kept to the second)
     log_event(store, legacy["id"], "letter.copied", form=letters.form_kind(action), edited=False, change_ratio=0)  # no «measure»: a legacy copy
     frozen, study_copy = episode.seed_frozen_copy(store, runs)
-    return {"e1": e1, "e2": e2, "legacy": legacy, "frozen": frozen, "study_copy": study_copy, "analogs": {e1["id"]: e1_ns, e2["id"]: e2_ns}}
+    dispatched = episode.seed_dispatched(app)[0] if app is not None else None
+    return {"e1": e1, "e2": e2, "legacy": legacy, "frozen": frozen, "study_copy": study_copy, "dispatched": dispatched,
+            "analogs": {e1["id"]: e1_ns, e2["id"]: e2_ns}}
 
 
 def update_script(store, case_id, pause):
@@ -618,7 +623,7 @@ def main():
     case_account = seed_account(store, runs)
     case_update = seed_update(store, runs)
     case_offer = seed_offer(store, runs)
-    episode_cases = seed_episode(store, runs)
+    episode_cases = seed_episode(store, runs, app)
     stages = seed_stages(store, runs)
     # case C and D last: the newest come first among cases that are equally due, so the case the main path opens is in view
     case_c = handler_case("Schimmel im Bad, Handler-Prozess (synthetisch)")
@@ -631,7 +636,7 @@ def main():
           f"  update {case_update['id']}  offer {case_offer['id']}  mandate {stages['mandate']['id']}  closed {stages['closed']['id']}"
           f"  arrived {stages['arrived']['id']}  failed {stages['failed']['id']}"
           f"  E1 {episode_cases['e1']['id']}  E2 {episode_cases['e2']['id']}  legacy copy {episode_cases['legacy']['id']}"
-          f"  frozen {episode_cases['frozen']['id']}  study copy {episode_cases['study_copy']['id']}"
+          f"  frozen {episode_cases['frozen']['id']}  study copy {episode_cases['study_copy']['id']}  dispatched 91 days ago {episode_cases['dispatched']['id']}"
           f"  replies to drop: {EPISODE_FILES}/E1, {EPISODE_FILES}/E2  fault switch: POST /preview/fault (?update=false turns it off)", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 

@@ -194,17 +194,16 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
             return None  # the version is no longer the one prepared: its package cannot be built from the same state
         events = store.list_case_events(case_id)
         package = [(draft["form"], draft["title"])] + [(a["kind"], a["title"]) for a in draft.get("also") or ()] if draft.get("also") else None
-        note = letters.file_note(view["case"], view.get("items") or [], events, view.get("follow_up"), store.list_files(case_id), package=package)
-        awaited = [a["what"] for a in completion.asks(approval.get("form"), approval.get("action_kind"), view.get("items") or [], events, view.get("assessment"),
-                                                      approval.get("respond_by"))]
         stage = (((view.get("evaluation") or {}).get("current")) or {}).get("step")
-        day = completion.swiss_day(approval.get("at"))
-        look = completion.next_look(view.get("process"), approval.get("form"), stage, day, approval.get("respond_by"))
-        days = completion.look_days(view.get("process"), approval.get("form"), stage)
-        # the follow-up as the case will count it: the reply date the letter sets; else the clock's days from the dispatch
-        # (for a dispatch on the day of the approval: that date); else the case's follow-up
-        follow = {"due": look, "days": days, "if_sent": day} if look and not approval.get("respond_by") and days else look \
-            or (view.get("follow_up") or {}).get("due")
+        # what the letter asks and the follow-up as the case will count it: the reply date the letter sets; else the clock's
+        # days from the dispatch (for a dispatch on the day of the approval: that date); else the case's follow-up
+        awaited, follow = completion.expected(approval.get("form"), approval.get("action_kind"), view.get("items") or [], events, view.get("assessment"),
+                                              view.get("process"), stage, completion.swiss_day(approval.get("at")), approval.get("respond_by"),
+                                              fallback=(view.get("follow_up") or {}).get("due"))
+        # the note says what the Wiedervorlage says: the letter's asks and the same date, never the documents of an earlier request
+        note = letters.file_note(view["case"], view.get("items") or [], events, view.get("follow_up"), store.list_files(case_id), package=package,
+                                 awaited={"what": awaited, "when": versandpaket.when_line(approval.get("respond_by"), follow), "approved": True},
+                                 approval_holds=True)
         blob, _ = versandpaket.build(draft, approval, note, awaited, follow_up=follow, parity_sha=parity_sha)
         digest = store.put_blob(blob)
         return record(case_id, who, "bundle.saved", version=approval["version"], approval=approval.get("event_id"), sha256=digest, bytes=len(blob))
@@ -314,13 +313,17 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
     return app
 
 
-def approved_letter(store, case_id):
+def approved_letter(store, case_id, version=None):
     """The letter as approved, for every export once a letter is approved: {version, form, title, approved_at,
     approved_by, name, docx (the Versandpaket's own Brief.docx bytes), text (its paragraphs), bundle (sha256)} of the
     latest approval whose Versandpaket is stored, or None before any approval. The report and the draft download serve
-    this, never a run's stored reply or a fresh rendering (slice C's routes; NEEDS_B.md)."""
+    this, never a run's stored reply or a fresh rendering (slice C's routes; NEEDS_B.md). ``version``: the letter the
+    case shows now; only an approval of that version counts, so a correction that changed the letter after its approval
+    is never answered with the letter as it was approved (the version itself stays in its Versandpaket)."""
     events = store.list_case_events(case_id)
     for approval in reversed(completion.approvals(events)):
+        if version is not None and approval.get("version") != version:
+            continue
         saved = completion._bundle(events, approval)
         if saved is None:
             continue

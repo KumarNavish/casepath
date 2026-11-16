@@ -83,6 +83,18 @@ def members(draft):
     return out
 
 
+def when_line(respond_by, follow_up):
+    """The Wiedervorlage's first line: the reply date the letter sets; else the clock's days counted from the dispatch (the
+    date for a dispatch on the approval day); else the case's follow-up. The file note's «Erwartet» says the same."""
+    if respond_by:  # the letter sets the date itself: it holds whenever the letter goes out
+        return f"Antwort erwartet bis {_day(respond_by)}"
+    if isinstance(follow_up, dict) and follow_up.get("days"):  # counted from the dispatch: the date for a dispatch on the approval day
+        return (f"Wiedervorlage {follow_up['days']} Tage nach dem Versand: {_day(follow_up.get('due'))} bei Versand am {_day(follow_up.get('if_sent'))}"
+                if follow_up.get("due") else f"Wiedervorlage {follow_up['days']} Tage nach dem Versand")
+    due = follow_up.get("due") if isinstance(follow_up, dict) else follow_up
+    return f"Wiedervorlage {_day(due)}" if due else "Wiedervorlage nach Versand"
+
+
 def build(draft, approval, note, awaited, follow_up=None, parity_sha=None):
     """The Versandpaket of an approved version: (zip bytes, manifest). ``draft``: the prepared letter as approved (its text,
     enclosures and recipients, completion.prepare); ``approval``: the «action.approved» event; ``note``: the file note of
@@ -99,15 +111,7 @@ def build(draft, approval, note, awaited, follow_up=None, parity_sha=None):
     files["Beilagen.txt"] = "\n".join(beilagen) + "\n"
     files["Aktennotiz.txt"] = (note or "").strip() + "\n"
     respond_by = approval.get("respond_by")
-    if respond_by:  # the letter sets the date itself: it holds whenever the letter goes out
-        when = f"Antwort erwartet bis {_day(respond_by)}"
-    elif isinstance(follow_up, dict) and follow_up.get("days"):  # counted from the dispatch: the date for a dispatch on the approval day
-        when = (f"Wiedervorlage {follow_up['days']} Tage nach dem Versand: {_day(follow_up.get('due'))} bei Versand am {_day(follow_up.get('if_sent'))}"
-                if follow_up.get("due") else f"Wiedervorlage {follow_up['days']} Tage nach dem Versand")
-    else:
-        due = follow_up.get("due") if isinstance(follow_up, dict) else follow_up
-        when = f"Wiedervorlage {_day(due)}" if due else "Wiedervorlage nach Versand"
-    files["Wiedervorlage.txt"] = f"{when}\nErwartet: {', '.join(awaited) if awaited else 'Rückmeldung'}\n"
+    files["Wiedervorlage.txt"] = f"{when_line(respond_by, follow_up)}\nErwartet: {', '.join(awaited) if awaited else 'Rückmeldung'}\n"
     for p in parts:
         p["sha256"] = _sha(files[p["name"]])
     for name in ("Beilagen.txt", "Aktennotiz.txt", "Wiedervorlage.txt"):

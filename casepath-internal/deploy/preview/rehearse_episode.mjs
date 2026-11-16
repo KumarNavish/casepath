@@ -36,7 +36,7 @@ import { fileURLToPath } from "url";
 
 const BASE = process.env.BASE || "http://127.0.0.1:8805", OUT = process.env.OUT || "", MODE = process.env.MODE || "scripted";
 const EPISODE = (process.env.EPISODE || "e1").toLowerCase(), SESSION = Number(process.env.SESSION || 1), KEEP_GOING = process.env.KEEP_GOING === "1";
-const TITLES = { e1: /D11-Analogon A\b/, e2: /D11-Analogon B\b/ };
+const TITLES = { e1: /D11-Analogon A\b(?!.*versandt)/, e2: /D11-Analogon B\b/ };  // E1, not its copy dispatched 91 days ago
 const DISPATCHED = new RegExp(process.env.DISPATCHED || "D11-Analogon A.*(versandt|91)", "i");  // the copy of E1 dispatched 91 days ago
 const REPLIES = path.join(path.dirname(fileURLToPath(import.meta.url)), "episode", EPISODE.toUpperCase());
 const LABEL = MODE === "scripted" ? "scripted_path.synthetic_analog.no_handler_time" : "developer_rehearsal.synthetic_analog.handler_savings_unverified";

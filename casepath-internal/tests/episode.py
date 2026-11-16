@@ -25,6 +25,7 @@ from datetime import date, datetime, timedelta, timezone
 from email.message import EmailMessage
 from email.utils import format_datetime
 import hashlib
+import re
 import tempfile
 import time
 from types import SimpleNamespace
@@ -645,6 +646,95 @@ def add_replies(store, case_id, ns=EPISODE, user=USER):
         row = extract(name, "message/rfc822", data)
         ids.append(store.add_file(case_id, name, row["media_type"], row["kind"], data, row, user)["id"])
     return ids
+
+
+class EpisodeClock:
+    """The store's clock and the handler's day set to the episode's own days while a case is seeded through the service
+    (``seed_dispatched``): ``at(day, "hh:mm")`` sets Swiss time; each stamp is a second later than the last, so the order
+    of what is written stays the order it happened in. Used as a context manager: the real clock is given back after."""
+
+    def __init__(self):
+        from zoneinfo import ZoneInfo
+        self.zone, self.stamp = ZoneInfo("Europe/Zurich"), None
+
+    def at(self, day, hhmm):
+        h, m = (int(x) for x in hhmm.split(":"))
+        self.stamp = datetime(day.year, day.month, day.day, h, m, tzinfo=self.zone).astimezone(timezone.utc)
+
+    def now(self):
+        self.stamp += timedelta(seconds=1)
+        return self.stamp.isoformat(timespec="seconds")
+
+    def today(self):
+        return self.stamp.astimezone(self.zone).date()
+
+    def __enter__(self):
+        from unittest import mock
+        self.patches = [mock.patch("casepath.web.store.now", self.now), mock.patch("casepath.process.completion.swiss_today", self.today)]
+        for patch in self.patches:
+            patch.start()
+        return self
+
+    def __exit__(self, *exc):
+        for patch in reversed(self.patches):
+            patch.stop()
+
+
+def decide_and_approve(client, case_id, ops="seed"):
+    """The handler's four decisions on the A5 of S-D11A through the case service's routes: Deckung confirmed, the
+    recommendation adopted as proposed, the prospects sufficient, then «Freigeben» (a gap the letter still holds is
+    written over first, as the handler does). Returns (the view before the approval, the approval's answer)."""
+    def post(path, body):
+        r = client.post(path, json=body)
+        assert r.status_code in (200, 201), r.text
+        return r.json()
+    for fact, value in (("deckung", "bestätigt"), ("aussichten", "genügend")):
+        post(f"/api/cases/{case_id}/edits", {"op": "set_fact", "args": {"fact": fact, "value": value}, "reason": "", "reason_code": "none", "recheck": False})
+    brief = client.get(f"/api/cases/{case_id}").json().get("assessment") or {}
+    if any(b.get("kind") == "decision" and b.get("key") == "empfehlung" for b in brief.get("blocking") or ()):
+        post(f"/api/cases/{case_id}/recommendation", {"chosen": brief["proposal"], "proposal": brief["proposal"]})
+    draft = client.get(f"/api/cases/{case_id}").json()["draft"]
+    gap = re.compile(r"\[bitte ergänzen: [^\]]*\]")
+    parts = [{"part": x["part"], "base_sha256": x["base_sha256"], "text": gap.sub("wie besprochen", x["text"])} for x in draft.get("parts") or () if gap.search(x["text"])]
+    if parts:
+        r = client.put(f"/api/cases/{case_id}/drafts/{draft['form']}", json={"parts": parts, "parent_id": draft.get("draft_id"), "op_id": f"{ops}-fill"})
+        assert r.status_code == 200, r.text
+    view = client.get(f"/api/cases/{case_id}").json()
+    return view, post(f"/api/cases/{case_id}/actions/approve", {"form": view["draft"]["form"], "version": view["draft"]["version"], "op_id": f"{ops}-approve"})
+
+
+def seed_dispatched(app, days=SILENCE_DAYS, user=USER, today=None, reference="4321.6011.0004", turns_b=None):
+    """The copy of E1 whose A5 went out ``days`` days before ``today`` (B-silence on the case service; deploy/preview's
+    «D11-Analogon A, versandt vor 91 Tagen»): S-D11A placed so that its A5 day lies ``days`` back, Phase A prepared on
+    d+34, the two replies of d+35 read by the scripted update, then on the A5's day the decisions, «Freigeben» and
+    «Versandt am» through the routes, as a handler takes them (the store's clock and the handler's day are the episode's
+    own while it is seeded: EpisodeClock). The run service's model is set for these runs only. ``turns_b(ns)``: other
+    turns for the update of the replies (a variant of what the reader records). Returns (case, ns)."""
+    from fastapi.testclient import TestClient
+    from casepath.process import completion
+    store, runs = app.state.store, app.state.runs
+    today = today or completion.swiss_today()
+    ns = analog(d0=today - timedelta(days=A5_AFTER + days),
+                names={**VARIANT_A, "title": f"D11-Analogon A, versandt vor {days} Tagen (synthetisch)", "reference": reference})
+    client, before = TestClient(app), runs.model_factory
+    try:
+        with EpisodeClock() as clock:
+            clock.at(ns.day(34), "16:40")
+            case = seed_phase_a(store, runs, ns, user=user)
+            clock.at(ns.day(35), "19:05")
+            add_replies(store, case["id"], ns, user)
+            runs.model_factory = lambda token=None: update_model(store, case["id"], (turns_b or (lambda x: x.turns_b()))(ns), ns.reply_names)
+            run = wait(store, runs.update(case["id"], user)["id"])
+            assert run["status"] == "completed", run.get("error")
+            clock.at(ns.a5_day, "09:10")
+            view, out = decide_and_approve(client, case["id"])
+            clock.at(ns.a5_day, "14:05")
+            r = client.post(f"/api/cases/{case['id']}/actions/dispatch", json={"version": out["approval"]["version"], "date": ns.a5_day.isoformat(),
+                                                                               "channel": "email", "op_id": "seed-dispatch"})
+            assert r.status_code == 200, r.text
+    finally:
+        runs.model_factory = before
+    return store.get_case(case["id"]), ns
 
 
 def seed_frozen_copy(store, runs, user=USER, expert="P1"):
