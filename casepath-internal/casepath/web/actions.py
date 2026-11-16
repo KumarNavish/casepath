@@ -197,9 +197,10 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         stage = (((view.get("evaluation") or {}).get("current")) or {}).get("step")
         # what the letter asks and the follow-up as the case will count it: the reply date the letter sets; else the clock's
         # days from the dispatch (for a dispatch on the day of the approval: that date); else the case's follow-up
+        clock = view.get("follow_up") or {}
         awaited, follow = completion.expected(approval.get("form"), approval.get("action_kind"), view.get("items") or [], events, view.get("assessment"),
                                               view.get("process"), stage, completion.swiss_day(approval.get("at")), approval.get("respond_by"),
-                                              fallback=(view.get("follow_up") or {}).get("due"))
+                                              fallback=clock.get("due"), set_date=clock.get("due") if clock.get("set_by") else None)
         # the note says what the Wiedervorlage says: the letter's asks and the same date, never the documents of an earlier request
         note = letters.file_note(view["case"], view.get("items") or [], events, view.get("follow_up"), store.list_files(case_id), package=package,
                                  awaited={"what": awaited, "when": versandpaket.when_line(approval.get("respond_by"), follow), "approved": True},

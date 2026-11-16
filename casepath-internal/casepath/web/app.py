@@ -595,27 +595,52 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"approval_holds": bool((st or {}).get("valid")) if (st or {}).get("approved") else None,
                 "adoption_holds": bool(adopted.get("valid")) if isinstance(adopted, dict) else None}
 
-    def _awaited(draft, st, listed, events, assessment, current, clock, files):
-        """The file note's «Erwartet» for the prepared letter while it is not sent (completion.expected): approved, what its
-        Versandpaket's Wiedervorlage says (its asks, its day); a draft while nothing of ours went out, the same for a
-        dispatch today. None otherwise: the note then says what the letter that went out still awaits."""
+    def _after_dispatch(draft, st, listed, events, assessment, current, clock, files):
+        """What the prepared letter asks and when the case looks at it again once it goes out, as its Versandpaket says
+        (completion.expected): (awaited, follow_up, approval, respond_by), or None once it went out. Approved: the
+        package's own date (its fallback, the case's follow-up, included); a draft: the date a dispatch today sets; a date
+        the handler set for this step comes first in both."""
         from ..process import completion
-        from . import bundle as versandpaket
         st = st or {}
         if not draft or st.get("state") == "versandt":
             return None
         approval = st.get("approved") if st.get("state") == "freigegeben" and st.get("valid") else None  # an approval that holds
-        if not approval and completion.sent_letters(events):
-            return None
         source = approval or {"form": draft.get("form") or draft.get("kind"), "respond_by": draft.get("respond_by")}
         stage = ((current.get("evaluation") or {}).get("current") or {}).get("step")
+        own = (((current.get("process") or {}).get("action_kinds") or {}).get(draft.get("kind")) or {}).get("stage")
+        if not approval and isinstance(own, str) and own != stage and not completion.look_days(current.get("process"), source.get("form"), stage):
+            stage = own  # prepared before its own stage (an assessment on the cover's premise): it goes out at that stage
         day = completion.swiss_day(approval.get("at")) if approval else as_of(files, completion.swiss_today()).isoformat()  # the view's day
-        # approved: the package's own date (its fallback, the case's follow-up, included); a draft: the date its dispatch sets
+        clock = clock or {}
         awaited, follow = completion.expected(source.get("form"), draft.get("kind"), listed, events, assessment, current.get("process"), stage, day,
-                                              source.get("respond_by"), fallback=(clock or {}).get("due") if approval else None)
-        if not approval and not awaited:  # a draft that asks nothing: the note as before
+                                              source.get("respond_by"), fallback=clock.get("due") if approval else None,
+                                              set_date=clock.get("due") if clock.get("set_by") else None)
+        return awaited, follow, approval, source.get("respond_by")
+
+    def _awaited(after, events):
+        """The file note's «Erwartet» for the prepared letter while it is not sent (``after``: _after_dispatch): approved,
+        what its Versandpaket's Wiedervorlage says (its asks, its day); a draft while nothing of ours went out, the same
+        for a dispatch today. None otherwise: the note then says what the letter that went out still awaits."""
+        from ..process import completion
+        from . import bundle as versandpaket
+        if not after:
             return None
-        return {"what": awaited, "when": versandpaket.when_line(source.get("respond_by"), follow), "approved": bool(approval)}
+        awaited, follow, approval, respond_by = after
+        if not approval and (completion.sent_letters(events) or not awaited):  # a draft that asks nothing: the note as before
+            return None
+        return {"what": awaited, "when": versandpaket.when_line(respond_by, follow), "approved": bool(approval)}
+
+    def _follow_shown(after, clock):
+        """The date beside «Freigeben»: the follow-up the Versandpaket will file ({due, days, if_sent, set, respond_by}), so
+        the bar, the package, the note and the wait after the dispatch say one date; for a letter the clock does not
+        follow up, the case's follow-up, which its package files. None without one."""
+        if not after:
+            return None
+        _, follow, _, respond_by = after
+        row = follow if isinstance(follow, dict) else {"due": follow} if follow else {"due": (clock or {}).get("due")}
+        if not row.get("due"):
+            return None
+        return {**row, **({"respond_by": True} if respond_by and row["due"] == respond_by and not row.get("set") else {})}
 
     def _list_completion(row, current, listed, events, files):
         """Where the prepared letter of a row stands after the decision, for its status (completion.state, as the case
@@ -813,7 +838,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             model["title"] = listing.next_step(action) if action else model["title"]  # the same words as the case list's «Als Nächstes»
             model.update(status=status["text"], status_kind=status["kind"],
                          due=listing.due(listed, (clock or {}).get("due"), files, historic, closed=status["kind"] == "closed"))
+        after = _after_dispatch(draft, done.get("completion"), listed, events, assessed.get("assessment"), current, clock, files) if completed else None
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
+                "follow_after_dispatch": None if study else _follow_shown(after, clock),
                 "screen": model, "status": status, "historic": historic,
                 **arrival, **assessed, **done,
                 "prepared_run": {k: prepared.get(k) for k in ("id", "kind", "builds_on", "created_at", "finished_at")} if prepared else None,
@@ -821,8 +848,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 "verlauf": verlauf.rows(listed, files, events if logged is not None else [], store.list_edits(case_id, active_only=False),
                                         current.get("process")),
                 "file_note": letters.file_note(current["case"], listed, events, clock, files, package=[(draft["form"], draft["title"])] + [(a["kind"], a["title"]) for a in draft["also"]]
-                                               if draft and draft.get("also") else None, awaited=_awaited(draft, done.get("completion"), listed, events,
-                                                                                                         assessed.get("assessment"), current, clock, files),
+                                               if draft and draft.get("also") else None, awaited=_awaited(after, events),
                                                **_holds(done.get("completion"), assessed.get("assessment")))
                 if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},

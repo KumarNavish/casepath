@@ -1584,9 +1584,16 @@ function preparedView(st) {
   const then = act && act.deadline && (sc.danach || []).length ? `<span class="cp-date cp-then" title="${esc(sc.danach.join(" · "))}">${T("then", "danach")}: ${sc.danach.map(esc).join(" · ")}</span>` : "";
   const when = then || (due ? `<span class="cp-date ${daysTo(due) < 0 && !quiet() ? "late" : ""}" ${f.capped ? `title="${esc(T("before the deadline runs out", "vor Fristablauf"))}"` : ""}>${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(due)}</button>
         <input type="date" id="followup-date" value="${esc(due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1"></span>` : "");
+  // before «Freigeben»: the date the Versandpaket will file (counted from the dispatch, the reply date the letter sets, or
+  // the handler's own), so the bar, the package, the note and the wait after the dispatch say one date
+  const fa = S.data.follow_after_dispatch;
+  const faWhy = !fa ? "" : fa.set ? T("set by you", "von Ihnen gesetzt") : fa.respond_by ? T("the reply date the letter sets", "das Antwortdatum im Brief")
+    : fa.days ? T(`${fa.days} days after sending, if sent on ${dateText(fa.if_sent)}`, `${fa.days} Tage nach dem Versand, bei Versand am ${dateText(fa.if_sent)}`) : "";
+  const whenAfter = then || (fa && fa.due ? `<span class="cp-date" title="${esc(faWhy)}">${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(fa.due)}</button>
+        <input type="date" id="followup-date" value="${esc(fa.due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1"></span>` : when);
   // a frozen study copy is copied and measured as frozen; any other case goes Freigeben → Brief kopieren → Versandt am
   const asFrozen = (completionOf().bar || {}).kind === "study" || !completionOf().bar;
-  const docButton = !text || c ? "" : !asFrozen ? carryButtons(active, { primary: acting && !decisionPrimary, gaps, stale, when })
+  const docButton = !text || c ? "" : !asFrozen ? carryButtons(active, { primary: acting && !decisionPrimary, gaps, stale, when, whenAfter })
     : active.main ? `<button class="cp-button ${docPrimary ? "primary" : ""}" id="copy-draft" data-gaps="${gaps}" ${stale ? "disabled" : ""}>${label}</button>`
     : `<button class="cp-button ${docPrimary ? "primary" : ""}" data-copy-also="${esc(active.kind)}" data-gaps="${gaps}" ${stale ? "disabled" : ""}>${label}</button>`;
   const stage = ((S.data.evaluation || {}).current || {}).step || "";
@@ -2218,7 +2225,7 @@ function bindOverview() {
   on("#followup-date", "change", async (fu) => {
     if (!fu.value) return;
     // the date set counts for this step only: it lapses with it, and with a later dispatch (clock.follow_up)
-    await caseEvent("followup.set", "followup:0", { date: fu.value, before: (S.data.follow_up || {}).due || null, step: (item("next_action", "0") || {}).action || null });
+    await caseEvent("followup.set", "followup:0", { date: fu.value, before: fu.defaultValue || (S.data.follow_up || {}).due || null, step: (item("next_action", "0") || {}).action || null });
     await loadCase();
   });
   on("#unaided", "submit", async (unaided, event) => {
@@ -2772,11 +2779,11 @@ function carryButtons(active, opts) {
     return `${sentLine}<span class="cp-waits">${esc(st.waits)}</span><button class="cp-button" id="approve" title="${T("prepared for the follow-up date", "für die Wiedervorlage vorbereitet")}">${T("Approve", "Freigeben")}</button>`;
   }
   if (bar.kind === "approve") {
-    if (opts.gaps) return `${gapsButton}${saving}${opts.when}`;
+    if (opts.gaps) return `${gapsButton}${saving}${opts.whenAfter || opts.when}`;
     if ((bar.conflicts || 0) > 0) return `<button class="cp-button" id="to-conflicts">${T("Check paragraph", "Absatz prüfen")}</button>${saving}`;
     const blocked = bar.decision ? T(`Decide first: ${bar.decision}`, `Zuerst entscheiden: ${bar.decision}`) : opts.stale ? T("New files are not read yet", "Neue Unterlagen sind noch nicht gelesen.") : "";
     const legacy = bar.legacy ? `<span class="cp-muted cp-legacy">${T("copied", "kopiert")} ${dateText(bar.legacy.at)}, ${T("sending not confirmed", "Versand nicht bestätigt")}</span>` : "";
-    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${T("Approve", "Freigeben")}</button>${legacy}${saving}${opts.when}`;
+    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${T("Approve", "Freigeben")}</button>${legacy}${saving}${opts.whenAfter || opts.when}`;
   }
   const rows = (bar.recipients || []).filter((r) => !r.dispatched);
   const copied = copiedApproved();

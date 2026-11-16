@@ -113,12 +113,26 @@ def last_dispatch(events):
     return max(sent, key=lambda s: (str(s.get("date") or ""), str(s.get("at") or ""))) if sent else None
 
 
+def _set_counts(event, step, sent, events):
+    """Whether a date a person set («followup.set») counts now: one set after the latest dispatch, for the step prepared
+    now (or for no step in particular); or one set for the step that went out, before its dispatch and after the dispatch
+    before it: the date its Versandpaket filed as the Wiedervorlage, which the wait after it keeps."""
+    at = str(event.get("at") or "")
+    if not sent or at > str(sent.get("at") or ""):
+        return step is None or event.get("step") in (None, step)
+    if not sent.get("action_kind") or event.get("step") != sent.get("action_kind"):
+        return False
+    from .completion import sent_letters
+    before = [str(s.get("at") or "") for s in sent_letters(events) if s.get("version") != sent.get("version") and str(s.get("at") or "") < str(sent.get("at") or "")]
+    return at > max(before, default="")
+
+
 def follow_up(next_in_days, files, events, today=None, since=None, until=None, step=None):
     """{"due", "reference", "set_by"}: the proposed date, or the one a person set; None without a proposal or a set date.
     ``since``: the day of the last action the case's history shows at or after its stage floor, which the date counts from.
     ``until``: a date the party waited for gave itself («Unterlagen folgen bis …»): the case is looked at again then.
     ``step``: the prepared action's kind; a date a person set for another step, or before the latest dispatch, lapses
-    with it. After a dispatch the date counts from the dispatch day; a letter that set the customer a date (its frozen
+    with it, except one set for the step that went out: its Versandpaket filed that date, and the wait keeps it. After a dispatch the date counts from the dispatch day; a letter that set the customer a date (its frozen
     ``respond_by``) is looked at again on that date. A cut counts from its «Stand am», never from an older document or
     action."""
     ref = parse_date(since) if since and parse_date(since) else reference_day(files, today)
@@ -126,8 +140,7 @@ def follow_up(next_in_days, files, events, today=None, since=None, until=None, s
     if cut and ref < cut:
         ref = cut
     sent = last_dispatch(events)
-    set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date")
-                   and (step is None or e.get("step") in (None, step)) and (not sent or str(e.get("at") or "") > str(sent.get("at") or ""))]
+    set_by_hand = [e for e in events if e.get("kind") == "followup.set" and e.get("date") and _set_counts(e, step, sent, events)]
     if set_by_hand:
         return {"due": set_by_hand[-1]["date"], "reference": ref.isoformat(), "set_by": set_by_hand[-1].get("expert")}
     if until and parse_date(until):

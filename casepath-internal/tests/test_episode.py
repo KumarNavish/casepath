@@ -390,6 +390,28 @@ class PackageTests(Episode):
         self.ready(case)
         self.check_package(case, [])
 
+    def test_the_date_beside_freigeben_is_the_one_the_package_files_and_the_wait_keeps(self):
+        """Before «Freigeben» the bar names the date the Versandpaket will file (A5 + 90 from a dispatch today), not the
+        date the case fell due; a date the handler sets there is the package's, the note's and the wait's after the
+        dispatch."""
+        case, today = self.cases["e1"], completion.swiss_today()
+        counted = {"due": (today + timedelta(days=90)).isoformat(), "days": 90, "if_sent": today.isoformat()}
+        self.assertEqual(self.view(case)["follow_after_dispatch"], counted)  # before the decisions too: the A5 goes out at its stage
+        self.ready(case)
+        self.assertEqual(self.view(case)["follow_after_dispatch"], counted)
+        own = today + timedelta(days=30)
+        self.post(f"/api/cases/{case}/events", {"kind": "followup.set", "item_id": "followup:0", "fields": {"date": own.isoformat(), "step": "A5"}}, 201)
+        self.assertEqual(self.view(case)["follow_after_dispatch"], {"due": own.isoformat(), "set": True})
+        approval = self.approve(case)["approval"]
+        archive = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{case}/actions/{approval['version']}/bundle").content))
+        self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[:2], [f"Wiedervorlage {day(own)}", f"Erwartet: {RECEIPTS}"])
+        self.assertEqual(json.loads(archive.read("manifest.json"))["follow_up"], {"due": own.isoformat(), "set": True})
+        self.assertTrue(archive.read("Aktennotiz.txt").decode().strip().endswith(f"Erwartet: {RECEIPTS}; Wiedervorlage {day(own)}."))
+        self.dispatch(case, approval["version"])
+        view = self.view(case)
+        self.assertEqual((view["follow_up"]["due"], self.row(case)["stand"]["text"]), (own.isoformat(), f"wartet auf Kundschaft bis {day(own)}"))
+        self.assertTrue(view["file_note"].endswith(f"Erwartet: {RECEIPTS}; Wiedervorlage {day(own)}."), view["file_note"])
+
 
 # -- (b) the case advances when evidence arrives ----------------------------------------------------------------------------
 

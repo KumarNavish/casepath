@@ -85,7 +85,10 @@ def members(draft):
 
 def when_line(respond_by, follow_up):
     """The Wiedervorlage's first line: the reply date the letter sets; else the clock's days counted from the dispatch (the
-    date for a dispatch on the approval day); else the case's follow-up. The file note's «Erwartet» says the same."""
+    date for a dispatch on the approval day); else the case's follow-up. A date the handler set comes first. The file
+    note's «Erwartet» says the same."""
+    if isinstance(follow_up, dict) and follow_up.get("set") and follow_up.get("due"):  # the handler's date: it holds
+        return f"Wiedervorlage {_day(follow_up['due'])}"
     if respond_by:  # the letter sets the date itself: it holds whenever the letter goes out
         return f"Antwort erwartet bis {_day(respond_by)}"
     if isinstance(follow_up, dict) and follow_up.get("days"):  # counted from the dispatch: the date for a dispatch on the approval day

@@ -1057,12 +1057,15 @@ def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=
             **({"deadline": deadline} if deadline else {})}
 
 
-def expected(form, kind, listed, events, assessment, process, stage, day, respond_by=None, fallback=None):
+def expected(form, kind, listed, events, assessment, process, stage, day, respond_by=None, fallback=None, set_date=None):
     """What the letter ``form`` (action ``kind``) asks, in words, and when the case looks at it again once it goes out on
     ``day`` (the approval's day): (awaited, follow_up), the follow-up {due, days, if_sent} counted from the dispatch, the
-    reply date the letter sets, else ``fallback`` (the case's follow-up). The Versandpaket's Wiedervorlage and the file
-    note's «Erwartet» are both written from it, so both say what the letter asks."""
+    reply date the letter sets, else ``fallback`` (the case's follow-up). ``set_date``: a date the handler set for this
+    step ({due, set}): it comes first, as it does for the wait after the dispatch (clock.follow_up). The Versandpaket's
+    Wiedervorlage, the file note's «Erwartet» and the date beside «Freigeben» are all written from it, so all say the same."""
     awaited = [a["what"] for a in asks(form, kind, listed, events, assessment, respond_by)]
+    if set_date:
+        return awaited, {"due": set_date, "set": True}
     look, days = next_look(process, form, stage, day, respond_by), look_days(process, form, stage)
     return awaited, ({"due": look, "days": days, "if_sent": day} if look and not respond_by and days else look or fallback)
 
