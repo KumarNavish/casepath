@@ -675,8 +675,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         st["held_now"] = (completion.held_marks(relied, marks, None, titles) if held_keys and relied and st["state"] != "versandt" else [])
         # the reviewed legal content this letter rests on, and how much of it a jurist has checked as it is now: the letter
         # says «n von m Bausteinen geprüft», and the jurist reviews in the letter (GET …/letter-review)
-        # (a need a Knowledge item added is practice, released under «Wissen», not legal content of the jurists' catalogue)
-        legal = [k for k in relied if not k.split(":", 1)[-1].split(".", 1)[-1].startswith("k-")]
+        # (a need a Knowledge item or the handler added is practice or this case's own, not an element of the jurists'
+        # catalogue: it is released under «Wissen», or not at all, and is not counted here)
+        known = review_model().elements if relied else {}
+        legal = [k for k in relied if k in known]
         st["reviewed"] = ({"of": len(legal), "checked": sum(1 for k in legal if (marks.get(k) or {}).get("mark") == "geprueft"),
                            "held": sum(1 for k in legal if (marks.get(k) or {}).get("mark") in completion.HELD_MARKS),
                            "practice": len(relied) - len(legal)} if legal else None)

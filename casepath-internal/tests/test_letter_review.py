@@ -52,6 +52,13 @@ class LetterReviewTests(Gate):
         after = self.client.get("/api/review/by-use").json()
         self.assertEqual((after["checked"], after["rows"][-1]["key"], after["rows"][-1]["state"]), (1, use["rows"][0]["key"], "geprueft"))
 
+    def test_the_count_beside_the_case_is_the_count_of_the_review_page_also_with_a_need_the_handler_added(self):
+        case = self.prepared("Fall A (synthetisch)")
+        self.candidate(case["id"])  # the handler adds a document to this case: it is in the letter, and no element of the catalogue
+        reviewed = self.client.get(f"/api/cases/{case['id']}").json()["completion"]["reviewed"]
+        page = self.client.get(f"/api/cases/{case['id']}/letter-review").json()
+        self.assertEqual((reviewed["of"], reviewed["practice"]), (page["status"]["counts"]["total"], 2))  # the Knowledge need and the handler's
+
     def test_a_case_without_a_letter_and_a_study_copy_have_no_letter_review(self):
         case = self.store.create_case("Leer (synthetisch)", {"synthetic": True}, "dev")
         self.assertIn(self.client.get(f"/api/cases/{case['id']}/letter-review").status_code, (404, 409))
