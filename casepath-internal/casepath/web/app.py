@@ -1470,6 +1470,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                                                        "beantwortet": f"beantwortet durch Nr. {args.get('entry')}"}.get(args.get("how"), "")
         elif op == "set_party":
             what = f"{'Kundschaft' if args.get('role') == 'kunde' else 'Gegenpartei'}: {' '.join(x for x in (args.get('salutation'), args.get('name')) if x)}"
+        elif op == "set_claim":
+            what = "Kostenangabe: " + {"amendment": "die neue Angabe ersetzt die bisherige", "additional": "weitere Kosten", "dismissed": "bleibt wie bisher"}.get(args.get("as"), "")
         else:
             what = {"add_document": f"Unterlage verlangt: {args.get('title')}", "remove_document": "Unterlage nicht mehr nötig"}.get(op, "Prozess angepasst")
         return f"{what} ({reason}; {who})" if reason else f"{what} ({who})"
@@ -1487,8 +1489,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             raise HTTPException(422, "Einträge der Fallbearbeitung über /entries.")
         if body.op == "add_dispatch":  # written only when a dispatch is confirmed (store.dispatch_once, Slice B), never here
             raise HTTPException(422, "Ein Versand wird mit «Versandt am» bestätigt, nicht hier.")
-        if (before["case"].get("intake") or {}).get("study") and body.op in ("settle_request", "set_party"):
+        if (before["case"].get("intake") or {}).get("study") and body.op in ("settle_request", "set_party", "set_claim"):
             raise HTTPException(409, "Eine Studienkopie bleibt, wie sie eingefroren wurde.")
+        if body.op == "set_claim":  # an answer to a cost stated differently: only while that statement is unsettled, never general
+            from ..process import claims as claim_model
+            rows = claim_model.normalized((((before.get("run") or {}).get("result") or {}).get("brief") or {}).get("claims"))
+            if not any(c["id"] == body.args.get("claim") and c["state"] == claim_model.UNCLEAR for c in rows):
+                raise HTTPException(422, "Diese Kostenangabe ist nicht (mehr) offen.")
+            if body.use_for_similar or body.reason_code == "4":
+                raise HTTPException(422, "Eine Kostenangabe gilt nur für diesen Fall.")
         if body.activate:  # shared Knowledge is activated in «Wissen» only, after a replay of its version (HANDLER_BAR L3)
             raise HTTPException(422, "Freigabe im Wissen erst nach dem Nachspielen")
         try:
@@ -1505,7 +1514,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         learned = None
         # "gilt generell so" (reason 4), or the same correction made in two other cases, becomes a proposal by itself;
         # it is only proposed: a person activates it, after seeing its replayed effect on the stored cases.
-        repeated = len({e["case_id"] for e in store.similar_edits(body.op, body.args, case_id)}) >= 2
+        repeated = body.op != "set_claim" and len({e["case_id"] for e in store.similar_edits(body.op, body.args, case_id)}) >= 2
         if not body.use_for_similar and (body.reason_code == "4" or repeated):
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
@@ -1528,6 +1537,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 "settle_request": "entry.corrected"}.get(body.op, "item.corrected")
         if body.op == "settle_request":
             target, values = f"request:{args.get('request')}", {"request": args.get("request"), "how": args.get("how")}
+        if body.op == "set_claim":
+            target, values = f"point:claim:{args.get('claim')}", {"claim": args.get("claim"), "as": args.get("as")}
         what = {"add_document": "document", "add_step": "step", "add_question": "question"}.get(body.op)
         cause = record(case_id, who, kind, item_id=target, edit_id=edit["id"], op=body.op, reason=body.reason_code or "none",
                        note_present=bool(body.reason.strip()), **values, **({"what": what, "free_text_present": True} if what else {}))

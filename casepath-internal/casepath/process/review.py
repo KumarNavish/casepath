@@ -399,6 +399,25 @@ class Model:
             text = "\n".join(f"{'eine Nachricht' if k == 'one' else 'mehrere'}: {v}" for k, v in value.items()) if isinstance(value, dict) else value
             self._add(wid, f"wortlaut.{key}", "wortlaut", self.WORDING_TITLES.get(key, key), [("Wortlaut", text, isinstance(value, dict))],
                       {"key": key, "wording": value})
+        follow = options.follow_on(data)
+        if follow:  # the short letter after an assessment (assessment.follow_on): each text, each step and its template
+            names = {"received": "Dank für die Nachricht", "documented": "Was damit belegt ist", "question": "Antwort auf die Frage, die wartete",
+                     "remainder": "Nur der Rest wird nachgefragt", "stands": "Die Einschätzung gilt im Übrigen"}
+            for key, title in names.items():
+                value = follow[key]
+                text = "\n".join(f"{'mit Beleg' if k == 'with' else 'ohne Beleg'}: {v}" for k, v in value.items()) if isinstance(value, dict) else value
+                self._add(wid, f"nachtrag.{key}", "wortlaut", f"Nachtrag: {title}", [("Wortlaut", text, isinstance(value, dict))], {"key": key, "wording": value})
+            for step in follow.get("steps") or ():
+                refs = [r for part in step["parts"] for r in part.get("law") or ()]
+                said = " ".join(options._with_cite(p["text"], [] if p.get("basis") == "prudence" or p.get("plain") else p.get("law"), data, workflow)
+                                for p in step["parts"])
+                self._add(wid, f"nachtrag.schritt.{step['option']}", "empfehlungen", f"Nachtrag: nächster Schritt zu «{(options.option(data, step['option']) or {}).get('title') or step['option']}»",
+                          [("Gesagt, wenn", "die verlangten Belege eingegangen sind"), ("Wortlaut", said)], {"step": step}, rows(refs))
+                t = step.get("template")
+                if t:
+                    self._add(wid, f"nachtrag.vorlage.{t['id']}", "vorlagen", f"Nachtrag: Vorlage «{t['title']}»",
+                              [("Betreff", t.get("subject") or t["title"]), ("Wortlaut", "\n".join(p["text"] for p in t["parts"]))], {"template": t},
+                              rows([r for p in t["parts"] for r in p.get("law") or ()]))
         for fact, ask in (data.get("asks") or {}).items():  # the question to the customer when the file leaves a fact open
             self._add(wid, f"rueckfrage.{fact}", "fragen", ask["frage"], [
                 ("Gefragt, wenn", f"«{_short((facts.get(fact) or {}).get('question') or fact)}» offen ist und eine Antwort oder Empfehlung davon abhängt"),
@@ -675,6 +694,10 @@ class Flags:
 
     def option(self, option_id):
         return self._held(f"empfehlung.{option_id}")
+
+    def follow(self, key):
+        """A text, a step or the template of the area's follow-on letter («nachtrag.<key>»)."""
+        return self._held(f"nachtrag.{key}")
 
     def answer(self, point_id, intent):
         """The answer row of an intent, by the element id it is reviewed under (its first point)."""

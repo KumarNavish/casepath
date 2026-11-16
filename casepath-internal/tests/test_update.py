@@ -325,6 +325,9 @@ class WhatEachAgentReceivesTests(unittest.TestCase):
         self.assertEqual(so_far["open_requests"], [])
         self.assertEqual(so_far["decisions"], {"deckung": "bestätigt", "vorgehen": "Mandat an Anwaltskanzlei"})
         self.assertIn("record_steps", self.model.calls[0][3])
+        # the costs claimed so far, each with its id and version, and how a statement names the one it changes (claims.py)
+        self.assertEqual(so_far["claims"], [])  # none claimed in this case
+        self.assertIn("names it (claim: its id, «c1») with its relation: amends", opening["instruction"])
 
     def test_the_finder_checks_only_the_needs_still_missing_in_the_new_file(self):
         instruction = self.opening(1)["instruction"]

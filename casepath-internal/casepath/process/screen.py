@@ -196,6 +196,17 @@ def decision(items, draft, stage, routing=None, assessment=None):
     act = next((i for i in items if i["kind"] == "next_action"), None) or {}
     needs = list((draft or {}).get("needs") or ())
     premise = bool(act.get("premise"))
+    # a cost the customer stated differently with nothing to say which holds: settled first, whatever is prepared, with
+    # both passages beside it (assessment.build's «claim:<id>» decision; the answer is the edit «set_claim»)
+    unclear = next((b for b in (assessment or {}).get("blocking") or () if str(b.get("key") or "").startswith("claim:")), None)
+    if unclear:
+        was, now = (unclear.get("amounts") or [None, None])[:2]
+        said = f" (gesagt am {day(unclear['stated'])})" if unclear.get("stated") else ""
+        return {"key": unclear["key"], "question": f"Kostenangabe: {unclear.get('what')}", "detail": f"bisher {was or 'ohne Betrag'}, neu {now or 'ohne Betrag'}{said}",
+                "source": (unclear.get("evidence") or [None])[0], "sources": [x for x in (unclear.get("evidence") or [])[:1] + (unclear.get("before") or [])[:1] if x],
+                "answers": [{"label": f"{now or 'neu'} ersetzt {was or 'bisher'}", "claim": unclear["statement"], "as": "amendment"},
+                            {"label": "weitere Kosten", "claim": unclear["statement"], "as": "additional"},
+                            {"label": f"bleibt bei {was or 'bisher'}", "claim": unclear["statement"], "as": "dismissed"}]}
     other = (routing or {}).get("other_topic")
     if other:
         return {"key": "process", "question": f"Prozess bestätigen: der Fall betrifft auch «{other.get('topic')}»", "answers": [{"label": "Prozess wählen", "choose": True}],
@@ -416,7 +427,11 @@ def head_block(changes, assessment, completion, draft=None):
     ch = changes or {}
     first = [] if ch.get("ledger") else [x for x in [entries_line(ch.get("entries"))] if x]  # the ledger (slice C) says it first where it is
     summary_line = [ch["update_summary"]] if isinstance(ch.get("update_summary"), str) and ch.get("update_summary").strip() else []
-    every = first + list(ch.get("ledger") or []) + summary_line + list(ch.get("entries") or []) + [f"neu: {x}" for x in ch.get("added") or ()] \
+    # what the arrival did to the costs claimed comes first: a corrected amount or a withdrawal changes what everything rests on
+    # (a newly claimed cost is one more thing that came, after the account's own lines)
+    costs = (assessment or {}).get("claims_changed") or []
+    every = [c["text"] for c in costs if c["kind"] != "added"] + first + list(ch.get("ledger") or []) + [c["text"] for c in costs if c["kind"] == "added"] \
+        + summary_line + list(ch.get("entries") or []) + [f"neu: {x}" for x in ch.get("added") or ()] \
         + [f"geändert: {x}" for x in ch.get("changed") or ()] + [f"nicht mehr: {x}" for x in ch.get("removed") or ()]
     summary = (assessment or {}).get("summary") or {}
     counts = [f"{summary[k]} {w}" for k, w in (("answered", "Frage beantwortet" if summary.get("answered") == 1 else "Fragen beantwortet"),
@@ -427,19 +442,38 @@ def head_block(changes, assessment, completion, draft=None):
     until = f"{until[8:10]}.{until[5:7]}.{until[:4]}" if until and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(until)) else until
     details = []
     kind = after.get("kind") if done.get("state") != "freigegeben" else None
-    if not (every or stale or recheck or kind in ("resolved", "partial", "refused", "unbelegt", "unrelated")):
+    if not (every or stale or recheck or kind in ("resolved", "partial", "refused", "unbelegt", "unrelated", "remainder", "unclear", "withdrawn")):
         return None  # a first preparation with nothing changed: the card says it already, no head to read
     if recheck:
         meaning = f"{recheck}; der Brief ging so hinaus, eine Korrektur wäre ein eigener Brief."
         dotted = lambda iso: f"{iso[8:10]}.{iso[5:7]}.{iso[:4]}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(iso or "")) else str(iso or "")
         details = [f"Versandt: {last.get('title') or 'Brief'} am " + ", ".join(dotted(d.get("date")) for d in last.get("dispatched") or ())]
+    elif kind in ("resolved", "remainder") and (assessment or {}).get("follow_on"):
+        # the follow-on: what came and what it settles, the work prepared, what stands and what it does not establish
+        f = assessment["follow_on"]
+        chf = lambda v: f"CHF {v:.2f}".replace(".00", "")
+        if kind == "resolved":
+            settled = ", ".join(f"{str(r.get('what') or '').replace('Belege zu: ', '')} {chf(r['amount'])} belegt" for r in f.get("resolved") or () if r.get("amount") is not None)
+            meaning = (f"Eingegangen: {settled}; " if settled else "") + f"{f['title']} vorbereitet" + (" (nächster Schritt mit Vorlage)." if f.get("template") else ".")
+        else:
+            part = (after.get("judgments") or [{}])[0].get("part") or {}
+            meaning = f"Belegt sind {chf(part.get('amount') or 0)} von {chf(part.get('of') or 0)}; {f['title']} vorbereitet: nur der Rest wird nachgefragt."
+        if f.get("stands"):
+            details.append("Gilt weiter: " + " · ".join(f"{x['what']} {x['value']}" if x["what"] != "Empfehlung übernommen" else f"Empfehlung «{x['value']}»" for x in f["stands"]))
+        if f.get("remains") and kind == "resolved":
+            details.append("Damit nicht belegt: " + ", ".join(dict.fromkeys(r["condition"] for r in f["remains"])))
+    elif kind == "unclear":
+        meaning = f"{after.get('text')}; bis dahin bleibt alles andere, wie es ist."
+    elif kind == "withdrawn":
+        gone = ", ".join(dict.fromkeys(str(a.get("what") or "") for a in after.get("moot") or ()))
+        meaning = f"Forderung zurückgezogen: {gone} nicht mehr erwartet; kein neues Schreiben nötig" + (f"; Wiedervorlage {until}." if until else ".")
     elif kind == "resolved":
         came = ", ".join(dict.fromkeys(j["ask"] for j in after.get("judgments") or () if j.get("ask")))
         judged = ", ".join(dict.fromkeys(j["judgment"] for j in after.get("judgments") or () if j.get("judgment")))
         ready = str(done.get("status") or "").endswith("vorbereitet")
         meaning = (f"Eingegangen: {came}; jetzt zu beurteilen: {judged}; " + (f"{title} vorbereitet." if ready else "die Einschätzung ist zu ergänzen.")
                    if judged else f"Eingegangen: {came}; {title} vorbereitet.")
-        details = [f"Beleg in: {j['file']}" for j in after.get("judgments") or () if j.get("file")]
+        details = []  # the passage is beside the question (its source chip), never a file's id here
     elif kind == "partial":
         meaning = f"Teilweise erfüllt: offen {', '.join(a.get('what') or '' for a in after.get('remainder') or ())}" + (f"; Wiedervorlage {until}." if until else ".")
     elif kind == "refused":
@@ -462,7 +496,7 @@ def head_block(changes, assessment, completion, draft=None):
         then = (f"kann nach {AFTER.get(done['decision'], 'dem Entscheid: ' + done['decision'])} freigegeben werden" if done.get("decision")
                 else f"noch {gaps} Lücke{'' if gaps == 1 else 'n'} zu füllen" if gaps else "kann freigegeben werden")
         meaning = f"{title} vorbereitet" + (f" ({', '.join(counts)})" if counts else "") + f"; {then}."
-    details += [f"Vorschlag: {' · '.join(summary['proposal'])}"] if summary.get("proposal") else []
+    details += [f"Vorschlag: {' · '.join(summary['proposal'])}"] if summary.get("proposal") and not (assessment or {}).get("follow_on") else []
     details += [f"Noch nachzureichen: {summary['residual']}"] if summary.get("residual") else []
     return {"changed": _one_line(every), "changed_all": every, "meaning": meaning, "meaning_all": details, "stale": stale, "stale_all": stale_all,
             "reconcile": last.get("version") if recheck else None}

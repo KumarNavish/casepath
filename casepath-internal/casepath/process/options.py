@@ -128,6 +128,51 @@ def verify(data, texts):
 
 # Validation -----------------------------------------------------------------------------------------------------------
 
+FOLLOW_ON = "A5_nachtrag"  # the form of the letter that follows an assessment when what it asked came (follow_on)
+FOLLOW_TEXTS = ("documented", "question", "remainder", "stands")
+FOLLOW_PLACEHOLDERS = {"datum", "beleg", "posten", "frage", "antwort", "belegt", "rest", "betrag", "objekt", "konto", "frist"}
+
+
+def follow_on(data):
+    """The area's follow-on to its assessment (``follow_on``), or None: the short letter prepared when the evidence the
+    assessment asked for came, its texts, and per option the next step it then advises with the customer's template."""
+    return (data or {}).get("follow_on") or None
+
+
+def follow_step(data, option_id):
+    return next((x for x in (follow_on(data) or {}).get("steps") or () if x.get("option") == option_id), None)
+
+
+def _follow_on(data, law, where, known):
+    """Fail closed on a malformed follow-on: its texts, each step of an option of the file with its parts (law parts
+    resting on verified passages, as an answer's) and its template."""
+    f = data.get("follow_on")
+    if f is None:
+        return
+    here = f"{where}: follow_on"
+    received = f.get("received") if isinstance(f, dict) else None
+    if not isinstance(f, dict) or not str(f.get("title") or "").strip() or not isinstance(received, dict) or set(received) != {"plain", "with"}:
+        raise CatalogueError(f"{here} needs a title and how it thanks for a message (received: plain, with)")
+    texts = [received["plain"], received["with"]] + [f.get(k) for k in FOLLOW_TEXTS]
+    if not all(isinstance(t, str) and t.strip() for t in texts):
+        raise CatalogueError(f"{here} needs its texts ({', '.join(FOLLOW_TEXTS)})")
+    for step in f.get("steps") or ():
+        at = f"{here}, step {step.get('option')!r}"
+        if step.get("option") not in known or not step.get("parts"):
+            raise CatalogueError(f"{at}: a step names an option of the file and has its parts")
+        for n, part in enumerate(step["parts"]):
+            _part(part, law, f"{at}, part {n + 1}", sentence=True)
+        t = step.get("template")
+        if t is not None and (not re.fullmatch(r"[a-z][a-z0-9_]*", str(t.get("id") or "")) or not t.get("parts") or not t.get("send")
+                              or not str(t.get("title") or "").strip() or not str(t.get("to") or "").strip()):
+            raise CatalogueError(f"{at}: its template needs an id, a title, whom it goes to, its parts and how to send it")
+        texts += [p.get("text") for p in step["parts"]] + [p.get("text") for p in (t or {}).get("parts") or ()]
+    for t in texts:
+        for name in re.findall(r"\{([a-z_]+)\}", str(t)):
+            if name not in FOLLOW_PLACEHOLDERS:
+                raise CatalogueError(f"{here}: placeholder {{{name}}} is not one of {', '.join(sorted(FOLLOW_PLACEHOLDERS))}")
+
+
 def _placeholders(text, where):
     for name in re.findall(r"\{([a-z_]+)\}", str(text)):
         if name not in PLACEHOLDERS:
@@ -351,6 +396,7 @@ def validate(data, workflow):
     from . import review
     raw = area.AREAS / f"{workflow['id']}.json"
     module_ids = set(review.module_ids(area.load(raw))) if raw.is_file() else set()
+    _follow_on(data, law, where, options)
     for q in data.get("open_questions") or ():
         about = q.get("about") if isinstance(q.get("about"), list) else [q.get("about")]
         if not str(q.get("text") or "").strip() or not about or any(a not in ids and a != review.WHOLE for a in about):

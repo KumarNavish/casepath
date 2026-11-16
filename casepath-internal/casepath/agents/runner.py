@@ -95,6 +95,11 @@ def case_state(store, catalogue, case_id, knowledge=None, study=None):
         done, paused = store.latest_run(case_id, "completed"), store.latest_run(case_id, "paused")
         run = paused if paused and (not done or paused["created_at"] > done["created_at"]) else done
     result = (run or {}).get("result") or {}
+    if run and not study_copy and (result.get("brief") or {}).get("claims"):
+        # the costs claimed, each with its id and current version and the handler's answers to unclear ones in force
+        from ..process import claims
+        result = {**result, "brief": {**result["brief"], "claims": claims.effective(result["brief"]["claims"], store.list_edits(case_id))}}
+        run = {**run, "result": result}
     workflow = None
     # A run names the workflow version it used; when that version is no longer shipped, the latest one of the same workflow governs.
     if case.get("workflow_id"):

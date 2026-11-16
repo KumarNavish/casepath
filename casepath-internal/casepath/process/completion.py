@@ -88,6 +88,9 @@ def swiss_today():
         return date.today()
 
 
+FOLLOW_ON = "A5_nachtrag"  # options.FOLLOW_ON: the short letter that follows an assessment when what it asked came
+
+
 def record_of(form):
     """(recipient, record kind, code) of a dispatch of ``form`` (FORM_RECORD)."""
     form = str(form or "")
@@ -541,6 +544,9 @@ def asks(form, kind, listed, events, assessment=None, respond_by=None, role="kun
     (``blocks``: the question, option and condition); a first request or a question back the letter's asked lines; a
     pending or status letter a reply by its date. Each {what, of, by, kind, ref, key, warns, blocks}."""
     form = str(form or "")
+    if form == FOLLOW_ON:  # the follow-on asks only what it says (a remainder), never the assessment's list again
+        return [{"what": a.get("what"), "of": role, "by": respond_by, "kind": a.get("kind"), "ref": a.get("ref"), "key": a.get("key"),
+                 **({"blocks": b} if (b := blocks_of(a, assessment)) else {})} for a in ((assessment or {}).get("follow_on") or {}).get("asks") or ()]
     assessing = kind == "A5" and form.startswith("A5") and form != "A5_aussichtslos"
     if assessing and (assessment or {}).get("letter"):  # the assessment writes the letter's residual: its asks are the letter's
         return [{"what": a.get("what"), "of": role, "by": respond_by, "kind": a.get("kind"), "ref": a.get("ref"), "key": a.get("key"),
@@ -566,8 +572,10 @@ def answers(kind, form, assessment=None, events=()):
     if kind != "A5" or not str(form or "").startswith("A5"):
         return []
     taken = {e.get("item_id") for e in events or () if e.get("kind") == "item.corrected" and str(e.get("item_id") or "").startswith("customer_question:")}
+    only = set(((assessment or {}).get("follow_on") or {}).get("questions") or ()) if form == FOLLOW_ON else None  # a follow-on: those it takes up
     return [{"what": q.get("text"), "answers": q.get("entry")} for q in (assessment or {}).get("questions") or ()
-            if q.get("text") and isinstance(q.get("entry"), int) and (q.get("state") == "beantwortet" or q.get("item_id") in taken)]
+            if q.get("text") and isinstance(q.get("entry"), int) and (q.get("state") == "beantwortet" or q.get("item_id") in taken)
+            and (only is None or q.get("item_id") in only)]
 
 
 def addressed(kind, form, assessment=None, events=()):
@@ -578,10 +586,12 @@ def addressed(kind, form, assessment=None, events=()):
     if kind != "A5" or not str(form or "").startswith("A5"):
         return []
     taken = {e.get("item_id") for e in events or () if e.get("kind") == "item.corrected" and str(e.get("item_id") or "").startswith("customer_question:")}
+    only = set(((assessment or {}).get("follow_on") or {}).get("questions") or ()) if form == FOLLOW_ON else None
     return [{"what": q["text"], "state": "beantwortet" if q.get("state") == "beantwortet" or q.get("item_id") in taken else "bedingt",
              "reason": q.get("reason") if q.get("state") == "bedingt" and q.get("item_id") not in taken else None}
             for q in (assessment or {}).get("questions") or ()
-            if q.get("text") and (q.get("state") in ("beantwortet", "bedingt") or q.get("item_id") in taken)]
+            if q.get("text") and (q.get("state") in ("beantwortet", "bedingt") or q.get("item_id") in taken)
+            and (only is None or q.get("item_id") in only)]
 
 
 def taken_up(events, edits=None):
@@ -637,8 +647,22 @@ def fulfilment(entry, acc, files, result=None, process=None, held=None):
     claims = ((result.get("brief") or {}).get("claims")) or []
     needs = {d["id"]: d for d in (process or {}).get("documents") or ()}
     met, open_, unbelegt, refused, promised, evidence = [], [], [], [], [], {}
+    moot, unclear = [], []
+    from . import claims as claim_model
+    claims = claim_model.normalized(claims)
+    contested = claim_model.contested(claims)
     for i, ask in enumerate(entry.get("asks") or ()):
         kind, ref, ok, where = ask.get("kind"), ask.get("ref"), False, None
+        claim = claims[ref] if kind == "claim" and isinstance(ref, int) and 0 <= ref < len(claims) else None
+        if claim is not None and claim["state"] == claim_model.WITHDRAWN:
+            # the customer withdrew the cost: its receipts are no longer owed, whatever the letter asked when it went out
+            moot.append({**ask, "why": "Forderung zurückgezogen", "stated": (claim.get("withdrawn") or {}).get("stated")})
+            continue
+        if claim is not None and claim["id"] in contested:
+            # the same cost stated differently, unsettled: nothing documents it until the handler says which holds
+            other = contested[claim["id"]]
+            unclear.append({**ask, "claim": claim["id"], "statement": other["id"], "amounts": [claim.get("amount"), other.get("amount")]})
+            continue
         if kind == "claim":
             in_reply = [f for f in files or () if f.get("id") in reply_files]
             judged, found = _held_claim(held, ask, ref, in_reply, claims, (acc or {}).get("entries"))
@@ -650,6 +674,16 @@ def fulfilment(entry, acc, files, result=None, process=None, held=None):
                 receipt = receipt[0] if isinstance(receipt, list) else receipt
                 ok = bool(claim and claim.get("documented") and (receipt or {}).get("file") in reply_files)
                 where = (receipt or {}).get("file") if ok else None
+            if not ok and claim is not None:
+                # the rest that was asked came: with the receipts already in the case it adds up to what is claimed
+                whole = account.documented(claim, files, (acc or {}).get("entries"))
+                mine = [f for f in (whole or {}).get("files") or () if f in reply_files]
+                if whole and whole.get("how") == "receipts" and mine:
+                    ok, where = True, mine[0]
+            if not ok and claim is not None:  # a receipt for the same cost that covers part of the amount: what is documented so far
+                part = documented_part(claim, in_reply, (acc or {}).get("entries"))
+                if part:
+                    ask = {**ask, "part": part}
         elif kind == "document":
             found = held({"what": ask.get("what"), "need": ref, "title": (needs.get(ref) or {}).get("title")}, [f for f in files or () if f.get("id") in reply_files])
             ok = bool(found and found.get("file") in reply_files)
@@ -681,10 +715,37 @@ def fulfilment(entry, acc, files, result=None, process=None, held=None):
             unbelegt.append(ask)  # closed by words, nothing in a file: an answer without evidence
         else:
             open_.append(ask)
-    total = len(entry.get("asks") or ())
+    total = len(entry.get("asks") or ()) - len(moot)  # what is still owed of it
     return {"acknowledged": bool(later), "replies": sorted(later_n), "met": met, "open": open_, "unbelegt": unbelegt, "refused": refused,
             "promised": promised, "evidence": evidence, "fulfilled": bool(later) and total > 0 and len(met) == total,
-            "partial": 0 < len(met) < total}
+            "partial": 0 < len(met) < total, "moot": moot, "unclear": unclear,
+            "remainder": [a for a in open_ + unbelegt if a.get("part")]}
+
+
+def claim_wishes(process):
+    """The wishes of the area's ways that name the claimed costs («will_schadenersatz»): what a withdrawn claim takes back."""
+    from . import options
+    data = options.load((process or {}).get("id"))
+    return {o["wish"] for o in (data or {}).get("options") or () if any(n.get("names_claim") for n in o.get("needs") or ())}
+
+
+def documented_part(claim, files, entries):
+    """What a receipt in ``files`` documents of a claim when it covers only part of its amount: {amount, of, rest, file, n,
+    expense}, for a receipt the reading recorded for the same cost that is set aside for its amount alone and is lower
+    than the claim's; None otherwise (no receipt, another cost, or nothing to compare)."""
+    from . import account
+    from .claims import number
+    why, total = [], number(claim)
+    if total is None or account.documented(claim, files, entries, None, why):
+        return None
+    rows = [w for w in why if w.get("recorded") and len(w.get("why") or ()) == 1 and str(w["why"][0]).startswith("Betrag weicht ab")
+            and len(w.get("amounts") or ()) == 1]
+    have = round(sum(w["amounts"][0] for w in rows), 2)  # every recorded receipt of this cost counts towards it
+    if not rows or have >= total:
+        return None
+    best = max(rows, key=lambda w: w["amounts"][0])
+    return {"amount": have, "of": total, "rest": round(total - have, 2), "file": best.get("file"), "n": best.get("n"), "expense": best.get("expense"),
+            "files": [w.get("file") for w in rows]}
 
 
 def _held_claim(held, ask, ref, files, claims, entries):
@@ -724,21 +785,39 @@ def consequence(how, entry=None, changed=(), held=()):
     - ``fulfilled``: every ask met, none blocked a judgment (a reply, a status answer): the next step decides;
     - ``unrelated``: the addressee wrote after it, but nothing meets, answers, refuses or promises an ask: the wait stays
       as it was, quiet;
-    - ``waiting``: nothing came since: the wait stays.
+    - ``waiting``: nothing came since: the wait stays;
+    - ``unclear``: a cost the letter asked the receipts of was since stated differently and nothing says which holds: one
+      question for the handler, before anything else;
+    - ``remainder``: a receipt documents part of a claimed amount (the claim was corrected upwards, or the receipt covers
+      less): a short letter asks only the rest;
+    - ``withdrawn``: what it asked is no longer owed (the customer withdrew the cost): no letter, the wait goes on.
 
     Returns {kind, judgments [{ask, judgment, blocks, file}], remainder [ask], refused [ask], reason_to_wait (bool),
     text}."""
     how = how or {}
     met = list(how.get("met") or ())
-    judgments = [{"ask": a.get("what"), "judgment": _judgment(a), "blocks": a.get("blocks"),
+    judgments = [{"ask": a.get("what"), "judgment": _judgment(a), "blocks": a.get("blocks"), "kind": a.get("kind"), "ref": a.get("ref"),
                   "file": (how.get("evidence") or {}).get(a.get("key") or a.get("what"))} for a in met if a.get("blocks")]
     remainder = list(how.get("open") or ()) + list(how.get("promised") or ())
-    out = {"judgments": judgments, "remainder": remainder, "refused": list(how.get("refused") or ()), "reason_to_wait": bool(remainder)}
+    out = {"judgments": judgments, "remainder": remainder, "refused": list(how.get("refused") or ()), "reason_to_wait": bool(remainder),
+           "moot": list(how.get("moot") or ()), "unclear": list(how.get("unclear") or ())}
+    if how.get("unclear"):  # one specific question before anything else moves: which statement of the cost holds
+        u = how["unclear"][0]
+        return {**out, "kind": "unclear", "reason_to_wait": False,
+                "text": "Kostenangabe klären: " + " oder ".join(str(a) for a in u.get("amounts") or () if a)}
     if changed or held:
         what = list(changed) + [f"{h['title']} ({h['mark']})" for h in held]
         return {**out, "kind": "contradiction", "reason_to_wait": False, "text": f"versandt mit früherem Stand – prüfen: {', '.join(what)}"}
+    if how.get("moot") and not (met or remainder or how.get("unbelegt") or how.get("refused")):
+        # everything it asked is no longer owed (the customer withdrew the cost): no letter, the wait to its date goes on
+        return {**out, "kind": "withdrawn", "reason_to_wait": True, "text": None}
     if not how.get("acknowledged"):
         return {**out, "kind": "waiting", "text": None}
+    if how.get("remainder"):
+        # a receipt covers part of what is claimed: only the rest is asked, in a short letter, not waited for in silence
+        asked = [{"ask": a.get("what"), "judgment": _judgment(a), "blocks": a.get("blocks"), "file": a["part"].get("file"), "part": a["part"],
+                  "ref": a.get("ref")} for a in how["remainder"]]
+        return {**out, "kind": "remainder", "judgments": asked, "reason_to_wait": False, "text": "teilweise belegt: Rest nachfragen"}
     if how.get("refused"):
         return {**out, "kind": "refused", "reason_to_wait": bool(remainder),
                 "text": "abgelehnt: " + ", ".join(a.get("what") or "" for a in how["refused"])}
@@ -912,6 +991,8 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
         mine = [d for d in sent if d["version"] == last.get("version")]
         checked = reconciled(events, last.get("version"))  # «Abgleich erledigt»: what the handler checked the sent letter against
         changed = changed_premise((checked or {}).get("premise") if checked else last.get("premise"), facts, assessment, process)
+        if how.get("moot"):  # the customer withdrew the cost after the letter went out: the letter was right when sent, nothing to reconcile
+            changed = [k for k in changed if k not in claim_wishes(process)]
         holding = held_marks(last.get("relies"), marks, (checked or {}).get("relies_marks") if checked else last.get("relies_marks"), titles)
         meaning = consequence(how, entry, [questions.get(k, k) for k in changed], holding)
         read = facts_read(facts, process)
@@ -958,9 +1039,14 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
     elif current_last and meaning.get("kind") == "resolved":
         # the evidence asked for came: the judgment it was asked for is next, prepared where the plan already turned to it
         ready = act.get("action") and (act.get("consequence") or act.get("action") == last.get("action_kind"))
-        out.update(bucket="urteil", status="erfüllt: " + ("Einschätzung vorbereitet" if ready and act.get("action") == "A5"
+        out.update(bucket="urteil", status="erfüllt: " + ("Nachtrag vorbereitet" if ready and act.get("form") == FOLLOW_ON
+                                                         else "Einschätzung vorbereitet" if ready and act.get("action") == "A5"
                                                          else f"{(act.get('label') or {}).get('de') or act.get('action')} vorbereitet" if ready
                                                          else "Einschätzung ergänzen" if last.get("action_kind") == "A5" else "nächsten Schritt vorbereiten"))
+    elif current_last and meaning.get("kind") == "unclear":
+        out.update(bucket="urteil", status=meaning["text"])  # one question first: which statement of the cost holds
+    elif current_last and meaning.get("kind") == "remainder":
+        out.update(bucket="urteil", status="teilweise belegt: " + ("Rückfrage zum Rest vorbereitet" if act.get("form") == FOLLOW_ON else "Rest nachfragen"))
     elif current_last and meaning.get("kind") in ("refused", "unbelegt"):
         out.update(bucket="urteil", status=meaning["text"])
     elif current_last and meaning.get("kind") == "partial" and meaning.get("judgments"):
@@ -1198,10 +1284,28 @@ def consequence_action(graph, here, state, result, files, events):
     if entry is None:
         return None
     meaning = consequence(fulfilment(entry, acc, files, result, graph))
-    if meaning["kind"] != "resolved":
+    if meaning["kind"] not in ("resolved", "remainder"):
         return None
     came = ", ".join(dict.fromkeys(j["ask"] for j in meaning["judgments"] if j.get("ask")))
     judged = ", ".join(dict.fromkeys(j["judgment"] for j in meaning["judgments"] if j.get("judgment")))
-    return {"kind": planned["kind"], "title": planned.get("title"), "next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
-            "skip_if": None, "reason": f"eingegangen: {came}" + (f"; jetzt zu beurteilen: {judged}" if judged else ""),
-            "consequence": {"version": last.get("version"), "judgments": meaning["judgments"]}}
+    # where the area says what follows its assessment (options.follow_on), the letter is that short follow-on: what came,
+    # what it settles, the next step; never the assessment written out again
+    from . import options
+    short = planned["kind"] == "A5" and str(last.get("form") or "").startswith("A5") and options.follow_on(options.load((graph or {}).get("id")))
+    follow = {"form": options.FOLLOW_ON, "title": short["title"]} if short else {"title": planned.get("title")}
+    if meaning["kind"] == "remainder":
+        if not short:
+            return None
+        part = meaning["judgments"][0]["part"]
+        reason = f"teilweise belegt: {_chf(part['amount'])} von {_chf(part['of'])}; Rest nachfragen"
+    else:
+        reason = f"eingegangen: {came}" + (f"; jetzt zu beurteilen: {judged}" if judged else "")
+    return {"kind": planned["kind"], **follow, "next_in_days": planned.get("next_in_days"), "follow_up": planned.get("follow_up"),
+            "skip_if": None, "reason": reason,
+            "consequence": {"version": last.get("version"), "kind": meaning["kind"], "judgments": meaning["judgments"],
+                            "sent": last.get("date"), "title": last.get("title")}}
+
+
+def _chf(value):
+    from .claims import chf
+    return chf(value)

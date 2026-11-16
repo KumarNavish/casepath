@@ -451,7 +451,11 @@ def seed_episode(store, runs, app=None):
     log_event(store, legacy["id"], "letter.copied", form=letters.form_kind(action), edited=False, change_ratio=0)  # no «measure»: a legacy copy
     frozen, study_copy = episode.seed_frozen_copy(store, runs)
     dispatched = episode.seed_dispatched(app)[0] if app is not None else None
-    return {"e1": e1, "e2": e2, "legacy": legacy, "frozen": frozen, "study_copy": study_copy, "dispatched": dispatched,
+    # what an arrival prepares after the assessment went out: the bill came (the short follow-on), the cost stated differently
+    # with nothing to say which holds (one decision)
+    arrived = {what: episode.seed_arrival(app, what, reference=ref)[0] for what, ref in (("receipts", "4321.6011.0005"), ("unclear", "4321.6011.0006"))} \
+        if app is not None else {}
+    return {"e1": e1, "e2": e2, "legacy": legacy, "frozen": frozen, "study_copy": study_copy, "dispatched": dispatched, "arrived": arrived,
             "analogs": {e1["id"]: e1_ns, e2["id"]: e2_ns}}
 
 
@@ -637,6 +641,7 @@ def main():
           f"  arrived {stages['arrived']['id']}  failed {stages['failed']['id']}"
           f"  E1 {episode_cases['e1']['id']}  E2 {episode_cases['e2']['id']}  legacy copy {episode_cases['legacy']['id']}"
           f"  frozen {episode_cases['frozen']['id']}  study copy {episode_cases['study_copy']['id']}  dispatched 91 days ago {episode_cases['dispatched']['id']}"
+          f"  follow-on {episode_cases['arrived']['receipts']['id']}  unclear cost {episode_cases['arrived']['unclear']['id']}"
           f"  replies to drop: {EPISODE_FILES}/E1, {EPISODE_FILES}/E2  fault switch: POST /preview/fault (?update=false turns it off)", flush=True)
     uvicorn.run(app, host="127.0.0.1", port=port, log_level="warning")
 

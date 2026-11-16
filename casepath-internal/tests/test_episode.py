@@ -43,6 +43,7 @@ from tests import episode
 USER = "N. Kumar"
 EP = episode.EPISODE  # S-D11A, the replies of 05.09.2026
 E2 = episode.analog(names=episode.VARIANT_B)  # S-D11B: one question (the deposit), no claim, receipts only promised
+WID = "mietmangel-handler"
 RECEIPTS = "Belege zu: Stromkosten für den Bautrockner"
 Q3 = "Werden mir die Stromkosten für den Bautrockner ersetzt?"
 
@@ -464,8 +465,10 @@ class ArrivalTests(Episode):
         # the consequence is prepared now: the assessment again, with the evidence named; not the follow-up at A5 + 90
         self.assertEqual((act["action"], act["reason"]), ("A5", f"eingegangen: {RECEIPTS}; jetzt zu beurteilen: «{Q3}»"))
         self.assertEqual(act["consequence"]["judgments"][0]["file"], bill)
-        self.assertEqual((self.row(case)["stand"]["bucket"], self.row(case)["stand"]["text"]), ("urteil", "erfüllt: Einschätzung vorbereitet"))
-        self.assertEqual(view["screen"]["head"]["meaning"], f"Eingegangen: {RECEIPTS}; jetzt zu beurteilen: «{Q3}»; Einschätzung vorbereitet.")
+        # what is prepared is the short follow-on (FollowOnTests), not the assessment written out again
+        self.assertEqual((act["form"], self.row(case)["stand"]["bucket"], self.row(case)["stand"]["text"]), ("A5_nachtrag", "urteil", "erfüllt: Nachtrag vorbereitet"))
+        self.assertEqual(view["screen"]["head"]["meaning"],
+                         "Eingegangen: Stromkosten für den Bautrockner CHF 85.40 belegt; Nachtrag zur Einschätzung vorbereitet (nächster Schritt mit Vorlage).")
         self.assertIsNone(view["completion"]["waiting_until"])
         self.assertNotIn("Bitte reichen Sie uns noch nach", view["draft"]["text"])  # nothing left to ask
         # the A5 quoted below the reply joins the dispatch («zitiert in Nr. …»): no second A5 in the account
@@ -495,7 +498,7 @@ class ArrivalTests(Episode):
         q3 = next(q for q in view["assessment"]["questions"] if q["text"] == Q3)
         last = view["completion"]["last"]
         self.assertEqual((q3["state"], last["acknowledged"], last["fulfilled"]), ("beantwortet", True, True))
-        self.assertEqual(self.row(case)["stand"]["text"], "erfüllt: Einschätzung vorbereitet")
+        self.assertEqual(self.row(case)["stand"]["text"], "erfüllt: Nachtrag vorbereitet")
         # the account reads the reply after the letter it answers: the receipts asked are answered by it, not left open
         ours = next(i for i in view["items"] if i["kind"] == "entry" and i.get("value") == "Rechtliche Einschätzung")
         self.assertTrue(any(n["text"].startswith(f"verlangt von der Kundschaft: {RECEIPTS} · beantwortet") for n in ours["notes"]), ours["notes"])
@@ -655,6 +658,260 @@ class ArrivalTests(Episode):
         self.assertEqual((self.row(due)["due"], view["screen"]["due"]), ({"date": (a5 + timedelta(days=90)).isoformat(), "word": "Wiedervorlage"},) * 2)
         self.assertEqual((view["completion"]["bar"]["label"], view["completion"]["bar"]["gaps"], view["completion"]["decisions"]), ("Freigeben", 0, []))
         self.assertIn(f"seit unserem letzten Kontakt vom {day(self.ns['d90'].a5_day)}", view["draft"]["text"])
+
+
+# -- the next arrival finishes the next piece of work (steering 2026-11-16) -------------------------------------------------
+
+AMENDED = "Ich muss mich korrigieren: Die Stromkosten für den Bautrockner betragen CHF 120, nicht rund CHF 85."
+
+
+class FollowOnTests(Episode):
+    """A material arrival revises the case, resolves what it was awaited for and prepares the smallest useful next work
+    (declared before the implementation: scratchpad DECLARATION.md; engineering expectations, not legal acceptance). All
+    on S-D11A with its A5 dispatched 21 days ago, asking «Belege zu: Stromkosten für den Bautrockner» (claim c1, rund CHF
+    85). Synthetic; the reader scripted."""
+    receipts = ArrivalTests.receipts
+    receipts_on = ArrivalTests.receipts_on
+    blank_reply = ArrivalTests.blank_reply
+    question = lambda self, view, text: next(q for q in view["assessment"]["questions"] if q["text"] == text)
+
+    def claims(self, case):
+        return self.store.latest_run(case, "completed")["result"]["brief"]["claims"]
+
+    def says(self, case, ns, name, said, claims, plus=10, bill=None, facts=(), day_=None):
+        """A reply of the customer after the A5 (``said``), with what the scripted reader records of it: the claims it
+        states (each with the relation it names or none) and, with ``bill``, a bill of that amount on its own entry."""
+        when = day_ or ns.a5_day + timedelta(days=plus)
+        attached = [("Abrechnung neu.txt", f"Energie Beispiel AG\nVerbrauch Bautrockner\nBetrag: CHF {bill}\n".encode())] if bill else []
+        mail = episode.eml(f"{ns.names['kunde']} <{ns.names['mail']}>", f"Protekta Rechtsschutz <{episode.INSURER_MAIL}>", when, "11:20",
+                           f"AW: Rechtliche Einschätzung {ns.reference}", f"Guten Tag\n\n{said}\n\nFreundliche Grüsse\n{ns.names['kunde']}", attachments=attached)
+        self.upload(case, [(name, mail)])
+        first = max([n for n in self.entries(case) if n <= 9000] or [0]) + 1
+        rows = [episode.entry(first, "fs", None, when, "kunde", "versicherer", "antwort", said[:60], said, answers=[episode.answer(said[:40], self.dispatched_n(case), said)])]
+        names = {"fs": name}
+        if bill:
+            rows.append(episode.entry(first + 1, "fb", None, None, "andere", "kunde", "andere", f"Abrechnung Bautrockner CHF {bill}", f"Betrag: CHF {bill}",
+                                      receipt=episode.receipt(f"Betrag: CHF {bill}", "Energieverbrauch Bautrockner", "Energie", amount=f"CHF {bill}", role="requested",
+                                                              party="Energie Beispiel AG")))
+            names["fb"] = "Abrechnung neu.txt"
+        self.update(case, episode.update_turns(rows, list(facts), said[:80], claims=claims), names)
+
+    # P: the valid receipt
+    def test_a_valid_receipt_prepares_the_short_follow_on_and_its_package_agrees(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        sent = next(e for e in self.events(case, "action.approved"))
+        old = versandpaket.text_of(self.client.get(f"/api/cases/{case}/actions/{sent['version']}/docx/A5").content)
+        self.receipts(case, ns)
+        view = self.view(case)
+        draft, f = view["draft"], view["assessment"]["follow_on"]
+        self.assertEqual((draft["form"], draft["kind"], draft["title"], f["kind"]), ("A5_nachtrag", "A5", "Nachtrag zur Einschätzung", "documented"))
+        text = draft["text"]
+        # not the assessment again: a third of its length, none of its exposition
+        self.assertLess(len(text.split()), len(old.split()) / 3)
+        for gone in ("Grundsätzlich hat die Mieterschaft", "Hinterlegung", "In Ihrem Fall", "Bitte reichen Sie uns noch nach", "Kosten mit Belegen zu beziffern"):
+            self.assertNotIn(gone, text)
+        # what came, what it documents (the receipt's own amount and issuer), the rule of the question that waited, the next step
+        self.assertIn(f"Vielen Dank für Ihre Nachricht vom {day(ns.a5_day + timedelta(days=20))} mit dem Beleg der Energie Beispiel AG.", text)
+        self.assertIn("Damit sind folgende Kosten belegt: Stromkosten für den Bautrockner, CHF 85.40 (Energie Beispiel AG", text)
+        self.assertIn(f"Zu Ihrer Frage «{Q3}»: Hat Ihnen der Mangel einen Schaden verursacht, muss die Vermieterschaft Ihnen dafür Ersatz leisten, wenn sie nicht "
+                      "beweist, dass sie kein Verschulden trifft (Art. 259e OR).", text)
+        self.assertIn("Wir empfehlen Ihnen, den belegten Betrag von CHF 85.40 bei der Vermieterschaft schriftlich zu verlangen", text)
+        self.assertIn(f"Unsere Einschätzung vom {day(ns.a5_day)} gilt im Übrigen unverändert.", text)
+        self.assertEqual(completion.gaps(draft), 0)
+        # the customer's template for that step, prefilled with the documented amount
+        template = next(a for a in draft["also"] if a["kind"] == "vorlage:ersatzforderung")
+        self.assertIn("sind mir folgende Kosten entstanden: Stromkosten für den Bautrockner, CHF 85.40 (Energie Beispiel AG", template["text"])
+        self.assertIn("den Betrag von CHF 85.40 bis ", template["text"])
+        # what it settles, what it does not, and what stands: no decision asked again
+        self.assertEqual([(r["what"], r["amount"], r["condition"]) for r in f["resolved"]], [(RECEIPTS, 85.4, "Kosten mit Belegen nachgewiesen")])
+        self.assertEqual([r["condition"] for r in f["remains"]], ["Schaden durch den Mangel", "kein Entlastungsbeweis der Vermieterschaft"])
+        self.assertEqual([x["what"] for x in f["stands"]], ["Deckung", "Empfehlung übernommen", "Erfolgsaussichten"])
+        self.assertEqual((view["assessment"]["blocking"], view["completion"]["decisions"], view["completion"]["bar"]["label"]), ([], [], "Freigeben"))
+        self.assertEqual(view["screen"]["head"]["meaning_all"],
+                         ["Gilt weiter: Deckung bestätigt · Empfehlung «Frist zur Beseitigung setzen · Kosten belegen und Ersatz verlangen» · Erfolgsaussichten genügend",
+                          "Damit nicht belegt: Schaden durch den Mangel, kein Entlastungsbeweis der Vermieterschaft"])
+        # approved: one version in the package; its note and Wiedervorlage are the follow-on's; the dispatch records what it means
+        today = completion.swiss_today()
+        approval = self.approve(case, op="op-approve-follow")["approval"]
+        self.assertEqual(approval["meaning"]["kunde"], {"asks": [], "answers": [{"what": Q3, "answers": approval["meaning"]["kunde"]["answers"][0]["answers"]}],
+                                                       "addressed": [{"what": Q3, "state": "beantwortet", "reason": None}]})
+        self.assertIn(f"{WID}:nachtrag.schritt.schadenersatz", approval["relies"])
+        archive = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{case}/actions/{approval['version']}/bundle").content))
+        self.assertEqual(sorted(n for n in archive.namelist() if n.startswith("Kundschaft/")), ["Kundschaft/Brief.docx", "Kundschaft/Forderung von Schadenersatz.docx"])
+        self.assertEqual(versandpaket.text_of(archive.read("Kundschaft/Brief.docx")), "\n".join(l if l.strip() else "" for l in text.split("\n")))
+        self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[:2],
+                         [f"Wiedervorlage 90 Tage nach dem Versand: {day(today + timedelta(days=90))} bei Versand am {day(today)}", "Erwartet: Rückmeldung"])
+        note = archive.read("Aktennotiz.txt").decode()
+        self.assertIn(f"Beantwortet in «Nachtrag zur Einschätzung»: «{Q3}».", note)
+        self.assertNotIn("Belege zu: Stromkosten", note.split("Erwartet:")[-1])  # nothing of the receipts is awaited any more
+        self.dispatch(case, approval["version"], op="op-dispatch-follow")
+        view = self.view(case)
+        self.assertEqual((self.action(view)["action"], self.row(case)["stand"]["text"]), ("A7", f"wartet auf Kundschaft bis {day(today + timedelta(days=90))}"))
+        self.assertEqual([r["text"] for line in view["screen"]["stand"] if line.get("party") == "kunde" for r in line.get("rows") or ()], [])  # nothing owed
+
+    def test_a_jurist_mark_on_the_follow_on_step_holds_it(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        self.receipts(case, ns)
+        self.post(f"/api/review/{WID}/nachtrag.schritt.schadenersatz", {"mark": "aenderung", "comment": "Zahlungsfrist so nicht", "suggestion": ""}, 201)
+        view = self.view(case)
+        self.assertGreater(completion.gaps(view["draft"]), 0)  # the step is a gap «(in Prüfung)», the rest of the letter stands
+        self.assertIn("Damit sind folgende Kosten belegt", view["draft"]["text"])
+        self.approve(case, op="op-approve-held", expect=422)
+
+    def test_the_reader_of_an_update_is_given_the_claims_with_their_ids_and_versions(self):
+        """The update's reader sees each cost claimed so far, one line with its id, version, amount and the day it was said,
+        so a new statement can name the claim it changes; nothing else of the contract moved."""
+        from casepath.agents import team
+        case, ns = self.cases["d21"], self.ns["d21"]
+        self.says(case, ns, "Korrektur.eml", AMENDED, [episode.claim("Stromkosten für den Bautrockner", AMENDED, "CHF 120", file="fs", relation="amends", of="c1")])
+        seen = {}
+        real = team.case_so_far
+        team.case_so_far = lambda work: seen.setdefault("view", real(work))
+        try:
+            self.says(case, ns, "Dank.eml", "Vielen Dank für Ihre Hilfe.", [], plus=11)
+        finally:
+            team.case_so_far = real
+        self.assertEqual(seen["view"]["claims"], [f"c1 · v2 · Stromkosten für den Bautrockner · CHF 120 · requested · gesagt am {(ns.a5_day + timedelta(days=10)).isoformat()}"])
+
+    # C1, C2: the explicit amendment
+    def test_an_amendment_makes_a_new_version_and_the_old_bill_no_longer_settles_it(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        self.receipts(case, ns)  # the CHF 85.40 bill is in the file
+        self.says(case, ns, "Korrektur.eml", AMENDED, [episode.claim("Stromkosten für den Bautrockner", AMENDED, "CHF 120", file="fs", relation="amends", of="c1")], plus=25)
+        c1, = self.claims(case)
+        self.assertEqual((c1["id"], c1["version"], c1["amount"], c1["stated"], [(h["version"], h["amount"], h["until"]) for h in c1["history"]]),
+                         ("c1", 2, "CHF 120", (ns.a5_day + timedelta(days=25)).isoformat(), [(1, "CHF 85", "amended")]))
+        self.assertIn("nicht rund CHF 85", c1["citations"][0]["quote"])  # the current version rests on the correction's passage
+        view = self.view(case)
+        q3, f = self.question(view, Q3), view["assessment"]["follow_on"]
+        self.assertEqual((q3["state"], view["assessment"]["claims"][0]["documented"]), ("bedingt", False))  # «Belege liegen vor» no more
+        self.assertEqual((view["draft"]["form"], f["kind"], self.row(case)["stand"]["text"]), ("A5_nachtrag", "remainder", "teilweise belegt: Rückfrage zum Rest vorbereitet"))
+        self.assertIn("Sie machen nun Stromkosten für den Bautrockner von CHF 120 geltend. Belegt sind bisher CHF 85.40. Bitte reichen Sie uns den Beleg für den "
+                      "Restbetrag von CHF 34.60 nach", view["draft"]["text"])
+        self.assertNotIn("CHF 85 ", view["draft"]["text"])
+        rest = "Beleg für den Restbetrag von CHF 34.60: Stromkosten für den Bautrockner"
+        self.assertEqual([a["what"] for a in f["asks"]], [rest])
+        self.assertEqual(view["assessment"]["blocking"], [])
+        self.assertEqual(view["screen"]["head"]["changed"], "Kostenangabe korrigiert: Stromkosten für den Bautrockner CHF 120 (bisher CHF 85)")
+        # sent: the earlier letter keeps what it asked; the account, the note and the diary name one open request, the current one
+        today = completion.swiss_today()
+        approval = self.approve(case, op="op-approve-rest")["approval"]
+        archive = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{case}/actions/{approval['version']}/bundle").content))
+        self.assertEqual(archive.read("Wiedervorlage.txt").decode().split("\n")[1], f"Erwartet: {rest}")
+        self.dispatch(case, approval["version"], op="op-dispatch-rest")
+        view = self.view(case)
+        self.assertEqual([r["text"].split(" · ")[0] for line in view["screen"]["stand"] if line.get("party") == "kunde" for r in line.get("rows") or ()], [rest])
+        self.assertTrue(view["file_note"].endswith(f"Erwartet: {rest}; Wiedervorlage {day(today + timedelta(days=90))}."), view["file_note"])
+        first = sorted((e for e in self.store.list_edits(case) if e["op"] == "add_dispatch"), key=lambda e: e["args"]["n"])[0]["args"]
+        self.assertEqual([a["what"] for a in first["asks"]], [RECEIPTS])  # the A5 as it went out
+        # the bill for the rest comes: the two bills document the corrected total together, and the follow-on says CHF 120
+        k = ns.names["kunde"]
+        mail = episode.eml(f"{k} <{ns.names['mail']}>", f"Protekta Rechtsschutz <{episode.INSURER_MAIL}>", today, "16:30", f"AW: Nachtrag {ns.reference}",
+                           f"Guten Tag\n\nAnbei die zweite Abrechnung.\n\nFreundliche Grüsse\n{k}", attachments=[("Abrechnung Rest.txt", "Energie Beispiel AG\nVerbrauch Bautrockner\nBetrag: CHF 34.60\n".encode())])
+        self.upload(case, [("Zweite Abrechnung.eml", mail)])
+        n = max(x for x in self.entries(case) if x <= 9000) + 1
+        newest = max(e["args"]["n"] for e in self.store.list_edits(case) if e["op"] == "add_dispatch")
+        self.update(case, episode.update_turns([
+            episode.entry(n, "fs", None, today, "kunde", "versicherer", "unterlagen", "Zweite Abrechnung zugestellt", "Anbei die zweite Abrechnung.",
+                          answers=[episode.answer("Abrechnung", newest, "Anbei die zweite Abrechnung.")]),
+            episode.entry(n + 1, "fb", None, None, "andere", "kunde", "andere", "Abrechnung Bautrockner CHF 34.60", "Betrag: CHF 34.60",
+                          receipt=episode.receipt("Betrag: CHF 34.60", "Energieverbrauch Bautrockner", "Energie", amount="CHF 34.60", role="requested", party="Energie Beispiel AG"))],
+            [], "Die Kundschaft reicht die zweite Abrechnung ein."), {"fs": "Zweite Abrechnung.eml", "fb": "Abrechnung Rest.txt"})
+        view = self.view(case)
+        self.assertEqual((view["assessment"]["claims"][0]["documented"], view["assessment"]["follow_on"]["kind"], self.row(case)["stand"]["text"]),
+                         (True, "documented", "erfüllt: Nachtrag vorbereitet"))
+        self.assertIn("Damit sind folgende Kosten belegt: Stromkosten für den Bautrockner, CHF 120 (Energie Beispiel AG", view["draft"]["text"])
+
+    def test_the_bill_of_the_corrected_amount_is_accepted(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        self.says(case, ns, "Korrektur.eml", AMENDED, [episode.claim("Stromkosten für den Bautrockner", AMENDED, "CHF 120", file="fs", relation="amends", of="c1")], bill="120.00")
+        view = self.view(case)
+        self.assertEqual((self.question(view, Q3)["state"], view["assessment"]["follow_on"]["kind"]), ("beantwortet", "documented"))
+        self.assertIn("Stromkosten für den Bautrockner, CHF 120 (Energie Beispiel AG", view["draft"]["text"])
+        self.assertNotIn("85", view["draft"]["text"].split("Sehr geehrte")[1])
+
+    # C3: the same cost stated differently, the reader names no relation
+    def test_a_different_amount_without_a_relation_is_one_decision_and_nothing_else_moves(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        before = self.view(case)
+        self.says(case, ns, "Korrektur.eml", AMENDED, [episode.claim("Stromkosten für den Bautrockner", AMENDED, "CHF 120", file="fs")], bill="120.00")
+        c1, c2 = self.claims(case)
+        self.assertEqual((c1["amount"], c1["version"], c2["state"], c2["of"], c2["amount"]), ("CHF 85", 1, "unclear", "c1", "CHF 120"))
+        view = self.view(case)
+        self.assertEqual((self.action(view)["action"], view["draft"]["form"], before["draft"]["form"]), ("A7", "A7", "A7"))  # no letter of its own: the wait's
+        self.assertEqual(self.row(case)["stand"], {**self.row(case)["stand"], "bucket": "urteil", "text": "Kostenangabe klären: CHF 85 oder CHF 120"})
+        dec = view["screen"]["decision"]
+        self.assertEqual((dec["question"], [a["as"] for a in dec["answers"]], len(dec["sources"])), ("Kostenangabe: Stromkosten für den Bautrockner", ["amendment", "additional", "dismissed"], 2))
+        self.assertFalse(view["assessment"]["claims"][0]["documented"])  # neither bill settles it meanwhile
+        self.approve(case, op="op-approve-unclear", expect=422)
+        self.post(f"/api/cases/{case}/edits", {"op": "set_claim", "args": {"claim": "c2", "as": "amendment"}, "reason": "", "reason_code": "none", "recheck": False}, 201)
+        view = self.view(case)
+        c1 = view["assessment"]["claims"][0]
+        self.assertEqual((c1["amount"], c1["version"], c1["documented"], view["assessment"]["follow_on"]["kind"]), ("CHF 120", 2, True, "documented"))
+        self.assertEqual(view["screen"]["decision"], None)
+        # undo: the question is open again
+        edit = next(e for e in self.store.list_edits(case) if e["op"] == "set_claim")
+        self.post(f"/api/edits/{edit['id']}/undo", {}, 200)
+        self.assertEqual(self.row(case)["stand"]["text"], "Kostenangabe klären: CHF 85 oder CHF 120")
+
+    # C4, C5: identity is not the words; precedence is not the upload order
+    def test_the_same_label_for_another_period_is_its_own_claim_and_an_older_statement_is_history(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        # «für Oktober kommen nochmals CHF 40 dazu»: a period that began after the first claim was made is another cost, its own
+        # claim, without a question to the handler; so is a further month under another invoice number
+        later = "Für Oktober kommen nochmals Stromkosten für den Bautrockner von CHF 40 dazu."
+        when = {"from": (ns.a5_day + timedelta(days=1)).isoformat(), "to": (ns.a5_day + timedelta(days=9)).isoformat()}
+        self.says(case, ns, "Oktober.eml", later, [episode.claim("Stromkosten für den Bautrockner", later, "CHF 40", file="fs", when=when, transaction="R-2210")], plus=10)
+        third = "Für November sind es Stromkosten für den Bautrockner von CHF 55."
+        nov = {"from": (ns.a5_day + timedelta(days=10)).isoformat(), "to": (ns.a5_day + timedelta(days=11)).isoformat()}
+        self.says(case, ns, "November.eml", third, [episode.claim("Stromkosten für den Bautrockner", third, "CHF 55", file="fs", when=nov, transaction="R-2311")], plus=11)
+        view = self.view(case)
+        self.assertEqual([(c["id"], c["state"], c["amount"], c["version"]) for c in view["assessment"]["claims"]],
+                         [("c1", "current", "CHF 85", 1), ("c2", "current", "CHF 40", 1), ("c3", "current", "CHF 55", 1)])
+        self.assertEqual(view["assessment"]["blocking"], [])
+        # the correction, then an older mail (dated before it) uploaded afterwards that still says «rund CHF 85»
+        self.says(case, ns, "Korrektur.eml", AMENDED, [episode.claim("Stromkosten für den Bautrockner", AMENDED, "CHF 120", file="fs", relation="amends", of="c1")], plus=12)
+        old = "Wie gesagt: Die Stromkosten für den Bautrockner betragen rund CHF 85."
+        self.says(case, ns, "Aeltere Nachricht.eml", old, [episode.claim("Stromkosten für den Bautrockner", old, "CHF 85", file="fs", relation="amends", of="c1")], plus=3)
+        c1 = self.claims(case)[0]
+        self.assertEqual((c1["amount"], c1["version"], [h["until"] for h in c1["history"]]), ("CHF 120", 2, ["amended", "earlier"]))
+        self.assertEqual([c["amount"] for c in self.claims(case)[1:]], ["CHF 40", "CHF 55"])  # the other claims untouched
+
+    # C6: the withdrawal
+    def test_a_withdrawal_ends_the_wait_for_the_receipts_without_a_letter_or_a_reconciliation(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        said = "Ich ziehe meine Forderung für die Stromkosten zurück."
+        before = self.view(case)
+        self.says(case, ns, "Rueckzug.eml", said, [], facts=[episode.fact("fs", "will_schadenersatz", "nein", said)])
+        c1, = self.claims(case)
+        self.assertEqual((c1["state"], c1["history"][0]["amount"], c1["withdrawn"]["stated"]), ("withdrawn", "CHF 85", (ns.a5_day + timedelta(days=10)).isoformat()))
+        view = self.view(case)
+        q3 = self.question(view, Q3)
+        self.assertEqual((q3["state"], q3["reason"]), ("erledigt", f"Forderung zurückgezogen am {day(ns.a5_day + timedelta(days=10))}"))
+        self.assertEqual(self.question(view, "Darf ich die Miete hinterlegen?")["state"], "bedingt")  # the other answers stand
+        self.assertEqual((view["assessment"]["residual"], view["completion"]["last"]["consequence"]["kind"], view["completion"]["premise_changed"]), ([], "withdrawn", []))
+        self.assertEqual((self.action(view)["action"], self.row(case)["stand"]["text"]), ("A7", before["status"]["text"]))  # the wait, as before
+        self.assertEqual([r["text"] for line in view["screen"]["stand"] if line.get("party") == "kunde" for r in line.get("rows") or ()], [])
+        self.assertNotIn("Belege zu", view["file_note"].split("Versandt:")[-1].split("Beantwortet in")[0])
+        self.assertIn("Forderung zurückgezogen: Belege zu: Stromkosten für den Bautrockner nicht mehr erwartet; kein neues Schreiben nötig", view["screen"]["head"]["meaning"])
+        # the letter that went out keeps what it asked
+        sent = next(e for e in self.store.list_edits(case) if e["op"] == "add_dispatch")["args"]
+        self.assertEqual([a["what"] for a in sent["asks"]], [RECEIPTS])
+        # a bill that still comes afterwards moves nothing: the withdrawn claim drives no letter and no approval
+        self.receipts_on(case, ns, ns.a5_day + timedelta(days=15))
+        view = self.view(case)
+        self.assertEqual((self.action(view)["action"], view["assessment"]["follow_on"], self.row(case)["stand"]["bucket"]), ("A7", None, "wartet"))
+
+    def test_a_follow_on_approved_before_the_withdrawal_no_longer_holds(self):
+        case, ns = self.cases["d21"], self.ns["d21"]
+        self.receipts(case, ns)
+        approval = self.approve(case, op="op-approve-early")["approval"]
+        said = "Ich ziehe meine Forderung für die Stromkosten zurück."
+        self.says(case, ns, "Rueckzug.eml", said, [episode.claim("Stromkosten für den Bautrockner", said, file="fs", relation="withdraws", of="c1")], plus=20)
+        view = self.view(case)
+        self.assertEqual((view["completion"]["valid"], self.row(case)["stand"]["bucket"]), (False, "urteil"))  # approved, unsent: stale, not sendable as it is
+        self.assertTrue(view["completion"]["status"].startswith("Freigabe veraltet"), view["completion"]["status"])
+        self.assertEqual(self.client.get(f"/api/cases/{case}/actions/{approval['version']}/docx/A5_nachtrag").status_code, 200)  # its version is kept
 
 
 # -- (c) one correction repairs the whole package -----------------------------------------------------------------------------

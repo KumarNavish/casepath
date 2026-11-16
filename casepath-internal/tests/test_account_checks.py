@@ -358,5 +358,16 @@ class StudyCopyTests(unittest.TestCase):
         self.assertEqual(([r["id"] for r in live["requests"]], rows(live)["Belege zu den Stromkosten"]["answered"]), (["r1.0", "r1.1"], None))
 
 
+
+class NegatedAmountTests(unittest.TestCase):
+    def test_a_corrected_amount_is_no_refusal(self):
+        """«CHF 120, nicht rund CHF 85» corrects a number: typed an answer; «keine Belege» still refuses."""
+        part = lambda quote: account.typed_parts({"what": "Stromkosten", "citations": [{"quote": quote}]})[0]["type"]
+        self.assertEqual(part("Die Stromkosten für den Bautrockner betragen CHF 120, nicht rund CHF 85."), "answer")
+        self.assertEqual(part("Es sind CHF 120 und nicht 85 Franken."), "answer")
+        self.assertEqual(part("Für die Stromkosten habe ich keine Belege."), "refusal")
+        self.assertEqual(part("Die Belege zu den Stromkosten kann ich nicht liefern."), "refusal")
+
+
 if __name__ == "__main__":
     unittest.main()

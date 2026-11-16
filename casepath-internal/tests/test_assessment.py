@@ -597,7 +597,11 @@ class InCaseTests(unittest.TestCase):
         self.assertEqual([r for r in brief["residual"] if r["kind"] == "claim"], [])
         self.assertNotIn("schadenersatz", brief["proposal"])
         q = brief["questions"][2]
-        self.assertEqual((q["state"], q["row"]), ("pruefen", 4))  # «Sie möchten den Ersatz … nicht»: the handler decides
+        # the customer withdrew the claim after asking: the question is settled by that passage, nothing left for the handler
+        # to place (before the claims had versions it stayed «zu prüfen»)
+        self.assertEqual((q["state"], q["row"], q["reason"]), ("erledigt", 4, f"Forderung zurückgezogen am {NS.day(37):%d.%m.%Y}"))
+        claim = withdrawn["result"]["brief"]["claims"][0]
+        self.assertEqual((claim["id"], claim["state"], claim["version"], [h["until"] for h in claim["history"]]), ("c1", "withdrawn", 2, ["withdrawn"]))
 
     def test_a_residual_line_can_be_unticked(self):
         unticked = Case(replied(), DECKUNG, [{"kind": "letter.line", "item_id": "residual:claim.0", "included": False}])
@@ -720,7 +724,9 @@ class WithoutOptionsTests(unittest.TestCase):
         self.assertEqual((about["items"]["enum"], about["maxItems"]), (["meldung", "reduktion", "hinterlegung", "schadenersatz", "kuendigung"], 2))
         claims = schema["properties"]["claims"]["items"]["properties"]
         # what a claim is about, under the names Slice C's rule reads (NEEDS_C §1; steering, point 5)
-        self.assertEqual(sorted(claims), ["amount", "citations", "expense", "expense_kind", "party", "period", "role", "transaction", "what"])
+        # and what a statement does to a cost already claimed: its relation and the claim it names (claims.py)
+        self.assertEqual(sorted(claims), ["amount", "citations", "claim", "expense", "expense_kind", "party", "period", "relation", "role", "transaction", "what"])
+        self.assertEqual(claims["relation"]["enum"], ["new", "amends", "withdraws"])
         self.assertEqual(sorted(claims["period"]["properties"]), ["from", "to"])
         record = team.steps_entry(work)["properties"]["receipt"]  # and what a receipt records, on its own entry
         self.assertEqual((record["type"], sorted(record["properties"])),

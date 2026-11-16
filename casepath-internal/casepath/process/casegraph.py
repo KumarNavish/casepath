@@ -24,7 +24,8 @@ EDIT_OPS = {"add_document", "remove_document", "set_required_when", "add_questio
             # none of these three changes the process either; each is refused until its slice fills its branch in apply_edit:
             "add_dispatch",  # a letter dispatched to one recipient, an entry of the account (Slice B; written by the store only)
             "settle_request",  # a request of the account settled by the handler (Slice C)
-            "set_party"}  # a party as the handler names it (Slice C)
+            "set_party",  # a party as the handler names it (Slice C)
+            "set_claim"}  # the handler's answer to a cost stated differently with nothing to say which holds (claims.py)
 
 
 def fact_value(definition, value):
@@ -260,6 +261,10 @@ def apply_edit(graph, edit):
             raise EditError("settled as erledigt, nicht_mehr_noetig or beantwortet")
         if args.get("how") == "beantwortet" and not isinstance(args.get("entry"), int):
             raise EditError("«beantwortet» names the entry that answered it")
+    elif op == "set_claim":  # an unclear statement about a claimed cost, settled by the handler (claims.effective)
+        from .claims import SETTLED_AS
+        if not re.fullmatch(r"c\d{1,3}", str(args.get("claim") or "")) or args.get("as") not in SETTLED_AS:
+            raise EditError("an unclear cost is named by its id («c2») and settled as amendment, additional or dismissed")
     elif op == "set_party":  # a party as the handler names it: the party items, the letters' greeting and the list title follow
         if args.get("role") not in ("kunde", "gegenpartei"):
             raise EditError("a party is the customer (kunde) or the other side (gegenpartei)")

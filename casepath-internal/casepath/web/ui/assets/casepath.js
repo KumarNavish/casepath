@@ -1522,7 +1522,8 @@ function decisionLine(dec, primary) {
   if (!dec) return "";
   const kg = dec.key === "kostennote" ? (S.data.items || []).filter((i) => i.kind === "stage_line" && /^kg-/.test(i.key)) : [];
   const detail = dec.key === "deckung" ? coverPanel() : kg.length ? kg.map((l) => `<div class="cp-decide-line" data-item="${esc(l.item_id)}">${esc(l.value)}${sourceChips(l.evidence)}</div>`).join("")
-    : dec.key === "empfehlung" ? briefPanel(dec) : dec.key === "aussichten" ? prospectsPanel(dec) : dec.source ? `<div>${sourceChip(dec.source)}</div>` : "";
+    : dec.key === "empfehlung" ? briefPanel(dec) : dec.key === "aussichten" ? prospectsPanel(dec)
+    : (dec.sources || []).length ? `<div>${dec.sources.map((x) => sourceChip(x)).join(" ")}</div>` : dec.source ? `<div>${sourceChip(dec.source)}</div>` : "";
   const pressed = (a) => (a.document ? S.feeAnswer === a.document : a.decline ? answered("deckung") === "abgelehnt" : String(answered(a.decide)) === String(a.value));
   const first = primary ? (dec.answers || []).findIndex((a) => !a.choose) : -1;
   const answer = (a, n) => {
@@ -1530,6 +1531,7 @@ function decisionLine(dec, primary) {
     if (a.choose) return `<select class="cp-button cp-small" data-point-choose aria-label="${T("Choose process", "Prozess wählen")}"><option value="">${esc(a.label)} …</option>${(S.workflows || []).map((w) => `<option value="${esc(w.id)}">${esc(w.short_title || w.title)}</option>`).join("")}</select>`;
     if (a.decline) return `<button class="${cls}" data-cover-decline aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
     if (a.document) return `<button class="${cls}" data-fee-answer="${esc(a.document)}" aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
+    if (a.claim) return `<button class="cp-button cp-small" data-claim-settle="${esc(a.claim)}" data-as="${esc(a.as)}">${esc(a.label)}</button>`;  // none preselected: the handler's judgment
     if (a.adopt) return `<button class="${cls}" data-rec-adopt>${esc(a.label)}</button>`;
     if (a.change) return `<button class="${cls}" data-rec-change aria-expanded="${Boolean(S.recChange)}">${esc(a.label)}</button>`;
     return `<button class="${cls}" data-decide="${esc(a.decide)}" data-value="${esc(a.value ?? isoToday())}" aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
@@ -1538,7 +1540,8 @@ function decisionLine(dec, primary) {
       ${(S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary").map((x) => `<button class="cp-chip" data-cover-reason="${esc(x.key)}">${esc(x.title)}</button>`).join("")}<button class="cp-chip" data-cover-reason="anderer Grund">${T("other reason", "anderer Grund")}</button></p>` : "";
   const premise = dec.key === "deckung" && (brief() || {}).under_premise ? ` <span class="cp-muted">· ${T("assessment prepared, subject to cover", "Einschätzung unter Vorbehalt der Deckung")}</span>` : "";
   const question = `${esc(dec.lapse || dec.question)}${dec.detail ? ` <span class="cp-muted">· ${esc(dec.detail)}</span>` : ""}${premise}`;
-  const holder = dec.key === "kostennote" ? "next_action:0" : dec.key === "process" ? "point:process" : dec.key === "empfehlung" ? "point:empfehlung" : `fact:${dec.key}`;
+  const holder = dec.key === "kostennote" ? "next_action:0" : dec.key === "process" ? "point:process" : dec.key === "empfehlung" ? "point:empfehlung"
+    : /^claim:/.test(dec.key) ? `point:${dec.key}` : `fact:${dec.key}`;
   const open = (S.decideOpen || (dec.key === "empfehlung" && S.recChange)) && detail;
   return `<div class="cp-decide" data-item="${esc(holder)}">${detail ? `<button class="cp-decide-q" id="decide-open" aria-expanded="${Boolean(open)}">${question}</button>` : `<span class="cp-decide-q">${question}</span>`}
     <span class="cp-point-actions">${(dec.answers || []).map(answer).join("")}</span>${open ? `<div class="cp-decide-more">${detail}</div>` : ""}${why}</div>`;
@@ -1729,7 +1732,7 @@ function sideAnliegen() {
 }
 function sideQuestions() {
   const b = brief();
-  if (b && b.assessment && (b.questions || []).length) return briefSide(b);  // an assessment's questions, the facts that decide it, what is still asked
+  if (b && (b.assessment || b.follow_on) && (b.questions || []).length) return briefSide(b);  // an assessment's questions, the facts that decide it, what is still asked
   const asks = (S.data.items || []).filter((i) => i.kind === "customer_question" && i.value);
   return asks.length ? `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${asks.map((q) => `<div data-item="${esc(q.item_id)}">«${esc(q.value)}»</div>`).join("")}</dd>` : "";
 }
@@ -2113,6 +2116,11 @@ function bindOverview() {
   on("[data-decide]", "click", async (b) => {  // the handler's own decision: one click, no reason asked
     S.lastEdit = await edit({ op: "set_fact", args: { fact: b.dataset.decide, value: b.dataset.value }, reason: "", reason_code: "none", recheck: false }).catch(() => S.lastEdit);
     S.decideOpen = false; S.docTab = null;
+    await loadCase();
+  });
+  on("[data-claim-settle]", "click", async (b) => {  // which statement of a claimed cost holds: one click, undoable like any edit
+    S.lastEdit = await edit({ op: "set_claim", args: { claim: b.dataset.claimSettle, as: b.dataset.as }, reason: "", reason_code: "none", recheck: false }).catch(() => S.lastEdit);
+    S.decideOpen = false;
     await loadCase();
   });
   on("[data-fee-answer]", "click", (b) => {  // the fee note: the query or the partial refusal, its letter shown to copy
@@ -2612,7 +2620,7 @@ async function route() {
 // corrected in place), what is still asked and the judgment each ask would settle. The recommendation is adopted or changed
 // on its own line; the prospects of success are a decision of their own (Art. 169 AVO).
 function brief() { return (S.data && S.data.assessment) || null; }
-const A_STATE = { beantwortet: ["answered", "beantwortet"], bedingt: ["conditional", "bedingt"], offen: ["open", "offen"], pruefen: ["check the rule", "Zuordnung prüfen"] };
+const A_STATE = { beantwortet: ["answered", "beantwortet"], bedingt: ["conditional", "bedingt"], offen: ["open", "offen"], pruefen: ["check the rule", "Zuordnung prüfen"], erledigt: ["settled", "erledigt"] };
 const A_COND = { "erfüllt": "met", "offen": "open", "nicht erfüllt": "not met", "widersprüchlich": "read two ways", "vermutet": "presumed", "nicht geprüft": "not checked" };
 const aValue = (v) => (v === true ? T("yes", "ja") : v === false ? T("no", "nein") : v === null || v === undefined ? "—" : String(v));
 const aChip = (state, label) => `<span class="cp-a-chip s-${esc(String(state).replace(/[^a-zäöü]+/gi, "-"))}">${esc(label || state)}</span>`;
@@ -2649,9 +2657,31 @@ function briefSide(b) {
       ${(r.set_aside || []).map((x) => `<div class="cp-a-why">${T("receipt set aside", "Beleg nicht zugeordnet")}: ${esc(clip(x.expense || "", 40))} · ${esc((x.why || []).join("; "))}${sourceChip({ file: x.file })}</div>`).join("")}</div>`).join("");
   const facts_asked = (b.asks || []).filter((a) => a.kind === "fact").map((a) => `<div class="cp-a-ask" data-item="${esc(a.key)}">${T("Question", "Frage")}: ${esc(a.what)}${a.decides ? `<div class="cp-a-why">${T("decides", "entscheidet")}: ${esc(clip(a.decides, 90))}</div>` : ""}${aBlocks(a.blocks)}</div>`).join("");
   const settled = (b.resolved || []).filter((r) => r.key.startsWith("residual:")).map((r) => `<div class="cp-a-ask done" data-item="${esc(r.key)}">✓ ${esc(r.line)} ${T("received", "eingegangen")}${sourceChips(r.by)}${aBlocks(r.blocks)}</div>`).join("");
-  return `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${questions}</dd>
+  // the costs claimed, each with its current version beside the passage that states it; an earlier version or a withdrawal
+  // stays visible, never as the current claim
+  const chf = (v) => `CHF ${Number(v).toFixed(2).replace(/\.00$/, "")}`;
+  const claimRow = (c) => {
+    const was = (c.history || []).filter((h) => h.until === "amended").map((h) => h.amount).filter(Boolean);
+    const state = c.state === "withdrawn" ? aChip("erledigt", T("withdrawn", "zurückgezogen")) : c.state === "unclear" ? aChip("pruefen", T("unclear", "unklar"))
+      : c.contested ? aChip("pruefen", T("stated differently", "anders angegeben")) : c.documented ? aChip("beantwortet", T("documented", "belegt")) : "";
+    const note = [c.version > 1 && c.state === "current" ? `${T("corrected", "korrigiert")}${c.stated ? ` ${dateText(c.stated)}` : ""}` : "",
+      was.length ? `${T("before", "bisher")} ${was.join(", ")}` : ""].filter(Boolean).join(" · ");
+    return `<div class="cp-a-fact" data-item="residual:claim.${c.i}">${esc(c.what)} <b>${esc(c.amount || "")}</b> ${state}${sourceChips((c.citations || []).slice(0, 1))}
+      ${note ? `<div class="cp-a-why">${esc(note)}</div>` : ""}</div>`;
+  };
+  const shown = (b.claims || []).filter((c) => !["merged", "dismissed"].includes(c.state));
+  const claims = shown.some((c) => c.version > 1 || c.state !== "current" || c.contested || shown.length > 1) || b.follow_on ? shown.map(claimRow).join("") : "";
+  // the follow-on: what the arrival settled, what it does not establish, and what was decided before and stands
+  const f = b.follow_on;
+  const follow = f ? `${(f.resolved || []).map((r) => `<div class="cp-a-ask done" data-item="${esc(r.key)}">✓ ${esc(r.what)}${r.amount != null ? ` · ${chf(r.amount)}` : ""}${sourceChips(r.by)}
+        ${r.condition ? `<div class="cp-a-why">${T("settles", "erfüllt")}: ${esc(r.condition)}</div>` : ""}</div>`).join("")}
+      ${(f.remains || []).length && f.kind === "documented" ? `<div class="cp-a-why">${T("not established by it", "damit nicht belegt")}: ${esc([...new Set(f.remains.map((r) => r.condition))].join(", "))}</div>` : ""}
+      ${(f.stands || []).length ? `<div class="cp-a-why">${T("stands", "gilt weiter")}: ${esc(f.stands.map((x) => (x.what === "Empfehlung übernommen" ? `Empfehlung «${x.value}»` : `${x.what} ${x.value}`)).join(" · "))}</div>` : ""}` : "";
+  return `${follow ? `<dt>${T("Follow-on", "Nachtrag")}</dt><dd>${follow}</dd>` : ""}
+    <dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${questions}</dd>
+    ${claims ? `<dt>${T("Costs", "Kosten")}</dt><dd class="cp-a-facts">${claims}</dd>` : ""}
     ${facts ? `<dt>${T("Deciding", "Entscheidend")}</dt><dd class="cp-a-facts">${facts}</dd>` : ""}
-    ${residual || facts_asked || settled ? `<dt>${T("Still asked", "Noch offen")}</dt><dd>${settled}${residual}${facts_asked}</dd>` : ""}`;
+    ${residual || facts_asked || (settled && !follow) ? `<dt>${T("Still asked", "Noch offen")}</dt><dd>${follow ? "" : settled}${residual}${facts_asked}</dd>` : ""}`;
 }
 // The recommendation opened: the ways (the proposal, each alternative and why it is not the proposal), the rule with each
 // condition met, open or not checked and its source, what would change it; «ändern» picks one holding way per wish.

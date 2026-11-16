@@ -18,7 +18,7 @@ from concurrent.futures import ThreadPoolExecutor
 import threading
 from datetime import date, timedelta
 
-from ..process import account, area, casegraph, incoming, workflows
+from ..process import account, area, casegraph, claims as claims_model, incoming, workflows
 from ..read.evidence import Evidence
 from .schema import arr, choice, fit_to_schema, obj, text, validate_result
 
@@ -946,8 +946,9 @@ def _report_schema(work, agent):
                    timeline=arr(obj(date=text(40), event=text(300), citations=_citations(files, 2)), maxItems=20),
                    not_enclosed=arr(obj(title=text(160, minLength=1), mentioned=text(120), citations=_citations(files, 1)), maxItems=8),
                    questions=arr(obj(question=text(200, minLength=1), citations=_citations(files, 1), about=about), maxItems=5),
+                   # relation and claim: what a statement does to a cost already claimed (case_so_far.claims, an update only)
                    claims=arr(obj(what=text(120, minLength=1), amount=text(40), role=choice(list(options.ROLES)), citations=_citations(files, 1),
-                                  **about_cost), maxItems=5))
+                                  relation=choice(list(claims_model.RELATIONS)), claim=text(8), **about_cost), maxItems=5))
     if agent == "process_builder":
         return obj(summary=text(800, minLength=1),
                    questions=arr(obj(fact=choice(facts) if facts else text(80), plain=text(300, minLength=1)), maxItems=40))
@@ -1302,7 +1303,12 @@ UPDATE_READ = ("New files came into this case after it was prepared: {files}. Re
                "new documents do not speak to keeps its value: do not record it, not even as unknown. What came in (eingang_…) "
                "is recorded in its plain fact: code moves the earlier items down. Then report: summary, one sentence on what "
                "the new documents add; timeline, only their dated events; questions and claims, only those the new documents "
-               "state, with about; request and parties empty.")
+               "state, with about; request and parties empty. A claim the new documents state about a cost case_so_far.claims "
+               "already lists names it (claim: its id, «c1») with its relation: amends when the customer corrects it (another "
+               "amount, period or number replaces the earlier one), withdraws when the customer no longer asks for it; a "
+               "further cost is new with claim empty. Judge by meaning: the same kind of cost for another period or under "
+               "another invoice number is a new claim, and an older message that only repeats what was said before amends "
+               "nothing.")
 UPDATE_FIND = ("New files came into this case: {files}. Check only these new files. Still missing: {missing}; record each one a "
                "new file meets, or one a new file of that kind cannot serve as unusable.{present} Record nothing else, and no "
                "need as absent.")
@@ -1338,7 +1344,10 @@ def case_so_far(work):
     decided = {f["id"]: v for f in work.graph["facts"] if f.get("handler_only")
                and (v := casegraph.fact_overrides(work.graph, work.employee_edits).get(f["id"], (None,))[0]) is not None}
     points = [{"id": p["id"], "statement": p["statement"]} for p in work.graph.get("key_points") or ()]
-    return {"entries": entries, "facts": facts, "open_requests": requests, "decisions": decided, "key_points": points}
+    # the costs claimed so far, each with its id and current version, so a new statement can say which one it changes
+    claimed = [claims_model.line(c) for c in claims_model.effective((work.brief or {}).get("claims"), work.employee_edits)
+               if c["state"] in (claims_model.CURRENT, claims_model.WITHDRAWN, claims_model.UNCLEAR)]
+    return {"entries": entries, "facts": facts, "open_requests": requests, "decisions": decided, "key_points": points, "claims": claimed}
 
 
 def update_finder_instruction(work, names):
@@ -1582,6 +1591,8 @@ def _located_brief(work, report):
             amount, dropped_amounts = None, dropped_amounts + 1  # an amount its sentence does not write is not the customer's
         role = entry.get("role") or "requested"
         claims.append({"what": what, "amount": amount, "role": role, **cost_fields(entry), "citations": located,
+                       **({"relation": entry["relation"], "claim": str(entry.get("claim") or "").strip()}
+                          if entry.get("relation") in ("amends", "withdraws") else {}),
                        # named only when its own words are in its sentence and it is still asked (not paid back already);
                        # whether a receipt documents it is decided where the case is shown (assessment.claims_of)
                        "checked": any(w in quote for w in words) and role != "refunded"})
@@ -1712,20 +1723,12 @@ def cost_fields(entry, more=()):
     return out
 
 
-def _claim_words(what):
-    return {w for w in re.findall(r"\w{5,}", str(what or "").casefold())}
-
-
-def merged_claims(claims, found):
-    """The brief's claims after an update: a cost the new documents state joins them, once (the same words, or the same
-    5+-letter words: «Stromkosten Bautrockner» is «Stromkosten für den Bautrockner»)."""
-    out = [dict(c) for c in claims]
-    for c in found:
-        words = _claim_words(c["what"])
-        if any(k["what"].casefold() == c["what"].casefold() or (words and words == _claim_words(k["what"])) for k in out):
-            continue
-        out.append(c)
-    return out
+def merged_claims(claims, found, entries=(), edits=()):
+    """The brief's claims after an update (claims.merge): a statement amends or withdraws the claim it names, a further
+    cost joins them, a restatement changes nothing, a statement made before the current version is history, and the same
+    cost stated differently with nothing to say which holds stays one question for the handler. The handler's earlier
+    answers (``edits``) are in force first. Returns (claims, changes)."""
+    return claims_model.merge(claims_model.effective(claims, edits), found, entries)
 
 
 def _update_ledger(work, old, entries, files):
@@ -1752,17 +1755,44 @@ def _update_ledger(work, old, entries, files):
     return led
 
 
-def _merge_brief(work, report):
+def _withdrawn_by_wish(work, claims, found, new=()):
+    """Withdrawals the update's facts state without the reader naming a claim: the customer no longer wants the costs
+    compensated (the wish of the area's way that names the claimed costs is now established «nein», quoted from a file
+    this update read), so every claim still asked is withdrawn by that passage. Nothing where the reader said it already."""
+    from ..process import options
+    data = options.load(work.graph.get("id"))
+    wishes = {o["wish"] for o in (data or {}).get("options") or () if any(n.get("names_claim") for n in o.get("needs") or ())}
+    new_files = {f["id"] if isinstance(f, dict) else f for f in new or ()}
+    out = []
+    for wish in sorted(wishes):
+        row = work.facts.get(wish) or {}
+        cites = [c for c in row.get("citations") or () if not new_files or c.get("file") in new_files]
+        if row.get("status") != "established" or row.get("value") is not False or row.get("verdict") not in (None, "accepted") or not cites:
+            continue
+        named = {str(c.get("claim") or "") for c in found if c.get("relation") == "withdraws"}
+        for c in claims_model.normalized(claims):
+            if claims_model.live(c) and c["id"] not in named:
+                out.append({"what": c["what"], "relation": "withdraws", "claim": c["id"], "citations": cites[:1]})
+    return out
+
+
+def _merge_brief(work, report, entries=(), new=()):
     """The brief after an update: the new documents' dated events, the customer's new questions and what they mention but
-    do not enclose join it (a question once); the rest stays as it was."""
+    do not enclose join it (a question once); a statement about a cost already claimed changes that claim (merged_claims,
+    ``entries``: the account's entries, for the day it was made; what changed is kept in ``claims_changed``); the rest
+    stays as it was."""
     brief = {**(work.brief or {})}
+    brief.pop("claims_changed", None)  # of the update before this one
     if report:
         found = _located_brief(work, report)
         brief["timeline"] = list(brief.get("timeline") or []) + found["timeline"]
         asked = {q["question"] for q in brief.get("questions") or []}
         brief["questions"] = list(brief.get("questions") or []) + [q for q in found["questions"] if q["question"] not in asked]
         brief["not_enclosed"] = list(brief.get("not_enclosed") or []) + found["not_enclosed"]
-        brief["claims"] = merged_claims(brief.get("claims") or [], found["claims"])
+        stated = list(found["claims"]) + _withdrawn_by_wish(work, brief.get("claims") or [], found["claims"], new)
+        brief["claims"], changed = merged_claims(brief.get("claims") or [], stated, entries, work.employee_edits)
+        if changed:
+            brief["claims_changed"] = changed
         for key in ("dropped_tags", "dropped_amounts"):
             brief[key] = (brief.get(key) or 0) + found[key]
     return brief
@@ -1775,7 +1805,7 @@ def finalize_update(work, prior, report, files, new):
     update's own account come from _update_record, the brief from _merge_brief."""
     evaluation = work.evaluate()
     record, update = _update_record(work, prior, report, files, new)
-    brief = _merge_brief(work, report)
+    brief = _merge_brief(work, report, record.get("entries") or (), new)
     kept = {k: v for k, v in prior.items() if k not in {"resumed_from", "speed_trials", "update", "paused", "done"}}
     return {**kept, "workflow": workflows.ref(work.base), "process": work.graph, "provenance": work.provenance,
             "agent_edits": work.agent_edits, "brief": brief, "facts": result_facts(work), "documents": list(work.documents.values()),

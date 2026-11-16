@@ -1343,8 +1343,8 @@ class ReceiptsEpisodeTests(unittest.TestCase):
         self.assertEqual(st["last"]["consequence"]["kind"], "resolved")
         self.assertEqual(st["last"]["consequence"]["judgments"][0]["file"], "ft")  # the bill, a file of its own attached to the reply
         self.assertEqual((self.planned["kind"], self.planned["consequence"]["version"]), ("A5", "v1"))  # what slice A's call prepares
-        if act.get("consequence"):  # slice A's planning call is in (NEEDS_B 2): the plan prepared the assessment again
-            self.assertEqual((act["action"], row["bucket"], row["text"]), ("A5", "urteil", "erfüllt: Einschätzung vorbereitet"))
+        if act.get("consequence"):  # the plan prepares what the receipts enable: the short follow-on, not the assessment again
+            self.assertEqual((act["action"], act.get("form"), row["bucket"], row["text"]), ("A5", "A5_nachtrag", "urteil", "erfüllt: Nachtrag vorbereitet"))
         else:  # B alone: the plan keeps the A7 and the queue says what comes, never a quiet «Wartet» until A5 + 90
             self.assertEqual((act["action"], row["bucket"], row["text"]), ("A7", "urteil", "erfüllt: Einschätzung ergänzen"))
 

@@ -1,7 +1,7 @@
 {
  "format": "casepath.options/1",
  "area": "mietmangel-handler",
- "version": "2026-11-15.2",
+ "version": "2026-11-16.1",
  "status": "draft",
  "label": "aus Gesetz und Praxis abgeleitet, noch nicht freigegeben",
  "law": {
@@ -145,6 +145,29 @@
     {"text": "; fristlos kündigen können Sie nur, wenn die Vermieterschaft den ihr bekannten Mangel nicht innert angemessener Frist beseitigt und er die Tauglichkeit der Wohnung ausschliesst oder erheblich beeinträchtigt", "law": ["law#259b-a"], "requires": ["angemessener Frist", "erheblich beeinträchtigt"]}],
    "needs": [], "changes_if": ["will_auszug"], "observed": null, "propose": true}
  ],
+ "follow_on": {
+  "title": "Nachtrag zur Einschätzung",
+  "received": {"plain": "Vielen Dank für Ihre Nachricht vom {datum}.", "with": "Vielen Dank für Ihre Nachricht vom {datum} mit {beleg}."},
+  "documented": "Damit sind folgende Kosten belegt: {posten}.",
+  "question": "Zu Ihrer Frage «{frage}»: {antwort}",
+  "remainder": "Sie machen nun {posten} geltend. Belegt sind bisher {belegt}. Bitte reichen Sie uns den Beleg für den Restbetrag von {rest} nach oder teilen Sie uns mit, wie sich der Betrag zusammensetzt; erst dann können wir Ihnen sagen, in welcher Höhe Sie Ersatz verlangen können.",
+  "stands": "Unsere Einschätzung vom {datum} gilt im Übrigen unverändert.",
+  "steps": [
+   {"option": "schadenersatz",
+    "parts": [
+     {"text": "Wir empfehlen Ihnen, den belegten Betrag von {betrag} bei der Vermieterschaft schriftlich zu verlangen und eine Kopie des Belegs beizulegen; dafür legen wir Ihnen eine Vorlage bei, die Sie prüfen, ergänzen und in Ihrem eigenen Namen senden.", "basis": "prudence"},
+     {"text": "Ersetzen muss die Vermieterschaft den Betrag nur, wenn Ihnen der Schaden durch den Mangel entstanden ist und sie nicht beweist, dass sie kein Verschulden trifft.", "law": ["law#259e"], "requires": ["schaden", "mangel", "verschulden"], "unless_answered": true},
+     {"text": "Lehnt die Vermieterschaft ab oder antwortet sie nicht, melden Sie sich bitte bei uns.", "plain": true}],
+    "template": {"id": "ersatzforderung", "title": "Forderung von Schadenersatz", "to": "die Vermieterschaft", "to_dative": "der Vermieterschaft",
+     "subject": "Schadenersatz wegen des Mangels an der Mietsache",
+     "fill": {"objekt": "Adresse und Stockwerk der Mietwohnung", "konto": "Ihre Kontoverbindung (IBAN, Kontoinhaber/in)"},
+     "parts": [
+      {"text": "Wegen des Mangels an der von mir gemieteten Wohnung ({objekt}) sind mir folgende Kosten entstanden: {posten}. Eine Kopie des Belegs liegt bei.", "plain": true},
+      {"text": "Ich ersuche Sie, mir diesen Schaden zu ersetzen und den Betrag von {betrag} bis {frist} auf folgendes Konto zu überweisen: {konto}.", "law": ["law#259e"]}],
+     "sets": {"days": 30, "text": "eine Zahlungsfrist von 30 Tagen"},
+     "send": {"text": "Wir empfehlen, das Schreiben eingeschrieben zu senden und eine Kopie samt Beleg aufzubewahren", "basis": "prudence"},
+     "advice": [{"text": "Die Vermieterschaft muss den Schaden nur ersetzen, wenn er durch den Mangel entstanden ist und sie nicht beweist, dass sie kein Verschulden trifft", "law": ["law#259e"]}]}}]
+ },
  "open_questions": [
   {"text": "Ist die Reihenfolge der Wege je Wunsch richtig (Praxiszahlen, sonst Dateireihenfolge)?", "about": "gebiet"},
   {"text": "Soll bei einer Frage nach der Hinterlegung die Frist mit Androhung vorgeschlagen werden? (siehe die Frage zur Vorlage «Mängelrüge»: Soll eine wiederholte Mängelrüge auch die Hinterlegung des Mietzinses androhen?)", "about": "empfehlung.frist_androhung", "linked": "vorlage.maengelruege"}

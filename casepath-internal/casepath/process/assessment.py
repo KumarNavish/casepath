@@ -206,11 +206,17 @@ def claims_of(result, files=None, acc=None):
     """The costs the customer asks to have compensated, as the reading located them, each with whether a receipt in the
     case's files documents it (documented_by: one rule): [{i, what, amount, checked, documented, held, set_aside, receipt,
     citations, …}] in the brief's order (``i`` its place there). ``receipt``: where the documenting receipt stands."""
+    from . import claims as model
     entries = (acc or {}).get("entries") or (((result or {}).get("record") or {}).get("entries") or [])
+    rows = model.normalized(((result or {}).get("brief") or {}).get("claims") or ())
+    open_ = model.contested(rows)
     claims = []
-    for i, c in enumerate(((result or {}).get("brief") or {}).get("claims") or ()):
-        row = {**c, "i": i, "documented": False, "held": None, "set_aside": [], "receipt": []}
-        if c.get("checked") and files is not None:
+    for i, c in enumerate(rows):
+        # only a claim's current version is asked and documented: a withdrawn one, or a statement not yet settled, is not
+        row = {**c, "i": i, "checked": bool(c.get("checked")) and model.live(c), "documented": False, "held": None, "set_aside": [], "receipt": []}
+        if c["id"] in open_:  # the same cost stated differently, unsettled: no receipt documents it until the handler says which holds
+            row["contested"] = {k: open_[c["id"]].get(k) for k in ("id", "amount", "stated", "citations")}
+        elif row["checked"] and files is not None:
             why = []
             hit = documented_by(c, files, entries, why)
             row.update(documented=bool(hit), held=hit, set_aside=why, receipt=receipt_evidence(hit, entries) if hit else [])
@@ -432,6 +438,15 @@ def evaluate_questions(state, result, items, events, marks=None, files=None):
                "evidence": _evidence(q.get("citations")),
                # the question asks for what its intent names (not a negation of it, not a wish the customer rejected)
                "wants": bool(intent_row) and st["row"] != 4 and wants_intent(text, intent_row)}
+        gone = [c for c in claims if c.get("state") == "withdrawn"]
+        if st["row"] == 4 and gone and ((intent_row or {}).get("next") or {}).get("kind") == "residual" and not any(c.get("checked") for c in claims):
+            # the question asked about costs the customer has since withdrawn: it is settled by that, kept in the brief with
+            # the passage, and no longer answered in a letter (not «zu prüfen»: nothing is left for the handler to place)
+            when = _day((gone[-1].get("withdrawn") or {}).get("stated"))
+            row.update(state="erledigt", reason="Forderung zurückgezogen" + (f" am {when}" if when else ""), ask=None, next=None,
+                       evidence_in=_evidence((gone[-1].get("withdrawn") or {}).get("citations")))
+            out.append(row)
+            continue
         took = taken.get(item_id)
         if took and (by_id.get(took["point"]) or {}).get("state") == "applies" and took.get("intent") and flagged.answer(took["point"], took["intent"]):
             # a jurist's current mark on the answer the handler took reopens it, as it does the drafted answer: the letter
@@ -499,6 +514,119 @@ def request_of(acc, text):
     rows = [r for r in (acc or {}).get("requests") or () if r["by"] == "kunde" and r["of"] == account.INSURER]
     score, _, row = account._best(rows, text) if rows else (0.0, 0, None)
     return row if row is not None and score >= 0.5 else None
+
+
+def claim_lines(changes):
+    """What the last update did to the costs claimed, one line each, for «Was sich geändert hat» (claims.merge's changes); a
+    statement that was only an earlier one says nothing."""
+    words = {"amended": lambda c: f"Kostenangabe korrigiert: {c['what']} {c['after']}" + (f" (bisher {c['before']})" if c.get("before") else ""),
+             "withdrawn": lambda c: f"Forderung zurückgezogen: {c['what']}",
+             "added": lambda c: f"Kosten geltend gemacht: {c['what']}" + (f" {c['after']}" if c.get("after") else ""),
+             "unclear": lambda c: f"Kostenangabe unklar: {c['what']} {c.get('before') or 'ohne Betrag'} oder {c.get('after') or 'ohne Betrag'}"}
+    return [{"kind": c["kind"], "text": words[c["kind"]](c)} for c in changes or () if c.get("kind") in words]
+
+
+# The follow-on: what an arrival enables, not the assessment again -------------------------------------------------------
+
+def _look(files):
+    """The day the case is looked at: a cut's «Stand am», else the handler's day."""
+    from .clock import as_of
+    from .completion import swiss_today
+    return as_of(files or ()) or swiss_today()
+
+
+def follow_on(data, graph, act, claims, questions, acc, flagged, case_facts, sender=None, recipient=None, today=None):
+    """The short letter that follows an assessment when what it asked came (options.follow_on), from the plan's
+    consequence (``act['consequence']``: the judgments the evidence allows, or the part it documents): {kind, parts
+    [{key, text}], asks, questions (the question ids it takes up), template, resolved, remains, stands, elements}; None
+    for another action or an area without a follow-on.
+
+    - ``documented``: the receipt thanked for, the cost it documents (the receipt's own amount, issuer and period), the law
+      sentence of the question that waited for it, the next step the adopted way now allows with the customer's template,
+      the conditions still unproven written as conditions, and one sentence that the assessment otherwise stands;
+    - ``remainder``: the cost as now claimed, what is documented of it, and only the rest asked.
+
+    Nothing of the earlier assessment is written out again; what it decided (cover, recommendation, prospects) stands and is
+    listed in ``stands``; ``remains`` names what the follow-on does not establish."""
+    f = options.follow_on(data)
+    cons = (act or {}).get("consequence") or {}
+    if not f or (act or {}).get("form") != options.FOLLOW_ON or not cons.get("judgments"):
+        return None
+    kind = cons.get("kind") or "resolved"
+    by_n = {e["n"]: e for e in (acc or {}).get("entries") or ()}
+    sent = parse_date(cons.get("sent"))
+    replies = sorted((e for e in by_n.values() if e.get("from") == "kunde" and not e.get("dispatch") and parse_date(e.get("date"))
+                      and (not sent or parse_date(e["date"]) >= sent)), key=lambda e: e["date"])
+    parts, asks, took, resolved, elements, template = [], [], [], [], [], None
+
+    def say(key, text):
+        elements.append(f"nachtrag.{key.split('.')[0]}" if not key.startswith("schritt") else f"nachtrag.{key}")
+        parts.append({"key": key, "text": gap(f"{f['title']} ({reviews.IN_REVIEW})") if flagged.follow(key) else text})
+    documented = [(j, claims[j["ref"]]) for j in cons["judgments"] if j.get("kind", "claim") == "claim" and isinstance(j.get("ref"), int)
+                  and j["ref"] < len(claims)]
+    receipts = [by_n.get((c.get("held") or {}).get("n")) or {} for _, c in documented]
+    issuer = next(((r.get("receipt") or {}).get("party") for r in receipts if (r.get("receipt") or {}).get("party")), None)
+    when = _day(replies[-1]["date"]) if replies else None
+    if when:
+        beleg = f"dem Beleg der {issuer}" if issuer else "dem Beleg"
+        say("received", (f["received"]["with"] if kind == "resolved" and documented else f["received"]["plain"]).replace("{datum}", when).replace("{beleg}", beleg))
+    from . import claims as model
+    if kind == "remainder":
+        for j in cons["judgments"]:
+            c, part = claims[j["ref"]], j["part"]
+            say("remainder", f["remainder"].replace("{posten}", f"{c['what']} von {model.chf(part['of'])}").replace("{belegt}", model.chf(part["amount"]))
+                .replace("{rest}", model.chf(part["rest"])))
+            asks.append({"key": f"residual:claim.{c['i']}", "what": f"Beleg für den Restbetrag von {model.chf(part['rest'])}: {c['what']}", "kind": "claim",
+                         "ref": c["i"], "blocks": j.get("blocks")})
+    else:
+        named = []
+        for (j, c), r in zip(documented, receipts):
+            basis = (c.get("held") or {}).get("basis") or {}
+            amount = basis.get("sum") or (basis.get("amounts") or [model.number(c)])[0]  # several receipts: what they add up to
+            period = basis.get("period") or ()
+            detail = ", ".join(x for x in ((r.get("receipt") or {}).get("party"),
+                                           f"{_day(period[0])} bis {_day(period[1])}" if len(period) == 2 and period[0] and period[0] != period[1] else None) if x)
+            named.append((j, c, amount, f"{c['what']}, {model.chf(amount)}" + (f" ({detail})" if detail else "")))
+            resolved.append({"key": f"residual:claim.{c['i']}", "what": j.get("ask"), "amount": amount, "by": list((c.get("receipt") or [])[:1]),
+                             "condition": (j.get("blocks") or {}).get("condition")})
+        if named:
+            say("documented", f["documented"].replace("{posten}", options.joined([n[3] for n in named])))
+        for qid in dict.fromkeys((j.get("blocks") or {}).get("question_id") for j, _, _, _ in named):
+            q = next((x for x in questions if x["item_id"] == qid and x["state"] == "beantwortet"), None)
+            row = _answer_row(data, q["intent"]) if q and q.get("intent") else None
+            if row is None:
+                continue
+            answer = options.answer_text(data, graph, row, residual=False, documented=False)  # the rule; the evidence is said above
+            if answer:
+                took.append(qid)
+                elements.append(f"antwort.{row['points'][0]}.{row['intent']}")
+                parts.append({"key": f"question.{qid}", "text": gap(f"{ANSWER} ({reviews.IN_REVIEW})") if flagged.answer(row["points"][0], row["intent"])
+                              else f["question"].replace("{frage}", q["text"]).replace("{antwort}", answer)})
+        total = sum(n[2] for n in named if n[2] is not None)
+        for option_id in dict.fromkeys((j.get("blocks") or {}).get("option") for j, _, _, _ in named):
+            step = options.follow_step(data, option_id)
+            if not step:
+                continue
+            # the rule is said once: a part marked ``unless_answered`` only where no question's answer said it above
+            text = " ".join(options._with_cite(p["text"].replace("{betrag}", model.chf(total)),
+                                               [] if p.get("basis") == "prudence" or p.get("plain") else p.get("law"), data, graph)
+                            for p in step["parts"] if not (p.get("unless_answered") and took))
+            say(f"schritt.{option_id}", text)
+            t = step.get("template")
+            if t and not flagged.follow(f"vorlage.{t['id']}"):
+                filled = {**t, "parts": [{**p, "text": p["text"].replace("{posten}", options.joined([n[3] for n in named])).replace("{betrag}", model.chf(total))}
+                                         for p in t["parts"]]}
+                template = {"id": t["id"], "title": t["title"], "heading": customer_letters.heading(t),
+                            "text": customer_letters.render(graph, filled, case_facts, sender, recipient, [], today or parse_date(cons.get("sent")))}
+                elements.append(f"nachtrag.vorlage.{t['id']}")
+    if cons.get("sent"):
+        say("stands", f["stands"].replace("{datum}", _day(cons["sent"])))
+    option_ids = list(dict.fromkeys((j.get("blocks") or {}).get("option") for j in cons["judgments"] if (j.get("blocks") or {}).get("option")))
+    remains = [{"option": oid, "condition": cond["text"]} for oid in option_ids for cond in (options.option(data, oid) or {}).get("conditions") or ()
+               if cond.get("kind") == "anspruch" and not cond.get("fact") and cond.get("evidence") != "claims"]
+    return {"kind": "documented" if kind == "resolved" else "remainder", "title": f["title"], "parts": parts, "asks": asks, "questions": took,
+            "template": template, "resolved": resolved, "remains": remains, "elements": list(dict.fromkeys(elements)),
+            "sent": cons.get("sent"), "sent_title": cons.get("title")}
 
 
 # The brief ------------------------------------------------------------------------------------------------------------
@@ -610,6 +738,9 @@ def build(state, result, items, files, events, marks):
     if data and acc is not None:
         candidates = [l for oid in list(dict.fromkeys(used + [p for p in pointed if p])) for l in need_lines(data, oid, claims, items, events)]
         for r in account.open_items(acc, "kunde", account.OWED_TO_US):
+            asked = next((x.get("ask") for x in acc.get("requests") or () if x["id"] == r["request"]), None) or {}
+            if asked.get("kind") == "claim" and isinstance(asked.get("ref"), int) and asked["ref"] < len(claims):
+                continue  # the receipts of a claim: its own line while it is asked and undocumented, nothing once it is not
             candidates.append({"key": f"residual:request.{r['request']}", "line": f"{r['what']} (erstmals verlangt am {_day(r['first']) or 'ohne Datum'})",
                                "kind": "request", "ref": r["request"], "evidence": [],
                                "blocks": {"question": None, "option": None, "condition": None}})
@@ -888,8 +1019,33 @@ def build(state, result, items, files, events, marks):
             nachzureichen = None  # a run without the account: the documents still asked, as before
         letter = {"im_fall": im_fall, "zu_fragen": zu_fragen, "empfehlung": empfehlung, "nachzureichen": nachzureichen}
 
+    # the follow-on to an assessment that went out: what the arrival enables, with what stands and what remains
+    follow = None
+    if data and act.get("form") == options.FOLLOW_ON:
+        from .items import customer_name
+        follow = follow_on(data, graph, act, claims, out_questions, acc, flagged, case_facts, sender=customer_name(result),
+                           recipient=case_facts.get("gegenpartei"), today=_look(files))
+    stands = []
+    if follow:
+        value = lambda v: "ja" if v is True else "nein" if v is False else str(v)
+        stands = [{"what": "Deckung", "value": value(case_facts.get("deckung"))}] if case_facts.get("deckung") not in (None, "offen") else []
+        if adopted and adopted.get("valid"):
+            stands.append({"what": "Empfehlung übernommen", "value": " · ".join((options.option(data, x) or {}).get("title") or x for x in adopted["chosen"]),
+                           "by": adopted.get("by"), "at": adopted.get("at")})
+        if case_facts.get("aussichten") not in UNJUDGED:
+            stands.append({"what": "Erfolgsaussichten", "value": value(case_facts.get("aussichten"))})
+        follow["stands"] = stands
+        asks = follow["asks"]
+
     # decisions that block the approval: the cover (while the assessment rests on it), the recommendation, the prospects
     blocking = []
+    from . import claims as claim_model
+    for c in claims:  # a cost stated differently with nothing to say which holds: settled first, whatever is prepared
+        if c.get("contested"):
+            other = c["contested"]
+            blocking.append({"kind": "decision", "key": f"claim:{other['id']}", "text": "Kostenangabe", "claim": c["id"], "statement": other["id"],
+                             "what": c.get("what"), "amounts": [c.get("amount"), other.get("amount")], "stated": other.get("stated"),
+                             "evidence": _evidence(other.get("citations")), "before": _evidence(c.get("citations"))})
     if a5 and premise_action and case_facts.get("deckung") in (None, "offen"):
         blocking.append({"kind": "decision", "key": "deckung", "text": "Deckung"})
     if a5 and data and selectable and not chosen:
@@ -903,6 +1059,9 @@ def build(state, result, items, files, events, marks):
             premise.setdefault(line["fact"], case_facts.get(line["fact"]))
     if not a5:
         premise = {}
+    if follow:  # the follow-on rests on what the assessment decided and on the wish its step serves
+        premise = {f: case_facts.get(f) for f in ("deckung", "aussichten")}
+        premise.update({(options.option(data, r["option"]) or {}).get("wish"): True for r in follow["remains"] if options.option(data, r["option"])})
 
     # candidates of an area without options: the points that apply and have advice, never filled in by themselves
     candidates = [] if data else [{"id": p["id"], "text": keypoints.advice_line(p), "cite": p.get("cite"), "law": p.get("law")}
@@ -921,6 +1080,10 @@ def build(state, result, items, files, events, marks):
             "options_version": (data or {}).get("version"), "review": options.weakest(review_states) if review_states else None,
             "changes_if": changes, "residual": residual, "asks": asks, "open_wishes": open_wishes, "resolved": resolved,
             "deciding": deciding, "contradicted": contra, "in_case": in_case, "letter": letter, "blocking": blocking,
+            "follow_on": follow, **({"elements": [f"{area_id}:{e}" for e in follow["elements"]]} if follow else {}),
+            "claims_changed": claim_lines(((result or {}).get("brief") or {}).get("claims_changed")),
+            "claims": [{k: c.get(k) for k in ("id", "i", "what", "amount", "version", "state", "stated", "history", "documented", "contested", "withdrawn",
+                                              "of", "citations")} for c in claims],
             "premise": premise, "candidates": candidates, "label": (data or {}).get("label"),
             "summary": {"answered": states.count("beantwortet"), "conditional": states.count("bedingt"), "open": states.count("offen"),
                         "check": states.count("pruefen"), "proposal": titles, "residual": sum(1 for r in residual if r["ticked"]),
@@ -994,6 +1157,8 @@ def _zu_fragen(questions):
     for q in questions:
         if q["item_id"] is None:
             continue  # a question of the account the reader did not list: shown in the brief, not in the letter
+        if q["state"] == "erledigt":
+            continue  # settled by the customer's own later word (a withdrawn claim): not answered in a letter
         if q["state"] in ("beantwortet", "bedingt") and q.get("answer"):
             key = (tuple(q["points"]), q["intent"], q["answer"])
             if key in groups:

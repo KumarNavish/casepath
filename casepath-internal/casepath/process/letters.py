@@ -393,6 +393,9 @@ def render(kind, forms, ctx):
     return (join_parts(parts), None) if parts is not None else (None, reason)
 
 
+FOLLOW_ON = "A5_nachtrag"  # options.FOLLOW_ON
+
+
 def form_kind(action):
     """The form an action's letter is written in: the first request's for «request», the form the action names, else its
     kind; an action the handler picked instead («andere Handlung») is written in its kind's own form."""
@@ -411,6 +414,12 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
     from .completion import frozen_respond_by
     held = held if held is not None else reviews.flags(current.get("process"), None)
     kind = form_kind(action)  # a closing in silence has its own (no) letter
+    follow = (assessment or {}).get("follow_on") if kind == FOLLOW_ON else None
+    if kind == FOLLOW_ON:  # the short letter after an assessment (assessment.follow_on): its parts are its own, in the frame
+        if not follow or not follow.get("parts"):
+            return None
+        forms = {**forms, FOLLOW_ON: {"title": follow["title"], "to": (forms.get("A5") or {}).get("to") or "Kundschaft",
+                                      "parts": [p["text"] for p in follow["parts"]]}}
     # a letter that sets the customer a date ({frist}) keeps the date its approval froze while that approval is open, so a
     # letter approved today is the same letter tomorrow (completion.frozen_respond_by)
     dated = "{frist}" in " ".join((forms.get(kind) or {}).get("parts") or ())
@@ -435,7 +444,11 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
                      for k in accompanying(kind, forms, listed)]
                     + [{"kind": f"vorlage:{i['key']}", "title": i["label"]["de"], "name": i.get("title"), "text": i["text"], "required": [], "template": True,
                         "base_parts": [("text", i["text"])], **({"review": i["review"]} if i.get("review") else {})}
-                       for i in customer_letters.with_letter(listed, events, kind)]}
+                       for i in customer_letters.with_letter(listed, events, kind)]
+                    # the follow-on's own template for the customer's next step (the claim it documents, prefilled)
+                    + ([{"kind": f"vorlage:{follow['template']['id']}", "title": follow["template"]["heading"], "name": follow["template"]["title"],
+                         "text": follow["template"]["text"], "required": [], "template": True, "base_parts": [("text", follow["template"]["text"])]}]
+                       if follow and follow.get("template") else [])}
 
 
 def accompanying(kind, forms, items=()):

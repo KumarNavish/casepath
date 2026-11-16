@@ -704,7 +704,7 @@ def decide_and_approve(client, case_id, ops="seed"):
     return view, post(f"/api/cases/{case_id}/actions/approve", {"form": view["draft"]["form"], "version": view["draft"]["version"], "op_id": f"{ops}-approve"})
 
 
-def seed_dispatched(app, days=SILENCE_DAYS, user=USER, today=None, reference="4321.6011.0004", turns_b=None):
+def seed_dispatched(app, days=SILENCE_DAYS, user=USER, today=None, reference="4321.6011.0004", turns_b=None, title=None):
     """The copy of E1 whose A5 went out ``days`` days before ``today`` (B-silence on the case service; deploy/preview's
     «D11-Analogon A, versandt vor 91 Tagen»): S-D11A placed so that its A5 day lies ``days`` back, Phase A prepared on
     d+34, the two replies of d+35 read by the scripted update, then on the A5's day the decisions, «Freigeben» and
@@ -716,7 +716,7 @@ def seed_dispatched(app, days=SILENCE_DAYS, user=USER, today=None, reference="43
     store, runs = app.state.store, app.state.runs
     today = today or completion.swiss_today()
     ns = analog(d0=today - timedelta(days=A5_AFTER + days),
-                names={**VARIANT_A, "title": f"D11-Analogon A, versandt vor {days} Tagen (synthetisch)", "reference": reference})
+                names={**VARIANT_A, "title": title or f"D11-Analogon A, versandt vor {days} Tagen (synthetisch)", "reference": reference})
     client, before = TestClient(app), runs.model_factory
     try:
         with EpisodeClock() as clock:
@@ -733,6 +733,42 @@ def seed_dispatched(app, days=SILENCE_DAYS, user=USER, today=None, reference="43
             r = client.post(f"/api/cases/{case['id']}/actions/dispatch", json={"version": out["approval"]["version"], "date": ns.a5_day.isoformat(),
                                                                                "channel": "email", "op_id": "seed-dispatch"})
             assert r.status_code == 200, r.text
+    finally:
+        runs.model_factory = before
+    return store.get_case(case["id"]), ns
+
+
+def seed_arrival(app, what="receipts", user=USER, reference="4321.6011.0005", title=None):
+    """A copy of S-D11A whose A5 went out 21 days ago and whose customer wrote back since, read by the scripted update
+    (deploy/preview's examples of what an arrival prepares): ``receipts``: the electricity bill came (the short follow-on
+    is prepared); ``unclear``: she now says CHF 120 for the same cost and the reader names no relation (one decision).
+    Returns (case, ns)."""
+    from fastapi.testclient import TestClient
+    store, runs = app.state.store, app.state.runs
+    case, ns = seed_dispatched(app, days=RECEIPTS_DAYS + 1, user=user, reference=reference, title=title or {
+        "receipts": "Nachtrag-Beispiel: Belege eingegangen (synthetisch)", "unclear": "Nachtrag-Beispiel: Betrag anders angegeben (synthetisch)"}[what])
+    client, before = TestClient(app), runs.model_factory
+    numbered = lambda: max([e["n"] for e in ((store.latest_run(case["id"], "completed")["result"].get("record") or {}).get("entries") or ()) if e["n"] <= 9000] or [0]) + 1
+    sent_n = next(e for e in store.list_edits(case["id"]) if e["op"] == "add_dispatch")["args"]["n"]
+    if what == "receipts":
+        rec = ns.branches["B-receipts"]
+        files, turns, names = rec.files(), rec.turns(numbered(), sent_n), {"fs": "Belege Stromkosten.eml", "ft": BILL}
+    else:
+        said = "Ich muss mich korrigieren: Die Stromkosten für den Bautrockner betragen CHF 120, nicht rund CHF 85."
+        k, came = ns.names["kunde"], ns.a5_day + timedelta(days=RECEIPTS_DAYS)
+        mail = eml(f"{k} <{ns.names['mail']}>", f"Protekta Rechtsschutz <{INSURER_MAIL}>", came, "11:20", f"AW: Rechtliche Einschätzung {ns.reference}",
+                   f"Guten Tag\n\n{said}\n\nFreundliche Grüsse\n{k}")
+        files, names = [("Korrektur Stromkosten.eml", mail)], {"fs": "Korrektur Stromkosten.eml"}
+        turns = update_turns([entry(numbered(), "fs", None, came, "kunde", "versicherer", "antwort", "Stromkosten: CHF 120", said,
+                                    answers=[answer("Stromkosten CHF 120", sent_n, said)])], [], "Die Kundschaft nennt für die Stromkosten nun CHF 120.",
+                             claims=[claim("Stromkosten für den Bautrockner", said, "CHF 120", file="fs")])
+    try:
+        r = client.post(f"/api/cases/{case['id']}/files", files=[("files", (n, d, "message/rfc822")) for n, d in files])
+        assert r.status_code == 201, r.text
+        runs.model_factory = lambda token=None: update_model(store, case["id"], turns, names)
+        run = wait(store, (store.latest_run(case["id"]) if (store.latest_run(case["id"]) or {}).get("kind") == "update"
+                           and store.latest_run(case["id"])["status"] in ("queued", "running") else runs.update(case["id"], user))["id"])
+        assert run["status"] == "completed", run.get("error")
     finally:
         runs.model_factory = before
     return store.get_case(case["id"]), ns

@@ -635,6 +635,8 @@ LEAD = {"die", "der", "das", "den", "dem", "des", "ein", "eine", "einen", "einem
         "meine", "meinen", "unser", "unsere", "alle", "allfällige", "sämtliche", "weitere", "kopie", "kopien", "noch", "auch", "zudem", "nur",
         "ausserdem", "bitte"}
 NEGATION = re.compile(r"\b(?:kein|keine|keinen|keinem|keiner|keines|nicht|nie)\b", re.I)
+# «CHF 120, nicht rund CHF 85»: a negated amount corrects a number; it refuses nothing
+NEGATED_AMOUNT = re.compile(r"\bnicht\s+(?:(?:rund|circa|ca\.?|etwa|ungefähr|nur|bloss)\s+)?(?:(?:CHF|SFr\.?|Fr\.?)\s*)?\d[\d'’.,]*(?:\s*(?:CHF|Franken|Fr\.?))?", re.I)
 PROMISE_WORDS = re.compile(r"nachreich|\bwerde\b|\bfolgt\b|\bfolgen\b|\bsobald\b|später|\bdemnächst\b", re.I)
 DELIVERY_WORDS = re.compile(r"\banbei\b|\bim anhang\b|beilieg|beigelegt|\bsende ihnen\b|übermittl|zugestellt", re.I)
 DELIVERY_ASKED = re.compile(r"send|zustell|schick|einreich|nachreich|beileg|beifüg|übermittl|zukommen", re.I)
@@ -739,7 +741,7 @@ def typed_parts(x):
         if not pick or not content(pick) & content(what):
             pick = quote
         text = f"{what} {pick}"
-        kind = "refusal" if NEGATION.search(text) else "promise" if PROMISE_WORDS.search(text) and not DELIVERY_WORDS.search(text) else "answer"
+        kind = "refusal" if NEGATION.search(NEGATED_AMOUNT.sub(" ", text)) else "promise" if PROMISE_WORDS.search(text) and not DELIVERY_WORDS.search(text) else "answer"
         days = sorted(written_dates(pick))
         out.append({"what": what, "quote": pick, "type": kind, **({"by": days[-1]} if kind == "promise" and days else {})})
     return out
@@ -1173,7 +1175,41 @@ def from_result(result, graph=None, edits=(), checked=True):
     if not kept(result):
         return None
     entries = with_handler(entries_of(result), edits)
-    return build(apply_corrections(entries, edits) if checked else entries, graph, checked=checked)
+    if not checked:
+        return build(entries, graph, checked=False)
+    return build(_moot_asks(apply_corrections(entries, edits), ((result or {}).get("brief") or {}).get("claims"), edits), graph, checked=True)
+
+
+def _moot_asks(entries, claims, edits=()):
+    """A dispatch's ask for the receipts of a claim the customer withdrew, or that a later letter asks anew, is no longer
+    owed as it was asked: settled «nicht mehr nötig» on the day of the withdrawal or of the later letter (as a handler's
+    settlement is, _settle), so the account, «Als Nächstes», the note and the wait name one open request per claim, the
+    current one. The dispatch itself keeps what it asked."""
+    from . import claims as model
+    rows = model.effective(claims, edits)
+    gone = {i: c for i, c in enumerate(rows) if c["state"] == model.WITHDRAWN}
+    # a later letter that asks the receipts of the same claim again (only the rest, after a correction) takes the earlier
+    # ask's place: one open request per claim, the newest
+    asked = [(e.get("date") or "", e["n"], a.get("ref")) for e in entries or () if e.get("dispatch") for a in e.get("asks") or () if a.get("kind") == "claim"]
+    newest = {}
+    for when, n, ref in sorted(asked):
+        newest[ref] = (when, n)
+    if not gone and len(asked) == len(newest):
+        return entries
+    out = []
+    for e in entries or ():
+        moot = []
+        for i, a in enumerate(e.get("asks") or ()):
+            if not e.get("dispatch") or a.get("kind") != "claim":
+                continue
+            if a.get("ref") in gone:
+                moot.append({"request": f"r{e['n']}.{i}", "how": "nicht_mehr_noetig", "by": None, "edit": None, "moot": "Forderung zurückgezogen",
+                             "at": (gone[a["ref"]].get("withdrawn") or {}).get("stated") or e.get("date")})
+            elif newest.get(a.get("ref"), (None, e["n"]))[1] != e["n"]:
+                moot.append({"request": f"r{e['n']}.{i}", "how": "nicht_mehr_noetig", "by": None, "edit": None, "moot": "neu verlangt",
+                             "at": newest[a["ref"]][0] or e.get("date")})
+        out.append({**e, "settled": list(e.get("settled") or ()) + moot} if moot else e)
+    return out
 
 
 # -- the account in the process: action history, agreement facts, silence -------------------------------------------
@@ -1684,7 +1720,8 @@ def receipt_profile(entry, f=None):
             "amounts": {a for a in amounts if a is not None}, "party": rec.get("party"), "payer": rec.get("payer"),
             "period": _period(rec.get("period")) or ((days[0], days[-1]) if days else None), "transaction": rec.get("transaction"),
             "role": rec.get("role") if rec.get("role") in RECEIPT_ROLES else role_of(quotes, entry.get("kind")) or ("paid" if entry.get("paid") else None),
-            "to": entry.get("to"), "file": entry.get("file") or (f or {}).get("id"), "n": entry.get("n"), "recorded": bool(rec)}
+            "to": entry.get("to"), "file": entry.get("file") or (f or {}).get("id"), "n": entry.get("n"), "recorded": bool(rec),
+            "from": entry.get("from")}
 
 
 def receipt_agrees(claim, receipt):
@@ -1707,6 +1744,9 @@ def receipt_agrees(claim, receipt):
         why.append(f"Ausgabe nur im Dateinamen: {_clip(r['expense'], 60)}")
     if not r["amounts"]:  # a receipt states what was billed or paid; without an amount in its content it documents nothing
         why.append("kein Betrag im Beleg")
+    if not r.get("recorded") and r.get("from") in CUSTOMER_SIDE:
+        # the customer's own message naming the cost and its amount is the claim said again, never its receipt
+        why.append("Angabe der Kundschaft, kein Beleg")
     if c["amount"] is not None and r["amounts"] and not same_amount:
         why.append(f"Betrag weicht ab: CHF {_chf(sorted(r['amounts'], key=lambda a: abs(a - c['amount']))[0])} statt CHF {_chf(c['amount'])}")
     if r["role"] and r["role"] not in DOCUMENTING:
@@ -1757,14 +1797,26 @@ def documented(claim, files, entries=None, file_ids=None, why=None):
     whose recorded details agree with the claim (receipt_agrees), else None; ``why`` collects each candidate set aside
     with its reasons ([{file, n, expense, why}]). For Slice A's residual and Slice B's fulfilment alike."""
     ids = list(file_ids) if file_ids is not None else [f["id"] for f in files or ()]
+    aside, parts = [], []
     for r in receipts_in(ids, files, entries):
         check = receipt_agrees(claim, r)
         if check["agrees"]:
             return {"file": r["file"], "how": "receipt", "n": r.get("n"),
                     "basis": {"expense": r["expense"], "amounts": sorted(r["amounts"]), "role": r["role"], "period": r["period"]}}
-        if check["candidate"] and why is not None:
-            why.append({"file": r["file"], "n": r.get("n"), "expense": r["expense"], "why": check["why"], "recorded": r.get("recorded", False),
-                        "same_amount": check["same_amount"], "by_name": check["by_name"]})
+        if check["candidate"]:
+            aside.append({"file": r["file"], "n": r.get("n"), "expense": r["expense"], "why": check["why"], "recorded": r.get("recorded", False),
+                          "same_amount": check["same_amount"], "by_name": check["by_name"], "amounts": sorted(r["amounts"])})
+            if r.get("recorded") and len(check["why"]) == 1 and check["why"][0].startswith("Betrag weicht ab") and len(r["amounts"]) == 1:
+                parts.append(r)  # a recorded receipt of this cost whose only difference is its amount: a part of it
+    # several receipts of the same cost that add up to what is claimed document it together (a corrected total, bill by bill)
+    c = claim_profile(claim)
+    total = round(sum(max(r["amounts"]) for r in parts), 2)
+    if len(parts) > 1 and c["amount"] is not None and abs(total - c["amount"]) <= (max(1.0, 0.05 * c["amount"]) if c["rough"] else max(0.5, 0.01 * c["amount"])):
+        first = parts[0]
+        return {"file": first["file"], "how": "receipts", "n": first.get("n"), "files": [r["file"] for r in parts],
+                "basis": {"expense": first["expense"], "amounts": [max(r["amounts"]) for r in parts], "sum": total, "role": first["role"], "period": first["period"]}}
+    if why is not None:
+        why.extend(aside)
     return None
 
 

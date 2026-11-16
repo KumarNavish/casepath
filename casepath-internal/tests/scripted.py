@@ -75,12 +75,15 @@ def period(first="", last=""):
     return {"from": first, "to": last}
 
 
-def claim(what, quote, amount=None, file="f1", role="requested", expense="", kind="andere", party="", when=None, transaction=""):
+def claim(what, quote, amount=None, file="f1", role="requested", expense="", kind="andere", party="", when=None, transaction="",
+          relation="new", of=""):
     """A cost the customer asks to have compensated, as the reader lists it: a few words of the customer's sentence, the
     amount as written, its role, what it is about (``expense`` in words and its ``kind``, who billed it, the period
-    ``when``, the number) and that sentence. Its receipt is recorded on the receipt's own entry (``receipt``)."""
+    ``when``, the number) and that sentence. Its receipt is recorded on the receipt's own entry (``receipt``). In an
+    update, ``relation`` and ``of`` say what the statement does to a cost already claimed (amends or withdraws «c1»)."""
     return {"what": what, "amount": amount or "", "role": role, "expense": expense or what, "expense_kind": kind, "party": party,
-            "period": when or period(), "transaction": transaction, "citations": [{"file": file, "quote": quote}]}
+            "period": when or period(), "transaction": transaction, "citations": [{"file": file, "quote": quote}],
+            "relation": relation, "claim": of}
 
 
 def receipt(quote, expense, kind, amount="", role="paid", party="", payer="kunde", when=None, transaction=""):
