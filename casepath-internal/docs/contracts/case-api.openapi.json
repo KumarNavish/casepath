@@ -248,6 +248,50 @@
     "title": "Body_upload_api_cases__case_id__files_post",
     "type": "object"
    },
+   "CaseIdentity": {
+    "additionalProperties": false,
+    "description": "The case's reference number, its owner and the owner's deputy; only the fields sent are changed, an empty one is\ntaken away (the owner then is again who created the case).",
+    "properties": {
+     "deputy": {
+      "anyOf": [
+       {
+        "maxLength": 120,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Deputy"
+     },
+     "owner": {
+      "anyOf": [
+       {
+        "maxLength": 120,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Owner"
+     },
+     "reference": {
+      "anyOf": [
+       {
+        "maxLength": 60,
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reference"
+     }
+    },
+    "title": "CaseIdentity",
+    "type": "object"
+   },
    "CaseTitle": {
     "properties": {
      "title": {
@@ -2215,6 +2259,54 @@
      }
     },
     "summary": "Mark Historic"
+   }
+  },
+  "/api/cases/{case_id}/identity": {
+   "put": {
+    "description": "The case's reference number, its owner and deputy, as a person sets them (each change attributed in the case's\nlog). A reference number another case carries is refused: one number is one case.",
+    "operationId": "set_identity_api_cases__case_id__identity_put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CaseIdentity"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Set Identity"
    }
   },
   "/api/cases/{case_id}/labels": {

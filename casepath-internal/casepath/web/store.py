@@ -105,6 +105,11 @@ class CaseStore:
             self._db.execute("alter table runs add column kind text not null default 'full'")
         if "builds_on" not in columns:
             self._db.execute("alter table runs add column builds_on text")
+        # a store made before a case had its reference number and its owner: both empty (the owner then reads as its creator)
+        columns = {r["name"] for r in self._all("pragma table_info(cases)")}
+        for name in ("reference", "owner", "deputy"):
+            if name not in columns:
+                self._db.execute(f"alter table cases add column {name} text")
 
     def close(self):
         with self._lock:
@@ -125,9 +130,24 @@ class CaseStore:
     def create_case(self, title, intake, user):
         case_id, at = new_id("case"), now()
         with self._lock:
-            self._db.execute("insert into cases(id,title,intake,created_by,created_at,updated_at) values(?,?,?,?,?,?)",
-                             (case_id, title, json.dumps(intake or {}, ensure_ascii=False), user, at, at))
+            self._db.execute("insert into cases(id,title,intake,created_by,created_at,updated_at,owner) values(?,?,?,?,?,?,?)",
+                             (case_id, title, json.dumps(intake or {}, ensure_ascii=False), user, at, at, user))
         return self.get_case(case_id)
+
+    def set_identity(self, case_id, **fields):
+        """The case's reference number, its owner and the owner's deputy (only the fields given; None empties one)."""
+        names = [k for k in ("reference", "owner", "deputy") if k in fields]
+        with self._lock:
+            self.get_case(case_id)
+            if names:
+                self._db.execute(f"update cases set {', '.join(f'{k}=?' for k in names)}, updated_at=? where id=?",
+                                 (*[fields[k] or None for k in names], now(), case_id))
+        return self.get_case(case_id)
+
+    def case_with_reference(self, reference, other_than=None):
+        """A case that already carries this reference number, or None."""
+        row = self._one("select id, title from cases where reference=? and id<>?", reference, other_than or "")
+        return row
 
     def get_case(self, case_id):
         row = self._one("select * from cases where id=?", case_id)

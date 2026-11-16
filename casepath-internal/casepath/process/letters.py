@@ -158,7 +158,11 @@ def _summary(items):
 
 
 def _reference(case):
-    """The case's reference number («4321.5555.0001») in its title or intake, as a match; None without one."""
+    """The case's reference number as a match: the one the case carries (set or confirmed by the handler), else the
+    number («4321.5555.0001») in its title or intake; None without one."""
+    own = str(case.get("reference") or "").strip()
+    if own:
+        return re.match(r".+", own)
     return re.search(r"\d{4}\.\d{4}\.\d{4}", f"{case.get('title', '')} {case.get('intake', '')}")
 
 

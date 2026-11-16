@@ -91,7 +91,8 @@ class Settings:
     auto_update: bool = False
     auto_update_max_pages: int = 20
     update_token_budget: int = 200_000
-    mail_subject: str | None = None  # the subject of a letter's mail draft (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
+    mail_subject: str | None = None  # the subject line shown beside a letter (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
+    reference_pattern: str = r"\d{4}\.\d{4}\.\d{4}"  # how a reference number looks in a file (CASEPATH_REFERENCE_PATTERN)
 
 
 def _flag(env, name, default):
@@ -153,6 +154,7 @@ def load_settings(env=None):
         auto_update_max_pages=int(env.get("CASEPATH_AUTO_UPDATE_MAX_PAGES", "20")),
         update_token_budget=int(env.get("CASEPATH_UPDATE_TOKEN_BUDGET", "200000")),
         mail_subject=env.get("CASEPATH_MAIL_SUBJECT") or None,
+        reference_pattern=env.get("CASEPATH_REFERENCE_PATTERN") or r"\d{4}\.\d{4}\.\d{4}",
         organisation=env.get("CASEPATH_ORGANISATION") or None,
         writing_language=env.get("CASEPATH_WRITING_LANGUAGE") or None,
         identity_format=identity_format,

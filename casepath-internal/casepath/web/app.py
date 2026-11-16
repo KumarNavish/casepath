@@ -71,6 +71,15 @@ class CaseTitle(BaseModel):
     title: str = Field(min_length=1, max_length=300)
 
 
+class CaseIdentity(BaseModel):
+    """The case's reference number, its owner and the owner's deputy; only the fields sent are changed, an empty one is
+    taken away (the owner then is again who created the case)."""
+    model_config = ConfigDict(extra="forbid")
+    reference: str | None = Field(None, max_length=60)
+    owner: str | None = Field(None, max_length=120)
+    deputy: str | None = Field(None, max_length=120)
+
+
 EVENT_KINDS = {"filenote.copied", "session.started", "case.opened", "item.exposed", "source.opened", "item.confirmed", "item.corrected",
                "item.dismissed", "item.added", "correction.undone", "item.propagated", "point.settled", "unaided.saved",
                "unaided.frozen", "reveal", "post_reveal.revised", "idle.started", "idle.ended", "letter.copied", "case.closed",
@@ -679,6 +688,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         rows = store.list_cases()
         marks = review_marks()[0]  # the jurists' marks: what is only offered while «in Prüfung»
         for row in rows:  # the next date a case is to be looked at: the list sorts by it
+            row.update(_identity(row, who))
             events = store.list_case_events(row["id"])
             row["closed"] = any(e["kind"] == "case.closed" for e in events)
             runs_in = _list_run_inputs(row)
@@ -751,6 +761,29 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         record(case_id, who, "case.renamed", text=title[:300])  # a person's title stands over the one the case gives itself
         return renamed
 
+    @app.put("/api/cases/{case_id}/identity")
+    def set_identity(case_id: str, body: CaseIdentity, who=Depends(user)):
+        """The case's reference number, its owner and deputy, as a person sets them (each change attributed in the case's
+        log). A reference number another case carries is refused: one number is one case."""
+        row = found(store.get_case, case_id)
+        if (row.get("intake") or {}).get("study"):
+            raise HTTPException(409, "Eine Studienkopie wird nicht bearbeitet: sie zeigt den eingefrorenen Lauf.")
+        sent = body.model_dump(exclude_unset=True)
+        fields = {k: (re.sub(r"\s+", " ", v).strip() if isinstance(v, str) else None) or None for k, v in sent.items()}
+        if fields.get("reference"):
+            other = store.case_with_reference(fields["reference"], other_than=case_id)
+            if other:
+                raise HTTPException(409, f"Diese Referenz trägt bereits der Fall «{other['title']}».")
+        changed = {k: v for k, v in fields.items() if v != row.get(k)}
+        if not changed:
+            return {"case": {**row, **_identity(row, who)}}
+        saved = store.set_identity(case_id, **changed)
+        if "reference" in changed:
+            record(case_id, who, "case.reference", text=changed["reference"] or "")
+        if "owner" in changed or "deputy" in changed:
+            record(case_id, who, "case.assigned", owner=saved.get("owner") or saved.get("created_by"), deputy=saved.get("deputy"))
+        return {"case": {**saved, **_identity(saved, who)}}
+
     # The case view is built in three parts, each one slice's, merged into the view: what arrived and what changed
     # (_arrival_view), the decision brief (_assessment_view) and where the letter stands after the decision
     # (_completion_view). Each returns only its own keys.
@@ -802,6 +835,33 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         proposal and its adoption, what would change it, the residual request, what blocks the approval and the premise."""
         from ..process import assessment
         return {"assessment": assessment.build(current, (completed or {}).get("result"), listed, files, events, marks)}
+
+    reference_found = {}  # file id → the first reference number in its name or the start of its text, or None
+
+    def _reference_proposal(case_id):
+        """A reference number the case's own files state, for a case that carries none: {value, file, name} from the first
+        file that names one (its name, else the start of its text). Proposed, never set: the handler confirms it."""
+        pattern = re.compile(settings.reference_pattern)
+        for f in store.list_files(case_id):
+            if f["id"] not in reference_found:
+                if len(reference_found) > 4000:
+                    reference_found.clear()
+                m = pattern.search(str(f.get("name") or "")) or pattern.search(str((store.get_file(f["id"], with_text=True).get("extraction") or {}).get("text") or "")[:6000])
+                reference_found[f["id"]] = m.group(0) if m else None
+            if reference_found[f["id"]]:
+                return {"value": reference_found[f["id"]], "file": f["id"], "name": f.get("name")}
+        return None
+
+    def _identity(row, who, with_proposal=False):
+        """What identifies a case for the people working on it: its reference number (the one it carries, else one in its
+        title), who is responsible for it (its owner, else who created it) and the deputy; ``mine``: the reader is either."""
+        ref = letters._reference(row)
+        owner = row.get("owner") or row.get("created_by")
+        out = {"reference": ref.group(0) if ref else None, "reference_set": bool(row.get("reference")), "owner": owner, "deputy": row.get("deputy"),
+               "mine": who in (owner, row.get("deputy"))}
+        if with_proposal and not ref and not (row.get("intake") or {}).get("study"):
+            out["reference_proposed"] = _reference_proposal(row["id"])
+        return out
 
     mail_blocks = {}  # file id → the mail headers in its text (a file's content never changes)
 
@@ -864,6 +924,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             current["case"], listed if completed else [], area_title(current.get("process")), renamed=renamed)}
         shown_case["headline"] = listing.headline(shown_case, listed if completed else [], area_title(current.get("process")), renamed=renamed)
         shown_case["parties"] = listing.parties_line(listed) if completed else None
+        shown_case.update(_identity(current["case"], who, with_proposal=True))
         historic = historic_file(files, current["case"].get("created_at"), events)
         closed = any(e["kind"] == "case.closed" for e in events)
         done = _completion_view(case_id, current, listed, draft, events, files, assessed.get("assessment"), changes=arrival.get("changes"))

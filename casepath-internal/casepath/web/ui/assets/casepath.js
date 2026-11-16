@@ -63,7 +63,9 @@ const AGENT_TITLE = Object.fromEntries(AGENTS.map(([id, title]) => [id, title]).
 const AGENT_ICON = Object.fromEntries(AGENTS.map(([id, , i]) => [id, i]).concat([["lead", "nodes"]]));
 const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const $ = (selector, root = document) => root.querySelector(selector);
-const S = { me: null, route: {}, data: null, pages: {}, file: null, page: null, step: null, editing: false, lastEdit: null,
+let listMineStored = false;
+try { listMineStored = localStorage.getItem("cp-list-mine") === "1"; } catch (error) { /* storage blocked: the list starts unfiltered */ }
+const S = { listMine: listMineStored, me: null, route: {}, data: null, pages: {}, file: null, page: null, step: null, editing: false, lastEdit: null,
             events: [], poll: null, follow: true, knowledge: null, workflows: null, message: "", shown: new Set(), litKey: null };
 
 async function api(path, options = {}) {
@@ -156,23 +158,33 @@ async function renderCases() {
     const s = standOf(c), due = s === "closed" ? null : c.due, late = due && due.date <= (c.as_of || today) && !c.as_of && !c.historic;
     const next = s === "closed" ? "" : c.next_action ? esc(LANG === "de" && c.next_action.text ? c.next_action.text : T(c.next_action.label.en, c.next_action.label.de))
       : s === "working" ? T("being prepared", "wird vorbereitet") : s === "new" ? T("prepare the case", "Fall vorbereiten") : "";
-    return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}"><td><a href="#/case/${esc(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
+    return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}"><td>${c.reference ? `<span class="cp-ref">${esc(c.reference)}</span> ` : ""}<a href="#/case/${esc(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
       <td>${next || '<span class="cp-muted">—</span>'}</td>
       <td class="cp-nowrap ${late ? "cp-late" : ""}">${due ? `${dateText(due.date)} <span class="cp-due-word">${esc(dueWord(due.word))}</span>` : '<span class="cp-muted">—</span>'}</td>
       <td><span class="cp-stand ${s}">${esc(standText(c))}</span></td></tr>`;
   };
   const table = (rows) => `<table class="cp-table cp-cases"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Next", "Als Nächstes")}</th>
     <th>${T("Due", "Fällig")}</th><th>${T("Status", "Status")}</th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table>`;
-  const ordered = orderedCases(cases.cases);
+  // the list narrowed by what the handler types (reference, case, parties, next step, status, owner) and to the cases
+  // the handler owns or deputises for («Meine»); both stay as set while the handler works
+  const q = (S.listQuery || "").trim().toLowerCase(), mineOnly = Boolean(S.listMine);
+  const hay = (c) => [c.reference, c.headline, c.display_title, c.title, c.parties, (c.next_action || {}).text, standText(c), c.owner, c.deputy].filter(Boolean).join(" ").toLowerCase();
+  const shownCases = cases.cases.filter((c) => (!mineOnly || c.mine) && (!q || q.split(/\s+/).every((w) => hay(c).includes(w))));
+  const anyMine = cases.cases.some((c) => c.mine) && cases.cases.some((c) => !c.mine);
+  const ordered = orderedCases(shownCases);
   // historic files (test cuts, whole old files uploaded for testing, or as a person placed them): listed apart, never overdue
   const historic = ordered.filter((c) => c.historic);
   const live = ordered.filter((c) => !historic.includes(c));
   const real = live.filter((c) => !(c.intake || {}).synthetic), examples = live.filter((c) => (c.intake || {}).synthetic);
   // files dropped anywhere on the list make a new case; the hint stands beside «Neuer Fall», a box only while there is no case
-  const any = ordered.length && !S.creating;
+  const any = cases.cases.length && !S.creating;
+  const tools = cases.cases.length > 6 || q || mineOnly ? `<div class="cp-list-tools"><input type="search" id="list-search" value="${esc(S.listQuery || "")}" placeholder="${T("Search: reference, name, status", "Suchen: Referenz, Name, Status")}" aria-label="${T("Search cases", "Fälle suchen")}">
+      ${anyMine || mineOnly ? `<label class="cp-list-mine"><input type="checkbox" id="list-mine" ${mineOnly ? "checked" : ""}> ${T("Mine", "Meine")}</label>` : ""}
+      ${q || mineOnly ? `<span class="cp-muted" id="list-count">${ordered.length} ${T("of", "von")} ${cases.cases.length}</span>` : ""}</div>` : "";
   $("#app").innerHTML = `<main class="cp-main cp-list"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
       ${S.canUpload === false ? "" : `<span class="cp-list-new">${any ? `<span class="cp-muted">${T("or drop files here", "oder Dateien hierher ziehen")}</span>` : ""}
         <label class="cp-button primary">${icon("plus")}${T("New case", "Neuer Fall")}<input type="file" id="new-files" multiple hidden></label></span>`}</div>
+    ${tools}${(q || mineOnly) && !ordered.length ? `<p class="cp-muted cp-list-none">${T("No case matches.", "Kein Fall passt.")}</p>` : ""}
     ${real.length ? bucketTables(real, table, 2) : ""}
     ${S.canUpload === false || any ? "" : `<div class="cp-drop" id="drop">${S.creating ? T("Creating the case…", "Der Fall wird angelegt …") : T("Drop files here and CasePath prepares the case", "Dateien hierher ziehen, CasePath bereitet den Fall vor")}</div>`}
     ${S.message ? `<p class="cp-error">${esc(S.message)}</p>` : ""}
@@ -186,6 +198,12 @@ async function renderCases() {
           : `<button class="cp-button" data-import="${esc(f.path)}">${icon("plus")}${T("Import", "Importieren")}</button>`}</td></tr>`).join("")}</tbody></table>`
         : `<p class="cp-muted">${T("No files there yet.", "Noch keine Dateien dort.")}</p>`}` : ""}</main>`;
   S.message = "";
+  const search = $("#list-search");
+  if (search) {
+    search.addEventListener("input", () => { S.listQuery = search.value; clearTimeout(S.listTimer); S.listTimer = setTimeout(() => { if (S.route.view === "cases") renderCases().then(() => { const el = $("#list-search"); if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); } }); }, 180); });
+  }
+  const mine = $("#list-mine");
+  if (mine) mine.addEventListener("change", () => { S.listMine = mine.checked; try { localStorage.setItem("cp-list-mine", mine.checked ? "1" : ""); } catch (error) { /* a per-person convenience only */ } renderCases(); });
   for (const button of document.querySelectorAll("[data-import]")) button.addEventListener("click", async () => {
     button.disabled = true;
     button.textContent = T("Importing…", "Wird importiert …");
@@ -333,6 +351,42 @@ function runError(error) {
 // The rail holds the case: its name (renamed in place), its parties, its status in the case list's words, a historic
 // file's last day; then its files and «Hinzufügen»; everything else is under «Mehr».
 const caseName = (c) => c.headline || c.display_title || c.title;
+// The case's reference number and who is responsible for it, in the rail: the number it carries, one its files state
+// (proposed with the file, taken over on a click), or «Referenz eintragen»; the owner and the deputy, changed in place.
+function identityLine(c) {
+  if ((c.intake || {}).study) return "";
+  const p = c.reference_proposed;
+  if (S.identityEdit) {  // what is typed is kept in S.identityEdit, so a re-render while typing loses nothing
+    const v = S.identityEdit;
+    return `<div class="cp-identity editing"><label>${T("Reference", "Referenz")} <input data-id-field="reference" value="${esc(v.reference)}" maxlength="60"></label>
+      <label>${T("Responsible", "Zuständig")} <input data-id-field="owner" value="${esc(v.owner)}" maxlength="120"></label>
+      <label>${T("Deputy", "Stellvertretung")} <input data-id-field="deputy" value="${esc(v.deputy)}" maxlength="120" placeholder="${T("none", "keine")}"></label>
+      <span><button class="cp-button cp-small" id="id-save">${T("Save", "Speichern")}</button> <button class="cp-link cp-quiet-link" id="id-cancel">${T("cancel", "abbrechen")}</button></span></div>`;
+  }
+  const ref = c.reference ? `<span class="cp-ref">${esc(c.reference)}</span>`
+    : p ? `<span class="cp-ref cp-ref-proposed" title="${esc(T(`from ${p.name}`, `aus ${p.name}`))}">${esc(p.value)}</span> <button class="cp-link cp-quiet-link" id="id-accept" data-reference="${esc(p.value)}">${T("take as reference", "als Referenz übernehmen")}</button>`
+    : `<button class="cp-link cp-quiet-link" id="id-edit-ref">${T("enter a reference", "Referenz eintragen")}</button>`;
+  const who = c.owner ? `${esc(c.owner)}${c.deputy ? ` · ${T("deputy", "Stv.")} ${esc(c.deputy)}` : ""}` : "";
+  return `<p class="cp-identity">${ref}${who ? ` <span class="cp-muted">· ${who}</span>` : ""} <button class="cp-link cp-quiet-link" id="id-edit" aria-label="${T("Change reference and responsibility", "Referenz und Zuständigkeit ändern")}">${T("change", "ändern")}</button></p>`;
+}
+async function saveIdentity(fields) {
+  try {
+    await api(`/api/cases/${S.route.id}/identity`, { method: "PUT", body: JSON.stringify(fields) });
+    S.identityEdit = false; S.message = "";
+  } catch (error) { S.message = error.message; S.messageOk = false; }
+  await loadCase();
+}
+function bindIdentity() {
+  const on = (sel, fn) => { const el = $(sel); if (el) el.addEventListener("click", () => fn(el)); };
+  on("#id-accept", (b) => saveIdentity({ reference: b.dataset.reference }));
+  const c = (S.data || {}).case || {};
+  const open = () => { S.identityEdit = { reference: c.reference_set ? c.reference : (c.reference_proposed || {}).value || c.reference || "", owner: c.owner || "", deputy: c.deputy || "" }; renderCase(); const el = $("[data-id-field='reference']"); if (el) el.focus(); };
+  on("#id-edit", open);
+  on("#id-edit-ref", open);
+  on("#id-cancel", () => { S.identityEdit = false; renderCase(); });
+  on("#id-save", () => saveIdentity({ ...S.identityEdit }));
+  for (const el of document.querySelectorAll("[data-id-field]")) el.addEventListener("input", () => { if (S.identityEdit) S.identityEdit[el.dataset.idField] = el.value; });
+}
 function renderRail() {
   const d = S.data, files = d.files || [], st = d.status || {};
   const rows = files.map((f) => `<button class="cp-source" data-file="${esc(f.id)}" aria-current="${S.file === f.id}">${fileIcon(f)}
@@ -342,6 +396,7 @@ function renderRail() {
   return `<aside class="cp-rail" aria-label="${T("Files", "Dateien")}">
     <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(caseName(d.case))}</div>
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
+      ${identityLine(d.case)}
       ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text ? `<span class="cp-stand ${esc(st.kind || "")}" data-status>${esc(LANG === "de" ? st.text : STAND_EN[st.kind] || st.text)}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
@@ -2344,6 +2399,7 @@ async function renderCase() {
   }
   keepMotion($("#app"));
   markInReview();
+  bindIdentity();
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; S.follow = !running(); renderCase(); } });
@@ -2859,7 +2915,7 @@ function handoverLine() {
   const row = (r) => {
     const a = r.address || {}, editing = S.addrEdit === r.to;
     const from = a.source ? T(`from ${a.source.name}: ${a.source.line}`, `aus ${a.source.name}: ${a.source.line}`) : a.set_by ? T(`set by ${a.set_by}`, `eingetragen von ${a.set_by}`) : "";
-    const address = editing ? `<input type="email" class="cp-ho-input" data-ho-input="${esc(r.to)}" value="${esc(a.value || "")}" placeholder="name@beispiel.ch" aria-label="${T("Mail address", "E-Mail-Adresse")}">
+    const address = editing ? `<input type="email" class="cp-ho-input" data-ho-input="${esc(r.to)}" value="${esc(S.addrDraft === null || S.addrDraft === undefined ? a.value || "" : S.addrDraft)}" placeholder="name@beispiel.ch" aria-label="${T("Mail address", "E-Mail-Adresse")}">
         <button class="cp-button cp-small" data-ho-save="${esc(r.to)}">${T("Save", "Speichern")}</button>`
       : a.value ? `${approved ? `<button class="cp-ho-chip" data-ho-copy="${esc(a.value)}" title="${esc(from)}">${S.hoCopied === a.value ? icon("tick") : ""}${esc(a.value)}</button>` : `<span class="cp-ho-value" title="${esc(from)}">${esc(a.value)}</span>`}
         <button class="cp-link cp-quiet-link" data-ho-edit="${esc(r.to)}">${T("change", "ändern")}</button>`
@@ -3047,17 +3103,18 @@ function bindCarry(on) {
   on("[data-ho-copy]", "click", async (b) => {
     if (await toClipboard(b.dataset.hoCopy, b)) { S.hoCopied = b.dataset.hoCopy; renderCase(); setTimeout(() => { S.hoCopied = null; if (S.route.view === "case") renderCase(); }, 1800); }
   });
-  on("[data-ho-edit]", "click", (b) => { S.addrEdit = b.dataset.hoEdit; renderCase(); const el = $("[data-ho-input]"); if (el) el.focus(); });
+  on("[data-ho-edit]", "click", (b) => { S.addrEdit = b.dataset.hoEdit; S.addrDraft = null; renderCase(); const el = $("[data-ho-input]"); if (el) el.focus(); });
+  on("[data-ho-input]", "input", (el) => { S.addrDraft = el.value; });
   const saveAddress = async (to) => {
     const el = $(`[data-ho-input='${CSS.escape(to)}']`);
     try {
       await api(`/api/cases/${S.route.id}/handover/address`, { method: "POST", body: JSON.stringify({ to, address: (el || {}).value || "" }) });
-      S.addrEdit = null; S.message = "";
+      S.addrEdit = null; S.addrDraft = null; S.message = "";
     } catch (error) { S.message = error.message; S.messageOk = false; }
     await loadCase();
   };
   on("[data-ho-save]", "click", (b) => saveAddress(b.dataset.hoSave));
-  on("[data-ho-input]", "keydown", (el, event) => { if (event.key === "Enter") { event.preventDefault(); saveAddress(el.dataset.hoInput); } if (event.key === "Escape") { S.addrEdit = null; renderCase(); } });
+  on("[data-ho-input]", "keydown", (el, event) => { if (event.key === "Enter") { event.preventDefault(); saveAddress(el.dataset.hoInput); } if (event.key === "Escape") { S.addrEdit = null; S.addrDraft = null; renderCase(); } });
   on("[data-head-open]", "click", (b) => { S.headOpen = S.headOpen === b.dataset.headOpen ? null : b.dataset.headOpen; renderCase(); });
   on("[data-reconcile]", "click", async (b) => {
     b.disabled = true;
