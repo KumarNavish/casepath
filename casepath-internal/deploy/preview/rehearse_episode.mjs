@@ -369,13 +369,22 @@ await step("deckung", async () => {
   if (await visible(onCard)) await click(onCard, "decide");
   await page.evaluate((c) => { location.hash = `#/case/${c}/overview`; }, id); await sleep(1500);
 }, "Deckung bestätigen");
+// The recommendation and the prospects are two decisions (the newer steering §1; slice A): «übernehmen» or «ändern» on
+// the «Empfehlung», then «genügend» or «nicht genügend» on the «Erfolgsaussichten», each counted as a decision
 await step("empfehlung", async () => {
-  const adopt = button(/^übernehmen · Aussichten genügend$/);
+  const adopt = page.locator("[data-rec-adopt]");
   if (await visible(adopt)) return click(adopt, "adopt");
-  lacking("A: the «Empfehlung» decision with «übernehmen · Aussichten genügend» (A5)");
+  const combined = button(/^übernehmen · Aussichten genügend$/);  // a build before the two decisions were split
+  if (await visible(combined)) return click(combined, "adopt");
+  lacking("A: the «Empfehlung» decision with «übernehmen» (A5)");
+}, "die Empfehlung übernehmen oder ändern");
+await step("aussichten", async () => {
   const prospects = page.locator("[data-decide='aussichten'][data-value='genügend']");
-  if (await visible(prospects)) await click(prospects, "prospects");
-}, "die Empfehlung übernehmen (Aussichten genügend) oder ändern");
+  if (await visible(prospects)) return click(prospects, "prospects");
+  if ((((await get(`/api/cases/${id}`)).assessment || {}).blocking || []).some((b) => b.key === "aussichten")) {
+    lacking("A: the «Erfolgsaussichten» decision on the card (A5)");
+  }
+}, "die Erfolgsaussichten beurteilen");
 const draftBefore = (await get(`/api/cases/${id}`)).draft || {};  // the prepared letter, by part where the view gives parts
 const textBefore = await letterText();
 await step("edits", async () => {

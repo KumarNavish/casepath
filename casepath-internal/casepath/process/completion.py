@@ -293,7 +293,9 @@ def _norm(value):
 
 def open_decisions(draft, facts, assessment=None, process=None):
     """The decisions still to make before the letter can be approved, in the handler's words: each of the form's needs
-    not answered, the prospects for an assessment (in every area), and the assessment's blocking decisions."""
+    not answered, the prospects for an assessment (in every area), and the assessment's blocking decisions. Where the
+    assessment lists its decisions, in its order, the order the card asks them (the cover while the A5 rests on it, the
+    recommendation, the prospects), so the queue and the head name the decision the card shows next."""
     defined = {f["id"] for f in (process or {}).get("facts") or ()} if process else None
     out = []
     for fact in (draft or {}).get("needs") or ():
@@ -301,10 +303,9 @@ def open_decisions(draft, facts, assessment=None, process=None):
             out.append(DECISION_WORDS.get(fact, fact))
     if str((draft or {}).get("kind") or "") == "A5" and str((draft or {}).get("form") or "").startswith("A5") and _answered(facts, "aussichten") is None:
         out.append("Erfolgsaussichten")
-    for b in (assessment or {}).get("blocking") or ():
-        if b.get("kind") == "decision":
-            out.append(DECISION_WORDS.get(b.get("key"), b.get("text") or b.get("key")))
-    return list(dict.fromkeys(out))
+    order = [DECISION_WORDS.get(b.get("key"), b.get("text") or b.get("key")) for b in (assessment or {}).get("blocking") or () if b.get("kind") == "decision"]
+    out = list(dict.fromkeys(out + order))
+    return [w for w in dict.fromkeys(order) if w in out] + [w for w in out if w not in order]
 
 
 def facts_read(facts, process=None):

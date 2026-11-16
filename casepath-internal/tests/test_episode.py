@@ -358,7 +358,15 @@ class PackageTests(Episode):
 
     def test_four_decisions_and_the_approved_letter_is_the_one_version_everywhere(self):
         case = self.cases["e1"]
-        self.ready(case)
+        # the queue and the head name the decision the card asks next, in the card's order
+        for fact, value, then in (("deckung", "bestätigt", "Empfehlung"), (None, None, "Erfolgsaussichten"), ("aussichten", "genügend", None)):
+            self.assertEqual(self.view(case)["completion"]["decisions"][0], {"deckung": "Deckung", None: "Empfehlung", "aussichten": "Erfolgsaussichten"}[fact])
+            self.decide(case, fact, value) if fact else self.adopt(case)
+            view = self.view(case)
+            self.assertEqual(self.row(case)["stand"]["text"], f"Entscheid: {then}" if then else "vorbereitet")
+            self.assertTrue(view["screen"]["head"]["meaning"].endswith({"Empfehlung": "kann nach dem Entscheid zur Empfehlung freigegeben werden.",
+                                                                      "Erfolgsaussichten": "kann nach dem Entscheid zu den Erfolgsaussichten freigegeben werden.",
+                                                                      None: "kann freigegeben werden."}[then]), view["screen"]["head"]["meaning"])
         approval, letter = self.check_package(case, [RECEIPTS])
         decisions = [e for e in self.events(case) if e["kind"] in ("item.corrected", "action.approved") and e.get("item_id") in ("fact:deckung", "point:empfehlung", "fact:aussichten", None)]
         self.assertEqual([e.get("item_id") or e["kind"] for e in decisions], ["fact:deckung", "point:empfehlung", "fact:aussichten", "action.approved"])

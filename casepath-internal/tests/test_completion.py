@@ -349,7 +349,8 @@ class ApprovalTests(Service):
         draft = self.fill()
         r = refused({"form": "A5", "version": draft["version"], "op_id": "op-d-1"}, 422)  # an assessment needs the prospects, in every area
         self.assertEqual(r.status_code, 422)  # and slice A's recommendation where its assessment asks for it
-        self.assertRegex(r.json()["detail"], r"^Zuerst entscheiden: Erfolgsaussichten(, Empfehlung)?$")
+        # in the order the card asks them (slice A's blocking: the recommendation, then the prospects), as the queue names them
+        self.assertRegex(r.json()["detail"], r"^Zuerst entscheiden: (Empfehlung, )?Erfolgsaussichten$")
         self.decide("aussichten", "genügend")
         self.adopt()
         draft = self.view()["draft"]
@@ -368,7 +369,9 @@ class ApprovalTests(Service):
                          (422, "Ihr Text betraf einen geänderten Absatz: bitte prüfen"))
         self.assertEqual(completion.refusal({"intake": {"study": {"source_case": "c"}}}, letter, "v"), (409, "Eine Studienkopie wird nicht freigegeben."))
         self.assertEqual(completion.open_decisions({"kind": "A5", "form": "A5", "needs": ["deckung"]}, {"deckung": "bestätigt"},
-                                                   {"blocking": [{"kind": "decision", "key": "empfehlung"}]}), ["Erfolgsaussichten", "Empfehlung"])
+                                                   {"blocking": [{"kind": "decision", "key": "empfehlung"}]}), ["Empfehlung", "Erfolgsaussichten"])
+        self.assertEqual(completion.open_decisions({"kind": "A5", "form": "A5", "needs": ["deckung"]}, {}, {"blocking": [
+            {"kind": "decision", "key": k} for k in ("deckung", "empfehlung", "aussichten")]}), ["Deckung", "Empfehlung", "Erfolgsaussichten"])
 
     def test_undoing_the_cover_decision_after_approval_makes_it_stale(self):
         cover = self.decide("deckung", "bestätigt")
