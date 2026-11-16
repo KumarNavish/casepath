@@ -3,6 +3,7 @@
 // page (the app's own origin, the person signed in) and calls the app's API exactly as the notebook cell does, never a
 // model itself. Paste the file, then type one of:
 //   await casepathDiagnose("hashes D11")                                        read only: the plan and the approving phrase
+//   await casepathDiagnose("shape D11")                                         read only: why a plan cannot be made (see shape())
 //   await casepathDiagnose("diagnose D11 <tree hash> <labels sha256> <plan>")    the run, on exactly that build, labels and cut
 //   await casepathDiagnose("diagnose D11 <tree hash> <labels sha256> <plan> keep")   the same, keeping the base case
 // Anything else: nothing happens, no request is made. The phrase is the approval of this run's steps only; the
@@ -113,8 +114,9 @@
   function parse(phrase) {
     phrase = String(phrase || "").trim();
     if (phrase === `hashes ${DOSSIER}`) return { mode: "hashes" };
+    if (phrase === `shape ${DOSSIER}`) return { mode: "shape" };
     const m = new RegExp(`^diagnose ${DOSSIER} ([0-9a-f]{12}) ([0-9a-f]{12,64}) ([0-9a-f]{12})( keep)?$`).exec(phrase);
-    if (!m) throw new Refused(`confirm must read: diagnose ${DOSSIER} <tree hash> <labels sha256> <plan> [keep], or hashes ${DOSSIER}`);
+    if (!m) throw new Refused(`confirm must read: diagnose ${DOSSIER} <tree hash> <labels sha256> <plan> [keep], or hashes ${DOSSIER}`);  // (or shape D11)
     return { mode: "diagnose", tree: m[1], wanted: m[2], plan: m[3], keep: Boolean(m[4]) };
   }
 
@@ -485,12 +487,50 @@
     return out;
   }
 
+  // Read only, for the case where no plan can be made: the shape of D11's labels and labels template as the cut sees
+  // them. Page numbers, flags and where each date lies among the labelled points' days («<p1», «=p2», «p2..p3», «>p4»,
+  // «not_iso»): never a date, a name or a text. Four GETs, nothing kept.
+  async function shape(api, say) {
+    const rows = (await api.call("GET", "/api/replay-points")).rows || [];
+    const ids = [...new Set(rows.filter((r) => r.dossier === DOSSIER).map((r) => r.case))];
+    if (ids.length !== 1) { const none = { labelled_cases: ids.length }; say(dumps(none, false)); return none; }
+    const labels = await api.call("GET", `/api/cases/${ids[0]}/labels`), detail = await api.call("GET", `/api/cases/${ids[0]}`);
+    const template = await api.call("GET", `/api/cases/${ids[0]}/labels-template`);
+    const iso = (d) => typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d);
+    const points = [...(labels.points || [])].sort((a, b) => byText(a.date, b.date) || a.n - b.n);
+    const where = (d) => {
+      if (d == null || d === "") return null;
+      if (!iso(d)) return "not_iso";
+      for (let i = 0; i < points.length; i += 1) {
+        if (d === points[i].date) return `=p${points[i].n}`;
+        if (d < points[i].date) return i === 0 ? `<p${points[i].n}` : `p${points[i - 1].n}..p${points[i].n}`;
+      }
+      return points.length ? `>p${points[points.length - 1].n}` : "no_points";
+    };
+    const who = (f) => (["versicherer", "kunde", "gegenpartei", "kanzlei", "behoerde", "andere"].includes(f) ? f : f == null ? null : "text");
+    const pdfs = (detail.files || []).filter((f) => f.kind === "pdf"), pdf = pdfs[0] || {};
+    const all = template.documents || [], mine = all.filter((r) => r.file == null || r.file === pdf.name);
+    const pages = Math.trunc(Number((pdf.extraction || {}).pages || 0));
+    const n3 = points.find((p) => p.kind === "A5");
+    const paged = mine.filter((r) => Number.isInteger(r.page)).map((r, i) => [r, i]).sort(([a, i], [b, j]) => a.page - b.page || i - j).map(([r]) => r);
+    const out = {
+      points: points.map((p, i) => ({ n: p.n, kind: p.kind, iso: iso(p.date), same_day_as_previous: i > 0 && p.date === points[i - 1].date })),
+      assessment_point: n3 ? n3.n : null, decisions: (labels.decisions || []).length,
+      files: (detail.files || []).length, pdfs: pdfs.length, pages, rows_all: all.length, rows_of_this_pdf: mine.length, rows_without_page: mine.length - paged.length,
+      rows: paged.map((r) => [r.page, r.n != null ? "entry" : "segment", where(r.date), truthy(r.insurer), who(r.from)]),
+      documents: n3 && pdfs.length === 1 ? documents(mine, pages).map((d) => [d.first, d.pages.length, d.rows, d.insurer, where(d.date), d.n != null ? "entry" : "segment"]) : [],
+    };
+    say(dumps(out, false));
+    return out;
+  }
+
   // The console's one command. ``options`` is for the tests only: {base, store, say, poll, stale}.
   globalThis.casepathDiagnose = async (phrase, options = {}) => {
     const { mode, tree, wanted, plan: approvedPlan, keep } = parse(phrase);  // refuses before any request
     const api = Api(options.base || "");
     const say = options.say || ((line) => console.log(line));
     if (mode === "hashes") return hashes(api, say);
+    if (mode === "shape") return shape(api, say);
     const receipt = await diagnose(api, options.store || globalThis.localStorage, say, tree, wanted, approvedPlan, keep,
                                    options.poll === undefined ? 10000 : options.poll, options.stale === undefined ? 60000 : options.stale);
     say(dumps(receipt, false));

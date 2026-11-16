@@ -808,6 +808,28 @@ class ConsoleDiagnoseTests(unittest.TestCase):
         self.assertEqual((answer["result"]["status"], answer["result"]["resumed"]), ("done", 1))
         self.assertEqual([p for m, p in served.app.calls if m == "POST" and p == "/api/cases/case_base/runs"], ["/api/cases/case_base/runs"])
 
+    def test_k_the_shape_says_why_no_plan_can_be_made_without_a_date_a_name_or_a_text(self):
+        served = Served(FakeApp())
+        self.addCleanup(served.close)
+        answer = self.node("run", "shape D11", served)
+        shape = answer["result"]
+        self.assertEqual((shape["assessment_point"], shape["pdfs"], shape["pages"], shape["rows_of_this_pdf"], shape["rows_without_page"]), (3, 1, 28, 14, 0))
+        self.assertEqual([p["kind"] for p in shape["points"]], ["A1", "A4", "A5", "A7"])
+        self.assertEqual(shape["rows"][8:12], [[20, "entry", "=p2", True, "versicherer"], [21, "entry", "p2..p3", False, "kunde"],
+                                               [23, "segment", None, False, "kunde"], [24, "entry", "p2..p3", False, "kunde"]])
+        # the two replies as the cut needs them: not the insurer's, between the question back and the assessment
+        self.assertEqual([d for d in shape["documents"] if d[4] == "p2..p3" and not d[3]], [[21, 3, 2, False, "p2..p3", "entry"], [24, 2, 1, False, "p2..p3", "entry"]])
+        text = json.dumps(answer, ensure_ascii=False)
+        self.assertIsNone(DATE.search(text))
+        for word in ("Akte.pdf", "Lea", "Immo", "bestätigt", "Stromkosten"):
+            self.assertNotIn(word, text)
+        self.assertEqual({m for m, _ in served.app.calls}, {"GET"})
+        self.assertFalse(os.path.exists(Path(self.folder.name) / "store.json"))
+        segments = Served(FakeApp(template=SEGMENT_TEMPLATE))  # senders as written: «text», never the words
+        self.addCleanup(segments.close)
+        rows = self.node("run", "shape D11", segments)["result"]["rows"]
+        self.assertEqual({r[4] for r in rows}, {"text", None})
+
     def test_g_the_script_calls_only_the_page_it_is_pasted_into_and_names_no_address_or_identity(self):
         text = CONSOLE.read_text()
         self.assertNotRegex(text, r"https?://")  # no address: relative requests on the page's own origin
