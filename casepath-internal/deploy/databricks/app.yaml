@@ -53,7 +53,9 @@ env:
   # model above. Which model reads a case is the owner's decision; a change here is an experiment until he decides.
   - name: CASEPATH_AGENT_MODELS
     value: ""
-  # Speed changes under trial, e.g. "second_reading_unquoted,result_without_files,finder_stage_only". Empty: today's behaviour.
+  # Changes under trial, e.g. "second_reading_unquoted,result_without_files,finder_stage_only" (fewer tokens) or
+  # "reader_intents" (the reader names what a customer's question asks, where the area's word stems miss it). Empty:
+  # today's behaviour. A trial is an experiment until the owner has seen a measured run of it and decides.
   - name: CASEPATH_SPEED_TRIALS
     value: ""
   # The study's pseudonym salt: filled in the deploy notebook's cell for a study, never in Git. Empty: no study session starts.

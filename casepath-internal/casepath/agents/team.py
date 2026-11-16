@@ -520,7 +520,18 @@ def _process_view(work):
             "summary_fields": [{"id": f["id"], "label": f["label"]} for f in work.graph.get("summary", [])],
             "letters": [{"step": s["id"], **s["produces"]} for s in work.graph["steps"] if s.get("produces")],
             # the area's legal key points: a customer's question names the ones whose rule it asks about (about)
-            "key_points": [{"id": p["id"], "statement": p["statement"], "question": p["question"]} for p in work.graph.get("key_points") or ()]}
+            "key_points": [{"id": p["id"], "statement": p["statement"], "question": p["question"],
+                            **({"asks": _intents(work)[p["id"]]} if _intents(work).get(p["id"]) else {})}  # the trial «reader_intents»
+                           for p in work.graph.get("key_points") or ()]}
+
+
+def _intents(work):
+    """Under the trial «reader_intents»: per key point what a question about it may ask ({point: [{intent, meaning}]},
+    process/live.py); {} without the trial or for an area that has none."""
+    if "reader_intents" not in getattr(work, "trials", ()) or not work.graph.get("id"):
+        return {}
+    from ..process import live, options
+    return live.intents(work.graph["id"], (options.load(work.graph["id"]) or {}).get("answers"))
 
 
 MAX_STEPS_PER_CALL = 40  # the call itself is never refused for its size: ten per call is guidance, not a limit
@@ -933,6 +944,17 @@ def _dispatch(work, agent, name, args):
 
 # -- reports --------------------------------------------------------------------
 
+def _asks(work):
+    """Under the trial «reader_intents»: the field of a question that names what it asks, among the intents of the area."""
+    from ..process import live
+    named = sorted({row["intent"] for rows in _intents(work).values() for row in rows})
+    if not named:
+        return {}
+    return {"asks": {**choice(named + [live.NO_INTENT]), "description": (
+        "What the question asks, by meaning, not by its words: the intent (process view, key_points[].asks) of a key point "
+        f"you gave in about; '{live.NO_INTENT}' when none of them is what it asks or about is empty.")}}
+
+
 def _report_schema(work, agent):
     files, facts = work.file_ids, list(work.fact_defs)
     if agent == "claim_reader":
@@ -945,7 +967,7 @@ def _report_schema(work, agent):
                    parties=arr(obj(role=text(80), name=text(120)), maxItems=10),
                    timeline=arr(obj(date=text(40), event=text(300), citations=_citations(files, 2)), maxItems=20),
                    not_enclosed=arr(obj(title=text(160, minLength=1), mentioned=text(120), citations=_citations(files, 1)), maxItems=8),
-                   questions=arr(obj(question=text(200, minLength=1), citations=_citations(files, 1), about=about), maxItems=5),
+                   questions=arr(obj(question=text(200, minLength=1), citations=_citations(files, 1), about=about, **_asks(work)), maxItems=5),
                    # relation and claim: what a statement does to a cost already claimed (case_so_far.claims, an update only)
                    claims=arr(obj(what=text(120, minLength=1), amount=text(40), role=choice(list(options.ROLES)), citations=_citations(files, 1),
                                   relation=choice(list(claims_model.RELATIONS)), claim=text(8), **about_cost), maxItems=5))
@@ -1589,7 +1611,10 @@ def _located_brief(work, report):
         if located and entry["question"].strip():
             tags = list(dict.fromkeys(str(t) for t in entry.get("about") or ()))
             dropped += sum(1 for t in tags if t not in known)  # a tag naming no key point of the area is dropped, and counted
-            asked.append({"question": entry["question"].strip(), "citations": located, "about": [t for t in tags if t in known]})
+            kept = [t for t in tags if t in known]
+            named = entry.get("asks")  # the trial «reader_intents»: kept only where it belongs to a key point the question is tagged with
+            fits = named and any(row["intent"] == named for t in kept for row in _intents(work).get(t) or ())
+            asked.append({"question": entry["question"].strip(), "citations": located, "about": kept, **({"intent": named} if fits else {})})
     claims, dropped_amounts = [], 0  # the costs the customer asks to have compensated, each with its sentence
     for entry in report.get("claims", []):
         located, _ = work.located(entry.get("citations") or [])

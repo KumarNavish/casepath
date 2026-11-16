@@ -1,0 +1,16 @@
+{
+ "format": "casepath.live-intents/1",
+ "version": "2026-11-17.1",
+ "note": "Was eine Frage der Kundschaft zu einem Kernpunkt fragt, in Worten, je Antwortzeile des Rechtsgebiets (options: answers). Nur für den Versuch «reader_intents»: die Leserin nennt die Absicht nach dem Sinn, statt dass ein Wortstamm sie trifft. Gilt für laufende Fälle; die eingefrorene Studie lädt diese Datei nicht. Nicht juristisch geprüft.",
+ "areas": {
+  "mietmangel-handler": {
+   "hinterlegen": "ob oder wie der Mietzins hinterlegt werden darf",
+   "weiter_zahlen": "ob der Mietzins weiterhin in voller Höhe zu zahlen ist",
+   "zurueckbehalten": "ob der Mietzins gekürzt, zurückbehalten oder nicht mehr gezahlt werden darf",
+   "herabsetzung": "ob eine Herabsetzung (Reduktion) des Mietzinses verlangt werden kann",
+   "ersatz": "ob Kosten oder ein Schaden ersetzt werden und wer dafür aufkommt",
+   "melden": "ob oder wie der Mangel der Vermieterschaft zu melden ist",
+   "ausziehen": "ob wegen des Mangels gekündigt oder ausgezogen werden darf"
+  }
+ }
+}

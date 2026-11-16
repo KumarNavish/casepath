@@ -22,7 +22,8 @@ class SettingsError(ValueError):
 
 # Speed changes that alter what a model is asked: each is tried on the development cuts and kept only if no scoreboard
 # line gets worse. Off by default.
-SPEED_TRIALS = {"second_reading_unquoted", "result_without_files", "finder_stage_only", "record_apart"}
+SPEED_TRIALS = {"second_reading_unquoted", "result_without_files", "finder_stage_only", "record_apart",
+                "reader_intents"}  # the last: the reader names what a question asks (process/live.py); a trial of quality, not of speed
 
 @dataclass(frozen=True)
 class ModelSettings:

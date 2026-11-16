@@ -426,7 +426,10 @@ def evaluate_questions(state, result, items, events, marks=None, files=None):
         valid = [t for t in dict.fromkeys(q.get("about") or ()) if t in by_id]
         candidate = keypoints.answer_for(text, points)
         rows = options.answers_for(data, valid or ([candidate["id"]] if candidate else [])) if data else []
-        intent_row = options.intent(text, rows) if data else None
+        # what the question asks: the intent the reader named for it (the trial «reader_intents», process/live.py), else the
+        # one a word stem of the area matches
+        from . import live
+        intent_row = (live.named_intent(q, rows) or options.intent(text, rows)) if data else None
         st = keypoints.status({"question": text, "about": valid}, points, candidate, intent_row, facts, wishes)
         ask = st["ask"]
         if ask and ask.get("fact"):  # the open fact asked in the customer's words where the area words it

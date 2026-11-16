@@ -74,3 +74,37 @@ def stance_form(base, chosen, incoming):
     named = f"{day[8:10]}.{day[5:7]}.{day[:4]}" if len(day) == 10 else "[bitte ergänzen: Datum des Angebots]"
     return {**{k: v for k, v in (base or {}).items() if k != "none"}, "title": own["title"], "to": own["to"], "anrede": own.get("anrede"),
             "parts": [p["text"].replace("{angebot_vom}", named) for p in own["parts"]], "live": answer["letter"]}
+
+
+# -- what a customer's question asks, named by the reader (the trial «reader_intents») ------------------------------------
+# The area matches a question's intent by word stems (options.intent). On real wording the stems miss: a question tagged
+# with a key point then waits as «Absicht unklar». Under the trial the reader names the intent by its meaning, as it names
+# the key points; code keeps every guard (the intent must belong to a key point the question is tagged with, a negation or
+# a failing point still holds it).
+
+INTENTS = Path(__file__).parent / "areas" / "live" / "absichten.json"
+NO_INTENT = "none"
+
+
+@functools.lru_cache(maxsize=None)
+def _intents():
+    return json.loads(INTENTS.read_text(encoding="utf-8"))["areas"]
+
+
+def intents(area_id, answers):
+    """Per key point the intents a question about it may ask: {point id: [{intent, meaning}]}, for the answer rows of the
+    area that have a meaning written (``answers``: the options file's rows); {} for an area without."""
+    meanings = _intents().get(area_id) or {}
+    out = {}
+    for a in answers or ():
+        if a.get("intent") in meanings:
+            for point in a.get("points") or ():
+                out.setdefault(point, []).append({"intent": a["intent"], "meaning": meanings[a["intent"]]})
+    return out
+
+
+def named_intent(question, rows):
+    """The answer row the reader named for a question (``question['intent']``), among the rows of its key points; None
+    when it named none, or one that belongs to none of them."""
+    given = (question or {}).get("intent")
+    return next((r for r in rows or () if given and r.get("intent") == given), None)
