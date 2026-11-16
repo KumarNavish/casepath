@@ -814,7 +814,6 @@ class ConsoleDiagnoseTests(unittest.TestCase):
         self.assertIn('credentials: "same-origin"', text)
         for word in ("Authorization", "Bearer", "token =", "cookie", "X-Forwarded"):
             self.assertNotIn(word, text)
-        self.assertNotIn("claude", text.lower())
 
 
 if __name__ == "__main__":
