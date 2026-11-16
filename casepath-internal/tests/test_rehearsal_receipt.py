@@ -941,6 +941,28 @@ class ConsoleDiagnoseTests(unittest.TestCase):
         self.assertEqual((posts.count("/api/cases/case_base/update"), posts.count("/api/cases/case_base/runs"), lost.app.uploads),
                          (1, 1, [["Antwort-1.pdf", "Antwort-2.pdf"], ["Antwort-1.pdf"]]))
 
+    def test_n_the_detail_of_the_base_case_is_codes_only_and_read_only(self):
+        served = Served(FakeApp())
+        self.addCleanup(served.close)
+        self.assertIn("no run with a base case was made here", self.node("run", "detail D11", served)["refused"])
+        self.node("run", self.phrase + " keep", served)
+        before = len(served.app.calls)
+        answer = self.node("run", "detail D11", served)
+        detail = answer["result"]
+        self.assertEqual((detail["base"], detail["run"], detail["next_action"], detail["gaps"]), ("case_base", "done", "a5", 0))
+        self.assertEqual(detail["questions"], [
+            {"row": 0, "state": "beantwortet", "about": ["hinterlegung"], "points": [], "intent": "weiter_zahlen", "taken": False, "of_the_account": False, "request": None},
+            {"row": 0, "state": "bedingt", "about": ["hinterlegung"], "points": [], "intent": "hinterlegen", "taken": False, "of_the_account": False, "request": None},
+            {"row": 0, "state": "pruefen", "about": ["schadenersatz"], "points": [], "intent": "ersatz", "taken": False, "of_the_account": False, "request": None}])
+        self.assertEqual((detail["residual"], detail["blocking"], detail["proposal"]),
+                         (["residual:claim.0"], [["decision", "empfehlung"]], ["frist_beseitigung", "schadenersatz"]))
+        guard({k: v for k, v in detail.items()})  # ids, counts and enums only, by the receipts' own guard
+        text = json.dumps(answer, ensure_ascii=False)
+        self.assertIsNone(DATE.search(text))
+        for word in ("Stromkosten", "Bautrockner", "Lücke", "Verneinung", "Brief ohne", "Akte.pdf", "CHF"):
+            self.assertNotIn(word, text)
+        self.assertEqual({m for m, _ in served.app.calls[before:]}, {"GET"})
+
     def test_g_the_script_calls_only_the_page_it_is_pasted_into_and_names_no_address_or_identity(self):
         text = CONSOLE.read_text()
         self.assertNotRegex(text, r"https?://")  # no address: relative requests on the page's own origin

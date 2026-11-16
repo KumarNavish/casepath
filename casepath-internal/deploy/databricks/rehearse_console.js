@@ -4,6 +4,8 @@
 // model itself. Paste the file, then type one of:
 //   await casepathDiagnose("hashes D11")                                        read only: the plan and the approving phrase
 //   await casepathDiagnose("shape D11")                                         read only: why a plan cannot be made (see shape())
+//   await casepathDiagnose("detail D11")                                        read only: the base case of the run made here, in
+//       codes (per question its row, state, key points and intent; per claim, open request and letter part its ids and flags)
 //   await casepathDiagnose("continue D11 <tree hash> <labels sha256> <plan>")    after a run stopped because its preparation
 //       passed the stop threshold and its base case was kept: the arrival, the one update, the decisions and the reading
 //       on that base case. The preparation is not made again. A decision of its own, with its own approval of its tokens
@@ -119,6 +121,7 @@
     phrase = String(phrase || "").trim();
     if (phrase === `hashes ${DOSSIER}`) return { mode: "hashes" };
     if (phrase === `shape ${DOSSIER}`) return { mode: "shape" };
+    if (phrase === `detail ${DOSSIER}`) return { mode: "detail" };
     const again = new RegExp(`^continue ${DOSSIER} ([0-9a-f]{12}) ([0-9a-f]{12,64}) ([0-9a-f]{12})$`).exec(phrase);
     if (again) return { mode: "diagnose", tree: again[1], wanted: again[2], plan: again[3], keep: true, onward: true };
     const m = new RegExp(`^diagnose ${DOSSIER} ([0-9a-f]{12}) ([0-9a-f]{12,64}) ([0-9a-f]{12})( keep)?$`).exec(phrase);
@@ -568,6 +571,40 @@
     return out;
   }
 
+  // Read only: the base case of the run made in this browser profile, in codes. What the receipt counts, one by one:
+  // each customer question with its row, state, the key points it is tagged with and the intent matched; each claim,
+  // each request of the account, each line the letter leaves to the handler, each part of the letter with its gaps.
+  // Ids, enums, counts and flags only; anything else becomes «text», and the receipt's own guard refuses the rest.
+  async function detail(api, store, say) {
+    const [, labels] = await located(api);
+    const held = store.getItem(`casepath.diagnose/${DOSSIER}-${(await labelsSha256(labels)).slice(0, 12)}`);
+    const receipt = held ? JSON.parse(held) : null;
+    if (!receipt || !receipt.base) throw new Refused("no run with a base case was made here: nothing to read");
+    const d = await api.call("GET", `/api/cases/${receipt.base}`);
+    const code = (v) => (v == null ? null : typeof v === "number" || typeof v === "boolean" ? v : typeof v === "string" && SAFE.test(v) && !DATE.test(v) ? v : "text");
+    const from = (o) => { const t = String(o || ""); return t.startsWith("knowledge") ? "knowledge" : t.startsWith("edit") ? "edit" : "workflow"; };
+    const a = d.assessment || {}, draft = d.draft || {}, items = d.items || [];
+    const action = items.find((i) => i.kind === "next_action") || {};
+    const claims = ((((d.run || {}).result || {}).brief || {}).claims) || [];
+    const gapsIn = (text) => String(text || "").split(GAP).length - 1;
+    const out = {
+      base: receipt.base, run: code(receipt.status), next_action: kind(action.action), form: code(String(draft.form || "").toLowerCase() || null),
+      gaps: gapsIn(draft.text), parts: (draft.parts || []).map((p) => [code(p.part), gapsIn(p.text), truthy(p.edited)]),
+      questions: (a.questions || []).map((q) => ({ row: Number.isInteger(q.row) ? q.row : 0, state: stateOf(q), about: (q.about || []).map(code), points: (q.points || []).map(code),
+                                                   intent: code(q.intent), taken: truthy(q.taken), of_the_account: q.item_id == null, request: code(q.request) })),
+      claims: claims.map((c, i) => ({ id: code(c.id || `c${i + 1}`), state: code(c.state || "current"), version: Math.trunc(Number(c.version || 1)), earlier: (c.history || []).length,
+                                      checked: truthy(c.checked), amount: truthy(c.amount), documented: truthy(c.documented), relation: code(c.relation) })),
+      residual: (a.residual || []).map((r) => code(r.key)), blocking: (a.blocking || []).map((b) => [code(b.kind), code(b.key)]),
+      proposal: (a.proposal || []).map(code), chosen: (a.chosen || []).map(code),
+      requests: (((d.account || {}).requests) || []).map((r) => ({ id: code(r.id), answered: r.answered != null, settled: truthy((r.answered || {}).settled), reopened: truthy(r.reopened) })),
+      asked_now: items.filter((i) => i.kind === "document" && i.ask === "now").map((i) => [code(i.key), from(i.origin)]),
+      letter_questions_now: items.filter((i) => i.kind === "letter_question" && i.ask === "now").map((i) => code(i.key)),
+    };
+    contentFree(out);
+    say(dumps(out, false));
+    return out;
+  }
+
   // The console's one command. ``options`` is for the tests only: {base, store, say, poll, stale}.
   globalThis.casepathDiagnose = async (phrase, options = {}) => {
     const { mode, tree, wanted, plan: approvedPlan, keep, onward } = parse(phrase);  // refuses before any request
@@ -575,6 +612,7 @@
     const say = options.say || ((line) => console.log(line));
     if (mode === "hashes") return hashes(api, say);
     if (mode === "shape") return shape(api, say);
+    if (mode === "detail") return detail(api, options.store || globalThis.localStorage, say);
     const receipt = await diagnose(api, options.store || globalThis.localStorage, say, tree, wanted, approvedPlan, keep,
                                    options.poll === undefined ? 10000 : options.poll, options.stale === undefined ? 60000 : options.stale, onward);
     say(dumps(receipt, false));
