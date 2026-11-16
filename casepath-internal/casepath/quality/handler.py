@@ -8,7 +8,9 @@ check the truth against the product's own rules without a model.
 asked now, present, offered, not needed or depending on an open fact, the area facts the files settle, and the statutory
 deadlines with the date the area's rule gives (``prüfen`` where it gives none, ``trigger_missing`` where the files do
 not state the trigger, ``not_applicable`` where the rule's condition fails), and the key points of the area whose
-condition the case's facts meet (``key_points``, ids; optional in older cases).
+condition the case's facts meet (``key_points``, ids; optional in older cases). For an assessment it may also name the
+recommendation a complete letter gives (``recommendation``: the ids of the ways to proceed) and how many of the
+customer's questions it answers (``answers``).
 
 ``score-saved`` reads a JSON list written by a browser script on the deployed product, one row per case: {case,
 workflow, action, now, offered, letter_lines, letter_gaps, follow_up, deadlines: [{id, date}], seconds, tokens:
@@ -18,8 +20,10 @@ counts). It prints one line per case, a table, totals and the failed checks grou
 case content. A first request that is incomplete says why: 0 lines, gaps, a missing part, no draft. A letter whose form
 declares the marked gaps the handler fills in (``handler_gaps``: in the assessment the reasons and the recommendation) is
 scored too: when its only gaps are those, it is «ok, n gaps for the handler», distinct from a letter with an unexpected
-gap or no lines. The row names its gaps' texts in ``letter_gap_texts`` (the words inside «[bitte ergänzen: …]»); a row
-with a count only is read as the handler's gaps while the count does not exceed the form's declared places.
+gap or no lines. Not so where the truth names a recommendation or answers: then the letter is expected to give them, and
+its declared gaps are gaps like any other. The row names its gaps' texts in ``letter_gap_texts`` (the words inside
+«[bitte ergänzen: …]»); a row with a count only is read as the handler's gaps while the count does not exceed the form's
+declared places.
 
 ``self-check`` evaluates each case with the product's rules as if the reading were perfect (the truth's facts, its
 present documents and the part of an open-ended need it calls offered) together with the practice rules a fresh
@@ -86,6 +90,11 @@ def check_truth(case, workflows):
         raise BenchmarkError(f"{where}: key_points must name key points of {workflow['id']}, each once")
     if truth.get("as_of") is not None and not DATE.match(str(truth["as_of"])):
         raise BenchmarkError(f"{where}: as_of is the day the truth holds, as YYYY-MM-DD")
+    named = truth.get("recommendation")
+    if named is not None and (not isinstance(named, list) or not named or any(not re.match(r"^[a-z0-9][a-z0-9_]{0,59}$", str(x)) for x in named)):
+        raise BenchmarkError(f"{where}: recommendation names the ways to proceed a complete assessment gives, by their ids")
+    if truth.get("answers") is not None and (type(truth["answers"]) is not int or truth["answers"] < 0):
+        raise BenchmarkError(f"{where}: answers is how many of the customer's questions the letter answers")
     return truth
 
 
@@ -152,7 +161,11 @@ def score_row(truth, row, workflows=None):
     letter, why, own = None, [], 0
     form = letter_form(truth, workflows)
     if truth.get("action") == "A1" or form.get("handler_gaps"):  # a first request, and a letter with the handler's gaps declared
-        why, own = letter_faults(row, form.get("handler_gaps"))
+        # where the truth names the recommendation or the answers, the letter is expected to give them: no gap is the handler's
+        named = [k for k in ("recommendation", "answers") if truth.get(k)]
+        why, own = letter_faults(row, None if named else form.get("handler_gaps"))
+        if why and named and form.get("handler_gaps"):
+            why.append("the truth names " + " and ".join(named))
         letter = False if why else "handler" if own else True
     tokens = row.get("tokens") or {}
     points = points_verdict(truth, row)

@@ -4,9 +4,13 @@ prepared by the team again.
 
 Scripted and model-free. tests/fixtures/replay/three_phases.json: a tenancy defect in three phases (the report and the
 first request; the reply with the lease and photos, a phone note; a mandate and a fee note), what a reader records for
-the whole file and for each cut."""
+the whole file and for each cut. tests/fixtures/replay/reply_assessment.json: S-D11A, the shape of D11 from the claim to
+the status inquiry, cut on each labelled point's day with the brief a reader writes from those pages alone."""
 from datetime import date
+import json
+import re
 import unittest
+from unittest import mock
 
 from casepath.process import account
 from casepath.quality import asof
@@ -68,6 +72,76 @@ class SameAsACutTests(unittest.TestCase):
             self.assertIsNone(shown["state"]["facts"].get("will_beseitigung"))
             # the counterparty, quoted from the report and from the later lease, keeps its value: the report holds its words
             self.assertEqual(shown["state"]["facts"]["gegenpartei"], "Immo Seeblick AG")
+
+
+class PrefixTests(unittest.TestCase):
+    """True chronology where the future is out of reach: each cut of S-D11A prepared by the team from its own pages and the
+    brief a reader writes from them, against the rebuild of the whole-file run on that day. What the replay scores
+    (MEASURED) is equal on every cut. What the brief puts on the screen and in the letter (asof.surface: the parties, the
+    summary, the customer's questions, the greeting, «In Ihrem Fall», the answers, the request, the firm's summary, the cover
+    check's hint on the insured person, the customer's name) differs only where the whole file states more later: the
+    request, which carries no quote. The count is fixed per cut; a change to the rebuild or the brief shows here first."""
+    SURFACE_DIFFERS = [["summary", "im_fall", "anliegen", "zusammenfassung"], ["summary", "im_fall", "anliegen", "zusammenfassung"], [], []]
+
+    @classmethod
+    def setUpClass(cls):
+        cls.case = phased.load("reply_assessment")
+        cls.desk = phased.Desk()
+        active = lambda: [(k["id"], k["version"]) for k in cls.desk.store.list_knowledge(statuses={"active"})]
+        cls.knowledge = active()  # one Knowledge snapshot for both arms
+        cls.whole = cls.desk.prepare(cls.case)
+        cls.arms = []
+        for cut in cls.case["cuts"]:
+            decisions = [d for d in cls.case["decisions"] if d["from"] <= cut["as_of"]]
+            alone = cls.desk.prepare(cls.case, cut, cut["pages"], cut["as_of"], decisions)
+            on_cut = asof.view(cls.desk.store, cls.desk.catalogue, alone)
+            shown, rebuilt = asof.as_of_view(cls.desk.store, cls.desk.catalogue, cls.whole, cut["as_of"], cls.case["decisions"])
+            cls.arms.append((on_cut, shown, rebuilt))
+        cls.knowledge_after = active()
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.desk.close()
+
+    def differing(self, on_cut, shown):
+        mine, theirs = asof.surface(on_cut, asof.letter(on_cut)), asof.surface(shown, asof.letter(shown))
+        return [k for k in asof.SURFACE if mine[k] != theirs[k]]
+
+    def test_a_each_cut_measures_the_same_and_its_surface_differs_by_a_fixed_count(self):
+        self.assertEqual(self.knowledge_after, self.knowledge)
+        for k, (on_cut, shown, rebuilt) in enumerate(self.arms):
+            mine, theirs = asof.measure(on_cut), asof.measure(shown)
+            same = [f for f in MEASURED if mine[f] == theirs[f]]
+            differ = self.differing(on_cut, shown)
+            print(f"cut {k} · measured {len(same)}/{len(MEASURED)} · surface {len(differ)}/{len(asof.SURFACE)}")
+            self.assertEqual(same, list(MEASURED), [(f, mine[f], theirs[f]) for f in MEASURED if f not in same])
+            self.assertEqual(differ, self.SURFACE_DIFFERS[k])
+        self.assertEqual([asof.measure(shown)["action"] for _, shown, _ in self.arms], ["A1", "A6", "A5", "A7"])
+
+    def test_b_a_party_named_only_later_is_dropped_and_counted_and_the_parties_then_agree(self):
+        on_cut, shown, rebuilt = self.arms[0]
+        self.assertEqual(rebuilt["limits"]["brief"]["parties_named_later"], 1)  # the shop of the receipt, named from the reply on
+        self.assertEqual([i["value"] for i in shown["items"] if i["kind"] == "party"], [i["value"] for i in on_cut["items"] if i["kind"] == "party"])
+        with mock.patch.object(asof, "named_in", lambda party, words: True):  # without the filter: one difference more
+            unfiltered, _ = asof.as_of_view(self.desk.store, self.desk.catalogue, self.whole, self.case["cuts"][0]["as_of"], self.case["decisions"])
+        self.assertEqual(self.differing(on_cut, unfiltered), ["parties"] + self.SURFACE_DIFFERS[0])
+        self.assertEqual([self.arms[k][2]["limits"]["brief"]["parties_named_later"] for k in range(4)], [1, 0, 0, 0])
+
+    def test_c_what_reaches_the_day_from_the_whole_file_is_counted_as_exposure(self):
+        brief = [rebuilt["limits"]["brief"] for _, _, rebuilt in self.arms]
+        self.assertEqual([b["request_uncited"] for b in brief], [1, 1, 1, 1])  # the request carries no quote
+        self.assertEqual([b["form_renders_brief"] for b in brief], [0, 0, 1, 0])  # the assessment writes the request and the answers
+        self.assertEqual([b["knowledge_from_same_case"] + b["agent_edits_applied"] for b in brief], [0, 0, 0, 0])
+        questions = [len([i for i in shown["items"] if i["kind"] == "customer_question"]) for _, shown, _ in self.arms]
+        self.assertEqual(questions, [0, 0, 3, 3])  # the questions keep their quotes: none before the replies
+
+    def test_d_the_surface_is_content_free(self):
+        on_cut, shown, _ = self.arms[2]
+        surface = asof.surface(shown, asof.letter(shown))
+        self.assertEqual(surface["counts"], {"parties": 3, "questions": 3})
+        self.assertTrue(all(re.fullmatch(r"[0-9a-f]{12}", surface[k]) for k in asof.SURFACE))
+        text = json.dumps(surface, ensure_ascii=False)
+        self.assertFalse([w for w in ("Steiner", "Sonnmatt", "Stromkosten", "Miete") if w in text])
 
 
 def entry(n, page, day, sender, to, kind="andere", phone=False):

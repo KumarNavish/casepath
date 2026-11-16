@@ -1,7 +1,8 @@
 """The insurer's real decision points in a case file, and what CasePath would have prepared at each, from one stored run.
 
     python -m casepath labels-template <case id>                       inside the insurer only: the file's documents
-    python -m casepath replay-points [--case ID …] [--labels FILE …] [--detail] [--json]
+    python -m casepath replay-points [--case ID …] [--labels FILE …] [--detail] [--accept] [--json]
+    python -m casepath replay-points --compare <before.json> <after.json>
 
 A labels file (``casepath.labels/1``, docs/HANDLER_BAR.md) names, for one case file, the handler's own decisions with the
 day from which each held, and each of the insurer's actions in the file (a point): its day, its action kind (A0–A13),
@@ -14,14 +15,36 @@ and found documents known then, the handler's decisions then in force, «Stand a
 view's own path. The point compares the action kind; for a letter the documents CasePath's letter asks now against the
 label's (a part named inside an asked whole counts as asked and is never an extra), the number of questions, and the
 follow-up date against the date the label sets. «bereit»: the kind right and, for a letter, at least 80 % of the label's
-documents asked with at most one extra, and the date within 7 days where the label sets one. Each miss gets a
-diagnosis by code: the stage, the rule that chose the action, the deciding facts on that day, what was open (incoming
-items, requests by the party asked), whether the documents that decided had an account entry at all, and what the
-rebuild could not settle.
+documents asked with at most one extra, and the date within 7 days where the label sets one. This narrow score is kept
+as it was and named in the summary «historische Handlung (eng; Wiedervorlage ±7 Tage, keine Frist-Toleranz)»: the
+seven-day tolerance is one for the follow-up date, never for a legal deadline. Each miss gets a diagnosis by code: the
+stage, the rule that chose the action, the deciding facts on that day, what was open (incoming items, requests by the
+party asked), whether the documents that decided had an account entry at all, and what the rebuild could not settle.
+
+The expanded acceptance (``accept``, a block of its own, never folded into «bereit») reads the letter rendered on the
+point's day, by rules declared before any result:
+
+- recipient: the form's addressees as account parties, against the label's ``to``;
+- questions: the customer's questions the letter answers, conditionally answers, leaves open or leaves to be checked
+  (beantwortet, bedingt, offen, prüfen; all open when the form answers none), against the optional label ``answered``;
+- residual: what the letter still asks, by key, against the label's documents; a need id is hit by its own line (or by
+  the whole it is part of), ``other:<word>`` by a line whose key or text holds ``<word>`` as the start of a word,
+  case-folded (``other:stromkosten`` is hit by «Belege zu: Stromkosten …»); right when nothing is missed and nothing extra;
+- deadlines: the dates the letter states (letters.stated_in_letter) against the optional label ``deadlines``
+  [{id, date}], exactly (handler.deadline_verdict), no tolerance; a wrong stated date is a critical error;
+- substantive: «present» when no gap remains; «verified» only with a verdict of the agreed jurist reviewer or of the
+  process owner within the formative session (label ``substantive`` with ``by_role`` jurist or process_owner), a
+  developer's verdict is a «developer check», otherwise «unverified»; citations and action matching never stand in;
+- authority: the form's decisions (``needs``) and, for an assessment, the prospects (``aussichten``) are among the
+  handler's decisions in force on the day; otherwise «decision pending».
+
+What the rebuild carries from the whole file anyway is counted per point as exposure, not as an effect (asof.py,
+``limits.brief``). Every report repeats the stated limits of the measurement on the real dossiers (``STATED_LIMITS``).
 
 The output is content-free by default (case and dossier ids, point numbers, action kinds, need, stage and fact ids,
 counts and day differences; no names, quotes or dates), so it can leave the insurer; ``--detail`` adds the values and
-dates, for use inside only. No model is called.
+dates, for use inside only. ``--compare BEFORE AFTER`` names every point whose kind or «bereit» changed between two saved
+tables (``--json``), for a read before and after a deploy. No model is called.
 """
 import argparse
 import json
@@ -31,9 +54,10 @@ import sys
 import time
 
 from ..agents.runner import case_state
-from ..process import account, casegraph
+from ..process import account, casegraph, letters
 from ..process.workflows import condition_facts, evaluate_condition
 from . import asof
+from .handler import MARKERS, deadline_verdict
 
 FORMAT = "casepath.labels/1"
 ACTION = re.compile(r"^A(?:[0-9]|1[0-3])$")
@@ -45,6 +69,21 @@ INTERNAL = {"A2"}  # a phone note: the handler's own record, no letter
 READY_SHARE, READY_EXTRAS, READY_DAYS = 0.8, 1, 7
 INSIDE = ("INSIDE THE INSURER ONLY: this listing holds the dates and parties of a case file. Mark the decision points in "
           "«labels» and keep the file inside; it never goes into Git.")
+POINT = {"n", "date", "kind", "to", "documents", "questions", "date_set", "internal"}
+POINT_OPTIONAL = {"answered", "deadlines", "substantive"}  # the expanded truth of a point, where it is labelled
+VERDICTS = {"correct", "incorrect", "incomplete"}
+ROLES = {"jurist": "verified", "process_owner": "verified", "developer": "developer_check"}  # who may verify substance (MEASURE §1)
+STATES = ("beantwortet", "bedingt", "offen", "pruefen")
+NARROW = "historische Handlung (eng; Wiedervorlage ±7 Tage, keine Frist-Toleranz)"
+# The limits stated with the measurement on the bridge's stored readings of the seven development dossiers before the
+# episode release (no date here: the table is content-free and holds none); every report repeats them.
+STATED_LIMITS = (
+    "stated limits (bridge, stored readings of the seven development dossiers, before the episode release): 16/35 letter actions as the "
+    "handler's, 11 of them meeting the narrow ready rule; the earlier 7/50 used other inputs and another denominator and "
+    "is not comparable; D6 supplies 28 of the 50 points; the seven dossiers and their 50 correlated points are not "
+    "independent validation")
+TO_PARTY = (("kundschaft", "kunde"), ("kunde", "kunde"), ("gegenpartei", "gegenpartei"), ("kanzlei", "kanzlei"),
+            ("behörde", "behoerde"), ("versicherer", "versicherer"))
 
 
 class LabelsError(ValueError):
@@ -103,11 +142,14 @@ def check(labels, process=None, case_id=None):
         problems.append("points: a list of at least one point")
         points = []
     seen = set()
+    deadlines = {d["id"] for d in (process or {}).get("deadlines") or () if isinstance(d, dict) and d.get("id")}
     for i, p in enumerate(points):
         where = f"points[{i}]"
-        if not isinstance(p, dict) or set(p) != {"n", "date", "kind", "to", "documents", "questions", "date_set", "internal"}:
-            problems.append(f"{where}: n, date, kind, to, documents, questions, date_set and internal")
+        if not isinstance(p, dict) or not POINT <= set(p) <= POINT | POINT_OPTIONAL:  # every label file of the narrow score stays valid
+            problems.append(f"{where}: n, date, kind, to, documents, questions, date_set and internal; optionally answered, deadlines "
+                            "and substantive")
             continue
+        problems += optional_problems(p, where, deadlines if process is not None else None)
         if type(p["n"]) is not int or p["n"] < 1 or p["n"] in seen:
             problems.append(f"{where}.n: a number from 1, once each")
         seen.add(p["n"])
@@ -134,6 +176,34 @@ def check(labels, process=None, case_id=None):
     if problems:
         raise LabelsError(problems)
     return {**labels, "points": sorted(points, key=lambda p: (p["date"], p["n"]))}
+
+
+def optional_problems(p, where, deadlines=None):
+    """The expanded truth of a point, where labelled: ``answered`` (how many of the customer's questions the handler's letter
+    answered), ``deadlines`` [{id, date}] (the dates it stated: a date, or prüfen, trigger_missing, not_applicable) and
+    ``substantive`` {by_role: jurist | process_owner | developer, verdict: correct | incorrect | incomplete, questions?:
+    [verdict per question]}. ``deadlines`` (with the case's process): the process's deadline ids."""
+    out = []
+    if "answered" in p and (type(p["answered"]) is not int or p["answered"] < 0):
+        out.append(f"{where}.answered: a count from 0")
+    if "deadlines" in p:
+        rows = p["deadlines"]
+        if not isinstance(rows, list) or any(not isinstance(d, dict) or set(d) != {"id", "date"} for d in rows):
+            out.append(f"{where}.deadlines: a list of {{id, date}}")
+        else:
+            for d in rows:
+                if not (d["date"] in MARKERS or (ISO.match(str(d["date"])) and asof.day(d["date"]))):
+                    out.append(f"{where}.deadlines: {d['id']!r} needs a date YYYY-MM-DD or one of {', '.join(sorted(MARKERS))}")
+                if not re.match(r"^[a-z0-9][a-z0-9_.:-]{0,79}$", str(d["id"])) or (deadlines is not None and d["id"] not in deadlines):
+                    out.append(f"{where}.deadlines: {d['id']!r} is not a deadline of this process")
+    if "substantive" in p:
+        s = p["substantive"]
+        if (not isinstance(s, dict) or not {"by_role", "verdict"} <= set(s) <= {"by_role", "verdict", "questions"} or s["by_role"] not in ROLES
+                or s["verdict"] not in VERDICTS or not isinstance(s.get("questions", []), list)
+                or any(v not in VERDICTS for v in s.get("questions", []))):
+            out.append(f"{where}.substantive: by_role ({', '.join(ROLES)}), verdict ({', '.join(sorted(VERDICTS))}) and optionally questions, "
+                       "a verdict per question")
+    return out
 
 
 def check_case(store, catalogue, case_id, labels):
@@ -233,6 +303,101 @@ def compare(point, got, process):
             "questions": {"label": point["questions"], "got": len((got or {}).get("questions") or ()) if letter else 0},
             "date": {"set": label_date is not None, "got": bool(due), "diff": diff, "ok": date_ok},
             "ready": kind == point["kind"] and (not letter or docs_ok) and date_ok}
+
+
+def recipients(to):
+    """The parties a form's addressee line names, in its order («Gegenpartei, als Entwurf zuerst an die Kundschaft» →
+    gegenpartei, kunde); «andere» when it names none of them."""
+    text = str(to or "").lower()
+    found = sorted({(text.find(word), party) for word, party in TO_PARTY if word in text})
+    out = list(dict.fromkeys(party for _, party in found))
+    return out or ["andere"]
+
+
+def question_states(items, drafted):
+    """{beantwortet, bedingt, offen, pruefen: count} over the customer's questions, as the letter of the day leaves them: the
+    state the question carries (``answer_state``), else answered where the item states an answer; all open when the
+    letter's form answers none."""
+    asked = [i for i in items if i["kind"] == "customer_question" and i.get("value")]
+    answers = any("{zu_fragen}" in p for p in (drafted or {}).get("parts") or ())
+
+    def state(i):
+        own = str(i.get("answer_state") or "").replace("ü", "ue")
+        return "offen" if not answers else own if own in STATES else "beantwortet" if i.get("answer") or i.get("answered_by") else "offen"
+    return {s: sum(1 for i in asked if state(i) == s) for s in STATES}
+
+
+def residual_lines(items, drafted):
+    """What the letter of the day still asks of the customer, as [{key, line}]: the assessment's residual where the case
+    view gives one, else the documents a form that lists documents asks (``residual:document.<need>``)."""
+    given = ((drafted or {}).get("assessment") or {}).get("residual")
+    if given is not None:
+        return [{"key": str(r.get("key")), "line": str(r.get("line") or "")} for r in given]
+    parts = " ".join((drafted or {}).get("parts") or ())
+    if not drafted or not drafted.get("text") or not any("{" + p + "}" in parts for p in asof.LETTER_LISTS):
+        return []
+    return [{"key": f"residual:document.{i['key']}", "line": str((i.get("label") or {}).get("de") or i["key"])}
+            for i in letters.asked(items, [], "document")]
+
+
+def residual_verdict(wanted, lines, process):
+    """The label's documents against the residual lines: {label, hits, missed, extras (keys), ok}, by the rule declared in
+    the module's text."""
+    whole = wholes(process)
+    need = lambda line: line["key"][len("residual:document."):] if line["key"].startswith("residual:document.") else None
+    asked = {need(line) for line in lines} - {None}
+
+    def hit(d, line):
+        if d.startswith("other:"):
+            word = d.split(":", 1)[1].casefold()
+            return bool(re.search(r"(?<![0-9a-zäöüß])" + re.escape(word), f"{line['key']} {line['line']}".casefold()))
+        return need(line) is not None and (need(line) == d or need(line) == whole.get(d))
+    hits = [d for d in wanted if any(hit(d, line) for line in lines)]
+    extras = sorted(line["key"] for line in lines if not any(hit(d, line) for d in wanted) and whole.get(need(line)) not in asked)
+    return {"label": len(wanted), "hits": hits, "missed": [d for d in wanted if d not in hits], "extras": extras,
+            "ok": len(hits) == len(wanted) and not extras}
+
+
+def deadline_check(point, items, text):
+    """The dates the letter states against the label's ``deadlines``: {stated, label, right, wrong, missing, ok, critical}."""
+    stated = {}
+    for i in items:
+        d = asof.day(i.get("value")) if letters.stated_in_letter(i) else None
+        if d and text and d.strftime("%d.%m.%Y") in text:
+            stated[i["key"]] = d.isoformat()
+    wanted = point.get("deadlines") or []
+    verdicts = [(d["id"], deadline_verdict(d, stated)) for d in wanted]
+    wrong = [k for k, v in verdicts if v == "wrong"]
+    return {"stated": len(stated), "label": len(wanted), "right": sum(1 for _, v in verdicts if v == "right"), "wrong": wrong,
+            "missing": [k for k, v in verdicts if v == "missing"], "ok": all(v == "right" for _, v in verdicts) if wanted else None,
+            "critical": len(wrong)}
+
+
+def accept(point, shown, drafted, decisions, process):
+    """The expanded acceptance of one letter point, from the letter rendered on its day (the module's text declares each
+    rule): {form, draft, recipient, questions, residual, deadlines, substantive, authority}. Ids, enums and counts only.
+    Without a draft (an action CasePath writes no letter for) only the questions, the deadlines and the verdict are read."""
+    items = (shown or {}).get("items") or []
+    text = (drafted or {}).get("text")
+    drafted = drafted if text is not None else None
+    states = question_states(items, drafted)
+    answered = point.get("answered")
+    gaps = str(text or "").count(letters.GAP)
+    verdict = point.get("substantive") or {}
+    out = {"form": asof.form_of((shown or {}).get("action")), "draft": drafted is not None,
+           "questions": {**states, "label": answered, "ok": None if answered is None else states["beantwortet"] == answered},
+           "deadlines": deadline_check(point, items, text),
+           "substantive": {"present": drafted is not None and gaps == 0, "gaps": gaps, "status": ROLES.get(verdict.get("by_role"), "unverified"),
+                           "verdict": verdict.get("verdict")}}
+    if drafted is None:
+        return {**out, "recipient": None, "residual": None, "authority": None}
+    to = recipients(drafted.get("to"))
+    needs = list(dict.fromkeys(list(drafted.get("needs") or []) + (["aussichten"] if drafted.get("form") == "A5" else [])))
+    held = {e["args"]["fact"] for e in asof.decisions_on(decisions, asof.day(point["date"]))}
+    missing = [n for n in needs if n not in held]
+    return {**out, "recipient": {"label": point["to"], "form": to, "ok": point["to"] in to},
+            "residual": residual_verdict(point["documents"], residual_lines(items, drafted), process),
+            "authority": {"needs": needs, "missing": missing, "ok": not missing}}
 
 
 def _slug(value):
@@ -372,7 +537,8 @@ def diagnose(point, got, shown, rebuilt, files, detail=False):
            # whose quotes all lie later (its earlier value, if it had one, is lost), pages without a date
            "rebuilt": {"undecided": limits.get("undecided", []),
                        "later_only": [f for f in limits.get("later_only", []) if f in set(decide) | set(waiting) | asked],
-                       "undated_pages": limits.get("undated_pages", 0), "elements_dropped": limits.get("elements_dropped", 0)}}
+                       "undated_pages": limits.get("undated_pages", 0), "elements_dropped": limits.get("elements_dropped", 0),
+                       "brief": dict(limits.get("brief") or {})}}  # what reached the day from the whole file: exposure, not effect
     if detail:
         out["next"] = {"title": (action.get("label") or {}).get("de"), "reason": action.get("reason"), "next_in_days": action.get("next_in_days"),
                        "follow_up": (shown.get("follow_up") or {}).get("due"), "since": action.get("since")}
@@ -396,8 +562,11 @@ def replay_case(store, catalogue, labels, detail=False):
         shown, rebuilt = asof.as_of_view(store, catalogue, case_id, p["date"], labels["decisions"], run=run, files=files, dating=dating)
         rebuilt["whole"] = run.get("result") or {}  # the stored run of the whole file: whether a document had an entry at all
         got = asof.measure(shown)
+        process = (shown or {}).get("state", {}).get("process")
         row = {"dossier": labels["dossier"], "case": case_id, "n": p["n"], "label": p["kind"], "to": p["to"], "internal": p["internal"],
-               **compare(p, got, (shown or {}).get("state", {}).get("process"))}
+               **compare(p, got, process), "exposure": dict(rebuilt["limits"].get("brief") or {})}
+        if not p["internal"]:  # the expanded acceptance, from the letter rendered on the point's day
+            row["accept"] = accept(p, shown, asof.letter(shown), labels["decisions"], process)
         if detail:
             row["detail"] = {"date": p["date"], "date_set": p["date_set"], "follow_up": (got or {}).get("follow_up"), "form": (got or {}).get("form"),
                              "title": (got or {}).get("title"), "asked": (got or {}).get("now"), "offered": (got or {}).get("offered")}
@@ -417,24 +586,41 @@ def summary(rows):
         return {k: [sum(1 for r in group if r["label"] == k and r["kind_ok"]), sum(1 for r in group if r["label"] == k)] for k in kinds}
     with_docs = [r for r in letters if r["documents"]["label"]]
     dated = [r for r in rows if "error" not in r and r["date"]["set"]]
+    accepted = [r["accept"] for r in letters if r.get("accept")]
+    drafted = [a for a in accepted if a["draft"]]
+    labelled = lambda key: [a for a in accepted if a[key].get("ok") is not None]
+    exposed = [r["exposure"] for r in rows if r.get("exposure")]
     return {"points": len(rows), "letters": len(letters), "internal": len(inner), "errors": sum(1 for r in rows if "error" in r),
             "ready": sum(1 for r in letters if r["ready"]), "ready_internal": sum(1 for r in inner if r["ready"]),
             "kind_right": by_kind(letters), "kind_right_internal": by_kind(inner),
+            "narrow": {"kind_ok": sum(1 for r in letters if r["kind_ok"]), "ready": sum(1 for r in letters if r["ready"]), "of": len(letters)},
             "documents": {"asked": sum(len(r["documents"]["hits"]) for r in with_docs), "of": sum(r["documents"]["label"] for r in with_docs),
                           "extras": sum(len(r["documents"]["extras"]) for r in letters)},
             "questions": {"same": sum(1 for r in letters if r["questions"]["got"] == r["questions"]["label"]), "of": len(letters)},
-            "dates": {"within": sum(1 for r in dated if r["date"]["ok"]), "of": len(dated)}}
+            "dates": {"within": sum(1 for r in dated if r["date"]["ok"]), "of": len(dated)},
+            "accept": {"of": len(accepted), "no_draft": len(accepted) - len(drafted), "recipient": sum(1 for a in drafted if a["recipient"]["ok"]),
+                       "questions": [sum(1 for a in labelled("questions") if a["questions"]["ok"]), len(labelled("questions"))],
+                       "residual": sum(1 for a in drafted if a["residual"]["ok"]),
+                       "deadlines": [sum(1 for a in labelled("deadlines") if a["deadlines"]["ok"]), len(labelled("deadlines"))],
+                       "deadlines_wrong": sum(a["deadlines"]["critical"] for a in accepted),
+                       "present": sum(1 for a in accepted if a["substantive"]["present"]),
+                       "substantive": {s: sum(1 for a in accepted if a["substantive"]["status"] == s) for s in ("verified", "developer_check", "unverified")},
+                       "decision_pending": sum(1 for a in drafted if not a["authority"]["ok"])},
+            "exposure": {"points": sum(1 for e in exposed if any(e.values())), "of": len(exposed),
+                         **{k: sum(e.get(k, 0) for e in exposed) for k in ("parties_named_later", "request_uncited", "form_renders_brief",
+                                                                            "knowledge_from_same_case", "agent_edits_applied")}}}
 
 
-def table(store, catalogue, case_ids=None, detail=False):
-    """Every labelled point of the store's labelled cases (or of those named): {rows, summary, lines, seconds, detail}."""
+def table(store, catalogue, case_ids=None, detail=False, accept_lines=False):
+    """Every labelled point of the store's labelled cases (or of those named): {rows, summary, lines, seconds, detail};
+    ``accept_lines``: each letter point's expanded acceptance as a line of its own under it."""
     started = time.perf_counter()
     rows = []
     for labels in store.list_labels():
         if case_ids and labels["case"] not in case_ids:
             continue
         rows += replay_case(store, catalogue, labels, detail)
-    out = {"rows": rows, "summary": summary(rows), "detail": detail, "model_calls": 0}
+    out = {"rows": rows, "summary": summary(rows), "detail": detail, "model_calls": 0, "accept_lines": accept_lines}
     out["seconds"] = round(time.perf_counter() - started, 2)
     out["lines"] = render(out)
     return out
@@ -489,19 +675,43 @@ def why_line(w):
     if rebuilt.get("undecided") or rebuilt.get("later_only") or rebuilt.get("undated_pages"):
         parts.append(f"rebuild undecided {','.join(rebuilt.get('undecided') or ()) or '-'} later_only {','.join(rebuilt.get('later_only') or ()) or '-'}"
                      f" undated_pages {rebuilt.get('undated_pages', 0)}")
+    brief = rebuilt.get("brief") or {}
+    if any(brief.values()):  # what the day showed from the whole file: exposure, not an effect on this point
+        parts.append("whole-file brief " + " ".join(f"{k} {v}" for k, v in brief.items() if v))
     return "   why: " + " · ".join(parts)
+
+
+def accept_line(a):
+    """The expanded acceptance of one point on one line, content-free."""
+    q, r, d, s, auth = a["questions"], a["residual"], a["deadlines"], a["substantive"], a["authority"]
+    labelled = "" if q["label"] is None else f" (labelled {q['label']}: {'same' if q['ok'] else 'differs'})"
+    substance = ("present" if s["present"] else f"{s['gaps']} gaps" if a["draft"] else "no draft") + ", " + s["status"].replace("_", " ")
+    parts = [f"to {','.join(a['recipient']['form'])} {'ok' if a['recipient']['ok'] else 'wrong'}" if a["draft"] else f"no draft ({a['form']})",
+             f"questions answered {q['beantwortet']} conditional {q['bedingt']} open {q['offen']} to check {q['pruefen']}{labelled}"]
+    if a["draft"]:
+        parts.append(f"residual {len(r['hits'])}/{r['label']} +{len(r['extras'])}" + (f" missed {','.join(r['missed'])}" if r["missed"] else "")
+                     + (f" extra {','.join(r['extras'])}" if r["extras"] else ""))
+    parts.append((f"deadlines {d['right']}/{d['label']}" + (f" WRONG {','.join(d['wrong'])}" if d["wrong"] else "")) if d["label"]
+                 else f"deadlines stated {d['stated']}")
+    parts.append(f"substance {substance}")
+    if a["draft"]:
+        parts.append("authority ok" if auth["ok"] else f"decision pending ({','.join(auth['missing'])})")
+    return "   accept: " + " · ".join(parts)
 
 
 def render(out):
     lines = []
     for r in out["rows"]:
         lines.append(line(r))
+        if out.get("accept_lines") and r.get("accept"):
+            lines.append(accept_line(r["accept"]))
         if r.get("why"):
             lines.append(why_line(r["why"]))
             if out["detail"] and r["why"].get("next"):
                 lines.append("   detail: " + json.dumps({**r["why"]["next"], **(r.get("detail") or {}), "open": r["why"]["open"]}, ensure_ascii=False))
     s = out["summary"]
     share = lambda a, b: f"{a}/{b}" + (f" ({round(100 * a / b)} %)" if b else "")
+    a, e, n = s["accept"], s["exposure"], s["narrow"]
     lines += ["", f"points {s['points']} · letters {s['letters']} · internal {s['internal']}" + (f" · errors {s['errors']}" if s["errors"] else ""),
               f"ready (letters) {share(s['ready'], s['letters'])} · internal ready {s['ready_internal']}/{s['internal']}",
               "kind right by action kind: " + (", ".join(f"{k} {a}/{b}" for k, (a, b) in s["kind_right"].items()) or "-")
@@ -509,8 +719,39 @@ def render(out):
               f"letters: documents asked {share(s['documents']['asked'], s['documents']['of'])} · extras {s['documents']['extras']}"
               f" · questions as labelled {s['questions']['same']}/{s['questions']['of']}",
               f"dates within {READY_DAYS} days {share(s['dates']['within'], s['dates']['of'])}",
+              f"{NARROW}: Handlungsart {n['kind_ok']}/{n['of']} · bereit {n['ready']}/{n['of']}",
+              f"accept (the letter of the day): no draft {a['no_draft']}/{a['of']} · recipient {a['recipient']}/{a['of'] - a['no_draft']}"
+              f" · questions as labelled {a['questions'][0]}/{a['questions'][1]}"
+              f" · residual {a['residual']}/{a['of'] - a['no_draft']} · deadlines {a['deadlines'][0]}/{a['deadlines'][1]} (wrong, critical: {a['deadlines_wrong']})"
+              f" · no gap {a['present']}/{a['of']} · substance verified {a['substantive']['verified']}, developer check "
+              f"{a['substantive']['developer_check']}, unverified {a['substantive']['unverified']} · decision pending {a['decision_pending']}",
+              f"exposure to the whole-file brief (not an effect): {e['points']} of {e['of']} points · parties named later {e['parties_named_later']}"
+              f" · request uncited {e['request_uncited']} · form renders the brief {e['form_renders_brief']} · Knowledge from the same case"
+              f" {e['knowledge_from_same_case']} · agent edits applied {e['agent_edits_applied']}",
+              STATED_LIMITS,
               f"computed in {out.get('seconds', 0)} s, no model" if "seconds" in out else "no model"]
     return lines
+
+
+def changes(before, after):
+    """Every point whose action kind or «bereit» differs between two tables of the same labels (a read before and after a
+    deploy): [(dossier, case, n, label, before row or None, after row or None)]."""
+    key = lambda r: (r["dossier"], r["case"], r["n"])
+    old, new = {key(r): r for r in before["rows"]}, {key(r): r for r in after["rows"]}
+    state = lambda r: None if r is None else (r.get("error"),) if "error" in r else (r["kind"], r["ready"])
+    return [(*k, (new.get(k) or old.get(k))["label"], old.get(k), new.get(k)) for k in sorted(old.keys() | new.keys(), key=str)
+            if state(old.get(k)) != state(new.get(k))]
+
+
+def change_lines(before, after):
+    """The changes as lines, content-free: «D11 case_… #3 A5: kind A6 → A5, ready no → no», then the totals."""
+    shown = lambda r, field: "-" if r is None else r.get("error", "") if "error" in r else (r[field] or "none") if field == "kind" \
+        else ("yes" if r[field] else "no")
+    out = [f"{d} {c} #{n} {label}: kind {shown(o, 'kind')} → {shown(w, 'kind')}, ready {shown(o, 'ready')} → {shown(w, 'ready')}"
+           for d, c, n, label, o, w in changes(before, after)]
+    b, a = before["summary"], after["summary"]
+    return out + [f"{len(out)} of {len(after['rows'])} points changed kind or ready · ready (letters) {b['ready']}/{b['letters']} before, "
+                  f"{a['ready']}/{a['letters']} after"]
 
 
 # -- the command line --------------------------------------------------------------------------------------------------
@@ -549,8 +790,15 @@ def main(argv=None):
     parser.add_argument("--case", action="append", help="only this case (repeatable)")
     parser.add_argument("--labels", action="append", default=[], help="a casepath.labels/1 file to check and keep in the case store first (repeatable)")
     parser.add_argument("--detail", action="store_true", help="values and dates in the diagnosis: inside the insurer only")
+    parser.add_argument("--accept", action="store_true", help="each letter point's expanded acceptance on a line of its own")
     parser.add_argument("--json", action="store_true", help="the table as JSON")
+    parser.add_argument("--compare", nargs=2, metavar=("BEFORE", "AFTER"),
+                        help="two saved tables (--json, or GET /api/replay-points): each point whose kind or ready changed; no store needed")
     args = parser.parse_args(argv)
+    if args.compare:
+        before, after = (json.loads(Path(p).read_text(encoding="utf-8")) for p in args.compare)
+        print("\n".join(change_lines(before, after)))
+        return
     from ..web.store import NotFound
 
     store, catalogue = _store()
@@ -564,7 +812,7 @@ def main(argv=None):
             except NotFound:
                 sys.exit(f"{path}: no case {raw.get('case')} in the case store")
             store.save_labels(labels["case"], labels, "replay-points")
-        out = table(store, catalogue, set(args.case or ()) or None, detail=args.detail)
+        out = table(store, catalogue, set(args.case or ()) or None, detail=args.detail, accept_lines=args.accept)
     finally:
         store.close()
     if args.json:
