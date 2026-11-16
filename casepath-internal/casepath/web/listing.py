@@ -179,60 +179,100 @@ def _day(d):
 
 def waiting_for(action):
     kind = (action or {}).get("action")
-    return "Gegenpartei" if kind in {"A8", "A9"} else "Kanzlei" if kind in {"A10"} else "Kundschaft"
+    return "Gegenpartei" if kind in {"A8", "A9"} else "Kanzlei" if kind in {"A10", "A2"} else "Kundschaft"
 
 
-def step_copied(action, events, completed_at):
-    """Whether the letter of the step now prepared went out since the case was prepared: a copy of its own form (a template
-    copied alone, or the letter of a step done before, such as «Frist wahren» before the first request, is not it); a copy
-    that names no form counts."""
-    action = action or {}
-    form = "A1" if action.get("action") == "request" else (None if action.get("chosen_by_handler") else action.get("form")) or action.get("action")
-    for e in events or ():
-        if e.get("kind") != "letter.copied" or str(e.get("at") or "") <= str(completed_at or "") or e.get("also"):
-            continue
-        if not e.get("form") or not action or e["form"] in {form, action.get("action")}:
-            return True
-    return False
+# The four groups of the case list (DESIGN §4), «Erledigt» folded below them.
+BUCKETS = ("urteil", "versandbereit", "wartet", "fehlgeschlagen", "erledigt")
+FOLLOW_UPS = {"A6", "A7"}  # the clock's follow-ups: prepared while the case waits for its date
+
+
+def is_closed(events):
+    """Whether the case is closed: the latest of «case.closed» and «case.reopened» (an arrival after closing) closes it."""
+    marks = [e for e in events or () if e.get("kind") in ("case.closed", "case.reopened")]
+    return bool(marks) and marks[-1]["kind"] == "case.closed"
+
+
+def waits(action):
+    """Whether the prepared action is a follow-up that waits for its date: a clock follow-up (A6, A7) or the stage's own
+    follow-up once its action is taken, counted from the last action (``since``) and not yet the silence's (its reason
+    «keine Antwort seit …»), or a date the party gave («zugesagt bis …»)."""
+    a = action or {}
+    follow = a.get("action") in FOLLOW_UPS or (a.get("follow_up") and a.get("action") == a.get("follow_up"))
+    quiet = str(a.get("reason") or "").startswith("keine Antwort seit")
+    return bool(a.get("until")) or (bool(follow) and bool(a.get("since")) and not quiet)
 
 
 def stand(*, closed, run_status, new_files, items, follow_up, events, completed_at, files, today=None, historic=None, run_kind=None,
           completion=None):
-    """Where a case stands, in the handler's words, with the rank by which the list orders it (what needs the handler
-    first) and the date that goes with it: {kind, text, rank, date}. A historic file (``historic``: clock.historic) is
-    looked at as of its own day, the cut's «Stand am» or its newest document, so nothing in it is overdue. ``run_kind``:
-    the kind of the run ``run_status`` is of (full or update); ``completion``: where the prepared letter stands after the
-    decision (completion.state); neither is read yet."""
+    """Where a case stands, in the handler's words, with the group of the case list it belongs to and the rank by which
+    the group orders it (what needs the handler first) and the date that goes with it: {kind, text, rank, date, bucket}.
+
+    - «Braucht Ihr Urteil» (urteil): a deadline running, the first contact due, new files, a run working, a decision open,
+      an approval no longer holding, a letter sent with an earlier state, a reply to check, a follow-up overdue, prepared;
+    - «Versandbereit»: approved and not yet sent (or copied by a browser before this release, the sending not confirmed);
+    - «Wartet»: the prepared step is a follow-up whose date has not come («wartet auf Kundschaft bis …», «zugesagt bis …»);
+    - «Fehlgeschlagen»: the latest update or preparation failed or was interrupted, a Versandpaket is missing;
+    - «Erledigt»: closed (the latest of «case.closed» and «case.reopened»).
+
+    A historic file (``historic``: clock.historic) is looked at as of its own day, the cut's «Stand am» or its newest
+    document, so nothing in it is overdue. ``run_kind``: the kind of the run ``run_status`` is of (full or update);
+    ``completion``: where the prepared letter stands after the decision (completion.state). A copy never counts as sent."""
     ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or date.today()
-    row = lambda kind, text, rank, day=None: {"kind": kind, "text": text, "rank": rank, "date": day.isoformat() if day else None}
+    row = lambda kind, text, rank, day=None, bucket="urteil": {"kind": kind, "text": text, "rank": rank, "bucket": bucket,
+                                                               "date": day.isoformat() if hasattr(day, "isoformat") else day}
+    update = run_kind == "update"
     if run_status in {"queued", "running"}:
-        return row("working", "wird vorbereitet", 7)
-    if run_status in {"paused", "failed", "interrupted"}:
+        return row("working", "wird aktualisiert" if update else "wird vorbereitet", 7)
+    if run_status in {"failed", "interrupted"}:
+        word = "unterbrochen" if run_status == "interrupted" else "fehlgeschlagen"
+        return row("failed", f"{'Aktualisierung' if update else 'Vorbereitung'} {word}", 0.5, None, "fehlgeschlagen")
+    if run_status == "paused":
         return row("paused", "angehalten", 6)
     if run_status != "completed":
         return row("new", "nicht vorbereitet", 5)
-    if new_files:
-        return row("arrived", "neue Unterlagen", 0)
+    closed = closed and is_closed(events) if any(e.get("kind") == "case.reopened" for e in events or ()) else closed
     action = next((i for i in items if i["kind"] == "next_action"), None)
     due = parse_date(follow_up) if follow_up else None
-    copied = step_copied(action, events, completed_at)
-    if closed or copied:
-        if (action or {}).get("action") in {"A12", "close"} and closed:
-            return row("closed", "erledigt", 9)
+    if closed:  # closed by the handler: done, or waiting for the date it was looked at again
+        if (action or {}).get("action") in {"A12", "close"}:
+            return row("closed", "erledigt", 9, None, "erledigt")
         if due and due > ref:
-            return row("waiting", f"wartet auf {waiting_for(action)}", 8, due)
+            return row("waiting", f"wartet auf {waiting_for(action)} bis {due.strftime('%d.%m.%Y')}", 8, due, "wartet")
         if due and not historic:
             return row("due", "Wiedervorlage fällig", 2, due)
-        return row("closed", "erledigt", 9)
+        return row("closed", "erledigt", 9, None, "erledigt")
+    if new_files:
+        return row("arrived", "neue Unterlagen", 0)
+    done = completion or {}
+    if done.get("bucket") == "fehlgeschlagen":
+        return row("failed", done["status"], 0.5, None, "fehlgeschlagen")
+    if done.get("bucket") == "versandbereit":
+        return row("ready", done["status"], 4, done.get("date"), "versandbereit")
+    if done.get("bucket") == "urteil":  # an approval no longer holding, a letter sent with an earlier state, a reply to check
+        return row("check", done["status"], 1.8, None)
     running = sorted(((parse_date(i["value"]), i) for i in items if urgent.customers(i) and urgent.dated(i) and not urgent.open_condition(i)
                       and ref <= parse_date(i["value"]) <= ref + timedelta(days=RUNNING_DAYS)), key=lambda row: row[0])
     if running:
         day, item = running[0]
         return row("frist", "dringend" if (day - ref).days <= URGENT_DAYS else "Frist läuft", 1, day)
     contact = None if as_of(files) or historic else next((i for i in items if i["kind"] == "contact"), None)  # a historic file has no first contact due
+    if contact and parse_date(contact.get("value")) and parse_date(contact["value"]) < ref:
+        return row("contact", "Erstkontakt überfällig", 1.5, parse_date(contact["value"]))
+    if done.get("decision"):
+        return row("decision", f"Entscheid: {done['decision']}", 3.5, due)
+    if (waits(action) or done.get("state") == "versandt") and due:  # a follow-up, or the letter prepared now went out already
+        title = ((action or {}).get("label") or {}).get("de") or (action or {}).get("value") or "Wiedervorlage"
+        if due > ref:
+            text = f"zugesagt bis {due.strftime('%d.%m.%Y')}" if (action or {}).get("until") else f"wartet auf {waiting_for(action)} bis {due.strftime('%d.%m.%Y')}"
+            return row("waiting", text, 8, due, "wartet")
+        if not historic:
+            return row("due", f"überfällig: {title} vorbereitet", 2, due)
+    if action and str(action.get("reason") or "").startswith("keine Antwort seit") and (action.get("action") in FOLLOW_UPS or action.get("action") == "A12"):
+        title = (action.get("label") or {}).get("de") or action.get("value")
+        return row("due", f"überfällig: {title} vorbereitet", 2, due)
     if contact and parse_date(contact.get("value")):
-        day = parse_date(contact["value"])
-        return row("contact", "Erstkontakt überfällig" if day < ref else "vorbereitet", 1.5 if day < ref else 3, day)
+        return row("contact", "vorbereitet", 3, parse_date(contact["value"]))
     return row("prepared", "vorbereitet", 4, due)
 
 

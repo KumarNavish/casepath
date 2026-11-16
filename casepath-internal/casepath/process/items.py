@@ -304,7 +304,8 @@ def build_items(state, result, files=None, events=None, review=None):
     study = (case.get("intake") or {}).get("study")
     created = study.get("opened") if isinstance(study, dict) else case.get("created_at")  # a study copy counts as its source, as frozen
     old = historic_file(files or [], created, events or ())
-    contacted = any(e.get("kind") == "letter.copied" for e in events or ())  # a letter of the insurer went out
+    from .completion import contacted as reached  # a letter of the insurer dispatched, or copied by a browser before this release
+    contacted = reached(events)
     items = []
     def add(kind, key, label=None, **fields):
         if kind not in ITEM_KINDS:
@@ -808,11 +809,14 @@ def silent_since(graph, code):
 
 
 def wahrt(events, deadline, template=None):
-    """Whether «Frist wahren» went out for this deadline: its letter copied and, where it has one, the template for the
-    customer's own letter too."""
-    copied = [e for e in events or () if e.get("kind") == "letter.copied" and (not e.get("deadline") or e.get("deadline") == deadline["item_id"])]
-    letter = any(e.get("form") == "A13" and not e.get("also") for e in copied)
-    return letter and (template is None or any(e.get("also") == f"vorlage:{template['id']}" for e in copied))
+    """Whether «Frist wahren» went out for this deadline: its letter (A13) dispatched, and, where it has one, the template
+    for the customer's own letter in the same approved version. A copy is not a dispatch."""
+    from .completion import sent_letters
+    for sent in sent_letters(events):
+        if sent["form"] == "A13" and sent.get("deadline") in (None, deadline["item_id"]) \
+                and (template is None or f"vorlage:{template['id']}" in sent["also"]):
+            return True
+    return False
 
 
 def customer_line(row):

@@ -248,8 +248,11 @@ def apply_edit(graph, edit):
             check_form(args)
         except FormError as error:
             raise EditError(str(error)) from None
-    elif op == "add_dispatch":  # Slice B fills this: a dispatch is an entry of the account, not a change to the process
-        raise EditError(f"unknown edit {op!r}")  # refused, as before, until then
+    elif op == "add_dispatch":  # a letter dispatched to one recipient: an entry of the account (account.dispatch_entries), not
+        # a change to the process; written only by the store's dispatch_once (the edits route refuses it, Slice C)
+        from .account import PARTIES, _iso
+        if not isinstance(args.get("n"), int) or not _iso(args.get("date")) or not args.get("version") or args.get("to") not in PARTIES:
+            raise EditError("a dispatch needs its number, its day, the approved version and its recipient")
     elif op == "settle_request":  # a request of the account the handler settles: an entry correction (account.apply_corrections)
         if not re.fullmatch(r"r\d+\.\d+", str(args.get("request") or "")):
             raise EditError("a request is named by its id («r3.0»)")

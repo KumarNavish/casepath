@@ -207,15 +207,50 @@ def next_handler_number(edits):
 
 
 def with_handler(entries, edits):
-    """A run's entries with the handler's entries in force (their own numbers: none can meet a reader's)."""
-    return list(entries or ()) + handler_entries(edits)
+    """A run's entries with the handler's entries and the dispatches in force (their own numbers: none can meet a
+    reader's)."""
+    return list(entries or ()) + handler_entries(edits) + dispatch_entries(edits)
+
+
+def dispatch_entries(edits):
+    """The letters the handler confirmed as dispatched, one entry per active «add_dispatch» edit (one per recipient):
+    from Protekta to that recipient on the dispatch day, the record kind and the code of its form (completion.FORM_RECORD:
+    its own code or none, never its kind's), its title, what it asked (each ask with the judgment it was asked for,
+    ``blocks``) and the customer's questions it answered (each naming the customer's entry, so build closes exactly
+    those). No quote: its source is the attributed confirmation."""
+    out = []
+    for e in edits or ():
+        if e.get("op") != "add_dispatch" or e.get("status", "active") != "active":
+            continue
+        a = e.get("args") or {}
+        day = _iso(a.get("date"))
+        if not isinstance(a.get("n"), int) or not day:
+            continue
+        to = a.get("to") if a.get("to") in PARTIES and a.get("to") != INSURER else "andere"
+        asks = [{"what": _clip(x.get("what"), 120), "of": x.get("of") if x.get("of") in PARTIES else to, "by": _iso(x.get("by")),
+                 "repeats": None, "warns": bool(x.get("warns")), "citations": [], **{k: x[k] for k in ("kind", "key", "ref", "blocks") if x.get(k) is not None}}
+                for x in a.get("asks") or () if isinstance(x, dict) and str(x.get("what") or "").strip()]
+        answers = [{"what": _clip(x.get("what"), 120), "answers": x["answers"] if isinstance(x.get("answers"), int) else None, "citations": []}
+                   for x in a.get("answers") or () if isinstance(x, dict) and str(x.get("what") or "").strip()]
+        out.append({"n": a["n"], "file": None, "page": None, "date": day, "from": INSURER, "to": to, "kind": str(a.get("kind") or "andere"),
+                    "code": str(a["code"]) if a.get("code") else None, "phone": False, "what": _clip(a.get("title") or "Schreiben", 160),
+                    "citations": [], "asks": asks, "answers": answers, "terms": [], "paid": [], "next": [],
+                    "dispatch": {"version": a.get("version"), "form": a.get("form"), "recipient": a.get("recipient"), "by": e.get("by"),
+                                 "at": e.get("at"), "channel": a.get("channel"), "edit": e.get("id")}})
+    return out
 
 
 def dispatch_facts(edits, graph=None):
     """For a run prepared before the account (from_result is None): the action facts the dispatches in force set,
-    {handlung_a<code>: the dispatch date}, which core.evaluate merges, so the clock and the last contact move from them.
-    Nothing until Slice B records dispatches."""
-    return {}
+    {handlung_a<code>: the latest dispatch date of that code}, for the action facts the process defines; core.evaluate
+    merges them, so the clock and the last contact move from them."""
+    defined = {f["id"] for f in (graph or {}).get("facts") or ()} if graph else None
+    out = {}
+    for e in sorted(dispatch_entries(edits), key=lambda x: x["date"]):
+        key = f"handlung_a{e['code']}" if e.get("code") else None
+        if key and (defined is None or key in defined):
+            out[key] = e["date"]  # by date: the latest stays
+    return out
 
 
 # -- checking the reader's entries --------------------------------------------------------------------------------
@@ -547,9 +582,12 @@ def _best(candidates, what):
 
 
 def code_of(entry, kinds, earlier_announced=False, phone_code="2"):
-    """The insurer's action kinds an entry of the insurer is: its kind's code (to this party), a phone note's code."""
+    """The insurer's action kinds an entry of the insurer is: its kind's code (to this party), a phone note's code; a
+    dispatched letter is exactly its own form's code or none (never its kind's, its kind's to the party, or the phone code)."""
     if entry.get("from") != INSURER:
         return []
+    if entry.get("dispatch"):
+        return [str(entry["code"])] if entry.get("code") else []
     row = kinds.get(entry.get("kind")) or {}
     code = (row.get("code_to") or {}).get(entry.get("to")) or row.get("code")
     if code and earlier_announced and row.get("again"):

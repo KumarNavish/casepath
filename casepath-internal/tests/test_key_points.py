@@ -260,16 +260,23 @@ class CaseListTests(unittest.TestCase):
         return listing.stand(**args)
 
     def test_the_stand_says_what_the_handler_acts_on_and_ranks_it(self):
+        # Rewritten for SLICE_B B8: each row names its group of the list (bucket); «wartet» names the date; a letter copied is
+        # no sending (it once made the row «wartet auf Gegenpartei»), only the dispatch of the letter prepared now does; a
+        # failed or interrupted update is «Fehlgeschlagen» (C3's run kind, asserted here because B owns ``stand``).
+        from tests.test_completion import approved, sent
         frist = item("deadline", "anfechtung", "2026-12-03", origin="law", party="kunde")
         termin = item("deadline", "frist", "2026-11-20", set_by_others=True, what="Schlichtungsverhandlung")
         contact = item("contact", "erstkontakt", "2026-11-18")
+        a8 = [item("next_action", "0", action="A8")]
         rows = {
             "frist": self.stand([frist]), "termin": self.stand([termin, frist]), "contact": self.stand([contact]),
             "prepared": self.stand([]), "arrived": self.stand([frist], new_files=2), "paused": self.stand(run_status="paused"),
             "working": self.stand(run_status="running"), "new": self.stand(run_status=None),
             "waiting": self.stand([item("next_action", "0", action="A1")], closed=True),
             "due": self.stand([item("next_action", "0", action="A1")], closed=True, follow_up="2026-11-10"),
-            "copied": self.stand([item("next_action", "0", action="A8")], events=[{"kind": "letter.copied", "at": "2026-11-14T09:00:00"}]),
+            "copied": self.stand(a8, events=[{"kind": "letter.copied", "at": "2026-11-14T09:00:00"}]),
+            "sent": self.stand(a8, events=[approved("A8"), sent()], completion={"state": "versandt"}),
+            "failed": self.stand(run_status="failed", run_kind="update"), "interrupted": self.stand(run_status="interrupted", run_kind="update"),
             "done": self.stand([item("next_action", "0", action="A12")], closed=True),
         }
         # the status in one word, the same on the card; the date it goes with is the list's «Fällig» (listing.due)
@@ -278,12 +285,16 @@ class CaseListTests(unittest.TestCase):
         self.assertEqual((rows["contact"]["text"], rows["contact"]["date"]), ("vorbereitet", "2026-11-18"))
         self.assertEqual(rows["prepared"]["text"], "vorbereitet")
         self.assertEqual(rows["arrived"]["text"], "neue Unterlagen")
-        self.assertEqual((rows["waiting"]["text"], rows["waiting"]["date"]), ("wartet auf Kundschaft", "2026-12-05"))
-        self.assertEqual(rows["copied"]["text"], "wartet auf Gegenpartei")
+        self.assertEqual((rows["waiting"]["text"], rows["waiting"]["date"]), ("wartet auf Kundschaft bis 05.12.2026", "2026-12-05"))
+        self.assertEqual(rows["copied"]["text"], "vorbereitet")  # a copy is not a sending
+        self.assertEqual((rows["sent"]["text"], rows["sent"]["bucket"]), ("wartet auf Gegenpartei bis 05.12.2026", "wartet"))
         self.assertEqual(rows["due"]["text"], "Wiedervorlage fällig")
+        self.assertEqual((rows["failed"]["text"], rows["failed"]["bucket"]), ("Aktualisierung fehlgeschlagen", "fehlgeschlagen"))
+        self.assertEqual((rows["interrupted"]["text"], rows["interrupted"]["bucket"]), ("Aktualisierung unterbrochen", "fehlgeschlagen"))
         self.assertEqual(listing.due([termin, frist, contact], "2026-12-05", [], today=self.TODAY), {"date": "2026-11-18", "word": "Erstkontakt"})
         self.assertEqual(listing.due([termin, frist], "2026-12-05", [], today=self.TODAY), {"date": "2026-11-20", "word": "Termin"})
-        self.assertEqual(rows["done"]["text"], "erledigt")
+        self.assertEqual((rows["done"]["text"], rows["done"]["bucket"]), ("erledigt", "erledigt"))
+        self.assertEqual({rows[k]["bucket"] for k in ("frist", "termin", "contact", "prepared", "arrived", "paused", "working", "new", "copied", "due")}, {"urteil"})
         order = sorted(rows, key=lambda k: rows[k]["rank"])
         self.assertEqual(order[0], "arrived")
         self.assertLess(rows["frist"]["rank"], rows["contact"]["rank"])

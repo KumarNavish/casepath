@@ -1,12 +1,14 @@
-// Browser check on a fresh local preview (make preview), one window size per run (each run closes case C):
+// Browser check on a fresh local preview (make preview), one window size per run (each run sends case C's letter):
 //   SIZE=1440x900 SHOTS=/some/dir NODE_PATH=$(npm root -g) node deploy/preview/check_simple.mjs
-// It measures, as a handler meets them: the main path on case C (open it from the case list, untick one line, copy the
-// letter, Erledigt) in clicks and scrolls; the one primary button in each state (prepared, running, paused, closed, new
-// files); instruction sentences and interactive elements above the fold on the Übersicht; that every handler gesture
-// on case D still leaves its event (the cover decision on the Prozess tab, where the stage's decisions are); that a file
-// added in the rail leaves every button working without a reload, that the
-// draft waits while new files are unread, that the Verlauf is one table with the report first and every gesture, that
-// «Der Fall» fills in while a run works and the viewer shows what is read, and that no element's event is refused.
+// It measures, as a handler meets them: the main path on case C (open it from the case list, untick one line,
+// «Freigeben», «Brief kopieren», «Versandt am») in clicks and scrolls, with the events it leaves (the copy measured, the
+// dispatch confirmed, the case not closed); the one primary button in each state (prepared, approved, sent and waiting,
+// running, paused, closed, new files); a clipboard that refuses («Kopieren fehlgeschlagen», nothing recorded);
+// instruction sentences and interactive elements above the fold on the Übersicht; that every handler gesture on case D
+// still leaves its event (the cover decision on the Prozess tab, where the stage's decisions are; the letter's text saved
+// per part on the server); that a file added in the rail leaves every button working without a reload, that the draft
+// waits while new files are unread, that the Verlauf is one table with the report first and every gesture, that «Der
+// Fall» fills in while a run works and the viewer shows what is read, and that no element's event is refused.
 // MODE=before runs only the measures that also apply to an older build.
 import { createRequire } from "module";
 const { chromium } = createRequire(import.meta.url)("playwright");
@@ -15,9 +17,9 @@ const [W, H] = (process.env.SIZE || "1440x900").split("x").map(Number), tag = `$
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const get = async (path) => (await fetch(BASE + path)).json();
 const cases = (await get("/api/cases")).cases, by = (re) => (cases.find((c) => re.test(c.title)) || {}).id;
-const C = by(/Handler-Prozess/), D = by(/zweite Meldung/), B = by(/zweiter Fall/), A = by(/Kramgasse 5$/);
+const C = by(/Handler-Prozess/), D = by(/zweite Meldung/), B = by(/zweiter Fall/), A = by(/Kramgasse 5$/), CLOSED = by(/Arbeitszeugnis, erledigt/);
 const browser = await chromium.launch();
-const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, permissions: ["clipboard-read", "clipboard-write"] });
+const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, locale: "de-CH", permissions: ["clipboard-read", "clipboard-write"] });
 const page = await context.newPage();
 let dialogs = 0, pageErrors = 0, refused = 0;
 page.on("dialog", async (d) => { dialogs += 1; await d.accept(d.type() === "prompt" ? "3" : undefined); });
@@ -54,7 +56,7 @@ const measure = () => page.evaluate(() => {
            pageHeight: document.documentElement.scrollHeight };
 });
 // A click as a person makes it: on what is in view, or after scrolling to it (counted).
-const scroll = { page: 0, inner: 0 };
+const scroll = { page: 0, inner: 0, what: [] };
 async function click(selector, what) {
   const el = await page.waitForSelector(selector, { state: "attached", timeout: 8000 })
     .catch(async (error) => { if (SHOTS) await page.screenshot({ path: `${SHOTS}/failed-${tag}.png` }); throw error; });
@@ -66,6 +68,7 @@ async function click(selector, what) {
     await el.evaluate((e) => e.scrollIntoView({ block: "center" })); await sleep(300);
     const after = await page.evaluate(() => scrollY);
     if (after !== before) scroll.page += 1; else scroll.inner += 1;
+    scroll.what.push(`${what}${after !== before ? " (page)" : " (box)"}`);
     box = await el.boundingBox();
   }
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
@@ -79,22 +82,55 @@ await shot("case-list");
 const list = await measure();
 out.push(`case list: ${list.interactive} interactive elements in view, primary "${list.primaries.join(", ")}" in view ${list.primaryInView}`);
 
-// 2. The main path on case C: open, untick one line, copy, Erledigt
+// 2. The main path on case C: open, untick one line, «Freigeben», «Brief kopieren», «Versandt am»
 let clicks = 0;
 dialogs = 0;
+// the case's row: in view, or below more urgent cases of the queue (a scroll of the list, counted apart from the card's)
+const listed = await page.evaluate((id) => { const a = document.querySelector(`a[href*="${id}"]`), r = a && a.getBoundingClientRect();
+  return { inView: Boolean(r && r.top >= 0 && r.bottom <= innerHeight), above: [...document.querySelectorAll(".cp-cases tbody tr")].findIndex((tr) => tr.contains(a)) }; }, C);
 await click(`a[href*="${C}"]`, "open"); clicks += 1; await sleep(1500);
+const listScroll = scroll.page; scroll.page = 0; scroll.what = [];
 const prepared = await measure();
 await shot("prepared-case");
 out.push(`prepared (Übersicht): ${prepared.interactive} interactive elements above the fold; instruction sentences ${prepared.sentences.length}${prepared.sentences.length ? ": " + prepared.sentences.map((s) => `«${s.slice(0, 70)}»`).join(" ") : ""}; ` +
   `primary "${prepared.primaries.join(", ")}" in view ${prepared.primaryInView}`);
 await click("[data-line]", "untick"); clicks += 1; await sleep(800);
-await click("#copy-draft", "copy"); clicks += 1;
-const afterCopy = await measure();
-await click("[data-close='erledigt']", "done"); clicks += 1; await sleep(800);
-const log = await events(C);
-const kinds = ["letter.line", "letter.copied", "case.closed"].map((k) => `${k} ${log.some((e) => e.kind === k)}`).join(", ");
-out.push(`main path: ${clicks} clicks${dialogs ? ` + ${dialogs} dialog(s)` : ""}, page scrolls ${scroll.page}, scrolls inside a box ${scroll.inner}; ` +
-  `after copying the primary is "${afterCopy.primaries.join(", ")}"; events: ${kinds}`);
+if (BEFORE) {
+  await click("#copy-draft", "copy"); clicks += 1;
+  await click("[data-close='erledigt']", "done"); clicks += 1; await sleep(800);
+  out.push(`main path: ${clicks} clicks, page scrolls ${scroll.page}, scrolls inside a box ${scroll.inner}`);
+} else {
+  await click("#approve", "approve"); clicks += 1; await sleep(1000);
+  const approved = await measure();
+  await shot("approved-case");
+  // a clipboard that refuses (a second window on the same case): «Kopieren fehlgeschlagen», nothing recorded
+  const denied = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, locale: "de-CH", permissions: [] });
+  const page2 = await denied.newPage();
+  await page2.addInitScript(() => { Object.defineProperty(navigator, "clipboard", { value: { writeText: () => Promise.reject(new DOMException("denied", "NotAllowedError")) } }); });
+  await page2.goto(`${BASE}/?lang=de#/case/${C}/overview`); await sleep(2500);
+  const copiesBefore = (await events(C)).filter((e) => e.kind === "letter.copied").length;
+  await page2.click("#copy-letter"); await sleep(1200);
+  const said = await page2.evaluate(() => document.body.innerText.includes("Kopieren fehlgeschlagen"));
+  const copiesAfter = (await events(C)).filter((e) => e.kind === "letter.copied").length;
+  if (SHOTS) await page2.screenshot({ path: `${SHOTS}/copy-failed-${tag}.png` });
+  out.push(`clipboard refused: «Kopieren fehlgeschlagen» shown ${said}, copies recorded ${copiesAfter - copiesBefore}`);
+  await denied.close();
+  await click("#copy-letter", "copy"); clicks += 1;
+  const afterCopy = await measure();
+  await click("[data-dispatch]", "sent"); clicks += 1; await sleep(1200);
+  const log = await events(C);
+  const kinds = ["letter.line", "action.approved", "bundle.saved", "letter.copied", "action.dispatched"].map((k) => `${k} ${log.some((e) => e.kind === k)}`).join(", ");
+  const measured = log.filter((e) => e.kind === "letter.copied").every((e) => e.measure === true && /^[0-9a-f]{64}$/.test(e.text_sha256 || ""));
+  out.push(`main path: ${clicks} clicks${dialogs ? ` + ${dialogs} dialog(s)` : ""}, page scrolls on the card ${scroll.page}, scrolls inside a box ${scroll.inner}${scroll.what.length ? ` (${scroll.what.join(", ")})` : ""}` +
+    `; the case's row ${listed.inView ? "in view in the list" : `below ${listed.above} more urgent cases (${listScroll} list scroll)`}; ` +
+    `after approving the primary is "${approved.primaries.join(", ")}", after copying "${afterCopy.primaries.join(", ")}"; events: ${kinds}; ` +
+    `the copy measured ${measured}; case.closed ${log.some((e) => e.kind === "case.closed")}`);
+  const sentState = await measure();
+  await shot("sent-case");
+  const stand = ((await get("/api/cases")).cases.find((c) => c.id === C) || {}).stand || {};
+  out.push(`sent: primary "${sentState.primaries.join(", ")}" (${sentState.primaries.length}); the list says «${stand.text}» in «${stand.bucket}»`);
+}
+await open(`/case/${CLOSED}/overview`);
 const closedState = await measure();
 await shot("closed-case");
 out.push(`closed: primary "${closedState.primaries.join(", ")}" (${closedState.primaries.length}) in view ${closedState.primaryInView}`);
@@ -128,9 +164,9 @@ if (!BEFORE) {
   const arrived = await measure();
   await shot("new-files");
   await click("#add-note", "note"); const formOpens = await page.$("#note-form") !== null; await click("#note-cancel", "cancel");
-  const blocked = await page.evaluate(() => Boolean((document.querySelector("#copy-draft") || {}).disabled) && Boolean(document.querySelector(".cp-letter.cp-stale")));
+  const blocked = await page.evaluate(() => Boolean((document.querySelector("#approve, #fill-gaps, #copy-draft") || {}).disabled) && Boolean(document.querySelector(".cp-letter.cp-stale")));
   await click("#use-anyway", "use anyway");
-  const usable = await page.evaluate(() => (document.querySelector("#copy-draft") || { disabled: true }).disabled === false);
+  const usable = await page.evaluate(() => (document.querySelector("#approve, #fill-gaps, #copy-draft") || { disabled: true }).disabled === false);
   const unblocked = (await events(A)).some((e) => e.kind === "letter.unblocked");
   out.push(`new files: primary "${arrived.primaries.join(", ")}" (${arrived.primaries.length}) in view ${arrived.primaryInView}; banner «${(await page.evaluate(() => (document.querySelector(".cp-runnow") || {}).innerText || "")).replace(/\s+/g, " ").slice(0, 90)}»; ` +
     `after adding a file in the rail: page errors ${pageErrors - errorsBefore}, a button works without reload ${formOpens}; draft held back ${blocked}, «trotzdem verwenden» unblocks it ${usable} (logged ${unblocked})`);
@@ -152,9 +188,9 @@ if (!BEFORE) {
   await click("#undo", "undo");
   checks.push(["undo", await last("correction.undone")]);
   await page.evaluate((id) => { location.hash = `#/case/${id}/overview`; }, D); await sleep(1500);
-  await page.click("[data-item='letter:0'] [data-seg='text']"); await page.keyboard.press("End"); await page.keyboard.type(" Mit freundlichem Gruss"); await sleep(300);
-  await click("#copy-draft", "copy");
-  checks.push(["reword the letter (copied as edited)", await last("letter.copied", (e) => e.edited === true)]);
+  await page.click("[data-letter-edit] [data-seg='text'][data-editable]"); await page.keyboard.press("End"); await page.keyboard.type(" Mit freundlichem Gruss"); await sleep(2600);
+  const saved = await get(`/api/cases/${D}`);
+  checks.push(["reword the letter (saved per part on the server)", Object.keys(saved.draft.saved || {}).length > 0 && saved.draft.text.includes("Mit freundlichem Gruss")]);
   await click("#add-note", "note"); await page.fill("#note-form textarea", "Kundin ruft morgen zurück."); await click("#note-form button:not([type])", "save");
   checks.push(["note (an entry of the account)", await last("entry.added", (e) => e.text === "Kundin ruft morgen zurück.")]);
   await page.evaluate(() => { const i = document.querySelector("#followup-date"); i.value = "2026-12-20"; i.dispatchEvent(new Event("change")); }); await sleep(1500);
@@ -167,8 +203,7 @@ if (!BEFORE) {
   await shot("documents-tab");
   out.push(`Unterlagen tab: «${counts}»`);
   await open(`/case/${D}/overview`);
-  await click(".cp-split summary", "more"); await page.fill("#reservation", "Deckung nochmals prüfen"); await click("[data-close='erledigt_mit_vorbehalt']", "close");
-  checks.push(["close with reservation", await last("case.closed", (e) => e.form === "erledigt_mit_vorbehalt" && e.text === "Deckung nochmals prüfen")]);
+  checks.push(["no «Erledigt» on a step with a letter", (await page.$("[data-close]")) === null]);
   out.push(`gestures (${(await events(D)).length - n0} events): ` + checks.map(([what, ok]) => `${what} ${ok ? "ok" : "MISSING"}`).join(" · "));
   const mine = await page.evaluate(() => document.body.innerText.includes("Ihre Änderungen"));
   await open(`/case/${D}/history`);

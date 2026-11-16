@@ -278,20 +278,25 @@ def letter_title(draft):
 
 
 def documents(draft, events, since=None):
-    """What goes out, each its own tab, with a tick once copied since the case was last prepared."""
+    """What goes out, each its own tab, with its state: «Entwurf», «freigegeben» or «versandt am …» (the approval and the
+    dispatch of its recipient, as completion.state left them in ``draft['tabs']``); ``copied``: its text copied since the
+    case was last prepared (measurement only, never a sending)."""
     if not draft:
         return []
     copied = {(e.get("also") or e.get("form")) for e in events or () if e.get("kind") == "letter.copied" and str(e.get("at") or "") >= str(since or "")}
+    tabs = draft.get("tabs") or {}
+    state = lambda kind: tabs.get(kind) or {"state": "entwurf", "label": "Entwurf"}
     out = []
     if draft.get("text"):
-        out.append({"kind": draft.get("form") or draft.get("kind"), "main": True, "title": letter_title(draft),
-                    "copied": (draft.get("form") or draft.get("kind")) in copied})
+        kind = draft.get("form") or draft.get("kind")
+        out.append({"kind": kind, "main": True, "title": letter_title(draft), "copied": kind in copied, **state(kind)})
     for a in draft.get("also") or ():
         if a.get("text"):
             title = a["title"]
             if a.get("template"):
                 title = re.sub(r"^Vorlage für Ihr Schreiben an ", "Vorlage an ", title)
-            out.append({"kind": a["kind"], "main": False, "title": title, "name": a.get("name"), "copied": a["kind"] in copied, "template": bool(a.get("template"))})
+            out.append({"kind": a["kind"], "main": False, "title": title, "name": a.get("name"), "copied": a["kind"] in copied, "template": bool(a.get("template")),
+                        **state(a["kind"])})
     twins = {t for t in (o["title"] for o in out) if sum(1 for o in out if o["title"] == t) > 1}
     for row in out:  # two templates to the same addressee: each by what it is («Vorlage: Einsprache gegen die Kündigung»)
         if row.get("template") and row.get("name") and row["title"] in twins:
@@ -332,10 +337,137 @@ def cover_line(items, stage, decided_by=None):
     return {"text": summary["value"].replace("Deckung: ", ""), "state": "open"}
 
 
+CHANGED_CHARS = 90  # «Was sich geändert hat» in one line
+AFTER = {"Deckung": "dem Deckungsentscheid", "Empfehlung": "dem Entscheid zur Empfehlung", "Erfolgsaussichten": "dem Entscheid zu den Erfolgsaussichten"}
+FROM_WORDS = {"Kundschaft": "der Kundschaft", "Gegenpartei": "der Gegenpartei", "Kanzlei": "der Kanzlei", "Gericht/Behörde": "des Gerichts oder der Behörde"}
+ENTRY_LINE = re.compile(r"^(\d{2}\.\d{2}\.\d{4}|ohne Datum) · (.+?) → (.+?) · ")
+
+
+def entries_line(entries):
+    """The new entries of the account in one line, as the handler first wants them: what came to Protekta, by sender and
+    day («2 Nachrichten der Kundschaft vom 05.09.2026»), then what was forwarded with it; None without entries."""
+    came, forwarded = {}, 0
+    for line in entries or ():
+        m = ENTRY_LINE.match(str(line))
+        if not m:
+            continue
+        day, sender, to = m.groups()
+        if to == "Protekta" and sender != "Protekta":
+            came.setdefault(sender, []).append(day)
+        elif sender != "Protekta":
+            forwarded += 1
+    parts = [f"{len(days)} {'Nachricht' if len(days) == 1 else 'Nachrichten'} {FROM_WORDS.get(who, 'von ' + who)} vom "
+             + " und ".join(dict.fromkeys(days)) for who, days in came.items()]
+    if forwarded:
+        parts.append(f"{forwarded} weitergeleitet{'e Nachricht' if forwarded == 1 else 'e Nachrichten'}")
+    return " · ".join(parts) or None
+
+
+def _one_line(lines, limit=CHANGED_CHARS):
+    """As many lines as fit in one line of ``limit`` characters, joined by « · »; the first one cut if it alone is longer."""
+    out = ""
+    for line in lines:
+        line = re.sub(r"\s+", " ", str(line)).strip()
+        if not line:
+            continue
+        joined = f"{out} · {line}" if out else line
+        if len(joined) <= limit:
+            out = joined
+        elif not out:
+            return line[:limit - 1].rstrip() + "…"
+        else:
+            break
+    return out or None
+
+
+def head_block(changes, assessment, completion, draft=None):
+    """The case head between «Weil» and the decision: what changed, what it means, and an approval that no longer holds;
+    None when there is nothing to say. Shown while the prepared run is newer than the case's last approval or dispatch
+    (``completion['fresh']``), while the approval is stale, or while a letter that went out rests on something that
+    changed since («versandt mit früherem Stand – prüfen»).
+
+    - ``changed``: «Was sich geändert hat: …», one line of at most 90 characters, the account's ledger lines first
+      (``changes['ledger']``, slice C) and the update's summary (``changes['update_summary']``), else the new entries in
+      one line (entries_line); then the entries and what the preparation changed; ``changed_all``: every line. (Slice C's
+      change line in «Der Fall» hides itself while ``changed`` is set.)
+    - ``meaning``: «Was das bedeutet: …»: for a reply to a letter that went out, what its evidence means (completion's
+      ``consequence``: the judgment it allows now, the remainder still owed, a refusal, an answer without evidence, or
+      nothing to the asks, so the wait goes on); otherwise from the assessment's summary, the decision still open and the
+      letter's state; ``meaning_all``: the details.
+    - ``stale``: «Freigabe veraltet: <Grund>», with what lies behind it (``stale_all``: the files that came, the elements a
+      jurist marked); ``reconcile``: the version to check after it went out, with what changed."""
+    done = completion or {}
+    last = done.get("last") or {}
+    after = last.get("consequence") or {}
+    stale = f"Freigabe veraltet: {done['stale'][0]}" if done.get("stale") and done.get("state") == "freigegeben" else None
+    stale_all = [f"{h['title']}: {h['mark']}" + (f" ({h['reviewer']})" if h.get("reviewer") else "") for h in done.get("held") or ()] if stale else []
+    stale_all += [f"neu in der Akte: {name}" for name in done.get("arrived") or ()] if stale else []
+    recheck = after.get("text") if after.get("kind") == "contradiction" else (
+        f"versandt mit früherem Stand – prüfen: {', '.join(last['stale'])}" if last.get("stale") else None)
+    if done.get("state") == "freigegeben" and not done.get("stale"):
+        recheck = None  # a newer letter is approved and holds: what it says governs
+    if not (done.get("fresh") or stale or recheck):
+        return None
+    ch = changes or {}
+    first = [] if ch.get("ledger") else [x for x in [entries_line(ch.get("entries"))] if x]  # the ledger (slice C) says it first where it is
+    summary_line = [ch["update_summary"]] if isinstance(ch.get("update_summary"), str) and ch.get("update_summary").strip() else []
+    every = first + list(ch.get("ledger") or []) + summary_line + list(ch.get("entries") or []) + [f"neu: {x}" for x in ch.get("added") or ()] \
+        + [f"geändert: {x}" for x in ch.get("changed") or ()] + [f"nicht mehr: {x}" for x in ch.get("removed") or ()]
+    summary = (assessment or {}).get("summary") or {}
+    counts = [f"{summary[k]} {w}" for k, w in (("answered", "Frage beantwortet" if summary.get("answered") == 1 else "Fragen beantwortet"),
+                                                ("conditional", "bedingt"), ("open", "offen"), ("check", "zu prüfen")) if summary.get(k)]
+    title = (draft or {}).get("title") or "Brief"
+    title = "Einschätzung" if str((draft or {}).get("kind") or "") == "A5" else title
+    until = done.get("waiting_until")
+    until = f"{until[8:10]}.{until[5:7]}.{until[:4]}" if until and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(until)) else until
+    details = []
+    kind = after.get("kind") if done.get("state") != "freigegeben" else None
+    if not (every or stale or recheck or kind in ("resolved", "partial", "refused", "unbelegt", "unrelated")):
+        return None  # a first preparation with nothing changed: the card says it already, no head to read
+    if recheck:
+        meaning = f"{recheck}; der Brief ging so hinaus, eine Korrektur wäre ein eigener Brief."
+        dotted = lambda iso: f"{iso[8:10]}.{iso[5:7]}.{iso[:4]}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(iso or "")) else str(iso or "")
+        details = [f"Versandt: {last.get('title') or 'Brief'} am " + ", ".join(dotted(d.get("date")) for d in last.get("dispatched") or ())]
+    elif kind == "resolved":
+        came = ", ".join(dict.fromkeys(j["ask"] for j in after.get("judgments") or () if j.get("ask")))
+        judged = ", ".join(dict.fromkeys(j["judgment"] for j in after.get("judgments") or () if j.get("judgment")))
+        ready = str(done.get("status") or "").endswith("vorbereitet")
+        meaning = (f"Eingegangen: {came}; jetzt zu beurteilen: {judged}; " + (f"{title} vorbereitet." if ready else "die Einschätzung ist zu ergänzen.")
+                   if judged else f"Eingegangen: {came}; {title} vorbereitet.")
+        details = [f"Beleg in: {j['file']}" for j in after.get("judgments") or () if j.get("file")]
+    elif kind == "partial":
+        meaning = f"Teilweise erfüllt: offen {', '.join(a.get('what') or '' for a in after.get('remainder') or ())}" + (f"; Wiedervorlage {until}." if until else ".")
+    elif kind == "refused":
+        meaning = f"{after['text']}; nichts mehr abzuwarten, ohne Beleg zu beurteilen."
+    elif kind == "unbelegt":
+        meaning = f"Antwort ohne Beleg – prüfen: {', '.join(last.get('unbelegt') or [])}."
+    elif kind == "unrelated":
+        meaning = f"Nichts zum Verlangten ({', '.join(last.get('asks') or []) or 'Rückmeldung'}); wartet weiter" + (f" bis {until}." if until else ".")
+    elif done.get("waits"):
+        meaning = f"{done['waits']}; {title} ist danach vorbereitet."
+    elif stale:
+        from .completion import swiss_day
+        at = swiss_day((done.get("approved") or {}).get("at"))
+        meaning = (f"{title} freigegeben" + (f" am {at[8:10]}.{at[5:7]}.{at[:4]}" if len(at) >= 10 else "")
+                   + ", gilt so nicht mehr: vor dem Versand prüfen und erneut freigeben.")
+    elif done.get("state") == "freigegeben":
+        meaning = f"{title} freigegeben, Versand offen."
+    else:
+        gaps = (done.get("bar") or {}).get("gaps") or 0
+        then = (f"kann nach {AFTER.get(done['decision'], 'dem Entscheid: ' + done['decision'])} freigegeben werden" if done.get("decision")
+                else f"noch {gaps} Lücke{'' if gaps == 1 else 'n'} zu füllen" if gaps else "kann freigegeben werden")
+        meaning = f"{title} vorbereitet" + (f" ({', '.join(counts)})" if counts else "") + f"; {then}."
+    details += [f"Vorschlag: {' · '.join(summary['proposal'])}"] if summary.get("proposal") else []
+    details += [f"Noch nachzureichen: {summary['residual']}"] if summary.get("residual") else []
+    return {"changed": _one_line(every), "changed_all": every, "meaning": meaning, "meaning_all": details, "stale": stale, "stale_all": stale_all,
+            "reconcile": last.get("version") if recheck else None}
+
+
 def build(items, draft, events, look, rule, stage=None, via=None, routing=None, since=None, decided_by=None, assessment=None, completion=None):
     """The screen model of one case: the card head and «Der Fall», each thing said once. ``assessment``: the decision brief
     (assessment.build), which the decision reads; ``completion``: where the prepared letter stands after the decision
-    (completion.state); not read yet."""
+    (completion.state), whose head (head_block: what changed, what it means, an approval that no longer holds) is the
+    card's ``head``."""
     act = next((i for i in items if i["kind"] == "next_action"), None) or {}
     head_lead = lead(items, look, rule, stage)
     reason = without_date(weil(items, via), (head_lead or {}).get("date")) or None
@@ -353,6 +485,7 @@ def build(items, draft, events, look, rule, stage=None, via=None, routing=None, 
     return {"title": (act.get("label") or {}).get("de") or act.get("value"), "weil": reason,
             "danach": [t.get("action") or t.get("title") for t in act.get("then") or () if t.get("action") or t.get("title")],
             "lead": head_lead, "decision": decision(items, draft, stage, routing, assessment=assessment), "progress": progress(items),
+            "head": (completion or {}).get("head"),
             "documents": documents(draft, events, since), "fristen": rows, "fristen_elsewhere": bool(head_lead or carried),
             "stand": stand, "lines": lines, "points": key_points(items, letter),
             "cover": cover_line(items, stage, decided_by),

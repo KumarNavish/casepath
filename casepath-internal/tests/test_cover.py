@@ -288,7 +288,13 @@ class FirstContactTests(unittest.TestCase):
         here = dict(segments=[self.LETTER], as_of=None, created="2026-11-13T09:12:00")
         self.assertNotIn("contact:erstkontakt", view(TENANT, history="A1 2026-11-16", **here)[1])
         self.assertNotIn("contact:erstkontakt", view(TENANT + [("handlung_a2", "2026-11-14", None)], **here)[1])
+        # Rewritten for SLICE_B B9: contact is a letter dispatched, or a copy by a browser before this release (no «measure»);
+        # a copy measured by this release's browser is no contact
         self.assertNotIn("contact:erstkontakt", view(TENANT, events=[{"kind": "letter.copied", "at": "2026-11-13T10:00:00"}], **here)[1])
+        self.assertIn("contact:erstkontakt", view(TENANT, events=[{"kind": "letter.copied", "at": "2026-11-13T10:00:00", "measure": True}], **here)[1])
+        sent = [{"kind": "action.approved", "version": "v1", "form": "A1", "recipients": [{"to": "kunde", "forms": ["A1"]}], "at": "2026-11-13T10:00:00"},
+                {"kind": "action.dispatched", "version": "v1", "recipient": "kunde", "date": "2026-11-13", "edit_id": "e1", "at": "2026-11-13T10:05:00"}]
+        self.assertNotIn("contact:erstkontakt", view(TENANT, events=sent, **here)[1])
         # a test cut looked at as of a day before it was made, and a whole old file uploaded for testing
         self.assertNotIn("contact:erstkontakt", view(TENANT, segments=[self.LETTER], as_of="2025-02-07", created="2026-11-13T09:12:00")[1])
         old = [{"date": "14.03.2024", "kind": "Schadenmeldung", "sender": "Lea Beispiel"}, {"date": "02.10.2025", "kind": "Brief", "sender": "Verwaltung"}]

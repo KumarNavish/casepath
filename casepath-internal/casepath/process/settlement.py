@@ -2,20 +2,24 @@
 
 Observed: once a settlement is reached, the handler records the agreed amount, asks the customer for bank details (in one
 file three to four times), chases the payout, confirms its receipt and closes. Each step here is a prepared action with
-its letter or the reason it has none, and a step done is not proposed again:
+its letter or the reason it has none, and a step completes only from evidence, never from a letter copied:
 
 1. Einigung festhalten: amount, who pays and by when, as the file states them (each with its source); the handler
    confirms (``vergleich_bestaetigt``).
-2. Bankverbindung erfragen: once. An IBAN of the customer already in the file (with its quote) is shown and not asked.
-3. Auszahlung ankündigen: the payment details to the other side, a copy to the customer.
-4. Zahlungseingang bestätigen: to the customer, from the payment the file shows (or asked, if it shows none).
-5. Dossier schliessen.
+2. Bankverbindung erfragen: done once the customer's IBAN is in the file or the account (or the payment came); a request
+   dispatched and not yet answered waits («Bankverbindung erfragt am … bis …») and is not sent again.
+3. Auszahlung ankündigen: the payment details to the other side, a copy to the customer; done once dispatched
+   («angekündigt am …») or once the payment came.
+4. Zahlungseingang bestätigen: done only when the payment is shown (the file or the account) and the confirmation to the
+   customer was dispatched. A payment instruction is not a payment.
+5. Dossier schliessen: «Zahlungseingang bestätigt» only when paid.
 
 Where the terms come from: ``agreement`` reads the offer and payment the file shows (the incoming items). The running
-account of the case, once another module keeps it, plugs in at one place: the ``account`` argument of ``agreement``
-(a dict with ``amount``, ``payer``, ``due`` and their ``citations``); what it states wins over the incoming items.
-Model-free.
+account of the case plugs in at one place: the ``account`` argument of ``agreement`` (``from_account``: amount, payer,
+due, paid and their ``citations``, and an IBAN the customer gave); what it states wins over the incoming items. A letter
+«went out» only as a dispatch the handler confirmed (completion.sent_letters). Model-free.
 """
+from datetime import timedelta
 import re
 
 from .clock import parse_date
@@ -49,11 +53,12 @@ PAYERS = {"kunde": "die Kundschaft", "versicherer": "Protekta", "kanzlei": "die 
 
 def from_account(ledger, facts=None):
     """The agreement as it stands in the case's running account (account.py), in the shape ``agreement`` takes: amount,
-    who pays (the other side by its name where the file states it), by when, whether paid, and its quotes; None without
-    an agreed term."""
+    who pays (the other side by its name where the file states it), by when, whether paid, and its quotes, with the IBAN
+    the customer gave in an entry of the account (``iban``); None without an agreed term or such an IBAN."""
     a = (ledger or {}).get("agreement")
+    iban = account_iban(ledger)
     if not a:
-        return None
+        return {"iban": iban} if iban else None
     payer = a.get("payer")
     name = ((facts or {}).get("gegenpartei") or "die Gegenpartei") if payer == "gegenpartei" else PAYERS.get(payer)
     payment = (ledger or {}).get("payment")
@@ -61,7 +66,26 @@ def from_account(ledger, facts=None):
             "citations": a.get("citations") or [], "paid": payment is not None,
             "paid_on": (payment or {}).get("date") or (payment or {}).get("entry_date"),
             # the handler entered the agreement: it is recorded by the handler, the first step of the sequence is done
-            "by_handler": bool(a.get("handler"))}
+            "by_handler": bool(a.get("handler")), **({"iban": iban} if iban else {})}
+
+
+def account_iban(ledger):
+    """An IBAN the customer gave in an entry of the account (its words or a quote of it, the checksum valid): {iban,
+    holder, file, page, quote}, or None."""
+    for e in reversed((ledger or {}).get("entries") or ()):
+        if e.get("from") != "kunde":
+            continue
+        quotes = [(c.get("file"), c.get("page"), str(c.get("quote") or "")) for k in ("citations",) for c in e.get(k) or ()]
+        quotes += [(c.get("file"), c.get("page"), str(c.get("quote") or "")) for x in e.get("answers") or () for c in x.get("citations") or ()]
+        quotes += [(e.get("file"), e.get("page"), str(e.get("what") or ""))]
+        for file_id, page, text in quotes:
+            for m in IBAN.finditer(text):
+                raw = m.group(1)
+                while raw and not _valid_iban(raw):
+                    raw = raw[:-1].rstrip()
+                if len(raw.replace(" ", "")) >= 15:
+                    return {"iban": raw, "holder": "Kundschaft", "file": file_id, "page": page, "quote": text[:160]}
+    return None
 
 
 def agreement(facts, rows=None, account=None):
@@ -129,9 +153,11 @@ def customer_iban(files, customer_name):
     return found
 
 
-def copied(events, form):
-    """Whether a letter of this form was copied (the browser logs the form it copied)."""
-    return any(e.get("kind") == "letter.copied" and form in (e.get("form"), e.get("also")) for e in events or ())
+def dispatched(events, form):
+    """The dispatches in force of a letter of this form, oldest first (completion.sent_letters: an approved version the
+    handler confirmed as sent, not undone); a letter copied is never one."""
+    from .completion import sent_letters
+    return [s for s in sent_letters(events) if form == s.get("form") or form in (s.get("also") or ())]
 
 
 def _day(value):
@@ -139,37 +165,57 @@ def _day(value):
     return d.strftime("%d.%m.%Y") if d else value
 
 
+def _plus(value, days):
+    d = parse_date(value)
+    return (d + timedelta(days=days)).isoformat() if d and days else None
+
+
 def state(facts, rows, files, events, customer_name=None, account=None):
-    """Where the sequence stands: {step, done: [ids], terms, iban}. A step done is never proposed again."""
+    """Where the sequence stands: {step, done: [ids], terms, iban, paid, asked, announced, confirmed}. A step is done only
+    on evidence: the agreement confirmed or entered by the handler, the customer's IBAN in the file or the account (or the
+    payment made), the payout announced by a dispatched letter (or the payment made), the receipt confirmed by a
+    dispatched letter once the payment is shown. ``asked``/``announced``/``confirmed``: the latest dispatch of the
+    step's letter (A11_iban, A11_auszahlung, A11_eingang)."""
     facts = facts or {}
     terms = agreement(facts, rows, account)
     iban = customer_iban(files, customer_name)
+    given = (account or {}).get("iban")
+    if not (iban and iban["holder"]) and given:  # an IBAN the customer gave in an entry of the account
+        iban = {**given, "holder": customer_name or given.get("holder")}
     paid = bool(facts.get("eingang_zahlung")) or facts.get("zahlung_erhalten") is True or bool(terms.get("paid"))
+    asked, announced, confirmed = (dispatched(events, f) for f in ("A11_iban", "A11_auszahlung", "A11_eingang"))
     done = []
     if facts.get("vergleich_bestaetigt") is True or terms.get("by_handler"):  # confirmed, or entered by the handler
         done.append("einigung")
-    if (iban and iban["holder"]) or copied(events, "A11_iban"):
+    if (iban and iban["holder"]) or paid:
         done.append("iban")
-    if copied(events, "A11_auszahlung") or paid:
+    if announced or paid:
         done.append("auszahlung")
-    if copied(events, "A11_eingang") or facts.get("zahlung_erhalten") is True:
+    if paid and confirmed:
         done.append("eingang")
     step = next((s for s in STEPS if s[0] not in done), STEPS[-1])
-    return {"step": step, "done": done, "terms": terms, "iban": iban, "paid": paid}
+    return {"step": step, "done": done, "terms": terms, "iban": iban, "paid": paid,
+            "asked": asked[-1] if asked else None, "announced": announced[-1] if announced else None, "confirmed": confirmed[-1] if confirmed else None}
 
 
 def planned(st, facts):
-    """The prepared action of the current step, in the shape items.build_items uses."""
+    """The prepared action of the current step, in the shape items.build_items uses. A step whose letter went out and
+    whose answer is still missing waits from that day (``since``), its reason saying what was asked and until when."""
     sid, kind, title, form, days = st["step"]
+    asked, announced, confirmed = st.get("asked"), st.get("announced"), st.get("confirmed")
     reason = {"einigung": "Einigung erzielt: Betrag, wer zahlt und bis wann aus der Akte festhalten"
                           + ("; von der Fallbearbeitung nicht bestätigt, bitte die Angaben prüfen" if (facts or {}).get("vergleich_bestaetigt") is False else ""),
-              "iban": "Einigung festgehalten; die Bankverbindung der Kundschaft fehlt in der Akte",
-              "auszahlung": "Einigung festgehalten" + ("; Bankverbindung laut Akte" if st["iban"] and st["iban"]["holder"] else
-                                                       "; Bankverbindung erfragt" if "iban" in st["done"] else ""),
-              "eingang": "Auszahlung angekündigt" + ("; Zahlung laut Akte eingegangen" if st["paid"] else "; Eingang bei der Kundschaft erfragen"),
+              "iban": (f"Bankverbindung erfragt am {_day(asked['date'])} bis {_day(_plus(asked['date'], days))}" if asked
+                       else "Einigung festgehalten; die Bankverbindung der Kundschaft fehlt in der Akte"),
+              "auszahlung": "Einigung festgehalten" + ("; Bankverbindung laut Akte" if st["iban"] and st["iban"]["holder"] else ""),
+              "eingang": ("Auszahlung angekündigt" + (f" am {_day(announced['date'])}" if announced else "")
+                          + ("; Zahlung laut Akte eingegangen" if st["paid"] else
+                             f"; Zahlungseingang erfragt am {_day(confirmed['date'])} bis {_day(_plus(confirmed['date'], days))}" if confirmed
+                             else "; Eingang bei der Kundschaft erfragen")),
               "abschluss": "Zahlungseingang bestätigt"}[sid]
+    waits = asked if sid == "iban" else confirmed if sid == "eingang" and not st["paid"] else None
     return {"kind": kind, "title": title, "form": form, "next_in_days": days, "follow_up": None, "skip_if": None, "reason": reason,
-            "settlement": sid}
+            "settlement": sid, **({"since": waits["date"]} if waits else {})}
 
 
 def lines(st):
