@@ -84,6 +84,13 @@ class Settings:
     reviewers: frozenset = frozenset()  # who may mark the legal content (CASEPATH_REVIEWERS); empty: every signed-in user
     volume: str | None = None
     speed_trials: tuple = ()  # named speed changes under trial (CASEPATH_SPEED_TRIALS); empty = today's behaviour
+    # The bounded update an upload starts by itself (CASEPATH_AUTO_UPDATE): off unless the deployment turns it on; only
+    # while the files the last preparation did not read have at most this many pages (CASEPATH_AUTO_UPDATE_MAX_PAGES);
+    # every update capped at this many tokens (CASEPATH_UPDATE_TOKEN_BUDGET, within the run's budget). A failed or capped
+    # update stops and waits for a person: it is never retried by itself.
+    auto_update: bool = False
+    auto_update_max_pages: int = 20
+    update_token_budget: int = 200_000
 
 
 def _flag(env, name, default):
@@ -141,6 +148,9 @@ def load_settings(env=None):
         run_workers=int(env.get("CASEPATH_RUN_WORKERS", "2")),
         page_image_side=int(env.get("CASEPATH_PAGE_IMAGE_SIDE", "1700")),
         run_token_budget=int(env.get("CASEPATH_RUN_TOKEN_BUDGET", "4000000")),
+        auto_update=_flag(env, "CASEPATH_AUTO_UPDATE", False),
+        auto_update_max_pages=int(env.get("CASEPATH_AUTO_UPDATE_MAX_PAGES", "20")),
+        update_token_budget=int(env.get("CASEPATH_UPDATE_TOKEN_BUDGET", "200000")),
         organisation=env.get("CASEPATH_ORGANISATION") or None,
         writing_language=env.get("CASEPATH_WRITING_LANGUAGE") or None,
         identity_format=identity_format,

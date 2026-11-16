@@ -31,11 +31,12 @@ TRAFFIC = [("rechtsgebiet", "Strafrecht, Ausweisentzug / Strassenverkehr"), ("st
            ("vorwurf", "Geschwindigkeitsüberschreitung von 32 km/h"), ("entzug_verfahren", True), ("beruflich", True)]
 
 
-def view(wid, facts, as_of, events=(), parties=None, decided=(), entries=None, documents=()):
-    """A case as the screen builds it, looked at on ``as_of``: (state, items, items by id, files)."""
+def view(wid, facts, as_of, events=(), parties=None, decided=(), entries=None, documents=(), segments=()):
+    """A case as the screen builds it, looked at on ``as_of``: (state, items, items by id, files); ``segments``: the
+    documents of its one file."""
     rows = [{"fact": f, "status": "established", "verdict": "accepted", "value": v, "citations": [{"file": "f1", "page": 1, "quote": f"zu {f}"}]}
             for f, v in facts]
-    files = [{"id": "f1", "name": "Akte.pdf", "extraction": {"cut_of": {"as_of": as_of}, "text": "[page 1]\nAkte", "segments": []}}]
+    files = [{"id": "f1", "name": "Akte.pdf", "extraction": {"cut_of": {"as_of": as_of}, "text": "[page 1]\nAkte", "segments": list(segments)}}]
     result = {"facts": rows, "documents": list(documents),
               "brief": {"request": "Der Kunde wehrt sich gegen einen Strafbefehl.", "timeline": [],
                         "parties": parties if parties is not None else [{"role": "Kundschaft (VN)", "name": "Lukas Beispiel"}]}}
@@ -155,11 +156,16 @@ class OneTruthTests(unittest.TestCase):
                    {"n": 2, "file": "f1", "page": 1, "date": "2025-02-19", "from": "kunde", "to": "versicherer", "kind": "unterlagen", "phone": False,
                     "what": "Unterlagen", "citations": [{"file": "f1", "page": 1, "quote": "im Anhang"}], "asks": [], "terms": [], "paid": [], "next": [],
                     "answers": [{"what": "Mietvertrag und Mängelrüge vom 3. Dezember 2024", "answers": 1, "citations": [{"file": "f1", "page": 1, "quote": "im Anhang"}]}]}]
-        state, items, listed, _ = view("mietmangel-handler", [("rechtsgebiet", "Mietrecht / Mangel")], "2025-03-01", entries=entries)
+        # Slice C (C10c): the reply's file holds both (its documents are named so); a word in the answer alone never delivers
+        held = [{"first_page": 1, "last_page": 1, "kind": "Vertrag", "title": "Mietvertrag"}, {"first_page": 1, "last_page": 1, "kind": "Brief", "title": "Mängelrüge"}]
+        state, items, listed, _ = view("mietmangel-handler", [("rechtsgebiet", "Mietrecht / Mangel")], "2025-03-01", entries=entries, segments=held)
         for need in ("mietvertrag", "maengelruege"):
             self.assertEqual(listed[f"document:{need}"]["status"], "present", need)
             self.assertIsNone(listed[f"document:{need}"]["ask"], need)
         self.assertNotIn("mietvertrag", [i["key"] for i in screen.missing(items, [])])
+        state, items, listed, _ = view("mietmangel-handler", [("rechtsgebiet", "Mietrecht / Mangel")], "2025-03-01", entries=entries)
+        self.assertNotEqual(listed["document:mietvertrag"]["status"], "present")  # «im Anhang» with nothing in the file that holds it
+        self.assertTrue(any("beigelegt, nicht in der Akte" in (r["answered"] or {}).get("unheld", "") for r in state["account"]["requests"]))
 
 
 class DeadlineTests(unittest.TestCase):
@@ -194,12 +200,16 @@ class DeadlineTests(unittest.TestCase):
     def test_a_run_stored_before_by_date_shows_its_open_dates_from_the_words(self):
         """Fault 2: a reply date in a settlement proposal and a period the firm set, kept only as words."""
         cite = [{"file": "f1", "page": 1, "quote": "x"}]
+        # Slice C (C10g): a date or an amount counts only where its element's quote writes it, so each quote here does
+        said = lambda quote: [{"file": "f1", "page": 1, "quote": quote}]
         entries = [{"n": 1, "file": "f1", "page": 1, "date": "2025-03-03", "from": "kanzlei", "to": "kunde", "kind": "anforderung", "phone": False,
                     "what": "Belege verlangt", "citations": cite, "answers": [], "terms": [], "paid": [], "next": [],
-                    "asks": [{"what": "Belege der Reparaturkosten", "of": "kunde", "by": "innert 14 Tagen", "repeats": None, "warns": False, "citations": cite}]},
+                    "asks": [{"what": "Belege der Reparaturkosten", "of": "kunde", "by": "innert 14 Tagen", "repeats": None, "warns": False,
+                              "citations": said("Bitte reichen Sie die Belege der Reparaturkosten innert 14 Tagen ein.")}]},
                    {"n": 2, "file": "f1", "page": 1, "date": "2025-03-10", "from": "gegenpartei", "to": "kanzlei", "kind": "angebot", "phone": False,
                     "what": "Vergleichsvorschlag", "citations": cite, "asks": [], "answers": [], "paid": [], "next": [],
-                    "terms": [{"what": "Vergleich", "amount": "CHF 800", "payer": "gegenpartei", "by": "30. April 2025", "agreed": False, "citations": cite}]},
+                    "terms": [{"what": "Vergleich", "amount": "CHF 800", "payer": "gegenpartei", "by": "30. April 2025", "agreed": False,
+                               "citations": said("Wir bieten zum Vergleich CHF 800 an und erwarten Ihre Antwort bis 30. April 2025.")}]},
                    {"n": 3, "file": "f1", "page": 1, "date": "2025-03-12", "from": "kanzlei", "to": "kunde", "kind": "anforderung", "phone": False,
                     "what": "Rückfrage", "citations": cite, "answers": [], "terms": [], "paid": [], "next": [],
                     "asks": [{"what": "Stellungnahme zum Vergleich", "of": "kunde", "by": "nach Rücksprache mit der Familie", "repeats": None, "warns": False, "citations": cite}]}]
@@ -305,7 +315,9 @@ class WhoAsksWhomTests(unittest.TestCase):
         self.assertEqual([r["what"] for r in account.open_items(acc, "kunde", account.OWED_TO_US)], ["Belege der Reparaturkosten"])
         stand = {line["label"]: line["text"] for line in account.stand(acc, date(2025, 3, 20), area.workflow("mietmangel-handler"))}
         self.assertNotIn("Schadenersatz", stand["Offen bei der Kundschaft"])
-        self.assertIn("Schadenersatz und Entfernungskosten", stand["Forderung der Gegenpartei"])
+        # Slice C (C10a): the combined demand is one row per item
+        self.assertTrue(stand["Forderung der Gegenpartei"].startswith("Schadenersatz · seit 20.01.2025"))
+        self.assertIn("; Entfernungskosten · seit 20.01.2025", stand["Forderung der Gegenpartei"])
         # every list a letter takes from the ledger: the check before an ending holds everything open at the customer, and the
         # letters take only what the insurer or the firm asked
         held = [{"kind": "check", "key": "androhung", "item_id": "check:androhung", "open_requests": account.open_items(acc, "kunde")}]

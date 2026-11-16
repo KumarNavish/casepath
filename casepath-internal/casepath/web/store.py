@@ -57,6 +57,7 @@ create table if not exists labels(
 """
 REVIEW_MARKS = ("geprueft", "aenderung", "frage")
 ACTIVE = ("queued", "running")
+INTERRUPTED = "interrupted: Der Dienst wurde neu gestartet, bevor der Lauf fertig war."
 
 
 def now():
@@ -73,6 +74,14 @@ class Conflict(RuntimeError):
 
 class NotFound(KeyError):
     pass
+
+
+class Duplicate(Conflict):
+    """A file whose bytes the case already holds: the file that holds them (its name, when it came, its id)."""
+
+    def __init__(self, name, created_at, file_id):
+        super().__init__(f"Bereits in der Akte: «{name}»")
+        self.name, self.created_at, self.file_id = name, created_at, file_id
 
 
 class CaseStore:
@@ -159,11 +168,17 @@ class CaseStore:
     def blob(self, digest):
         return (self.root / "files" / digest[:2] / digest).read_bytes()
 
-    def add_file(self, case_id, name, media_type, kind, data, extraction, user):
+    def add_file(self, case_id, name, media_type, kind, data, extraction, user, refuse_same=False):
+        """``refuse_same``: raise Duplicate when the case already holds these bytes (an upload); checked under the store
+        lock, so two uploads of one file at once keep one. Without it a file is kept as given (a study copy, a cut, a
+        prepared case: copied whole, also where an older store holds the same bytes twice; there is no unique index)."""
         self.get_case(case_id)
         digest = self.put_blob(data)
         file_id, at = new_id("file"), now()
         with self._lock:
+            same = self.file_by_sha(case_id, digest) if refuse_same else None
+            if same:
+                raise Duplicate(same["name"], same["created_at"], same["id"])
             self._db.execute("insert into files values(?,?,?,?,?,?,?,?,?,?)",
                              (file_id, case_id, name, media_type, kind, digest, len(data),
                               json.dumps(extraction, ensure_ascii=False), user, at))
@@ -258,12 +273,12 @@ class CaseStore:
         return seq
 
     def interrupt_unfinished(self):
-        """After a restart, say plainly that unfinished runs stopped."""
+        """After a restart, say plainly that unfinished runs stopped; the ids of those runs."""
         with self._lock:
             ids = [r["id"] for r in self._all(f"select id from runs where status in {ACTIVE}")]
             for run_id in ids:
                 self._db.execute("update runs set status='interrupted', error=?, finished_at=? where id=?",
-                                 ("The service restarted before this run finished.", now(), run_id))
+                                 (INTERRUPTED, now(), run_id))
         return ids
 
     # Knowledge: whole items, versioned by the knowledge module
@@ -485,3 +500,8 @@ class CaseStore:
     # -- completion (Slice B): the drafts per letter part, numbered edits, the dispatch ---------------------------------------
 
     # -- arrival (Slice C): files by their content -----------------------------------------------------------------------
+    def file_by_sha(self, case_id, sha):
+        """The case's first file with these bytes (SHA-256), or None: an upload of it again is refused, an attachment of
+        it skipped and remembered on its e-mail."""
+        row = self._one("select id from files where case_id=? and sha256=? order by created_at, rowid limit 1", case_id, sha)
+        return self.get_file(row["id"]) if row else None

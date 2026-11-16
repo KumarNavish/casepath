@@ -163,14 +163,33 @@
    "Body_upload_api_cases__case_id__files_post": {
     "properties": {
      "file": {
-      "format": "binary",
-      "title": "File",
-      "type": "string"
+      "anyOf": [
+       {
+        "format": "binary",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "File"
+     },
+     "files": {
+      "anyOf": [
+       {
+        "items": {
+         "format": "binary",
+         "type": "string"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Files"
      }
     },
-    "required": [
-     "file"
-    ],
     "title": "Body_upload_api_cases__case_id__files_post",
     "type": "object"
    },
@@ -902,7 +921,7 @@
   },
   "/api/cases/from-files": {
    "post": {
-    "description": "A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,\nand its preparation started at once.",
+    "description": "A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,\nand its preparation started at once; a file given twice is kept once («skipped»).",
     "operationId": "create_from_files_api_cases_from_files_post",
     "requestBody": {
      "content": {
@@ -1435,6 +1454,7 @@
   },
   "/api/cases/{case_id}/files": {
    "post": {
+    "description": "Files into a case as one deliberate import (``files``; ``file`` from older clients): each is stored, an e-mail's\nattachments as files of their own. A file the case already holds is refused before it is read and named in\n«skipped» (409 when every file is one), an attachment the case holds is skipped and remembered on its e-mail. Where\nthe deployment starts updates by itself (CASEPATH_AUTO_UPDATE), a prepared case then gets one bounded update of\nwhat came in; «auto» says so («gestartet») or why not («aus», «zu_gross», «lauf_aktiv», or why «Aktualisieren» is\nblocked). A file into a closed case reopens it. An older client's one ``file`` gets its row, these keys added.",
     "operationId": "upload_api_cases__case_id__files_post",
     "parameters": [
      {
@@ -1454,8 +1474,7 @@
         "$ref": "#/components/schemas/Body_upload_api_cases__case_id__files_post"
        }
       }
-     },
-     "required": true
+     }
     },
     "responses": {
      "201": {
@@ -1787,7 +1806,7 @@
   },
   "/api/cases/{case_id}/report.docx": {
    "get": {
-    "description": "The case report for the case file: what the last prepared run found, each finding with its source.",
+    "description": "The case report for the case file: what the last prepared run found, each finding with its source. After an\nupdate the result checker's fields stand under the full preparation's date; the letter is the one the case shows.",
     "operationId": "report_docx_api_cases__case_id__report_docx_get",
     "parameters": [
      {
@@ -2090,6 +2109,7 @@
   },
   "/api/edits/{edit_id}/undo": {
    "post": {
+    "description": "Undo a correction: everything that follows from the case's state follows back (the package's before and after);\nwhat already left CasePath cannot be undone and is named (``limits``).",
     "operationId": "undo_api_edits__edit_id__undo_post",
     "parameters": [
      {
@@ -2419,6 +2439,7 @@
   },
   "/api/knowledge/{knowledge_id}/activate": {
    "post": {
+    "description": "«Freigeben»: only an item whose replay is of its current version and, for a refinement, of the version of the\nitem it refines as it is now; it then applies exactly the transformation the replay applied (activation).",
     "operationId": "activate_api_knowledge__knowledge_id__activate_post",
     "parameters": [
      {
@@ -2462,6 +2483,44 @@
      }
     },
     "summary": "Activate"
+   }
+  },
+  "/api/knowledge/{knowledge_id}/replay": {
+   "post": {
+    "description": "«Nachspielen»: the item's current version applied to every prepared case without a model; what it would change\nis kept on the item, and only then can it be activated («Freigeben»).",
+    "operationId": "replay_knowledge_api_knowledge__knowledge_id__replay_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "knowledge_id",
+      "required": true,
+      "schema": {
+       "title": "Knowledge Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Replay Knowledge"
    }
   },
   "/api/knowledge/{knowledge_id}/retire": {
@@ -2975,6 +3034,7 @@
   },
   "/api/runs/{run_id}/draft.docx": {
    "get": {
+    "description": "The result checker's reply draft of a full preparation; an update inherited it (409).",
     "operationId": "draft_docx_api_runs__run_id__draft_docx_get",
     "parameters": [
      {

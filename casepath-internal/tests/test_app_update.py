@@ -161,6 +161,8 @@ class UpdateServiceTests(Service):
         self.assertEqual((view["prepared_run"]["id"], view["new_files"]), (base["id"], ["Zwischenhonorar.txt"]))
         listed = next(c for c in self.client.get("/api/cases").json()["cases"] if c["id"] == case["id"])
         self.assertEqual(listed["stand"]["kind"], "arrived")  # not «nicht vorbereitet»: a run set aside does not count
+        # Slice C (C5): the case view's status too, from the run it built on, as the list (it read «nicht vorbereitet» before)
+        self.assertEqual(view["status"]["kind"], "arrived")
 
     def test_trotzdem_verwenden_unblocks_the_draft_until_another_file_comes(self):
         case, _ = self.prepared_case()

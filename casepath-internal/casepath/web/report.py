@@ -3,6 +3,11 @@
 Everything in it comes from the case's last prepared run and its current process: where the case stands, the summary,
 deadlines, the document checklist and the accepted facts, each with the exact passage and page it rests on, the open
 points, the Knowledge used and the reply draft. It is marked as AI-assisted and still to be reviewed.
+
+After an update («Aktualisieren») the result checker's fields (the short assessment, its summary, the open points and the
+reply draft) are the full preparation's: they stand only under «Stand der vollständigen Vorbereitung vom …, vor n neuen
+Dokumenten», and the head says «Vorbereitet am … · aktualisiert am …». The letter the case prepares now comes from the same
+state the screen shows (``current``); once approved, the approved package (``package``, Slice B) is the one in the report.
 """
 import io
 import zipfile
@@ -22,7 +27,9 @@ LABELS = {
            "accepted": "belegt", "rejected": "nicht belegt", "not_checked": "nicht geprüft", "conflicting": "widersprüchlich",
            "yes": "ja", "no": "nein", "used": "genutzt", "suggested": "vom Wissen vorgeschlagen", "optional": "freiwillig",
            "depends": "hängt von einer offenen Antwort ab", "obtain": "Einholen", "resolve": "Nicht erfüllt", "ask": "Klären",
-           "attached": "Anhang von", "scanned": "gescannte Seiten vom Modell gelesen", "pages": "Seiten", "page_one": "Seite", "by_law": "nach Gesetz verlangt:", "not_prepared": "Der Fall ist noch nicht vorbereitet."},
+           "attached": "Anhang von", "scanned": "gescannte Seiten vom Modell gelesen", "pages": "Seiten", "page_one": "Seite", "by_law": "nach Gesetz verlangt:", "not_prepared": "Der Fall ist noch nicht vorbereitet.",
+           "updated": "aktualisiert am", "stale": "Stand der vollständigen Vorbereitung vom {date}, vor {n} neuen Dokumenten",
+           "letter": "Vorbereiteter Brief (Entwurf, nicht freigegeben)", "approved": "Freigegebener Brief", "to": "An", "approved_by": "Freigegeben von"},
     "en": {"title": "Case report", "notice": "Prepared with CasePath's AI assistance. Every finding names the passage it rests on. "
            "Qualified review is still required; nothing was sent.", "case": "Case", "prepared": "Prepared on", "process": "Process",
            "position": "Where the case stands", "end": "End of the process", "current": "Current step", "waiting": "Waiting for", "next": "Next steps",
@@ -34,7 +41,9 @@ LABELS = {
            "accepted": "supported", "rejected": "not supported", "not_checked": "not checked", "conflicting": "conflicting",
            "yes": "yes", "no": "no", "used": "used", "suggested": "suggested by Knowledge", "optional": "optional",
            "depends": "depends on an open answer", "obtain": "Obtain", "resolve": "Not met", "ask": "Answer",
-           "attached": "Attached to", "scanned": "scanned pages read by the model", "pages": "pages", "page_one": "page", "by_law": "required by law:", "not_prepared": "The case is not prepared yet."},
+           "attached": "Attached to", "scanned": "scanned pages read by the model", "pages": "pages", "page_one": "page", "by_law": "required by law:", "not_prepared": "The case is not prepared yet.",
+           "updated": "updated on", "stale": "As of the full preparation of {date}, before {n} new documents",
+           "letter": "Prepared letter (draft, not approved)", "approved": "Approved letter", "to": "To", "approved_by": "Approved by"},
 }
 
 
@@ -90,12 +99,21 @@ def _value(value, L):
     return L["yes"] if value is True else L["no"] if value is False else L["none"] if value is None else str(value)
 
 
-def build(case, state, files, lang="de", knowledge=()):
-    """The report as .docx bytes. ``state``: the case state (process, evaluation, run with its result)."""
+def _day(value):
+    """«2026-09-05…» → «05.09.2026»."""
+    text = str(value or "")[:10]
+    return f"{text[8:10]}.{text[5:7]}.{text[:4]}" if len(text) == 10 and text[4] == "-" else text
+
+
+def build(case, state, files, lang="de", knowledge=(), current=None, package=None):
+    """The report as .docx bytes. ``state``: the case state (process, evaluation, run with its result). ``current``: the
+    letter the case prepares now, as the screen shows it ({title, to, text}); ``package``: the approved package ({title,
+    to, text, by, at}, Slice B), which then stands in its place."""
     L = LABELS.get(lang, LABELS["de"])
     run = state.get("run") or {}
     result = run.get("result") or {}
     names = {f["id"]: f["name"] for f in files}
+    since = result.get("stale_since")  # an update: the result checker's fields are the full preparation's
 
     def where(citation):
         page = f", {L['page']} {citation['page']}" if citation.get("page") else ""
@@ -103,7 +121,9 @@ def build(case, state, files, lang="de", knowledge=()):
     body = [_para(_run(f"{L['title']}: {case['title']}", bold=True, size=36)),
             _para(_run(L["notice"], italic=True, size=18, color="61636B"))]
     meta = [f"{L['case']}: {case['id'][-8:].upper()}"]
-    if run.get("finished_at"):
+    if since and since.get("prepared_at"):
+        meta.append(f"{L['prepared']} {_day(since['prepared_at'])} · {L['updated']} {_day(run.get('finished_at'))}")
+    elif run.get("finished_at"):
         meta.append(f"{L['prepared']}: {str(run['finished_at'])[:10]}")
     if state.get("workflow"):
         meta.append(f"{L['process']}: {state['workflow'].get('title', state['workflow'].get('id'))}")
@@ -158,15 +178,35 @@ def build(case, state, files, lang="de", knowledge=()):
                  "\n".join(where(c) for c in f.get("citations", [])) or L["none"]] for f in facts]
         body.append(_table([L["question"], L["answer"], L["checked"], L["source"]], rows, [2600, 1500, 1200, 4338]))
 
+    letter = package or current
+    if letter and letter.get("text"):  # the letter as it stands now (approved: the package), from the state the screen shows
+        body.append(_heading(L["approved"] if package else L["letter"]))
+        head = [f"{L['to']}: {letter['to']}" if letter.get("to") else "", letter.get("title") or "",
+                f"{L['approved_by']} {letter['by']}, {_day(letter.get('at'))}" if package and letter.get("by") else ""]
+        if any(head):
+            body.append(_para(_run(" · ".join(x for x in head if x), size=18, color="61636B")))
+        body += [_para(_run(part)) for part in str(letter["text"]).split("\n\n")]
+    checked = []  # the result checker's open points and short assessment
     if result.get("open_points"):
-        body.append(_heading(L["open"]))
-        body += [_para(_run(f"• {point}"), space_after=40) for point in result["open_points"]]
+        checked.append(_heading(L["open"]))
+        checked += [_para(_run(f"• {point}"), space_after=40) for point in result["open_points"]]
     if result.get("answer") or result.get("summary"):
-        body.append(_heading(L["assessment"]))
+        checked.append(_heading(L["assessment"]))
         if result.get("answer"):
-            body.append(_para(_run(result["answer"], bold=True)))
+            checked.append(_para(_run(result["answer"], bold=True)))
         if result.get("summary"):
-            body.append(_para(_run(result["summary"])))
+            checked.append(_para(_run(result["summary"])))
+    reply, drafted = result.get("reply") or {}, []
+    if reply.get("needed") and reply.get("clauses"):
+        drafted.append(_heading(L["reply"]))
+        if reply.get("subject"):
+            drafted.append(_para(_run(reply["subject"], bold=True)))
+        drafted += [_para(_run(c["text"])) for c in reply["clauses"]]
+    if since and (checked or drafted):  # under the full preparation's title only, never as the case's current word
+        body.append(_heading(L["stale"].format(date=_day(since.get("prepared_at")), n=since.get("files") or 0)))
+        body += [x.replace('color="82072A"', 'color="61636B"') for x in checked + drafted]
+    elif not since:
+        body += checked
 
     applied = [k for k in ((state.get("provenance") or {}).get("knowledge") or []) if k.get("applied")]
     if applied:
@@ -177,12 +217,8 @@ def build(case, state, files, lang="de", knowledge=()):
             title = content.get("title") or content.get("question") or content.get("text") or k["item"]
             body.append(_para(_run(f"• {title} — v{k.get('version', '?')} {L['used']}"), space_after=40))
 
-    reply = result.get("reply") or {}
-    if reply.get("needed") and reply.get("clauses"):
-        body.append(_heading(L["reply"]))
-        if reply.get("subject"):
-            body.append(_para(_run(reply["subject"], bold=True)))
-        body += [_para(_run(c["text"])) for c in reply["clauses"]]
+    if not since:  # the reply draft keeps its place after the Knowledge used
+        body += drafted
 
     body.append(_heading(L["files"]))
     for f in files:

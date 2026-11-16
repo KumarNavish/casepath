@@ -46,8 +46,8 @@ from ..quality.auswertung import auswertung
 
 SERVED_WHOLE_BYTES = 15 * 1024 * 1024  # the Databricks Apps proxy fails on responses of about 18 MB (measured 2026-11-11)
 from ..read.extract import attachments, extract
-from ..agents.runner import RunService, case_state
-from .store import CaseStore, Conflict, NotFound
+from ..agents.runner import RunService, TooLarge, auto_update_reason, case_state
+from .store import CaseStore, Conflict, Duplicate, NotFound
 
 UI = Path(__file__).parent / "ui"
 CONTRACT = Path(__file__).parents[2] / "docs" / "contracts" / "case-api.openapi.json"
@@ -269,7 +269,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     runs = RunService(store, catalogue, model_factory or default_model_factory(settings), max_workers=settings.run_workers,
                       reading_workers=settings.reading_workers, page_image_side=settings.page_image_side,
                       token_budget=settings.run_token_budget, speed_trials=settings.speed_trials,
-                      voice={"organisation": settings.organisation, "writing": settings.writing_language})
+                      voice={"organisation": settings.organisation, "writing": settings.writing_language},
+                      auto_update=settings.auto_update, auto_update_max_pages=settings.auto_update_max_pages,
+                      update_token_budget=settings.update_token_budget, model_as_user=bool(settings.model and settings.model.auth == "user"))
 
     @asynccontextmanager
     async def lifespan(_):
@@ -359,8 +361,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     incoming = f"{settings.volume.rstrip('/')}/incoming" if settings.volume else None
 
-    def add_with_attachments(case_id, name, declared, data, who):
-        """Add the file to the case; an e-mail's attachments become files of the case too, each noting its e-mail."""
+    def add_with_attachments(case_id, name, declared, data, who, skipped=None):
+        """Add the file to the case; an e-mail's attachments become files of the case too, each noting its e-mail. A file
+        whose bytes the case already holds is refused before it is read (Duplicate); an attachment the case already holds
+        is skipped before it is read, named in ``skipped`` and remembered on its e-mail (``extraction.same_as``: the files
+        that hold it), so the account counts that file as delivered with the e-mail."""
         import mimetypes
 
         def read(file_name, kind, payload):
@@ -369,16 +374,40 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 result["text"] = result["text"][:settings.max_text_chars]
                 result["note"] = ((result["note"] + " ") if result["note"] else "") + "Only the first part of the text is used."
             return result
+        same = store.file_by_sha(case_id, hashlib.sha256(data).hexdigest())
+        if same:
+            raise Duplicate(same["name"], same["created_at"], same["id"])
         result = read(name, declared, data)
-        row = store.add_file(case_id, name, result["media_type"], result["kind"], data, result, who)
-        added = []
+        row = store.add_file(case_id, name, result["media_type"], result["kind"], data, result, who, refuse_same=True)
+        added, same_as = [], []
         for attached_name, payload in (attachments(name, declared, data) if result["kind"] == "email" else []):
             if not payload or len(payload) > settings.max_upload_bytes:
                 continue
-            inner = read(attached_name, mimetypes.guess_type(attached_name)[0] or "application/octet-stream", payload)
-            inner["attached_to"] = name
-            added.append(store.add_file(case_id, attached_name, inner["media_type"], inner["kind"], payload, inner, who)["id"])
+            held = store.file_by_sha(case_id, hashlib.sha256(payload).hexdigest())
+            try:
+                if held:
+                    raise Duplicate(held["name"], held["created_at"], held["id"])
+                inner = read(attached_name, mimetypes.guess_type(attached_name)[0] or "application/octet-stream", payload)
+                inner["attached_to"] = name
+                added.append(store.add_file(case_id, attached_name, inner["media_type"], inner["kind"], payload, inner, who, refuse_same=True)["id"])
+            except Duplicate as kept:
+                same_as.append(kept.file_id)
+                if skipped is not None:
+                    skipped.append({"name": attached_name, "same_as": kept.file_id, "in_case": kept.name, "at": kept.created_at, "attachment": name})
+        if same_as:
+            row = store.update_extraction(row["id"], {**store.get_file(row["id"], True)["extraction"], "same_as": list(dict.fromkeys(same_as))})
         return {**row, "attachments": added} if added else row
+
+    def already(skipped):
+        """«Bereits in der Akte: «Antwort.eml» vom 05.09.2026»: a file the case holds, by the name it has there and the day it
+        came (Swiss time)."""
+        when = str(skipped.get("at") or "")
+        try:
+            from zoneinfo import ZoneInfo
+            when = datetime.fromisoformat(when).astimezone(ZoneInfo("Europe/Zurich")).date().isoformat()
+        except Exception:  # noqa: BLE001  without the time zone data: the stored day
+            when = when[:10]
+        return f"Bereits in der Akte: «{skipped.get('in_case') or skipped.get('name')}» vom {account.day(when) or when}"
     uploads_from_bytes = True  # loose PDFs are read by pypdf where installed, else by CasePath's own reader (pdfread)
 
     summaries = {}
@@ -461,8 +490,13 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             if workflow is None:
                 raise HTTPException(404, "No such workflow.")
             store.select_workflow(case["id"], workflow["id"], workflow["version"], who)
-        added = await run_in_threadpool(add_with_attachments, case["id"], name, mimetypes.guess_type(name)[0] or "application/octet-stream", data, who)
-        return {"case": store.get_case(case["id"]), "file": added}
+        skipped = []  # an attachment whose bytes the case already holds (the e-mail itself, an earlier attachment): skipped
+        try:
+            added = await run_in_threadpool(add_with_attachments, case["id"], name, mimetypes.guess_type(name)[0] or "application/octet-stream",
+                                            data, who, skipped)
+        except Duplicate as same:  # the target case holds these bytes: refused
+            raise HTTPException(409, already({"name": name, "in_case": same.name, "at": same.created_at})) from None
+        return {"case": store.get_case(case["id"]), "file": added, "skipped": skipped}
 
     @app.get("/api/me")
     def me(who=Depends(user)):
@@ -501,13 +535,16 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return action, options, forms
 
     def _list_run_inputs(row):
-        """A row of the case list and its runs: the run its items are built from (``run``, None when there is none to build
-        from), the case's files, the files that run did not read, and what the status reads of the case's runs
-        (``run_status``, ``run_kind``)."""
-        completed = store.latest_run(row["id"], "completed") if row.get("run_status") == "completed" else None
+        """A row of the case list and its runs: the run its items are built from (``run``: the latest completed run, also
+        when a later run failed, was interrupted or runs, so the row keeps «Als Nächstes», «Fällig» and its new files;
+        None when there is none), the case's files, the files that run did not read, and the latest run that was not set
+        aside, whose status and kind the status reads (``run_status``, ``run_kind``: a failed or interrupted update is
+        «Fehlgeschlagen», a stopped full run «angehalten»)."""
+        completed = store.latest_run(row["id"], "completed")
+        latest = store.latest_run(row["id"], exclude="discarded")
         case_files = store.list_files(row["id"])
         return {"run": completed, "files": case_files, "new_files": len(core.unread(case_files, completed)) if completed else 0,
-                "run_status": row.get("run_status"), "run_kind": None}
+                "run_status": (latest or {}).get("status"), "run_kind": (latest or {}).get("kind")}
 
     def _list_completion(row, current, listed, events, files):
         """Where the prepared letter of a row stands after the decision, for its status (Slice B: completion.state(...));
@@ -607,6 +644,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         blocked = core.update_blocked(current["case"], files, prepared)
         update = {"available": blocked is None, "reason": blocked[0] if blocked else None, "text": blocked[1] if blocked else None,
                   "needs_full": bool(blocked) and blocked[0] == "full_needed" and bool(arrived)}
+        if arrived and not study:  # why the update did not start by itself, for «Aktualisieren»'s title (runner.auto_update_reason)
+            update.update(auto=auto_update_reason(store, case_id, settings.auto_update_max_pages) if settings.auto_update else "aus",
+                          max_pages=settings.auto_update_max_pages)
         newest = max((str(f["added"] or "") for f in arrived), default="")
         stale = bool(arrived) and not any(e["kind"] == "letter.unblocked" and str(e.get("at") or "") >= newest for e in logged or ())
         changes = None
@@ -620,10 +660,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                       for f in [k["fact"], *(k.get("earlier") or [])]}  # what came in, by its kind's title
             changes = item_changes(build_items(before_state, before_run.get("result"), files, logged, marks), listed, titles)
             if done[0].get("kind") == "update":  # the account's new entries, one line each, as the Verlauf shows them
-                added = {str(n) for n in ((done[0].get("result") or {}).get("update") or {}).get("entries") or ()}
+                done_update = (done[0].get("result") or {}).get("update") or {}
+                added = {str(n) for n in done_update.get("entries") or ()}
                 changes["entries"] = [f"{account.day(i.get('date')) or 'ohne Datum'} · {i.get('from_title')} → {i.get('to_title')} · "
                                       f"{(i.get('label') or {}).get('de')}: {i.get('value')}" for i in listed if i["kind"] == "entry" and i["key"] in added]
-        run_now = store.latest_run(case_id)  # the status the case list shows for it, from the same function and the same inputs
+                # how the reply was matched (C7): what the update's entries closed, refused, left partial, promised or opened
+                changes["ledger"] = list((done_update.get("ledger") or {}).get("lines") or [])
+                changes["update_summary"] = done_update.get("summary")
+                changes["updated_at"] = done[0].get("finished_at")
+        # the status the case list shows for it, from the same function and the same inputs: a run set aside (a stopped
+        # update, a discarded pause) does not count, so the case shows the run it built on, as the list does
+        run_now = store.latest_run(case_id, exclude="discarded")
         return {"new_files": new_files, "arrived": arrived, "update": update, "draft_stale": stale, "changes": changes}, run_now
 
     def _assessment_view(current, completed, listed, files, events, marks):
@@ -673,7 +720,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         status = listing.stand(closed=closed, run_status=(run_now or {}).get("status"), new_files=len(arrival["arrived"]) if prepared else 0,
                                items=listed if (run_now or {}).get("status") == "completed" else [], follow_up=(clock or {}).get("due"),
                                events=events, completed_at=(prepared or {}).get("created_at"), files=files, historic=historic,
-                               run_kind=None, completion=done.get("completion"))
+                               run_kind=(run_now or {}).get("kind"), completion=done.get("completion"))
         stage = ((current.get("evaluation") or {}).get("current") or {})
         cover_edit = next((e for e in reversed(store.list_edits(case_id)) if e.get("op") == "set_fact" and (e.get("args") or {}).get("fact") == "deckung"), None)
         model = screen.build(listed, draft, events, as_of(files), (current.get("process") or {}).get("urgent"), stage=stage.get("step"),
@@ -935,19 +982,56 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     uploads = bool(importlib.util.find_spec("python_multipart") or importlib.util.find_spec("multipart"))
 
-    async def upload(case_id: str, file: UploadFile = File(...), who=Depends(user)):
+    async def upload(case_id: str, request: Request, files: list[UploadFile] | None = File(None), file: UploadFile | None = File(None),
+                     who=Depends(user)):
+        """Files into a case as one deliberate import (``files``; ``file`` from older clients): each is stored, an e-mail's
+        attachments as files of their own. A file the case already holds is refused before it is read and named in
+        «skipped» (409 when every file is one), an attachment the case holds is skipped and remembered on its e-mail. Where
+        the deployment starts updates by itself (CASEPATH_AUTO_UPDATE), a prepared case then gets one bounded update of
+        what came in; «auto» says so («gestartet») or why not («aus», «zu_gross», «lauf_aktiv», or why «Aktualisieren» is
+        blocked). A file into a closed case reopens it. An older client's one ``file`` gets its row, these keys added."""
         found(store.get_case, case_id)
-        data = await file.read(settings.max_upload_bytes + 1)
-        if len(data) > settings.max_upload_bytes:
-            raise HTTPException(413, f"Files up to {settings.max_upload_bytes // (1024 * 1024)} MB are accepted.")
-        if not data:
+        received = []
+        for given in list(files or []) + ([file] if file is not None else []):
+            data = await given.read(settings.max_upload_bytes + 1)
+            if len(data) > settings.max_upload_bytes:
+                raise HTTPException(413, f"Files up to {settings.max_upload_bytes // (1024 * 1024)} MB are accepted.")
+            if data:
+                received.append((Path(given.filename or "file").name[:255], given.content_type, data))
+        if not received:
             raise HTTPException(422, "The file is empty.")
-        name = Path(file.filename or "file").name[:255]
-        return await run_in_threadpool(add_with_attachments, case_id, name, file.content_type, data, who)  # a large PDF must not block the server
+        rows, skipped = [], []
+        for name, declared, data in received:  # a large PDF must not block the server
+            try:
+                rows.append(await run_in_threadpool(add_with_attachments, case_id, name, declared, data, who, skipped))
+            except Duplicate as same:
+                skipped.append({"name": name, "same_as": same.file_id, "in_case": same.name, "at": same.created_at})
+        if not rows:
+            raise HTTPException(409, "; ".join(already(s) for s in skipped))
+        closing = next((e["kind"] for e in reversed(store.list_case_events(case_id)) if e["kind"] in ("case.closed", "case.reopened")), None)
+        if closing == "case.closed":  # what arrives after closing reopens the case (its letter, its date, its status follow)
+            record(case_id, who, "case.reopened", file=rows[0]["id"], files=[r["id"] for r in rows])
+        run, auto = None, "aus"
+        if settings.auto_update:
+            auto = auto_update_reason(store, case_id, settings.auto_update_max_pages) or "gestartet"
+            if auto == "gestartet":
+                try:  # the files it reads are admitted now, within the cap: a file coming later waits for the next update
+                    run = runs.update(case_id, who, model_token(request), auto=True, budget=settings.update_token_budget,
+                                      max_pages=settings.auto_update_max_pages)
+                except HTTPException:  # the model is called as the person, who must sign in again: «Aktualisieren» stays
+                    auto = "anmelden"
+                except TooLarge:  # another upload added pages a moment before
+                    auto = "zu_gross"
+                except Conflict:  # another upload started one a moment before
+                    auto = "lauf_aktiv"
+                else:
+                    record(case_id, who, "update.started", auto=True, run=run["id"])
+        out = {"files": rows, "skipped": skipped, "run": run, "auto": auto}
+        return {**rows[0], **out} if file is not None and not files else out
 
     async def create_from_files(request: Request, files: list[UploadFile] = File(...), who=Depends(user)):
         """A new case from its files in one gesture: named from the first e-mail's subject or the first file's name,
-        and its preparation started at once."""
+        and its preparation started at once; a file given twice is kept once («skipped»)."""
         received = []
         for file in files:
             data = await file.read(settings.max_upload_bytes + 1)
@@ -958,7 +1042,12 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if not received:
             raise HTTPException(422, "The files are empty.")
         case = store.create_case(Path(received[0][0]).stem[:300] or "Neuer Fall", {"source": "upload"}, who)
-        rows = [await run_in_threadpool(add_with_attachments, case["id"], name, declared, data, who) for name, declared, data in received]
+        rows, skipped = [], []
+        for name, declared, data in received:
+            try:
+                rows.append(await run_in_threadpool(add_with_attachments, case["id"], name, declared, data, who, skipped))
+            except Duplicate as same:
+                skipped.append({"name": name, "same_as": same.file_id, "in_case": same.name, "at": same.created_at})
         mails = [r for r in rows if r.get("kind") == "email"]
         subject = _headers(store.get_file(mails[0]["id"], True)["extraction"].get("text", "")).get("Subject", "").strip() if mails else ""
         if subject:
@@ -967,7 +1056,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             run = runs.start(case["id"], who, model_token(request))
         except Conflict:
             run = None
-        return {"case": store.get_case(case["id"]), "files": rows, "run": run}
+        return {"case": store.get_case(case["id"]), "files": rows, "skipped": skipped, "run": run}
 
     if uploads:  # a runtime without the form parser serves prepared cases only (imported from the volume)
         app.post("/api/cases/{case_id}/files", status_code=201)(upload)
@@ -1152,27 +1241,101 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             record(run["case_id"], who, kind, item_id=target, **({"reason": body.reason_code or "none", "note_present": bool(body.note)} if kind == "item.corrected" else {}))
         return {"feedback": listed}
 
+    def _report_package(case_id, view):
+        """The approved package the exports serve once the letter is approved ({title, to, text, by, at}; Slice B fills
+        this from its stored bundle); None so far."""
+        return None
+
     @app.get("/api/cases/{case_id}/report.docx")
     def report_docx(case_id: str, lang: str = "de", who=Depends(user)):
-        """The case report for the case file: what the last prepared run found, each finding with its source."""
+        """The case report for the case file: what the last prepared run found, each finding with its source. After an
+        update the result checker's fields stand under the full preparation's date; the letter is the one the case shows."""
         from .report import build
 
         current = state(case_id)
+        view = get_case(case_id, who) if current.get("run") else {}
+        draft = view.get("draft") or {}
+        shown = {"title": draft.get("title"), "to": draft.get("to"), "text": draft.get("text")} if draft.get("text") else None
         data = build(current["case"], current, store.list_files(case_id), lang=lang if lang in ("de", "en") else "de",
-                     knowledge=store.list_knowledge())
+                     knowledge=store.list_knowledge(), current=shown, package=_report_package(case_id, view))
         name = "Fallbericht.docx" if lang != "en" else "Case-report.docx"
         return Response(data, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                         headers={"Content-Disposition": f"attachment; filename={name}", "Cache-Control": "private, no-store"})
 
     @app.get("/api/runs/{run_id}/draft.docx")
     def draft_docx(run_id: str, who=Depends(user)):
+        """The result checker's reply draft of a full preparation; an update inherited it (409)."""
         run = found(store.get_run, run_id)
         reply = ((run.get("result") or {}).get("reply")) or {}
         if not reply.get("clauses"):
             raise HTTPException(404, "This run has no draft.")
+        if (run.get("result") or {}).get("stale_since"):
+            raise HTTPException(409, "Der Entwurf stammt aus einer früheren Vorbereitung")
         data = _docx(reply.get("subject") or "Entwurf", [c["text"] for c in reply["clauses"]])
         return Response(data, media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                         headers={"Content-Disposition": "attachment; filename=Entwurf.docx", "Cache-Control": "private, no-store"})
+
+    # One correction repairs the whole package (C9): what the handler reviews is the difference, not the whole case
+    def _package(view):
+        """What a correction can change in the prepared package, as the handler reviews it: the step and its letter (form,
+        recipient line, text), the documents still asked, what is open in the account, the date it is awaited by, the case
+        note, the status in the queue and, with Slice B, the approval."""
+        items = view.get("items") or []
+        label = lambda i: (i.get("label") or {}).get("de") or str(i.get("key"))
+        draft = view.get("draft") or {}
+        text = draft.get("text") or ""
+        open_ = []
+        for i in items:
+            if i["kind"] == "stand" and i.get("key") != "kontakt":
+                open_ += [f"{label(i)}: {r}" for r in ([x.get("text") for x in i.get("rows") or ()] or ([i["value"]] if i.get("value") else []))]
+        done = view.get("completion") or {}
+        return {"Schritt": (view.get("screen") or {}).get("title"), "Brief": draft.get("title"),
+                "Empfänger": next((line for line in text.splitlines() if line.startswith(("Sehr geehrte", "Guten Tag"))), None),
+                "Unterlagen": sorted(label(i) for i in items if i["kind"] == "document" and i.get("status") == "missing" and i.get("ask") == "now"),
+                "Offen": open_, "Wiedervorlage": account.day((view.get("follow_up") or {}).get("due")),
+                "Status": (view.get("status") or {}).get("text"), "Freigabe": done.get("status") or done.get("state"),
+                "text": text, "note": view.get("file_note") or ""}
+
+    def _consequences(before, after):
+        """Each part of the package the correction changed, before and after: lists by what left and what came, the
+        letter's text and the case note by the paragraphs and sentences that changed."""
+        out = []
+        for key in ("Schritt", "Brief", "Empfänger", "Unterlagen", "Offen", "Wiedervorlage", "Status", "Freigabe"):
+            b, a = before.get(key), after.get(key)
+            if b == a:
+                continue
+            if isinstance(b, list) or isinstance(a, list):
+                out.append({"what": key, "before": [x for x in b or () if x not in (a or ())], "after": [x for x in a or () if x not in (b or ())]})
+            else:
+                out.append({"what": key, "before": b, "after": a})
+        other_letter = any(c["what"] == "Brief" for c in out)  # another letter altogether: it stands in the card, not as a diff
+        for key, what, split in (("text", "Brieftext", "\n\n"), ("note", "Aktennotiz", ". ")):
+            b, a = [x.strip() for x in before[key].split(split) if x.strip()], [x.strip() for x in after[key].split(split) if x.strip()]
+            if what == "Brieftext" and other_letter:
+                continue
+            if b != a:
+                gone, came = [x for x in b if x not in a][:3], [x for x in a if x not in b][:3]
+                shown = {y for c in out for side in (c["before"], c["after"]) for y in (side if isinstance(side, list) else [side]) if y}
+                said = lambda x: any(y in x or x in y for y in shown if isinstance(y, str))
+                same = what == "Aktennotiz" and all(said(x) for x in gone + came)  # the note says what is shown above: so marked
+                out.append({"what": what, "before": [] if same else gone, "after": [] if same else came, **({"same": True} if same else {})})
+        return out
+
+    def _basis(op, args, reason, current, who):
+        """Why the package changed, in the handler's words: the correction itself, with its reason and who made it."""
+        if op == "set_fact":
+            fact = next((f for f in (current.get("process") or {}).get("facts") or () if f["id"] == args.get("fact")), {})
+            value = lambda v: "ja" if v is True else "nein" if v is False else "offen" if v in (None, "") else str(v)
+            what = f"{fact.get('question') or args.get('fact')}: {value((current.get('facts') or {}).get(args.get('fact')))} → {value(args.get('value'))}"
+        elif op == "settle_request":
+            row = next((r for r in (current.get("account") or {}).get("requests") or () if r["id"] == args.get("request")), {})
+            what = f"«{row.get('what') or args.get('request')}»: " + {"erledigt": "erledigt", "nicht_mehr_noetig": "nicht mehr nötig",
+                                                                       "beantwortet": f"beantwortet durch Nr. {args.get('entry')}"}.get(args.get("how"), "")
+        elif op == "set_party":
+            what = f"{'Kundschaft' if args.get('role') == 'kunde' else 'Gegenpartei'}: {' '.join(x for x in (args.get('salutation'), args.get('name')) if x)}"
+        else:
+            what = {"add_document": f"Unterlage verlangt: {args.get('title')}", "remove_document": "Unterlage nicht mehr nötig"}.get(op, "Prozess angepasst")
+        return f"{what} ({reason}; {who})" if reason else f"{what} ({who})"
 
     # Editing the case's process
     @app.post("/api/cases/{case_id}/edits", status_code=201)
@@ -1185,10 +1348,22 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         reason_text = body.reason.strip() or REASONS[body.reason_code]
         if body.op == "add_entry":
             raise HTTPException(422, "Einträge der Fallbearbeitung über /entries.")
+        if body.op == "add_dispatch":  # written only when a dispatch is confirmed (store.dispatch_once, Slice B), never here
+            raise HTTPException(422, "Ein Versand wird mit «Versandt am» bestätigt, nicht hier.")
+        if (before["case"].get("intake") or {}).get("study") and body.op in ("settle_request", "set_party"):
+            raise HTTPException(409, "Eine Studienkopie bleibt, wie sie eingefroren wurde.")
+        if body.activate:  # shared Knowledge is activated in «Wissen» only, after a replay of its version (HANDLER_BAR L3)
+            raise HTTPException(422, "Freigabe im Wissen erst nach dem Nachspielen")
         try:
             casegraph.check_edit(before["process"], {"op": body.op, "args": body.args})
+        except casegraph.Derived as error:  # a fact code computes: said where it follows from (C9)
+            raise HTTPException(422, str(error)) from None
         except (casegraph.EditError, workflows.CatalogueError, KeyError, TypeError) as error:
             raise HTTPException(422, f"This change cannot be applied: {error}") from None
+        if body.op == "settle_request" and not any(r["id"] == body.args.get("request") and r["answered"] is None
+                                                   for r in (before.get("account") or {}).get("requests") or ()):
+            raise HTTPException(422, "Diese Anforderung ist nicht mehr offen.")
+        package_before = _package(get_case(case_id, who)) if before.get("run") else None
         edit = store.add_edit(case_id, body.op, body.args, who, reason_text)
         learned = None
         # "gilt generell so" (reason 4), or the same correction made in two other cases, becomes a proposal by itself;
@@ -1197,27 +1372,25 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if not body.use_for_similar and (body.reason_code == "4" or repeated):
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
-                rows = replay(store, catalogue, [item])
-                item["replay"] = {"cases": len(rows), "changed": [{"case": r["case"], "changed": sorted(r["changed"])} for r in rows if r["changed"]],
-                                  "because": "gilt generell" if body.reason_code == "4" else "wiederholt"}
-                learned = store.save_knowledge(item)
+                learned = store.save_knowledge(replayed(item, who, "gilt generell" if body.reason_code == "4" else "wiederholt"))
             except kb.KnowledgeError:
                 learned = None  # not every correction can be said in general terms; the case keeps its edit
-        if body.use_for_similar:
+        if body.use_for_similar:  # a candidate with the replay of its version: activated in «Wissen», never here
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
             except kb.KnowledgeError as error:
                 raise HTTPException(422, str(error)) from None
-            if body.activate:
-                item = kb.set_status(item, "active", by=who, reason="activated by the case worker who made the change")
-            learned = store.save_knowledge(item)
+            learned = store.save_knowledge(replayed(item, who, "für ähnliche Fälle"))
         after = state(case_id)
         change = casegraph.diff(before["evaluation"], after["evaluation"])
         args = body.args
         target = (f"fact:{args['fact']}" if body.op == "set_fact" and args.get("fact") else f"document:{args.get('document')}" if args.get("document")
                   else f"step:{args.get('step')}" if args.get("step") else None)
         values = {"before": before["facts"].get(args.get("fact")), "after": after["facts"].get(args.get("fact"))} if body.op == "set_fact" else {}
-        kind = {"remove_document": "item.dismissed", "add_document": "item.added", "add_step": "item.added", "add_question": "item.added"}.get(body.op, "item.corrected")
+        kind = {"remove_document": "item.dismissed", "add_document": "item.added", "add_step": "item.added", "add_question": "item.added",
+                "settle_request": "entry.corrected"}.get(body.op, "item.corrected")
+        if body.op == "settle_request":
+            target, values = f"request:{args.get('request')}", {"request": args.get("request"), "how": args.get("how")}
         what = {"add_document": "document", "add_step": "step", "add_question": "question"}.get(body.op)
         cause = record(case_id, who, kind, item_id=target, edit_id=edit["id"], op=body.op, reason=body.reason_code or "none",
                        note_present=bool(body.reason.strip()), **values, **({"what": what, "free_text_present": True} if what else {}))
@@ -1238,17 +1411,48 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 recheck = runs.recheck(case_id, added, who, model_token(request))
             except Conflict:
                 recheck = None
-        return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"]}
+        consequences = None
+        if package_before is not None:  # the package before and after, with the correction as its basis (C9)
+            consequences = {"basis": _basis(body.op, body.args, body.reason.strip() or ("" if body.reason_code in (None, "none") else reason_text), before, who),
+                            "changes": _consequences(package_before, _package(get_case(case_id, who)))}
+        return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"], "consequences": consequences}
+
+    def _undo_limits(edit):
+        """What undoing a correction cannot undo: a letter copied, approved or dispatched since (it went out, or may have,
+        with the corrected state: it stays as it was, to check), and Knowledge proposed from it (retired in «Wissen»)."""
+        out, events = [], store.list_case_events(edit["case_id"])
+        start = next((e["seq"] for e in events if e.get("edit_id") == edit["id"]), None)  # the correction's own event: after it
+        for e in events:
+            if (e.get("seq") or 0) <= start if start is not None else str(e.get("at") or "") <= str(edit.get("at") or ""):
+                continue
+            when = account.day(str(e.get("at") or "")[:10])
+            if e["kind"] == "action.dispatched":
+                out.append(f"Versandt am {account.day(e.get('date')) or when}: der versandte Brief bleibt, wie er war; prüfen, ob er zu berichtigen ist")
+            elif e["kind"] == "letter.copied":
+                out.append(f"Brief am {when} kopiert: der kopierte Text bleibt, wie er war; prüfen, ob er so versandt wurde")
+            elif e["kind"] == "action.approved":
+                out.append(f"Freigabe vom {when}: sie galt dem korrigierten Stand und gilt nicht mehr")
+        if any((k.get("origin") or {}).get("edit_id") == edit["id"] and k.get("status") != "retired" for k in store.list_knowledge()):
+            out.append("Der Vorschlag im Wissen bleibt; dort zurückziehen")
+        return list(dict.fromkeys(out))
 
     @app.post("/api/edits/{edit_id}/undo")
     def undo(edit_id: str, who=Depends(user)):
+        """Undo a correction: everything that follows from the case's state follows back (the package's before and after);
+        what already left CasePath cannot be undone and is named (``limits``)."""
         edit = found(store.get_edit, edit_id)
         before = state(edit["case_id"])
+        package_before = _package(get_case(edit["case_id"], who)) if before.get("run") else None
+        undone = _basis(edit["op"], edit.get("args") or {}, "", before, edit.get("by") or who).rsplit(" (", 1)[0]  # what is taken back
+        if edit["op"] == "set_fact":  # the value the correction set (the case holds it until now)
+            undone = undone.rsplit(" → ", 1)[0].rsplit(": ", 1)[0] + ": " + undone.rsplit(" → ", 1)[-1]
         store.set_edit_status(edit_id, "undone", who)
         undoes = next((e["event_id"] for e in reversed(store.list_case_events(edit["case_id"])) if e.get("edit_id") == edit_id), None)
         record(edit["case_id"], who, "correction.undone", undoes=undoes, edit_id=edit_id)
         after = state(edit["case_id"])
-        return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"])}
+        changes = _consequences(package_before, _package(get_case(edit["case_id"], who))) if package_before is not None else None
+        return {"edit": store.get_edit(edit_id), "diff": casegraph.diff(before["evaluation"], after["evaluation"]),
+                "consequences": {"basis": undone, "undone": True, "changes": changes} if changes is not None else None, "limits": _undo_limits(edit)}
 
     # Knowledge
     STAGES = {"lesen": {"reader"}, "prozess": {"router", "process_builder"}, "fakten": {"claim_reader"},
@@ -1335,18 +1539,55 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def get_knowledge(knowledge_id: str, who=Depends(user)):
         return {"item": found(store.get_knowledge, knowledge_id), "uses": store.knowledge_uses(knowledge_id)}
 
+    def activation(item, who, reason=None):
+        """What «Freigeben» makes of an item, the one transformation both the replay and the activation apply: (the items
+        it saves, the item it refines as it is now, or None). A plain item becomes active; a refinement is merged into the
+        item it refines (a new version of it, keeping that item's status) and is itself retired."""
+        if not item.get("refines"):
+            return [kb.set_status(item, "active", by=who, reason=reason or "")], None
+        target = found(store.get_knowledge, item["refines"])
+        merged = kb.refine(target, content=item["content"], applies_when=item["applies_when"], applies_when_text=item["applies_when_text"],
+                           by=who, case_id=(item.get("origin") or {}).get("case_id"), reason=reason or "refined from a later case")
+        return [merged, kb.set_status(item, "retired", by=who, reason=f"merged into {target['id']} v{merged['version']}")], target
+
+    def replayed(item, who, because=None):
+        """The item with the model-free replay of its current version on the stored cases (quality/replay.py): the active
+        Knowledge as its activation would leave it (activation: a refinement merged into the item it refines, which it
+        replaces), how many cases were replayed and what it changes in each (the changed outputs, before and after), kept on
+        the item (``replay.version``; for a refinement also the refined item and the version it was replayed on, so a
+        change of either makes the replay stale) and logged (``knowledge.replayed``)."""
+        saved, target = activation(item, who)
+        rows = replay(store, catalogue, [k for k in saved if k["status"] == "active"])
+        changed = [{"case": r["case"], "title": r["title"], "changed": sorted(r["changed"]), "after": {k: v["after"] for k, v in r["changed"].items()}}
+                   for r in rows if r["changed"]]
+        item = {**item, "replay": {"version": item["version"], "cases": len(rows), "changed": changed, "by": who,
+                                   "at": datetime.now().astimezone().isoformat(timespec="seconds"), **({"because": because} if because else {}),
+                                   **({"target": target["id"], "target_version": target["version"]} if target else {})}}
+        store.append_workspace_event({"schema": "casepath.knowledge.event/1", "kind": "knowledge.replayed", "item": item["id"],
+                                      "version": item["version"], "cases": len(rows), "changed": len(changed), "by": who,
+                                      **({"target": target["id"], "target_version": target["version"]} if target else {})})
+        return item
+
+    @app.post("/api/knowledge/{knowledge_id}/replay")
+    def replay_knowledge(knowledge_id: str, who=Depends(user)):
+        """«Nachspielen»: the item's current version applied to every prepared case without a model; what it would change
+        is kept on the item, and only then can it be activated («Freigeben»)."""
+        return store.save_knowledge(replayed(found(store.get_knowledge, knowledge_id), who))
+
     @app.post("/api/knowledge/{knowledge_id}/activate")
     def activate(knowledge_id: str, body: StatusChange, who=Depends(user)):
+        """«Freigeben»: only an item whose replay is of its current version and, for a refinement, of the version of the
+        item it refines as it is now; it then applies exactly the transformation the replay applied (activation)."""
         item = found(store.get_knowledge, knowledge_id)
-        if item.get("refines"):
-            target = found(store.get_knowledge, item["refines"])
-            merged = kb.refine(target, content=item["content"], applies_when=item["applies_when"],
-                               applies_when_text=item["applies_when_text"], by=who,
-                               case_id=item["origin"].get("case_id"), reason=body.reason or "refined from a later case")
-            store.save_knowledge(merged)
-            store.save_knowledge(kb.set_status(item, "retired", by=who, reason=f"merged into {target['id']} v{merged['version']}"))
-            return merged
-        return store.save_knowledge(kb.set_status(item, "active", by=who, reason=body.reason))
+        played = item.get("replay") or {}
+        if played.get("version") != item.get("version"):
+            raise HTTPException(409, "Zuerst nachspielen: die Wirkung dieser Fassung ist nicht bekannt")
+        saved, target = activation(item, who, body.reason)
+        if target is not None and (played.get("target"), played.get("target_version")) != (target["id"], target["version"]):
+            raise HTTPException(409, "Zuerst nachspielen: der verfeinerte Eintrag hat sich seither geändert")
+        for row in saved:
+            store.save_knowledge(row)
+        return saved[0]
 
     @app.post("/api/knowledge/{knowledge_id}/retire")
     def retire(knowledge_id: str, body: StatusChange, who=Depends(user)):

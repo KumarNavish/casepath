@@ -61,6 +61,33 @@ class EditError(ValueError):
     pass
 
 
+def party_overrides(edits):
+    """The parties a case worker named (op «set_party», Slice C): {role: {name, salutation, edit, by, at}}, the latest active
+    edit per role (kunde, gegenpartei). The party items, the letters' greeting and recipient and the list title follow."""
+    out = {}
+    for edit in edits or ():
+        args = edit.get("args") or {}
+        if edit.get("op") == "set_party" and edit.get("status", "active") == "active" and args.get("role") in ("kunde", "gegenpartei") \
+                and str(args.get("name") or "").strip():
+            out[args["role"]] = {"name": str(args["name"]).strip(), "salutation": args.get("salutation") or None, "edit": edit.get("id"),
+                                 "by": edit.get("by"), "at": edit.get("at")}
+    return out
+
+
+class Derived(EditError):
+    """A fact code computes, set by hand: refused with what it follows from (C9)."""
+
+
+# what a derived fact follows from, in the handler's words: where to correct it instead (C9)
+DERIVED_FROM = {"action_A1": "die Schreiben von Protekta im Verlauf", "last_action_A2": "die Telefonnotizen im Verlauf",
+                "requests_count": "die Anforderungen im Verlauf", "replied_since_request": "die Antworten der Kundschaft im Verlauf",
+                "silent_after_requests": "die Anforderungen mit Frist und die Antworten im Verlauf",
+                "closing_announced": "die Statusanfrage im Verlauf und ihre Frist", "documents_complete": "die Unterlagen (Dokumenten-Checkliste)",
+                "assess_needs_present": "die Unterlagen (Dokumenten-Checkliste)", "nothing_to_ask": "die Unterlagen und die offenen Fragen",
+                "no_stage_fact_open": "die offenen Fragen des Schritts", "one_stage_fact_open": "die offenen Fragen des Schritts",
+                "cost_claim_open": "die Kostennoten und Zahlungen im Verlauf", "settled": "die Vereinbarung und die Zahlung im Verlauf"}
+
+
 def conjunction(pairs):
     """[{fact, value}] from a model or a form → a condition (None when empty)."""
     parts = [{"fact": p["fact"], "is": p["value"]} for p in pairs or []]
@@ -223,10 +250,20 @@ def apply_edit(graph, edit):
             raise EditError(str(error)) from None
     elif op == "add_dispatch":  # Slice B fills this: a dispatch is an entry of the account, not a change to the process
         raise EditError(f"unknown edit {op!r}")  # refused, as before, until then
-    elif op == "settle_request":  # Slice C fills this: a request settled by the handler (account.apply_corrections)
-        raise EditError(f"unknown edit {op!r}")
-    elif op == "set_party":  # Slice C fills this: a party as the handler names it (the party items, letters and title)
-        raise EditError(f"unknown edit {op!r}")
+    elif op == "settle_request":  # a request of the account the handler settles: an entry correction (account.apply_corrections)
+        if not re.fullmatch(r"r\d+\.\d+", str(args.get("request") or "")):
+            raise EditError("a request is named by its id («r3.0»)")
+        if args.get("how") not in ("erledigt", "nicht_mehr_noetig", "beantwortet"):
+            raise EditError("settled as erledigt, nicht_mehr_noetig or beantwortet")
+        if args.get("how") == "beantwortet" and not isinstance(args.get("entry"), int):
+            raise EditError("«beantwortet» names the entry that answered it")
+    elif op == "set_party":  # a party as the handler names it: the party items, the letters' greeting and the list title follow
+        if args.get("role") not in ("kunde", "gegenpartei"):
+            raise EditError("a party is the customer (kunde) or the other side (gegenpartei)")
+        if not str(args.get("name") or "").strip() or len(str(args["name"])) > 120:
+            raise EditError("the party's name, up to 120 characters")
+        if args.get("salutation") not in (None, "", "Frau", "Herr"):
+            raise EditError("salutation: Frau, Herr or none")
     elif op == "set_fact":  # changes the facts the case is evaluated with, not the process; see fact_overrides
         definition = next((f for f in graph["facts"] if f["id"] == args.get("fact")), None)
         if definition is None:
@@ -475,7 +512,13 @@ def open_stage_facts(graph, facts, evaluation):
 
 def check_edit(base_graph, edit):
     """Validate one proposed edit against the current case process before saving it (by applying it to a copy: an op
-    whose branch in apply_edit still refuses, add_dispatch, settle_request or set_party, is refused here too)."""
+    whose branch in apply_edit still refuses, add_dispatch, is refused here too). A fact code computes is not set by hand
+    (Derived, «wird berechnet; korrigieren Sie, woraus er folgt: …»); an edit stored before this check keeps applying."""
+    if edit.get("op") == "set_fact":
+        definition = next((f for f in base_graph.get("facts") or () if f["id"] == (edit.get("args") or {}).get("fact")), None)
+        if definition and definition.get("derived"):
+            raise Derived("wird berechnet; korrigieren Sie, woraus er folgt: "
+                          + DERIVED_FROM.get(str(definition["derived"]), "der Verlauf und die Unterlagen"))
     trial = deepcopy(base_graph)
     apply_edit(trial, {**edit, "id": edit.get("id", "pending")})
     validate_workflow(trial)

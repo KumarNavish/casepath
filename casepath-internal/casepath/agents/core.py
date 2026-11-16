@@ -474,6 +474,10 @@ def update(job, prior, model, blobs, on_event=lambda e: None, on_extraction=None
         if result.get("stopped"):
             return _outcome(status="stopped", result=result, extractions=storage.extractions)
         result["update"]["builds_on"] = prior.get("id")
+        # what the result checker wrote (answer, summary, open points, the reply draft) is the full preparation's: from the
+        # first update on it is marked with that preparation and the new files since (C6)
+        since = (prior.get("result") or {}).get("stale_since") or {"run": prior.get("id"), "prepared_at": prior.get("finished_at")}
+        result["stale_since"] = {**since, "files": int(since.get("files") or 0) + len(new)}
         if options.get("speed_trials"):
             result["speed_trials"] = sorted(options["speed_trials"])
         return _outcome(routing=prior.get("routing"), workflow=workflows.ref(workflow), result=result, extractions=storage.extractions)
@@ -509,7 +513,8 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     overrides = casegraph.fact_overrides(graph, edits)  # a case worker's value governs
     facts.update({k: v for k, (v, _) in overrides.items()})
     findings = {d["document"]: d for d in result.get("documents", []) if d["status"] in {"present", "unusable"} and d.get("verdict") == "accepted"}
-    for need, row in account.delivered(ledger, graph.get("documents")).items():  # what the account shows delivered is in the file
+    # what the account shows delivered is in the file: checked, only where a file of the answering entry holds it (C10c)
+    for need, row in account.delivered(ledger, graph.get("documents"), files, findings, ((result.get("brief") or {}).get("claims"))).items():
         findings.setdefault(need, row)
     asked, partial = casegraph.whole_findings(graph, findings)  # a need for all of something stays asked
     checked = bool(result.get("documents"))
@@ -518,7 +523,8 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
                                    incoming_dates=incoming.document_dates(graph, rows, files), account=ledger)  # at view time: what arrived decides, not the run
     evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=checked), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings,
-            "overrides": {k: e for k, (_, e) in overrides.items()}, "account": ledger, "handler_entries": account.handler_entries(edits)}
+            "overrides": {k: e for k, (_, e) in overrides.items()}, "account": ledger, "handler_entries": account.handler_entries(edits),
+            **({} if study else {"parties_set": casegraph.party_overrides(edits)})}  # the parties a case worker named (C9)
 
 
 def main(argv=None):

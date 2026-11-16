@@ -318,8 +318,11 @@ function runError(error) {
     schema_mismatch: T("the model gave an unusable answer; please try again", "Das Modell gab eine unbrauchbare Antwort; bitte erneut versuchen"),
     max_output_tokens: T("the page was too long for one answer", "die Seite war zu lang für eine Antwort"),
     "no image in the file": T("the file holds no image of this page", "die Datei enthält kein Bild dieser Seite"),
+    interrupted: T("the service was restarted before the run finished", "Der Dienst wurde neu gestartet"),
+    stopped: T("stopped; nothing was kept", "angehalten; nichts übernommen"),
   };
   if (known[reason]) return known[reason];
+  if (/^The service restarted/.test(String(error || ""))) return known.interrupted;  // a run interrupted before this release
   if (/^http_(429|5\d\d)$/.test(reason)) return T("the model service is busy; please try again shortly", "Der Modelldienst ist ausgelastet; bitte gleich erneut versuchen");
   if (/^http_4\d\d$/.test(reason)) return T(`the model service refused the request (${reason.slice(5)})`, `Der Modelldienst hat die Anfrage abgelehnt (${reason.slice(5)})`);
   return error;
@@ -340,8 +343,8 @@ function renderRail() {
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
       ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text ? `<span class="cp-stand ${esc(st.kind || "")}" data-status>${esc(LANG === "de" ? st.text : STAND_EN[st.kind] || st.text)}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
+    ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
-    ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px">${esc(S.message)}</p>` : ""}
     <div class="cp-rail-foot">${unaidedPending() ? "" : moreMenu()}</div>
   </aside>`;
 }
@@ -440,13 +443,14 @@ function bindRail() {
     stopRun.disabled = true; S.stopping = S.data.run.id;
     await api(`/api/runs/${S.data.run.id}/stop`, { method: "POST" }).catch(() => {});
   });
-  const updateRun = $("#update-run");  // «Aktualisieren»: only what came in is read; a person asks, it spends tokens
-  if (updateRun) updateRun.addEventListener("click", async () => {
+  // «Aktualisieren» and «Erneut aktualisieren» (after a failed or interrupted update): only what came in is read
+  for (const updateRun of document.querySelectorAll("#update-run, #retry-update")) updateRun.addEventListener("click", async () => {
     updateRun.disabled = true;
     await api(`/api/cases/${S.route.id}/update`, { method: "POST" }).then(() => { S.events = []; S.follow = true; return loadCase(); }).catch((error) => { S.message = error.message; renderCase(); });
   });
   const prepareNew = $("#prepare-new");  // a person asks: the run is not started automatically (it spends tokens)
   if (prepareNew) prepareNew.addEventListener("click", async () => {
+    if (S.data && S.data.lastCompleted && !confirmAnew()) return;
     prepareNew.disabled = true;
     await api(`/api/cases/${S.route.id}/runs`, { method: "POST" }).then(() => { S.events = []; return loadCase(); }).catch((error) => { S.message = error.message; renderCase(); });
   });
@@ -461,24 +465,33 @@ function bindRail() {
   });
 }
 
+// One drop is one import: every file in one request. The server refuses a file the case already holds (named with the day
+// it came) and skips an attachment it holds; where updates start by themselves, the update of what came in is followed.
 async function uploadFiles(list) {
-  S.message = "";
+  S.message = ""; S.messageOk = false;
   const files = [...list];  // the picker is emptied at once: its value is never carried into the next page
   const picker = $("#upload");
   if (picker) picker.value = "";
-  for (const file of files) {
-    const form = new FormData();
-    form.append("file", file);
-    try { await api(`/api/cases/${S.route.id}/files`, { method: "POST", body: form }); }
-    catch (error) { S.message = `${file.name}: ${error.message}`; }
-  }
+  if (!files.length) return;
+  const form = new FormData();
+  for (const file of files) form.append("files", file);
+  try {
+    const answer = await api(`/api/cases/${S.route.id}/files`, { method: "POST", body: form });
+    const skipped = answer.skipped || [];
+    S.message = skipped.map((s) => s.attachment ? T(`Attachment already in the file: “${s.name}” (skipped)`, `Anhang bereits in der Akte: «${s.name}» (übersprungen)`)
+      : T(`Already in the file: “${s.in_case || s.name}” of ${dateText(s.at)}`, `Bereits in der Akte: «${s.in_case || s.name}» vom ${dateText(s.at)}`)).join(" · ");
+    S.messageOk = !skipped.some((s) => !s.attachment);
+    if (answer.run) { S.events = []; S.follow = true; }
+  } catch (error) { S.message = error.message; S.messageOk = false; }
   await loadCase();
 }
 
+// Preparing anew calls the model again for every file; a prepared case asks first.
+const confirmAnew = () => window.confirm(T("This case is already prepared. Prepare it anew? Every file is read once more, which uses the model again; for new files “Update” is enough.",
+  "Dieser Fall ist bereits vorbereitet. Ganz neu vorbereiten? Alle Dokumente werden erneut gelesen; das ruft das Modell nochmals auf. Für neu eingegangene Dateien genügt «Aktualisieren»."));
 async function startRun(event) {
-  // Preparing again calls the model again; a prepared case asks first.
-  if (event && event.currentTarget && event.currentTarget.id === "run" && S.data && S.data.lastCompleted && !window.confirm(T("This case is already prepared. Prepare it anew? Every file is read once more, which uses the model again; for new files “Update” is enough.",
-      "Dieser Fall ist bereits vorbereitet. Ganz neu vorbereiten? Alle Dokumente werden erneut gelesen; das ruft das Modell nochmals auf. Für neu eingegangene Dateien genügt «Aktualisieren»."))) return;
+  // «Ganz neu vorbereiten» (in «Mehr») and «Erneut versuchen» after a failed run ask first once a preparation completed
+  if (event && event.currentTarget && ["run", "start-run"].includes(event.currentTarget.id) && S.data && S.data.lastCompleted && !confirmAnew()) return;
   try {
     await api(`/api/cases/${S.route.id}/runs`, { method: "POST" });
     S.follow = true; S.moreOpen = false;
@@ -1038,8 +1051,7 @@ function editForm(step) {
     <div data-op="set_transition" hidden><label>${T("Branch", "Verzweigung")}<select name="edge">${edges}</select></label><label>${T("Now leads to", "Führt neu zu")}<select name="to">${steps}</select></label></div>
     <div data-op="rename_step" hidden><label>${T("New wording", "Neue Bezeichnung")}<input name="rename" maxlength="200" value="${esc(step.title)}"></label></div>
     <label>${T("Why this changes (required)", "Begründung (Pflicht)")}<textarea name="reason" rows="2" required maxlength="500"></textarea></label>
-    <label class="cp-check"><input type="checkbox" name="similar"> ${T("Use for similar cases", "Für ähnliche Fälle übernehmen")}</label>
-    <label class="cp-check"><input type="checkbox" name="activate" disabled> ${T("Apply to new cases now (otherwise it is suggested until approved)", "Ab sofort bei neuen Fällen anwenden (sonst nur Vorschlag bis zur Freigabe)")}</label>
+    <label class="cp-check"><input type="checkbox" name="similar"> ${T("Use for similar cases (a proposal in Knowledge, approved there after its replay)", "Für ähnliche Fälle übernehmen (Vorschlag im Wissen, dort nach dem Nachspielen freigeben)")}</label>
     <div class="row"><button class="cp-button primary">${T("Save change", "Änderung speichern")}</button><button type="button" class="cp-button" id="edit-cancel">${T("Cancel", "Abbrechen")}</button>
       <span class="cp-error" id="edit-error"></span></div></form>`;
 }
@@ -1060,7 +1072,6 @@ function bindEdit() {
   };
   form.op.addEventListener("change", show);
   for (const prefix of ["add", "set"]) form[`${prefix}-fact`].addEventListener("change", () => fillValues(prefix));
-  form.similar.addEventListener("change", () => { form.activate.disabled = !form.similar.checked; if (!form.similar.checked) form.activate.checked = false; });
   $("#edit-cancel").addEventListener("click", () => { S.editing = false; renderCase(); });
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -1077,7 +1088,7 @@ function bindEdit() {
     const before = snapshot(op, args);
     try {
       const response = await api(`/api/cases/${S.route.id}/edits`, { method: "POST", body: JSON.stringify({
-        op, args, reason: form.reason.value, use_for_similar: form.similar.checked, activate: form.activate.checked }) });
+        op, args, reason: form.reason.value, use_for_similar: form.similar.checked }) });
       S.lastEdit = { ...response, op, args, before };
       S.editing = false;
       await loadCase();
@@ -1221,7 +1232,9 @@ function resultView() {
   const deadlines = (r.deadlines || []).map((d, i) => { const n = days(d.date); return `<li><b>${dateText(d.date)}</b> · ${esc(d.question)} <span class="cp-chip ${n < 0 ? "bad" : n <= 14 ? "wait" : ""}">${Number.isNaN(n) ? "" : left(n)}</span>${rate(`deadline:${i}`)}</li>`; }).join("");
   const summary = (r.case_summary || []).length ? `<section class="cp-card" style="padding:16px 20px;max-width:900px;margin-bottom:18px"><h2 class="cp-section" style="margin-top:0">${T("Case summary", "Fallzusammenfassung")}</h2>
       <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:180px 1fr">${r.case_summary.map((f, i) => `<dt>${esc(f.label)}</dt><dd>${esc(f.text)}${rate(`summary:${i}`)}</dd>`).join("")}</dl></section>` : "";
-  const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
+  // after an update the result checker's fields are the full preparation's: «Stand <Datum>», and its draft is no download (C6)
+  const stale = r.stale_since ? ` <span class="cp-stale-chip" title="${esc(T(`Before ${r.stale_since.files} new document(s)`, `Vor ${r.stale_since.files} neuen Dokument(en)`))}">${T("As of", "Stand")} ${dateText(r.stale_since.prepared_at)}</span>` : "";
+  const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run && !r.stale_since ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
   const action = { answer: T("Answer: ", "Klären: "), resolve: T("Not met: ", "Nicht erfüllt: "), obtain: T("Obtain: ", "Einholen: ") };
   const docs = ev ? ev.documents.filter((d) => !["suggested", "optional"].includes(d.required)) : [];
   const present = docs.filter((d) => d.status === "present").length, missing = docs.filter((d) => d.status !== "present").length;
@@ -1238,10 +1251,10 @@ function resultView() {
   const report = `<p><a class="cp-button" href="/api/cases/${esc(S.route.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report as .docx", "Fallbericht als .docx")}</a>
     <span class="cp-muted">${T("Everything above with its sources, for the case file.", "Alles hier mit den Fundstellen, für das Dossier.")}</span></p>`;
   return `${ratedRun() ? feedbackLine() : ""}${report}${position}${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
-    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${trimmed("open_point", String(i))}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
+    ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}${stale}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${trimmed("open_point", String(i))}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
     ${learning}
-    <h2 class="cp-section">${T("Short assessment (draft)", "Kurzeinschätzung (Entwurf)")}</h2><p class="cp-answer">${esc(r.answer)}${trimmed("answer", "0")}${rate("answer")}</p><p>${esc(r.summary)}</p>
-    ${r.reply && r.reply.needed ? `<h2 class="cp-section">${T("Reply draft", "Antwortentwurf")}</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(T("AI-generated draft", "KI-generierter Entwurf"))}</span></header>
+    <h2 class="cp-section">${T("Short assessment (draft)", "Kurzeinschätzung (Entwurf)")}${stale}</h2><p class="cp-answer">${esc(r.answer)}${trimmed("answer", "0")}${rate("answer")}</p><p>${esc(r.summary)}</p>
+    ${r.reply && r.reply.needed ? `<h2 class="cp-section">${T("Reply draft", "Antwortentwurf")}${stale}</h2><article class="cp-reply"><header><span>${esc(r.reply.subject)}</span><span>${esc(T("AI-generated draft", "KI-generierter Entwurf"))}</span></header>
       <div class="clauses">${r.reply.clauses.map((c, i) => `<div class="clause ${c.supported ? "" : "unsupported"}"><p>${esc(c.text)}${rate(`reply:${i}`)}</p>
         <small class="cp-muted">${c.supported ? (c.kind === "formal" ? "" : (c.kind === "request" ? T("Asks for: ", "Fragt nach: ") : T("Rests on: ", "Beruht auf: ")) + c.basis.map((b) => esc(b.startsWith("fact:") ? questionOf(b.slice(5)) : needOf(b.slice(9)))).join("; "))
           : T("Not supported by an accepted finding: review before use", "Durch keine bestätigte Feststellung gestützt: vor Verwendung prüfen")}</small></div>`).join("")}</div>
@@ -1274,11 +1287,13 @@ const item = (kind, key) => (S.data.items || []).find((i) => i.kind === kind && 
 // failed (again), new files (prepare again), closed (next case), not prepared (prepare).
 function caseState() {
   const run = S.data.run;
-  if (closed()) return "closed";
+  const arrived = S.data.lastCompleted && (S.data.new_files || []).length;
+  if (closed() && !arrived) return "closed";  // what arrives after closing reopens the case (the server logs case.reopened)
   if (running()) return "running";
   if (run && run.status === "paused") return "paused";
   if (run && ["failed", "interrupted"].includes(run.status)) return "failed";
-  if (S.data.lastCompleted && (S.data.new_files || []).length) return "arrived";
+  if (arrived) return "arrived";
+  if (closed()) return "closed";
   if (!hasPrepared()) return (S.data.files || []).length ? "unprepared" : "empty";
   return "prepared";
 }
@@ -1341,7 +1356,7 @@ function runLine(st) {
     const routed = S.events.find((e) => e.kind === "routing.decided");
     const others = (S.workflows || []).filter((w) => !routed || w.id !== routed.workflow);
     const stopping = S.stopping === run.id || S.switching;
-    return wrap(`<ol class="cp-stages">${cells}</ol><p class="cp-runnow">${stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …")
+    return wrap(`<ol class="cp-stages">${cells}</ol>${arrivalNow(run)}<p class="cp-runnow">${stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …")
         : `${T("Now", "Jetzt")}: ${doing} ${where}${left ? ` · ${T("about", "etwa")} ${left} s ${T("to go", "noch")}` : ""}`}</p>
       ${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${esc(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}`,
       `${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
@@ -1352,15 +1367,20 @@ function runLine(st) {
     return wrap(`<ol class="cp-stages paused">${cells}</ol><p class="cp-runnow"><b>${T("Stopped", "Angehalten")}</b></p>`,
       `<button class="cp-link cp-quiet-link" id="discard-run">${T("discard", "verwerfen")}</button><button class="cp-button primary" id="continue-run">${T("Continue", "Weiter")}</button>`);
   }
+  if (st === "failed" && run.kind === "update") {  // the update only is offered again; a full preparation stays behind «Mehr»
+    const interrupted = run.status === "interrupted";
+    return wrap(`<p class="cp-runnow cp-arrival-failed"><b>${interrupted ? T("Update interrupted", "Aktualisierung unterbrochen") : T("Update failed", "Aktualisierung fehlgeschlagen")}</b>: ${esc(runError(run.error))}</p>`,
+      `<button class="cp-button primary" id="retry-update">${T("Update again", "Erneut aktualisieren")}</button>`);
+  }
   if (st === "failed") {
     return wrap(`<p class="cp-runnow"><b>${T("Not finished", "Nicht fertig")}</b>: ${esc(runError(run.error))}</p>`, `<button class="cp-button primary" id="start-run">${T("Try again", "Erneut versuchen")}</button>`);
   }
   if (st === "arrived") {
     const came = S.data.arrived || S.data.new_files.map((name) => ({ name })), u = S.data.update || {}, eta = updateEta();
     const names = came.map((f) => `${esc(f.name)}${f.added ? ` <span class="cp-muted">(${dateText(f.added)})</span>` : ""}`).join(", ");
-    // why «Aktualisieren» cannot read them alone is the button's title, not a paragraph to read
+    // why «Aktualisieren» did not start by itself, or cannot read them alone, is the button's title, not a paragraph to read
     return wrap(`<p class="cp-runnow"><b>${T(`New: ${came.length} file(s)`, `Neu eingegangen: ${came.length} Datei(en)`)}</b> · ${names}</p>`,
-      u.available ? `<button class="cp-button primary" id="update-run">${T("Update", "Aktualisieren")}${eta ? `<span class="cp-eta"> · ${eta}</span>` : ""}</button>`
+      u.available ? `<button class="cp-button primary" id="update-run" title="${esc(autoTitle(u))}">${T("Update", "Aktualisieren")}${eta ? `<span class="cp-eta"> · ${eta}</span>` : ""}</button>`
         : `<button class="cp-button primary" id="prepare-new" title="${esc(u.text || "")}">${T("Prepare anew", "Ganz neu vorbereiten")}</button>`);
   }
   if (st === "unprepared") return wrap(`<p class="cp-runnow">${T("Not prepared yet", "Noch nicht vorbereitet")}</p>`, `<button class="cp-button primary" id="start-run">${T("Prepare case", "Fall vorbereiten")}</button>`);
@@ -1542,7 +1562,7 @@ function progressLine(steps) {
 function preparedView(st) {
   const act = item("next_action", "0"), sc = scr(), draft = S.data.draft || {};
   const c = closed();
-  const stale = st === "arrived" && Boolean(S.data.draft_stale) && !c;  // new files not read yet: the draft may be out of date
+  const stale = Boolean(S.data.draft_stale) && !c;  // new files not read yet (in every state: running, failed …): the draft may be out of date
   const editable = !c && st !== "running" && !stale;
   const { rows: docs, active } = documentsOut();
   const text = active ? docText(active) : "";
@@ -1688,7 +1708,7 @@ function partiesHtml() {
 function sideAnliegen() {
   const r = result() || {}, brief = r.brief || {}, items = S.data.items || [];
   const summary = items.find((i) => i.kind === "summary" && i.value);
-  const anliegen = (summary && summary.value) || brief.request || r.answer || "";
+  const anliegen = (summary && summary.value) || brief.request || "";  // never the result checker's answer (C6: after an update it is inherited)
   const long = anliegen.length > 95;  // about two lines: more opens on a click
   return `<dt>${T("Request", "Anliegen")}</dt><dd data-item="summary:0">${long ? `<button class="cp-anliegen ${S.anliegenOpen ? "open" : ""}" id="anliegen-open" aria-expanded="${Boolean(S.anliegenOpen)}">${esc(anliegen)}</button>` : esc(anliegen) || "—"}</dd>`;
 }
@@ -1703,12 +1723,41 @@ function sideAccount() {
   const stand = sc.stand || [];  // the account's lines as the server words them for this screen (screen.account_lines)
   const stageLines = sc.lines || [];  // the stage's short lines, without what the card head states (screen.py)
   const next = stand.map((l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}${handlerTag(l.handler)}</div>`
-    : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
+    : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}${settleButtons(x)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
     .concat(stageLines.map((l) => `<div class="cp-acct-line" data-item="${esc(l.item_id)}">${esc(l.value || "")}${sourceChips(l.evidence)}</div>`)).join("");
   return next ? `<dt>${T("Next", "Als Nächstes")}</dt><dd><div class="cp-acct">${next}</div></dd>` : "";
 }
+// After a correction: what changed in the prepared package, before and after, with its basis, and its undo; after an undo,
+// what came back and what an undo cannot reach. Otherwise, after an update, how the reply was matched (C7), unless the
+// card head (Slice B) already says it.
 function sideChangeLine() {
-  return S.lastEdit && !S.lastEdit.op ? `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>` : "";
+  if (S.lastUndo && S.lastUndo.case === S.route.id && !S.lastEdit) return consequencesBlock(S.lastUndo.consequences, T("Undone", "Rückgängig gemacht"), "", S.lastUndo.limits);
+  if (S.lastEdit && !S.lastEdit.op) {
+    const undo = `<button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button>`;
+    return S.lastEdit.consequences ? consequencesBlock(S.lastEdit.consequences, T("Changed", "Geändert"), undo)
+      : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} ${undo}</p>`;
+  }
+  const ch = S.data.changes || {}, sc = scr();
+  if (running() || !(ch.ledger || []).length || (sc.head && (sc.head.changed || sc.head.lines))) return "";
+  return `<div class="cp-change cp-ledger"><b>${T("Updated", "Aktualisiert")}${ch.updated_at ? ` ${T("on", "am")} ${dateText(ch.updated_at)}` : ""}</b>
+    <ul>${ch.ledger.map((line) => `<li class="${/prüfen|abgelehnt|teilweise|nicht eingegangen/.test(line) ? "check" : ""}">${esc(line)}</li>`).join("")}</ul></div>`;
+}
+function consequencesBlock(c, head, undo, limits) {
+  const rows = (c && c.changes) || [];
+  const side = (v) => Array.isArray(v) ? v.map((x) => esc(clip(x, 140))).join("<br>") || "—" : esc(clip(v == null ? "—" : String(v), 140));
+  const why = c && c.basis ? ` · ${c.undone ? T("taken back", "zurückgenommen") : T("because", "weil")}: ${esc(c.basis)}` : "";
+  return `<div class="cp-change cp-consequences" aria-live="polite"><p><b>${head}</b>${why} ${undo}</p>
+    ${rows.length ? `<dl>${rows.map((r) => `<dt>${esc(r.what)}</dt><dd>${r.same ? `<span class="cp-muted">${T("follows (as above)", "folgt (wie oben)")}</span>`
+      : `<div class="cp-chg-was">${side(r.before)}</div><div class="cp-chg-now">${side(r.after)}</div>`}</dd>`).join("")}</dl>`
+      : `<p class="cp-muted">${T("Nothing else in the package changed", "Sonst änderte sich nichts am Paket")}</p>`}
+    ${(limits || []).length ? `<p class="cp-limits"><b>${T("Not undone", "Nicht rückgängig")}</b>: ${limits.map(esc).join("; ")}</p>` : ""}</div>`;
+}
+function studyCopy() { return Boolean((((S.data || {}).case || {}).intake || {}).study); }
+// «erledigt» and «nicht mehr nötig» on an open request of the account (C9): kept and undone like every correction
+function settleButtons(x) {
+  if (!x || !x.request || studyCopy() || running()) return "";
+  return ` <span class="cp-settle"><button class="cp-link cp-quiet-link" data-settle="${esc(x.request)}" data-how="erledigt">${T("done", "erledigt")}</button>
+    · <button class="cp-link cp-quiet-link" data-settle="${esc(x.request)}" data-how="nicht_mehr_noetig">${T("no longer needed", "nicht mehr nötig")}</button></span>`;
 }
 function sideChanges() {
   const ch = S.data.changes || {}, any = (ch.added || []).length + (ch.changed || []).length + (ch.removed || []).length + (ch.entries || []).length;
@@ -2038,6 +2087,12 @@ function bindOverview() {
     await api(`/api/cases/${S.route.id}/action`, { method: "POST", body: JSON.stringify({ kind, reason_code: b.dataset.actionReason }) }).catch((error) => { S.message = error.message; });
     await loadCase();
   });
+  on("[data-settle]", "click", async (b) => {  // an open request the handler settles: the package follows, with its undo
+    S.lastUndo = null;
+    S.lastEdit = await edit({ op: "settle_request", args: { request: b.dataset.settle, how: b.dataset.how }, reason: "", reason_code: "none", recheck: false })
+      .catch((error) => { S.message = error.message; return S.lastEdit; });
+    await loadCase();
+  });
   on("[data-decide]", "click", async (b) => {  // the handler's own decision: one click, no reason asked
     S.lastEdit = await edit({ op: "set_fact", args: { fact: b.dataset.decide, value: b.dataset.value }, reason: "", reason_code: "none", recheck: false }).catch(() => S.lastEdit);
     S.decideOpen = false; S.docTab = null;
@@ -2275,7 +2330,9 @@ async function renderCase() {
   const open = $("#edit-open");
   if (open) open.addEventListener("click", () => { S.editing = !S.editing; renderCase(); });
   const undo = $("#undo");
-  if (undo) undo.addEventListener("click", async () => { await api(`/api/edits/${S.lastEdit.edit.id}/undo`, { method: "POST" }); S.lastEdit = null; await loadCase(); });
+  if (undo) undo.addEventListener("click", async () => {  // what came back and what an undo cannot reach stay in view once
+    const done = await api(`/api/edits/${S.lastEdit.edit.id}/undo`, { method: "POST" }).catch(() => null);
+    S.lastUndo = done && { ...done, case: S.route.id }; S.lastEdit = null; await loadCase(); });
   const onlyOpen = $("#only-open");
   if (onlyOpen) onlyOpen.addEventListener("change", () => { S.onlyOpen = onlyOpen.checked; S.openParty = null; renderCase(); });
   for (const b of document.querySelectorAll("[data-open-party]")) b.addEventListener("click", () => {
@@ -2379,7 +2436,10 @@ async function renderKnowledge() {
       ${seededNote(k) ? `<span class="cp-muted">${esc(seededNote(k))}</span>` : `<span class="cp-muted">${k.origin.kind === "case_edit" ? T("Learned from a case worker’s change in", "Gelernt aus einer Änderung in der Fallbearbeitung, im Fall") : T("Learned by the result checker in", "Gelernt vom Ergebnisprüfer im Fall")} <a href="#/case/${esc(k.origin.case_id)}/process_builder">${esc(caseName(k.origin.case_id))}</a></span>`}
       ${k.uses.length ? `<span>${T("Cases", "Fälle")}: ${k.uses.map((u) => `<a href="#/case/${esc(u.case_id)}/document_finder">${esc(caseName(u.case_id))}</a> <span class="cp-chip ${u.outcome === "present" ? "good" : u.outcome === "contradicted" ? "bad" : ""}">${esc(word(u.outcome))}</span>`).join(" ")}</span>` : ""}
       <details><summary class="cp-link">${T("History", "Verlauf")}</summary><ul class="cp-log">${k.history.map((h) => `<li><b>v${h.version}</b><span>${esc(changeText(h.change))}${h.by ? ` · ${esc(byWhom(h.by))}` : ""} · ${dateText(h.at)}</span></li>`).join("")}</ul></details>
-      <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? `<button class="cp-button primary" data-activate="${esc(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>` : ""}
+      ${k.status !== "active" && k.status !== "retired" ? replayLine(k, data.knowledge, caseName) : ""}
+      <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? (replayCurrent(k, data.knowledge)
+          ? `<button class="cp-button primary" data-activate="${esc(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>`
+          : `<button class="cp-button primary" data-replay="${esc(k.ids.join(","))}">${T("Replay", "Nachspielen")}</button>`) : ""}
         ${k.status !== "retired" ? `<button class="cp-button" data-retire="${esc(k.ids.join(","))}">${T("Retire", "Zurückziehen")}</button>` : ""}</div></article>`;
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const sections = Object.entries(groups).sort(([a], [b]) => a.localeCompare(b, "de")).map(([name, entries]) => {
@@ -2394,7 +2454,12 @@ async function renderKnowledge() {
       "Was CasePath aus früheren Fällen und aus Änderungen der Fallbearbeitung gelernt hat. Freigegebene Einträge prägen neue Fälle; Vorschläge werden nur als Vorschlag geprüft, bis ein Mensch sie freigibt.")}</p>
     ${sections || `<p class="cp-empty">${T("Nothing learned yet. Knowledge appears after cases are prepared or a case worker saves a change for similar cases.", "Noch nichts gelernt. Wissen entsteht, wenn Fälle vorbereitet werden oder eine Änderung für ähnliche Fälle gespeichert wird.")}</p>`}</main>`;
   const each = (ids, path, reason) => Promise.all(ids.split(",").map((id) => api(`/api/knowledge/${id}/${path}`, { method: "POST", body: JSON.stringify({ reason }) })));
-  for (const b of document.querySelectorAll("[data-activate]")) b.addEventListener("click", async () => { await each(b.dataset.activate, "activate", T("approved in Knowledge", "im Wissen freigegeben")); renderKnowledge(); });
+  for (const b of document.querySelectorAll("[data-replay]")) b.addEventListener("click", async () => {  // without a model: what this version would change
+    b.disabled = true;
+    await each(b.dataset.replay, "replay").catch(() => {});
+    renderKnowledge();
+  });
+  for (const b of document.querySelectorAll("[data-activate]")) b.addEventListener("click", async () => { await each(b.dataset.activate, "activate", T("approved in Knowledge", "im Wissen freigegeben")).catch(() => {}); renderKnowledge(); });
   for (const b of document.querySelectorAll("[data-retire]")) b.addEventListener("click", async () => { await each(b.dataset.retire, "retire", T("retired in Knowledge", "im Wissen zurückgezogen")); renderKnowledge(); });
 }
 
@@ -2625,3 +2690,44 @@ document.addEventListener("click", async (e) => {
 // ---------- completion: approval, the Versandpaket, dispatch and the queue (Slice B) ----------
 
 // ---------- arrival: what came in, the update, corrections and the account's checks (Slice C) ----------
+// Why «Aktualisieren» did not start by itself after an upload (the server's reason, web/app.py _arrival_view): its title.
+function autoTitle(u) {
+  const reason = (u || {}).auto;
+  if (!reason) return "";
+  if (reason === "aus") return T("Automatic updating is switched off", "Automatische Aktualisierung ist ausgeschaltet");
+  if (reason === "zu_gross") return T(`Automatically only up to ${u.max_pages} pages: please start it yourself`, `Automatisch nur bis ${u.max_pages} Seiten: bitte selbst starten`);
+  if (reason === "lauf_aktiv") return T("A run is in progress", "Ein Lauf ist im Gang");
+  if (reason === "anmelden") return T("Sign in again to update", "Zum Aktualisieren erneut anmelden");
+  return u.text || "";
+}
+// Knowledge is approved only after a replay of its current version (HANDLER_BAR L3): each item of a card (the same item
+// seeded for an area and the intake it replaced) has its own; «ändert n von m Fällen», the changes by case, then «Freigeben».
+const KNOWLEDGE_CHANGE = { needs: T("documents", "Unterlagen"), now: T("asked now", "jetzt verlangt"), offered: T("offered", "angeboten"),
+                           later: T("asked later", "später verlangt"), questions: T("questions", "Fragen"), next_action: T("next step", "nächster Schritt") };
+// A replay counts for the version it played and, for a refinement, for the version of the item it refines it played on.
+function replayCurrent(k, all) {
+  return k.ids.every((id) => {
+    const it = all.find((x) => x.id === id), r = it && it.replay;
+    if (!r || r.version !== it.version) return false;
+    const target = it.refines ? all.find((x) => x.id === it.refines) : null;
+    return !target || r.target_version === target.version;
+  });
+}
+function replayLine(k, all, caseName) {
+  if (!replayCurrent(k, all)) return `<span class="cp-muted">${T("Its effect on the stored cases is not known yet.", "Die Wirkung auf die vorbereiteten Fälle ist noch nicht bekannt.")}</span>`;
+  const replays = k.ids.map((id) => all.find((x) => x.id === id).replay);
+  const changed = {};
+  for (const r of replays) for (const row of r.changed || []) changed[row.case] = [...new Set([...(changed[row.case] || []), ...row.changed])];
+  const total = Math.max(...replays.map((r) => r.cases || 0)), n = Object.keys(changed).length;
+  return `<details class="cp-replay"><summary class="cp-link">${T(`changes ${n} of ${total} cases`, `ändert ${n} von ${total} Fällen`)}</summary>
+    <ul class="cp-log">${Object.entries(changed).map(([id, what]) => `<li><a href="#/case/${esc(id)}/overview">${esc(caseName(id))}</a> <span class="cp-muted">· ${what.map((w) => esc(KNOWLEDGE_CHANGE[w] || w)).join(", ")}</span></li>`).join("")}</ul></details>`;
+}
+// An update at work says what it reads: «Neu eingegangen: 2 Datei(en) · wird aktualisiert»; one started again after a
+// restart says so («wird fortgesetzt»).
+function arrivalNow(run) {
+  if (!run || run.kind !== "update") return "";
+  const came = (S.data.arrived || []).length || (S.data.new_files || []).length;
+  const resumed = (S.data.caseEvents || []).some((e) => e.kind === "update.started" && e.run === run.id && e.resumed);
+  return `<p class="cp-runnow cp-arrival-now"><b>${resumed ? T("Update interrupted: the service was restarted", "Aktualisierung unterbrochen: Der Dienst wurde neu gestartet")
+    : T(`New: ${came} file(s)`, `Neu eingegangen: ${came} Datei(en)`)}</b> · ${resumed ? T("continues", "wird fortgesetzt") : T("updating", "wird aktualisiert")}</p>`;
+}

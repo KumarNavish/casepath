@@ -106,10 +106,15 @@ class SelfConductedCaseTests(unittest.TestCase):
 
     def test_b_the_ledger_holds_each_request_with_who_asked_whom_how_often_and_the_entry_that_answered_it(self):
         rows = {r["what"]: r for r in self.acc["requests"]}
-        docs = rows["Mietvertrag und Mängelrüge an die Verwaltung"]
-        self.assertEqual((docs["by"], docs["of"], docs["first"], docs["last"], docs["times"], docs["due"]),
-                         ("versicherer", "kunde", "2025-01-14", "2025-02-11", 2, "2025-02-21"))
-        self.assertEqual((docs["answered"]["n"], docs["answered"]["how"], docs["answered"]["confirmed"]), (4, "entry", True))
+        # Slice C (C10a): the combined ask «Mietvertrag und Mängelrüge an die Verwaltung» is one row per item, with the same
+        # quote and the ids r2.0 and r2.1; each was asked twice, each is answered by entry 4. The reminder's own quote writes
+        # no date (C10g), the date it carries is the one the customer gave in the same call (21.02.2025)
+        self.assertEqual((rows["Mietvertrag"]["id"], rows["Mängelrüge an die Verwaltung"]["id"]), ("r2.0", "r2.1"))
+        for what in ("Mietvertrag", "Mängelrüge an die Verwaltung"):
+            docs = rows[what]
+            self.assertEqual((docs["by"], docs["of"], docs["first"], docs["last"], docs["times"], docs["due"]),
+                             ("versicherer", "kunde", "2025-01-14", "2025-02-11", 2, "2025-02-21"))
+            self.assertEqual((docs["answered"]["n"], docs["answered"]["how"], docs["answered"]["confirmed"]), (4, "entry", True))
         iban = rows["IBAN"]
         self.assertEqual((iban["times"], iban["answered"]["n"], iban["answered"]["confirmed"]), (1, 8, True))
         question = rows["Kann ich den Mietzins reduzieren?"]
@@ -178,10 +183,11 @@ class SelfConductedCaseTests(unittest.TestCase):
         self.assertEqual([r["key"] for r in rows if r["open"]], ["1", "7"])  # the customer's question; the agreed payment, not yet made
         phone = [r for r in rows if r["phone"]]
         self.assertEqual([r["date"] for r in phone], ["2025-02-11", "2025-03-25", "2025-03-27"])
-        self.assertIn({"kind": "asked", "text": "erneut verlangt (2.): Mietvertrag und Mängelrüge an die Verwaltung bis 21.02.2025 · beantwortet (Nr. 4)",
-                       "open": False}, rows[2]["notes"])
-        self.assertIn({"kind": "asked", "text": "verlangt von der Kundschaft: Mietvertrag und Mängelrüge an die Verwaltung bis 04.02.2025", "open": False},
-                      rows[1]["notes"])
+        # Slice C: one note per item (C10a); the reminder's quote writes no date, so its own date is «prüfen» (C10g)
+        for what in ("Mietvertrag", "Mängelrüge an die Verwaltung"):
+            self.assertIn({"kind": "asked", "text": f"erneut verlangt (2.): {what} (Frist laut Akte, Datum prüfen) · beantwortet (Nr. 4)", "open": False},
+                          rows[2]["notes"])
+            self.assertIn({"kind": "asked", "text": f"verlangt von der Kundschaft: {what} bis 04.02.2025", "open": False}, rows[1]["notes"])
 
     def test_i_the_reader_read_less_and_every_quote_is_still_found_in_the_original(self):
         hygiene_stats = self.result["record"]["hygiene"]
@@ -222,7 +228,8 @@ class LedgerTests(unittest.TestCase):
         entries = stored(CASES["selbst"])["record"]["entries"]
         ids = lambda acc: {r["what"]: r["id"] for r in acc["requests"]}
         before = ids(account.build(entries, graph))
-        self.assertEqual(before, {"Kann ich den Mietzins reduzieren?": "r1.0", "Mietvertrag und Mängelrüge an die Verwaltung": "r2.0", "IBAN": "r7.0"})
+        # Slice C (C10a): the combined ask of entry 2 is two rows, numbered in order within the entry (r2.0, r2.1)
+        self.assertEqual(before, {"Kann ich den Mietzins reduzieren?": "r1.0", "Mietvertrag": "r2.0", "Mängelrüge an die Verwaltung": "r2.1", "IBAN": "r7.0"})
         # the handler enters a call made two days after the report, before our first request, in which a document was asked
         call = {"id": "e1", "op": "add_entry", "status": "active", "args": {"kind": "telefon", "party": "kunde", "date": "2025-01-12", "n": 9001,
                                                                             "said": "Kundin angerufen.", "asked": {"what": "Police der Hausratversicherung"}}}
