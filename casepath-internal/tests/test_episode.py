@@ -477,10 +477,13 @@ class ArrivalTests(Episode):
 
     def receipts_on(self, case, ns, came, linked=True):
         """B-receipts on another day: the reply dated ``came``, answering the A5's dispatch by its number or (``linked``
-        False) linked to nothing by the reader."""
+        False) linked to nothing by the reader, numbered as the reader numbers (below the dispatch's own range: a reply of
+        the dispatch day has a lower number than the letter it answers)."""
         rec = ns.branches["B-receipts"]
         self.upload(case, rec.files(came=came))
-        return self.update(case, rec.turns(self.first_free(case), self.dispatched_n(case) if linked else None, came=came),
+        first = max([n for n in self.entries(case) if n <= 9000] or [0]) + 1
+        self.assertLess(first, self.dispatched_n(case))
+        return self.update(case, rec.turns(first, self.dispatched_n(case) if linked else None, came=came),
                            {"fs": "Belege Stromkosten.eml", "ft": episode.BILL})
 
     def test_a_reply_on_the_dispatch_day_that_answers_the_letter_prepares_the_judgment(self):
@@ -493,6 +496,9 @@ class ArrivalTests(Episode):
         last = view["completion"]["last"]
         self.assertEqual((q3["state"], last["acknowledged"], last["fulfilled"]), ("beantwortet", True, True))
         self.assertEqual(self.row(case)["stand"]["text"], "erfüllt: Einschätzung vorbereitet")
+        # the account reads the reply after the letter it answers: the receipts asked are answered by it, not left open
+        ours = next(i for i in view["items"] if i["kind"] == "entry" and i.get("value") == "Rechtliche Einschätzung")
+        self.assertTrue(any(n["text"].startswith(f"verlangt von der Kundschaft: {RECEIPTS} · beantwortet") for n in ours["notes"]), ours["notes"])
 
     def test_a_mail_of_the_dispatch_day_that_answers_nothing_or_one_dated_before_it_leaves_the_wait(self):
         """Not a reply to the letter: a mail of its day the reader links to nothing, or one dated before it that names it.

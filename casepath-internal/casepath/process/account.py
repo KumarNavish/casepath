@@ -576,6 +576,20 @@ def _key(e):
     return (e.get("date") or "9999-12-31", e["n"])
 
 
+def _in_order(entries):
+    """Entries in time order (_key), except that an entry answering a handler's entry or dispatch of its own day by
+    number comes after it: the reader numbers below HANDLER_BASE, the handler's entries and dispatches above it, so a
+    reply of the dispatch day would otherwise be read before the letter it answers."""
+    out = sorted(entries, key=_key)
+    by_n = {e["n"]: e for e in out}
+
+    def placed(e):
+        answered = [a.get("answers") for a in e.get("answers") or () if isinstance(a.get("answers"), int) and a["answers"] > HANDLER_BASE
+                    and a["answers"] > e["n"] and (by_n.get(a["answers"]) or {}).get("date") == e.get("date")]
+        return (e.get("date") or "9999-12-31", max(answered) + 0.5 if answered else e["n"])
+    return sorted(out, key=placed)
+
+
 def _best(candidates, what):
     scored = sorted(((overlap(what, r["what"]), i, r) for i, r in enumerate(candidates)), key=lambda x: (-x[0], x[1]))
     return scored[0] if scored else (0.0, 0, None)
@@ -873,7 +887,7 @@ def _build_checked(entries, graph=None):
     level answer over several rows unspecified, a repeat only from a later day, a document read twice or a quoted dispatch
     counted once, values kept only where their quotes write them, an agreement only with both sides on it, a payment only
     as such and summed per payer, the other side's demand never owed to us."""
-    entries = sorted([_stored_entry(e) for e in entries or () if e.get("n") is not None], key=_key)
+    entries = _in_order([_stored_entry(e) for e in entries or () if e.get("n") is not None])
     if not entries:
         return None
     record = (graph or {}).get("record") or {}
