@@ -3,7 +3,7 @@
 Model-free; from the item list, the follow-up date, the case's events and files. A historic file cut at a decision
 point is looked at as of its own day and listed apart, so its dates never count as overdue among live cases.
 """
-from datetime import date, timedelta
+from datetime import timedelta
 import re
 
 from ..process import urgent
@@ -203,6 +203,14 @@ def waits(action):
     return bool(a.get("until")) or (bool(follow) and bool(a.get("since")) and not quiet)
 
 
+def handler_day():
+    """Today as the handler's day, the Swiss day (completion.swiss_today), as the case view counts it: between 23:00 and
+    24:00 UTC the server's day is still yesterday, and a follow-up due «today» would otherwise wait in the list while the
+    case already prepares it."""
+    from ..process.completion import swiss_today
+    return swiss_today()
+
+
 def stand(*, closed, run_status, new_files, items, follow_up, events, completed_at, files, today=None, historic=None, run_kind=None,
           completion=None):
     """Where a case stands, in the handler's words, with the group of the case list it belongs to and the rank by which
@@ -218,7 +226,7 @@ def stand(*, closed, run_status, new_files, items, follow_up, events, completed_
     A historic file (``historic``: clock.historic) is looked at as of its own day, the cut's «Stand am» or its newest
     document, so nothing in it is overdue. ``run_kind``: the kind of the run ``run_status`` is of (full or update);
     ``completion``: where the prepared letter stands after the decision (completion.state). A copy never counts as sent."""
-    ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or date.today()
+    ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or handler_day()
     row = lambda kind, text, rank, day=None, bucket="urteil": {"kind": kind, "text": text, "rank": rank, "bucket": bucket,
                                                                "date": day.isoformat() if hasattr(day, "isoformat") else day}
     update = run_kind == "update"
@@ -282,7 +290,7 @@ def due(items, follow_up, files, historic=None, closed=False, today=None):
     None for a closed case."""
     if closed:
         return None
-    ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or date.today()
+    ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or handler_day()
     rows = []
     for i in items or ():
         if i["kind"] == "deadline" and (urgent.customers(i) or urgent.ours(i) or (i.get("account") and i.get("party") == "kunde")) \
