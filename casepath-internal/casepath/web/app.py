@@ -630,6 +630,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             return None
         return {"what": awaited, "when": versandpaket.when_line(respond_by, follow), "approved": bool(approval)}
 
+    def _answered(after, draft, events, assessment):
+        """The questions the prepared letter answers, for the file note (completion.addressed), while it is not sent:
+        approved, or a draft while nothing of ours went out (as «Erwartet»). None otherwise."""
+        from ..process import completion
+        if not after:
+            return None
+        if not after[2] and completion.sent_letters(events):
+            return None
+        rows = completion.addressed(draft.get("kind"), draft.get("form") or draft.get("kind"), assessment, events)
+        return {"title": draft.get("title"), "rows": rows} if rows else None
+
     def _follow_shown(after, clock):
         """The date beside «Freigeben»: the follow-up the Versandpaket will file ({due, days, if_sent, set, respond_by}), so
         the bar, the package, the note and the wait after the dispatch say one date; for a letter the clock does not
@@ -679,6 +690,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                       since=(action or {}).get("since"), until=(action or {}).get("until"), step=(action or {}).get("action"))
                     clock = capped(clock, listed, (current.get("process") or {}).get("deadline_margin_days"), store.list_files(row["id"]))
                     row["follow_up"] = clock and clock["due"]
+                    row["overdue_on"] = listing.overdue_day(listed, clock)
                     row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
                     row["display_title"] = listing.display_title(row, listed, area_title(current.get("process")),
                                                                  renamed=any(e["kind"] == "case.renamed" for e in events))
@@ -701,8 +713,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             row["stand"] = listing.stand(closed=row["closed"], run_status=runs_in["run_status"], new_files=row["new_files"], items=listed,
                                          follow_up=row.get("follow_up"), events=events, completed_at=(completed or {}).get("created_at"),
                                          files=case_files, historic=row["historic"], run_kind=runs_in["run_kind"],
-                                         completion=_list_completion(row, current, listed, events, case_files))
-            row["due"] = listing.due(listed, row.get("follow_up"), case_files, row["historic"], closed=row["stand"]["kind"] == "closed")
+                                         completion=_list_completion(row, current, listed, events, case_files), overdue_on=row.get("overdue_on"))
+            row["due"] = listing.due(listed, row.get("follow_up"), case_files, row["historic"], closed=row["stand"]["kind"] == "closed",
+                                     overdue_on=row.get("overdue_on"))
         return {"cases": rows}
 
     def area_title(process):
@@ -826,7 +839,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         status = listing.stand(closed=closed, run_status=(run_now or {}).get("status"), new_files=len(arrival["arrived"]) if prepared else 0,
                                items=listed if (run_now or {}).get("status") == "completed" else [], follow_up=(clock or {}).get("due"),
                                events=events, completed_at=(prepared or {}).get("created_at"), files=files, historic=historic,
-                               run_kind=(run_now or {}).get("kind"), completion=done.get("completion"))
+                               run_kind=(run_now or {}).get("kind"), completion=done.get("completion"), overdue_on=listing.overdue_day(listed, clock))
         stage = ((current.get("evaluation") or {}).get("current") or {})
         cover_edit = next((e for e in reversed(store.list_edits(case_id)) if e.get("op") == "set_fact" and (e.get("args") or {}).get("fact") == "deckung"), None)
         model = screen.build(listed, draft, events, as_of(files), (current.get("process") or {}).get("urgent"), stage=stage.get("step"),
@@ -837,7 +850,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if model is not None:
             model["title"] = listing.next_step(action) if action else model["title"]  # the same words as the case list's «Als Nächstes»
             model.update(status=status["text"], status_kind=status["kind"],
-                         due=listing.due(listed, (clock or {}).get("due"), files, historic, closed=status["kind"] == "closed"))
+                         due=listing.due(listed, (clock or {}).get("due"), files, historic, closed=status["kind"] == "closed",
+                                         overdue_on=listing.overdue_day(listed, clock)))
         after = _after_dispatch(draft, done.get("completion"), listed, events, assessed.get("assessment"), current, clock, files) if completed else None
         return {"items": listed, "items_sha256": items_sha256(listed), "follow_up": clock, "draft": draft, "action_options": options,
                 "follow_after_dispatch": None if study else _follow_shown(after, clock),
@@ -849,6 +863,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                         current.get("process")),
                 "file_note": letters.file_note(current["case"], listed, events, clock, files, package=[(draft["form"], draft["title"])] + [(a["kind"], a["title"]) for a in draft["also"]]
                                                if draft and draft.get("also") else None, awaited=_awaited(after, events),
+                                               answered=_answered(after, draft, events, assessed.get("assessment")),
                                                **_holds(done.get("completion"), assessed.get("assessment")))
                 if completed else None,
                 **{k: current[k] for k in ("run_version", "governing_version") if k in current},

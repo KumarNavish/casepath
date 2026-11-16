@@ -570,6 +570,41 @@ def answers(kind, form, assessment=None, events=()):
             if q.get("text") and isinstance(q.get("entry"), int) and (q.get("state") == "beantwortet" or q.get("item_id") in taken)]
 
 
+def addressed(kind, form, assessment=None, events=()):
+    """Every customer question the letter takes up, for the file note and «Als Nächstes»: [{what, state, reason}], answered
+    («beantwortet», or an answer the handler took) or answered on a condition («bedingt», ``reason``: what it rests on or
+    waits for). Unlike ``answers`` (what closes the question in the account), a conditional answer counts: the letter
+    answers it, and what it waits for is the customer's open ask, never something open at the insurer."""
+    if kind != "A5" or not str(form or "").startswith("A5"):
+        return []
+    taken = {e.get("item_id") for e in events or () if e.get("kind") == "item.corrected" and str(e.get("item_id") or "").startswith("customer_question:")}
+    return [{"what": q["text"], "state": "beantwortet" if q.get("state") == "beantwortet" or q.get("item_id") in taken else "bedingt",
+             "reason": q.get("reason") if q.get("state") == "bedingt" and q.get("item_id") not in taken else None}
+            for q in (assessment or {}).get("questions") or ()
+            if q.get("text") and (q.get("state") in ("beantwortet", "bedingt") or q.get("item_id") in taken)]
+
+
+def taken_up(events, edits=None):
+    """The customer questions the letters sent (in force) took up, as their dispatch recorded them (``addressed``)."""
+    by_event = {e.get("event_id"): e for e in events or () if e.get("kind") == "action.dispatched"}
+    return [a for s in sent_letters(events, edits) for a in (by_event.get(s.get("event")) or {}).get("answered") or ()]
+
+
+def answered_line(title, rows):
+    """«Beantwortet in «Titel»: «…»; bedingt: «…» (was es braucht)», or None without rows."""
+    plain = [f"«{r['what']}»" for r in rows or () if r.get("state") == "beantwortet"]
+    cond = [f"«{r['what']}»" + (f" ({r['reason']})" if r.get("reason") else "") for r in rows or () if r.get("state") != "beantwortet"]
+    if not plain and not cond:
+        return None
+    return f"Beantwortet in «{title}»: " + "; ".join(plain + ([f"bedingt: {', '.join(cond)}"] if cond else []))
+
+
+def without_answered(rows, questions):
+    """The rows of «Offen bei uns» without the questions a letter took up (a row starts with the question's words)."""
+    words = [q.get("what") for q in questions or () if q.get("what")]
+    return [r for r in rows or () if not any(str(r.get("text") or "").startswith(w) for w in words)]
+
+
 # -- fulfilment by evidence -------------------------------------------------------------------------------------------------
 
 def _entry_files(entry, files):

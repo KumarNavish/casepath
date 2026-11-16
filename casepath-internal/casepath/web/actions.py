@@ -202,9 +202,10 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
                                               view.get("process"), stage, completion.swiss_day(approval.get("at")), approval.get("respond_by"),
                                               fallback=clock.get("due"), set_date=clock.get("due") if clock.get("set_by") else None)
         # the note says what the Wiedervorlage says: the letter's asks and the same date, never the documents of an earlier request
+        took = completion.addressed(approval.get("action_kind"), approval.get("form"), view.get("assessment"), events)
         note = letters.file_note(view["case"], view.get("items") or [], events, view.get("follow_up"), store.list_files(case_id), package=package,
                                  awaited={"what": awaited, "when": versandpaket.when_line(approval.get("respond_by"), follow), "approved": True},
-                                 approval_holds=True)
+                                 approval_holds=True, answered={"title": draft.get("title"), "rows": took} if took else None)
         blob, _ = versandpaket.build(draft, approval, note, awaited, follow_up=follow, parity_sha=parity_sha)
         digest = store.put_blob(blob)
         return record(case_id, who, "bundle.saved", version=approval["version"], approval=approval.get("event_id"), sha256=digest, bytes=len(blob))
@@ -245,10 +246,13 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         written = []
         for role in roles:
             args = completion.dispatch_args(approval, role, body.date, body.channel, view.get("items") or [], events, view.get("assessment"))
+            # the questions the letter took up, conditional answers included: the file note and «Als Nächstes» no longer
+            # list them as open at the insurer once it went out
+            answered = completion.addressed(approval.get("action_kind"), args["form"], view.get("assessment"), events) if args["form"] == approval.get("form") else []
             event = {"schema": "casepath.study.event/1", "session_id": None, "expert": who, "case_copy": case_id, "source_case": None,
                      "frozen_run_id": (prepared or {}).get("id"), "kind": "action.dispatched", "parity_sha": parity_sha, "item_id": None,
                      "version": body.version, "recipient": role, "date": body.date, "channel": body.channel, "op_id": body.op_id,
-                     "asks": [a["what"] for a in args["asks"]], **({"stale": stale} if stale else {})}
+                     "asks": [a["what"] for a in args["asks"]], **({"answered": answered} if answered else {}), **({"stale": stale} if stale else {})}
             edit, logged = store.dispatch_once(case_id, body.version, role, args, who, "Versandt (Bestätigung der Fallbearbeitung)", event)
             written.append(logged or {"kind": "action.dispatched", "version": body.version, "recipient": role, "edit_id": edit["id"],
                                       "date": edit["args"].get("date"), "channel": edit["args"].get("channel"), "repeated": True})

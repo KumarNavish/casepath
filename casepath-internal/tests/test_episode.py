@@ -390,6 +390,31 @@ class PackageTests(Episode):
         self.ready(case)
         self.check_package(case, [])
 
+    def test_the_note_names_the_questions_the_letter_answers_never_as_open_at_the_insurer(self):
+        """The package's note and the note after the dispatch say which questions the letter answers (the conditional
+        ones with what they rest on), and «Offen bei uns» no longer lists them, in the note or in «Als Nächstes»."""
+        case = self.cases["e1"]
+        self.ready(case)
+        template = next(a for a in self.view(case)["draft"]["also"] if a["kind"] == "vorlage:maengelruege")["text"]
+        self.assertIn("Der Mangel besteht seit Juli 2026 (Art. 257g Abs. 1 OR).", template)  # as the customer writes a month
+        took = ("Beantwortet in «Rechtliche Einschätzung»: «Muss ich weiterhin die volle Miete bezahlen?»; bedingt: "
+                f"«Darf ich die Miete hinterlegen?» (vorher mit uns besprechen), «{Q3}» ({RECEIPTS}).")
+        approval = self.approve(case)["approval"]
+        archive = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{case}/actions/{approval['version']}/bundle").content))
+        for note in (archive.read("Aktennotiz.txt").decode(), self.view(case)["file_note"]):
+            self.assertIn(took, note)
+            self.assertNotIn("Offen bei uns", note)
+        self.dispatch(case, approval["version"])
+        view = self.view(case)
+        self.assertIn(took, view["file_note"])
+        self.assertNotIn("Offen bei uns", view["file_note"])
+        self.assertEqual([line["label"]["de"] for line in view["screen"]["stand"] if line.get("rows")], ["Offen bei der Kundschaft", "Offen bei der Gegenpartei"])
+        # E2: its one question, answered on a condition
+        case = self.cases["e2"]
+        self.ready(case)
+        self.assertIn("Beantwortet in «Rechtliche Einschätzung»: bedingt: «Darf ich die Miete hinterlegen?» (vorher mit uns besprechen).",
+                      self.view(case)["file_note"])
+
     def test_the_date_beside_freigeben_is_the_one_the_package_files_and_the_wait_keeps(self):
         """Before «Freigeben» the bar names the date the Versandpaket will file (A5 + 90 from a dispatch today), not the
         date the case fell due; a date the handler sets there is the package's, the note's and the wait's after the
@@ -557,7 +582,9 @@ class ArrivalTests(Episode):
         a5 = self.ns["d90"].a5_day  # 90 days before the day the template was built: due that day
         self.assertEqual((act["since"], view["follow_up"]["due"]), (a5.isoformat(), (a5 + timedelta(days=90)).isoformat()))
         self.assertEqual(self.row(due)["stand"]["bucket"], "urteil")
-        self.assertTrue(self.row(due)["stand"]["text"].endswith("Statusanfrage mit Abschlussankündigung vorbereitet"), self.row(due)["stand"])
+        # on the day the wait ran out: «fällig», and «Fällig» names that day, not the date the status inquiry would set
+        self.assertEqual(self.row(due)["stand"]["text"], "fällig: Statusanfrage mit Abschlussankündigung vorbereitet")
+        self.assertEqual((self.row(due)["due"], view["screen"]["due"]), ({"date": (a5 + timedelta(days=90)).isoformat(), "word": "Wiedervorlage"},) * 2)
         self.assertEqual((view["completion"]["bar"]["label"], view["completion"]["bar"]["gaps"], view["completion"]["decisions"]), ("Freigeben", 0, []))
         self.assertIn(f"seit unserem letzten Kontakt vom {day(self.ns['d90'].a5_day)}", view["draft"]["text"])
 

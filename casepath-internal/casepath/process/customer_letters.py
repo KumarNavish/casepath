@@ -142,11 +142,20 @@ def _cites(graph, refs):
     return [law[str(r).split("#", 1)[1]]["cite"] for r in refs if str(r).split("#", 1)[-1] in law]
 
 
+MONTHS = ("Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember")
+
+
+def _month(value):
+    """A date known to the month («2026-07») as the customer writes it: «Juli 2026»; None for anything else."""
+    m = re.fullmatch(r"(\d{4})-(\d{2})", str(value or "").strip())
+    return f"{MONTHS[int(m.group(2)) - 1]} {m.group(1)}" if m and 1 <= int(m.group(2)) <= 12 else None
+
+
 def _value(graph, facts, slot, fills):
     value = (facts or {}).get(slot)
     if value not in (None, "") and not isinstance(value, bool):
         definition = next((f for f in (graph or {}).get("facts") or () if f["id"] == slot), {})
-        return _day(value) if definition.get("type") == "date" and _day(value) else str(value)
+        return (_day(value) or _month(value) or str(value)) if definition.get("type") == "date" else str(value)
     if slot in fills:
         return filler(fills[slot])
     definition = next((f for f in (graph or {}).get("facts") or () if f["id"] == slot), {})

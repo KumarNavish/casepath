@@ -212,7 +212,7 @@ def handler_day():
 
 
 def stand(*, closed, run_status, new_files, items, follow_up, events, completed_at, files, today=None, historic=None, run_kind=None,
-          completion=None):
+          completion=None, overdue_on=None):
     """Where a case stands, in the handler's words, with the group of the case list it belongs to and the rank by which
     the group orders it (what needs the handler first) and the date that goes with it: {kind, text, rank, date, bucket}.
 
@@ -225,7 +225,8 @@ def stand(*, closed, run_status, new_files, items, follow_up, events, completed_
 
     A historic file (``historic``: clock.historic) is looked at as of its own day, the cut's «Stand am» or its newest
     document, so nothing in it is overdue. ``run_kind``: the kind of the run ``run_status`` is of (full or update);
-    ``completion``: where the prepared letter stands after the decision (completion.state). A copy never counts as sent."""
+    ``completion``: where the prepared letter stands after the decision (completion.state). A copy never counts as sent.
+    ``overdue_on``: the day the wait of a silent case ran out (overdue_day), «fällig» on it and «überfällig» after it."""
     ref = as_of(files) or (parse_date((historic or {}).get("newest")) if historic else None) or today or handler_day()
     row = lambda kind, text, rank, day=None, bucket="urteil": {"kind": kind, "text": text, "rank": rank, "bucket": bucket,
                                                                "date": day.isoformat() if hasattr(day, "isoformat") else day}
@@ -274,19 +275,28 @@ def stand(*, closed, run_status, new_files, items, follow_up, events, completed_
         if due > ref:
             text = f"zugesagt bis {due.strftime('%d.%m.%Y')}" if (action or {}).get("until") else f"wartet auf {waiting_for(action)} bis {due.strftime('%d.%m.%Y')}"
             return row("waiting", text, 8, due, "wartet")
-        if not historic:
-            return row("due", f"überfällig: {title} vorbereitet", 2, due)
+        if not historic:  # «fällig» on its day, «überfällig» after it
+            return row("due", f"{'fällig' if due == ref else 'überfällig'}: {title} vorbereitet", 2, due)
     if action and str(action.get("reason") or "").startswith("keine Antwort seit") and (action.get("action") in FOLLOW_UPS or action.get("action") == "A12"):
         title = (action.get("label") or {}).get("de") or action.get("value")
-        return row("due", f"überfällig: {title} vorbereitet", 2, due)
+        ran_out = parse_date(overdue_on)  # the day the wait ran out: «fällig» on it, «überfällig» after it
+        return row("due", f"{'fällig' if ran_out and ran_out >= ref else 'überfällig'}: {title} vorbereitet", 2, ran_out or due)
     if contact and parse_date(contact.get("value")):
         return row("contact", "vorbereitet", 3, parse_date(contact["value"]))
     return row("prepared", "vorbereitet", 4, due)
 
 
-def due(items, follow_up, files, historic=None, closed=False, today=None):
+def overdue_day(items, follow_up):
+    """The day the wait of a silent case ran out (its follow-up's ``fell_due``), unless a person set the follow-up date
+    (``follow_up``: clock.follow_up): what «Fällig» and the status name for it, whatever the run does next."""
+    act = next((i for i in items or () if i["kind"] == "next_action"), None) or {}
+    return act.get("fell_due") if act.get("fell_due") and not (follow_up or {}).get("set_by") else None
+
+
+def due(items, follow_up, files, historic=None, closed=False, today=None, overdue_on=None):
     """«Fällig» in the case list: the earliest of the open deadlines of the customer or of Protekta (statutory, set by a
     court, an authority or the other side, or held by the account), the follow-up and the first contact, with its word.
+    ``overdue_on``: the day the wait of a silent case ran out (overdue_day), which stands for the follow-up.
     None for a closed case."""
     if closed:
         return None
@@ -296,8 +306,9 @@ def due(items, follow_up, files, historic=None, closed=False, today=None):
         if i["kind"] == "deadline" and (urgent.customers(i) or urgent.ours(i) or (i.get("account") and i.get("party") == "kunde")) \
                 and urgent.dated(i) and not urgent.open_condition(i) and parse_date(i["value"]) >= ref:
             rows.append((i["value"], "Termin" if i.get("set_by_others") and not i.get("account") and i.get("what") else "Frist"))
-    if follow_up and parse_date(follow_up):
-        rows.append((parse_date(follow_up).isoformat(), "Wiedervorlage"))
+    when = overdue_on or follow_up  # overdue: the day it fell due, as the status says, not the date the step prepared would set
+    if when and parse_date(when):
+        rows.append((parse_date(when).isoformat(), "Wiedervorlage"))
     contact = None if as_of(files) or historic else next((i for i in items or () if i["kind"] == "contact"), None)
     if contact and parse_date(contact.get("value")):
         rows.append((parse_date(contact["value"]).isoformat(), "Erstkontakt"))

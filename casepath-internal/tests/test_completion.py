@@ -839,7 +839,13 @@ class QueueTests(unittest.TestCase):
         self.assertEqual(follow_up(28, files, hand, step="A5")["due"], "2026-12-01")
         self.assertEqual(follow_up(28, files, hand, step="A7")["due"], "2026-12-13")  # another step: the clock's date
         later = hand + [approved("A5", version="v1", at="2026-11-15T09:00:00+00:00"), sent("v1", at="2026-11-15T10:00:00+00:00")]
-        self.assertEqual(follow_up(28, files, later, step="A5")["due"], "2026-12-13")  # set before the dispatch: lapsed
+        # set for the step that went out, before its dispatch: its Versandpaket filed that date, so the wait keeps it
+        self.assertEqual(follow_up(28, files, later, step="A7")["due"], "2026-12-01")
+        other = [{**hand[0], "step": "A4"}] + later[1:]  # set for another step before the dispatch: lapsed
+        self.assertEqual(follow_up(28, files, other, step="A7")["due"], "2026-12-13")
+        older = [{**hand[0], "at": "2026-11-14T08:00:00+00:00"}, approved("A5", version="v0", at="2026-11-14T09:00:00+00:00"),
+                 sent("v0", day="2026-11-14", edit="ed0", at="2026-11-14T10:00:00+00:00")] + later[1:]  # set before an earlier dispatch of the step: lapsed with it
+        self.assertEqual(follow_up(28, files, older, step="A7")["due"], "2026-12-13")
         again = later + [{**hand[0], "date": "2026-12-03", "at": "2026-11-15T11:00:00+00:00"}]
         self.assertEqual(follow_up(28, files, again, step="A5")["due"], "2026-12-03")
         legacy = [{"kind": "followup.set", "date": "2026-12-02", "at": "2026-11-15T08:00:00+00:00"}]  # set by a browser before this release

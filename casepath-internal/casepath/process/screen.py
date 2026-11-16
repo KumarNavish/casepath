@@ -107,11 +107,12 @@ def without_date(text, date):
     return (text[:cut] + text[at + len(date):] if cut >= 0 else text.replace(date, "")).strip(" ,;–")
 
 
-def account_lines(items, look, act, stated, lead_id=None):
+def account_lines(items, look, act, stated, lead_id=None, answered=()):
     """«Als Nächstes» in «Der Fall»: the account's lines (what is agreed, what is open with whom), each open request with
     the date it is due by (so that date is not a second «Fristen» line), without what the card head states (its date, the
-    deadline that leads) and without the agreement while the payout's progress line stands for it. Returns the lines and
-    the account dates they carry."""
+    deadline that leads), without the agreement while the payout's progress line stands for it, and without a question a
+    letter that went out answered, on a condition too (``answered``: completion.taken_up). Returns the lines and the
+    account dates they carry."""
     dated = {str(i["key"])[len("konto-"):]: i for i in items if i["kind"] == "deadline" and i.get("account") and str(i["key"]).startswith("konto-")}
     lines, carried = [], set()
     for line in items:
@@ -122,7 +123,11 @@ def account_lines(items, look, act, stated, lead_id=None):
                 lines.append({k: line.get(k) for k in ("item_id", "label", "value", "open", "evidence", "handler")})
             continue
         rows = []
-        for row in line["rows"]:
+        source = line["rows"]
+        if line["key"] == "offen_versicherer" and answered:
+            from .completion import without_answered
+            source = without_answered(source, answered)
+        for row in source:
             due = dated.get(str(row.get("request")))
             if (due and due["item_id"] == lead_id) or any(d in row["text"] for d in stated):
                 if due:
@@ -473,7 +478,8 @@ def build(items, draft, events, look, rule, stage=None, via=None, routing=None, 
     reason = without_date(weil(items, via), (head_lead or {}).get("date")) or None
     stated = set(DAY.findall(" ".join(x for x in (reason or "", (head_lead or {}).get("date") or "") if x)))
     skip = {x for x in ((head_lead or {}).get("item_id"), act.get("deadline")) if x}
-    stand, carried = account_lines(items, look, act, stated, (head_lead or {}).get("item_id"))
+    from .completion import taken_up
+    stand, carried = account_lines(items, look, act, stated, (head_lead or {}).get("item_id"), answered=taken_up(events))
     # the stage's own short lines (the mandate, the payout's agreement and account), without what the head states; the cost
     # check's lines belong to the fee note's decision
     lines = [{k: i.get(k) for k in ("item_id", "value", "evidence")} for i in items if i["kind"] == "stage_line" and i.get("shown")

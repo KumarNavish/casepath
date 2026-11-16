@@ -465,7 +465,8 @@ def _adoption(events, process=None):
     return " · ".join(str(t) for t in titles)
 
 
-def file_note(case, items, events, follow_up, files=(), runs_done=None, package=None, awaited=None, approval_holds=None, adoption_holds=None):
+def file_note(case, items, events, follow_up, files=(), runs_done=None, package=None, awaited=None, approval_holds=None, adoption_holds=None,
+              answered=None):
     """One paragraph for the case system: received, decided and why, sent, awaited. Only from what is stored.
     ``package``: the titles of the letters that go out together (the mandate package), each with its state («freigegeben»,
     «versandt am …»). Received and entered since the last Versandpaket saved (the file note of that version is in it);
@@ -474,8 +475,10 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
     is approved, or while nothing of ours went out, «Erwartet» says what that letter asks, as its Wiedervorlage does.
     ``approval_holds`` / ``adoption_holds``: False once a correction made the approval or the adopted recommendation lapse
     (completion.state, the assessment's ``adopted.valid``): the note then never says «Zum Versand freigegeben» or
-    «Empfehlung übernommen» of them; None where the caller does not know (as before)."""
-    from .completion import approvals, note_lines, sent_letters
+    «Empfehlung übernommen» of them; None where the caller does not know (as before). ``answered``: {title, rows} of the
+    prepared letter while it is not sent (completion.addressed): the questions it answers, on a condition too, are no
+    longer «Offen bei uns» and the note names the letter that answers them, as it does for a letter that went out."""
+    from .completion import answered_line, approvals, note_lines, sent_letters, taken_up, without_answered
     label = lambda i: (i.get("label") or {}).get("de") or i["key"]
     since = max((str(e.get("at") or "") for e in events or () if e.get("kind") == "bundle.saved"), default="")
     received = [f.get("name") for f in files or () if f.get("name") and (not since or str(f.get("created_at") or "") > since)]
@@ -502,8 +505,17 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
     own = [i for i in items if i["kind"] == "entry" and i.get("handler") and str(i["handler"].get("at") or "") > copied_at]
     if own:
         parts.append("Erfasst durch die Fallbearbeitung: " + "; ".join(handler_line(i) for i in own) + ".")
-    # the running account (account.py), when the run recorded one: what is agreed, open at whom, the last contact
-    parts += [f"{label(i)}: {i.get('detail') or i.get('value')}." for i in items if i["kind"] == "stand"]
+    # the running account (account.py), when the run recorded one: what is agreed, open at whom, the last contact; a
+    # question the letter answers (or a letter that went out answered) is not open at the insurer
+    gone = list((answered or {}).get("rows") or ()) + taken_up(events)
+    for i in items:
+        if i["kind"] != "stand":
+            continue
+        kept = without_answered(i.get("rows"), gone) if i.get("key") == "offen_versicherer" and i.get("rows") and gone else None
+        if kept is None or len(kept) == len(i["rows"]):
+            parts.append(f"{label(i)}: {i.get('detail') or i.get('value')}.")
+        elif kept or i.get("more"):
+            parts.append(f"{label(i)}: " + "; ".join(r["text"] for r in kept) + (f"; … {i['more']} weitere" if i.get("more") else "") + ".")
     if decided:
         parts.append(f"Entschieden: {'; '.join(decided)}.")
     if action:
@@ -532,6 +544,10 @@ def file_note(case, items, events, follow_up, files=(), runs_done=None, package=
         parts.append(f"Paket ({len(package)} Schreiben, je einzeln): {'; '.join(named)}.")
     parts += [f"{line}." for line in note_lines(events) if approval_holds is not False or not line.startswith("Zum Versand freigegeben")]
     last = sent[-1] if sent else None
+    went_answered = next((e.get("answered") for e in events or () if e.get("kind") == "action.dispatched" and last and e.get("event_id") == last.get("event")), None)
+    took = answered_line(answered["title"], answered["rows"]) if (answered or {}).get("rows") else answered_line(last.get("title"), went_answered) if went_answered else None
+    if took:
+        parts.append(f"{took}.")
     went = next((e for e in reversed(events or ()) if e.get("kind") == "action.dispatched" and last and e.get("version") == last["version"]
                  and e.get("asks")), None)
     asked_then = (went or {}).get("asks")

@@ -476,7 +476,8 @@ def build_items(state, result, files=None, events=None, review=None):
         if quiet:
             planned = {"kind": quiet["then"], **({"form": quiet["form"]} if quiet.get("form") else {}), "title": quiet.get("title") or kind_title(graph, quiet["then"]), "next_in_days": quiet.get("deadline_days"),
                        "follow_up": quiet.get("follow_up"), "skip_if": None,
-                       "reason": f'keine Antwort seit {silent_since(graph, quiet["last"])} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)'}
+                       "reason": f'keine Antwort seit {silent_since(graph, quiet["last"])} vom {".".join(reversed(quiet["since"].split("-")))} ({quiet["silent_days"]} Tage)',
+                       **({"fell_due": fell_due(quiet)} if fell_due(quiet) else {})}
         owed = None if ev.get("outcome") else account.payout_due(ledger, look)
         if owed:  # an agreed payment whose date has passed and that the file does not show made: chase it, a letter to the
             # party that owes it (form A11_nachfragen); the settlement sequence then proposes no step of its own beside it
@@ -559,6 +560,7 @@ def build_items(state, result, files=None, events=None, review=None):
                                         **({"reason": planned["reason"]} if planned.get("reason") else {}),
                                         **({"because": planned["because"]} if planned.get("because") else {}),
                                         **({"since": planned["since"]} if planned.get("since") else {}),
+                                        **({"fell_due": planned["fell_due"]} if planned.get("fell_due") else {}),
                                         **({"consequence": planned["consequence"]} if planned.get("consequence") else {}),
                                         **({"owed": planned["owed"]} if planned.get("owed") else {}),
                                         **({"settlement": {"step": (settling or {}).get("step", ("",))[0], "done": list((settling or {}).get("done") or []),
@@ -811,6 +813,14 @@ SINCE = {"A1": "unserer Anforderung", "A4": "unserer Rückfrage", "A5": "unserer
 def silent_since(graph, code):
     """What nobody answered, in words (never the action's code): «unserer Anforderung»."""
     return SINCE.get(code) or f"unserem Schreiben ({kind_title(graph, code)})"
+
+
+def fell_due(quiet):
+    """The day the wait of a silent case ran out (the clock's rule: the letter's day plus its days), ISO, or None: what the
+    case list's «Fällig» names for the follow-up prepared for it, rather than the date that follow-up would set."""
+    from datetime import timedelta
+    since = parse_date((quiet or {}).get("since"))
+    return (since + timedelta(days=int(quiet["days"]))).isoformat() if since and str((quiet or {}).get("days") or "").isdigit() else None
 
 
 def wahrt(events, deadline, template=None):
