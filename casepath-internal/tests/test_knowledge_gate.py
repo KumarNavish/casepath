@@ -12,7 +12,7 @@ import unittest
 from fastapi.testclient import TestClient
 
 from casepath.config import load_settings
-from casepath.process import knowledge as kb
+from casepath.process import completion, knowledge as kb
 from casepath.read.extract import extract
 from casepath.web.app import create_app
 
@@ -290,7 +290,7 @@ class StandTests(Gate):
         self.assertEqual(self.client.get("/api/recall", params={"workflow_version": approval["stand"]["workflow"]["version"]}).json()["letters"], 1)
         element = approval["relies"][0]
         self.assertEqual(self.client.get("/api/recall", params={"element": element}).json()["letters"], 1)  # by a reviewed element it rests on
-        sent = self.client.post(f"/api/cases/{a['id']}/actions/dispatch", json={"version": approval["version"], "date": "2026-11-16", "channel": "email",
+        sent = self.client.post(f"/api/cases/{a['id']}/actions/dispatch", json={"version": approval["version"], "date": completion.swiss_today().isoformat(), "channel": "email",
                                                                                  "op_id": "op-recall-2"})
         self.assertEqual(sent.status_code, 200, sent.text)
         self.assertEqual(self.client.get("/api/recall", params={"knowledge": seed}).json()["sent"], 1)
