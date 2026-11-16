@@ -278,12 +278,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         store.sweep_blobs()  # bytes of a deleted case that came back with the volume's copy: removed here, then there
     catalogue = catalogue or workflows.Catalogue.load(settings.catalogue_dir)
     kb.seed(store, {w["id"] for w in catalogue.workflows})
+    parity_sha = source_tree()[0]  # the source this app runs, once: every log line carries it, the run service's own too
     runs = RunService(store, catalogue, model_factory or default_model_factory(settings), max_workers=settings.run_workers,
                       reading_workers=settings.reading_workers, page_image_side=settings.page_image_side,
                       token_budget=settings.run_token_budget, speed_trials=settings.speed_trials,
                       voice={"organisation": settings.organisation, "writing": settings.writing_language},
                       auto_update=settings.auto_update, auto_update_max_pages=settings.auto_update_max_pages,
-                      update_token_budget=settings.update_token_budget, model_as_user=bool(settings.model and settings.model.auth == "user"))
+                      update_token_budget=settings.update_token_budget, model_as_user=bool(settings.model and settings.model.auth == "user"),
+                      parity_sha=parity_sha)
 
     ticking = threading.Event()
 
@@ -334,7 +336,6 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         except NotFound:
             raise HTTPException(404, "Not found.") from None
 
-    parity_sha = source_tree()[0]
     # The Auswertung's pseudonyms: a salt kept inside Mobiliar, or a random one per start (unlinkable, not stable).
     auswertung_salt = os.environ.get("CASEPATH_SCORECARD_SALT") or secrets.token_hex(16)
 

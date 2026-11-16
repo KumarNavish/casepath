@@ -205,6 +205,17 @@ class DuplicateTests(Arrival):
 
 
 class FollowOnTests(AutoOn):
+    def setUp(self):
+        super().setUp()
+        # on a slow machine hashing the source tree takes longer than a short update: the run service must not do it
+        # between starting the follow-on and logging it (the log line then came after the follow-on had finished)
+        def slow(*args, **kwargs):
+            time.sleep(2.5)
+            return "0" * 64, 0
+        patcher = mock.patch("casepath.parity.source_tree", side_effect=slow)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def test_a_file_arriving_during_an_update_gets_one_more_update(self):
         case = self.seeded()
         retract = NS.perturbations["P-retract"]

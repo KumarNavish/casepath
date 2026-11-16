@@ -122,7 +122,7 @@ def case_state(store, catalogue, case_id, knowledge=None, study=None):
 class RunService:
     def __init__(self, store, catalogue, model_factory, *, max_workers=2, effort="medium", read_scans=True, reading_workers=1, page_image_side=1700,
                  token_budget=0, voice=None, speed_trials=(), auto_update=False, auto_update_max_pages=20, update_token_budget=0,
-                 model_as_user=False):
+                 model_as_user=False, parity_sha=None):
         """``auto_update``: updates start by themselves (an upload, a file that came during an update, a restart);
         ``update_token_budget``: the cap of every update; ``model_as_user``: the model is called as the person who started
         a run, so nothing can start without that person (an interrupted update then waits for «Erneut aktualisieren»)."""
@@ -131,6 +131,7 @@ class RunService:
         self.token_budget, self.voice, self.speed_trials = token_budget, voice or {}, tuple(speed_trials)
         self.auto_update, self.auto_update_max_pages, self.update_token_budget = auto_update, auto_update_max_pages, update_token_budget
         self.model_as_user = model_as_user
+        self._parity = parity_sha  # the source's hash the service's own log lines carry: given by the app, else computed once (_source)
         self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix="casepath-run")
         self._stops = set()  # runs a person asked to stop ("Anhalten"); checked between turns
         self.resumed = self._resume(self.store.interrupt_unfinished())
@@ -193,6 +194,7 @@ class RunService:
             run = self.store.get_run(run_id)
             if run["status"] != "completed" or not self.auto_update or auto_update_reason(self.store, case_id, self.auto_update_max_pages):
                 return
+            self._source()  # before the follow-on starts: its log line is written at once, never after it finished
             later = self.update(case_id, run["created_by"], token, auto=True, budget=budget, follow=False, max_pages=self.auto_update_max_pages)
             self.log(case_id, run["created_by"], "update.started", auto=True, run=later["id"], follows=run_id)
         except Exception:  # noqa: BLE001  the case keeps its «Aktualisieren»: the arrival is shown, nothing is lost
@@ -221,6 +223,7 @@ class RunService:
                 # unread files and nothing blocking; without the admitted inputs, the actual unread set within the cap
                 if auto_update_reason(self.store, case_id, 0 if inputs is not None else self.auto_update_max_pages):
                     continue
+                self._source()
                 again = self.update(case_id, run["created_by"], None, auto=True, only=inputs)
                 self.log(case_id, run["created_by"], "update.started", auto=True, run=again["id"], resumed=run_id)
                 out.append(again["id"])
@@ -228,11 +231,17 @@ class RunService:
                 continue
         return out
 
-    def log(self, case_id, who, kind, **fields):
-        """An event of the case's log written by the run service itself (casepath.study.event/1, as web/app.py writes)."""
+    def _source(self):
+        """The hash of the source the service runs (parity.source_tree), computed at most once. Hashing the tree can take
+        seconds on a slow disk, so whoever starts a run and then logs it asks for it before starting the run."""
         if not getattr(self, "_parity", None):
             from ..parity import source_tree
             self._parity = source_tree()[0]
+        return self._parity
+
+    def log(self, case_id, who, kind, **fields):
+        """An event of the case's log written by the run service itself (casepath.study.event/1, as web/app.py writes)."""
+        self._source()
         completed = self.store.latest_run(case_id, "completed")
         return self.store.append_case_event(case_id, {"schema": "casepath.study.event/1", "session_id": None, "expert": who, "case_copy": case_id,
                                                       "source_case": None, "frozen_run_id": (completed or {}).get("id"), "kind": kind,
