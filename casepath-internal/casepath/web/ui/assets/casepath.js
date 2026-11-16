@@ -73,8 +73,42 @@ async function api(path, options = {}) {
   const response = await fetch(path, { ...options, headers });
   const type = response.headers.get("content-type") || "";
   const body = type.includes("json") ? await response.json() : await response.text();
-  if (!response.ok) throw new Error((body && body.detail) || response.statusText);
+  if (!response.ok) throw new Error(plainError(body && body.detail, response.status, response.statusText));
   return body;
+}
+// What the server refused, in the handler's language: a message it words in English (the API's own) is said in German,
+// a list of field errors as one sentence, and nothing technical is ever shown as it came.
+const ERRORS_DE = [
+  [/^Not found\.$/, "Nicht gefunden. Bitte die Liste neu laden."],
+  [/^Sign-in required\.$/, "Bitte neu anmelden."],
+  [/^Sign in again: CasePath calls the model as you\.$/, "Bitte neu anmelden: CasePath ruft das Modell in Ihrem Namen auf."],
+  [/^This workspace needs an access role you do not have\.$/, "Für diesen Arbeitsbereich fehlt Ihnen die Berechtigung."],
+  [/^This CasePath pilot is open to its named pilot group only\.$/, "Dieser Pilot steht nur der benannten Pilotgruppe offen."],
+  [/^Sign-in is not configured for this deployment\.$/, "Die Anmeldung ist für diese Installation nicht eingerichtet."],
+  [/^Files up to (\d+) MB are accepted\.$/, "Dateien bis $1 MB werden angenommen."],
+  [/^The files? (?:is|are) empty\.$/, "Die Datei ist leer."],
+  [/^A title of up to 300 characters is required\.$/, "Bitte einen Namen mit höchstens 300 Zeichen angeben."],
+  [/^(?:A run is in progress for this case\.|this case already has a run in progress)$/, "Für diesen Fall läuft gerade eine Vorbereitung. Bitte warten, bis sie fertig ist."],
+  [/^This file is already imported\.$/, "Diese Akte ist bereits importiert."],
+  [/^No volume is configured for imports\.$/, "Für den Import ist kein Ablageort eingerichtet."],
+  [/^Only case files in the volume's incoming folder can be imported\.$/, "Importiert werden nur Akten aus dem Eingangsordner."],
+  [/^This runtime reads prepared cases only; prepare the file first\.$/, "Diese Installation liest nur vorbereitete Akten; die Datei muss zuerst vorbereitet werden."],
+  [/^No such workflow\.$/, "Diesen Prozess gibt es nicht (mehr)."],
+  [/^Name the one PDF to cut\.$/, "Bitte das eine PDF nennen, das zugeschnitten wird."],
+  [/^Your own answer for this case is already saved and frozen\.$/, "Ihre eigene Antwort zu diesem Fall ist bereits gespeichert."],
+  [/^This run has no draft\.$/, "Zu diesem Lauf gibt es keinen Entwurf."],
+  [/^Choose or route a workflow before editing the process\.$/, "Zuerst muss der Prozess des Falls feststehen."],
+  [/^Say why the process changes\.$/, "Bitte angeben, weshalb der Prozess ändert."],
+  [/^This change cannot be applied: .*$/, "Diese Änderung lässt sich so nicht anwenden."],
+  [/^(?:Unknown event kind.*|Unknown reason\.|Unknown item kind\.|Too much in one event\.)$/, "Das liess sich nicht festhalten. Bitte neu laden."],
+];
+function plainError(detail, status, fallback) {
+  if (Array.isArray(detail)) return T("The entry does not fit; please check it.", "Die Eingabe passt so nicht; bitte prüfen.");
+  const text = String(detail || "");
+  if (LANG !== "de") return text || fallback;
+  for (const [pattern, german] of ERRORS_DE) if (pattern.test(text)) return text.replace(pattern, german);
+  if (!text) return status >= 500 ? "Der Dienst antwortet gerade nicht. Bitte gleich erneut versuchen." : "Das hat nicht geklappt. Bitte neu laden und erneut versuchen.";
+  return text;
 }
 
 function parseRoute() {
@@ -354,7 +388,9 @@ function runError(error) {
   if (/^The service restarted/.test(String(error || ""))) return known.interrupted;  // a run interrupted before this release
   if (/^http_(429|5\d\d)$/.test(reason)) return T("the model service is busy; please try again shortly", "Der Modelldienst ist ausgelastet; bitte gleich erneut versuchen");
   if (/^http_4\d\d$/.test(reason)) return T(`the model service refused the request (${reason.slice(5)})`, `Der Modelldienst hat die Anfrage abgelehnt (${reason.slice(5)})`);
-  return error;
+  // anything else is technical: said plainly with a short code for support; the full text stays in the run's record
+  const code = reason === "internal" ? (String(error).split(":")[1] || "").trim().replace(/[^A-Za-z0-9_]/g, "").slice(0, 40) : reason.replace(/[^A-Za-z0-9_ -]/g, "").slice(0, 40);
+  return T(`an internal error ended the run${code ? ` (code ${code})` : ""}`, `ein interner Fehler hat den Lauf beendet${code ? ` (Code ${code})` : ""}`);
 }
 
 // ---------- rail ----------
@@ -1396,7 +1432,8 @@ function stageLine() {
     const open = mine.filter((e) => e.kind === "agent.start").length > mine.filter((e) => e.kind === "agent.end").length;
     return { start: at(mine[0]), open };
   };
-  const learned = (S.runProfile || {}).median_seconds || {};
+  const known = (S.runProfile || {}).timed >= 3;  // a time is said only from three of this deployment's own runs on
+  const learned = known ? (S.runProfile || {}).median_seconds || {} : {};
   const kind = (S.data.run || {}).kind === "update" ? "update" : "full";
   const pages = (S.data.files || []).reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 1), 0);
   if (!S.runProfile || S.runProfile.forCase !== S.data.case.id || S.runProfile.kind !== kind) {
@@ -1407,15 +1444,18 @@ function stageLine() {
   let nowAt = rows.findIndex((x) => x.span && x.span.open);  // the stage at work, else the one after the last begun
   if (nowAt < 0) nowAt = rows.map((x) => Boolean(x.span)).lastIndexOf(true) + 1;
   const left = rows.filter((x) => !x.span || x.span.open).reduce((n, x) => n + Math.max(0, x.stage.expect - (x.span ? (now - x.span.start) / 1000 : 0)), 0);
+  // a stage that already took longer than usual: no number that would stand still, the line says so instead
+  const over = rows.some((x) => x.span && x.span.open && (now - x.span.start) / 1000 > x.stage.expect);
   const cells = rows.map(({ stage }, i) => `<li class="${i < nowAt ? "done" : i === nowAt ? "now" : ""}">${i < nowAt ? icon("tick") : ""}${T(stage.en, stage.de)}</li>`).join("");
-  return { cells, left: Math.max(5, Math.round(left / 5) * 5) };
+  return { cells, left: known && !over ? Math.max(5, Math.round(left / 5) * 5) : null, over: known && over, agents: (rows[nowAt] || rows[rows.length - 1]).stage.agents };
 }
 function runLine(st) {
   const run = S.data.run;
   const wrap = (body, end) => `<section class="cp-runline" aria-live="polite">${body}<span class="cp-runline-end">${end}</span></section>`;
   if (st === "running") {
-    const { cells, left } = S.events.length ? stageLine() : { cells: "", left: null };
-    const last = S.events.slice().reverse().find((e) => e.file && e.agent !== "lead") || {};
+    const { cells, left, over, agents } = S.events.length ? stageLine() : { cells: "", left: null };
+    // the file named is one the stage at work is on, never the last file of a stage that is over
+    const last = S.events.slice().reverse().find((e) => e.file && e.agent !== "lead" && (!agents || agents.includes(e.agent))) || {};
     const doing = { reader: T("reads", "liest"), claim_reader: T("reads", "liest"), document_finder: T("looks for documents in", "sucht Unterlagen in"),
       source_checker: T("checks the sources in", "prüft die Belege in"), result_checker: T("checks the result against", "prüft das Ergebnis an") }[last.agent] || T("starts on", "beginnt mit");
     const where = last.file ? `<button class="cp-link" data-cite-file="${esc(last.file)}" data-page="${last.page || last.from_page || ""}">${esc(clip(fileName(last.file), 40))}${last.page || last.from_page ? `, ${T("p.", "S.")} ${last.page || last.from_page}` : ""}</button>` : T("the files", "den Akten");
@@ -1423,14 +1463,17 @@ function runLine(st) {
     const others = (S.workflows || []).filter((w) => !routed || w.id !== routed.workflow);
     const stopping = S.stopping === run.id || S.switching;
     return wrap(`<ol class="cp-stages">${cells}</ol>${arrivalNow(run)}<p class="cp-runnow">${stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …")
-        : `${T("Now", "Jetzt")}: ${doing} ${where}${left ? ` · ${T("about", "etwa")} ${left} s ${T("to go", "noch")}` : ""}`}</p>
+        : `${T("Now", "Jetzt")}: ${doing} ${where}${left ? ` · ${T("about", "etwa")} ${left} s ${T("to go", "noch")}` : over ? ` · ${T("taking longer than usual", "dauert länger als üblich")}` : ""}`}</p>
       ${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${esc(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}`,
       `${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
       <button class="cp-button primary" id="stop-run" ${stopping ? "disabled" : ""}>${T("Stop", "Anhalten")}</button>`);
   }
   if (st === "paused") {
     const { cells } = S.events.length ? stageLine() : { cells: "" };
-    return wrap(`<ol class="cp-stages paused">${cells}</ol><p class="cp-runnow"><b>${T("Stopped", "Angehalten")}</b></p>`,
+    // a run the model failed in keeps the steps it finished: said with its reason, continued with «Weiter»
+    const failed = ((run || {}).result || {}).failed;
+    return wrap(`<ol class="cp-stages paused">${cells}</ol><p class="cp-runnow"><b>${failed ? T("Interrupted", "Unterbrochen") : T("Stopped", "Angehalten")}</b>${failed
+        ? `: ${esc(runError(failed.error))} · ${T("what was finished is kept; «Continue» goes on from there", "was fertig war, bleibt; «Weiter» setzt dort fort")}` : ""}</p>`,
       `<button class="cp-link cp-quiet-link" id="discard-run">${T("discard", "verwerfen")}</button><button class="cp-button primary" id="continue-run">${T("Continue", "Weiter")}</button>`);
   }
   if (st === "failed" && run.kind === "update") {  // the update only is offered again; a full preparation stays behind «Mehr»
@@ -1460,7 +1503,7 @@ function updateEta() {
     S.updateProfile = { loading: true };
     api("/api/run-profile?kind=update").then((p) => { S.updateProfile = p; if (S.route.view === "case" && caseState() === "arrived") renderCase(); }).catch(() => {});
   }
-  const s = (S.updateProfile || {}).median_total;
+  const s = (S.updateProfile || {}).timed >= 3 ? S.updateProfile.median_total : null;
   if (!s) return "";
   return s < 90 ? T(`about ${Math.max(5, Math.round(s / 5) * 5)} s`, `etwa ${Math.max(5, Math.round(s / 5) * 5)} s`) : T(`about ${Math.round(s / 60)} min`, `etwa ${Math.round(s / 60)} Min.`);
 }
@@ -2361,6 +2404,40 @@ async function loadCase() {
   await renderCase();
 }
 
+// A run the reader started and left: the browser keeps asking (cheaply, statuses only) and says when it is done, in
+// the tab's title and in one quiet line that opens the case. Opening the case takes the notice away.
+const WATCH = { runs: {}, done: [], timer: null };
+function watchRun(run, c) {
+  if (!run || !["queued", "running"].includes(run.status)) return;
+  WATCH.runs[run.id] = { id: c.id, name: caseName(c), kind: run.kind };
+  if (!WATCH.timer) WATCH.timer = setInterval(pulse, 4000);
+}
+async function pulse() {
+  const ids = Object.keys(WATCH.runs);
+  if (!ids.length) { clearInterval(WATCH.timer); WATCH.timer = null; return; }
+  let now;
+  try { now = (await api(`/api/pulse?runs=${ids.join(",")}`)).runs; } catch (error) { return; }
+  for (const id of ids) {
+    const status = now[id];
+    if (status && ["queued", "running"].includes(status)) continue;
+    const row = WATCH.runs[id];
+    delete WATCH.runs[id];
+    if (S.route.view === "case" && S.route.id === row.id && !document.hidden) continue;  // the reader is looking at it
+    WATCH.done = WATCH.done.filter((d) => d.id !== row.id).concat([{ ...row, status }]);
+  }
+  showNotices();
+}
+function showNotices() {
+  WATCH.done = WATCH.done.filter((d) => !(S.route.view === "case" && S.route.id === d.id && !document.hidden));
+  document.title = `${WATCH.done.length ? `(${WATCH.done.length}) ` : ""}CasePath`;
+  let box = document.getElementById("cp-notices");
+  if (!WATCH.done.length) { if (box) box.remove(); return; }
+  if (!box) { box = document.createElement("div"); box.id = "cp-notices"; box.className = "cp-notices"; box.setAttribute("role", "status"); document.body.appendChild(box); }
+  const word = (d) => d.status === "completed" ? (d.kind === "update" ? T("Updated", "Aktualisiert") : T("Prepared", "Fertig vorbereitet"))
+    : d.status === "paused" ? T("Stopped", "Angehalten") : T("Not finished", "Nicht fertig");
+  box.innerHTML = WATCH.done.map((d) => `<a class="cp-notice ${d.status === "completed" ? "" : "warn"}" href="#/case/${esc(d.id)}/overview">${d.status === "completed" ? icon("check") : ""}<b>${word(d)}</b> ${esc(d.name)}</a>`).join("");
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden) showNotices(); });
 function schedulePoll() {
   clearTimeout(S.poll);
   S.poll = setTimeout(async () => {
@@ -2401,6 +2478,8 @@ async function renderCase() {
   const typing = [...document.querySelectorAll("#app input[id], #app textarea[id]")].filter((el) => el.value && !["file", "checkbox", "radio"].includes(el.type))
     .map((el) => ({ id: el.id, value: el.value, focus: el === document.activeElement, start: el.selectionStart, end: el.selectionEnd }));
   $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
+  watchRun(S.data.run, S.data.case);
+  showNotices();
   for (const t of typing) {
     const el = document.getElementById(t.id);
     if (!el || el.value || el.type === "file") continue;
@@ -2685,6 +2764,7 @@ async function route() {
   } catch (error) {
     $("#app").innerHTML = `<main class="cp-main"><p class="cp-error">${esc(error.message)}</p></main>`;
   }
+  showNotices();
 }
 
 (async () => {

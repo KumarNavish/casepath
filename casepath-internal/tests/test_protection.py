@@ -120,5 +120,19 @@ class HoldTests(Service):
         self.approve(draft)
 
 
+
+class PulseTests(Shared):
+    def test_the_pulse_says_only_whether_runs_are_done(self):
+        a = self.person("A. Handler")
+        store = self.apps[0].state.store
+        cid = a.post("/api/cases", json={"title": "Schimmel", "intake": {}}).json()["id"]
+        store.add_file(cid, "Meldung.txt", "text/plain", "text", b"Guten Tag", {"text": "Guten Tag"}, "A. Handler")
+        run = store.create_run(cid, "A. Handler")
+        self.assertEqual(a.get(f"/api/pulse?runs={run['id']},run_gibt_es_nicht,../x").json(), {"runs": {run["id"]: "queued"}})
+        store.update_run(run["id"], status="completed")
+        self.assertEqual(a.get(f"/api/pulse?runs={run['id']}").json(), {"runs": {run["id"]: "completed"}})
+        self.assertEqual(a.get("/api/pulse").json(), {"runs": {}})
+
+
 if __name__ == "__main__":
     unittest.main()

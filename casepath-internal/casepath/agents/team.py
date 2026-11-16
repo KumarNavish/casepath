@@ -1421,6 +1421,18 @@ class CaseTeam:
             return {"paused": True, "brief": work.brief, "facts": list(work.facts.values()), "documents": list(work.documents.values()),
                     "record": work.record,
                     "usage": work.usage, "events": work.events, "done": state["done"]}
+        except TeamError:
+            raise  # a limit the run reached (budget, turns, delegations): continuing would only reach it again
+        except Exception as error:
+            # The model failed (unreachable, busy, an unusable answer) or something broke after steps were finished: what
+            # they established stays, as when a person stops the run, and «Weiter» continues with the step that failed.
+            reason = getattr(error, "reason", None) or "internal"
+            if not state["done"] or reason in ("token_budget", "model_not_configured"):  # nothing to keep, or a cap: it stops the run
+                raise
+            work.emit("lead", "run.paused", failed=reason)
+            return {"paused": True, "brief": work.brief, "facts": list(work.facts.values()), "documents": list(work.documents.values()),
+                    "record": work.record, "usage": work.usage, "events": work.events, "done": state["done"],
+                    "failed": {"reason": reason, "error": f"{reason}: {type(error).__name__}"}}
 
     def _step(self, work, state, key, do):
         """One step of the plan, once: a continued run skips what the paused run finished."""

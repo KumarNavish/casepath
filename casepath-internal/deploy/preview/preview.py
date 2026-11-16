@@ -83,9 +83,9 @@ def script(email, letter, knowledge_id=None):
                 questions=[{"fact": "legal_area", "plain": "Geht es um einen Mangel der Mietsache?"}, {"fact": "landlord_notified", "plain": "Wurde die Vermieterschaft informiert?"}])],
         [delegate("claim_reader", "Record the facts the process asks about.")],
         [("search", {"query": "Verwaltung informiert"})],
-        [("record_fact", {"fact": "legal_area", "status": "established", "value": "Mietmangel",
+        [("record_fact", {"part": None, "fact": "legal_area", "status": "established", "value": "Mietmangel",
                           "citations": [{"file": email, "quote": "Im Badezimmer meiner Wohnung bildet sich seit Dezember schwarzer Schimmel."}]})],
-        [("record_fact", {"fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": email, "quote": TOLD}]}),
+        [("record_fact", {"part": None, "fact": "landlord_notified", "status": "established", "value": "yes", "citations": [{"file": email, "quote": TOLD}]}),
          report("claim_reader", summary="Beide Angaben mit wörtlichen Zitaten festgehalten.")],
         [delegate("document_finder", "Match each document need to a file.")],
         [("open_process", {})],
@@ -587,7 +587,8 @@ def main():
         time.sleep(0.1)
     for item in store.list_knowledge(statuses={"candidate"}):
         store.save_knowledge(kb.set_status(item, "active", by="N. Kumar", reason="In zwei Mietmangel-Fällen gesehen"))
-    item = store.list_knowledge(statuses={"active"})[0]
+    # the rule case A's run proposed and that was just released (never one of the rules the deployment ships)
+    item = next(k for k in store.list_knowledge(statuses={"active"}) if (k.get("origin") or {}).get("case_id") == case_a["id"])
     case_b, (email_b, letter_b, _) = seed("Schimmel im Badezimmer, Kramgasse 5 (zweiter Fall)")
     pause = float(sys.argv[2]) if len(sys.argv) > 2 else 1.5
     calls = {"n": 0}

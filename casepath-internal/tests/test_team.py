@@ -442,6 +442,27 @@ class ContinueTests(unittest.TestCase):
         self.assertEqual(pick(resumed), pick(straight))
 
 
+    def test_a_run_the_model_fails_in_keeps_its_finished_steps_and_continues_to_the_same_result(self):
+        from casepath.agents.azure_model import ModelError
+        fields = {"reply": {"needed": False, "subject": "", "clauses": []}}
+        straight = CaseTeam(ScriptedModel(standard_script(finder_calls=[], result_fields=fields))).run(case=CASE, files=FILES, workflow=FIXTURE)
+        script = standard_script(finder_calls=[], result_fields=fields)
+        brief_done = next(i for i, t in enumerate(script) if t and t[0][0] == "report" and "request" in t[0][1])
+
+        class Unreachable(ScriptedModel):  # answers the turns it has, then fails as an unreachable model does
+            def respond(self, **kwargs):
+                if not self.turns:
+                    raise ModelError("transport", "Das Modell war nicht erreichbar.")
+                return super().respond(**kwargs)
+        failed = CaseTeam(Unreachable(script[:brief_done + 1])).run(case=CASE, files=FILES, workflow=FIXTURE)
+        self.assertEqual((failed["paused"], failed["done"], failed["failed"]), (True, ["0:claim_reader"], {"reason": "transport", "error": "transport: ModelError"}))
+        self.assertEqual([t["date"] for t in failed["brief"]["timeline"]], [t["date"] for t in straight["brief"]["timeline"]])  # the brief is kept
+        resumed = CaseTeam(ScriptedModel(script[brief_done + 1:])).run(case=CASE, files=FILES, workflow=FIXTURE, resume=failed)
+        pick = lambda r: ([(f["fact"], f["value"], f["verdict"]) for f in r["facts"]], r["evaluation"]["outcome"], r["brief"]["timeline"])
+        self.assertEqual(pick(resumed), pick(straight))
+        with self.assertRaises(ModelError):  # nothing finished yet: the run fails with its reason, as before
+            CaseTeam(Unreachable([])).run(case=CASE, files=FILES, workflow=FIXTURE)
+
     def test_an_answer_given_while_paused_stands_on_weiter_and_is_never_overwritten(self):
         fields = {"reply": {"needed": False, "subject": "", "clauses": []}}
         script = standard_script(finder_calls=[], result_fields=fields)

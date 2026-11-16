@@ -784,3 +784,7 @@ h3.cp-bucket{font-size:14px;margin:12px 0 4px}
 .cp-list-tools input[type=search]{font:inherit;padding:6px 10px;min-width:320px;border:1px solid var(--border);border-radius:6px}
 .cp-list-mine{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .cp-list-none{margin:12px 0}
+.cp-notices{position:fixed;right:20px;bottom:20px;display:grid;gap:8px;z-index:20;max-width:420px}
+.cp-notice{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-left:4px solid var(--green-ink,#1f6b3a);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.12);text-decoration:none;color:var(--ink);font-size:14px}
+.cp-notice.warn{border-left-color:var(--crimson)}
+.cp-notice .cp-icon{width:18px;height:18px;color:var(--green-ink,#1f6b3a)}

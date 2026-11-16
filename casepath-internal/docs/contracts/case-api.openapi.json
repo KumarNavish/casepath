@@ -3366,6 +3366,46 @@
     "summary": "Me"
    }
   },
+  "/api/pulse": {
+   "get": {
+    "description": "Whether runs the reader's browser is waiting for are done: {runs: {id: status}}, nothing of their cases. The\nscreen asks while a run it started is at work and the reader is elsewhere, and then says «fertig».",
+    "operationId": "pulse_api_pulse_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "runs",
+      "required": false,
+      "schema": {
+       "default": "",
+       "maxLength": 2000,
+       "title": "Runs",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Pulse"
+   }
+  },
   "/api/replay-points": {
    "get": {
     "description": "Every labelled point replayed from its case's stored run: one row per point and the summary table.",

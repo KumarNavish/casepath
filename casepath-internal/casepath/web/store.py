@@ -261,6 +261,14 @@ class CaseStore:
             self._db.execute(f"update runs set {', '.join(k + '=?' for k in fields)} where id=?", (*values, run_id))
         return self.get_run(run_id)
 
+    def run_statuses(self, run_ids):
+        """{run id: status} of the given runs that exist; nothing else of them."""
+        ids = [str(i) for i in run_ids][:50]
+        if not ids:
+            return {}
+        rows = self._all(f"select id, status from runs where id in ({','.join('?' for _ in ids)})", *ids)
+        return {r["id"]: r["status"] for r in rows}
+
     def get_run(self, run_id, after=0):
         row = self._one("select * from runs where id=?", run_id)
         if row is None:

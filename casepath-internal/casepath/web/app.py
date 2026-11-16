@@ -1800,11 +1800,22 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 times = [datetime.fromisoformat(e["at"]) for e in events if e.get("agent") in agents and e.get("at")]
                 if times:
                     spans[stage].append((max(times) - min(times)).total_seconds())
+        # a time comes only from runs that can be one: up to two hours (a run whose record was written by hand, or one
+        # that sat interrupted, is no measurement); ``timed`` says how many there are, and the screen states a time only
+        # from three on
+        real = lambda seconds: 0 <= seconds <= 7200
         median = lambda xs: sorted(xs)[len(xs) // 2] if xs else None
-        totals = [(datetime.fromisoformat(r["finished_at"]) - datetime.fromisoformat(r["created_at"])).total_seconds()
-                  for r in chosen if r.get("finished_at") and r.get("created_at")]
-        return {"runs": len(chosen), "kind": kind, "band": band(pages) if pages is not None and chosen is same else "alle",
-                "median_seconds": {s: median(v) for s, v in spans.items()}, "median_total": median(totals)}
+        totals = [t for t in ((datetime.fromisoformat(r["finished_at"]) - datetime.fromisoformat(r["created_at"])).total_seconds()
+                              for r in chosen if r.get("finished_at") and r.get("created_at")) if real(t)]
+        return {"runs": len(chosen), "timed": len(totals), "kind": kind, "band": band(pages) if pages is not None and chosen is same else "alle",
+                "median_seconds": {s: median([x for x in v if real(x)]) for s, v in spans.items()}, "median_total": median(totals)}
+
+    @app.get("/api/pulse")
+    def pulse(runs: str = Query("", max_length=2000), who=Depends(user)):
+        """Whether runs the reader's browser is waiting for are done: {runs: {id: status}}, nothing of their cases. The
+        screen asks while a run it started is at work and the reader is elsewhere, and then says «fertig»."""
+        ids = [i for i in runs.split(",") if re.fullmatch(r"[A-Za-z0-9_-]{4,64}", i)]
+        return {"runs": store.run_statuses(ids)}
 
     @app.get("/api/manifest")
     def running_manifest(who=Depends(user)):
