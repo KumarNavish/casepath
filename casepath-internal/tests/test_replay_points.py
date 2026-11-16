@@ -295,6 +295,29 @@ class ReplayTests(unittest.TestCase):
         finally:
             desk.close()
 
+    def test_i_a_labelled_cut_of_a_labelled_case_is_not_counted_with_its_dossier(self):
+        """A diagnostic that keeps its base case leaves a cut of the dossier, labelled to replay one point. The whole table
+        counts the dossier once; the cut is replayed when it is named."""
+        desk = phased.Desk()
+        try:
+            case_id = desk.prepare(self.case)
+            desk.store.save_labels(case_id, {**points.check(self.labels), "case": case_id}, "test")
+            before = points.table(desk.store, desk.catalogue)
+            cut = desk.prepare(self.case)
+            for f in desk.store.list_files(cut):
+                desk.store.update_extraction(f["id"], {**f["extraction"], "cut_of": {"case": case_id, "file": "file_x", "as_of": None}})
+            desk.store.save_labels(cut, {**points.check(self.labels), "case": cut}, "test")
+            whole = points.table(desk.store, desk.catalogue)
+            self.assertEqual((whole["summary"]["points"], whole["cut_copies"], {r["case"] for r in whole["rows"]}),
+                             (before["summary"]["points"], 1, {case_id}))
+            self.assertIn("left out: 1 labelled case(s) cut from another labelled case (a diagnostic's kept base case; replayed when named)", whole["lines"])
+            named = points.table(desk.store, desk.catalogue, {cut})
+            self.assertEqual(({r["case"] for r in named["rows"]}, named["cut_copies"]), ({cut}, 0))
+            self.assertEqual(before["cut_copies"], 0)
+            self.assertNotIn("left out", "\n".join(before["lines"]))
+        finally:
+            desk.close()
+
     def test_j_the_narrow_score_is_named_and_the_stated_limits_are_repeated(self):
         lines = self.table["lines"]
         self.assertIn("historische Handlung (eng; Wiedervorlage ±7 Tage, keine Frist-Toleranz): Handlungsart 8/8 · bereit 7/8", lines)

@@ -612,7 +612,7 @@
                                       checked: truthy(c.checked), amount: truthy(c.amount), documented: truthy(c.documented), relation: code(c.relation) })),
       residual: (a.residual || []).map((r) => code(r.key)), blocking: (a.blocking || []).map((b) => [code(b.kind), code(b.key)]),
       proposal: (a.proposal || []).map(code), chosen: (a.chosen || []).map(code),
-      requests: (((d.account || {}).requests) || []).map((r) => ({ id: code(r.id), answered: r.answered != null, settled: truthy((r.answered || {}).settled), reopened: truthy(r.reopened) })),
+      requests: items.filter((i) => i.kind === "stand").flatMap((i) => (i.rows || []).filter((r) => r.request != null).map((r) => [code(i.key), code(r.request)])),
       asked_now: items.filter((i) => i.kind === "document" && i.ask === "now").map((i) => [code(i.key), from(i.origin)]),
       letter_questions_now: items.filter((i) => i.kind === "letter_question" && i.ask === "now").map((i) => code(i.key)),
     };

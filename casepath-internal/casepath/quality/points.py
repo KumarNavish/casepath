@@ -615,12 +615,25 @@ def table(store, catalogue, case_ids=None, detail=False, accept_lines=False):
     """Every labelled point of the store's labelled cases (or of those named): {rows, summary, lines, seconds, detail};
     ``accept_lines``: each letter point's expanded acceptance as a line of its own under it."""
     started = time.perf_counter()
-    rows = []
-    for labels in store.list_labels():
+    rows, labelled = [], store.list_labels()
+    ids = {labels["case"] for labels in labelled}
+
+    def copy(case_id):
+        """A labelled case cut from another labelled case: the base case a diagnostic kept, labelled to replay one point
+        of its dossier. Counted with the dossier it would be the same point twice."""
+        try:
+            return any(((f.get("extraction") or {}).get("cut_of") or {}).get("case") in ids - {case_id} for f in store.list_files(case_id))
+        except Exception:  # noqa: BLE001  a case that cannot be read is replayed as it always was
+            return False
+    copies = 0
+    for labels in labelled:
         if case_ids and labels["case"] not in case_ids:
             continue
+        if not case_ids and copy(labels["case"]):  # the whole table: the dossier itself only; named, a copy is replayed
+            copies += 1
+            continue
         rows += replay_case(store, catalogue, labels, detail)
-    out = {"rows": rows, "summary": summary(rows), "detail": detail, "model_calls": 0, "accept_lines": accept_lines}
+    out = {"rows": rows, "summary": summary(rows), "detail": detail, "model_calls": 0, "accept_lines": accept_lines, "cut_copies": copies}
     out["seconds"] = round(time.perf_counter() - started, 2)
     out["lines"] = render(out)
     return out
@@ -709,6 +722,8 @@ def render(out):
             lines.append(why_line(r["why"]))
             if out["detail"] and r["why"].get("next"):
                 lines.append("   detail: " + json.dumps({**r["why"]["next"], **(r.get("detail") or {}), "open": r["why"]["open"]}, ensure_ascii=False))
+    if out.get("cut_copies"):
+        lines.append(f"left out: {out['cut_copies']} labelled case(s) cut from another labelled case (a diagnostic's kept base case; replayed when named)")
     s = out["summary"]
     share = lambda a, b: f"{a}/{b}" + (f" ({round(100 * a / b)} %)" if b else "")
     a, e, n = s["accept"], s["exposure"], s["narrow"]
