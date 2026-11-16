@@ -197,7 +197,7 @@ def build(case, state, files, lang="de", knowledge=(), current=None, package=Non
         if result.get("summary"):
             checked.append(_para(_run(result["summary"])))
     reply, drafted = result.get("reply") or {}, []
-    if reply.get("needed") and reply.get("clauses"):
+    if reply.get("needed") and reply.get("clauses") and not package:  # approved: the package is the one letter in the report
         drafted.append(_heading(L["reply"]))
         if reply.get("subject"):
             drafted.append(_para(_run(reply["subject"], bold=True)))

@@ -524,6 +524,7 @@ def evaluate(workflow, knowledge, edits, result, case_id, files=None, today=None
     evaluation = casegraph.mark_partial(workflows.evaluate(graph, facts, asked, checked=checked), partial)
     return {"process": graph, "provenance": provenance, "evaluation": evaluation, "facts": facts, "findings": findings,
             "overrides": {k: e for k, (_, e) in overrides.items()}, "account": ledger, "handler_entries": account.handler_entries(edits),
+            "study": study,  # a study evaluation: items.build_items never prepares the A5 on the cover's premise for it (slice A)
             **({} if study else {"parties_set": casegraph.party_overrides(edits)})}  # the parties a case worker named (C9)
 
 

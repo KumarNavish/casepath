@@ -14,7 +14,7 @@ from casepath.process import knowledge as kb
 from casepath.process.workflows import Catalogue
 from casepath.read import cut
 from casepath.web.store import CaseStore
-from tests.scripted import ScriptedModel, report
+from tests.scripted import ScriptedModel, claim, report
 
 FIXTURES = Path(__file__).parent / "fixtures" / "replay"
 FIELDS = ("first_page", "last_page", "kind", "date", "sender", "recipient", "title")
@@ -45,16 +45,17 @@ def entry(raw, file_id):
 
 def reader_brief(brief, file_id):
     """What the reader reports of a brief, each question, claim and dated event with the sentence it comes from: questions
-    [text, quote, key points it is about?], claims [what, quote, amount?, receipt quote?], timeline [date, event, quote].
-    The team keeps of the report what its reader records (agents/team.py, _located_brief), each with its quote located."""
+    [text, quote, key points it is about?], claims [what, quote, amount?], timeline [date, event, quote]. A claim is reported
+    as the reader's schema has it (tests/scripted.py claim: its role, what it is about); a receipt is recorded on its own
+    entry, never on the claim (NEEDS_A §3). The team keeps of the report what its reader records (agents/team.py,
+    _located_brief), each with its quote located."""
     cite = lambda quote: [{"file": file_id, "quote": quote}] if quote else []
     out = {"request": brief.get("request", ""), "parties": [{"role": r, "name": n} for r, n in brief.get("parties", [])],
            "timeline": [{"date": d, "event": e, "citations": cite(q)} for d, e, q in brief.get("timeline", [])]}
     if brief.get("questions"):
         out["questions"] = [{"question": q[0], "citations": cite(q[1]), "about": list(q[2]) if len(q) > 2 else []} for q in brief["questions"]]
     if brief.get("claims"):
-        out["claims"] = [{"what": c[0], "citations": cite(c[1]), "amount": c[2] if len(c) > 2 and c[2] else "",
-                          "receipt": cite(c[3]) if len(c) > 3 else []} for c in brief["claims"]]
+        out["claims"] = [claim(c[0], c[1], amount=c[2] if len(c) > 2 and c[2] else None, file=file_id) for c in brief["claims"]]
     return out
 
 

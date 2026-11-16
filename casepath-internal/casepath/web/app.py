@@ -1293,9 +1293,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"feedback": listed}
 
     def _report_package(case_id, view):
-        """The approved package the exports serve once the letter is approved ({title, to, text, by, at}; Slice B fills
-        this from its stored bundle); None so far."""
-        return None
+        """The approved package the exports serve once the letter is approved ({title, to, text, by, at}): the letter of the
+        latest approval whose Versandpaket is stored (actions.approved_letter), never a run's stored reply; None before."""
+        from . import actions
+        found = actions.approved_letter(store, case_id)
+        return {"title": found["title"], "to": found["to"], "text": found["text"], "by": found["approved_by"], "at": found["approved_at"]} if found else None
 
     @app.get("/api/cases/{case_id}/report.docx")
     def report_docx(case_id: str, lang: str = "de", who=Depends(user)):
@@ -1315,8 +1317,14 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     @app.get("/api/runs/{run_id}/draft.docx")
     def draft_docx(run_id: str, who=Depends(user)):
-        """The result checker's reply draft of a full preparation; an update inherited it (409)."""
+        """The result checker's reply draft of a full preparation; an update inherited it (409). Once a letter is approved,
+        the approved letter itself (the Versandpaket's own Brief.docx)."""
         run = found(store.get_run, run_id)
+        from . import actions
+        approved = actions.approved_letter(store, run["case_id"])
+        if approved:
+            return Response(approved["docx"], media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                            headers={"Content-Disposition": f"attachment; filename*=UTF-8''{quote(approved['name'])}", "Cache-Control": "private, no-store"})
         reply = ((run.get("result") or {}).get("reply")) or {}
         if not reply.get("clauses"):
             raise HTTPException(404, "This run has no draft.")

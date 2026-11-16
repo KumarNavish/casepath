@@ -1059,8 +1059,11 @@ class ReceiptTests(unittest.TestCase):
         self.assertNotIn("strom", BILL_WORDS["extraction"]["text"].lower())  # … the bill names the cost in other words
         _, _, refused = self.arrived(CARPET, CARPET_RECORD)
         line = refused.brief["residual"][0]
-        self.assertEqual((line["key"], line["set_aside"][0]["expense"]), ("residual:claim.0", "Teppichreinigung Wohnzimmer"))
-        self.assertTrue(any("Ausgabe" in why for why in line["set_aside"][0]["why"]))  # why, beside the line (the rule's own words)
+        # one rule decides (Slice C's account.documented): every candidate that shares a word or the amount is set aside with
+        # its reasons, the earlier mails about the dryer among them; the same-amount receipt is set aside for its expense
+        carpet = next(x for x in line["set_aside"] if x["file"] == CARPET["id"])
+        self.assertEqual((line["key"], carpet["expense"], carpet["why"]), ("residual:claim.0", "Teppichreinigung Wohnzimmer",
+                                                                           ["andere Ausgabe: Teppichreinigung Wohnzimmer"]))
         self.assertEqual((refused.question(2)["state"], [r["key"] for r in refused.brief["asks"]]), ("bedingt", ["residual:claim.0"]))
         _, _, accepted = self.arrived(BILL_WORDS, {**BILL_RECORD, "expense": "Energieverbrauch Bautrockner"})
         # accepted without the handler entering anything: the claim line goes, the question it blocked is answered

@@ -1124,14 +1124,12 @@ class OneArtifactTests(Service):
         self.assertEqual(self.store.get_run(run["id"])["result"]["reply"]["clauses"][0]["text"], "Früherer Antwortentwurf, vor den Antworten der Kundin.")
         return run, actions.approved_letter(self.store, self.case)
 
-    @unittest.expectedFailure  # the integrator fills slice C's _report_package with actions.approved_letter (NEEDS_B.md 1a); drop once it does
     def test_the_report_carries_the_approved_letter_after_an_update(self):
         run, approved = self.approved_after_an_update()
         report = zipfile.ZipFile(io.BytesIO(self.client.get(f"/api/cases/{self.case}/report.docx").content)).read("word/document.xml").decode()
         self.assertNotIn("Früherer Antwortentwurf", report)  # never the stored reply of an earlier run
         self.assertIn(approved["text"].split("\n")[-1], report)
 
-    @unittest.expectedFailure  # slice C's draft download serves actions.approved_letter once a letter is approved (NEEDS_B.md 1b); drop once it does
     def test_the_draft_download_serves_the_approved_letter_after_an_update(self):
         run, approved = self.approved_after_an_update()
         self.assertEqual(self.client.get(f"/api/runs/{run['id']}/draft.docx").content, approved["docx"])

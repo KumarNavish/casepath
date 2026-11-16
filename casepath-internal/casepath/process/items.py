@@ -453,6 +453,10 @@ def build_items(state, result, files=None, events=None, review=None):
                          and here.get("id") in (r.get("stages") or [here.get("id")])), None)
             if rule:  # the date the clock would come due: the same day the follow-up is shown for
                 planned["next_in_days"] = rule["days"]
+        from .completion import consequence_action  # what a reply makes possible (slice B): the evidence a judgment waited for
+        again = consequence_action(graph, here, state, result, files or (), events or ())  # came in, so that judgment is prepared
+        if again and not variant:  # now, not the follow-up date
+            planned = again
         if planned and floor:  # placed by its history: the follow-up counts from the last action taken
             days = [d for c, ds in done.items() for d in ds if d]
             planned = {**planned, **({"since": max(days)} if days else {})}
@@ -555,6 +559,7 @@ def build_items(state, result, files=None, events=None, review=None):
                                         **({"reason": planned["reason"]} if planned.get("reason") else {}),
                                         **({"because": planned["because"]} if planned.get("because") else {}),
                                         **({"since": planned["since"]} if planned.get("since") else {}),
+                                        **({"consequence": planned["consequence"]} if planned.get("consequence") else {}),
                                         **({"owed": planned["owed"]} if planned.get("owed") else {}),
                                         **({"settlement": {"step": (settling or {}).get("step", ("",))[0], "done": list((settling or {}).get("done") or []),
                                                            "terms": bool(((settling or {}).get("terms") or {}).get("amount")),

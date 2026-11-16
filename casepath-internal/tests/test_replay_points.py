@@ -322,8 +322,7 @@ class ReplayTests(unittest.TestCase):
 class ReplyAssessmentTests(unittest.TestCase):
     """S-D11A (tests/fixtures/replay/reply_assessment.json), the shape of D11 with its four labelled points and the expanded
     truth of the assessment: answered 1, the electricity-cost receipts as the one document asked, no verdict on substance.
-    The values pinned here are the product's before the episode's slices: the slice that writes the assessment changes the
-    third point's acceptance (its residual, its answers, its gaps), and that change is to be named where it is pinned."""
+    Pinned on the integrated episode; each change against the product before its slices is named where it is pinned."""
 
     @classmethod
     def setUpClass(cls):
@@ -348,18 +347,25 @@ class ReplyAssessmentTests(unittest.TestCase):
     def test_b_the_assessment_is_accepted_by_its_own_rules(self):
         accept = self.rows[3]["accept"]
         self.assertEqual((accept["form"], accept["draft"], accept["recipient"]["ok"]), ("A5", True, True))
+        # slice A answers by intent (before: keyword answers, 1 answered and 2 open): Q1 answered, Q2 and Q3 conditional
         self.assertEqual({k: accept["questions"][k] for k in ("beantwortet", "bedingt", "offen", "pruefen", "label", "ok")},
-                         {"beantwortet": 1, "bedingt": 0, "offen": 2, "pruefen": 0, "label": 1, "ok": True})
-        self.assertEqual(accept["residual"], {"label": 1, "hits": [], "missed": ["other:stromkosten"], "ok": False,
-                                              "extras": [f"residual:document.{KORRESPONDENZ}", "residual:document.quittungen"]})
-        self.assertEqual(accept["substantive"], {"present": False, "gaps": 4, "status": "unverified", "verdict": None})
+                         {"beantwortet": 1, "bedingt": 2, "offen": 0, "pruefen": 0, "label": 1, "ok": True})
+        # slice A asks the receipts of the claimed cost, not the stage's generic list (before: the Knowledge correspondence
+        # and «quittungen» as extras, the receipts missed); slice C splits the first request's combined ask into its items
+        # (C10a), and the reply delivered the lease and the correspondence only, so the list of damaged items and the
+        # description of the facts are asked again (r2.2, r2.3): the remainder, never the whole list
+        self.assertEqual(accept["residual"], {"label": 1, "hits": ["other:stromkosten"], "missed": [], "ok": False,
+                                              "extras": ["residual:request.r2.2", "residual:request.r2.3"]})
+        self.assertEqual(accept["substantive"], {"present": True, "gaps": 0, "status": "unverified", "verdict": None})  # before: 4 gaps
         self.assertEqual(accept["authority"]["missing"], ["aussichten"])  # the labels hold no prospects decision: «decision pending»
         self.assertEqual(accept["deadlines"]["label"], 0)
-        line = next(x for x in self.table["lines"] if x.startswith("   accept:") and "residual 0/1" in x)
-        self.assertIn("missed other:stromkosten", line)
+        line = next(x for x in self.table["lines"] if x.startswith("   accept:") and "residual 1/1" in x)
+        self.assertIn("+2 extra residual:request.r2.2,residual:request.r2.3", line)
         self.assertIn("decision pending (aussichten)", line)
         s = self.table["summary"]["accept"]
-        self.assertEqual((s["recipient"], s["questions"], s["residual"], s["present"], s["decision_pending"]), (4, [1, 1], 1, 3, 1))
+        # no point's residual is as labelled now (before: one, the A7's): every letter after the reply carries the two open
+        # items of the first request (C10a), the A7 also the claim's receipts; the substance is present on all four (before 3)
+        self.assertEqual((s["recipient"], s["questions"], s["residual"], s["present"], s["decision_pending"]), (4, [1, 1], 0, 4, 1))
 
     def test_c_the_exposure_to_the_whole_file(self):
         self.assertEqual([self.rows[n]["exposure"]["request_uncited"] for n in (1, 2, 3, 4)], [1, 1, 1, 1])

@@ -237,8 +237,9 @@ class AppTests(unittest.TestCase):
         self.assertEqual(self.mark(client, keys[0], sha256=row["groups"][0]["elements"][0]["sha256"]).status_code, 201)
         self.assertEqual(label()["label"], f"in Prüfung (1 von {len(keys)} geprüft)")
         for key in keys[1:]:
-            self.assertEqual(self.mark(client, key).status_code, 201)
-        today = date.today().strftime("%d.%m.%Y")
+            last = self.mark(client, key)
+            self.assertEqual(last.status_code, 201)
+        today = review._day(last.json()["mark"]["at"])  # the release's day as the product states it: the Swiss day, at any hour
         self.assertEqual(label(), {"state": "freigegeben", "label": f"freigegeben am {today} · Jurist A", "title": "Arbeitszeugnis"})
         overview = {r["id"]: r for r in client.get("/api/review").json()["rows"]}
         self.assertEqual(overview["arbeit-zeugnis"]["status"]["state"], "freigegeben")

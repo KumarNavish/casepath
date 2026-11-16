@@ -57,7 +57,11 @@ class SameAsACutTests(unittest.TestCase):
     def test_c_between_phase_2_and_3_the_same_with_the_cover_decision_in_force(self):
         on_cut, rebuilt_view, rebuilt = self.compare(self.case["cuts"][2])
         self.assertEqual({k: rebuilt_view[k] for k in MEASURED}, {k: on_cut[k] for k in MEASURED})
-        self.assertEqual((rebuilt_view["action"], rebuilt_view["next_in_days"], rebuilt_view["follow_up"]), ("A6", 25, "2025-03-30"))  # after the call
+        # after the call: the customer promised the copy of the notice by 10.03.2025, and the case is looked at then; the
+        # first request's combined ask is split into its items (slice C, C10a), the reply delivered the lease and the photos
+        # only, so the notice stays open and the promise dates it (before the split the reply closed the whole request and the
+        # date was the cut's day plus 25, 30.03.2025)
+        self.assertEqual((rebuilt_view["action"], rebuilt_view["next_in_days"], rebuilt_view["follow_up"]), ("A6", 25, "2025-03-10"))
         self.assertNotIn("mietvertrag", rebuilt_view["now"])  # the lease came with the reply
         self.assertEqual([e["op"] for e in rebuilt["edits"]], ["set_fact"])  # cover from 26.02.; the way to proceed only from 14.03.
 
