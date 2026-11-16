@@ -277,6 +277,7 @@ class FakeApp:
     def __init__(self, full_usage=60_000, duplicate=409, auto="aus", tree=TREE, template=None):
         self.calls, self.full_usage, self.duplicate, self.auto, self.tree = [], full_usage, duplicate, auto, tree
         self.uploads, self.template = [], template or TEMPLATE
+        self.latest = None  # the base case's latest run, as the case view gives it («run»)
 
     def run(self, run_id, kind, usage):
         return {"id": run_id, "kind": kind, "status": "completed", "created_at": "2026-11-15T10:00:00+00:00", "finished_at": "2026-11-15T10:03:05+00:00",
@@ -304,11 +305,13 @@ class FakeApp:
             self.cut = body
             return {"id": "case_base"}
         if path == "/api/cases/case_base/runs":
+            self.latest = {"id": "run_full", "kind": "full", "status": "queued"}
             return {"id": "run_full", "status": "queued"}
         if path == "/api/runs/run_full":
             return self.run("run_full", "full", [{"agent": "claim_reader", "input_tokens": self.full_usage, "cached_tokens": 0, "output_tokens": 9000},
                                                  {"agent": "reader", "input_tokens": 1500, "cached_tokens": 0, "output_tokens": 300}])
         if path == "/api/cases/case_base/update":
+            self.latest = {"id": "run_update", "kind": "update", "status": "queued"}
             return {"id": "run_update", "status": "queued"}
         if path == "/api/runs/run_update":
             return self.run("run_update", "update", [{"agent": "claim_reader", "input_tokens": 30_000, "cached_tokens": 12_000, "output_tokens": 5000},
@@ -316,7 +319,7 @@ class FakeApp:
         if path == "/api/cases/case_base":
             if method == "DELETE":
                 return {"deleted": "case_base"}
-            return {"items": [{"kind": "next_action", "action": "A5"}], "draft": {"text": "Brief ohne Lücke."},
+            return {"run": self.latest, "items": [{"kind": "next_action", "action": "A5"}], "draft": {"text": "Brief ohne Lücke."},
                     "assessment": {"questions": [{"item_id": "customer_question:0", "state": "beantwortet", "about": ["hinterlegung"], "intent": "weiter_zahlen"},
                                                  {"item_id": "customer_question:1", "state": "bedingt", "about": ["hinterlegung"], "intent": "hinterlegen"},
                                                  {"item_id": "customer_question:2", "state": "prüfen", "about": ["schadenersatz"], "intent": "ersatz",
@@ -346,6 +349,8 @@ class FakeApp:
         self.calls.append(("POST", f"/api/cases/{case_id}/files"))
         self.uploads.append([name for name, _ in files])
         if len(self.uploads) == 1:
+            if self.auto == "gestartet":
+                self.latest = {"id": "run_update", "kind": "update", "status": "queued"}
             return 201, {"files": [{"id": f"file_{i}"} for i, _ in enumerate(files, 2)], "skipped": [], "auto": self.auto,
                          "run": {"id": "run_update"} if self.auto == "gestartet" else None}
         return self.duplicate, {}
@@ -551,6 +556,265 @@ class DiagnoseRunTests(unittest.TestCase):
             with self.assertRaises(self.cell["Stop"]) as stop:
                 self.cell["plan"](SEGMENT_LABELS, {"documents": changed}, pdf)
             self.assertEqual(stop.exception.args, ("cut", reason))
+
+
+CONSOLE = Path(__file__).resolve().parents[1] / "deploy" / "databricks" / "rehearse_console.js"
+# Runs the console script outside a browser: the stand-in's address as its base, a file as its localStorage, no waiting
+# between polls. Prints {result | refused | error, said}.
+RUNNER = r"""
+const fs = require("fs");
+const [file, base, storeFile, mode, arg] = process.argv.slice(2);
+require(file);
+const read = () => (fs.existsSync(storeFile) ? JSON.parse(fs.readFileSync(storeFile, "utf8")) : {});
+const store = { getItem: (k) => (k in read() ? read()[k] : null), setItem: (k, v) => fs.writeFileSync(storeFile, JSON.stringify({ ...read(), [k]: v })) };
+const said = [];
+const real = globalThis.fetch;
+globalThis.fetch = async (url, init = {}) => {
+  const line = `${init.method || "GET"} ${String(url).slice(base.length)}`;
+  if (process.env.DIE && line.startsWith(process.env.DIE)) process.exit(0);  // the tab is lost before this request leaves
+  const response = await real(url, init);
+  if (process.env.DIE_AFTER && line.startsWith(process.env.DIE_AFTER)) process.exit(0);  // …or after the app answered it
+  return response;
+};
+(async () => {
+  const out = { said };
+  try {
+    if (mode === "plan") {
+      const { labels, template, pdf } = JSON.parse(arg);
+      const { plan, sealed } = globalThis.casepathDiagnose.parts;
+      try { const cut = plan(labels, template, pdf); out.result = { cut, sealed: await sealed(cut) }; }
+      catch (stop) { out.stop = [stop.step, stop.reason]; }
+    } else {
+      out.result = await globalThis.casepathDiagnose(arg, { base, store, say: (line) => said.push(line), poll: 0, stale: Number(process.env.STALE || 0) });
+    }
+  } catch (error) { out[{ Refused: "refused", Interrupted: "interrupted" }[error.constructor.name] || "error"] = String(error.message); }
+  process.stdout.write(JSON.stringify(out));
+})();
+"""
+
+
+class Served:
+    """A FakeApp behind HTTP on this machine, for the console script: every request reaches the same stand-in the cell is
+    tested with, and is recorded by it in the same words."""
+
+    def __init__(self, app):
+        import http.server
+        import threading
+        fake = self.app = app
+
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def log_message(self, *args):
+                pass
+
+            def answer(self, status, body, kind="application/json"):
+                data = body if isinstance(body, bytes) else json.dumps(body).encode()
+                self.send_response(status)
+                self.send_header("Content-Type", kind)
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
+
+            def handle_one(self, method):
+                body = self.rfile.read(int(self.headers.get("Content-Length") or 0))
+                try:
+                    upload = re.fullmatch(r"/api/cases/([a-z0-9_]+)/files", self.path)
+                    if method == "POST" and upload:
+                        assert self.headers.get("Content-Type", "").startswith("multipart/form-data"), "an import is one multipart request"
+                        names = re.findall(rb'name="files"; filename="([^"]+)"', body)
+                        status, out = fake.upload(upload.group(1), [(n.decode(), b"") for n in names])
+                        return self.answer(status, out)
+                    if method == "GET" and "/original?" in self.path:
+                        return self.answer(200, fake.raw(self.path), "application/pdf")
+                    return self.answer(200, fake.call(method, self.path, json.loads(body) if body else None))
+                except PermissionError:
+                    return self.answer(401, {"detail": "Sign-in required."})
+                except AssertionError as error:
+                    return self.answer(500, {"detail": str(error)})
+
+            do_GET = lambda self: self.handle_one("GET")
+            do_POST = lambda self: self.handle_one("POST")
+            do_DELETE = lambda self: self.handle_one("DELETE")
+
+        self.server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        self.url = f"http://127.0.0.1:{self.server.server_address[1]}"
+        threading.Thread(target=self.server.serve_forever, daemon=True).start()
+
+    def close(self):
+        self.server.shutdown()
+        self.server.server_close()
+
+
+@unittest.skipUnless(shutil.which("node"), "node is not installed")
+class ConsoleDiagnoseTests(unittest.TestCase):
+    """The console's script (deploy/databricks/rehearse_console.js) is the cell, step for step: against the same stand-in
+    it makes the same requests in the same order and gives the same receipt, plan and seal."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.cell = runpy.run_path(str(CELL))
+
+    def setUp(self):
+        self.folder = tempfile.TemporaryDirectory()
+        self.addCleanup(self.folder.cleanup)
+        self.runner = Path(self.folder.name) / "runner.cjs"
+        self.runner.write_text(RUNNER)
+        self.cut = self.cell["plan"](LABELS, TEMPLATE, {"name": "Akte.pdf", "extraction": {"pages": 28}})
+        self.plan = self.cell["sealed"](self.cut)
+        self.phrase = f"diagnose D11 {TREE} {labels_hash(LABELS)[:12]} {self.plan}"
+
+    def node(self, mode, arg, served=None, store="store.json", **env):
+        out = subprocess.run(["node", str(self.runner), str(CONSOLE), served.url if served else "http://127.0.0.1:9", str(Path(self.folder.name) / store), mode, arg],
+                             capture_output=True, text=True, timeout=120, env={**os.environ, **env})
+        self.assertEqual(out.returncode, 0, out.stderr)
+        return json.loads(out.stdout) if out.stdout else None  # None: the tab was lost (DIE, DIE_AFTER)
+
+    def both(self, phrase=None, keep=False, **kw):
+        """(the cell's receipt and its stand-in, the console's answer and its stand-in), each on a fresh stand-in."""
+        theirs = FakeApp(**kw)
+        with tempfile.TemporaryDirectory() as volume, mock.patch("sys.stdout", new_callable=io.StringIO) as printed:
+            receipt = self.cell["diagnose"](theirs, volume, TREE, labels_hash(LABELS)[:12], self.plan, keep, poll=0)
+        self.printed = printed.getvalue()
+        served = Served(FakeApp(**kw))
+        self.addCleanup(served.close)
+        answer = self.node("run", (phrase or self.phrase) + (" keep" if keep else ""), served, store=f"store-{len(os.listdir(self.folder.name))}.json")
+        return receipt, theirs, answer, served.app
+
+    def test_a_the_run_is_the_cells_request_for_request_and_its_receipt_the_same(self):
+        receipt, theirs, answer, ours = self.both()
+        self.assertEqual(answer.get("error"), None)
+        self.assertEqual(answer["result"], receipt)
+        self.assertEqual(ours.calls, theirs.calls)  # the same requests in the same order
+        self.assertEqual((ours.uploads, ours.cut), (theirs.uploads, theirs.cut))
+        self.assertEqual(answer["said"][0], self.printed.strip())  # the plan, word for word
+        self.assertEqual(json.loads(answer["said"][1]), receipt)
+        guard({k: v for k, v in answer["result"].items() if k != "format"})
+
+    def test_b_every_branch_of_the_run_ends_as_the_cell_ends_it(self):
+        for kw, keep in (({"auto": "gestartet"}, False), ({"full_usage": 230_000}, False), ({"duplicate": 201, "auto": "gestartet"}, True),
+                         ({"duplicate": 201}, False)):
+            receipt, theirs, answer, ours = self.both(keep=keep, **kw)
+            self.assertEqual((answer.get("error"), answer["result"], ours.calls), (None, receipt, theirs.calls), kw)
+
+    def test_c_the_plan_and_its_seal_are_the_cells_for_entries_and_for_segments(self):
+        pdf30 = {"name": "Akte.pdf", "extraction": {"pages": 30}}
+        for labels, template, pdf in ((LABELS, TEMPLATE, {"name": "Akte.pdf", "extraction": {"pages": 28}}), (SEGMENT_LABELS, SEGMENT_TEMPLATE, pdf30)):
+            cut = self.cell["plan"](labels, template, pdf)
+            answer = self.node("plan", json.dumps({"labels": labels, "template": template, "pdf": pdf}))
+            self.assertEqual((answer["result"]["cut"], answer["result"]["sealed"]), (cut, self.cell["sealed"](cut)))
+        rows = SEGMENT_TEMPLATE["documents"]
+        undated, landlord = copy.deepcopy(rows), copy.deepcopy(rows)
+        undated[12]["date"] = None
+        landlord[14].update(date="2026-09-07", insurer=False, **{"from": "Immo Muster AG"})
+        for reason, changed in (("arrival_not_as_in_the_outline", undated), ("another_document_before_the_assessment", landlord)):
+            answer = self.node("plan", json.dumps({"labels": SEGMENT_LABELS, "template": {"documents": changed}, "pdf": pdf30}))
+            self.assertEqual(answer.get("stop"), ["cut", reason])
+
+    def test_d_the_read_only_mode_names_the_same_phrase_and_makes_only_reads(self):
+        theirs = FakeApp()
+        with mock.patch("sys.stdout", new_callable=io.StringIO) as printed:
+            expected = self.cell["hashes"](theirs)
+        served = Served(FakeApp())
+        self.addCleanup(served.close)
+        answer = self.node("run", "hashes D11", served)
+        self.assertEqual((answer["result"], answer["said"][0]), (expected, printed.getvalue().strip()))
+        self.assertTrue(answer["said"][0].endswith(f"approval reads: {self.phrase}"))
+        self.assertEqual((served.app.calls, {m for m, _ in served.app.calls}), (theirs.calls, {"GET"}))
+        self.assertFalse(os.path.exists(Path(self.folder.name) / "store.json"))  # nothing kept: nothing was run
+
+    def test_e_without_its_phrase_or_on_another_build_labels_or_cut_nothing_is_done(self):
+        served = Served(FakeApp())
+        self.addCleanup(served.close)
+        for phrase in ("", "diagnose D11", f"diagnose D11 {TREE}", f"diagnose D12 {TREE} {'0' * 12} {'0' * 12}", f"diagnose D11 {TREE.upper()} {'0' * 12} {'0' * 12}",
+                       f"diagnose D11 {TREE} {'0' * 12} {'0' * 12} now", f"diagnose D11 {TREE} {'0' * 12}"):
+            self.assertIn("confirm must read", self.node("run", phrase, served)["refused"], phrase)
+        self.assertEqual(served.app.calls, [])  # refused before any request
+        other = Served(FakeApp(tree="aaaaaaaaaaaa"))
+        self.addCleanup(other.close)
+        self.assertIn("not the one approved: nothing done", self.node("run", self.phrase, other)["refused"])
+        self.assertEqual(other.app.calls, [("GET", "/api/manifest")])
+        self.assertIn("labels are not the ones approved", self.node("run", f"diagnose D11 {TREE} {'0' * 12} {self.plan}", served)["refused"])
+        self.assertIn("the cut is not the approved plan", self.node("run", f"diagnose D11 {TREE} {labels_hash(LABELS)[:12]} {'0' * 12}", served)["refused"])
+        self.assertFalse([path for _, path in served.app.calls if path.endswith("/cut")])
+        self.assertFalse(os.path.exists(Path(self.folder.name) / "store.json"))
+
+    def test_f_a_run_made_is_not_made_again_in_the_same_browser_profile(self):
+        served = Served(FakeApp())
+        self.addCleanup(served.close)
+        first = self.node("run", self.phrase, served)["result"]
+        again = Served(FakeApp())
+        self.addCleanup(again.close)
+        answer = self.node("run", self.phrase, again)
+        self.assertEqual(answer["result"], first)
+        self.assertIn("already run", answer["said"][0])
+        self.assertEqual(again.app.calls, [("GET", "/api/manifest"), ("GET", "/api/replay-points"), ("GET", "/api/cases/case_d11/labels")])
+
+    def test_h_a_lost_tab_is_taken_up_where_it_stands_and_no_step_is_repeated(self):
+        """The tab is lost at each point of the run where tokens are at stake; the same phrase typed again ends the run
+        with the cell's receipt (plus «resumed»), and the stand-in saw one cut, one preparation, one import and its
+        second upload, one update: never two."""
+        with tempfile.TemporaryDirectory() as volume, mock.patch("sys.stdout", new_callable=io.StringIO):
+            expected = self.cell["diagnose"](FakeApp(), volume, TREE, labels_hash(LABELS)[:12], self.plan, False, poll=0)
+        once = ("/api/cases/case_d11/cut", "/api/cases/case_base/runs", "/api/cases/case_base/update", "/api/cases/case_base/edits", "/api/cases/case_base")
+        for n, lost in enumerate(({"DIE": "GET /api/runs/run_full"},  # waiting for the preparation
+                                  {"DIE_AFTER": "POST /api/cases/case_base/runs"},  # the preparation started, its id not kept
+                                  {"DIE": "GET /api/files/file_1/original"},  # the preparation recorded, the arrival not begun
+                                  {"DIE_AFTER": "POST /api/cases/case_base/files"},  # the arrival went in, nothing kept of it
+                                  {"DIE": "GET /api/runs/run_update"},  # waiting for the update
+                                  {"DIE_AFTER": "POST /api/cases/case_base/update"},  # the update started, its id not kept
+                                  {"DIE": "POST /api/cases/case_base/labels"})):  # the decisions set, the replay not read
+            served = Served(FakeApp())
+            self.addCleanup(served.close)
+            store = f"lost-{n}.json"
+            self.assertIsNone(self.node("run", self.phrase, served, store=store, **lost), lost)
+            kept = json.loads(json.loads((Path(self.folder.name) / store).read_text())[f"casepath.diagnose/D11-{labels_hash(LABELS)[:12]}"])
+            self.assertEqual(kept["status"], "started", lost)
+            answer = self.node("run", self.phrase, served, store=store)
+            self.assertEqual(answer.get("error"), None, lost)
+            # the arrival went in and its answer was never seen: the import is offered again and refused as held (which is
+            # the duplicate's test), and what the import answered («auto») stays unknown
+            unseen = "POST /api/cases/case_base/files" in lost.values()
+            self.assertEqual(answer["result"], {**expected, "resumed": 1, **({"auto": None} if unseen else {})}, lost)
+            self.assertIn("no step is repeated", answer["said"][1])
+            posts = [path for method, path in served.app.calls if method in ("POST", "DELETE")]
+            for path in once:
+                self.assertEqual(posts.count(path), 1, (lost, path))  # the cut, the preparation, the update, the decision, the removal: once
+            self.assertEqual(served.app.uploads, [["Antwort-1.pdf", "Antwort-2.pdf"], ["Antwort-1.pdf", "Antwort-2.pdf"] if unseen else ["Antwort-1.pdf"]], lost)
+
+    def test_i_a_run_taken_in_another_tab_is_left_alone_and_another_phrase_does_not_take_it_up(self):
+        served = Served(FakeApp())
+        self.addCleanup(served.close)
+        self.assertIsNone(self.node("run", self.phrase, served, DIE="GET /api/runs/run_full"))
+        before = list(served.app.calls)
+        busy = self.node("run", self.phrase, served, STALE="60000")  # its last sign of life is a moment old
+        self.assertIn("being taken in another tab", busy["refused"])
+        other = self.node("run", self.phrase + " keep", served)  # the same run, approved with «keep»: another phrase
+        self.assertIn("approved with another phrase", other["refused"])
+        self.assertFalse([c for c in served.app.calls[len(before):] if c[0] != "GET"])  # neither made anything but reads
+
+    def test_j_a_sign_in_that_ran_out_leaves_the_run_started_and_keeps_its_base_case(self):
+        class Expiring(FakeApp):
+            def call(self, method, path, body=None):
+                if path == "/api/runs/run_full" and not getattr(self, "expired", False):
+                    self.expired = True
+                    self.calls.append((method, path))
+                    raise PermissionError
+                return super().call(method, path, body)
+        served = Served(Expiring())
+        self.addCleanup(served.close)
+        first = self.node("run", self.phrase, served)
+        self.assertIn("interrupted (http_401): the run stays started", first["interrupted"])
+        self.assertNotIn(("DELETE", "/api/cases/case_base"), served.app.calls)  # the base case is kept, to be taken up
+        answer = self.node("run", self.phrase, served)
+        self.assertEqual((answer["result"]["status"], answer["result"]["resumed"]), ("done", 1))
+        self.assertEqual([p for m, p in served.app.calls if m == "POST" and p == "/api/cases/case_base/runs"], ["/api/cases/case_base/runs"])
+
+    def test_g_the_script_calls_only_the_page_it_is_pasted_into_and_names_no_address_or_identity(self):
+        text = CONSOLE.read_text()
+        self.assertNotRegex(text, r"https?://")  # no address: relative requests on the page's own origin
+        self.assertIn('credentials: "same-origin"', text)
+        for word in ("Authorization", "Bearer", "token =", "cookie", "X-Forwarded"):
+            self.assertNotIn(word, text)
+        self.assertNotIn("claude", text.lower())
 
 
 if __name__ == "__main__":
