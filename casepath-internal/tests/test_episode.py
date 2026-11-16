@@ -532,7 +532,8 @@ class ArrivalTests(Episode):
         view = self.view(due)
         act = self.action(view)
         self.assertEqual((act["action"], view["draft"]["form"], view["draft"]["title"]), ("A7", "A7", "Statusanfrage mit Abschlussankündigung"))
-        self.assertEqual((act["since"], view["follow_up"]["due"]), (self.ns["d90"].a5_day.isoformat(), completion.swiss_today().isoformat()))
+        a5 = self.ns["d90"].a5_day  # 90 days before the day the template was built: due that day
+        self.assertEqual((act["since"], view["follow_up"]["due"]), (a5.isoformat(), (a5 + timedelta(days=90)).isoformat()))
         self.assertEqual(self.row(due)["stand"]["bucket"], "urteil")
         self.assertTrue(self.row(due)["stand"]["text"].endswith("Statusanfrage mit Abschlussankündigung vorbereitet"), self.row(due)["stand"])
         self.assertEqual((view["completion"]["bar"]["label"], view["completion"]["bar"]["gaps"], view["completion"]["decisions"]), ("Freigeben", 0, []))
