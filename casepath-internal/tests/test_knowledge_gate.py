@@ -44,6 +44,12 @@ class Gate(unittest.TestCase):
                               result={"facts": [fact], "documents": [], "brief": {"request": "Schimmel im Bad.", "parties": [], "timeline": []}})
         return case
 
+    def approve(self, case_id, op):
+        draft = self.client.get(f"/api/cases/{case_id}").json()["draft"]
+        r = self.client.post(f"/api/cases/{case_id}/actions/approve", json={"form": draft["form"], "version": draft["version"], "op_id": op})
+        self.assertEqual(r.status_code, 200, r.text)
+        return r.json()["approval"]
+
     def candidate(self, case_id):
         """A document need a handler saved «für ähnliche Fälle» in one case: a candidate, with the replay of its version."""
         body = {"op": "add_document", "args": {"title": "Lüftungsprotokoll", "why": "Zeigt, wie gelüftet wurde.", "step": "klaeren"},
@@ -173,12 +179,6 @@ class ExactPreviewTests(Gate):
 class LandingTests(Gate):
     """A correction teaches, and a rule change lands where it changes something (docs/HANDLER_WORK.md)."""
 
-    def approve(self, case_id, op):
-        draft = self.client.get(f"/api/cases/{case_id}").json()["draft"]
-        r = self.client.post(f"/api/cases/{case_id}/actions/approve", json={"form": draft["form"], "version": draft["version"], "op_id": op})
-        self.assertEqual(r.status_code, 200, r.text)
-        return r.json()["approval"]
-
     def add(self, case_id, title, step="klaeren", code="2"):
         r = self.client.post(f"/api/cases/{case_id}/edits", json={"op": "add_document", "args": {"title": title, "why": "Wird gebraucht.", "step": step},
                                                                   "reason": "", "reason_code": code, "recheck": False})
@@ -248,6 +248,54 @@ class LandingTests(Gate):
         self.assertIn('op: "remove_document"', handler)
         self.assertIn('code === "3" || code === "4"', handler)
         self.assertIn("Für ähnliche Fälle vorgeschlagen", SCRIPT)
+
+
+class StandTests(Gate):
+    """«Stand bei Freigabe»: the approval keeps what it was given on, the package says it in words, and a recall finds
+    every letter that rests on a rule."""
+
+    def test_the_package_keeps_the_rules_requirements_and_facts_the_letter_was_approved_on(self):
+        import io
+        import json
+        import zipfile
+        a = self.prepared("Fall A (synthetisch)")
+        approval = self.approve(a["id"], "op-stand-1")
+        self.assertEqual(sorted(approval["stand"]), ["facts_sha256", "items_sha256", "knowledge", "workflow"])  # the event keeps no case content
+        blob = self.client.get(f"/api/cases/{a['id']}/actions/{approval['version']}/bundle").content
+        with zipfile.ZipFile(io.BytesIO(blob)) as archive:
+            page = archive.read("Stand bei Freigabe.txt").decode("utf-8")
+            manifest = json.loads(archive.read("manifest.json"))
+        record = manifest["stand"]
+        self.assertEqual({k: record[k] for k in approval["stand"]}, approval["stand"])
+        self.assertIn("Stand bei Freigabe.txt", [p["name"] for p in manifest["parts"]])
+        asked = {x["what"]: x["from"] for x in record["asked"]}
+        self.assertIn("Wissen", asked.values())  # a need a Knowledge item asks, named as such
+        self.assertIn("Prozess", asked.values())
+        self.assertEqual({p["wording"] for p in record["parts"]}, {"Formular"})  # nothing reworded by the handler
+        self.assertEqual([r["ref"] for r in record["knowledge_titles"]], approval["stand"]["knowledge"])
+        for line in (f"Prozess: {WID} · Fassung ", "Wissen (Regeln, auf denen der Fall beruht):", "Der Brief verlangt:", "- Unterlage: ",
+                     "Feststellungen, wie der Fall sie bei der Freigabe hielt:", "Daraus berechnet (nach der Regel des Prozesses):",
+                     f"Anforderungen (SHA-256): {approval['stand']['items_sha256']}"):
+            self.assertIn(line, page)
+
+    def test_a_recall_finds_every_letter_that_rests_on_a_rule_and_says_whether_it_went_out(self):
+        a, b = self.prepared("Fall A (synthetisch)"), self.prepared("Fall B (synthetisch)")
+        approval = self.approve(a["id"], "op-recall-1")
+        seed = approval["stand"]["knowledge"][0].split("#", 1)[1].split("@")[0]
+        found = self.client.get("/api/recall", params={"knowledge": seed}).json()
+        self.assertEqual((found["letters"], found["sent"], found["cases"]), (1, 0, 1))
+        row, = found["rows"]
+        self.assertEqual((row["case"], row["form"], row["version"], row["approved_by"], row["sent"]), (a["id"], "A1", approval["version"], "dev", []))
+        self.assertEqual(self.client.get("/api/recall", params={"knowledge": seed, "version": 99}).json()["letters"], 0)  # another version of the rule
+        self.assertEqual(self.client.get("/api/recall", params={"workflow_version": approval["stand"]["workflow"]["version"]}).json()["letters"], 1)
+        element = approval["relies"][0]
+        self.assertEqual(self.client.get("/api/recall", params={"element": element}).json()["letters"], 1)  # by a reviewed element it rests on
+        sent = self.client.post(f"/api/cases/{a['id']}/actions/dispatch", json={"version": approval["version"], "date": "2026-11-16", "channel": "email",
+                                                                                 "op_id": "op-recall-2"})
+        self.assertEqual(sent.status_code, 200, sent.text)
+        self.assertEqual(self.client.get("/api/recall", params={"knowledge": seed}).json()["sent"], 1)
+        self.assertEqual(self.client.get("/api/recall").status_code, 422)  # exactly one question
+        self.assertIn("Briefe, die darauf beruhen", SCRIPT)
 
 if __name__ == "__main__":
     unittest.main()

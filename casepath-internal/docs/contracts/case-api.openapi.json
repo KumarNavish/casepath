@@ -3477,6 +3477,71 @@
     "summary": "Pulse"
    }
   },
+  "/api/recall": {
+   "get": {
+    "description": "«Welche Briefe beruhen darauf?»: the letters approved on a rule (a Knowledge item and, if given, its version; a\nreviewed element; a version of the process), across the cases. A reviewer's question; no letter text.",
+    "operationId": "recall_api_recall_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "knowledge",
+      "required": false,
+      "schema": {
+       "title": "Knowledge",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "version",
+      "required": false,
+      "schema": {
+       "title": "Version",
+       "type": "integer"
+      }
+     },
+     {
+      "in": "query",
+      "name": "element",
+      "required": false,
+      "schema": {
+       "title": "Element",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "workflow_version",
+      "required": false,
+      "schema": {
+       "title": "Workflow Version",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Recall"
+   }
+  },
   "/api/replay-points": {
    "get": {
     "description": "Every labelled point replayed from its case's stored run: one row per point and the summary table.",

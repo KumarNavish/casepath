@@ -2,7 +2,8 @@
 
 One zip, one folder per recipient (``<Empfänger>/Brief.docx``: the exact approved text; ``<Empfänger>/<Titel>.docx``:
 each enclosure for that recipient), ``Beilagen.txt`` (what goes to whom), ``Aktennotiz.txt`` (the file note of the
-version), ``Wiedervorlage.txt`` (the date and what is awaited) and ``manifest.json`` (format ``casepath.versandpaket/1``:
+version), ``Wiedervorlage.txt`` (the date and what is awaited), ``Stand bei Freigabe.txt`` (the rules, requirements and
+facts the letter was approved on, with their sources; also ``manifest.stand``) and ``manifest.json`` (format ``casepath.versandpaket/1``:
 the version, the form, the recipients, who approved when, the reply date, the options chosen, the run and the files it
 rests on, the code, and each member's SHA-256). Deterministic: the members sorted, every timestamp 1980-01-01, also
 inside each .docx, so the same approval gives the same bytes. The stored blob is the record: it is never rebuilt to be
@@ -98,7 +99,7 @@ def when_line(respond_by, follow_up):
     return f"Wiedervorlage {_day(due)}" if due else "Wiedervorlage nach Versand"
 
 
-def build(draft, approval, note, awaited, follow_up=None, parity_sha=None):
+def build(draft, approval, note, awaited, follow_up=None, parity_sha=None, stand=None, stand_text=None):
     """The Versandpaket of an approved version: (zip bytes, manifest). ``draft``: the prepared letter as approved (its text,
     enclosures and recipients, completion.prepare); ``approval``: the «action.approved» event; ``note``: the file note of
     the version; ``awaited``: what the letter asks, in words; ``follow_up``: the case's follow-up date."""
@@ -115,9 +116,11 @@ def build(draft, approval, note, awaited, follow_up=None, parity_sha=None):
     files["Aktennotiz.txt"] = (note or "").strip() + "\n"
     respond_by = approval.get("respond_by")
     files["Wiedervorlage.txt"] = f"{when_line(respond_by, follow_up)}\nErwartet: {', '.join(awaited) if awaited else 'Rückmeldung'}\n"
+    if stand_text:  # «Stand bei Freigabe»: what the letter was approved on, in words (completion.stand_record)
+        files["Stand bei Freigabe.txt"] = stand_text
     for p in parts:
         p["sha256"] = _sha(files[p["name"]])
-    for name in ("Beilagen.txt", "Aktennotiz.txt", "Wiedervorlage.txt"):
+    for name in ("Beilagen.txt", "Aktennotiz.txt", "Wiedervorlage.txt") + (("Stand bei Freigabe.txt",) if stand_text else ()):
         parts.append({"name": name, "kind": None, "title": name[:-4], "sha256": _sha(files[name])})
     look = follow_up if isinstance(follow_up, dict) else {"due": follow_up} if follow_up else None
     manifest = {"format": FORMAT, "version": approval.get("version"), "form": approval.get("form"), "title": approval.get("title"),
@@ -125,7 +128,8 @@ def build(draft, approval, note, awaited, follow_up=None, parity_sha=None):
                 "recipients": [{k: r.get(k) for k in ("to", "recipient", "forms")} for r in approval.get("recipients") or ()],
                 "approved_by": approval.get("expert"), "approved_at": approval.get("at"), "respond_by": respond_by,
                 "chosen": approval.get("chosen"), "options_sha256": approval.get("options_sha256"), "run_id": approval.get("run_id"),
-                "files_digest": approval.get("files_digest"), "parity_sha": parity_sha, "parts": sorted(parts, key=lambda p: p["name"])}
+                "files_digest": approval.get("files_digest"), "parity_sha": parity_sha, "parts": sorted(parts, key=lambda p: p["name"]),
+                **({"stand": stand} if stand else {})}
     files["manifest.json"] = json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=1) + "\n"
     return _zip(files), manifest
 

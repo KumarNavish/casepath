@@ -512,7 +512,7 @@ class BundleTests(Service):
         archive = zipfile.ZipFile(io.BytesIO(r.content))
         names = sorted(archive.namelist())
         self.assertEqual(names, sorted(["Kundschaft/Brief.docx", "Kundschaft/Mängelrüge mit Frist zur Beseitigung.docx", "Beilagen.txt",
-                                        "Aktennotiz.txt", "Wiedervorlage.txt", "manifest.json"]))
+                                        "Aktennotiz.txt", "Wiedervorlage.txt", "Stand bei Freigabe.txt", "manifest.json"]))
         self.assertTrue(all(i.date_time == (1980, 1, 1, 0, 0, 0) for i in archive.infolist()))
         letter = zipfile.ZipFile(io.BytesIO(archive.read("Kundschaft/Brief.docx"))).read("word/document.xml").decode()
         self.assertEqual("\n".join(re.findall(r'<w:t xml:space="preserve">([^<]*)</w:t>', letter)).replace("&amp;", "&"),

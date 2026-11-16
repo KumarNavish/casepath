@@ -2083,6 +2083,40 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         item = found(store.get_knowledge, knowledge_id)
         return landed(who, item, "retired", lambda: store.save_knowledge(kb.set_status(item, "retired", by=who, reason=body.reason)))
 
+    def letters_resting_on(knowledge=None, version=None, element=None, workflow_version=None):
+        """Every approved letter, in any case, that rests on a rule: a Knowledge item (any version, or one), a reviewed
+        element («<file>:<element>»), or a version of the process. From the approvals' own records (``stand``, ``relies``):
+        [{case, title, reference, letter, form, version, approved_by, approved_at, sent [{to, date}], closed}], newest
+        first. An approval from before the record was kept is found by its elements only."""
+        from ..process import completion
+        rows = []
+        for c in store.list_cases():
+            if (c.get("intake") or {}).get("study"):
+                continue
+            events = store.list_case_events(c["id"])
+            sent = completion.dispatches(events, store.list_edits(c["id"], active_only=False))
+            for a in completion.approvals(events):
+                stand = a.get("stand") or {}
+                hit = ((knowledge and any(r.split("@")[0] == f"knowledge#{knowledge}" and (version is None or r.endswith(f"@v{version}")) for r in stand.get("knowledge") or ()))
+                       or (element and element in (a.get("relies") or ()))
+                       or (workflow_version and (stand.get("workflow") or {}).get("version") == workflow_version))
+                if hit:
+                    rows.append({"case": c["id"], "title": c.get("title"), "reference": c.get("reference"), "letter": a.get("title"), "form": a.get("form"),
+                                 "version": a.get("version"), "approved_by": a.get("expert"), "approved_at": a.get("at"),
+                                 "sent": [{"to": d["recipient"], "date": d["date"]} for d in sent if d["version"] == a.get("version")],
+                                 "closed": any(e["kind"] == "case.closed" for e in events)})
+        return sorted(rows, key=lambda r: str(r["approved_at"] or ""), reverse=True)
+
+    @app.get("/api/recall")
+    def recall(knowledge: str = None, version: int = None, element: str = None, workflow_version: str = None, who=Depends(user)):
+        """«Welche Briefe beruhen darauf?»: the letters approved on a rule (a Knowledge item and, if given, its version; a
+        reviewed element; a version of the process), across the cases. A reviewer's question; no letter text."""
+        reviewer(who)
+        if sum(x is not None for x in (knowledge, element, workflow_version)) != 1:
+            raise HTTPException(422, "Genau eines angeben: knowledge, element oder workflow_version.")
+        rows = letters_resting_on(knowledge, version, element, workflow_version)
+        return {"rows": rows, "letters": len(rows), "sent": sum(1 for r in rows if r["sent"]), "cases": len({r["case"] for r in rows})}
+
     # A jurist's review of the legal content: one row per area (and the cover check, the letters with prescribed content)
     @app.get("/api/review")
     def review_overview(who=Depends(user)):

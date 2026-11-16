@@ -1210,11 +1210,11 @@ def changed_words(draft):
 
 
 def stand(process, listed):
-    """«Stand bei Freigabe»: what the case's requirements were built from when a letter was approved, so that a third
-    person can say later why it went out as it did, and so that a rule changed since is seen: {workflow {id, version},
-    knowledge [«knowledge#<id>@v<n>» of every Knowledge item the case's process carries], items_sha256 (the documents
-    asked now, offered and later, the letter's questions and the next action, as the replay compares them), facts (each
-    established fact with its value as the case held it)}. Model-free, from the case's own process and items."""
+    """«Stand bei Freigabe», as the approval's event keeps it (no case content): what the case's requirements were built
+    from when a letter was approved, so that a rule changed since is seen and a recall can find the letter: {workflow
+    {id, version}, knowledge [«knowledge#<id>@v<n>» of every Knowledge item the case's process carries], items_sha256
+    (the documents asked now, offered and later, the letter's questions and the next action, as the replay compares
+    them), facts_sha256 (every established fact with its value)}. Model-free, from the case's own process and items."""
     process, listed = process or {}, list(listed or ())
     refs = sorted({r for group in ("documents", "facts", "steps") for node in process.get(group) or () for r in node.get("source_refs") or ()
                    if str(r).startswith("knowledge#")})
@@ -1222,9 +1222,74 @@ def stand(process, listed):
     action = next((i for i in listed if i["kind"] == "next_action"), {})
     shape = {"needs": sorted(i["key"] for i in listed if i["kind"] == "document"), "now": pick("document", "now"), "offered": pick("document", "proposed"),
              "later": pick("document", "later"), "questions": pick("letter_question", "now"), "next_action": action.get("action")}
+    facts = {i["key"]: i.get("value") for i in listed if i["kind"] == "fact" and i.get("value") not in (None, "", "offen")}
     return {"workflow": {"id": process.get("id"), "version": process.get("version")}, "knowledge": refs,
             "items_sha256": sha(json.dumps(shape, ensure_ascii=False, sort_keys=True)),
-            "facts": {i["key"]: i.get("value") for i in listed if i["kind"] == "fact" and i.get("value") not in (None, "", "offen")}}
+            "facts_sha256": sha(json.dumps(facts, ensure_ascii=False, sort_keys=True, default=str))}
+
+
+def stand_record(process, listed, draft=None, files=()):
+    """«Stand bei Freigabe», as the Versandpaket keeps it (the case's own record, with its content): ``stand`` and, in
+    words, what a third person needs to say why the letter went out as it did: the Knowledge items by title and
+    version, each document and question the letter asks with where the need comes from (the process, a Knowledge item,
+    the handler) and its legal basis, each established fact with its value and its source (the file and page it was
+    read from, or the handler who set it), and each part of the letter as the form's wording or the handler's own."""
+    process, listed = process or {}, list(listed or ())
+    names = {f.get("id"): f.get("name") for f in files or ()}
+    titles = {}
+    for group in ("documents", "facts", "steps"):
+        for node in process.get(group) or ():
+            for r in node.get("source_refs") or ():
+                if str(r).startswith("knowledge#"):
+                    titles.setdefault(r, node.get("title") or node.get("question") or node.get("id"))
+    word = lambda i: (i.get("label") or {}).get("de") or i.get("title") or i["key"]
+
+    def origin(i):
+        o = str(i.get("origin") or "")
+        return "Wissen" if o.startswith("knowledge") else "Fallbearbeitung" if o.startswith("edit") else "Prozess"
+
+    def source(i):
+        if i.get("verdict") == "set_by_handler" or (i.get("handler") or {}).get("by"):
+            return {"by": "Fallbearbeitung"}
+        if i.get("stated_as") == "computed" or i.get("verdict") == "derived":
+            return {"by": "berechnet"}  # follows from the case's own record (its letters, dates and answers), by the process's rule
+        e = next(iter(i.get("evidence") or ()), None)
+        return {"by": "Akte", "file": names.get(e.get("file"), e.get("file")), "page": e.get("page")} if e else {"by": "ohne Quelle"}
+    return {**stand(process, listed),
+            "knowledge_titles": [{"ref": r, "title": titles.get(r)} for r in sorted(titles)],
+            "asked": [{"kind": "Unterlage" if i["kind"] == "document" else "Frage", "what": word(i), "from": origin(i),
+                       **({"legal_basis": i["legal_basis"]} if i.get("legal_basis") else {})}
+                      for i in listed if i["kind"] in ("document", "letter_question") and i.get("ask") == "now"],
+            "facts": [{"fact": i["key"], "question": word(i), "value": i.get("value"), "source": source(i)}
+                      for i in listed if i["kind"] == "fact" and i.get("value") not in (None, "", "offen")],
+            "parts": [{"part": p.get("part"), "wording": "Fallbearbeitung" if p.get("edited") else "Formular"} for p in (draft or {}).get("parts") or ()]}
+
+
+def stand_text(record, approval=None):
+    """The record as one plain page of the Versandpaket («Stand bei Freigabe.txt»)."""
+    r, a = record or {}, approval or {}
+    lines = ["Stand bei Freigabe", ""]
+    if a.get("expert") or a.get("at"):
+        lines += [f"Freigegeben von {a.get('expert') or '—'} am {a.get('at') or '—'}", ""]
+    lines += [f"Prozess: {(r.get('workflow') or {}).get('id')} · Fassung {(r.get('workflow') or {}).get('version')}", "", "Wissen (Regeln, auf denen der Fall beruht):"]
+    lines += [f"- {k.get('title') or '—'} ({k['ref']})" for k in r.get("knowledge_titles") or ()] or ["- keine"]
+    lines += ["", "Der Brief verlangt:"]
+    lines += [f"- {x['kind']}: {x['what']} · aus: {x['from']}" + (f" · {x['legal_basis']}" if x.get("legal_basis") else "") for x in r.get("asked") or ()] or ["- nichts"]
+    lines += ["", "Feststellungen, wie der Fall sie bei der Freigabe hielt:"]
+    said = lambda v: "ja" if v is True else "nein" if v is False else v
+    read = [f for f in r.get("facts") or () if (f.get("source") or {}).get("by") != "berechnet"]
+    for f in read:
+        s = f.get("source") or {}
+        where = f"{s.get('file')}" + (f", S. {s['page']}" if s.get("page") else "") if s.get("by") == "Akte" else s.get("by")
+        lines.append(f"- {f.get('question')}: {said(f.get('value'))} · Quelle: {where}")
+    lines += [] if read else ["- keine"]
+    derived = [f for f in r.get("facts") or () if (f.get("source") or {}).get("by") == "berechnet"]
+    if derived:
+        lines += ["", "Daraus berechnet (nach der Regel des Prozesses):"] + [f"- {f.get('question')}: {said(f.get('value'))}" for f in derived]
+    own = [p["part"] for p in r.get("parts") or () if p.get("wording") == "Fallbearbeitung"]
+    lines += ["", f"Wortlaut: {len(r.get('parts') or ())} Teile, davon von der Fallbearbeitung geändert: {len(own)}" + (f" ({', '.join(str(x) for x in own)})" if own else ""),
+              "", f"Anforderungen (SHA-256): {r.get('items_sha256')}", f"Feststellungen (SHA-256): {r.get('facts_sha256')}"]
+    return "\n".join(lines) + "\n"
 
 
 def rule_changed(approval, now):

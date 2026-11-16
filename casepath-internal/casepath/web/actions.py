@@ -225,7 +225,9 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         note = letters.file_note(view["case"], view.get("items") or [], events, view.get("follow_up"), store.list_files(case_id), package=package,
                                  awaited={"what": awaited, "when": versandpaket.when_line(approval.get("respond_by"), follow), "approved": True},
                                  approval_holds=True, answered={"title": draft.get("title"), "rows": took} if took else None)
-        blob, _ = versandpaket.build(draft, approval, note, awaited, follow_up=follow, parity_sha=parity_sha)
+        frozen = completion.stand_record(view.get("process"), view.get("items") or [], draft, store.list_files(case_id))
+        blob, _ = versandpaket.build(draft, approval, note, awaited, follow_up=follow, parity_sha=parity_sha, stand=frozen,
+                                     stand_text=completion.stand_text(frozen, approval))
         digest = store.put_blob(blob)
         return record(case_id, who, "bundle.saved", version=approval["version"], approval=approval.get("event_id"), sha256=digest, bytes=len(blob))
 

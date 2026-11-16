@@ -2710,6 +2710,7 @@ async function renderKnowledge() {
       ${seededNote(k) ? `<span class="cp-muted">${esc(seededNote(k))}</span>` : `<span class="cp-muted">${k.origin.kind === "case_edit" ? T("Learned from a case worker’s change in", "Gelernt aus einer Änderung in der Fallbearbeitung, im Fall") : T("Learned by the result checker in", "Gelernt vom Ergebnisprüfer im Fall")} <a href="#/case/${esc(k.origin.case_id)}/process_builder">${esc(caseName(k.origin.case_id))}</a></span>`}
       ${k.uses.length ? `<span>${T("Cases", "Fälle")}: ${k.uses.map((u) => `<a href="#/case/${esc(u.case_id)}/document_finder">${esc(caseName(u.case_id))}</a> <span class="cp-chip ${u.outcome === "present" ? "good" : u.outcome === "contradicted" ? "bad" : ""}">${esc(word(u.outcome))}</span>`).join(" ")}</span>` : ""}
       <details><summary class="cp-link">${T("History", "Verlauf")}</summary><ul class="cp-log">${k.history.map((h) => `<li><b>v${h.version}</b><span>${esc(changeText(h.change))}${h.by ? ` · ${esc(byWhom(h.by))}` : ""} · ${dateText(h.at)}</span></li>`).join("")}</ul></details>
+      ${review && review.may_review && k.status !== "candidate" ? `<details class="cp-recall" data-recall="${esc(k.ids.join(","))}"><summary class="cp-link">${T("Letters resting on it", "Briefe, die darauf beruhen")}</summary><ul class="cp-log"><li class="cp-muted">…</li></ul></details>` : ""}
       ${k.status !== "active" && k.status !== "retired" ? replayLine(k, data.knowledge, caseName) : ""}
       <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? (replayCurrent(k, data.knowledge)
           ? `<button class="cp-button primary" data-activate="${esc(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>`
@@ -2733,8 +2734,22 @@ async function renderKnowledge() {
     await each(b.dataset.replay, "replay").catch(() => {});
     renderKnowledge();
   });
+  // the recall: every approved letter whose case carried this rule when it was approved («Stand bei Freigabe»), read when opened
+  for (const d of document.querySelectorAll("[data-recall]")) d.addEventListener("toggle", async () => {
+    if (!d.open || d.dataset.loaded) return;
+    d.dataset.loaded = "1";
+    const found = await Promise.all(d.dataset.recall.split(",").map((id) => api(`/api/recall?knowledge=${encodeURIComponent(id)}`).catch(() => ({ rows: [] }))));
+    d.querySelector("ul").innerHTML = recallRows(found.flatMap((x) => x.rows || []));
+  });
   for (const b of document.querySelectorAll("[data-activate]")) b.addEventListener("click", async () => { await each(b.dataset.activate, "activate", T("approved in Knowledge", "im Wissen freigegeben")).catch(() => {}); renderKnowledge(); });
   for (const b of document.querySelectorAll("[data-retire]")) b.addEventListener("click", async () => { await each(b.dataset.retire, "retire", T("retired in Knowledge", "im Wissen zurückgezogen")); renderKnowledge(); });
+}
+
+// The rows of a recall (GET /api/recall): which case, which letter, approved when and by whom, sent or not.
+function recallRows(rows) {
+  if (!rows.length) return `<li class="cp-muted">${T("No approved letter rests on it.", "Kein freigegebener Brief beruht darauf.")}</li>`;
+  return rows.map((r) => `<li><a href="#/case/${esc(r.case)}/overview">${esc(r.reference || r.title || r.case)}</a> <span>${esc(r.letter || r.form || "")} · ${T("approved", "freigegeben")} ${dateText(r.approved_at).slice(0, 10)}${r.approved_by ? ` · ${esc(r.approved_by)}` : ""}
+    · ${r.sent.length ? `${T("sent", "versandt")} ${r.sent.map((x) => esc(dateText(x.date))).join(", ")}` : `<b>${T("not sent yet", "noch nicht versandt")}</b>`}</span></li>`).join("");
 }
 
 // ---------- review of the legal content (Wissen → Rechtsgebiete) ----------
