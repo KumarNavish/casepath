@@ -52,7 +52,7 @@ TO_WORDS = {"kunde": "die Kundschaft", "gegenpartei": "die Gegenpartei", "kanzle
 DECISION_WORDS = {"deckung": "Deckung", "empfehlung": "Empfehlung", "aussichten": "Erfolgsaussichten", "vorgehen": "Vorgehen"}
 DECISION_FACTS = {"deckung", "aussichten", "vorgehen", "leistungen_einstellen", "vergleich_bestaetigt"}  # the handler's own decisions
 # the reasons an approval no longer holds, the cause before its consequences
-REASONS = ("Entscheid geändert", "Voraussetzung geändert", "Grundlage in Prüfung", "Neue Unterlagen", "Pflichtteil fehlt", "Schritt geändert",
+REASONS = ("Entscheid geändert", "Voraussetzung geändert", "Grundlage in Prüfung", "Regel geändert", "Neue Unterlagen", "Pflichtteil fehlt", "Schritt geändert",
            "Empfänger geändert", "Beilagen geändert", "Datum", "Text geändert")
 HELD_MARKS = {"aenderung": "Änderung nötig", "frage": "Frage"}  # a jurist's mark that holds an element the letter rests on
 COVER, BACKBONE = "cover", "backbone"  # the review's files besides the area modules (process/review.py)
@@ -906,7 +906,8 @@ def arrived_after(approval, files, events=()):
     return came
 
 
-def validity(approval, draft, facts, assessment=None, process=None, unread=(), files=(), events=(), today=None, marks=None, partial=False):
+def validity(approval, draft, facts, assessment=None, process=None, unread=(), files=(), events=(), today=None, marks=None, partial=False,
+             stand_now=None):
     """Why an approval no longer holds, recomputed now: [reasons] (empty: it holds). It holds only while its version is
     the current one, its form the prepared one, its premise as stored, no decision is open, every required part is in
     the letter, nothing the letter rests on was marked by a jurist since («Änderung nötig» or «Frage»: ``marks``, the
@@ -939,6 +940,8 @@ def validity(approval, draft, facts, assessment=None, process=None, unread=(), f
         out.append("Pflichtteil fehlt")
     if held_marks(approval.get("relies"), marks, approval.get("relies_marks")):
         out.append("Grundlage in Prüfung")
+    if rule_changed(approval, stand_now):  # a rule released or withdrawn since changed what this case asks (``stand_now``: stand() now)
+        out.append("Regel geändert")
     if arrived_after(approval, files, events):
         out.append("Neue Unterlagen")
     if not enough_time(approval.get("respond_by"), approval.get("at"), today):
@@ -977,7 +980,7 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
            "held": [], "premise_changed": [], "last": None, "acknowledged": False, "fulfilled": False, "partial": False, "waiting_until": None,
            "legacy_copy": None, "decision": None, "bucket": None, "status": None, "date": None, "recipients": draft.get("recipients") or [], "rest": None}
     if rest:
-        stale = validity(rest, draft, facts, assessment, process, unread, files, events, today, marks, partial=True)
+        stale = validity(rest, draft, facts, assessment, process, unread, files, events, today, marks, partial=True, stand_now=stand(process, listed))
         out["rest"] = {"version": rest.get("version"), "form": rest.get("form"), "title": rest.get("title"), "earliest": earliest(rest, events, rest.get("form")),
                        "pending": [r for r in rest.get("recipients") or () if r.get("to") not in done_for(rest)],
                        "dispatched": [{"recipient": d["recipient"], "date": d["date"], "channel": d["channel"]} for d in sent if d["version"] == rest.get("version")],
@@ -995,7 +998,7 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
         out["dispatched"] = [{"recipient": d["recipient"], "date": d["date"], "channel": d["channel"], "by": d["by"], "edit": d["edit"]} for d in mine]
         out["pending"] = [r for r in approval.get("recipients") or () if r.get("to") not in {d["recipient"] for d in mine}]
         out["state"] = "freigegeben" if out["pending"] else "versandt"
-        out["stale"] = validity(approval, draft, facts, assessment, process, unread, files, events, today, marks)
+        out["stale"] = validity(approval, draft, facts, assessment, process, unread, files, events, today, marks, stand_now=stand(process, listed))
         out["held"] = held_marks(approval.get("relies"), marks, approval.get("relies_marks"), titles)
         out["arrived"] = [f.get("name") for f in arrived_after(approval, files, events)]
         out["valid"] = not out["stale"]
@@ -1206,8 +1209,34 @@ def changed_words(draft):
     return {"total": len(final), "changed": changed}
 
 
+def stand(process, listed):
+    """«Stand bei Freigabe»: what the case's requirements were built from when a letter was approved, so that a third
+    person can say later why it went out as it did, and so that a rule changed since is seen: {workflow {id, version},
+    knowledge [«knowledge#<id>@v<n>» of every Knowledge item the case's process carries], items_sha256 (the documents
+    asked now, offered and later, the letter's questions and the next action, as the replay compares them), facts (each
+    established fact with its value as the case held it)}. Model-free, from the case's own process and items."""
+    process, listed = process or {}, list(listed or ())
+    refs = sorted({r for group in ("documents", "facts", "steps") for node in process.get(group) or () for r in node.get("source_refs") or ()
+                   if str(r).startswith("knowledge#")})
+    pick = lambda kind, ask: sorted(i["key"] for i in listed if i["kind"] == kind and i.get("ask") == ask)
+    action = next((i for i in listed if i["kind"] == "next_action"), {})
+    shape = {"needs": sorted(i["key"] for i in listed if i["kind"] == "document"), "now": pick("document", "now"), "offered": pick("document", "proposed"),
+             "later": pick("document", "later"), "questions": pick("letter_question", "now"), "next_action": action.get("action")}
+    return {"workflow": {"id": process.get("id"), "version": process.get("version")}, "knowledge": refs,
+            "items_sha256": sha(json.dumps(shape, ensure_ascii=False, sort_keys=True)),
+            "facts": {i["key"]: i.get("value") for i in listed if i["kind"] == "fact" and i.get("value") not in (None, "", "offen")}}
+
+
+def rule_changed(approval, now):
+    """Whether a rule changed under an approval: the Knowledge the case's process carries is another than at the approval
+    (an item released, withdrawn or in a new version) and the case's requirements are other than they were. An approval
+    from before the record was kept (no ``stand``) is never stale for it."""
+    was = (approval or {}).get("stand")
+    return bool(was and now and was.get("knowledge") != now.get("knowledge") and was.get("items_sha256") != now.get("items_sha256"))
+
+
 def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=None, op_id=None, deadline=None, relies=(), marks=None,
-                    file_ids=None, meaning=None, addresses=None):
+                    file_ids=None, meaning=None, addresses=None, stand_=None):
     """The fields of «action.approved»: the version and what it consists of, the premise (``premise_``: premise() now),
     the options chosen, the reviewed legal content it rests on (``relies``: relied_elements) with the jurists' marks on it
     as they stand (``marks``: the marks that hold now), the files of the case it was given on (``file_ids``) and what it
@@ -1223,6 +1252,7 @@ def approval_record(draft, premise_, assessment=None, run_id=None, files_digest=
             "parts": [[p["part"], sha(p["text"])] for p in draft.get("parts") or ()], "run_id": run_id, "files_digest": files_digest, "op_id": op_id,
             "relies": list(relies or ()), "relies_marks": marks_of(relies, marks), **({"file_ids": list(file_ids)} if file_ids is not None else {}),
             **({"meaning": meaning} if meaning is not None else {}),
+            **({"stand": stand_} if stand_ else {}),  # «Stand bei Freigabe» (stand): workflow, Knowledge versions, requirements, facts
             **({"deadline": deadline} if deadline else {})}
 
 

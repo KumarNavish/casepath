@@ -541,10 +541,20 @@ class CaseStore:
         return edit
 
     def similar_edits(self, op, args, case_id):
-        """Active edits in other cases with the same operation on the same target: a correction made again and again."""
-        key = {k: args.get(k) for k in ("fact", "document", "step", "value") if args.get(k) is not None}
+        """Active edits in other cases that are the same correction: the same operation on the same thing. What «the
+        same» is depends on the operation: an added document, question or step is the same by what it is called (its
+        title, without case or spacing; the step it hangs on does not make two different documents one), a struck
+        document by its id, a fact by the fact and the value set; anything else by its named target."""
+        named = {"add_document": "title", "add_step": "title", "add_question": "question"}.get(op)
+        fold = lambda v: " ".join(str(v or "").casefold().split())
+        if named:
+            want = fold(args.get(named))
+            same = lambda r: bool(want) and fold(r["args"].get(named)) == want
+        else:
+            key = {k: args.get(k) for k in ("fact", "document", "step", "value", "request", "how") if args.get(k) is not None}
+            same = lambda r: bool(key) and {k: r["args"].get(k) for k in key} == key
         rows = [json.loads(r["data"]) for r in self._all("select data from case_edits where status='active' and case_id<>?", case_id)]
-        return [r for r in rows if r["op"] == op and {k: r["args"].get(k) for k in key} == key]
+        return [r for r in rows if r["op"] == op and same(r)]
 
     def list_edits(self, case_id, active_only=True):
         rows = [json.loads(r["data"]) | {"status": r["status"]} for r in

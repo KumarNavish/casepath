@@ -108,6 +108,15 @@ A case runs for weeks or months, and most of the work is reacting to what comes 
 | changes the proposed date | the waiting time for this action | follow-up rules |
 | closes "mit Vorbehalt" | the case needs a second look | where CasePath is least trusted |
 
+What is built of this table, and how a change lands:
+
+- **One strike.** Unticking a document in the letter with «hier nicht relevant» or «gilt generell so» takes it out of what the case needs (`remove_document`, undoable), not only out of this letter. The other reasons keep the need and leave the line out of this letter.
+- **«Gilt generell so» proposes, or says why not.** An added document, question or step, and a struck document, become a candidate under «Wissen» with the replay of its effect; a struck document is a note for whoever keeps the process (it changes no case by itself). Where a correction cannot be said in general (a fact of this case) the answer says «Gilt in diesem Fall …» in place of the silent drop.
+- **The repeat detector compares the thing, not the step** (`store.similar_edits`): an added document is the same by its name, a struck one by its id, a fact by fact and value. The same correction in two other cases makes the third a proposal («wiederholt»); three different documents on one step no longer do.
+- **A strike counts against the rule that asked** (`knowledge.struck`): once per case, in the item's history; two such cases outweighing its confirmations mark it for review.
+- **A rule change lands visibly** (`app.landed`). Releasing or withdrawing an item writes a line into the log of every open case whose requirements it changes («Regel freigegeben: … · neu verlangt: …», by «Wissen · who»); study copies and closed cases are not touched. An approved, unsent letter of such a case is stale («Regel geändert») by its own record: the approval keeps the Knowledge versions and the requirements it was given on (`completion.stand`).
+- Not built: rewording a proposal or giving it a condition in «Wissen»; learning from a reworded letter, another action picked or a changed date; a jurist's proposed wording still reaches the letters only through a build.
+
 ## What we take from the dossiers (development dossiers only)
 
 Read each of the seven development dossiers whole, as the record of a handler's work, and report in general terms, never case content:

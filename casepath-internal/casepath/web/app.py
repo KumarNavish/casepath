@@ -1788,12 +1788,22 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         # "gilt generell so" (reason 4), or the same correction made in two other cases, becomes a proposal by itself;
         # it is only proposed: a person activates it, after seeing its replayed effect on the stored cases.
         repeated = body.op != "set_claim" and len({e["case_id"] for e in store.similar_edits(body.op, body.args, case_id)}) >= 2
+        only_here = None  # said back when «gilt generell so» cannot be said in general: never silently dropped
+        if body.op == "remove_document":  # a struck document that an active Knowledge item asks for counts against that item
+            asked_by = next((d.get("knowledge") for d in before["process"].get("documents") or () if d.get("id") == body.args.get("document")), None)
+            if asked_by:
+                try:
+                    store.save_knowledge(kb.struck(store.get_knowledge(asked_by), case_id=case_id, by=who))
+                except NotFound:
+                    pass
         if not body.use_for_similar and (body.reason_code == "4" or repeated):
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
                 learned = store.save_knowledge(replayed(item, who, "gilt generell" if body.reason_code == "4" else "wiederholt"))
             except kb.KnowledgeError:
                 learned = None  # not every correction can be said in general terms; the case keeps its edit
+                if body.reason_code == "4":
+                    only_here = "Gilt in diesem Fall. Als Regel für ähnliche Fälle lässt sich das hier nicht vorschlagen."
         if body.use_for_similar:  # a candidate with the replay of its version: activated in «Wissen», never here
             try:
                 item = kb.from_edit(before["workflow"]["id"], edit, before["process"], by=who)
@@ -1836,7 +1846,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if package_before is not None:  # the package before and after, with the correction as its basis (C9)
             consequences = {"basis": _basis(body.op, body.args, body.reason.strip() or ("" if body.reason_code in (None, "none") else reason_text), before, who),
                             "changes": _consequences(package_before, _package(get_case(case_id, who)))}
-        return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"], "consequences": consequences}
+        return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"], "consequences": consequences,
+                **({"only_here": only_here} if only_here else {})}
 
     def _undo_limits(edit):
         """What undoing a correction cannot undo: a letter copied, approved or dispatched since (it went out, or may have,
@@ -2001,6 +2012,46 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                       **({"target": target["id"], "target_version": target["version"]} if target else {})})
         return item
 
+    def landed(who, item, verb, apply):
+        """A rule change lands visibly: ``apply`` saves it, and every open case whose requirements it changes gets a line
+        in its own log («knowledge.changed»: the item, its version, who released or withdrew it, what the case asks now
+        that it did not, and what it no longer asks). An approved, unsent letter of such a case is stale by its own
+        record (completion.rule_changed). Study copies keep their frozen rules and are not touched. Model-free."""
+        from ..quality.replay import snapshot
+        rows = [c for c in store.list_cases() if not (c.get("intake") or {}).get("study")
+                and not any(e["kind"] == "case.closed" for e in store.list_case_events(c["id"]))]
+        before = {}
+        for c in rows:
+            try:
+                before[c["id"]] = snapshot(store, catalogue, c["id"])
+            except Exception:  # a case that cannot be evaluated is not a reason to refuse the rule change
+                before[c["id"]] = None
+        out = apply()
+        touched = 0
+        for c in rows:
+            was = before.get(c["id"])
+            if was is None:
+                continue
+            try:
+                current = case_state(store, catalogue, c["id"])
+                listed = build_items(current, (current.get("run") or {}).get("result") or {}, store.list_files(c["id"]))
+            except Exception:
+                continue
+            titles = {i["key"]: i.get("title") or (i.get("label") or {}).get("de") or i["key"] for i in listed if i["kind"] in ("document", "letter_question")}
+            now = {"needs": sorted(i["key"] for i in listed if i["kind"] == "document"),
+                   "questions": sorted(i["key"] for i in listed if i["kind"] == "letter_question" and i.get("ask") == "now")}
+            added = [titles.get(k, k) for group in ("needs", "questions") for k in now[group] if k not in was[group]]
+            dropped = [k for group in ("needs", "questions") for k in was[group] if k not in now[group]]
+            if not added and not dropped:
+                continue
+            touched += 1
+            record(c["id"], who, "knowledge.changed", item=item["id"], version=item.get("version"), verb=verb,
+                   title=(item.get("content") or {}).get("title") or (item.get("content") or {}).get("question") or item["id"],
+                   added=added[:8], dropped=len(dropped))
+        store.append_workspace_event({"schema": "casepath.knowledge.event/1", "kind": f"knowledge.{verb}", "item": item["id"], "version": item.get("version"),
+                                      "by": who, "cases_touched": touched})
+        return out
+
     @app.post("/api/knowledge/{knowledge_id}/replay")
     def replay_knowledge(knowledge_id: str, who=Depends(user)):
         """«Nachspielen»: the item's current version applied to every prepared case without a model; what it would change
@@ -2020,15 +2071,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         saved, target = activation(item, who, body.reason)
         if target is not None and (played.get("target"), played.get("target_version")) != (target["id"], target["version"]):
             raise HTTPException(409, "Zuerst nachspielen: der verfeinerte Eintrag hat sich seither geändert")
-        for row in saved:
-            store.save_knowledge(row)
-        return saved[0]
+        def apply():
+            for row in saved:
+                store.save_knowledge(row)
+            return saved[0]
+        return landed(who, saved[0], "released", apply)
 
     @app.post("/api/knowledge/{knowledge_id}/retire")
     def retire(knowledge_id: str, body: StatusChange, who=Depends(user)):
         reviewer(who)
         item = found(store.get_knowledge, knowledge_id)
-        return store.save_knowledge(kb.set_status(item, "retired", by=who, reason=body.reason))
+        return landed(who, item, "retired", lambda: store.save_knowledge(kb.set_status(item, "retired", by=who, reason=body.reason)))
 
     # A jurist's review of the legal content: one row per area (and the cover check, the letters with prescribed content)
     @app.get("/api/review")

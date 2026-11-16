@@ -198,7 +198,8 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
                                                     files_digest=store.files_digest(case_id), op_id=body.op_id, deadline=act.get("deadline"),
                                                     relies=relies, marks=marks_now(), file_ids=[f["id"] for f in store.list_files(case_id)],
                                                     meaning=completion.frozen_meaning(draft, view.get("items") or [], events, view.get("assessment")),
-                                                    addresses={r["to"]: r["address"]["value"] for r in done.get("handover") or ()})
+                                                    addresses={r["to"]: r["address"]["value"] for r in done.get("handover") or ()},
+                                                    stand_=completion.stand(view.get("process"), view.get("items") or []))
                 existing = record(case_id, who, "action.approved", **fields)
             saved = completion._bundle(store.list_case_events(case_id), existing)
             if saved is None:  # the Versandpaket, from the same state: the exact text, enclosures, note and next date

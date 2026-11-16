@@ -72,6 +72,20 @@ def set_status(item, status, *, by, reason=""):
     return updated
 
 
+def struck(item, *, case_id, by):
+    """A handler struck, in a case, the document this active item asks for: it counts against the item (``contradicted``),
+    once per case, and is kept in its history; two such cases outweighing the confirmations suggest a review."""
+    updated = deepcopy(item)
+    if any(h.get("change", "").startswith("struck") and h.get("case_id") == case_id for h in updated["history"]):
+        return updated
+    updated["stats"]["contradicted"] += 1
+    updated["history"].append({"version": item["version"], "change": "struck: von der Fallbearbeitung als nicht nötig gestrichen", "by": by,
+                               "case_id": case_id, "at": now()})
+    updated["review_suggested"] = updated["stats"]["contradicted"] >= 2 and updated["stats"]["contradicted"] > updated["stats"]["confirmed"]
+    updated["updated_at"] = now()
+    return updated
+
+
 def record_outcome(item, *, case_id, run_id, document_status=None, contradicted=False, reason=""):
     """Update use statistics after a completed run that applied this item."""
     updated = deepcopy(item)
@@ -107,7 +121,16 @@ def from_edit(family, edit, graph, *, by):
     if edit["op"] == "add_question":
         return new_item(family, "question", {"question": args["question"], "type": args.get("type", "boolean"),
                                               "values": args.get("values")}, origin=origin)
-    raise KnowledgeError("only added documents and questions can become Knowledge")
+    if edit["op"] == "remove_document":
+        # a document struck as not needed, said in general: a note for whoever keeps the process (it changes no case by
+        # itself; the need is given a condition or withdrawn by a person, in «Wissen» or in the process's own data)
+        document = next((d for d in (graph or {}).get("documents") or () if d.get("id") == args.get("document")), None)
+        if document is None:
+            raise KnowledgeError("this document is not part of the process")
+        return new_item(family, "note", {"text": f"«{document.get('title') or document['id']}» wird von der Fallbearbeitung als nicht nötig gestrichen: "
+                                                 "Bedarf prüfen (Bedingung ergänzen oder zurückziehen).", "document": document["id"],
+                                         **({"knowledge": document["knowledge"]} if document.get("knowledge") else {})}, origin=origin)
+    raise KnowledgeError("only added or struck documents, questions and steps can be said in general")
 
 
 SEED_DIR = __import__("pathlib").Path(__file__).with_name("knowledge_seed")

@@ -169,5 +169,85 @@ class ExactPreviewTests(Gate):
         self.assertIn("r.target_version === target.version", SCRIPT)  # «Wissen» offers «Nachspielen» again in that case
 
 
+
+class LandingTests(Gate):
+    """A correction teaches, and a rule change lands where it changes something (docs/HANDLER_WORK.md)."""
+
+    def approve(self, case_id, op):
+        draft = self.client.get(f"/api/cases/{case_id}").json()["draft"]
+        r = self.client.post(f"/api/cases/{case_id}/actions/approve", json={"form": draft["form"], "version": draft["version"], "op_id": op})
+        self.assertEqual(r.status_code, 200, r.text)
+        return r.json()["approval"]
+
+    def add(self, case_id, title, step="klaeren", code="2"):
+        r = self.client.post(f"/api/cases/{case_id}/edits", json={"op": "add_document", "args": {"title": title, "why": "Wird gebraucht.", "step": step},
+                                                                  "reason": "", "reason_code": code, "recheck": False})
+        self.assertEqual(r.status_code, 201, r.text)
+        return r.json()
+
+    def strike(self, case_id, document, code="3"):
+        r = self.client.post(f"/api/cases/{case_id}/edits", json={"op": "remove_document", "args": {"document": document}, "reason": "", "reason_code": code,
+                                                                  "recheck": False})
+        self.assertEqual(r.status_code, 201, r.text)
+        return r.json()
+
+    def test_a_released_rule_is_in_the_log_of_each_case_it_changes_and_an_unsent_approval_is_stale(self):
+        a, b = self.prepared("Fall A (synthetisch)"), self.prepared("Fall B (synthetisch)")
+        approval = self.approve(b["id"], "op-land-1")
+        self.assertEqual(approval["stand"]["workflow"]["id"], WID)  # «Stand bei Freigabe»: the rules the approval was given on
+        self.assertTrue(all(ref.startswith("knowledge#") and "@v" in ref for ref in approval["stand"]["knowledge"]))
+        self.assertEqual(self.client.get(f"/api/cases/{b['id']}").json()["completion"]["stale"], [])
+        item = self.candidate(a["id"])
+        self.assertEqual([e for e in self.store.list_case_events(b["id"]) if e["kind"] == "knowledge.changed"], [])  # a candidate lands nowhere
+        self.client.post(f"/api/knowledge/{item['id']}/activate", json={"reason": "Nachgespielt."})
+        landed, = [e for e in self.store.list_case_events(b["id"]) if e["kind"] == "knowledge.changed"]
+        self.assertEqual((landed["item"], landed["version"], landed["verb"], landed["added"], landed["expert"]),
+                         (item["id"], 1, "released", ["Lüftungsprotokoll"], "dev"))
+        view = self.client.get(f"/api/cases/{b['id']}").json()
+        self.assertIn("Regel geändert", view["completion"]["stale"])
+        row, = [r for r in view["verlauf"] if r["title"] == "Regel"]
+        self.assertEqual((row["who"], row["what"]), ("Wissen · dev", "Regel freigegeben: «Lüftungsprotokoll» (Fassung 1) · neu verlangt: Lüftungsprotokoll"))
+        # the case the rule came from already asked the document: nothing changed there, so nothing is written there
+        self.assertEqual([e for e in self.store.list_case_events(a["id"]) if e["kind"] == "knowledge.changed"], [])
+        self.client.post(f"/api/knowledge/{item['id']}/retire", json={"reason": "Doch nicht."})
+        self.assertEqual([(e["verb"], e["dropped"]) for e in self.store.list_case_events(b["id"]) if e["kind"] == "knowledge.changed"],
+                         [("released", 0), ("retired", 1)])
+        self.assertEqual([e["cases_touched"] for kind in ("knowledge.released", "knowledge.retired") for e in self.store.list_workspace_events(kind)], [1, 1])
+
+    def test_the_same_document_added_in_three_cases_becomes_a_proposal_and_three_different_ones_do_not(self):
+        cases = [self.prepared(f"Fall {n} (synthetisch)") for n in "ABCDEF"]
+        for case, title in zip(cases[:3], ("Fotos der Küche", "Heizkostenabrechnung", "Zeugenliste")):  # the same step, three different documents
+            self.assertIsNone(self.add(case["id"], title)["knowledge"])
+        self.assertIsNone(self.add(cases[3]["id"], "Lüftungsprotokoll")["knowledge"])
+        self.assertIsNone(self.add(cases[4]["id"], "lüftungsprotokoll ", step="eingang")["knowledge"])  # the same by its name, on another step
+        learned = self.add(cases[5]["id"], "Lüftungsprotokoll")["knowledge"]
+        self.assertEqual((learned["kind"], learned["status"], learned["content"]["title"], learned["replay"]["because"]),
+                         ("document_need", "candidate", "Lüftungsprotokoll", "wiederholt"))
+
+    def test_a_struck_document_teaches_and_generally_so_is_never_silently_dropped(self):
+        a, b, c = (self.prepared(f"Fall {n} (synthetisch)") for n in "ABC")
+        need = next(d for d in self.client.get(f"/api/cases/{a['id']}").json()["process"]["documents"] if d.get("knowledge"))
+        self.assertIsNone(self.strike(a["id"], need["id"])["knowledge"])  # «hier nicht relevant»: this case only
+        self.assertIsNone(self.strike(b["id"], need["id"])["knowledge"])
+        learned = self.strike(c["id"], need["id"])["knowledge"]  # the third case: said in general, for a person to decide
+        self.assertEqual((learned["kind"], learned["status"], learned["content"]["document"], learned["replay"]["because"]),
+                         ("note", "candidate", need["id"], "wiederholt"))
+        self.assertIn(f"«{need['title']}» wird von der Fallbearbeitung als nicht nötig gestrichen", learned["content"]["text"])
+        asked_by = self.store.get_knowledge(need["knowledge"])  # each strike counts against the item that asks it, once per case
+        self.assertEqual((asked_by["stats"]["contradicted"], asked_by["review_suggested"]), (3, True))
+        # «gilt generell so» on a fact of the case cannot be a rule: said back, never dropped without a word
+        r = self.client.post(f"/api/cases/{a['id']}/edits", json={"op": "set_fact", "args": {"fact": "maengelruege_schriftlich", "value": "ja"}, "reason": "",
+                                                                  "reason_code": "4", "recheck": False})
+        self.assertEqual(r.status_code, 201, r.text)
+        self.assertEqual((r.json()["knowledge"], r.json()["only_here"]),
+                         (None, "Gilt in diesem Fall. Als Regel für ähnliche Fälle lässt sich das hier nicht vorschlagen."))
+
+    def test_one_strike_in_the_letter_takes_the_document_out_of_the_case(self):
+        handler = SCRIPT[SCRIPT.index('on("[data-line-reason]"'):]
+        handler = handler[:handler.index("\n  });")]
+        self.assertIn('op: "remove_document"', handler)
+        self.assertIn('code === "3" || code === "4"', handler)
+        self.assertIn("Für ähnliche Fälle vorgeschlagen", SCRIPT)
+
 if __name__ == "__main__":
     unittest.main()

@@ -1918,8 +1918,12 @@ function sideChangeLine() {
   if (S.lastUndo && S.lastUndo.case === S.route.id && !S.lastEdit) return consequencesBlock(S.lastUndo.consequences, T("Undone", "Rückgängig gemacht"), "", S.lastUndo.limits);
   if (S.lastEdit && !S.lastEdit.op) {
     const undo = `<button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button>`;
-    return S.lastEdit.consequences ? consequencesBlock(S.lastEdit.consequences, T("Changed", "Geändert"), undo)
-      : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} ${undo}</p>`;
+    // what the correction teaches, said where it was made: proposed for similar cases (a reviewer releases it), or only here
+    const k = S.lastEdit.knowledge;
+    const taught = k ? `<p class="cp-change cp-taught">${T("Proposed for similar cases", "Für ähnliche Fälle vorgeschlagen")}${(k.replay || {}).because === "wiederholt" ? T(" (made in several cases)", " (in mehreren Fällen so korrigiert)") : ""}: ${T("a reviewer releases it under Knowledge; until then it changes no other case.", "freigegeben wird es unter «Wissen»; bis dahin ändert es keinen anderen Fall.")}</p>`
+      : S.lastEdit.only_here ? `<p class="cp-change cp-taught">${esc(S.lastEdit.only_here)}</p>` : "";
+    return (S.lastEdit.consequences ? consequencesBlock(S.lastEdit.consequences, T("Changed", "Geändert"), undo)
+      : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} ${undo}</p>`) + taught;
   }
   const ch = S.data.changes || {}, sc = scr();
   if (running() || !(ch.ledger || []).length || (sc.head && (sc.head.changed || sc.head.lines))) return "";
@@ -2255,8 +2259,14 @@ function bindOverview() {
     await loadCase();
   });
   on("[data-line-reason]", "click", async (b) => {
-    const id = S.askWhy; S.askWhy = null;
-    await caseEvent("letter.line", id, { included: false, reason: b.dataset.lineReason });
+    const id = S.askWhy, code = b.dataset.lineReason; S.askWhy = null;
+    await caseEvent("letter.line", id, { included: false, reason: code });
+    // one strike: a document that is not relevant here, or generally not, leaves what the case needs (undoable), not only
+    // this letter; «gilt generell so» is also proposed for similar cases, and said so (or said why it cannot be)
+    if (/^document:/.test(id || "") && (code === "3" || code === "4")) {
+      S.lastEdit = await edit({ op: "remove_document", args: { document: id.slice("document:".length) }, reason: "", reason_code: code, recheck: false })
+        .catch((error) => { S.message = error.message; S.messageOk = false; return S.lastEdit; });
+    }
     await loadCase();
   });
   on("#add-doc", "keydown", (el, e) => { if (e.key === "Enter" && el.value.trim()) { S.addDoc = el.value.trim(); renderCase(); } });
