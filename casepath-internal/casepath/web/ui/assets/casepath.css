@@ -804,3 +804,12 @@ h3.cp-bucket{font-size:14px;margin:12px 0 4px}
 /* what follows each answer of a decision, said before it is given */
 .cp-decide-then{list-style:none;margin:2px 0 0;padding:0;flex-basis:100%;color:var(--muted);font-size:13px;line-height:1.45}
 .cp-decide-then b{font-weight:600}
+
+/* review in the letter: the letter's own count beside the area's state, the letter beside its elements, release by use */
+.cp-caseline .cp-letter-review{display:block;font-size:12.5px;margin-top:2px}
+.cp-caseline .cp-letter-review.released{color:var(--green-ink)}
+.cp-rv-letter{margin:10px 0 6px;border:1px solid var(--line);border-radius:6px;padding:8px 12px;background:var(--bg)}
+.cp-rv-letter pre{white-space:pre-wrap;font:inherit;font-size:13.5px;color:var(--ink-doc);margin:8px 0 2px;max-height:340px;overflow:auto}
+.cp-rv-use-head{font-size:14px;margin:18px 0 4px}
+.cp-rv-use li{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
+.cp-rv-use-none{margin:2px 0 10px}

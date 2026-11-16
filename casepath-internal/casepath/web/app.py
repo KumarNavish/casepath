@@ -671,8 +671,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         # what the letter prepared now rests on that a jurist holds, whatever kind of element it is (a frame text, a wording,
         # a prescribed part) and whenever the mark was set: «Änderung nötig» refuses the approval until it is settled; a
         # «Frage» is shown beside «Freigeben» and recorded with the approval (its relies_marks)
-        st["held_now"] = (completion.held_marks(completion.relied_elements(draft, assessment, current.get("process"), listed, events), marks, None, titles)
-                          if held_keys and draft.get("text") and st["state"] != "versandt" and not study else [])
+        relied = completion.relied_elements(draft, assessment, current.get("process"), listed, events) if draft.get("text") and not study else []
+        st["held_now"] = (completion.held_marks(relied, marks, None, titles) if held_keys and relied and st["state"] != "versandt" else [])
+        # the reviewed legal content this letter rests on, and how much of it a jurist has checked as it is now: the letter
+        # says «n von m Bausteinen geprüft», and the jurist reviews in the letter (GET …/letter-review)
+        # (a need a Knowledge item added is practice, released under «Wissen», not legal content of the jurists' catalogue)
+        legal = [k for k in relied if not k.split(":", 1)[-1].split(".", 1)[-1].startswith("k-")]
+        st["reviewed"] = ({"of": len(legal), "checked": sum(1 for k in legal if (marks.get(k) or {}).get("mark") == "geprueft"),
+                           "held": sum(1 for k in legal if (marks.get(k) or {}).get("mark") in completion.HELD_MARKS),
+                           "practice": len(relied) - len(legal)} if legal else None)
         for h in st["held_now"]:
             h["blocks"] = h["mark"] == completion.HELD_MARKS["aenderung"]
         from ..process import refusal
@@ -2123,6 +2130,67 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         """The rows of «Rechtsgebiete», each with its state and counts, and whether the signed-in person may mark."""
         latest = store.latest_reviews()
         return {"may_review": may_review(who), "reviewers_named": bool(settings.reviewers), "rows": review_model().overview(latest)}
+
+    @app.get("/api/review/by-use")
+    def review_by_use(who=Depends(user)):
+        """The reviewed elements ordered by use: how many approved letters rest on each (the approvals' own ``relies``,
+        across the cases), those not yet «geprüft» first, so a jurist releases first what letters actually carry. Each
+        with the case of the latest such letter, to review it there. No case content."""
+        reviewer(who)
+        from ..process import completion
+        model, latest = review_model(), store.latest_reviews()
+        use = {}
+        for c in store.list_cases():
+            if (c.get("intake") or {}).get("study"):
+                continue
+            events = store.list_case_events(c["id"])
+            sent = {d["version"] for d in completion.dispatches(events, store.list_edits(c["id"], active_only=False))}
+            for a in completion.approvals(events):
+                for key in a.get("relies") or ():
+                    row = use.setdefault(key, {"letters": 0, "sent": 0, "cases": set(), "latest": ("", None)})
+                    row["letters"] += 1
+                    row["sent"] += a.get("version") in sent
+                    row["cases"].add(c["id"])
+                    row["latest"] = max(row["latest"], (str(a.get("at") or ""), c["id"]))
+        rows = []
+        for key, row in use.items():
+            if key not in model.elements:
+                continue
+            state = model.state(key, latest.get(key))
+            rows.append({"key": key, "title": model.elements[key]["title"], "state": state, "state_text": reviews.STATES[state], "letters": row["letters"],
+                         "sent": row["sent"], "cases": len(row["cases"]), "case": row["latest"][1]})
+        rows.sort(key=lambda r: (r["state"] == "geprueft", -r["letters"], r["title"]))
+        return {"rows": rows, "elements": len(rows), "checked": sum(1 for r in rows if r["state"] == "geprueft")}
+
+    @app.get("/api/cases/{case_id}/letter-review")
+    def letter_review(case_id: str, who=Depends(user)):
+        """Review in the letter: the letter prepared in this case and every reviewed element it rests on, in the shape of a
+        review row (one group per kind of element), so a jurist marks them beside the real letter and a handler sees what
+        is checked. Marks are set by the same route as everywhere (POST /api/review/{file}/{element})."""
+        from ..process import completion
+        view = get_case(case_id, who)
+        if (view["case"].get("intake") or {}).get("study"):
+            raise HTTPException(409, "Eine Studienkopie bleibt, wie sie eingefroren wurde.")
+        draft = view.get("draft") or {}
+        if not draft.get("text"):
+            raise HTTPException(404, "In diesem Fall ist kein Brief vorbereitet.")
+        model, latest = review_model(), store.latest_reviews()
+        relied = [k for k in completion.relied_elements(draft, view.get("assessment"), view.get("process"), view.get("items") or [],
+                                                        store.list_case_events(case_id)) if k in model.elements]
+        elements = [model.view(k, latest) for k in relied]
+        groups = {}
+        for el in elements:
+            groups.setdefault(el["group"], []).append(el)
+        count = lambda s: sum(1 for el in elements if el["state"] == s)
+        counts = {"total": len(elements), "geprueft": count("geprueft"), "offen": count("offen") + count("geaendert"), "aenderung": count("aenderung"),
+                  "frage": count("frage"), "geaendert": count("geaendert")}
+        done = bool(elements) and counts["geprueft"] == len(elements)
+        return {"id": f"brief:{case_id}", "kind": "letter", "case": case_id, "title": draft.get("title") or "Brief",
+                "subtitle": f"{view['case'].get('reference') or view['case'].get('title') or ''} · an {draft.get('to') or '—'}".strip(" ·"),
+                "label": "noch nicht freigegeben", "questions": [], "letter": draft["text"], "may_review": may_review(who),
+                "status": {"state": "freigegeben" if done else "in_pruefung" if counts["geprueft"] or counts["aenderung"] or counts["frage"] else "offen",
+                           "label": f"{counts['geprueft']} von {len(elements)} Bausteinen geprüft", "counts": counts},
+                "groups": [{"id": g, "title": reviews.GROUPS.get(g, g), "elements": rows} for g, rows in groups.items()]}
 
     @app.get("/api/review/export")
     def review_export(format: Literal["json", "md"] = "json", who=Depends(user)):

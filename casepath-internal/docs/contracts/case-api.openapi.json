@@ -2456,6 +2456,44 @@
     "summary": "Labels Template"
    }
   },
+  "/api/cases/{case_id}/letter-review": {
+   "get": {
+    "description": "Review in the letter: the letter prepared in this case and every reviewed element it rests on, in the shape of a\nreview row (one group per kind of element), so a jurist marks them beside the real letter and a handler sees what\nis checked. Marks are set by the same route as everywhere (POST /api/review/{file}/{element}).",
+    "operationId": "letter_review_api_cases__case_id__letter_review_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Letter Review"
+   }
+  },
   "/api/cases/{case_id}/offer/stance": {
    "post": {
     "description": "The handler's answer to the open offer of the other side (annehmen, ablehnen, Gegenangebot), attributed and per\noffer: the letter to the other side is prepared from it (process/live.py). 409 where no offer waits for one.",
@@ -3609,6 +3647,23 @@
      }
     },
     "summary": "Review Overview"
+   }
+  },
+  "/api/review/by-use": {
+   "get": {
+    "description": "The reviewed elements ordered by use: how many approved letters rest on each (the approvals' own ``relies``,\nacross the cases), those not yet «geprüft» first, so a jurist releases first what letters actually carry. Each\nwith the case of the latest such letter, to review it there. No case content.",
+    "operationId": "review_by_use_api_review_by_use_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Review By Use"
    }
   },
   "/api/review/export": {

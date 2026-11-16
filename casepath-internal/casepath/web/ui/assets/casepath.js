@@ -115,6 +115,7 @@ function parseRoute() {
   const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
   if (parts[0] === "case" && parts[1]) return { view: "case", id: parts[1], tab: parts[2] || "overview" };
   if (parts[0] === "knowledge" && parts[1] === "gebiet" && parts[2]) return { view: "review", id: decodeURIComponent(parts[2]) };
+  if (parts[0] === "knowledge" && parts[1] === "brief" && parts[2]) return { view: "review", id: `brief:${decodeURIComponent(parts[2])}` };  // review in a case's letter
   if (parts[0] === "knowledge") return { view: "knowledge" };
   if (parts[0] === "auswertung") return { view: "auswertung" };
   return { view: "cases" };
@@ -325,7 +326,10 @@ function standAm(d) {
 function areaLine(d) {
   const a = d.area_review;
   if (!a || !a.label) return "";
-  return `<small class="cp-area-review ${a.state === "freigegeben" ? "released" : ""}" title="${esc(a.title || "")}">${esc(a.label)}</small>`;
+  // the letter prepared now: how much of the reviewed content it rests on is checked, one click to see or review it there
+  const r = (d.completion || {}).reviewed;
+  const letter = r && r.of ? ` <a class="cp-link cp-quiet-link cp-letter-review ${r.checked === r.of ? "released" : ""}" href="#/knowledge/brief/${encodeURIComponent(d.case.id)}">${T(`This letter: ${r.checked} of ${r.of} elements checked`, `Dieser Brief: ${r.checked} von ${r.of} Bausteinen geprüft`)}${r.held ? T(` · ${r.held} under review`, ` · ${r.held} in Prüfung`) : ""}</a>` : "";  // needs a Knowledge item added are released under «Wissen», not counted here
+  return `<small class="cp-area-review ${a.state === "freigegeben" ? "released" : ""}" title="${esc(a.title || "")}">${esc(a.label)}</small>${letter}`;
 }
 // An element a jurist marked «Änderung nötig» shows «in Prüfung» beside it wherever the case's screens draw it: added after
 // drawing, from the items the server marked (review); a deadline stays as it is, only marked.
@@ -2677,8 +2681,9 @@ function familyName(family) {
 }
 
 async function renderKnowledge() {
-  const [data, cases, workflows, review] = await Promise.all([api("/api/knowledge"), api("/api/cases"), api("/api/workflows"),
-    S.mayReview ? api("/api/review").catch(() => null) : Promise.resolve(null)]);
+  const [data, cases, workflows, review, byUse] = await Promise.all([api("/api/knowledge"), api("/api/cases"), api("/api/workflows"),
+    S.mayReview ? api("/api/review").catch(() => null) : Promise.resolve(null),
+    S.mayReview ? api("/api/review/by-use").catch(() => null) : Promise.resolve(null)]);
   S.workflows = workflows.workflows;
   const titles = Object.fromEntries(cases.cases.map((c) => [c.id, c.title]));
   const caseName = (id) => titles[id] || T("a deleted case", "ein gelöschter Fall");
@@ -2723,7 +2728,7 @@ async function renderKnowledge() {
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;align-items:start">${items.map(card).join("")}</div>`;
   }).join("");
   $("#app").innerHTML = `<main class="cp-main"><h1 class="cp-title">${T("Knowledge", "Wissen")}</h1>
-    ${review && review.may_review ? reviewTable(review) : ""}
+    ${review && review.may_review ? reviewTable(review) + reviewByUse(byUse) : ""}
     ${review && review.may_review ? `<h2 class="cp-section cp-learned">${T("Learned from cases", "Aus Fällen gelernt")}</h2>` : ""}
     <p class="cp-muted">${T("What CasePath learned from earlier cases and case workers’ changes. Active items shape new cases; candidates are checked as suggestions until a person activates them.",
       "Was CasePath aus früheren Fällen und aus Änderungen der Fallbearbeitung gelernt hat. Freigegebene Einträge prägen neue Fälle; Vorschläge werden nur als Vorschlag geprüft, bis ein Mensch sie freigibt.")}</p>
@@ -2764,6 +2769,18 @@ function reviewState(status) {
   const cls = status.state === "freigegeben" ? "released" : status.state === "in_pruefung" ? "busy" : "";
   return `<span class="cp-rv-state ${cls}">${esc(status.state === "offen" ? T("not released", "noch nicht freigegeben") : status.label)}</span>`;
 }
+// Release by use: the reviewed elements approved letters rest on, those not yet checked first, each reviewed in the
+// latest letter that carries it (GET /api/review/by-use).
+function reviewByUse(use) {
+  if (!use) return "";
+  const open = use.rows.filter((r) => r.state !== "geprueft");
+  const head = `<h3 class="cp-rv-use-head">${T("Review first: used in approved letters", "Zuerst prüfen: in freigegebenen Briefen verwendet")} <span class="cp-muted">· ${T(`${use.checked} of ${use.elements} checked`, `${use.checked} von ${use.elements} geprüft`)}</span></h3>`;
+  if (!use.elements) return `${head}<p class="cp-muted cp-rv-use-none">${T("No letter has been approved yet. A prepared letter is reviewed from its case («This letter: … checked»).", "Noch ist kein Brief freigegeben. Ein vorbereiteter Brief wird aus seinem Fall heraus geprüft («Dieser Brief: … geprüft»).")}</p>`;
+  if (!open.length) return `${head}<p class="cp-muted cp-rv-use-none">${T("Every element approved letters rest on is checked.", "Alle Bausteine, auf denen freigegebene Briefe beruhen, sind geprüft.")}</p>`;
+  return `${head}<ul class="cp-log cp-rv-use">${open.slice(0, 12).map((r) => `<li><a href="#/knowledge/brief/${encodeURIComponent(r.case)}">${esc(r.title)}</a>
+    <span class="cp-muted">${T(`${r.letters} letter(s), ${r.sent} sent`, `${r.letters} ${r.letters === 1 ? "Brief" : "Briefe"}, davon ${r.sent} versandt`)}${r.state !== "offen" ? ` · ${esc(REVIEW_WORD[r.state] || r.state_text)}` : ""}</span></li>`).join("")}</ul>
+    ${open.length > 12 ? `<p class="cp-muted">${T(`and ${open.length - 12} more`, `und ${open.length - 12} weitere`)}</p>` : ""}`;
+}
 function reviewTable(review) {
   const n = (v, cls = "") => `<td class="num ${v ? cls : "zero"}">${v}</td>`;
   return `<h2 class="cp-section" id="rechtsgebiete">${T("Legal areas", "Rechtsgebiete")}</h2>
@@ -2773,8 +2790,13 @@ function reviewTable(review) {
       <td><a href="#/knowledge/gebiet/${encodeURIComponent(r.id)}"><b>${esc(r.title)}</b></a><br><small class="cp-muted">${esc(r.subtitle || "")}</small></td><td>${reviewState(r.status)}</td>
       ${n(r.status.counts.geprueft)}${n(r.status.counts.offen)}${n(r.status.counts.aenderung, "flag")}${n(r.status.counts.frage)}</tr>`).join("")}</tbody></table>`;
 }
+// One area's elements, or (id «brief:<case>») the elements one case's letter rests on, beside that letter.
+const reviewUrl = (id) => (/^brief:/.test(id) ? `/api/cases/${encodeURIComponent(id.slice(6))}/letter-review` : `/api/review/${encodeURIComponent(id)}`);
 async function renderReview(id) {
-  S.reviewRow = await api(`/api/review/${encodeURIComponent(id)}`);
+  try { S.reviewRow = await api(reviewUrl(id)); } catch (error) {
+    $("#app").innerHTML = `<main class="cp-main cp-review"><p class="cp-rv-back"><a class="cp-link cp-quiet-link" href="#/knowledge">${T("Legal areas", "Rechtsgebiete")}</a></p><p class="cp-empty">${esc(plainError(error.message))}</p></main>`;
+    return;
+  }
   drawReview();
 }
 // A passage as a jurist reads it: the article first, then its words, the official text one click away.
@@ -2810,13 +2832,15 @@ function drawReview() {
   const d = S.reviewRow, c = d.status.counts, only = Boolean(S.reviewOnlyOpen);
   const groups = d.groups.map((g) => ({ ...g, shown: g.elements.filter((el) => !only || el.state !== "geprueft") })).filter((g) => g.shown.length);
   $("#app").innerHTML = `<main class="cp-main cp-review">
-    <p class="cp-rv-back"><a class="cp-link cp-quiet-link" href="#/knowledge">${T("Legal areas", "Rechtsgebiete")}</a></p>
+    <p class="cp-rv-back">${d.kind === "letter" ? `<a class="cp-link cp-quiet-link" href="#/case/${esc(d.case)}/overview">${T("Back to the case", "Zurück zum Fall")}</a> · ` : ""}<a class="cp-link cp-quiet-link" href="#/knowledge">${T("Legal areas", "Rechtsgebiete")}</a></p>
     <h1 class="cp-title">${esc(d.title)}</h1>
     <p class="cp-rv-sub">${esc(d.subtitle || "")} · ${reviewState(d.status)}</p>
     <p class="cp-rv-bar"><span>${T(`${c.total} elements · ${c.geprueft} checked · ${c.offen} open · ${c.aenderung} change needed · ${c.frage} questions`,
       `${c.total} Elemente · ${c.geprueft} geprüft · ${c.offen} offen · ${c.aenderung} Änderung nötig · ${c.frage} ${c.frage === 1 ? "Frage" : "Fragen"}`)}</span>
       <label class="cp-rv-filter"><input type="checkbox" id="rv-only-open" ${only ? "checked" : ""}> ${T("open only", "nur offene")}</label>
-      <a class="cp-link cp-quiet-link" href="/api/review/${encodeURIComponent(d.id)}/pruefpaket" target="_blank" rel="noopener">${T("Review pack (print)", "Prüfpaket")}</a></p>
+      ${d.kind === "letter" ? "" : `<a class="cp-link cp-quiet-link" href="/api/review/${encodeURIComponent(d.id)}/pruefpaket" target="_blank" rel="noopener">${T("Review pack (print)", "Prüfpaket")}</a>`}</p>
+    ${d.kind === "letter" ? `<details class="cp-rv-letter" open><summary class="cp-link">${T("The letter as prepared", "Der Brief, wie er vorbereitet ist")}</summary><pre>${esc(d.letter)}</pre></details>
+      <p class="cp-muted">${T("Below: every reviewed element this letter rests on. A mark applies wherever the element is used.", "Darunter: jeder geprüfte Baustein, auf dem dieser Brief beruht. Eine Markierung gilt überall, wo der Baustein verwendet wird.")}</p>` : ""}
     ${d.may_review ? "" : `<p class="cp-muted">${T("View only: marks are set by the people named to review.", "Nur Ansicht: markieren dürfen die für die Prüfung bestimmten Personen.")}</p>`}
     ${d.questions.length ? `<div class="cp-rv-areaq"><b>${T("Open questions on the area", "Offene Fragen zum Gebiet")}</b>${d.questions.map((q) => `<p>${esc(q)}</p>`).join("")}</div>` : ""}
     ${groups.map((g) => `<h2 class="cp-section cp-rv-group">${esc(g.title)} <span class="cp-muted">· ${g.shown.length}${only && g.shown.length !== g.elements.length ? ` ${T("of", "von")} ${g.elements.length}` : ""}</span></h2>
@@ -2830,7 +2854,7 @@ async function saveMark(key, mark, comment = "", suggestion = "") {
   try {
     await api(`/api/review/${encodeURIComponent(file)}/${encodeURIComponent(rest.join(":"))}`, { method: "POST", body: JSON.stringify({ mark, comment, suggestion, sha256: el && el.sha256 }) });
     S.reviewing = null;
-    S.reviewRow = await api(`/api/review/${encodeURIComponent(S.reviewRow.id)}`);
+    S.reviewRow = await api(reviewUrl(S.reviewRow.id));
     drawReview();
     window.scrollTo(0, y);
   } catch (error) { alert(error.message); }
