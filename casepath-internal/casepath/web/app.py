@@ -542,7 +542,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                        if action and due and due > look and listing.waits(action) and st["state"] == "entwurf" else None)
         latest = max([str(a.get("at") or "") for a in completion.approvals(events)] + [str(d.get("at") or "") for d in completion.dispatches(events)], default="")
         st["fresh"] = bool(prepared) and str(prepared.get("created_at") or "") > latest
-        st["premise_now"] = completion.premise(draft, current.get("facts"), assessment) if draft else {}
+        st["premise_now"] = completion.premise(draft, current.get("facts"), assessment, current.get("process")) if draft else {}
         st["decisions"] = completion.open_decisions(draft, current.get("facts"), assessment, current.get("process")) if draft else []
         st["study"] = bool(study)
         if study:

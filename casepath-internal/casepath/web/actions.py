@@ -275,8 +275,7 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         meaning = last.get("consequence") or {}
         if last.get("version") != body.version or not (meaning.get("kind") == "contradiction" or last.get("stale")):
             raise HTTPException(422, "Für diese Fassung ist nichts abzugleichen.")
-        facts = {i["key"]: i.get("value") for i in view.get("items") or () if i.get("kind") == "fact"}
-        premise = {k: completion._norm(facts.get(k)) for k in (approval.get("premise") or {})}
+        premise = last.get("premise_now") or {}  # the premise as the state reads it now (the case's facts, else the assessment's)
         logged = record(case_id, who, "action.reconciled", version=body.version, premise=premise, changed=meaning.get("text"),
                         relies_marks=completion.marks_of(approval.get("relies"), marks_now()), op_id=body.op_id)
         sync()

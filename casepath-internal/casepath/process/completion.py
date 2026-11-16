@@ -307,18 +307,39 @@ def open_decisions(draft, facts, assessment=None, process=None):
     return list(dict.fromkeys(out))
 
 
-def premise(draft, facts, assessment=None):
+def facts_read(facts, process=None):
+    """The case's facts as the assessment reads them: with the area's implications applied where slice A's options file
+    gives them («schriftlich gemeldet» ⇒ «gemeldet», options.implied); the case's facts as they are without it. The same
+    reading at the approval and on every later read, whichever step the plan is at by then."""
+    facts = dict(facts or {})
+    try:
+        from . import options  # slice A's
+    except ImportError:
+        return facts
+    data = options.load((process or {}).get("id")) if (process or {}).get("id") else None
+    return options.implied(facts, data) if data else facts
+
+
+def _premise_value(fact, read, assessment=None):
+    """A fact the letter rests on, as it reads now (``read``: facts_read), else as the assessment's premise gives it."""
+    return _norm(read[fact] if fact in read else ((assessment or {}).get("premise") or {}).get(fact))
+
+
+def premise(draft, facts, assessment=None, process=None):
     """What the letter rests on, as it stands now: the assessment's premise and each decision the form needs (and the
     prospects for an assessment), {fact: value}."""
-    out = {k: _norm((facts or {}).get(k)) if k in (facts or {}) else _norm(v) for k, v in ((assessment or {}).get("premise") or {}).items()}
+    read = facts_read(facts, process)
+    out = {k: _premise_value(k, read, assessment) for k in (assessment or {}).get("premise") or {}}
     for fact in list((draft or {}).get("needs") or ()) + (["aussichten"] if str((draft or {}).get("kind") or "") == "A5" else []):
-        out[fact] = _norm((facts or {}).get(fact))
+        out[fact] = _premise_value(fact, read, assessment)
     return out
 
 
-def changed_premise(stored, facts):
-    """The facts of a stored premise whose value is no longer the same: [fact]."""
-    return [k for k, v in (stored or {}).items() if _norm(v) != _norm((facts or {}).get(k))]
+def changed_premise(stored, facts, assessment=None, process=None):
+    """The facts of a stored premise whose value is no longer the same: [fact], each read now as ``premise`` read it when
+    it was stored."""
+    read = facts_read(facts, process)
+    return [k for k, v in (stored or {}).items() if _norm(v) != _premise_value(k, read, assessment)]
 
 
 def relied_elements(draft, assessment=None, process=None, listed=(), events=()):
@@ -770,7 +791,7 @@ def validity(approval, draft, facts, assessment=None, process=None, unread=(), f
         if (draft.get("respond_by") or None) != (approval.get("respond_by") or None):
             named.append("Datum")
         out += named or ["Text geändert"]
-    for fact in changed_premise(approval.get("premise"), facts):
+    for fact in changed_premise(approval.get("premise"), facts, assessment, process):
         out.append("Entscheid geändert" if fact in DECISION_FACTS else "Voraussetzung geändert")
     if not partial and open_decisions(draft, facts, assessment, process):
         out.append("Entscheid geändert")
@@ -848,9 +869,10 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
         how = fulfilment(entry, account, files, result, process, held) if entry and account else {}
         mine = [d for d in sent if d["version"] == last.get("version")]
         checked = reconciled(events, last.get("version"))  # «Abgleich erledigt»: what the handler checked the sent letter against
-        changed = changed_premise((checked or {}).get("premise") if checked else last.get("premise"), facts)
+        changed = changed_premise((checked or {}).get("premise") if checked else last.get("premise"), facts, assessment, process)
         holding = held_marks(last.get("relies"), marks, (checked or {}).get("relies_marks") if checked else last.get("relies_marks"), titles)
         meaning = consequence(how, entry, [questions.get(k, k) for k in changed], holding)
+        read = facts_read(facts, process)
         out["last"] = {"form": last.get("form"), "title": last.get("title"), "version": last.get("version"), "respond_by": last.get("respond_by"),
                        "action_kind": last.get("action_kind"),
                        "dispatched": [{"recipient": d["recipient"], "date": d["date"], "channel": d["channel"], "by": d["by"]} for d in mine],
@@ -858,7 +880,9 @@ def state(case, listed, draft, events, edits, account=None, assessment=None, fil
                        "open": [a.get("what") for a in how.get("open") or ()], "unbelegt": [a.get("what") for a in how.get("unbelegt") or ()],
                        "refused": [a.get("what") for a in how.get("refused") or ()], "promised": [a.get("what") for a in how.get("promised") or ()],
                        "met": [a.get("what") for a in how.get("met") or ()], "held": holding, "consequence": meaning,
-                       "reconciled": {"by": checked.get("expert"), "at": checked.get("at")} if checked else None}
+                       "reconciled": {"by": checked.get("expert"), "at": checked.get("at")} if checked else None,
+                       # what «Abgleich erledigt» records: the sent letter's premise as it reads now (read as validity reads it)
+                       "premise_now": {k: _premise_value(k, read, assessment) for k in last.get("premise") or {}}}
         out["premise_changed"] = [questions.get(k, k) for k in changed]
         gone = _undone(events)
         out["last"]["stale"] = sorted({r for e in events or () if e.get("kind") == "action.dispatched" and e.get("version") == last.get("version")

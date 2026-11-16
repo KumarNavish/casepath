@@ -81,6 +81,14 @@ def phase_b():
     return phase_b.cached
 
 
+def picked(listed, kind):
+    """«andere Handlung»: the handler takes ``kind`` instead of the planned action, as web/app.py prepared_action does (a
+    no-op where the plan already has it). Keeps a test of the letter independent of which step the plan prepares."""
+    drop = ("reason", "deadline", "urgency", "template", "then", "settlement", "incoming")
+    return [{**{k: v for k, v in i.items() if k not in drop}, "action": kind, "chosen_by_handler": True}
+            if i["kind"] == "next_action" and i.get("action") != kind else i for i in listed]
+
+
 def letter_of(state, listed, events, files, day=None):
     """The prepared letter as the case view shows it (letters.draft and completion.prepare), on the day the case is looked at."""
     act = next(i for i in listed if i["kind"] == "next_action")
@@ -161,13 +169,25 @@ class Service(unittest.TestCase):
         self.assertEqual(r.status_code, 200, r.text)
         return self.view(client)["draft"]
 
+    def adopt(self):
+        """«Empfehlung übernehmen» where slice A's assessment asks for it before the approval (its blocking decision
+        «empfehlung»): the handler adopts the proposed ways (POST /recommendation, slice A). Nothing to adopt on B alone."""
+        brief = self.view().get("assessment") or {}
+        if any(b.get("kind") == "decision" and b.get("key") == "empfehlung" for b in brief.get("blocking") or ()):
+            r = self.client.post(f"/api/cases/{self.case}/recommendation", json={"chosen": brief["proposal"], "proposal": brief["proposal"]})
+            self.assertEqual(r.status_code, 201, r.text)
+
     def ready(self):
-        """Deckung confirmed, the prospects sufficient, the gaps filled: the A5 as it can be approved."""
+        """Deckung confirmed, the prospects sufficient, the recommendation adopted where it is asked, the gaps filled: the
+        A5 as it can be approved."""
         self.decide("deckung", "bestätigt")
         self.decide("aussichten", "genügend")
+        self.adopt()
         return self.fill()
 
     def approve(self, draft=None, op="op-approve-1", expect=200):
+        if expect == 200:
+            self.adopt()  # the handler's decision before an approval, where slice A asks for it; the letter stays the same
         draft = draft or self.view()["draft"]
         r = self.client.post(f"/api/cases/{self.case}/actions/approve", json={"form": draft["form"], "version": draft["version"], "op_id": op})
         self.assertEqual(r.status_code, expect, r.text)
@@ -281,7 +301,8 @@ class VersionTests(unittest.TestCase):
     def test_the_frozen_reply_date_keeps_the_approval_until_too_little_time_is_left(self):
         result, files = phase_b()
         day = EP.day(34)
-        state, listed = episode.view(result, [EP.dossier], day)  # d+34: the pending letter sets the customer a date ({frist})
+        state, listed = episode.view(result, [EP.dossier], day)
+        listed = picked(listed, "A6")  # d+34: the Mängelrüge sets the customer a date ({frist}), planned or picked by the handler
         events = []
         draft, clock = letter_of(state, listed, events, episode.looked_at([EP.dossier], day))
         self.assertTrue(draft["respond_by"])
@@ -292,6 +313,7 @@ class VersionTests(unittest.TestCase):
         for later, holds in ((1, True), (3, True), (4, False)):  # held while the form's period less three days is left
             look = day + timedelta(days=later)
             state, listed = episode.view(result, [EP.dossier], look)
+            listed = picked(listed, "A6")
             now, _ = letter_of(state, listed, [approval], episode.looked_at([EP.dossier], look))
             self.assertEqual(now["respond_by"] == draft["respond_by"], holds, later)  # the letter keeps the frozen date while it holds
             reasons = completion.validity(approval, now, state["facts"], today=look)
@@ -315,13 +337,21 @@ class ApprovalTests(Service):
         refused = lambda body, status: self.client.post(f"/api/cases/{self.case}/actions/approve", json=body)
         r = refused({"form": "A5", "version": "0" * 64, "op_id": "op-v-1"}, 409)
         self.assertEqual((r.status_code, r.json()["detail"]), (409, "Der Entwurf hat sich seit dem Laden geändert; bitte neu laden."))
+        if not GAP.search(draft["text"]):  # slice A's assessment writes the case's parts: the handler leaves a gap in one
+            part = draft["parts"][-1]
+            r = self.client.put(f"/api/cases/{self.case}/drafts/{draft['form']}", json={"parts": [{"part": part["part"], "base_sha256": part["base_sha256"],
+                                "text": part["text"] + " [bitte ergänzen: Datum]"}], "parent_id": draft.get("draft_id"), "op_id": "op-gap-1"})
+            self.assertEqual(r.status_code, 200, r.text)
+            draft = self.view()["draft"]
         r = refused({"form": "A5", "version": draft["version"], "op_id": "op-g-1"}, 422)
         self.assertEqual(r.status_code, 422)
         self.assertRegex(r.json()["detail"], r"^Noch \d+ Lücken? im Brief$")
         draft = self.fill()
         r = refused({"form": "A5", "version": draft["version"], "op_id": "op-d-1"}, 422)  # an assessment needs the prospects, in every area
-        self.assertEqual((r.status_code, r.json()["detail"]), (422, "Zuerst entscheiden: Erfolgsaussichten"))
+        self.assertEqual(r.status_code, 422)  # and slice A's recommendation where its assessment asks for it
+        self.assertRegex(r.json()["detail"], r"^Zuerst entscheiden: Erfolgsaussichten(, Empfehlung)?$")
         self.decide("aussichten", "genügend")
+        self.adopt()
         draft = self.view()["draft"]
         self.client.post(f"/api/cases/{self.case}/files", files={"file": ("Nachtrag.txt", "Noch eine Nachricht der Kundin.".encode(), "text/plain")})
         view = self.view()
@@ -624,15 +654,16 @@ class FulfilmentTests(unittest.TestCase):
                  {"id": "ft", "name": episode.BILL, "extraction": {"attached_to": "Belege Stromkosten.eml"}}]
         claim = lambda documented, receipt_file: {"brief": {"claims": [{"what": "Stromkosten für den Bautrockner", "documented": documented,
                                                                        "receipt": [{"file": receipt_file, "quote": "Betrag: CHF 85.40"}]}]}}
-        cases = {"refusal": ("Für die Stromkosten habe ich keine Belege.", claim(False, None)),  # closed by words today (C refuses it)
-                 "mixed": ("Fotos anbei, Belege zu den Stromkosten folgen", claim(False, None)),
-                 "delivery without word overlap": ("Stromabrechnung anbei.", claim(True, "ft")),  # the bill attached to the reply
-                 "bare word match": ("Belege zu den Stromkosten für den Bautrockner", claim(False, None)),
-                 "receipt elsewhere": ("Belege zu den Stromkosten", claim(True, "fa"))}  # documented, but not by a file of the reply
+        no_bill = files[:1]  # a reply without the bill: no file of it documents the claim (slice C decides from the files)
+        cases = {"refusal": ("Für die Stromkosten habe ich keine Belege.", claim(False, None), no_bill),  # closed by words today (C refuses it)
+                 "mixed": ("Fotos anbei, Belege zu den Stromkosten folgen", claim(False, None), no_bill),
+                 "delivery without word overlap": ("Stromabrechnung anbei.", claim(True, "ft"), files),  # the bill attached to the reply
+                 "bare word match": ("Belege zu den Stromkosten für den Bautrockner", claim(False, None), no_bill),
+                 "receipt elsewhere": ("Belege zu den Stromkosten", claim(True, "fa"), no_bill)}  # documented, but not by a file of the reply
         out = {}
-        for label, (reply, result) in cases.items():
+        for label, (reply, result, seen) in cases.items():
             entry, acc = self.account_with(reply)
-            out[label] = completion.fulfilment(entry, acc, files, result)
+            out[label] = completion.fulfilment(entry, acc, seen, result)
         self.assertTrue(out["delivery without word overlap"]["fulfilled"])
         for label in ("refusal", "mixed", "bare word match", "receipt elsewhere"):
             self.assertFalse(out[label]["fulfilled"], label)
@@ -644,7 +675,7 @@ class FulfilmentTests(unittest.TestCase):
         draft = {"form": "A7", "kind": "A7", "text": "Brief", "version": "v7", "recipients": [], "needs": []}
         entry, acc = self.account_with("Belege zu den Stromkosten für den Bautrockner")
         events = [approved("A5", version="v1"), saved("v1"), sent("v1", day="2026-09-08", edit="d1")]
-        st = completion.state({}, [], draft, events, [dispatch_edit()], account=acc, files=files, **st_args)
+        st = completion.state({}, [], draft, events, [dispatch_edit()], account=acc, files=no_bill, **st_args)
         self.assertEqual((st["bucket"], st["status"]), ("urteil", "Antwort ohne Beleg – prüfen"))
         entry, acc = self.account_with("Stromabrechnung anbei.")
         st = completion.state({}, [], draft, events, [dispatch_edit()], account=acc, files=files, **{**st_args, "result": claim(True, "ft")})
@@ -1119,6 +1150,7 @@ class ConsequenceTests(unittest.TestCase):
              {"id": "ft", "name": episode.BILL, "extraction": {"attached_to": "Belege Stromkosten.eml"}},
              {"id": "fq", "name": "Quittung Moebelhaus.txt", "extraction": {"attached_to": "Belege Stromkosten.eml"}},
              {"id": "fa", "name": "Akte.txt", "extraction": {}}]
+    NO_BILL = [f for f in FILES if f["id"] != "ft"]  # the reply without the bill: no file of it documents the claim (slice C reads files)
     A7 = [{"kind": "next_action", "key": "0", "item_id": "next_action:0", "action": "A7", "since": "2026-09-08", "follow_up": "A12",
            "label": {"de": "Statusanfrage mit Abschlussankündigung"}}]
     A5 = [{"kind": "next_action", "key": "0", "item_id": "next_action:0", "action": "A5", "label": {"de": "Rechtliche Einschätzung"},
@@ -1145,10 +1177,10 @@ class ConsequenceTests(unittest.TestCase):
             if fact is not None else []
         return {"brief": {"claims": claims}, "facts": facts}
 
-    def state_of(self, asks, answers=(), listed=None, facts=None, events=None, **result):
+    def state_of(self, asks, answers=(), listed=None, facts=None, events=None, files=None, **result):
         entry, acc = self.account_with(asks, answers, result.pop("refused", None))
         draft = {"form": listed[0]["action"] if listed else "A7", "kind": "A7", "text": "Brief", "version": "v7", "recipients": [], "needs": []}
-        return completion.state({}, listed or self.A7, draft, events or self.EVENTS, [dispatch_edit(asks=asks)], account=acc, files=self.FILES,
+        return completion.state({}, listed or self.A7, draft, events or self.EVENTS, [dispatch_edit(asks=asks)], account=acc, files=files or self.FILES,
                                 result=self.result(**result), facts=facts or {"mangel_besteht": True}, today=date(2026, 9, 30),
                                 follow_up={"due": "2026-12-07"})
 
@@ -1173,7 +1205,7 @@ class ConsequenceTests(unittest.TestCase):
     def test_an_unrelated_attachment_leaves_the_wait_quiet(self):
         # a receipt of the same amount for something else: the reading does not document the claim with it (slice A), so nothing is met
         for result in ({"documented": False, "receipt": "fq"}, {"documented": True, "receipt": "fa"}):  # unrelated, or a receipt not in the reply
-            st = self.state_of([self.CLAIM], (), **result)
+            st = self.state_of([self.CLAIM], (), files=self.NO_BILL, **result)
             self.assertEqual(st["last"]["consequence"]["kind"], "unrelated", result)
             self.assertIsNone(st["bucket"])
             self.assertEqual(st["waiting_until"], "2026-12-07")
@@ -1183,13 +1215,13 @@ class ConsequenceTests(unittest.TestCase):
         self.assertEqual(head["meaning"], "Nichts zum Verlangten (Belege zu: Stromkosten für den Bautrockner); wartet weiter bis 07.12.2026.")
 
     def test_a_partial_reply_leaves_only_the_remainder_awaited(self):
-        st = self.state_of([self.CLAIM, self.FACT], (), fact=True, documented=False, receipt="fq")  # the fact answered with its quote, no receipt
+        st = self.state_of([self.CLAIM, self.FACT], (), files=self.NO_BILL, fact=True, documented=False, receipt="fq")  # the fact answered with its quote, no receipt
         meaning = st["last"]["consequence"]
         self.assertEqual((meaning["kind"], [a["what"] for a in meaning["remainder"]]), ("partial", [self.CLAIM["what"]]))
         self.assertEqual(st["status"], "teilweise erfüllt: offen Belege zu: Stromkosten für den Bautrockner")
         self.assertEqual(st["bucket"], "urteil")  # what came answers a judgment (the deposit question): that is for now
         plain = dict(self.FACT, blocks=None)
-        st = self.state_of([self.CLAIM, plain], (), fact=True, documented=False, receipt="fq")
+        st = self.state_of([self.CLAIM, plain], (), files=self.NO_BILL, fact=True, documented=False, receipt="fq")
         self.assertEqual((st["bucket"], st["waiting_until"]), (None, "2026-12-07"))  # nothing to judge yet: the wait goes on, quiet
         # the file note awaits only the rest: the entry of the dispatch shows which of its asks are still open
         entry_item = {"kind": "entry", "key": "9001", "notes": [{"kind": "asked", "text": f"verlangt von der Kundschaft: {self.CLAIM['what']}", "open": True},
@@ -1200,15 +1232,15 @@ class ConsequenceTests(unittest.TestCase):
         self.assertNotIn(self.FACT["what"], note)
 
     def test_a_refusal_or_a_contradiction_reopens_the_judgment(self):
-        st = self.state_of([self.CLAIM], ("Für die Stromkosten habe ich keine Belege.",), documented=False, refused=self.CLAIM["what"])
+        st = self.state_of([self.CLAIM], ("Für die Stromkosten habe ich keine Belege.",), files=self.NO_BILL, documented=False, refused=self.CLAIM["what"])
         self.assertEqual((st["last"]["consequence"]["kind"], st["bucket"]), ("refused", "urteil"))
         self.assertEqual(st["status"], "abgelehnt: Belege zu: Stromkosten für den Bautrockner")
-        changed = self.state_of([self.CLAIM], (), facts={"mangel_besteht": False}, documented=False, receipt="fq")
+        changed = self.state_of([self.CLAIM], (), facts={"mangel_besteht": False}, files=self.NO_BILL, documented=False, receipt="fq")
         self.assertEqual((changed["bucket"], changed["last"]["consequence"]["kind"]), ("urteil", "contradiction"))
         self.assertTrue(changed["status"].startswith("versandt mit früherem Stand – prüfen: "))
         self.assertEqual(changed["bar"]["reconcile"], "v1")
         checked = self.EVENTS + [{"kind": "action.reconciled", "version": "v1", "premise": {"mangel_besteht": False}, "at": "2026-09-29T08:00:00+00:00"}]
-        quiet = self.state_of([self.CLAIM], (), facts={"mangel_besteht": False}, events=checked, documented=False, receipt="fq")
+        quiet = self.state_of([self.CLAIM], (), facts={"mangel_besteht": False}, events=checked, files=self.NO_BILL, documented=False, receipt="fq")
         self.assertEqual((quiet["bucket"], quiet["last"]["consequence"]["kind"]), (None, "unrelated"))  # reconciled: the wait as before
 
     def test_a_claim_line_is_judged_by_slice_cs_receipt_check_once_it_is_there(self):
@@ -1235,7 +1267,7 @@ class ConsequenceTests(unittest.TestCase):
         self.assertEqual((planned["kind"], planned["skip_if"], planned["follow_up"]), ("A5", None, "A7"))
         self.assertEqual(planned["reason"], "eingegangen: Belege zu: Stromkosten für den Bautrockner; jetzt zu beurteilen: "
                                             "«Werden mir die Stromkosten für den Bautrockner ersetzt?»")
-        self.assertIsNone(completion.consequence_action(WF, here, {"account": acc}, self.result(documented=False), self.FILES, self.EVENTS))  # no letter for every upload
+        self.assertIsNone(completion.consequence_action(WF, here, {"account": acc}, self.result(documented=False), self.NO_BILL, self.EVENTS))  # no letter for every upload
         other = next(s for s in WF["steps"] if s["id"] == "gegenpartei")
         self.assertIsNone(completion.consequence_action(WF, other, {"account": acc}, self.result(), self.FILES, self.EVENTS))  # the case moved on
         _, partial = self.account_with([self.CLAIM, self.FACT], ["Stromabrechnung anbei."])
@@ -1244,22 +1276,40 @@ class ConsequenceTests(unittest.TestCase):
 
 class ReceiptsEpisodeTests(unittest.TestCase):
     """B-receipts on S-D11A (synthetic): the A5 went out asking the claim line for Q3; the customer's reply brings the bill
-    as an attachment, read by an update. What the evidence means decides the queue, not the follow-up date."""
+    as an attachment (or another receipt of the same amount), read by an update. What the evidence means decides the queue,
+    not the follow-up date."""
+
+    def other_receipt(self, a5):
+        """The reply with another receipt of the same amount attached (a carpet cleaning) instead of the bill: nothing in it
+        documents the claim line asked. (core files, turns), as B-receipts gives them."""
+        k, came, name, other = EP.names["kunde"], a5 + timedelta(days=episode.RECEIPTS_DAYS), "Quittung.eml", "Quittung Teppichreinigung.txt"
+        receipt = "Teppich Beispiel GmbH\nReinigung Teppich Wohnzimmer\nBetrag: CHF 85.40\nBar bezahlt.".encode()
+        data = episode.eml(f"{k} <{EP.names['mail']}>", f"Protekta Rechtsschutz <{episode.INSURER_MAIL}>", came, "11:20",
+                           f"AW: Rechtliche Einschätzung {EP.reference}", f"Guten Tag\n\nAnbei eine Quittung.\n\nFreundliche Grüsse\n{k}",
+                           attachments=[(other, receipt)])
+        attached = episode.text_file("ft", other, receipt)
+        attached["extraction"]["attached_to"] = name
+        turns = episode.update_turns([
+            episode.entry(16, "fs", None, came, "kunde", "versicherer", "unterlagen", "Quittung zugestellt", "Anbei eine Quittung."),
+            episode.entry(17, "ft", None, None, "andere", "kunde", "andere", "Quittung Teppichreinigung CHF 85.40", "Betrag: CHF 85.40")],
+            [], "Die Kundschaft reicht eine Quittung der Teppichreinigung ein.")
+        return [episode.mail_file("fs", name, data), attached], turns
 
     def after_receipts(self, documented):
         result, files = phase_b()
         a5 = EP.a5_day
         edits = episode.decided(("deckung", "bestätigt"), ("aussichten", "genügend")) + [dispatch_edit(day=a5.isoformat(), asks=[ConsequenceTests.CLAIM])]
         receipts = episode.branches(EP)["B-receipts"]
-        outcome, _ = episode.updated({"id": "run_b", "workflow_id": episode.WID, "result": result}, files + receipts.core_files(a5),
-                                     receipts.turns(16, 9001, a5), edits=edits)
+        came, turns = (receipts.core_files(a5), receipts.turns(16, 9001, a5)) if documented else self.other_receipt(a5)
+        outcome, _ = episode.updated({"id": "run_b", "workflow_id": episode.WID, "result": result}, files + came, turns, edits=edits)
         self.assertEqual(outcome["status"], "completed", outcome.get("error"))
         res = outcome["result"]
         # what slice A's reading records of the claim (scripted here): documented by the bill attached to the reply, or not
+        # (slice C's receipt check then decides from the reply's files: the bill, or the other receipt)
         res["brief"]["claims"] = [{"what": "Stromkosten für den Bautrockner", "checked": True, "documented": documented,
                                    "receipt": [{"file": "ft", "quote": "Betrag: CHF 85.40"}]}]
         day = a5 + timedelta(days=episode.RECEIPTS_DAYS + 1)
-        seen = episode.looked_at(files + receipts.core_files(a5), day)
+        seen = episode.looked_at(files + came, day)
         state = core.evaluate(WF, [], edits, res, "c", files=seen)
         events = [approved("A5", version="v1", at=f"{a5}T09:00:00+00:00", title="Rechtliche Einschätzung"), saved("v1", at=f"{a5}T09:00:01+00:00"),
                   sent("v1", day=a5.isoformat(), edit="d1", at=f"{a5}T10:00:00+00:00")]
@@ -1275,9 +1325,11 @@ class ReceiptsEpisodeTests(unittest.TestCase):
         act, st, row = self.after_receipts(documented=True)
         self.assertEqual(st["last"]["consequence"]["kind"], "resolved")
         self.assertEqual(st["last"]["consequence"]["judgments"][0]["file"], "ft")  # the bill, a file of its own attached to the reply
-        self.assertEqual((row["bucket"], row["text"]), ("urteil", "erfüllt: Einschätzung ergänzen"))  # B alone: the plan keeps the A7 (NEEDS_B 2)
-        self.assertEqual(act["action"], "A7")
-        self.assertEqual((self.planned["kind"], self.planned["consequence"]["version"]), ("A5", "v1"))  # what slice A's call then prepares
+        self.assertEqual((self.planned["kind"], self.planned["consequence"]["version"]), ("A5", "v1"))  # what slice A's call prepares
+        if act.get("consequence"):  # slice A's planning call is in (NEEDS_B 2): the plan prepared the assessment again
+            self.assertEqual((act["action"], row["bucket"], row["text"]), ("A5", "urteil", "erfüllt: Einschätzung vorbereitet"))
+        else:  # B alone: the plan keeps the A7 and the queue says what comes, never a quiet «Wartet» until A5 + 90
+            self.assertEqual((act["action"], row["bucket"], row["text"]), ("A7", "urteil", "erfüllt: Einschätzung ergänzen"))
 
     def test_a_reply_whose_attachment_documents_nothing_leaves_the_wait_quiet(self):
         act, st, row = self.after_receipts(documented=False)
