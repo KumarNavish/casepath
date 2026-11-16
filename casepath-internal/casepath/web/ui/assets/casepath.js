@@ -1679,6 +1679,7 @@ function decisionLine(dec, primary) {
     if (a.choose) return `<select class="cp-button cp-small" data-point-choose aria-label="${T("Choose process", "Prozess wählen")}"><option value="">${esc(a.label)} …</option>${(S.workflows || []).map((w) => `<option value="${esc(w.id)}">${esc(w.short_title || w.title)}</option>`).join("")}</select>`;
     if (a.decline) return `<button class="${cls}" data-cover-decline aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
     if (a.document) return `<button class="${cls}" data-fee-answer="${esc(a.document)}" aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
+    if (a.stance) return `<button class="${cls}" data-stance="${esc(a.stance)}" aria-pressed="${dec.chosen === a.stance}" title="${esc(a.then || "")}">${esc(a.label)}</button>`;
     if (a.claim) return `<button class="cp-button cp-small" data-claim-settle="${esc(a.claim)}" data-as="${esc(a.as)}">${esc(a.label)}</button>`;  // none preselected: the handler's judgment
     if (a.adopt) return `<button class="${cls}" data-rec-adopt>${esc(a.label)}</button>`;
     if (a.change) return `<button class="${cls}" data-rec-change aria-expanded="${Boolean(S.recChange)}">${esc(a.label)}</button>`;
@@ -1688,11 +1689,14 @@ function decisionLine(dec, primary) {
       ${(S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary").map((x) => `<button class="cp-chip" data-cover-reason="${esc(x.key)}">${esc(x.title)}</button>`).join("")}<button class="cp-chip" data-cover-reason="anderer Grund">${T("other reason", "anderer Grund")}</button></p>` : "";
   const premise = dec.key === "deckung" && (brief() || {}).under_premise ? ` <span class="cp-muted">· ${T("assessment prepared, subject to cover", "Einschätzung unter Vorbehalt der Deckung")}</span>` : "";
   const question = `${esc(dec.lapse || dec.question)}${dec.detail ? ` <span class="cp-muted">· ${esc(dec.detail)}</span>` : ""}${premise}`;
+  // what follows each answer, said before it is given (an offer's three answers); once one is given, only its own line
+  const thens = (dec.answers || []).filter((a) => a.then && (!dec.chosen || dec.chosen === a.stance));
+  const follows = thens.length ? `<ul class="cp-decide-then">${thens.map((a) => `<li><b>${esc(a.label)}</b>: ${esc(a.then)}</li>`).join("")}</ul>` : "";
   const holder = dec.key === "kostennote" ? "next_action:0" : dec.key === "process" ? "point:process" : dec.key === "empfehlung" ? "point:empfehlung"
     : /^claim:/.test(dec.key) ? `point:${dec.key}` : `fact:${dec.key}`;
   const open = (S.decideOpen || (dec.key === "empfehlung" && S.recChange)) && detail;
   return `<div class="cp-decide" data-item="${esc(holder)}">${detail ? `<button class="cp-decide-q" id="decide-open" aria-expanded="${Boolean(open)}">${question}</button>` : `<span class="cp-decide-q">${question}</span>`}
-    <span class="cp-point-actions">${(dec.answers || []).map(answer).join("")}</span>${open ? `<div class="cp-decide-more">${detail}</div>` : ""}${why}</div>`;
+    <span class="cp-point-actions">${(dec.answers || []).map(answer).join("")}</span>${follows}${open ? `<div class="cp-decide-more">${detail}</div>` : ""}${why}</div>`;
 }
 // The cover check, prepared: the edition and the policy's start, then each point with its clause and source; the policy
 // ticks are the handler's. Opened from the cover decision, and on the Prozess tab.
@@ -1721,7 +1725,7 @@ function preparedView(st) {
   const text = active ? docText(active) : "";
   const dec = c ? null : sc.decision;
   const acting = st === "prepared" && !c;  // the card's own primary: only when nothing above it (a run, new files) has one
-  const open = dec && !(dec.key === "kostennote" && S.feeAnswer);
+  const open = dec && !(dec.key === "kostennote" && S.feeAnswer) && !(dec.key === "angebot" && dec.chosen);
   const decisionPrimary = Boolean(acting && open && (dec.answers || []).some((a) => !a.choose));
   const phone = !text && act && ["A2", "A9"].includes(act.action) && !c;
   const gaps = text ? gapCount(active) : 0;
@@ -2284,6 +2288,12 @@ function bindOverview() {
   on("[data-claim-settle]", "click", async (b) => {  // which statement of a claimed cost holds: one click, undoable like any edit
     S.lastEdit = await edit({ op: "set_claim", args: { claim: b.dataset.claimSettle, as: b.dataset.as }, reason: "", reason_code: "none", recheck: false }).catch(() => S.lastEdit);
     S.decideOpen = false;
+    await loadCase();
+  });
+  on("[data-stance]", "click", async (b) => {  // the answer to an offer: one click writes the letter; the same click again takes it back
+    const now = (scr().decision || {}).chosen === b.dataset.stance ? null : b.dataset.stance;
+    try { await api(`/api/cases/${S.route.id}/offer/stance`, { method: "POST", body: JSON.stringify({ stance: now }) }); S.message = ""; } catch (error) { S.message = error.message; S.messageOk = false; }
+    S.docTab = null;
     await loadCase();
   });
   on("[data-fee-answer]", "click", (b) => {  // the fee note: the query or the partial refusal, its letter shown to copy
@@ -2988,7 +2998,7 @@ function completionOf() { return (S.data && S.data.completion) || {}; }
 function closingStep(act, text) {
   if (!act || !["A12", "close"].includes(act.action)) return false;
   const st = completionOf();
-  return !text || st.state === "versandt";
+  return !text || st.state === "versandt" || Boolean(((S.data || {}).draft || {}).optional);  // a closing letter that may be left out
 }
 // A tab says where its document stands: «Entwurf», «freigegeben», «Freigabe veraltet», «versandt am …».
 function tabState(d) {

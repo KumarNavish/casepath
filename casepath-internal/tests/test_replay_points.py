@@ -303,7 +303,7 @@ class ReplayTests(unittest.TestCase):
             self.assertIn(part, points.STATED_LIMITS)
         self.assertEqual(self.table["summary"]["narrow"], {"kind_ok": 8, "ready": 7, "of": 8})
         accept = self.table["summary"]["accept"]
-        self.assertEqual((accept["of"], accept["no_draft"]), (8, 4))  # the payments and the closing have no letter of CasePath's
+        self.assertEqual((accept["of"], accept["no_draft"]), (8, 3))  # the payments have no letter of CasePath's (the closing has its short one, process/live.py)
         # the assessment's form waits for the cover decision (labelled) and the prospects (not labelled): «decision pending»
         self.assertEqual(self.rows[4]["accept"]["authority"], {"needs": ["deckung", "aussichten"], "missing": ["aussichten"], "ok": False})
         self.assertNotIn("accept", self.rows[3])  # a phone note has no letter

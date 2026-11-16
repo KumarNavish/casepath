@@ -12,7 +12,7 @@ from .clock import parse_date
 GESTURES = {"item.corrected", "item.dismissed", "item.added", "correction.undone", "letter.copied", "letter.line", "followup.set",
             "case.closed", "note.added", "filenote.copied", "case.historic", "case.renamed", "letter.unblocked", "point.settled",
             "entry.changed", "entry.removed", "run.discarded", "action.approved", "bundle.saved", "action.dispatched", "case.reopened",
-            "entry.corrected", "case.reference", "case.assigned", "handover.address", "system.moved"}
+            "entry.corrected", "case.reference", "case.assigned", "handover.address", "system.moved", "offer.stance"}
 CHANNELS = {"post": "Post", "email": "E-Mail", "portal": "Portal", "andere": "andere"}
 RECIPIENTS = {"kunde": "die Kundschaft", "gegenpartei": "die Gegenpartei", "kanzlei": "die Kanzlei", "behoerde": "die Behörde", "andere": "Dritte"}
 REASON_WORDS = {"1": "steht anders in den Akten", "2": "steht nicht in den Akten", "3": "hier nicht relevant", "4": "gilt generell so",
@@ -58,6 +58,9 @@ def gesture(e, items, process, edits, events=()):
         return (f"Referenz: {e['text']}" if e.get("text") else "Referenz entfernt"), None, None
     if kind == "case.assigned":
         return f"Zuständig: {e.get('owner') or '—'}" + (f" · Stellvertretung: {e['deputy']}" if e.get("deputy") else ""), None, None
+    if kind == "offer.stance":
+        words = {"annehmen": "annehmen", "ablehnen": "ablehnen", "gegenangebot": "Gegenangebot"}
+        return (f"Angebot der Gegenpartei: {words.get(e.get('stance'), e.get('stance'))}" if e.get("stance") else "Antwort auf das Angebot zurückgenommen"), None, None
     if kind == "handover.address":
         to = RECIPIENTS.get(e.get("to"), e.get("to") or "")
         return (f"Adresse für {to}: {e['address']}" if e.get("address") else f"Adresse für {to} entfernt"), None, None

@@ -1,0 +1,116 @@
+{
+ "format": "casepath.live-forms/1",
+ "version": "2026-11-16.2",
+ "note": "Schreiben für Schritte, für die der Prozess kein Formular hinterlegt («Kein Entwurf»), wo der Inhalt ohne neues Urteil feststeht. Gilt für laufende Fälle; die eingefrorene Studie lädt diese Datei nicht. Nicht juristisch geprüft.",
+ "forms": {
+  "A12_erledigt": {
+   "title": "Dossier schliessen",
+   "to": "Kundschaft",
+   "optional": true,
+   "parts": [
+    {
+     "id": "erledigt",
+     "title": "Die Sache ist erledigt",
+     "text": "Nach unseren Unterlagen ist die Angelegenheit, in der Sie uns um Unterstützung gebeten haben, erledigt."
+    },
+    {
+     "id": "schliessen",
+     "title": "Schliessung und Wiederaufnahme",
+     "text": "Wir schliessen daher Ihr Dossier. Sollte sich in dieser Sache erneut etwas ergeben, melden Sie sich bitte bei uns."
+    }
+   ]
+  },
+  "A9_annehmen": {
+   "title": "Annahme des Angebots",
+   "to": "Gegenpartei, Kopie an die Kundschaft",
+   "anrede": "Sehr geehrte Damen und Herren",
+   "parts": [
+    {
+     "id": "bezug",
+     "title": "Bezug auf das Angebot",
+     "text": "Wir beziehen uns auf Ihr Angebot vom {angebot_vom}."
+    },
+    {
+     "id": "annahme",
+     "title": "Annahme",
+     "text": "Unsere Versicherte nimmt dieses Angebot an."
+    },
+    {
+     "id": "bestaetigung",
+     "title": "Bestätigung und Abwicklung",
+     "text": "Bitte bestätigen Sie uns die Einigung kurz schriftlich. Für die Abwicklung melden wir uns gesondert bei Ihnen."
+    }
+   ]
+  },
+  "A9_ablehnen": {
+   "title": "Ablehnung des Angebots",
+   "to": "Gegenpartei, Kopie an die Kundschaft",
+   "anrede": "Sehr geehrte Damen und Herren",
+   "parts": [
+    {
+     "id": "bezug",
+     "title": "Bezug auf das Angebot",
+     "text": "Wir beziehen uns auf Ihr Angebot vom {angebot_vom}."
+    },
+    {
+     "id": "ablehnung",
+     "title": "Ablehnung",
+     "text": "Unsere Versicherte kann dieses Angebot nicht annehmen. Sie hält an ihrer Forderung fest."
+    },
+    {
+     "id": "frist",
+     "title": "Stellungnahme erbeten",
+     "text": "Wir bitten Sie um Ihre Stellungnahme bis {frist}."
+    }
+   ]
+  },
+  "A9_gegenangebot": {
+   "title": "Gegenangebot",
+   "to": "Gegenpartei, Kopie an die Kundschaft",
+   "anrede": "Sehr geehrte Damen und Herren",
+   "parts": [
+    {
+     "id": "bezug",
+     "title": "Bezug auf das Angebot",
+     "text": "Wir beziehen uns auf Ihr Angebot vom {angebot_vom}."
+    },
+    {
+     "id": "gegenangebot",
+     "title": "Gegenangebot",
+     "text": "Unsere Versicherte kann dieses Angebot so nicht annehmen. Unpräjudiziell und ohne Anerkennung einer Rechtspflicht ist sie bereit, die Angelegenheit wie folgt zu erledigen: [bitte ergänzen: Inhalt des Gegenangebots]"
+    },
+    {
+     "id": "frist",
+     "title": "Stellungnahme erbeten",
+     "text": "Wir bitten Sie um Ihre Stellungnahme bis {frist}."
+    }
+   ]
+  }
+ },
+ "stances": {
+  "angebot": {
+   "question": "Angebot der Gegenpartei: wie antworten?",
+   "form": "A9",
+   "answers": [
+    {
+     "id": "annehmen",
+     "label": "annehmen",
+     "then": "Annahme an die Gegenpartei; danach die Einigung eintragen und abwickeln",
+     "letter": "A9_annehmen"
+    },
+    {
+     "id": "ablehnen",
+     "label": "ablehnen",
+     "then": "Ablehnung an die Gegenpartei; die Forderung bleibt bestehen",
+     "letter": "A9_ablehnen"
+    },
+    {
+     "id": "gegenangebot",
+     "label": "Gegenangebot",
+     "then": "Gegenangebot an die Gegenpartei; den Inhalt ergänzen Sie im Schreiben",
+     "letter": "A9_gegenangebot"
+    }
+   ]
+  }
+ }
+}

@@ -85,7 +85,9 @@ class AgreementByPhoneTests(unittest.TestCase):
 
     def test_the_next_action_becomes_the_settlement_sequence_not_the_answer_to_the_offer(self):
         before = self.before[2]["next_action:0"]
-        self.assertEqual((before["action"], before["value"]), ("A9", "Antwort auf das Angebot der Gegenpartei"))
+        # an offer is the customer's to accept: with nothing said to the customer since it came, the customer is asked first
+        self.assertEqual((before["action"], before["value"]), ("A2", "Kundschaft zum Angebot befragen"))
+        self.assertEqual(before["incoming"]["kind"], "angebot")
         nxt = self.by_id["next_action:0"]
         self.assertEqual(self.state["evaluation"]["current"]["step"], "abwicklung")
         self.assertEqual((nxt["action"], nxt["value"], nxt["form"]), ("A11", "Bankverbindung der Kundschaft erfragen", "A11_iban"))

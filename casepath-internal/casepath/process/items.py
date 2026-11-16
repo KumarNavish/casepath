@@ -507,7 +507,8 @@ def build_items(state, result, files=None, events=None, review=None):
         # the follow-up); the others wait, in priority order. What lies before that point is a fact of the case, shown in
         # «Der Fall», never an action. At intake, clarifying and assessing (``incoming_lead``) the stage's own action leads
         # while it is due, and the open items follow it («danach»): the first request or the assessment goes out first.
-        order = {"ref": incoming.reference(known_facts, ledger, files, created), "ledger": ledger}
+        order = {"ref": incoming.reference(known_facts, ledger, files, created), "ledger": ledger,
+                 "customer_steps": bool((ledger or {}).get("checked")) and not state.get("study")}
         dated_in = incoming.document_dates(graph, result.get("facts"), files)
         open_items = incoming.pending(graph, known_facts, dated_in, order)
         in_case = incoming.case_facts(graph, known_facts, dated_in, order)
@@ -524,6 +525,13 @@ def build_items(state, result, files=None, events=None, review=None):
                            if disputed.get("status") == "conflicting" and disputed.get("second_value") else "")}
             if settling and open_items[0]["kind"]["id"] == "zahlung":  # the payment came in: the receipt step's letter
                 planned = {**planned, "form": "A11_eingang", "settlement": "eingang"}
+            offer_day = open_items[0].get("date") if open_items[0]["kind"]["id"] == "angebot" else None
+            if offer_day and not state.get("study") and (ledger or {}).get("checked") and not any(
+                    str(e.get("date") or "") >= offer_day and {e.get("from"), e.get("to")} == {account.INSURER, "kunde"} for e in ledger["entries"]):
+                # an offer of the other side is the customer's to accept: nothing was said with the customer since it came,
+                # so the customer is asked first (a call, noted), and the answer to the other side follows that note
+                planned = {"kind": "A2", "form": "A2", "title": "Kundschaft zum Angebot befragen", "next_in_days": act.get("next_in_days"),
+                           "follow_up": None, "skip_if": None, "reason": incoming.reason(open_items[0]) + "; zuerst die Stellungnahme der Kundschaft"}
         planned = cover.adjust(planned, known_facts, here.get("id"), ledger)  # prescribed letters: refusal for lack of prospects, demand before an ending
         if planned and not (planned.get("skip_if") and evaluate_condition(planned["skip_if"], state.get("facts") or {})):
             title = planned["title"]

@@ -34,6 +34,7 @@ FORM_RECORD = {
     "A6": ("kunde", "abschlussankuendigung", "6"),
     "A7": ("kunde", "abschlussankuendigung", "7"),
     "A8": ("gegenpartei", "schreiben_gegenpartei", "8"),
+    "A9": ("gegenpartei", "schreiben_gegenpartei", "9"),
     "A10": ("kanzlei", "mandat", "10"),
     "A10_kunde": ("kunde", "andere", None),
     "A11_iban": ("kunde", "anforderung", None),
@@ -384,6 +385,11 @@ def relied_elements(draft, assessment=None, process=None, listed=(), events=()):
         out += refusal.element_ids()
     if form == "A4" and (next((i for i in listed or () if i.get("kind") == "next_action"), None) or {}).get("partial"):
         out += partial.element_ids()
+    from . import live
+    if form in live.forms() and not (draft.get("required") or ()):
+        out += live.element_ids(form)
+    if draft.get("live"):  # the answer to an offer, as the handler chose it
+        out += live.element_ids(draft["live"])
     for ask in asks(form, draft.get("kind"), listed, events, assessment):
         if ask.get("kind") == "document" and ask.get("ref"):
             own(f"unterlage.{ask['ref']}")

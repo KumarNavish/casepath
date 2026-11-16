@@ -424,7 +424,14 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
             return None
         forms = {**forms, FOLLOW_ON: {"title": follow["title"], "to": (forms.get("A5") or {}).get("to") or "Kundschaft",
                                       "parts": [p["text"] for p in follow["parts"]]}}
-    from . import partial, refusal
+    from . import live, partial, refusal
+    if kind in live.forms() and forms.get(kind) and not ((current.get("case") or {}).get("intake") or {}).get("study"):
+        forms = {**forms, kind: live.form(kind, forms[kind])}  # a step the process leaves without a form, written where it can be
+    stance = None
+    if kind == "A9" and (action.get("incoming") or {}).get("kind") == "angebot" and forms.get("A9") and not ((current.get("case") or {}).get("intake") or {}).get("study"):
+        chosen = live.stance_of(events, action["incoming"])  # the one judgment of this step, then its letter (process/live.py)
+        stance = live.stance_question(action["incoming"], chosen)
+        forms = {**forms, "A9": live.stance_form(forms["A9"], chosen, action["incoming"])}
     if kind == "A4" and action.get("partial") and forms.get("A4"):  # a partial answer: what came, what is still open
         forms = {**forms, "A4": partial.form(forms["A4"], action["partial"])}
     if kind == refusal.FORM:  # the refusal of cover: its own form, with the point that decides it (process/refusal.py)
@@ -442,6 +449,8 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
     # while a jurist marked it «Änderung nötig»
     required = lambda k: [{**r, **({"review": reviews.IN_REVIEW} if held.required(k, r["id"]) else {})} for r in cover.required_for(k, current.get("facts"))]
     return {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "to": (forms.get(kind) or {}).get("to"), "text": text, "none": none,
+            **({"optional": True} if (forms.get(kind) or {}).get("optional") else {}),  # the step may also end without this letter
+            **({"stance": stance, "live": (forms.get(kind) or {}).get("live")} if stance else {}),
             "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
             "required": required(kind),
             # the letter by part (the handler's text is kept per part, completion.merge) and the date it sets the customer

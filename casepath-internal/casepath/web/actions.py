@@ -18,7 +18,7 @@ attributed record. A frozen study copy refuses all of them and records nothing.
 """
 from datetime import date
 import threading
-from typing import Literal
+from typing import Literal, Optional
 import uuid
 
 from fastapi import Depends, HTTPException
@@ -80,6 +80,11 @@ class Address(BaseModel):
     model_config = ConfigDict(extra="forbid")
     to: Literal["kunde", "gegenpartei", "kanzlei", "behoerde", "andere"]
     address: str = Field(max_length=254)  # empty: no address (the proposal is taken away)
+
+
+class Stance(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    stance: Optional[Literal["annehmen", "ablehnen", "gegenangebot"]] = None  # None: the answer is taken back
 
 
 def register(app, store, catalogue, mirror, record, state, user, case_view=None, parity_sha=None, marks=None, handover=None):
@@ -312,6 +317,19 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         logged = record(case_id, who, "handover.address", to=body.to, address=value)
         sync()
         return {"address": logged}
+
+    @app.post("/api/cases/{case_id}/offer/stance", status_code=201)
+    def set_stance(case_id: str, body: Stance, who=Depends(user)):
+        """The handler's answer to the open offer of the other side (annehmen, ablehnen, Gegenangebot), attributed and per
+        offer: the letter to the other side is prepared from it (process/live.py). 409 where no offer waits for one."""
+        row = case(case_id)
+        refuse_study(row)
+        question = (case_view(case_id, who=who).get("draft") or {}).get("stance") or {}
+        if not question.get("offer"):
+            raise HTTPException(409, "In diesem Fall wartet kein Angebot auf eine Antwort.")
+        logged = record(case_id, who, "offer.stance", offer=question["offer"], stance=body.stance)
+        sync()
+        return {"stance": logged}
 
     def stored(case_id, version):
         events = store.list_case_events(case_id)

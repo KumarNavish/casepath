@@ -245,6 +245,12 @@ def items(workflow, facts, dated=None, order=None):
             # a later step of the insurer that answered another item of this kind (a payment of the other claim) did not deal
             # with this one: it is left over and still calls for its action
             row["timing"] = "call"
+        if row["open"] and row["timing"] != "call" and day and (order or {}).get("customer_steps") and row["kind"]["id"] == "angebot":
+            # an offer of the other side is not dealt with by talking to the customer about it: while every step of the
+            # insurer since it came went to the customer (or was a file note), the offer still waits for its answer
+            since = [e for e in (order.get("ledger") or {}).get("entries") or () if e.get("from") == INSURER and (d := parse_date(e.get("date"))) and d >= day]
+            if since and all(e.get("to") in (CUSTOMER, INSURER) for e in since):
+                row["timing"] = "call"
     return sorted(rows, key=lambda r: (r["kind"]["priority"], r["date"] is None, r["date"] or ""))
 
 

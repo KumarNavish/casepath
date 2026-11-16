@@ -1011,6 +1011,29 @@
     "title": "ReviewMark",
     "type": "object"
    },
+   "Stance": {
+    "additionalProperties": false,
+    "properties": {
+     "stance": {
+      "anyOf": [
+       {
+        "enum": [
+         "annehmen",
+         "ablehnen",
+         "gegenangebot"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stance"
+     }
+    },
+    "title": "Stance",
+    "type": "object"
+   },
    "StatusChange": {
     "properties": {
      "reason": {
@@ -2431,6 +2454,54 @@
      }
     },
     "summary": "Labels Template"
+   }
+  },
+  "/api/cases/{case_id}/offer/stance": {
+   "post": {
+    "description": "The handler's answer to the open offer of the other side (annehmen, ablehnen, Gegenangebot), attributed and per\noffer: the letter to the other side is prepared from it (process/live.py). 409 where no offer waits for one.",
+    "operationId": "set_stance_api_cases__case_id__offer_stance_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/Stance"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Set Stance"
    }
   },
   "/api/cases/{case_id}/own-answer": {

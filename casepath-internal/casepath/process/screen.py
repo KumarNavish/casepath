@@ -241,6 +241,8 @@ def decision(items, draft, stage, routing=None, assessment=None):
             return adopt
         if unjudged:
             return prospects(items)
+    if (draft or {}).get("stance"):  # the answer to an offer: one question, each answer with what follows (process/live.py)
+        return dict(draft["stance"])
     if act.get("form") == FEE_NOTE or (draft or {}).get("form") == FEE_NOTE:
         claim = act.get("incoming") or {}
         return {"key": "kostennote", "question": "Kostennote",

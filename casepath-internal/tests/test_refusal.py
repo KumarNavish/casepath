@@ -105,5 +105,19 @@ class RefusalTests(unittest.TestCase):
         self.assertTrue(any("Rechtsbehelfe" in q for q in asked))
 
 
+
+class LiveFormTests(unittest.TestCase):
+    def test_a_step_without_a_form_gets_its_letter_only_where_the_process_has_none(self):
+        from casepath.process import live
+        none = {"title": "Dossier schliessen", "none": "die Sache ist gemäss den Akten erledigt; ein Abschlussschreiben verfasst die Fallbearbeitung bei Bedarf"}
+        made = live.form("A12_erledigt", none)
+        self.assertEqual((made["to"], len(made["parts"]), made["optional"], "none" in made), ("Kundschaft", 2, True, False))
+        self.assertIn("schliessen daher Ihr Dossier", made["parts"][1])
+        own = {"title": "Dossier abschliessen", "to": "Kundschaft", "parts": ["Eigener Text."]}
+        self.assertIs(live.form("A12_erledigt", own), own)  # a form the process writes itself stays its own
+        self.assertIs(live.form("A9", {"title": "Antwort", "none": "entscheidet die Fallbearbeitung"}).get("none"), "entscheidet die Fallbearbeitung")
+        self.assertEqual(live.element_ids("A12_erledigt"), ["backbone:live.A12_erledigt.erledigt", "backbone:live.A12_erledigt.schliessen"])
+
+
 if __name__ == "__main__":
     unittest.main()

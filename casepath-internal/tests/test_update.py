@@ -288,8 +288,10 @@ class EquivalenceTests(unittest.TestCase):
         before, after, state, result, _ = self.check("offer")
         self.assertEqual((before["action"], before["value"]), ("A9", "Gegenpartei mahnen"))  # silence after our letter
         self.assertNotIn("incoming", before)
-        self.assertEqual((after["action"], after["value"]), ("A9", "Antwort auf das Angebot der Gegenpartei"))
+        # the offer is the open item; the customer's view comes before the answer to the other side
+        self.assertEqual((after["action"], after["value"]), ("A2", "Kundschaft zum Angebot befragen"))
         self.assertEqual(after["incoming"]["kind"], "angebot")
+        self.assertTrue(after["reason"].endswith("; zuerst die Stellungnahme der Kundschaft"))
 
 
 class WhatEachAgentReceivesTests(unittest.TestCase):

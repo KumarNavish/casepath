@@ -425,7 +425,10 @@ class Model:
 
     def _backbone(self):
         area, bb = self.area, self.bb
-        from . import partial
+        from . import live, partial
+        for kind, own in live.forms().items():  # letters for steps the process leaves without a form (process/live.py)
+            for p in own["parts"]:
+                self._add(BACKBONE, f"{live.PREFIX}{kind}.{p['id']}", "schreiben", f"{own['title']}: {p['title']}", [("An", own["to"]), ("Wortlaut", p["text"])], {"part": p})
         for p in partial.data()["parts"]:  # the question back after a partial answer (process/partial.py)
             self._add(BACKBONE, f"{partial.PREFIX}{p['id']}", "schreiben", f"Rückfrage nach einer Teilantwort: {p['title']}", [
                 ("Gesagt, wenn", "die Kundschaft einen Teil des Verlangten geliefert hat und etwas davon noch offen ist"), ("Wortlaut", p["text"])], {"part": p})
