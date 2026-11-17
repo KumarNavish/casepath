@@ -34,6 +34,7 @@ SKIP = re.compile(r"(^|_)(id|ids|sha256|sha|hash|href|url|path|at|by|seq|version
 # Keys whose single words are wording (a title, a label), so a miss is worth a translation.
 WORDING = {"title", "short_title", "label", "headline", "word", "text", "question", "why", "reason", "summary", "note", "lead",
            "meaning", "changed", "detail", "what", "action", "subject", "stand", "status_line", "next", "weil", "name_shown"}
+ROLE_MARK = re.compile(r"\s*\((?:VN|GP)\)")
 FILE = re.compile(r"\.[A-Za-z0-9]{2,5}$")
 MEMORY_DIR = Path(__file__).with_name("i18n")
 BATCH_TEXTS, BATCH_CHARS = 40, 6000
@@ -88,7 +89,11 @@ def texts(payload, key=""):
         for v in payload:
             yield from texts(v, key)
     elif isinstance(payload, str) and wording(payload):
-        yield payload, (" " in payload.strip() or key in WORDING) and not FILE.search(payload.strip())
+        worth = (" " in payload.strip() or key in WORDING) and not FILE.search(payload.strip())
+        yield payload, worth
+        short = ROLE_MARK.sub("", payload)  # a party's role is shown without its mark («Mieterin (VN)» as «Mieterin»)
+        if short != payload and wording(short):
+            yield short, worth
 
 
 class Translator:
