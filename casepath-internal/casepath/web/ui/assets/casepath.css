@@ -1545,3 +1545,8 @@ mark.cp-hit.chosen, mark#live-hit { animation: cp-mark-pulse .9s var(--ease); }
 .cp-trail-watch button { display: inline-flex; align-items: center; gap: 6px; color: var(--crimson) !important; font-weight: 500 !important; }
 .cp-trail-watch .cp-icon { width: 13px; height: 13px; }
 .cp-trail li.cp-trail-watch { border-color: var(--crimson-track, #ecd3da); }
+.cp-story-wrap { margin: 0 0 26px; scroll-margin-top: 96px; }
+.cp-story-wrap > header { display: flex; align-items: baseline; justify-content: space-between; margin: 0 2px 10px; }
+.cp-work-story .cp-stages { display: flex; flex-direction: row; gap: 4px 18px; flex-wrap: wrap; padding: 0; background: none; }
+.cp-work-story .cp-stages li { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; }
+.cp-work-story .cp-work-head { align-items: center; }

@@ -1913,7 +1913,12 @@ function overviewView() {
   const top = runLine(st);
   if (!hasPrepared() || (!item("next_action", "0") && !result())) return top;
   const arrive = S.arrive; S.arrive = null;  // once per case opened: the sheet comes in (from the right when the reader went on)
-  return `${top}<div class="cp-overview ${arrive ? `cp-arrive ${arrive === "next" ? "from-right" : ""}` : ""}">${preparedView(st)}${sideView()}</div>`;
+  // the picture of how this step was prepared, opened from the line above the step: across the page's width
+  const picture = S.storyOpen === S.route.id && window.CasePathStory && (S.data.prepared_run || {}).id
+    ? `<section class="cp-story-wrap" data-story-wrap><header><p class="cp-eyebrow">${T("How CasePath prepared this step", "Wie CasePath diesen Schritt vorbereitet hat")}</p>
+        <button class="cp-link cp-quiet-link" type="button" id="story-close">${T("close", "schliessen")}</button></header>
+        <div class="cp-story" id="story" data-story="replay"></div></section>` : "";
+  return `${top}${picture}<div class="cp-overview ${arrive ? `cp-arrive ${arrive === "next" ? "from-right" : ""}` : ""}">${preparedView(st)}${sideView()}</div>`;
 }
 // A source is one quiet chip, its page; what rests on the handler's own entry says so where the chip would stand.
 function sourceChip(e) {
@@ -2117,7 +2122,7 @@ function mountStory() {
     const host = document.createElement("div");
     host.className = "cp-story-host";
     layer.appendChild(host);
-    const ctrl = window.CasePathStory.mount(host, storyModel(events, live), { autoplay: !live && !seen[run], start: live || seen[run] ? "last" : "first", height: live ? 360 : 420,
+    const ctrl = window.CasePathStory.mount(host, storyModel(events, live), { autoplay: !live && !seen[run], start: live || seen[run] ? "last" : "first", height: live ? 360 : 460,
       onOpen: (n) => { if (n && n.href) location.hash = n.href; } });
     seen[run] = true;
     S.story = { ctrl, key, live, run, n: (events || []).length };
@@ -2171,8 +2176,7 @@ function workTrail(fresh) {
   ].filter(Boolean);
   const watch = window.CasePathStory ? `<li class="cp-trail-watch"><button type="button" id="story-open" aria-expanded="${S.storyOpen === id}">${icon("right")}${S.storyOpen === id ? T("Close the picture", "Bild schliessen") : T("Watch how it was prepared", "Ansehen, wie es entstand")}</button></li>` : "";
   return `<ol class="cp-trail${fresh ? enter(`trail:${(S.data.prepared_run || {}).id}`) : ""}" data-trail aria-label="${T("What CasePath did", "Was CasePath getan hat")}">${steps.map(([href, text]) =>
-    `<li><span class="cp-trail-tick">${icon("tick")}</span>${href ? `<a href="${href}">${text}</a>` : `<span>${text}</span>`}</li>`).join("")}${watch}</ol>${
-    S.storyOpen === id && window.CasePathStory ? `<div class="cp-story" id="story" data-story="replay" aria-label="${T("How CasePath prepared this step", "Wie CasePath diesen Schritt vorbereitet hat")}"></div>` : ""}`;
+    `<li><span class="cp-trail-tick">${icon("tick")}</span>${href ? `<a href="${href}">${text}</a>` : `<span>${text}</span>`}</li>`).join("")}${watch}</ol>`;
 }
 const decisionsOpen = () => (completionOf().decisions || []).length;
 // The action bar answers a change of state (approved, sent, at rest) with a short movement, once, never on a mere re-render.
@@ -3034,7 +3038,7 @@ function bindOverview() {
     await api(`/api/cases/${S.route.id}/entries/${b.dataset.entryRemove}`, { method: "DELETE" }).catch((error) => { S.message = error.message; });
     await loadCase();
   });
-  on("#story-open", "click", () => { openStory(); });
+  on("#story-open, #story-close", "click", () => { openStory().then(() => { const w = document.querySelector("[data-story-wrap]"); if (w) w.scrollIntoView({ block: "start", behavior: reducedMotion() ? "auto" : "smooth" }); }); });
   on("#other-reference-open", "click", (b) => { S.file = b.dataset.file; location.hash = `#/case/${S.route.id}/claim_reader`; });
   on("#trail-open", "click", () => { S.trailOpen = !S.trailOpen; if (S.justFinished === S.route.id) { S.justFinished = null; S.trailOpen = false; } renderCase(); });
   on("#letter-original", "click", () => { S.letterOriginal = true; renderCase(); });

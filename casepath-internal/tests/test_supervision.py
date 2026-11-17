@@ -254,7 +254,7 @@ class CraftTests(unittest.TestCase):
         self.assertIn("const pageIn = () => { const now = S.pageIn; S.pageIn = false;", SCRIPT)
         self.assertIn(".cp-tab-in .cp-steps > li { animation: cp-rise-in", STYLE)   # Prozess: the path is walked
         self.assertIn("function workTrail(fresh)", SCRIPT)              # files read, facts found, history, documents, letter, decisions
-        self.assertIn("const open = fresh || S.trailOpen;", SCRIPT)     # shown when it finishes under the reader's eyes, else one press away
+        self.assertIn("const open = fresh || S.trailOpen || S.storyOpen === S.route.id;", SCRIPT)     # shown when it finishes under the reader's eyes, else one press away
         self.assertIn('id="trail-open"', SCRIPT)
         self.assertIn("`#/case/${id}/document_finder`", SCRIPT)         # each step leads to where it can be checked
 
@@ -268,6 +268,28 @@ class CraftTests(unittest.TestCase):
         self.assertIn("if (moved) { S.moreOpen = false; S.overviewSource = false; }", SCRIPT)
         self.assertIn('if (event.key !== "Escape" || S.route.view !== "case" || !S.data) return;', SCRIPT)  # Esc leaves a menu or a small form
         self.assertIn("const fold = (text) => String(text || \"\").toLowerCase().normalize(\"NFD\")", SCRIPT)  # «larchenweg» finds «Lärchenweg»
+
+    def test_the_case_is_shown_as_a_picture_built_from_its_real_state(self):
+        assets = Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets"
+        engine, look = (assets / "story.js").read_text(encoding="utf-8"), (assets / "story.css").read_text(encoding="utf-8")
+        page = (assets.parent / "index.html").read_text(encoding="utf-8")
+        self.assertIn('<script src="/assets/story.js" defer></script>', page)
+        self.assertIn('<link rel="stylesheet" href="/assets/story.css">', page)
+        self.assertIn("CasePathStory", engine)
+        self.assertIn("prefers-reduced-motion", engine + look)            # a reader who asked for stillness gets each state, no travel
+        self.assertNotIn("innerHTML =", engine.replace('innerHTML = ""', ""))  # what a case says is put in as text, never as markup
+        # the picture is the case's own state: its files, the run's events in order, needs, knowledge, letter, decisions
+        self.assertIn("function storyModel(events, live)", SCRIPT)
+        for kind in ('e.kind === "fact.located"', 'e.kind === "document.recorded"', 'e.kind === "process.state"', 'e.kind === "record.recorded"'):
+            self.assertIn(kind, SCRIPT)
+        self.assertIn('edge(`file:${e.cite.file}`, nid, "cites", page(e.cite))', SCRIPT)   # a finding is joined to the passage it rests on
+        self.assertIn('edge(kid, `need:${i.key}`, "learned")', SCRIPT)                     # what practice taught reaches the need it asks for
+        # live while CasePath works, in a layer a redraw leaves standing; a replay one press from the prepared step
+        self.assertIn('id="story" data-story="live"', SCRIPT)
+        self.assertIn('layer.id = "cp-story-layer"', SCRIPT)
+        self.assertIn("S.story.ctrl.update(storyModel(events, true));", SCRIPT)
+        self.assertIn('id="story-open"', SCRIPT)
+        self.assertIn("onOpen: (n) => { if (n && n.href) location.hash = n.href; }", SCRIPT)  # a node opens the real thing
 
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
         self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)

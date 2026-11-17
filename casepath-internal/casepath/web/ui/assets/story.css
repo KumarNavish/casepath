@@ -1,0 +1,184 @@
+/* CasePath story engine (assets/story.js). Every class starts with cps-. The choreography is here: story.js only
+   switches classes (cps-on: in the picture, cps-act: the subject of the current beat, cps-enter: arriving now). */
+.cps {
+  --cps-ink: var(--ink, #10171a); --cps-quiet: var(--ink-2, #536167); --cps-ghost: var(--ghost, #8a979c); --cps-ring: #c9d1d4;
+  --cps-hair: #e3e7e9; --cps-pale: #f4f6f7; --cps-deep: var(--deep, #1b2a30); --cps-crimson: var(--crimson, #82072a);
+  --cps-green: #1f6b3a; --cps-green-tint: #edf5ee;
+  --cps-ease: cubic-bezier(.2, .8, .2, 1);      /* arrivals: quick out, long settle */
+  --cps-cam: cubic-bezier(.5, .02, .16, 1);     /* the camera: slow to leave, slow to arrive */
+  --cps-cam-ms: 820ms;
+  position: relative; font-family: "Inter", system-ui, sans-serif; font-size: 14px; line-height: 1.4; color: var(--cps-ink);
+  text-align: left; -webkit-font-smoothing: antialiased;
+}
+.cps *, .cps *::before, .cps *::after { box-sizing: border-box; }
+.cps [hidden] { display: none !important; }
+
+/* ----- the stage: a viewport on a dotted ground; the world moves in it ----- */
+.cps-stage { position: relative; overflow: hidden; border: 1px solid var(--cps-hair); border-radius: 16px; cursor: grab; touch-action: pan-y;
+  user-select: none; -webkit-user-select: none; background-color: #f9fafb; background-image: radial-gradient(circle, #d5dcdf 1px, transparent 1.2px); background-size: 18px 18px; }
+.cps-stage:focus-visible { outline: 2px solid var(--cps-crimson); outline-offset: 2px; }
+.cps-stage.cps-drag { cursor: grabbing; }
+.cps-world { position: absolute; left: 0; top: 0; transform-origin: 0 0; transition: transform var(--cps-cam-ms) var(--cps-cam); }
+.cps-edges { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; transition: opacity .5s ease .4s; }
+.cps-edges.cps-settle { opacity: 0; transition: none; }
+/* lane titles: a band at the top of the viewport, in screen space (always 11 px), each title above its lane */
+.cps-heads { position: absolute; left: 0; right: 0; top: 0; height: 38px; overflow: hidden; pointer-events: none; background: #fbfcfc; border-bottom: 1px solid var(--cps-hair); }
+.cps-head { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 11px; line-height: 38px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; color: var(--cps-ghost);
+  transition: transform var(--cps-cam-ms) var(--cps-cam); }
+.cps-grab .cps-world, .cps-grab .cps-head, .cps-drag .cps-world, .cps-drag .cps-head, .cps-reduced .cps-world, .cps-reduced .cps-head { transition: none; }
+
+/* ----- nodes: a button that holds the place, a card that carries the look and the entrance ----- */
+.cps-node { position: absolute; left: 0; top: 0; margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: default;
+  visibility: hidden; pointer-events: none; transition: transform .6s var(--cps-ease), visibility 0s .25s; }   /* transform: a card moving to a new place after an update */
+.cps-node.cps-on { visibility: visible; pointer-events: auto; transition: transform .6s var(--cps-ease); }
+.cps-node.cps-link { cursor: pointer; }
+.cps-drag .cps-node { cursor: grabbing; }
+.cps-node:focus { outline: none; }
+.cps-node:focus-visible .cps-card { outline: 2px solid var(--cps-crimson); outline-offset: 3px; }
+.cps-card { position: relative; display: flex; align-items: center; gap: 10px; width: 100%; height: 100%; padding: 0 13px; background: #fff; border: 1px solid var(--cps-hair); border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(16, 23, 26, .04); opacity: 0; transition: opacity .25s ease, transform .45s var(--cps-ease), box-shadow .45s ease, border-color .45s ease; }
+.cps-on .cps-card { opacity: 1; }
+.cps-link:hover .cps-card { border-color: var(--cps-ring); box-shadow: 0 1px 2px rgba(16, 23, 26, .05), 0 10px 24px -14px rgba(16, 23, 26, .3); }
+.cps-body { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; transition: opacity .45s ease; }
+.cps-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 13px; line-height: 17px; font-weight: 550; letter-spacing: -.006em; overflow-wrap: anywhere; }
+.cps-foot { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.cps-sub { flex: 0 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 11.5px; line-height: 16px; color: var(--cps-ghost); }
+.cps-sub:empty, .cps-ref:empty { display: none; }
+/* the passage a card rests on («S. 6», the label of its edge): a small tab on the card's upper edge */
+.cps-ref { position: absolute; top: -9px; right: 12px; padding: 0 7px; border: 1px solid var(--cps-hair); border-radius: 999px; background: #fff; font-size: 10.5px; line-height: 16px; color: var(--cps-quiet);
+  font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* the subject of the beat, and everything before it at a quieter weight */
+.cps-act .cps-card { border-color: rgba(130, 7, 42, .55); transform: scale(1.02);
+  box-shadow: 0 0 0 3px rgba(130, 7, 42, .06), 0 1px 3px rgba(16, 23, 26, .05), 0 12px 24px -16px rgba(16, 23, 26, .32); }
+.cps-has-act .cps-node:not(.cps-act) .cps-card { box-shadow: none; }
+.cps-has-act .cps-node:not(.cps-act) .cps-body, .cps-has-act .cps-node:not(.cps-act) .cps-mark, .cps-has-act .cps-node:not(.cps-act) .cps-sheet { opacity: .68; }
+.cps-mark, .cps-sheet { transition: opacity .45s ease; }
+/* relationships on demand: the pressed or pointed-at node, its edges and their other ends; the rest steps back */
+.cps-hov .cps-node:not(.cps-rel) .cps-body, .cps-hov .cps-node:not(.cps-rel) .cps-mark, .cps-hov .cps-node:not(.cps-rel) .cps-sheet { opacity: .22; }
+.cps-hov .cps-node:not(.cps-rel) .cps-card { box-shadow: none; border-color: var(--cps-hair); }
+.cps-hov .cps-node.cps-rel .cps-body, .cps-hov .cps-node.cps-rel .cps-mark, .cps-hov .cps-node.cps-rel .cps-sheet { opacity: 1; }
+.cps-hov .cps-node.cps-rel .cps-card { border-color: var(--cps-ring); box-shadow: 0 1px 3px rgba(16, 23, 26, .05), 0 12px 24px -16px rgba(16, 23, 26, .32); }
+
+/* a sheet of the case file */
+.cps-sheet { flex: none; width: 24px; height: 28px; fill: #fff; stroke: var(--cps-quiet); stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+.cps-k-file .cps-card { border-radius: 10px; }
+.cps-k-file .cps-title { font-weight: 600; }
+/* a finding: the question quiet, its value the strong line */
+.cps-k-fact .cps-title { font-size: 12.5px; line-height: 16.5px; font-weight: 450; color: var(--cps-quiet); }
+.cps-k-fact .cps-sub { font-size: 14px; line-height: 18px; font-weight: 620; color: var(--cps-ink); letter-spacing: -.01em; }
+/* a document the case needs: a box that gets its tick, or stays open in the accent when it is missing */
+.cps-mark { flex: none; display: grid; place-items: center; width: 18px; height: 18px; border: 1.5px solid var(--cps-ring); border-radius: 6px; background: #fff; }
+.cps-tick { grid-area: 1 / 1; width: 12px; height: 12px; fill: none; stroke: var(--cps-green); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; }
+.cps-tick path { stroke-dasharray: 16; }
+[data-state="present"] .cps-mark, [data-state="done"] .cps-mark { border-color: var(--cps-green); background: var(--cps-green-tint); }
+[data-state="present"] .cps-tick, [data-state="done"] .cps-tick { opacity: 1; }
+[data-state="missing"] .cps-mark { border-color: var(--cps-crimson); border-style: dashed; }
+.cps-ratio { flex: none; width: 34px; height: 4px; border-radius: 2px; background: var(--cps-hair); overflow: hidden; }
+.cps-ratio i { display: block; height: 100%; border-radius: 2px; background: var(--cps-quiet); transform-origin: 0 50%; transform: scaleX(var(--cps-r, 0)); }
+/* a step on the path, a decision, an entry: round marks */
+.cps-k-step .cps-mark, .cps-k-decision .cps-mark, .cps-k-entry .cps-mark { border-radius: 50%; }
+.cps-k-step .cps-card { border-radius: 999px; padding: 0 18px 0 13px; }
+[data-state="now"] .cps-mark, .cps-k-decision[data-state="open"] .cps-mark { border-color: var(--cps-crimson); }
+[data-state="now"] .cps-mark::after, .cps-k-decision[data-state="open"] .cps-mark::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--cps-crimson); grid-area: 1 / 1; }
+.cps-k-decision[data-state="open"] .cps-mark::after { width: 6px; height: 6px; background: none; border: 1.5px solid var(--cps-crimson); }
+.cps-k-step[data-state="open"] .cps-title { color: var(--cps-quiet); font-weight: 450; }
+.cps-k-step[data-state="now"] .cps-title { font-weight: 620; }
+.cps-k-entry .cps-mark { width: 10px; height: 10px; border-color: var(--cps-quiet); }
+.cps-k-entry .cps-tick { display: none; }
+/* what CasePath learned from earlier cases: the one card on the pale tint */
+.cps-k-knowledge .cps-card { background: var(--cps-pale); border-color: var(--cps-hair); border-style: dashed; border-radius: 14px; }
+.cps-k-knowledge .cps-sheet { width: 24px; height: 24px; fill: none; stroke: var(--cps-crimson); }
+.cps-k-knowledge .cps-title { font-weight: 620; }
+/* the letter taking shape: a sheet whose lines write themselves */
+.cps-k-letter .cps-card { align-items: flex-start; padding: 19px 18px 0; border-radius: 10px; box-shadow: 0 1px 2px rgba(16, 23, 26, .04), 0 14px 32px -18px rgba(16, 23, 26, .2); }
+.cps-k-letter[data-state="now"] .cps-card::before { content: ""; position: absolute; left: 18px; top: -1px; width: 34px; height: 3px; border-radius: 0 0 3px 3px; background: var(--cps-crimson); }
+.cps-k-letter .cps-title { font-size: 14px; line-height: 18.5px; font-weight: 620; letter-spacing: -.012em; }
+.cps-k-letter .cps-sub { font-size: 12px; color: var(--cps-quiet); }
+.cps-lines { display: block; margin-top: 7px; }
+.cps-lines i { display: block; width: var(--cps-w, 100%); height: 4px; margin-top: 7px; border-radius: 2px; background: #d9dfe2; transform-origin: 0 50%; }
+
+/* ----- edges: one layer under the cards. cites: thin ink; leads: the path; learned: dashed, the accent; branch: the fork ----- */
+.cps-edge { opacity: 0; }
+.cps-edge.cps-on { opacity: 1; transition: opacity .2s linear var(--cps-d, 0ms); }
+.cps-edge path { fill: none; stroke: var(--cps-ink); stroke-width: 1.3; stroke-opacity: var(--cps-quiet, .3); stroke-linecap: round; stroke-dasharray: var(--cps-len, 0); stroke-dashoffset: var(--cps-len, 0); }
+.cps-edge.cps-on path { stroke-dashoffset: 0; transition: stroke-dashoffset .74s cubic-bezier(.45, 0, .2, 1) var(--cps-d, 0ms), stroke-opacity .4s ease, stroke-width .4s ease; }
+.cps-edge circle { fill: var(--cps-ink); fill-opacity: .45; opacity: 0; }
+.cps-edge.cps-on circle { opacity: 1; transition: opacity .2s linear calc(var(--cps-d, 0ms) + .62s); }   /* the line has arrived */
+.cps-e-leads path { stroke: var(--cps-deep); stroke-width: 2.4; stroke-opacity: calc(var(--cps-quiet, .3) + .2); }
+.cps-e-leads circle { fill: var(--cps-deep); fill-opacity: .7; }
+.cps-e-learned path { stroke: var(--cps-crimson); stroke-width: 1.4; stroke-opacity: calc(var(--cps-quiet, .3) + .12); stroke-linecap: butt; }
+.cps-e-learned circle { fill: var(--cps-crimson); fill-opacity: .6; }
+.cps-e-branch path { stroke-width: 1.7; stroke-opacity: calc(var(--cps-quiet, .3) + .1); }
+.cps-edge.cps-act path, .cps-edge.cps-rel path { stroke-opacity: .95; }
+.cps-edge.cps-act circle, .cps-edge.cps-rel circle { fill-opacity: 1; }
+.cps-e-cites.cps-act path, .cps-e-cites.cps-rel path { stroke-width: 1.6; }
+.cps-hov .cps-edge.cps-on:not(.cps-rel) { opacity: .1; transition: opacity .25s ease; }
+
+/* ----- entrances (only from-states: every animation ends in the element's own resting look) ----- */
+.cps-enter .cps-card { animation: cps-in .62s var(--cps-ease) var(--cps-d, 0ms) both; }
+.cps-k-file.cps-enter .cps-card { animation: cps-in-sheet .78s var(--cps-ease) var(--cps-d, 0ms) both; }
+.cps-k-letter.cps-enter .cps-card { animation-duration: .8s; }
+.cps-enter .cps-mark { animation: cps-pop .42s var(--cps-ease) calc(var(--cps-d, 0ms) + .26s) both; }
+.cps-enter .cps-tick path { animation: cps-draw .4s ease-out calc(var(--cps-d, 0ms) + .5s) both; }
+.cps-enter .cps-ratio i { animation: cps-write .7s var(--cps-ease) calc(var(--cps-d, 0ms) + .45s) both; }
+.cps-enter .cps-lines i { animation: cps-write .46s cubic-bezier(.3, 0, .2, 1) calc(var(--cps-d, 0ms) + .56s + var(--cps-i, 0) * .13s) both; }
+@keyframes cps-in { from { opacity: 0; transform: translate(var(--cps-fx, 0), var(--cps-fy, 16px)) scale(.94); } }
+@keyframes cps-in-sheet { from { opacity: 0; transform: translateX(-64px) rotate(-4deg); } }
+@keyframes cps-pop { from { opacity: 0; transform: scale(.3); } }
+@keyframes cps-draw { from { stroke-dashoffset: 16; } }
+@keyframes cps-write { from { transform: scaleX(0); } }
+/* live: the node being worked on carries a small mark that breathes */
+.cps-live.cps-tail .cps-act .cps-card::after { content: ""; position: absolute; top: -4px; left: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--cps-crimson);
+  box-shadow: 0 0 0 2px #fff; animation: cps-breathe 1.5s ease-in-out infinite; }
+@keyframes cps-breathe { 50% { opacity: .3; } }
+/* a seek, reduced motion: the state simply is; nothing travels or draws (the camera is governed above) */
+.cps-still .cps-world *, .cps-still .cps-world *::before, .cps-still .cps-world *::after, .cps-still .cps-caption *, .cps-still .cps-bar * { transition: none !important; animation: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .cps-world, .cps-head { transition: none; }
+  .cps-world *, .cps-world *::before, .cps-world *::after { animation: none !important; }
+}
+
+/* ----- caption: what happened (strong), why (quiet); two layers crossfade ----- */
+.cps-caption { position: relative; height: 82px; margin: 14px 4px 4px; }
+.cps-cap { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(5px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
+.cps-cap.cps-show { opacity: 1; transform: none; pointer-events: auto; transition: opacity .3s ease .12s, transform .3s var(--cps-ease) .12s; }
+.cps-agent { min-height: 17px; font-size: 11px; line-height: 17px; letter-spacing: .09em; text-transform: uppercase; font-weight: 600; color: var(--cps-ghost); }
+.cps-what, .cps-why { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; flex: none; }
+.cps-what { font-size: 16.5px; line-height: 22px; font-weight: 620; letter-spacing: -.014em; color: var(--cps-ink); }
+.cps-why { margin-top: 1px; font-size: 14px; line-height: 20px; color: var(--cps-quiet); }
+
+/* ----- controls: play, the timeline (one tick per beat), where we are, the whole picture ----- */
+.cps-bar { display: flex; align-items: center; gap: 14px; margin: 0 2px; }
+.cps-bar button { margin: 0; font: inherit; cursor: pointer; }
+.cps-bar button:focus-visible, .cps-timeline:focus-visible { outline: 2px solid var(--cps-crimson); outline-offset: 2px; }
+.cps-ico { width: 18px; height: 18px; fill: currentColor; stroke: none; flex: none; }
+.cps-play { flex: none; display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: var(--cps-deep); color: #fff; transition: transform .14s var(--cps-ease), background .16s ease; }
+.cps-play:hover { background: #0f1a1e; }
+.cps-play:active { transform: scale(.94); }
+.cps-play[data-mode="replay"] .cps-ico, .cps-ghost .cps-ico { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cps-timeline { position: relative; flex: 1; min-width: 80px; height: 32px; border-radius: 8px; cursor: pointer; touch-action: none; }
+.cps-track { position: absolute; left: calc(50% / var(--cps-n, 1)); right: calc(50% / var(--cps-n, 1)); top: 50%; height: 2px; margin-top: -1px; border-radius: 2px; background: var(--cps-hair); }
+.cps-fill { position: absolute; inset: 0; border-radius: 2px; background: var(--cps-deep); transform-origin: 0 50%; transform: scaleX(0); transition: transform .45s var(--cps-ease); }
+.cps-ticks { position: absolute; inset: 0; display: flex; }
+.cps-tick-mark { position: relative; flex: 1; }
+.cps-tick-mark::after { content: ""; position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 1.5px var(--cps-ring);
+  transition: transform .25s var(--cps-ease), background .25s ease, box-shadow .25s ease; }
+.cps-tick-mark:hover::after { transform: scale(1.35); }
+.cps-tick-mark.cps-past::after { background: var(--cps-deep); box-shadow: none; }
+.cps-tick-mark.cps-now::after { background: var(--cps-crimson); box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(130, 7, 42, .35); transform: scale(1.3); }
+.cps-dense .cps-tick-mark::after { width: 2px; height: 9px; margin-left: -1px; border-radius: 1px; }
+.cps-count { flex: none; min-width: 108px; text-align: right; font-size: 12.5px; color: var(--cps-quiet); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cps-ghost { flex: none; display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 13px 0 11px; border: 1px solid var(--cps-hair); border-radius: 999px; background: #fff; color: var(--cps-quiet); font-size: 12.5px; white-space: nowrap;
+  transition: border-color .16s ease, color .16s ease; }
+.cps-ghost .cps-ico { width: 15px; height: 15px; }
+.cps-ghost:hover { border-color: var(--cps-ring); color: var(--cps-ink); }
+.cps-close { width: 32px; padding: 0; justify-content: center; }
+
+/* ----- compact: the same picture with a one-line caption ----- */
+.cps-compact .cps-caption { height: 44px; margin-top: 10px; }
+.cps-compact .cps-agent { display: none; }
+.cps-compact .cps-what, .cps-compact .cps-why { display: block; white-space: nowrap; text-overflow: ellipsis; }
+.cps-compact .cps-what { font-size: 14.5px; line-height: 21px; }
+.cps-compact .cps-why { font-size: 13px; line-height: 19px; }
+.cps-compact .cps-count { display: none; }
