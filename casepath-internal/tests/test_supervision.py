@@ -260,7 +260,14 @@ class CraftTests(unittest.TestCase):
 
     def test_a_day_of_the_week_pressed_narrows_the_list_to_that_day(self):
         self.assertIn('const only = dayOnly ? (c) => Boolean(c.due && c.due.date === dayOnly', SCRIPT)
-        self.assertIn("S.rowsIn = true; renderCases();", SCRIPT)        # the rows come in again, the head stays
+        self.assertIn("S.rowsIn = true; renderCases(true);", SCRIPT)    # the rows come in again, the head stays
+        self.assertIn("if (!(kept && S.listData && S.listData.lang === LANG)) {", SCRIPT)  # from the cases already here: at once
+
+    def test_what_is_opened_is_read_from_its_top_and_a_menu_stays_on_its_page(self):
+        self.assertIn("if (moved) window.scrollTo(0, 0);", SCRIPT)
+        self.assertIn("if (moved) { S.moreOpen = false; S.overviewSource = false; }", SCRIPT)
+        self.assertIn('if (event.key !== "Escape" || S.route.view !== "case" || !S.data) return;', SCRIPT)  # Esc leaves a menu or a small form
+        self.assertIn("const fold = (text) => String(text || \"\").toLowerCase().normalize(\"NFD\")", SCRIPT)  # «larchenweg» finds «Lärchenweg»
 
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
         self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)
