@@ -1409,3 +1409,113 @@ h1.cp-title { font-size: 30px; font-weight: 550; letter-spacing: -.035em; }
 /* a press is felt everywhere a hand lands */
 .cp-filter-item:active:not(:disabled), .cp-wday:active:not(:disabled), .cp-doc-tab:active, .cp-tab:active { transform: scale(.97); }
 .cp-cases tbody tr:active td { background: #f6f8f8; }
+
+/* ---------- White ground: the page is white; a card is a hairline, a quiet fill is the pale tint ---------- */
+:root { --ground: #fff; --tint: #f4f6f7; --canvas: #f4f6f7; --hair: #e3e7e9; }
+html, body { background: var(--ground); }
+.cp-rail { background: var(--ground); }
+.cp-top { background: rgba(255,255,255,.94); }
+.cp-prepared > footer.cp-bar::before { background: var(--ground); }
+.cp-cases tbody tr:hover td { background: #fbfcfc; }
+
+/* ---------- Two languages: one small control, the page turns in place ---------- */
+.cp-lang { display: inline-flex; padding: 3px; border: 1px solid var(--hair); border-radius: 999px; background: var(--sheet); gap: 0; }
+.cp-lang-item { border: 0; background: none; font: inherit; font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--ghost); padding: 4px 9px; border-radius: 999px; cursor: pointer; transition: background .16s var(--ease), color .16s var(--ease); }
+.cp-lang-item:hover:not(.on) { color: var(--ink); }
+.cp-lang-item.on { background: var(--deep); color: #fff; }
+.cp-lang-wait { width: 7px; height: 7px; border-radius: 50%; background: var(--crimson); margin-left: -6px; animation: cp-breathe 1.4s ease-in-out infinite; }
+#app { transition: opacity .16s var(--ease); }
+#app.cp-lang-out { opacity: 0; }
+.cp-lang-turn::view-transition-old(root) { animation: cp-vt-out .18s var(--ease) both; }
+.cp-lang-turn::view-transition-new(root) { animation: cp-vt-in .26s .06s var(--ease) both; }
+@keyframes cp-vt-out { to { opacity: 0; } }
+@keyframes cp-vt-in { from { opacity: 0; } }
+.cp-reading-note { margin: 0 0 8px 2px; font-size: 12.5px; color: var(--ghost); }
+.cp-text[data-reading] { cursor: default; }
+@media (prefers-reduced-motion: reduce) { #app { transition: none; } .cp-lang-wait { animation: none; } }
+.cp-source-lang { font-size: 12.5px; margin-right: 10px; white-space: nowrap; }
+.cp-doc-body mark.cp-hit { box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+
+/* ---------- Motion at its moment: a screen arrives in the order it is read; a choice slides; work done is ticked off ---------- */
+/* a tab or a page arrives: its blocks rise, then its rows in turn */
+.cp-tab-in > *, .cp-page-in > * { animation: cp-rise-in .38s var(--ease) both; }
+.cp-tab-in > *:nth-child(2), .cp-page-in > *:nth-child(2) { animation-delay: .04s; }
+.cp-tab-in > *:nth-child(3), .cp-page-in > *:nth-child(3) { animation-delay: .08s; }
+.cp-tab-in > *:nth-child(n+4), .cp-page-in > *:nth-child(n+4) { animation-delay: .12s; }
+.cp-tab-in .cp-table tbody tr, .cp-page-in .cp-table tbody tr, .cp-rows-in .cp-cases tbody tr { animation: cp-rise-in .36s var(--ease) both; }
+.cp-tab-in .cp-table tbody tr:nth-child(1), .cp-page-in .cp-table tbody tr:nth-child(1), .cp-rows-in .cp-cases tbody tr:nth-child(1) { animation-delay: .06s; }
+.cp-tab-in .cp-table tbody tr:nth-child(2), .cp-page-in .cp-table tbody tr:nth-child(2), .cp-rows-in .cp-cases tbody tr:nth-child(2) { animation-delay: .09s; }
+.cp-tab-in .cp-table tbody tr:nth-child(3), .cp-page-in .cp-table tbody tr:nth-child(3), .cp-rows-in .cp-cases tbody tr:nth-child(3) { animation-delay: .12s; }
+.cp-tab-in .cp-table tbody tr:nth-child(4), .cp-page-in .cp-table tbody tr:nth-child(4), .cp-rows-in .cp-cases tbody tr:nth-child(4) { animation-delay: .15s; }
+.cp-tab-in .cp-table tbody tr:nth-child(5), .cp-page-in .cp-table tbody tr:nth-child(5), .cp-rows-in .cp-cases tbody tr:nth-child(5) { animation-delay: .18s; }
+.cp-tab-in .cp-table tbody tr:nth-child(6), .cp-page-in .cp-table tbody tr:nth-child(6), .cp-rows-in .cp-cases tbody tr:nth-child(6) { animation-delay: .21s; }
+.cp-tab-in .cp-table tbody tr:nth-child(n+7), .cp-page-in .cp-table tbody tr:nth-child(n+7), .cp-rows-in .cp-cases tbody tr:nth-child(n+7) { animation-delay: .24s; }
+/* Prozess: the path is walked, step after step; a step done has its tick drawn, the step now breathes */
+.cp-tab-in .cp-steps > li { animation: cp-rise-in .4s var(--ease) both; }
+.cp-tab-in .cp-steps > li:nth-child(1) { animation-delay: .08s; } .cp-tab-in .cp-steps > li:nth-child(2) { animation-delay: .16s; }
+.cp-tab-in .cp-steps > li:nth-child(3) { animation-delay: .24s; } .cp-tab-in .cp-steps > li:nth-child(4) { animation-delay: .32s; }
+.cp-tab-in .cp-steps > li:nth-child(5) { animation-delay: .4s; } .cp-tab-in .cp-steps > li:nth-child(n+6) { animation-delay: .48s; }
+.cp-tab-in .cp-step.done .cp-step-mark .cp-icon { stroke-dasharray: 30; animation: cp-draw .5s .3s var(--ease) both; }
+.cp-step.now .cp-step-mark > * { border-radius: 50%; animation: cp-breathe 2.2s ease-in-out infinite; }
+/* Akte: what the findings rest on lights up once the page is there */
+.cp-tab-in mark.cp-hit.cited, .cp-tab-in mark.cp-hit.chosen { animation: cp-mark-in .7s .25s var(--ease) both; }
+@keyframes cp-mark-in { from { background-color: transparent; box-shadow: none; } }
+/* a source opened at its passage: the passage answers */
+mark.cp-hit.chosen, mark#live-hit { animation: cp-mark-pulse .9s var(--ease); }
+@keyframes cp-mark-pulse { 30% { box-shadow: 0 0 0 5px var(--crimson-track); } }
+
+/* one control, one fill: the fill slides to the choice */
+.cp-tabs, .cp-filter, .cp-doc-tabs { position: relative; }
+.cp-ink { position: absolute; z-index: 0; border-radius: 999px; background: var(--deep); pointer-events: none; }
+.cp-gliding > .cp-tab[aria-current="page"], .cp-gliding > .cp-filter-item.on, .cp-gliding > .cp-doc-tab[aria-selected="true"] { background: transparent; }
+.cp-gliding > * { position: relative; z-index: 1; }
+.cp-gliding > .cp-ink { position: absolute; z-index: 0; }
+
+/* the list's rows answer the hand: the row lifts a little and its way in shows */
+.cp-cases tbody tr { transition: transform .16s var(--ease); }
+.cp-cases tbody tr:hover { transform: translateY(-1px); }
+.cp-cases tbody tr td:last-child { position: relative; padding-right: 44px; }
+.cp-cases tbody tr td:last-child::after { content: "→"; position: absolute; right: 18px; top: 50%; transform: translate(-6px, -50%); opacity: 0; color: var(--ghost); font-size: 16px; transition: opacity .16s var(--ease), transform .16s var(--ease); }
+.cp-cases tbody tr:hover td:last-child::after, .cp-cases tbody tr.cp-row-on td:last-child::after { opacity: 1; transform: translate(0, -50%); }
+
+/* what CasePath did, said once when it is done and kept one press away: the steps of its work, ticked in turn */
+.cp-trail { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; padding: 0; list-style: none; }
+.cp-trail li { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px 7px 9px; border: 1px solid var(--hair); border-radius: 999px; background: var(--sheet); font-size: 13px; color: var(--ink-2); }
+.cp-trail li b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+.cp-trail li a, .cp-trail li button { color: inherit; text-decoration: none; border: 0; background: none; font: inherit; padding: 0; cursor: pointer; }
+.cp-trail li:hover { border-color: var(--ghost-ring); }
+.cp-trail-tick { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #edf5ee; color: var(--green-ink); flex: none; }
+.cp-trail-tick .cp-icon { width: 12px; height: 12px; stroke-width: 2.8; }
+.cp-trail.enter li { animation: cp-rise-in .4s var(--ease) both; }
+.cp-trail.enter li:nth-child(1) { animation-delay: .1s; } .cp-trail.enter li:nth-child(2) { animation-delay: .28s; }
+.cp-trail.enter li:nth-child(3) { animation-delay: .46s; } .cp-trail.enter li:nth-child(4) { animation-delay: .64s; }
+.cp-trail.enter li:nth-child(5) { animation-delay: .82s; } .cp-trail.enter li:nth-child(n+6) { animation-delay: 1s; }
+.cp-trail.enter .cp-trail-tick { animation: cp-pop .4s var(--ease) both; animation-delay: inherit; }
+.cp-trail.enter .cp-trail-tick .cp-icon { stroke-dasharray: 30; animation: cp-draw .45s var(--ease) both; animation-delay: inherit; }
+.cp-by-open { border: 0; background: none; font: inherit; color: inherit; letter-spacing: inherit; text-transform: inherit; padding: 0; cursor: pointer; }
+.cp-by-open:hover { color: var(--ink-2); }
+.cp-by-open .cp-icon { width: 11px; height: 11px; margin-left: 4px; vertical-align: -1px; transition: transform .16s var(--ease); }
+.cp-by-open[aria-expanded="true"] .cp-icon { transform: rotate(90deg); }
+
+/* CasePath at work: what it reads travels to it, what it finds travels on */
+.cp-work-lines circle { fill: var(--crimson); opacity: .85; }
+.cp-work:has(.cp-work-now.done) .cp-work-lines circle { display: none; }
+/* a file that has just come in says so in the rail */
+.cp-file.enter { animation: cp-file-in .6s var(--ease) both; }
+@keyframes cp-file-in { from { opacity: 0; transform: translateX(-10px); } 60% { box-shadow: 0 0 0 3px var(--crimson-track); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-tab-in > *, .cp-page-in > *, .cp-tab-in .cp-table tbody tr, .cp-page-in .cp-table tbody tr, .cp-rows-in .cp-cases tbody tr, .cp-tab-in .cp-steps > li,
+  .cp-tab-in .cp-step.done .cp-step-mark .cp-icon, .cp-step.now .cp-step-mark > *, .cp-tab-in mark.cp-hit, mark.cp-hit.chosen, mark#live-hit, .cp-trail.enter li,
+  .cp-trail.enter .cp-trail-tick, .cp-trail.enter .cp-trail-tick .cp-icon, .cp-file.enter { animation: none; }
+  .cp-cases tbody tr, .cp-cases tbody tr td:last-child::after { transition: none; }
+  .cp-work-lines circle { display: none; }
+}
+.cp-prepared > footer.cp-bar::before { box-shadow: 0 -16px 14px 2px var(--ground); }
+/* the list's bar: what is shown at the left, the search at the right, on one line */
+.cp-list-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; margin-top: 4px; }
+.cp-list-bar .cp-filter { margin: 0; }
+.cp-list-bar .cp-list-tools { margin: 0; display: flex; align-items: center; gap: 14px; }
+.cp-list-bar #list-search { width: 260px; }
+.cp-list .cp-today-note { margin: 28px 0 0; font-size: 12.5px; }
+.cp-list-bar { margin-top: 22px; }

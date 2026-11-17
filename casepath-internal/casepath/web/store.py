@@ -59,6 +59,10 @@ create table if not exists drafts(
   base_sha256 text not null, base text not null, text text not null, parent_id text, by text not null, at text not null,
   op_id text, primary key(id, part));
 create index if not exists drafts_case on drafts(case_id, form);
+create table if not exists translations(
+  lang text not null, sha256 text not null, translation text not null, case_id text, at text not null,
+  primary key(lang, sha256));
+create table if not exists translation_spend(day text primary key, tokens integer not null);
 create table if not exists case_ticks(
   case_id text primary key references cases(id), digest text not null, state text not null, at text not null);
 """
@@ -117,6 +121,24 @@ class CaseStore:
     def close(self):
         with self._lock:
             self._db.close()
+
+    # What the model translated for a reader in another language (web/translate.py): the translation by the hash of its
+    # original line, with the case it came from, so it is deleted with that case; and the tokens spent on it per day.
+    def translation(self, lang, sha256):
+        row = self._one("select translation from translations where lang=? and sha256=?", lang, sha256)
+        return row["translation"] if row else None
+
+    def translations_put(self, lang, rows, tokens=0):
+        with self._lock:
+            for sha256, translation, case_id in rows:
+                self._db.execute("insert or replace into translations values(?,?,?,?,?)", (lang, sha256, translation, case_id, now()))
+            if tokens:
+                day = now()[:10]
+                self._db.execute("insert into translation_spend values(?,?) on conflict(day) do update set tokens=tokens+excluded.tokens", (day, tokens))
+
+    def translation_spent(self, day):
+        row = self._one("select tokens from translation_spend where day=?", day)
+        return row["tokens"] if row else 0
 
     # One connection serves the web requests and the run threads, so every
     # statement, including reads, runs under the same lock.
@@ -367,7 +389,7 @@ class CaseStore:
             # the Versandpakete the case's approvals stored (bundle.saved): its own record, deleted with it
             bundles = {json.loads(r["data"]).get("sha256") for r in self._all("select data from events where case_id=?", case_id)
                        if json.loads(r["data"]).get("kind") == "bundle.saved"}
-            for table in ("runs", "case_edits", "knowledge_uses", "files", "events", "labels", "drafts", "case_ticks"):
+            for table in ("runs", "case_edits", "knowledge_uses", "files", "events", "labels", "drafts", "case_ticks", "translations"):
                 self._db.execute(f"delete from {table} where case_id=?", (case_id,))
             for row in self._all("select id, data from knowledge"):
                 item = json.loads(row["data"])

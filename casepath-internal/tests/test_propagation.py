@@ -184,7 +184,7 @@ class CorrectionTests(Propagation):
         self.assertEqual(again["limits"], [])  # nothing left CasePath in between
         self.assertEqual((again["consequences"]["basis"], again["consequences"]["undone"]), ("«Besteht der Schimmel weiterhin?»: erledigt", True))
         self.assertEqual(self.edit(case["id"], "settle_request", {"request": "r3.0", "how": "erledigt"}).status_code, 422)  # answered already
-        self.assertIn('data-settle="${esc(x.request)}" data-how="nicht_mehr_noetig"', SCRIPT)
+        self.assertIn('data-settle="${raw(x.request)}" data-how="nicht_mehr_noetig"', SCRIPT)
 
     def test_a_corrected_party_reaches_greeting_letters_and_title(self):
         case = self.seeded()

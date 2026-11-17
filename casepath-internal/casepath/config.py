@@ -104,6 +104,11 @@ class Settings:
     auto_update: bool = False
     auto_update_max_pages: int = 20
     update_token_budget: int = 200_000
+    # Reading in another language (CASEPATH_TRANSLATE): «memory», what the shipped translation memory knows, free;
+    # «model», the model translates the rest in the background, within this many tokens a day
+    # (CASEPATH_TRANSLATE_TOKENS); «off», no translation is offered.
+    translate: str = "memory"
+    translate_token_budget: int = 300_000
     mail_subject: str | None = None  # the subject line shown beside a letter (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
     reference_pattern: str = r"\d{4}\.\d{4}\.\d{4}"  # how a reference number looks in a file (CASEPATH_REFERENCE_PATTERN)
 
@@ -192,6 +197,8 @@ def load_settings(env=None):
         allowed_users=frozenset(u.strip().lower() for u in env.get("CASEPATH_ALLOWED_USERS", "").split(",") if u.strip()),
         reviewers=frozenset(u.strip().lower() for u in env.get("CASEPATH_REVIEWERS", "").split(",") if u.strip()),
         case_access=_case_access(env.get("CASEPATH_CASE_ACCESS")),
+        translate=_one_of(env.get("CASEPATH_TRANSLATE"), "memory", {"off", "memory", "model"}, "CASEPATH_TRANSLATE is off, memory or model"),
+        translate_token_budget=max(0, int(env.get("CASEPATH_TRANSLATE_TOKENS", "300000"))),
         time_measure=_one_of(env.get("CASEPATH_TIME_MEASURE"), "off", {"off", "session"}, "CASEPATH_TIME_MEASURE is off or session"),
         tick_minutes=max(0, int(env.get("CASEPATH_TICK_MINUTES", "60"))),
     )

@@ -33,7 +33,7 @@ from ..agents import core
 from ..process import account, letters, review as reviews, screen, verlauf
 from ..process.clock import as_of
 from ..process.items import ITEM_KINDS, SCREEN_KINDS, kind_title, build_items, item_changes, items_sha256
-from . import identity, listing, outbox
+from . import identity, listing, outbox, translate
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
 from .. import parity
@@ -287,6 +287,11 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                       update_token_budget=settings.update_token_budget, model_as_user=bool(settings.model and settings.model.auth == "user"),
                       parity_sha=parity_sha)
 
+    # What CasePath shows in a reader's other language (web/translate.py): the shipped memory, what the deployment's
+    # model translated before, and that model for the rest where the deployment allows it.
+    translator = translate.Translator(store, mode=settings.translate, model_factory=model_factory or default_model_factory(settings),
+                                      token_budget=settings.translate_token_budget)
+
     ticking = threading.Event()
 
     def tick_loop():
@@ -414,6 +419,30 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                                          "locked": True}, status_code=403)
         return await call_next(request)
 
+    @app.middleware("http")
+    async def in_the_readers_language(request: Request, call_next):
+        """A reader who asked for another language (the page's header x-casepath-lang) gets, beside each JSON answer, the
+        translation of the texts it contains ("_tr"); the answer itself is as always."""
+        response = await call_next(request)
+        language = request.headers.get("x-casepath-lang", "")
+        if (language not in translate.LANGUAGES or settings.translate == "off" or not request.url.path.startswith("/api/")
+                or "json" not in response.headers.get("content-type", "") or response.status_code >= 400):
+            return response
+        body = b"".join([chunk async for chunk in response.body_iterator])
+        headers = {k: v for k, v in response.headers.items() if k.lower() not in ("content-length", "content-type")}
+        try:
+            payload = json.loads(body)
+        except ValueError:
+            payload = None
+        if isinstance(payload, dict) and "_tr" not in payload:
+            row = case_of_path(request.url.path)
+            # a file's pages are translated when the reader asks for a page (POST /api/translate), never a whole file at once
+            pages = request.url.path.endswith("/pages")
+            await run_in_threadpool(translator.annotate, payload, language, case_id=row["id"] if row else None,
+                                    token=request.headers.get("x-forwarded-access-token"), model=not pages)
+            body = json.dumps(payload, ensure_ascii=False).encode()
+        return Response(body, status_code=response.status_code, headers=headers, media_type="application/json")
+
     def area_review(process, latest):
         """The handler's line on the area's review: «aus dem Gesetz abgeleitet, noch nicht freigegeben», «in Prüfung
         (n von m geprüft)» or «freigegeben am … · <reviewer>»."""
@@ -428,6 +457,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def health():
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
                 "imports": files is not None, "uploads": uploads,
+                # reading in another language: from the shipped memory only, or the model for the rest (and what failed last)
+                "translate": {"mode": settings.translate, "languages": list(translate.LANGUAGES), "error": translator.error},
                 "pdf_text": "pypdf" if importlib.util.find_spec("pypdf") else "builtin",
                 "scanned_pages": "rendered" if importlib.util.find_spec("pypdfium2") and importlib.util.find_spec("PIL") else "embedded images",
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none",
@@ -1529,6 +1560,29 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def file_text(file_id: str, who=Depends(user)):
         row = found(store.get_file, file_id, True)
         return {"id": row["id"], "name": row["name"], "text": row["extraction"].get("text", ""), "note": row["extraction"].get("note")}
+
+    class TranslateTexts(BaseModel):
+        model_config = ConfigDict(extra="forbid")
+        lang: Literal["en"]
+        texts: list[str] = Field(max_length=600)
+        case_id: str | None = Field(None, pattern=r"^[A-Za-z0-9_-]{1,80}$")
+
+    @app.post("/api/translate")
+    def translate_texts(body: TranslateTexts, request: Request, who=Depends(user)):
+        """Texts the reader asks for in their language (a page of a file): what is known at once under "_tr"; with the
+        model allowed, the rest is on its way ("_tr_wait") and the same call answers it when it is there."""
+        if body.case_id:
+            found(store.get_case, body.case_id)
+        payload = {"text": [t[:4000] for t in body.texts]}
+        translator.annotate(payload, body.lang, case_id=body.case_id, token=request.headers.get("x-forwarded-access-token"))
+        return {"_tr": payload.get("_tr", {}), "_tr_wait": payload.get("_tr_wait", 0)}
+
+    @app.get("/api/translate/missing")
+    def translate_missing(lang: str = "en", who=Depends(user)):
+        """For whoever keeps the translation memory: the texts readers were shown untranslated, with how often."""
+        reviewer(who)
+        rows = sorted(translator.missed.get(lang, {}).items(), key=lambda r: -r[1])
+        return {"lang": lang, "count": len(rows), "texts": [{"text": t, "asked": n} for t, n in rows]}
 
     @app.get("/api/files/{file_id}/pages")
     def file_pages(file_id: str, who=Depends(user)):

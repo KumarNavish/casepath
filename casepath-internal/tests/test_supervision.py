@@ -241,6 +241,27 @@ class CraftTests(unittest.TestCase):
         longest = max(float(x) for x in __import__("re").findall(r"animation: cp-(?:rise|pop|sheet-in|sheet-next|draw|underline)\b[^;]*? (\.\d+)s", STYLE))
         self.assertLessEqual(longest, 0.6)
 
+    def test_the_ground_is_white_and_a_choice_slides_to_its_place(self):
+        self.assertIn(":root { --ground: #fff;", STYLE)
+        self.assertIn("html, body { background: var(--ground); }", STYLE)
+        self.assertIn("function glide()", SCRIPT)                       # the fill of the tabs, the filter and the letters slides
+        self.assertIn('[".cp-tabs", \'.cp-tab[aria-current="page"]\']', SCRIPT)
+        self.assertIn("|| reducedMotion() ||", SCRIPT)                  # and stands still for a reader who asked
+
+    def test_a_tab_arrives_once_and_what_casepath_did_is_told_when_it_is_done(self):
+        self.assertIn("S.tabIn = true;", SCRIPT)                        # set where the tab changes, used by the one render after
+        self.assertIn('${tabIn ? " cp-tab-in" : ""}', SCRIPT)
+        self.assertIn("const pageIn = () => { const now = S.pageIn; S.pageIn = false;", SCRIPT)
+        self.assertIn(".cp-tab-in .cp-steps > li { animation: cp-rise-in", STYLE)   # Prozess: the path is walked
+        self.assertIn("function workTrail(fresh)", SCRIPT)              # files read, facts found, history, documents, letter, decisions
+        self.assertIn("const open = fresh || S.trailOpen;", SCRIPT)     # shown when it finishes under the reader's eyes, else one press away
+        self.assertIn('id="trail-open"', SCRIPT)
+        self.assertIn("`#/case/${id}/document_finder`", SCRIPT)         # each step leads to where it can be checked
+
+    def test_a_day_of_the_week_pressed_narrows_the_list_to_that_day(self):
+        self.assertIn('const only = dayOnly ? (c) => Boolean(c.due && c.due.date === dayOnly', SCRIPT)
+        self.assertIn("S.rowsIn = true; renderCases();", SCRIPT)        # the rows come in again, the head stays
+
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
         self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)
         self.assertIn('document.querySelector(".cp-prepared .cp-button.primary:not(:disabled)")', SCRIPT)

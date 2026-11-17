@@ -1061,6 +1061,42 @@
     "title": "StudyCopyRequest",
     "type": "object"
    },
+   "TranslateTexts": {
+    "additionalProperties": false,
+    "properties": {
+     "case_id": {
+      "anyOf": [
+       {
+        "pattern": "^[A-Za-z0-9_-]{1,80}$",
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Case Id"
+     },
+     "lang": {
+      "const": "en",
+      "title": "Lang",
+      "type": "string"
+     },
+     "texts": {
+      "items": {
+       "type": "string"
+      },
+      "maxItems": 600,
+      "title": "Texts",
+      "type": "array"
+     }
+    },
+    "required": [
+     "lang",
+     "texts"
+    ],
+    "title": "TranslateTexts",
+    "type": "object"
+   },
    "ValidationError": {
     "properties": {
      "loc": {
@@ -4381,6 +4417,82 @@
      }
     },
     "summary": "Today"
+   }
+  },
+  "/api/translate": {
+   "post": {
+    "description": "Texts the reader asks for in their language (a page of a file): what is known at once under \"_tr\"; with the\nmodel allowed, the rest is on its way (\"_tr_wait\") and the same call answers it when it is there.",
+    "operationId": "translate_texts_api_translate_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/TranslateTexts"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Translate Texts"
+   }
+  },
+  "/api/translate/missing": {
+   "get": {
+    "description": "For whoever keeps the translation memory: the texts readers were shown untranslated, with how often.",
+    "operationId": "translate_missing_api_translate_missing_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "lang",
+      "required": false,
+      "schema": {
+       "default": "en",
+       "title": "Lang",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Translate Missing"
    }
   },
   "/api/workflows": {

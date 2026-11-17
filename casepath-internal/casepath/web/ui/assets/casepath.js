@@ -2,8 +2,9 @@
 // CasePath internal workspace: one page on the live API. Everything shown comes from
 // the case store, the agents' recorded work and the Knowledge base; nothing is staged.
 
-// Case workers read German; English stays available for demonstrations (?lang=en, remembered in this browser).
-const LANG = (() => {
+// Case workers read German; English is the same product for a reader of English. The language is switched in place
+// (no reload) and remembered in this browser; ?lang=en opens in English.
+let LANG = (() => {
   const asked = new URLSearchParams(location.search).get("lang");
   try {
     if (asked) localStorage.setItem("casepath.lang", asked);
@@ -12,6 +13,54 @@ const LANG = (() => {
 })() === "en" ? "en" : "de";
 const T = (en, de) => (LANG === "de" ? de : en);
 document.documentElement.lang = LANG;
+// A wording fixed once (a list of names, a table of words) is made when it is read, so it follows the language.
+const pageIn = () => { const now = S.pageIn; S.pageIn = false; return now ? " cp-page-in" : ""; };
+const lazy = (make) => { let lang = null, value; return () => { if (lang !== LANG) { lang = LANG; value = make(); } return value; }; };
+// What the case says, in the reader's language. Cases are worked in German; for another language the server sends, with
+// each answer, the translation of the texts in it ("_tr"). Text is shown through esc(), which shows the translation
+// where there is one; what is stored, sent or put into a field goes through raw() and is always the original.
+const TR = new Map();
+const reading = () => LANG !== "de";
+// For whoever keeps the translation memory: with casepath.trmiss set in this browser, the texts shown untranslated are
+// collected (window.casepathMissing()).
+const TR_MISS = (() => { try { return localStorage.getItem("casepath.trmiss") ? new Set() : null; } catch (error) { return null; } })();
+if (TR_MISS) window.casepathMissing = () => [...TR_MISS];
+const TR_NONE = new Set();  // texts looked up without a translation, so a redraw does not look again
+function trWhole(value) {
+  const hit = TR.get(value);
+  if (hit !== undefined) return hit;
+  const core = value.trim();
+  const inner = core === value ? undefined : TR.get(core);
+  return inner === undefined ? undefined : value.replace(core, () => inner);
+}
+// A text put together from parts («Frage: …», «… · …»): each part in the reader's language where it is known.
+function trParts(value, depth = 0) {
+  for (const sep of [" · ", ": ", "; ", " – "]) {
+    if (!value.includes(sep)) continue;
+    let any = false;
+    const out = value.split(sep).map((part) => {
+      const t = trWhole(part) ?? (depth < 2 ? trParts(part, depth + 1) : undefined);
+      if (t !== undefined) any = true;
+      return t ?? part;
+    });
+    if (any) return out.join(sep);
+  }
+  return undefined;
+}
+function tr(value) {
+  if (!reading() || typeof value !== "string" || !value || TR_NONE.has(value)) return value;
+  const hit = trWhole(value) ?? trParts(value);
+  if (hit !== undefined) { if (!TR.has(value)) TR.set(value, hit); return hit; }
+  TR_NONE.add(value);
+  if (TR_MISS && /[A-Za-zÄÖÜäöüß]{3}/.test(value)) TR_MISS.add(value.trim());
+  return value;
+}
+function learn(body) {
+  if (!body || typeof body !== "object" || !body._tr) return;
+  if (TR.size > 40000) TR.clear();
+  for (const [k, v] of Object.entries(body._tr)) TR.set(k, v);
+  TR_NONE.clear();
+}
 const WORDS = {
   completed: "abgeschlossen", failed: "fehlgeschlagen", running: "läuft", queued: "wartet", interrupted: "unterbrochen", paused: "angehalten", discarded: "verworfen",
   present: "vorhanden", missing: "fehlt", unusable: "unbrauchbar", unchecked: "nicht geprüft", contradicted: "widersprochen",
@@ -24,14 +73,14 @@ const TOOL_DE = { list_files: "listet die Dateien", open_process: "öffnet den P
                   get_findings: "holt die Feststellungen", record_fact: "hält eine Feststellung fest", record_document: "hält ein Dokument fest", propose_change: "schlägt eine Prozessänderung vor" };
 
 // What each agent is doing, in the interface language; the lead's own instructions to the agents stay in the run record.
-const TASK = {
+const TASK = lazy(() => ({
   lead: T("Prepare the case", "Den Fall vorbereiten"),
   claim_reader: T("Read the files and record the facts", "Dokumente lesen und Fakten festhalten"),
   process_builder: T("Build this case’s process", "Den Prozess dieses Falls aufbauen"),
   document_finder: T("Find each needed document in the files", "Jedes verlangte Dokument in den Dateien finden"),
   source_checker: T("Check each finding against its quote", "Jede Feststellung an ihrem Zitat prüfen"),
   result_checker: T("Evaluate, draft the reply and propose what to learn", "Auswerten, Antwort entwerfen, Lernvorschläge machen"),
-};
+}));
 
 const ICONS = {
   doc: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M9.5 12h6M9.5 15.5h6M9.5 9h3"/>',
@@ -54,14 +103,16 @@ const ICONS = {
   search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/>',
 };
 const icon = (name, cls = "") => `<svg class="cp-icon ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.doc}</svg>`;
-const AGENTS = [
+const AGENTS = lazy(() => ([
   ["claim_reader", T("Claim reader", "Fallleser"), "doc"], ["source_checker", T("Source checker", "Quellenprüfer"), "shield"],
   ["process_builder", T("Process builder", "Prozessbauer"), "nodes"], ["document_finder", T("Document finder", "Dokumentenfinder"), "folder"],
   ["result_checker", T("Result checker", "Ergebnisprüfer"), "check"],
-];
-const AGENT_TITLE = Object.fromEntries(AGENTS.map(([id, title]) => [id, title]).concat([["lead", T("Lead", "Leitung")]]));
-const AGENT_ICON = Object.fromEntries(AGENTS.map(([id, , i]) => [id, i]).concat([["lead", "nodes"]]));
-const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+]));
+const AGENT_TITLE = new Proxy({}, { get: (_, id) => (id === "lead" ? T("Lead", "Leitung") : (AGENTS().find(([a]) => a === id) || [])[1]) });
+const AGENT_ICON = Object.fromEntries(AGENTS().map(([id, , i]) => [id, i]).concat([["lead", "nodes"]]));
+const raw = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const esc = (value) => raw(tr(value));
+const plain = raw;  // the original, where a local name hides raw()
 const $ = (selector, root = document) => root.querySelector(selector);
 let listMineStored = false;
 try { listMineStored = localStorage.getItem("cp-list-mine") === "1"; } catch (error) { /* storage blocked: the list starts unfiltered */ }
@@ -70,9 +121,12 @@ const S = { listMine: listMineStored, me: null, route: {}, data: null, pages: {}
 
 async function api(path, options = {}) {
   const headers = options.body && !(options.body instanceof FormData) ? { "content-type": "application/json" } : {};
+  if (reading()) headers["x-casepath-lang"] = LANG;
   const response = await fetch(path, { ...options, headers });
   const type = response.headers.get("content-type") || "";
   const body = type.includes("json") ? await response.json() : await response.text();
+  learn(body);
+  if (body && typeof body === "object" && "_tr" in body && body._tr_wait) awaitTranslation(body._tr_wait);
   if (!response.ok) throw new Error(plainError(body && body.detail, response.status, response.statusText));
   return body;
 }
@@ -145,7 +199,7 @@ function renderTop() {
   let tabs;
   if (route.view === "case") {
     tabs = [["overview", T("Overview", "Übersicht"), "check"], ["claim_reader", T("File", "Akte"), "doc"], ["process_builder", T("Process", "Prozess"), "nodes"],
-            ["document_finder", T("Documents", "Unterlagen"), "folder"], ["history", T("History", "Verlauf"), "memory"]].map(([id, title, ic]) => `<a class="cp-tab" href="#/case/${esc(route.id)}/${id}"
+            ["document_finder", T("Documents", "Unterlagen"), "folder"], ["history", T("History", "Verlauf"), "memory"]].map(([id, title, ic]) => `<a class="cp-tab" href="#/case/${raw(route.id)}/${id}"
       ${route.tab === id ? 'aria-current="page"' : ""} data-tab="${id}">${icon(ic)}${title}</a>`).join("");
   } else {
     tabs = `<a class="cp-tab" href="#/cases" ${route.view === "cases" ? 'aria-current="page"' : ""}>${icon("folder")}${T("Cases", "Fälle")}</a>`;
@@ -153,7 +207,75 @@ function renderTop() {
   const other = LANG === "de" ? "en" : "de";
   $("#top").innerHTML = `${wordmark}<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
     ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button><a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
-      <a class="cp-link" href="?lang=${other}${esc(location.hash)}" lang="${other}">${other.toUpperCase()}</a></div>`;
+      ${langSwitch()}</div>`;
+  glide();
+}
+// One control, one fill: when the choice changes, the fill slides from the old choice to the new one (the tabs, the
+// list's filter, the letters of a step). Called after a render; where nothing moved, nothing plays.
+const GLIDES = [[".cp-tabs", '.cp-tab[aria-current="page"]'], [".cp-filter", ".cp-filter-item.on"], [".cp-doc-tabs", '.cp-doc-tab[aria-selected="true"]']];
+function glide() {
+  S.glideAt = S.glideAt || {};
+  for (const [box, on] of GLIDES) {
+    const host = document.querySelector(box), el = host && host.querySelector(on);
+    if (!el) { delete S.glideAt[box]; continue; }
+    const h = host.getBoundingClientRect(), r = el.getBoundingClientRect();
+    const at = { x: r.left - h.left, y: r.top - h.top, w: r.width, h: r.height }, was = S.glideAt[box];
+    S.glideAt[box] = at;
+    if (!was || reducedMotion() || !el.animate || (Math.abs(was.x - at.x) < 1 && Math.abs(was.w - at.w) < 1) || host.querySelector(".cp-ink")) continue;
+    const ink = document.createElement("i");
+    ink.className = "cp-ink";
+    Object.assign(ink.style, { left: `${at.x}px`, top: `${at.y}px`, width: `${at.w}px`, height: `${at.h}px` });
+    host.classList.add("cp-gliding"); host.prepend(ink);
+    const done = () => { ink.remove(); host.classList.remove("cp-gliding"); };
+    const move = ink.animate([{ transform: `translate(${was.x - at.x}px, ${was.y - at.y}px)`, width: `${was.w}px` }, { transform: "none", width: `${at.w}px` }],
+      { duration: 260, easing: "cubic-bezier(.2,.8,.2,1)" });
+    move.onfinish = done; move.oncancel = done;
+  }
+}
+// The language, one small control at the right of the header: both languages shown, the current one filled. A press
+// changes the page in place; where the model is still translating a case's texts, a small dot says so.
+function langSwitch() {
+  const one = (l, name) => `<button type="button" class="cp-lang-item ${LANG === l ? "on" : ""}" data-lang="${l}" lang="${l}" aria-pressed="${LANG === l}" title="${name}">${l.toUpperCase()}</button>`;
+  return `<span class="cp-lang" role="group" aria-label="${T("Language", "Sprache")}">${one("de", "Deutsch")}${one("en", "English")}</span>${
+    S.trWait ? `<span class="cp-lang-wait" title="${T("The case's texts are being translated", "Die Texte des Falls werden übersetzt")}"></span>` : ""}`;
+}
+async function setLang(next) {
+  if (next === LANG || S.langBusy || !["de", "en"].includes(next)) return;
+  S.langBusy = true;
+  try { localStorage.setItem("casepath.lang", next); } catch (error) { /* this page only */ }
+  const swap = async () => {
+    LANG = next; document.documentElement.lang = LANG;
+    if (/[?&]lang=/.test(location.search)) history.replaceState(null, "", location.pathname + location.hash);
+    S.trWait = 0; S.trTries = 0; clearTimeout(S.trTimer);
+    if (S.workflows) { try { S.workflows = (await api("/api/workflows")).workflows; } catch (error) { /* the names stay as they were */ } }
+    if (S.route.view === "case") Object.assign(S, { data: null, pages: {} });
+    await route();
+  };
+  try {
+    if (document.startViewTransition && !reducedMotion()) { document.documentElement.classList.add("cp-lang-turn"); await document.startViewTransition(swap).finished; }
+    else {
+      const app = $("#app"); app.classList.add("cp-lang-out");
+      await new Promise((r) => setTimeout(r, reducedMotion() ? 0 : 130));
+      await swap(); app.classList.remove("cp-lang-out");
+    }
+  } catch (error) { if (LANG !== next) await swap(); }
+  finally { S.langBusy = false; document.documentElement.classList.remove("cp-lang-turn"); }
+}
+document.addEventListener("click", (event) => {
+  const b = event.target.closest && event.target.closest("[data-lang]");
+  if (b) setLang(b.dataset.lang);
+});
+// Texts the model is still translating: the page asks again a few times, a little later each time, and shows them
+// when they are there.
+function awaitTranslation(n) {
+  if (!n || !reading() || (S.trTries || 0) >= 8) return;
+  S.trWait = n;
+  clearTimeout(S.trTimer);
+  S.trTimer = setTimeout(async () => {
+    S.trTries = (S.trTries || 0) + 1; S.trWait = 0;
+    if (!reading()) return;
+    if (S.route.view === "case" && !running()) { await loadCase(); } else if (S.route.view !== "case") { await route(); }
+  }, 2500 + 1500 * (S.trTries || 0));
 }
 // Wissen and Auswertung are for the people named to review the legal content (CASEPATH_REVIEWERS; with none named, for
 // everyone): one quiet entry at the right of the header, never beside «Fälle».
@@ -198,7 +320,7 @@ function orderedCases(cases) {
 // preparation that finished, what a colleague did). The last visit is this browser's own note, kept nowhere else.
 let visitFrom = null;
 try { visitFrom = localStorage.getItem("cp-last-visit"); } catch (error) { /* without it «Heute» shows the counts only */ }
-function todayPanel(rows, today, since, walkEnd) {
+function todayPanel(rows, today, since, walkEnd, tools) {
   const open = rows.filter((c) => standOf(c) !== "closed" && !c.historic);
   if (!open.length) return "";
   const n = (bucket) => open.filter((c) => bucketOf(c) === bucket).length;
@@ -236,12 +358,12 @@ function todayPanel(rows, today, since, walkEnd) {
         ${dayLine}${walkEnd ? `<p class="cp-walk-end" role="status">${icon("tick")}${T("You have been through every case that needs you.", "Sie haben alle Fälle durchgesehen, die Sie brauchen.")}</p>` : ""}</div>
       <div class="cp-hero-side"><div class="cp-week" role="group" aria-label="${T("Due in the coming days", "Fällig in den nächsten Tagen")}">${week}</div>
         ${open.some(needsReader) ? `<button class="cp-button primary cp-walk" id="walk-start" type="button">${T("Go through the cases", "Fälle durchgehen")} ${icon("right")}</button>` : ""}</div></div>
-    <div class="cp-filter" role="group" aria-label="${T("Show", "Zeigen")}">${seg(open.length, T("All", "Alle"), "")}${seg(urteil, T("Need your judgment", "Braucht Ihr Urteil"), "urteil")}${seg(due, T("Due today or overdue", "Heute fällig"), "due")}
-      ${seg(ready, T("Ready to send", "Versandbereit"), "versandbereit")}${seg(waits, T("Waiting", "Wartet"), "wartet")}</div>
+    <div class="cp-list-bar"><div class="cp-filter" role="group" aria-label="${T("Show", "Zeigen")}">${seg(open.length, T("All", "Alle"), "")}${seg(urteil, T("Need your judgment", "Braucht Ihr Urteil"), "urteil")}${seg(due, T("Due today or overdue", "Heute fällig"), "due")}
+      ${seg(ready, T("Ready to send", "Versandbereit"), "versandbereit")}${seg(waits, T("Waiting", "Wartet"), "wartet")}</div>${tools || ""}</div>
     ${events.length ? `<div class="cp-today-since"><p class="cp-muted">${T("Since your last visit", "Seit Ihrem letzten Besuch")} (${day(since.since)}):</p><ul>${events.slice(0, 6).map((e) =>
-      `<li><a href="#/case/${esc(e.case)}/overview">${e.reference ? `<span class="cp-ref">${esc(e.reference)}</span> ` : ""}${esc(e.title || "")}</a> · ${esc(e.what)} <span class="cp-muted">· ${esc(e.by || "")} · ${day(e.at)}</span></li>`).join("")}
+      `<li><a href="#/case/${raw(e.case)}/overview">${e.reference ? `<span class="cp-ref">${esc(e.reference)}</span> ` : ""}${esc(e.title || "")}</a> · ${esc(e.what)} <span class="cp-muted">· ${esc(e.by || "")} · ${day(e.at)}</span></li>`).join("")}
       ${events.length + (since.more || 0) > 6 ? `<li class="cp-muted">${T(`and ${events.length + (since.more || 0) - 6} more`, `und ${events.length + (since.more || 0) - 6} weitere`)}</li>` : ""}</ul></div>` : ""}
-    <p class="cp-muted cp-today-note">${T("Only cases that are in CasePath.", "Nur Fälle, die in CasePath liegen.")}${tick.at ? ` ${T("Dates checked", "Termine geprüft")}: ${day(tick.at)}.` : ""}</p></section>`;
+    </section>`;
 }
 async function renderCases() {
   const sinceMark = visitFrom;
@@ -259,7 +381,7 @@ async function renderCases() {
     const s = standOf(c), due = s === "closed" ? null : c.due, late = due && due.date <= (c.as_of || today) && !c.as_of && !c.historic;
     const next = s === "closed" ? "" : c.next_action ? esc(LANG === "de" && c.next_action.text ? c.next_action.text : T(c.next_action.label.en, c.next_action.label.de))
       : s === "working" ? T("being prepared", "wird vorbereitet") : s === "new" ? T("prepare the case", "Fall vorbereiten") : "";
-    return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}"><td>${c.reference ? `<span class="cp-ref">${esc(c.reference)}</span> ` : ""}<a href="#/case/${esc(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
+    return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}"><td>${c.reference ? `<span class="cp-ref">${esc(c.reference)}</span> ` : ""}<a href="#/case/${raw(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
       <td>${next || '<span class="cp-muted">—</span>'}</td>
       <td class="cp-nowrap ${late ? "cp-late" : ""}">${due ? `${dateText(due.date)} <span class="cp-due-word">${esc(dueWord(due.word))}</span>` : '<span class="cp-muted">—</span>'}</td>
       <td><span class="cp-stand ${s}" title="${esc(standText(c))}">${esc(standShort(c))}</span></td></tr>`;
@@ -283,16 +405,17 @@ async function renderCases() {
   const real = live.filter((c) => !(c.intake || {}).synthetic), examples = live.filter((c) => (c.intake || {}).synthetic);
   // files dropped anywhere on the list make a new case; the hint stands beside «Neuer Fall», a box only while there is no case
   const any = cases.cases.length && !S.creating;
-  const tools = cases.cases.length > 6 || q || mineOnly || only ? `<div class="cp-list-tools"><input type="search" id="list-search" value="${esc(S.listQuery || "")}" placeholder="${T("Search: reference, name, status", "Suchen: Referenz, Name, Status")}" aria-label="${T("Search cases", "Fälle suchen")}">
+  const tools = cases.cases.length > 6 || q || mineOnly || only ? `<div class="cp-list-tools"><input type="search" id="list-search" value="${raw(S.listQuery || "")}" placeholder="${T("Search: reference, name, status", "Suchen: Referenz, Name, Status")}" aria-label="${T("Search cases", "Fälle suchen")}">
       ${anyMine || mineOnly ? `<label class="cp-list-mine"><input type="checkbox" id="list-mine" ${mineOnly ? "checked" : ""}> ${T("Mine", "Meine")}</label>` : ""}
       ${q || mineOnly || only ? `<span class="cp-muted" id="list-count">${ordered.length} ${T("of", "von")} ${cases.cases.length}</span>` : ""}
       ${only ? `<button class="cp-link cp-quiet-link" id="list-all" type="button">${T("show all", "alle zeigen")}</button>` : ""}</div>` : "";
   const arriving = S.listFresh; S.listFresh = false;
-  $("#app").innerHTML = `<main class="cp-main cp-list ${arriving ? "cp-list-in" : ""}"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
+  const rowsIn = S.rowsIn && !arriving; S.rowsIn = false;
+  $("#app").innerHTML = `<main class="cp-main cp-list ${arriving ? "cp-list-in" : ""}${rowsIn ? " cp-rows-in" : ""}"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
       ${S.canUpload === false ? "" : `<span class="cp-list-new">${any ? `<span class="cp-muted">${T("or drop files here", "oder Dateien hierher ziehen")}</span>` : ""}
         <label class="cp-button ${cases.cases.some((c) => needsReader(c) && standOf(c) !== "closed" && (!mineOnly || c.mine)) ? "" : "primary"}">${icon("plus")}${T("New case", "Neuer Fall")}<input type="file" id="new-files" multiple hidden></label></span>`}</div>
-    ${todayPanel(cases.cases.filter((c) => !mineOnly || c.mine), today, since, walkEnd)}
-    ${tools}${(q || mineOnly || only) && !ordered.length ? `<p class="cp-muted cp-list-none">${T("No case matches.", "Kein Fall passt.")}</p>` : ""}
+    ${todayPanel(cases.cases.filter((c) => !mineOnly || c.mine), today, since, walkEnd, tools)}
+    ${(q || mineOnly || only) && !ordered.length ? `<p class="cp-muted cp-list-none">${T("No case matches.", "Kein Fall passt.")}</p>` : ""}
     ${real.length ? bucketTables(real, table, 2) : ""}
     ${S.canUpload === false || any ? "" : `<div class="cp-drop" id="drop">${S.creating ? T("Creating the case…", "Der Fall wird angelegt …") : T("Drop files here and CasePath prepares the case", "Dateien hierher ziehen, CasePath bereitet den Fall vor")}</div>`}
     ${S.message ? `<p class="cp-error">${esc(S.message)}</p>` : ""}
@@ -300,20 +423,22 @@ async function renderCases() {
     ${historic.length ? `<h2 class="cp-section cp-muted">${T("Historic files", "Historische Akten")}</h2>${table(historic)}` : ""}
     ${lockedRows.length ? `<h2 class="cp-section cp-muted">${T("Colleagues' cases", "Fälle von Kolleginnen und Kollegen")}</h2><table class="cp-table cp-locked"><tbody>${lockedRows
       .filter((c) => !q || [c.reference, c.owner].filter(Boolean).join(" ").toLowerCase().includes(q)).map((c) => `<tr><td><span class="cp-ref">${esc(c.reference || T("no reference", "ohne Referenz"))}</span></td>
-        <td class="cp-muted">${esc(c.owner || "")}</td><td><button class="cp-button cp-small" data-takeover="${esc(c.id)}">${T("Deputise", "Vertretung übernehmen")}</button></td></tr>`).join("")}</tbody></table>` : ""}
+        <td class="cp-muted">${esc(c.owner || "")}</td><td><button class="cp-button cp-small" data-takeover="${raw(c.id)}">${T("Deputise", "Vertretung übernehmen")}</button></td></tr>`).join("")}</tbody></table>` : ""}
     ${imports ? `<h2 class="cp-section">${T("Case files waiting to be imported", "Bereitgestellte Akten")}</h2>
       ${imports.files.length ? `<table class="cp-table"><tbody>${imports.files.map((f) =>
         `<tr><td><b>${esc(f.title || f.name)}</b>${f.title && f.title !== f.name ? `<br><small class="cp-muted">${esc(f.name)}</small>` : ""}</td>
         <td>${f.prepared ? T(`prepared · ${f.files ?? "?"} file(s)${f.pages ? ` · ${f.pages} pages` : ""}`, `vorbereitet · ${f.files ?? "?"} Datei(en)${f.pages ? ` · ${f.pages} Seiten` : ""}`)
-          : f.size ? `${(f.size / 1048576).toFixed(1)} MB` : "—"}</td><td>${f.case ? `<a class="cp-link" href="#/case/${esc(f.case)}/overview">${T("Open case", "Fall öffnen")}</a>`
-          : `<button class="cp-button" data-import="${esc(f.path)}">${icon("plus")}${T("Import", "Importieren")}</button>`}</td></tr>`).join("")}</tbody></table>`
-        : `<p class="cp-muted">${T("No files there yet.", "Noch keine Dateien dort.")}</p>`}` : ""}</main>`;
+          : f.size ? `${(f.size / 1048576).toFixed(1)} MB` : "—"}</td><td>${f.case ? `<a class="cp-link" href="#/case/${raw(f.case)}/overview">${T("Open case", "Fall öffnen")}</a>`
+          : `<button class="cp-button" data-import="${raw(f.path)}">${icon("plus")}${T("Import", "Importieren")}</button>`}</td></tr>`).join("")}</tbody></table>`
+        : `<p class="cp-muted">${T("No files there yet.", "Noch keine Dateien dort.")}</p>`}` : ""}
+    <p class="cp-muted cp-today-note">${T("Only cases that are in CasePath.", "Nur Fälle, die in CasePath liegen.")}${((since || {}).tick || {}).at ? ` ${T("Dates checked", "Termine geprüft")}: ${dateText(since.tick.at)}.` : ""}</p></main>`;
   S.message = "";
   for (const b of document.querySelectorAll("[data-today-filter]")) b.addEventListener("click", () => {  // a count narrows the list to its cases
-    S.listFilter = !b.dataset.todayFilter || S.listFilter === b.dataset.todayFilter ? null : b.dataset.todayFilter; renderCases();
+    S.listFilter = !b.dataset.todayFilter || S.listFilter === b.dataset.todayFilter ? null : b.dataset.todayFilter; S.rowsIn = true; renderCases();
   });
+  glide();
   const all = $("#list-all");
-  if (all) all.addEventListener("click", () => { S.listFilter = null; renderCases(); });
+  if (all) all.addEventListener("click", () => { S.listFilter = null; S.rowsIn = true; renderCases(); });
   for (const tr of document.querySelectorAll("table.cp-cases tbody tr")) tr.addEventListener("click", (event) => {
     if (event.target.closest("a, button, input, select, label") || String(window.getSelection() || "")) return;
     const a = tr.querySelector("a[href^='#/case/']"); if (a) location.hash = a.getAttribute("href");
@@ -450,7 +575,7 @@ function recorded(kind) {
 function fileName(id) { const f = (S.data.files || []).find((x) => x.id === id); return f ? f.name : id; }
 function fileIcon(file) {
   const kind = file.kind;
-  if (kind === "image") return `<span class="cp-fileicon"><img alt="" src="/api/files/${esc(file.id)}/original" loading="lazy"></span>`;
+  if (kind === "image") return `<span class="cp-fileicon"><img alt="" src="/api/files/${raw(file.id)}/original" loading="lazy"></span>`;
   if (kind === "email") return `<span class="cp-fileicon">${icon("mail", "big")}</span>`;
   if (kind === "pdf") return `<span class="cp-fileicon">${icon("doc", "big")}<span class="tag">PDF</span></span>`;
   if (kind === "word") return `<span class="cp-fileicon">${icon("doc", "big")}<span class="tag word">W</span></span>`;
@@ -494,13 +619,13 @@ function identityLine(c) {
   const p = c.reference_proposed;
   if (S.identityEdit) {  // what is typed is kept in S.identityEdit, so a re-render while typing loses nothing
     const v = S.identityEdit;
-    return `<div class="cp-identity editing"><label>${T("Reference", "Referenz")} <input data-id-field="reference" value="${esc(v.reference)}" maxlength="60"></label>
-      <label>${T("Responsible", "Zuständig")} <input data-id-field="owner" value="${esc(v.owner)}" maxlength="120"></label>
-      <label>${T("Deputy", "Stellvertretung")} <input data-id-field="deputy" value="${esc(v.deputy)}" maxlength="120" placeholder="${T("none", "keine")}"></label>
+    return `<div class="cp-identity editing"><label>${T("Reference", "Referenz")} <input data-id-field="reference" value="${raw(v.reference)}" maxlength="60"></label>
+      <label>${T("Responsible", "Zuständig")} <input data-id-field="owner" value="${raw(v.owner)}" maxlength="120"></label>
+      <label>${T("Deputy", "Stellvertretung")} <input data-id-field="deputy" value="${raw(v.deputy)}" maxlength="120" placeholder="${T("none", "keine")}"></label>
       <span><button class="cp-button cp-small" id="id-save">${T("Save", "Speichern")}</button> <button class="cp-link cp-quiet-link" id="id-cancel">${T("cancel", "abbrechen")}</button></span></div>`;
   }
   const ref = c.reference ? `<span class="cp-ref">${esc(c.reference)}</span>`
-    : p ? `<span class="cp-ref cp-ref-proposed" title="${esc(T(`from ${p.name}`, `aus ${p.name}`))}">${esc(p.value)}</span> <button class="cp-link cp-quiet-link" id="id-accept" data-reference="${esc(p.value)}">${T("take as reference", "als Referenz übernehmen")}</button>`
+    : p ? `<span class="cp-ref cp-ref-proposed" title="${esc(T(`from ${p.name}`, `aus ${p.name}`))}">${esc(p.value)}</span> <button class="cp-link cp-quiet-link" id="id-accept" data-reference="${raw(p.value)}">${T("take as reference", "als Referenz übernehmen")}</button>`
     : `<button class="cp-link cp-quiet-link" id="id-edit-ref">${T("enter a reference", "Referenz eintragen")}</button>`;
   const who = c.owner ? `${esc(c.owner)}${c.deputy ? ` · ${T("deputy", "Stv.")} ${esc(c.deputy)}` : ""}` : "";
   // one way into the editor: «Referenz eintragen» where there is none, «ändern» otherwise
@@ -527,7 +652,7 @@ function bindIdentity() {
 }
 function renderRail() {
   const d = S.data, files = d.files || [], st = d.status || {};
-  const rows = files.map((f) => `<button class="cp-source" data-file="${esc(f.id)}" aria-current="${S.file === f.id}">${fileIcon(f)}
+  const rows = files.map((f) => `<button class="cp-source" data-file="${raw(f.id)}" aria-current="${S.file === f.id}">${fileIcon(f)}
       <span class="cp-source-label">${esc(f.name)}<small>${f.extraction && f.extraction.attached_to ? `${T("Attached to", "Anhang von")} ${esc(f.extraction.attached_to)}`
         : dateText(f.created_at)}${f.extraction && f.extraction.pages > 1 ? ` · ${(f.extraction.kept_pages || []).length || f.extraction.pages} ${T("pages", "Seiten")}` : ""}</small>
       ${(f.extraction && (f.extraction.instruction_like || []).length) ? `<span class="cp-warn">${T("Contains text addressed to an AI", "Enthält Text an die KI")}</span>` : ""}</span></button>${segmentRows(f)}`).join("");
@@ -535,7 +660,7 @@ function renderRail() {
     <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(caseName(d.case))}</div>
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
       ${identityLine(d.case)}
-      ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text ? `<span class="cp-stand ${esc(st.kind || "")}" data-status>${esc(LANG === "de" ? st.text : STAND_EN[st.kind] || st.text)}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
+      ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text ? `<span class="cp-stand ${raw(st.kind || "")}" data-status>${esc(LANG === "de" ? st.text : STAND_EN[st.kind] || st.text)}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
@@ -544,12 +669,12 @@ function renderRail() {
 }
 function moreMenu() {
   const d = S.data, run = d.run, done = S.data.lastCompleted;
-  const options = (S.workflows || []).map((w) => `<option value="${esc(w.id)}" ${d.case.workflow_id === w.id ? "selected" : ""}>${esc(w.short_title || w.title)}</option>`).join("");
+  const options = (S.workflows || []).map((w) => `<option value="${raw(w.id)}" ${d.case.workflow_id === w.id ? "selected" : ""}>${esc(w.short_title || w.title)}</option>`).join("");
   return `<details class="cp-more" ${S.moreOpen ? "open" : ""}><summary class="cp-link">${T("More", "Mehr")}</summary><div class="cp-menu">
     <label>${T("Process", "Prozess")}<select id="workflow"><option value="">${T("from the files", "aus den Akten bestimmen")}</option>${options}</select></label>
     ${running() || !(d.files || []).length ? "" : `<button class="cp-link" id="run">${icon("nodes")}${run ? T("Prepare anew", "Ganz neu vorbereiten") : T("Prepare case", "Fall vorbereiten")}</button>`}
-    ${S.file ? `<a class="cp-link" href="/api/files/${esc(S.file)}/original" target="_blank" rel="noopener">${icon("external")}${T("Open original", "Original öffnen")}</a>` : ""}
-    ${done ? `<a class="cp-link" href="/api/cases/${esc(d.case.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report (.docx)", "Fallbericht (.docx)")}</a>` : ""}
+    ${S.file ? `<a class="cp-link" href="/api/files/${raw(S.file)}/original" target="_blank" rel="noopener">${icon("external")}${T("Open original", "Original öffnen")}</a>` : ""}
+    ${done ? `<a class="cp-link" href="/api/cases/${raw(d.case.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report (.docx)", "Fallbericht (.docx)")}</a>` : ""}
     ${S.mayReview ? `<button class="cp-link" id="historic-toggle" data-historic="${d.historic ? "false" : "true"}">${d.historic ? T("Treat as a live case", "Als laufenden Fall führen") : T("Treat as a historic file", "Als historische Akte führen")}</button>` : ""}
     ${done ? `<small class="cp-muted">${T("Prepared", "Vorbereitet am")} ${dateText(done.finished_at)}</small>` : ""}</div></details>`;
 }
@@ -578,7 +703,7 @@ function segmentRows(file) {
   const segments = (file.extraction && file.extraction.segments) || [];
   if (!segments.length) return "";
   const unfolded = S.route.tab === "claim_reader" || (S.segsOpen || {})[file.id];
-  return `<details class="cp-segs-fold" data-segs="${esc(file.id)}" ${unfolded ? "open" : ""}><summary>${segments.length} ${T("documents inside", "Dokumente darin")}</summary><ol class="cp-segs" aria-label="${T("Documents in", "Dokumente in")} ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${esc(file.id)}" data-page="${s.first_page}" title="${esc(s.summary || "")}">
+  return `<details class="cp-segs-fold" data-segs="${raw(file.id)}" ${unfolded ? "open" : ""}><summary>${segments.length} ${T("documents inside", "Dokumente darin")}</summary><ol class="cp-segs" aria-label="${T("Documents in", "Dokumente in")} ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${raw(file.id)}" data-page="${s.first_page}" title="${esc(s.summary || "")}">
     <span>${esc(s.title || s.kind)}</span><small>${esc([s.kind !== s.title ? s.kind : "", s.date, `${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}`].filter(Boolean).join(" · "))}${olderDocument(s) ? ` · <span class="cp-older">${T("older document", "älteres Dokument")}</span>` : ""}</small></button></li>`).join("")}</ol></details>`;
 }
 
@@ -604,11 +729,12 @@ function bindRail() {
     const save = async () => {
       const value = title.textContent.replace(/\s+/g, " ").trim().slice(0, 300);
       const shown = caseName(S.data.case);
-      if (!value || value === shown) { title.textContent = shown; return; }
+      if (!value || value === shown) { title.textContent = tr(shown); return; }
       const renamed = await api(`/api/cases/${S.route.id}/title`, { method: "PUT", body: JSON.stringify({ title: value }) }).catch(() => null);
       if (renamed) S.data.case = { ...S.data.case, ...renamed, display_title: renamed.title, headline: renamed.title };
-      title.textContent = caseName(S.data.case);
+      title.textContent = tr(caseName(S.data.case));
     };
+    title.addEventListener("focus", () => { if (reading()) title.textContent = caseName(S.data.case); });
     title.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); title.blur(); } if (e.key === "Escape") { title.textContent = caseName(S.data.case); title.blur(); } });
     title.addEventListener("blur", save);
   }
@@ -757,10 +883,41 @@ function highlight(raw, page, cites, from = 0) {
   let out = "", at = from;
   for (const r of ranges) {
     if (r.a < at) continue;
-    out += esc(raw.slice(at, r.a)) + `<mark class="cp-hit ${r.live ? `live${S.litKey === r.key ? " lit" : ""}` : r.chosen ? "chosen" : "cited"}" ${r === live ? 'id="live-hit"' : ""}>${esc(raw.slice(r.a, r.b))}</mark>`;
+    out += plain(raw.slice(at, r.a)) + `<mark class="cp-hit ${r.live ? `live${S.litKey === r.key ? " lit" : ""}` : r.chosen ? "chosen" : "cited"}" ${r === live ? 'id="live-hit"' : ""}>${plain(raw.slice(r.a, r.b))}</mark>`;
     at = r.b;
   }
-  return out + esc(raw.slice(at));
+  return out + plain(raw.slice(at));
+}
+// A page for a reader of another language: the same lines, each in that language where it is known; a line a finding
+// cites is marked as a whole (the exact words are marked in the original, one press away).
+function readPage(text, page, cites, from = 0) {
+  const map = normaliseWithMap(text);
+  const ranges = cites.filter((c) => c.page === page && c.end <= map.length).map((c) => ({ ...c, a: map[c.start], b: map[c.end - 1] + 1 }));
+  const live = ranges.find((r) => r.live) || ranges.find((r) => r.chosen);
+  let at = from, lit = false;
+  return text.slice(from).split("\n").map((line) => {
+    const a = at, b = at + line.length; at = b + 1;
+    const hit = ranges.filter((r) => r.a < b && r.b > a);
+    if (!hit.length || !line.trim()) return esc(line);
+    const top = hit.includes(live) ? live : hit[0], first = top === live && !lit;
+    if (first) lit = true;
+    return `<mark class="cp-hit ${top.live ? `live${S.litKey === top.key ? " lit" : ""}` : top.chosen ? "chosen" : "cited"}" ${first ? 'id="live-hit"' : ""}>${esc(line)}</mark>`;
+  }).join("\n");
+}
+// Lines of a file the shipped memory does not know: where the deployment lets the model translate, the page asks for
+// them once per file and shows them when they are there.
+async function askPages(fileId, doc) {
+  S.pagesAsked = S.pagesAsked || {};
+  if (!reading() || S.translateMode !== "model" || (S.pagesAsked[fileId] || 0) >= 6) return;
+  const lines = [...new Set(doc.pages.flatMap((p) => p.text.split("\n")).map((l) => l.trim()).filter((l) => l.length > 1 && !TR.has(l)))].slice(0, 600);
+  if (!lines.length) return;
+  S.pagesAsked[fileId] = (S.pagesAsked[fileId] || 0) + 1;
+  try {
+    const res = await api("/api/translate", { method: "POST", body: JSON.stringify({ lang: LANG, texts: lines, case_id: S.route.id }) });
+    const got = Object.keys(res._tr || {}).length;
+    if (got && S.route.view === "case" && S.file === fileId) renderCase();
+    if (res._tr_wait) setTimeout(() => { if (S.route.view === "case" && S.file === fileId) askPages(fileId, doc); }, 3500);
+  } catch (error) { /* the lines stay as written */ }
 }
 async function sourceCard(fileId) {
   if (!fileId) return `<div class="cp-card cp-empty">${T("Choose a source on the left.", "Wählen Sie links eine Quelle.")}</div>`;
@@ -774,14 +931,18 @@ async function sourceCard(fileId) {
   const isPdf = doc.media_type === "application/pdf";
   const pageUrl = (n) => `/api/files/${esc(fileId)}/original?pages=${n}`;  // one original page: always small enough to open
   const firstCited = (cites.find((c) => c.live && c.page) || cites.find((c) => c.page) || {}).page || (doc.pages[0] || {}).page;
+  const readSource = reading() && !S.sourceOriginal && doc.pages.length > 0;
+  if (readSource) setTimeout(() => askPages(fileId, doc), 0);
+  const langToggle = reading() && doc.pages.length ? `<button class="cp-link cp-quiet-link cp-source-lang" id="source-lang" type="button" title="${S.sourceOriginal
+    ? T("Read this file in English", "Diese Datei auf Englisch lesen") : T("The file as it was written; the exact words a finding cites are marked there", "Die Datei, wie sie geschrieben wurde; dort sind die zitierten Worte genau markiert")}">${S.sourceOriginal ? T("English", "Englisch") : T("Original", "Original")}</button>` : "";
   const body = doc.pages.length ? doc.pages.map((p) => `${p.page ? (isPdf
       ? `<a class="page" id="page-${p.page}" href="${pageUrl(p.page)}" target="_blank" rel="noopener" title="${T("Open this original page", "Originalseite öffnen")}">${T("Page", "Seite")} ${p.page} ${icon("external")}</a>`
-      : `<span class="page" id="page-${p.page}">${T("Page", "Seite")} ${p.page}</span>`) : ""}${highlight(p.text, p.page, cites, skip(p))}`).join("\n")
-    : doc.kind === "image" ? `<img alt="${esc(doc.name)}" src="/api/files/${esc(fileId)}/original" style="max-width:100%">` : `<span class="cp-muted">${T("No readable text.", "Kein lesbarer Text.")}</span>`;
+      : `<span class="page" id="page-${p.page}">${T("Page", "Seite")} ${p.page}</span>`) : ""}${readSource ? readPage(p.text, p.page, cites, skip(p)) : highlight(p.text, p.page, cites, skip(p))}`).join("\n")
+    : doc.kind === "image" ? `<img alt="${esc(doc.name)}" src="/api/files/${raw(fileId)}/original" style="max-width:100%">` : `<span class="cp-muted">${T("No readable text.", "Kein lesbarer Text.")}</span>`;
   return `<article class="cp-card" aria-label="${esc(doc.name)}"><div class="cp-doc-toolbar">
-      <button class="cp-icon-button" data-step-file="${esc(files[index - 1] || "")}" aria-label="${T("Previous source", "Vorherige Quelle")}" ${index <= 0 ? "disabled" : ""}>${icon("left")}</button>
-      <button class="cp-icon-button" data-step-file="${esc(files[index + 1] || "")}" aria-label="${T("Next source", "Nächste Quelle")}" ${index >= files.length - 1 ? "disabled" : ""}>${icon("right")}</button>
-      <span class="grow"><span class="name">${esc(doc.name)}</span></span><a class="cp-icon-button" href="${isPdf && firstCited ? pageUrl(firstCited) : `/api/files/${esc(fileId)}/original`}" target="_blank" rel="noopener" aria-label="${T("Open full source", "Original öffnen")}">${icon("external")}</a></div>
+      <button class="cp-icon-button" data-step-file="${raw(files[index - 1] || "")}" aria-label="${T("Previous source", "Vorherige Quelle")}" ${index <= 0 ? "disabled" : ""}>${icon("left")}</button>
+      <button class="cp-icon-button" data-step-file="${raw(files[index + 1] || "")}" aria-label="${T("Next source", "Nächste Quelle")}" ${index >= files.length - 1 ? "disabled" : ""}>${icon("right")}</button>
+      <span class="grow"><span class="name">${esc(doc.name)}</span></span>${langToggle}<a class="cp-icon-button" href="${isPdf && firstCited ? pageUrl(firstCited) : `/api/files/${raw(fileId)}/original`}" target="_blank" rel="noopener" aria-label="${T("Open full source", "Original öffnen")}">${icon("external")}</a></div>
     ${head}<div class="cp-doc-body">${body}</div>${readingNote(doc)}</article>`;
 }
 
@@ -812,7 +973,7 @@ function spine() {
 
 function describe(e) {
   const what = {
-    "agent.start": () => `${T("starts", "beginnt")}: ${TASK[e.agent] || e.instruction || ""}`,
+    "agent.start": () => `${T("starts", "beginnt")}: ${TASK()[e.agent] || e.instruction || ""}`,
     "agent.end": () => { const c = e.counts || {};
       if (e.routing) {
         const title = ((S.workflows || []).find((w) => w.id === e.workflow) || {}).title || e.workflow;
@@ -823,7 +984,7 @@ function describe(e) {
       if ("agreed" in c) return T(`Second reading: ${c.agreed} agree, ${c.differed} differ, ${c.added} found only now`, `Zweite Lesung: ${c.agreed} übereinstimmend, ${c.differed} abweichend, ${c.added} erst jetzt gefunden`);
       if ("checked" in c) return T(`${c.accepted} of ${c.checked} supported by their quotes`, `${c.accepted} von ${c.checked} durch ihre Zitate belegt`);
       return e.summary || T("done", "fertig"); },
-    "delegate": () => `${T("asks", "beauftragt")} ${AGENT_TITLE[e.to] || e.to}: ${TASK[e.to] || e.instruction || ""}`,
+    "delegate": () => `${T("asks", "beauftragt")} ${AGENT_TITLE[e.to] || e.to}: ${TASK()[e.to] || e.instruction || ""}`,
     "fact.located": () => T(`found ${e.quotes} exact quote(s) for “${questionOf(e.fact)}”`, `${e.quotes} wörtliche Stelle(n) gefunden zu «${questionOf(e.fact)}»`),
     "fact.accepted": () => T(`supports “${questionOf(e.fact)}”`, `bestätigt «${questionOf(e.fact)}»`),
     "fact.rejected": () => `${T(`does not accept “${questionOf(e.fact)}”`, `bestätigt «${questionOf(e.fact)}» nicht`)}${e.reason ? `: ${e.reason}` : ""}`,
@@ -880,8 +1041,8 @@ function rate(target) {
   if (!ratedRun()) return "";
   const v = verdictOf(target);
   return `<span class="cp-rate" role="group" aria-label="${T("Your feedback", "Ihre Rückmeldung")}">
-    <button type="button" data-rate="${esc(target)}" data-verdict="correct" aria-pressed="${v === "correct"}" title="${T("Correct", "Stimmt")}" aria-label="${T("Correct", "Stimmt")}">${icon("tick")}</button>
-    <button type="button" data-rate="${esc(target)}" data-verdict="wrong" aria-pressed="${v === "wrong"}" title="${T("Not correct", "Stimmt nicht")}" aria-label="${T("Not correct", "Stimmt nicht")}">${icon("xcircle")}</button></span>`;
+    <button type="button" data-rate="${raw(target)}" data-verdict="correct" aria-pressed="${v === "correct"}" title="${T("Correct", "Stimmt")}" aria-label="${T("Correct", "Stimmt")}">${icon("tick")}</button>
+    <button type="button" data-rate="${raw(target)}" data-verdict="wrong" aria-pressed="${v === "wrong"}" title="${T("Not correct", "Stimmt nicht")}" aria-label="${T("Not correct", "Stimmt nicht")}">${icon("xcircle")}</button></span>`;
 }
 async function sendRating(button) {
   const target = button.dataset.rate, verdict = verdictOf(target) === button.dataset.verdict ? null : button.dataset.verdict;
@@ -900,7 +1061,7 @@ const needOf = (id) => {
   const d = ((S.data.process || {}).documents || []).find((x) => x.id === id) || (((liveState() || {}).state || {}).documents || []).find((x) => x.document === id);
   return d ? d.title : T("a document added for this case", "ein für diesen Fall ergänztes Dokument");
 };
-const clip = (text, n) => (String(text).length > n ? `${String(text).slice(0, n - 1)}…` : String(text));
+const clip = (text, n) => { const t = String(tr(text)); return t.length > n ? `${t.slice(0, n - 1)}…` : t; };
 const reducedMotion = () => Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 // Marks an element as new the first time it is drawn, so it enters once and stays still on later polls.
 function enter(key) { if (S.shown.has(key)) return ""; S.shown.add(key); return " enter"; }
@@ -930,7 +1091,7 @@ function livePanel(live) {
   const mine = S.events.filter((e) => e.agent === agent && !["agent.start", "process.state", "reading.saved"].includes(e.kind)).slice(-4);
   const target = S.events.slice().reverse().find((e) => e.agent === agent && (e.target || e.fact || e.document));
   const title = target ? (target.fact || (target.target && facts().some((f) => f.id === target.target)) ? questionOf(target.fact || target.target) : needOf(target.document || target.target))
-    : TASK[agent] || AGENT_TITLE[agent];
+    : TASK()[agent] || AGENT_TITLE[agent];
   const rows = mine.map((e, i) => i === mine.length - 1 ? activeRow(describe(e), e)
     : `<li>${icon("check")}${esc(describe(e))}</li>`).join("") || activeRow(T("Starting", "Beginnt"), S.events[S.events.length - 1]);
   return `<aside><section class="cp-card cp-plan"><h3>${T(`Building “${esc(title)}”`, `In Arbeit: «${esc(title)}»`)}</h3><ol>${rows}</ol></section>
@@ -992,7 +1153,7 @@ function liveSpine(live) {
     // At a fork the case passed, the branches it did not take fall away.
     const dropped = after && !row.either && (step.next || []).length > 1 ? step.next.filter((e) => e.to !== after.step) : [];
     const end = row.state === "terminal" ? `<small class="cp-q-end">${T("End of the process", "Prozessende")}</small>` : "";
-    nodes.push(`<div class="cp-q ${cls}${row.state === "terminal" ? " end" : ""}${enter(`node:${row.step}`)}" data-step-node="${esc(row.step)}" title="${esc(step.title)}">
+    nodes.push(`<div class="cp-q ${cls}${row.state === "terminal" ? " end" : ""}${enter(`node:${row.step}`)}" data-step-node="${raw(row.step)}" title="${esc(step.title)}">
       <span class="cp-ring">${cls === "done" ? icon("tick") : ""}</span><span class="cp-q-label">${esc(stepLabel(step))}</span>${end}
       ${dropped.length ? `<span class="cp-dropped">${dropped.map((e) => `<s class="${enter(`drop:${row.step}:${e.to}`).trim()}">${esc(clip(branchLabel(e, steps), 60))}</s>`).join("")}</span>` : ""}</div>`);
   });
@@ -1021,7 +1182,7 @@ function liveDocuments(live) {
     const origin = d.knowledge ? `<span class="cp-kv">${icon("memory")}${T("Knowledge", "Wissen")} v${esc(d.version)} ${d.suggested ? T("suggested", "vorgeschlagen") : T("used", "genutzt")}</span>`
       : d.edit && d.by_agent ? `<span class="cp-kv add">${icon(d.legal_basis ? "law" : "plus")}${d.legal_basis ? T(`required by law (${esc(d.legal_basis)})`, `nach Gesetz verlangt (${esc(d.legal_basis)})`)
         : T("suggested for this case", "für diesen Fall vorgeschlagen")}</span>` : "";
-    return `<li class="st-${esc(d.status)}${enter(`doc:${d.document}`)}" data-doc="${esc(d.document)}">${mark}<span><b>${esc(d.title)}</b>
+    return `<li class="st-${raw(d.status)}${enter(`doc:${d.document}`)}" data-doc="${raw(d.document)}">${mark}<span><b>${esc(d.title)}</b>
       <small>${step ? `${T("for", "für")} «${esc(clip(stepLabel(step), 64))}»` : T("for the whole case", "für den ganzen Fall")}${d.required === "depends" ? (d.questions && d.questions.length ? T(` · if the answer requires it: ${esc(d.questions.join(" / "))}`, ` · falls die Antwort es verlangt: ${esc(d.questions.join(" / "))}`) : T(" · if an open answer requires it", " · falls eine offene Antwort es verlangt")) : ""}</small>${origin}</span></li>`;
   }).join("");
   const used = (graph.knowledge || []).filter((k) => !docs.some((d) => d.knowledge === k.item));
@@ -1130,7 +1291,7 @@ function factLine(id) {
   const f = item("fact", id);
   if (!f || f.value === null || f.value === undefined || f.value === "") return "";
   const src = (f.evidence || []).find((e) => e.file);
-  return `<li class="cp-step-fact" data-item="${esc(f.item_id)}">${esc(shortFact(id))}: <b>${esc(plainValue(f.value))}</b>${src ? sourceChip(src) : f.verdict === "set_by_handler" ? ` <span class="cp-muted">· ${T("your decision", "Ihr Entscheid")}</span>` : ""}</li>`;
+  return `<li class="cp-step-fact" data-item="${raw(f.item_id)}">${esc(shortFact(id))}: <b>${esc(plainValue(f.value))}</b>${src ? sourceChip(src) : f.verdict === "set_by_handler" ? ` <span class="cp-muted">· ${T("your decision", "Ihr Entscheid")}</span>` : ""}</li>`;
 }
 // The decisions of the step the case is at: the cover check (while no later stage settles it), the handler's own decisions
 // of this stage, and what a prescribed letter rests on; each answered here as on the card.
@@ -1146,9 +1307,9 @@ function stepDecisions(stepId) {
   const cover = sum && !late ? `<li class="cp-step-decide" data-item="cover:summary"><span>${T("Cover", "Deckung")} <span class="cp-muted">· ${esc(String(sum.value || "").replace(/^Deckung: /, ""))}</span></span>
       <span class="cp-point-actions">${coverButtons()}<button class="cp-link cp-quiet-link" data-cover-toggle aria-expanded="${Boolean(S.coverOpen)}">${T("check", "prüfen")}</button></span>
       ${S.coverOpen ? coverPanel() : ""}${S.coverDecline ? `<p class="cp-reasons cp-cover-why"><span class="cp-muted">${T("Which point fails?", "Welcher Punkt ist nicht erfüllt?")}</span>
-      ${(S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary").map((x) => `<button class="cp-chip" data-cover-reason="${esc(x.key)}">${esc(x.title)}</button>`).join("")}<button class="cp-chip" data-cover-reason="anderer Grund">${T("other reason", "anderer Grund")}</button></p>` : ""}</li>` : "";
+      ${(S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary").map((x) => `<button class="cp-chip" data-cover-reason="${raw(x.key)}">${esc(x.title)}</button>`).join("")}<button class="cp-chip" data-cover-reason="anderer Grund">${T("other reason", "anderer Grund")}</button></p>` : ""}</li>` : "";
   const prospects = item("check", "aussichten");
-  const rows = own.map((f) => `<li class="cp-step-decide" data-item="${esc(f.item_id)}"><span>${esc(plainQuestion((f.label || {}).de))}${f.key === "aussichten" && prospects ? passagesToggle(`check:aussichten`, prospects.law) : ""}</span><span class="cp-point-actions">${decisionButtons(f.key)}</span></li>`).join("");
+  const rows = own.map((f) => `<li class="cp-step-decide" data-item="${raw(f.item_id)}"><span>${esc(plainQuestion((f.label || {}).de))}${f.key === "aussichten" && prospects ? passagesToggle(`check:aussichten`, prospects.law) : ""}</span><span class="cp-point-actions">${decisionButtons(f.key)}</span></li>`).join("");
   return cover + rows + checkRows();
 }
 const passagesToggle = (key, law) => (law || []).length ? ` ${clauseTag(key, law)}` : "";
@@ -1157,7 +1318,7 @@ function checkRows() {
   return (S.data.items || []).filter((i) => i.kind === "check" && i.key !== "aussichten").map((c) => {
     const missing = c.key === "androhung" && c.value === "fehlt", others = c.key === "androhung" && c.value === "andere";
     const override = (missing || others) && c.decided !== true ? `<span class="cp-point-actions"><button class="cp-button cp-small" data-decide="leistungen_einstellen" data-value="ja">${T("End benefits all the same", "Leistungen trotzdem einstellen")}</button></span>` : "";
-    return `<li class="cp-step-decide" data-item="${esc(c.item_id)}"><span>${esc(plainQuestion((c.label || {}).de))}${c.key === "androhung" ? `: <b class="${missing || others ? "cp-flag" : ""}">${missing ? T("missing", "fehlt") : others ? T("only by others", "nur durch Dritte") : T("in the file", "in der Akte")}</b>` : ""}
+    return `<li class="cp-step-decide" data-item="${raw(c.item_id)}"><span>${esc(plainQuestion((c.label || {}).de))}${c.key === "androhung" ? `: <b class="${missing || others ? "cp-flag" : ""}">${missing ? T("missing", "fehlt") : others ? T("only by others", "nur durch Dritte") : T("in the file", "in der Akte")}</b>` : ""}
       ${clauseTag(c.item_id, c.law || c.clauses || [])}${(c.lines || []).map((l) => `<br><span class="cp-muted">${esc(isoDay(l))}</span>`).join("")}${sourceChips(c.evidence)}</span>${override}</li>`;
   }).join("");
 }
@@ -1177,13 +1338,13 @@ function processView() {
   const rows = model.path.map((n, i) => {
     const state = n.state === "passed" || n.state === "terminal" ? "done" : n.state === "current" ? "now" : "next";
     const mark = { done: "✓", now: "●", next: "○" }[state];
-    const name = S.editing ? `<button class="cp-link cp-step-pick" data-step="${esc(n.step.id)}" aria-pressed="${S.step === n.step.id}">${esc(shortTitle(n.step.title))}</button>` : `<b>${esc(shortTitle(n.step.title))}</b>`;
+    const name = S.editing ? `<button class="cp-link cp-step-pick" data-step="${raw(n.step.id)}" aria-pressed="${S.step === n.step.id}">${esc(shortTitle(n.step.title))}</button>` : `<b>${esc(shortTitle(n.step.title))}</b>`;
     const facts = state === "done" ? decided(i).map(factLine).join("") : "";
     const asked = new Set(["deckung", ...((S.data.draft || {}).needs || [])]);  // a decision asked below is not also «offen»
-    const waiting = state === "now" ? (ev.waiting_for || []).filter((w) => !asked.has(w.fact)).map((w) => `<li class="cp-step-open" data-item="fact:${esc(w.fact)}"><span class="cp-muted">${T("open", "offen")}:</span> ${esc(shortFact(w.fact))}</li>`).join("") : "";
+    const waiting = state === "now" ? (ev.waiting_for || []).filter((w) => !asked.has(w.fact)).map((w) => `<li class="cp-step-open" data-item="fact:${raw(w.fact)}"><span class="cp-muted">${T("open", "offen")}:</span> ${esc(shortFact(w.fact))}</li>`).join("") : "";
     const here = state === "now" && !ev.outcome ? `${sc.title ? `<li class="cp-step-action">${T("Next", "Als Nächstes")}: ${esc(sc.title)}</li>` : ""}${stepDecisions(n.step.id)}
-        ${sc.missing !== undefined ? `<li class="cp-step-docs"><a class="cp-link cp-quiet-link" href="#/case/${esc(S.route.id)}/document_finder" data-missing="${sc.missing}">${T("Documents", "Unterlagen")} · ${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></li>` : ""}` : "";
-    return `<li class="cp-step ${state}" data-item="step:${esc(n.step.id)}"><span class="cp-step-mark">${mark}</span><div class="cp-step-body">${name}${state === "now" ? ` <span class="cp-muted">· ${T("now", "jetzt")}</span>` : ""}${originLabel(n.step)}
+        ${sc.missing !== undefined ? `<li class="cp-step-docs"><a class="cp-link cp-quiet-link" href="#/case/${raw(S.route.id)}/document_finder" data-missing="${sc.missing}">${T("Documents", "Unterlagen")} · ${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></li>` : ""}` : "";
+    return `<li class="cp-step ${state}" data-item="step:${raw(n.step.id)}"><span class="cp-step-mark">${mark}</span><div class="cp-step-body">${name}${state === "now" ? ` <span class="cp-muted">· ${T("now", "jetzt")}</span>` : ""}${originLabel(n.step)}
       ${facts || waiting || here ? `<ul class="cp-step-facts">${facts}${waiting}${here}</ul>` : ""}</div></li>`;
   }).join("");
   const end = ev.outcome ? `<li class="cp-step done"><span class="cp-step-mark">✓</span><div class="cp-step-body"><b>${T("End", "Abschluss")}: ${esc(ev.outcome.title)}</b></div></li>` : "";
@@ -1192,7 +1353,7 @@ function processView() {
   const order = (S.data.process.steps || []).map((x) => x.id);
   const behind = first ? (ev.reached || []).filter((id) => !onPath.has(id) && model.steps[id] && order.indexOf(id) < order.indexOf(first.id))
     .sort((a, b) => order.indexOf(a) - order.indexOf(b)) : [];
-  const before = behind.map((id) => `<li class="cp-step done" data-item="step:${esc(id)}"><span class="cp-step-mark">✓</span><div class="cp-step-body"><b>${esc(shortTitle(model.steps[id].title))}</b> <span class="cp-muted">· ${T("as the file shows", "laut Akte")}</span></div></li>`).join("");
+  const before = behind.map((id) => `<li class="cp-step done" data-item="step:${raw(id)}"><span class="cp-step-mark">✓</span><div class="cp-step-body"><b>${esc(shortTitle(model.steps[id].title))}</b> <span class="cp-muted">· ${T("as the file shows", "laut Akte")}</span></div></li>`).join("");
   // what may follow the current step: its branches, one line, never a sequence the case has not taken
   const after = ev.outcome ? [] : [...new Set((current.step.next || []).map((e) => (model.steps[e.to] || {}).title).filter(Boolean))];
   const ahead = after.length ? `<li class="cp-step next"><span class="cp-step-mark">○</span><div class="cp-step-body"><span class="cp-muted">${T("then, depending on the case", "danach, je nach Fall")}</span>
@@ -1219,22 +1380,22 @@ function proposalVersion(row) {
   return row.action === "new" ? T("v1 proposed", "v1 vorgeschlagen") : "";
 }
 
-const OPS = [["add_document", T("Add a document need", "Dokument verlangen")], ["set_required_when", T("Change when a document is required", "Ändern, wann ein Dokument nötig ist")],
+const OPS = lazy(() => ([["add_document", T("Add a document need", "Dokument verlangen")], ["set_required_when", T("Change when a document is required", "Ändern, wann ein Dokument nötig ist")],
              ["add_question", T("Add a question", "Frage ergänzen")], ["add_step", T("Add a step before this one", "Schritt davor ergänzen")],
-             ["set_transition", T("Redirect a branch", "Verzweigung umleiten")], ["rename_step", T("Rename this step", "Schritt umbenennen")]];
+             ["set_transition", T("Redirect a branch", "Verzweigung umleiten")], ["rename_step", T("Rename this step", "Schritt umbenennen")]]));
 
 function conditionFields(prefix) {
-  const options = facts().map((f) => `<option value="${esc(f.id)}">${esc(questionLabel(f))}</option>`).join("");
+  const options = facts().map((f) => `<option value="${raw(f.id)}">${esc(questionLabel(f))}</option>`).join("");
   return `<div class="row"><label>${T("Required when", "Nötig, wenn")}<select name="${prefix}-fact"><option value="">${T("Always", "Immer")}</option>${options}</select></label>
     <label>${T("is", "ist")}<select name="${prefix}-value"></select></label></div>`;
 }
 
 function editForm(step) {
-  const docs = S.data.process.documents.map((d) => `<option value="${esc(d.id)}">${esc(d.title)}</option>`).join("");
-  const steps = S.data.process.steps.map((s) => `<option value="${esc(s.id)}">${esc(s.title)}</option>`).join("");
+  const docs = S.data.process.documents.map((d) => `<option value="${raw(d.id)}">${esc(d.title)}</option>`).join("");
+  const steps = S.data.process.steps.map((s) => `<option value="${raw(s.id)}">${esc(s.title)}</option>`).join("");
   const edges = (step.next || []).map((e, i) => `<option value="${i}">${esc(e.label || T("next", "weiter"))} → ${esc(S.data.process.steps.find((s) => s.id === e.to).title)}</option>`).join("");
   return `<form class="cp-edit" id="edit-form"><h3>${T(`Edit “${esc(step.title)}”`, `«${esc(step.title)}» bearbeiten`)}</h3>
-    <label>${T("Change", "Änderung")}<select name="op">${OPS.map(([v, t]) => `<option value="${v}">${t}</option>`).join("")}</select></label>
+    <label>${T("Change", "Änderung")}<select name="op">${OPS().map(([v, t]) => `<option value="${v}">${t}</option>`).join("")}</select></label>
     <div data-op="add_document"><label>${T("Document", "Dokument")}<input name="title" maxlength="200" placeholder="${T("e.g. Ventilation record", "z. B. Lüftungsprotokoll")}"></label>
       <label>${T("Why it is needed", "Wozu es nötig ist")}<input name="why" maxlength="400"></label>${conditionFields("add")}</div>
     <div data-op="set_required_when" hidden><label>${T("Document", "Dokument")}<select name="document">${docs}</select></label>${conditionFields("set")}</div>
@@ -1244,7 +1405,7 @@ function editForm(step) {
       <label>${T("Why this case needs it", "Wozu dieser Fall ihn braucht")}<input name="stepwhy" maxlength="400"></label>
       <label>${T("Legal basis (optional)", "Rechtsgrundlage (freiwillig)")}<input name="steplaw" maxlength="200" placeholder="${T("e.g. Art. 336b OR", "z. B. Art. 336b OR")}"></label></div>
     <div data-op="set_transition" hidden><label>${T("Branch", "Verzweigung")}<select name="edge">${edges}</select></label><label>${T("Now leads to", "Führt neu zu")}<select name="to">${steps}</select></label></div>
-    <div data-op="rename_step" hidden><label>${T("New wording", "Neue Bezeichnung")}<input name="rename" maxlength="200" value="${esc(step.title)}"></label></div>
+    <div data-op="rename_step" hidden><label>${T("New wording", "Neue Bezeichnung")}<input name="rename" maxlength="200" value="${raw(step.title)}"></label></div>
     <label>${T("Why this changes (required)", "Begründung (Pflicht)")}<textarea name="reason" rows="2" required maxlength="500"></textarea></label>
     <label class="cp-check"><input type="checkbox" name="similar"> ${T("Use for similar cases (a proposal in Knowledge, approved there after its replay)", "Für ähnliche Fälle übernehmen (Vorschlag im Wissen, dort nach dem Nachspielen freigeben)")}</label>
     <div class="row"><button class="cp-button primary">${T("Save change", "Änderung speichern")}</button><button type="button" class="cp-button" id="edit-cancel">${T("Cancel", "Abbrechen")}</button>
@@ -1359,7 +1520,7 @@ function claimView(card) {
       ${parties ? `<h2 class="cp-section">${T("Parties", "Parteien")}</h2><p data-item="party:0">${parties}</p>` : ""}
       ${timeline.length ? `<h2 class="cp-section">${T("Timeline", "Chronologie")}</h2><div class="cp-lines">${timeline.map((t, i) => {
         const c = (t.citations || [])[0];
-        return `<div data-item="timeline:${i}"><time>${esc(isoDay(t.date))}</time><span>${c ? `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(t.event)}</button>` : esc(t.event)}${rate(`timeline:${i}`)}</span></div>`;
+        return `<div data-item="timeline:${i}"><time>${esc(isoDay(t.date))}</time><span>${c ? `<button class="cp-link" data-cite-file="${raw(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(t.event)}</button>` : esc(t.event)}${rate(`timeline:${i}`)}</span></div>`;
       }).join("")}</div>` : ""}
     </section>` : `<p class="cp-empty">${T("Not prepared yet", "Noch nicht vorbereitet")}</p>`}${dossierContents()}</aside></div>`;
 }
@@ -1370,7 +1531,7 @@ function dossierContents() {
   if (!files.length) return "";
   const count = files.reduce((n, f) => n + f.extraction.segments.length, 0);
   return `<section class="cp-card cp-contents"><h2 class="cp-section">${T(`Contents of the files · ${count} documents`, `Inhalt der Dossiers · ${count} Dokumente`)}</h2>
-    ${files.map((f) => `${files.length > 1 ? `<h3>${esc(f.name)}</h3>` : ""}<ol>${f.extraction.segments.map((s) => `<li><button class="cp-link" data-cite-file="${esc(f.id)}" data-page="${s.first_page}">
+    ${files.map((f) => `${files.length > 1 ? `<h3>${esc(f.name)}</h3>` : ""}<ol>${f.extraction.segments.map((s) => `<li><button class="cp-link" data-cite-file="${raw(f.id)}" data-page="${s.first_page}">
       <span>${esc([isoDay(s.date), s.kind].filter(Boolean).join(" · "))} <small>${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}</small>${olderDocument(s) ? ` <small class="cp-older">${T("older document", "älteres Dokument")}</small>` : ""}</span>
       <b>${esc(s.title)}</b>${s.summary ? `<small>${esc(s.summary)}</small>` : ""}</button></li>`).join("")}</ol>`).join("")}</section>`;
 }
@@ -1381,7 +1542,7 @@ function checkerView() {
   return `${ratedRun() ? feedbackLine() : ""}<table class="cp-table"><thead><tr><th>${T("Finding", "Feststellung")}</th><th>${T("Verdict", "Prüfung")}</th><th>${T("Exact sentence", "Wörtliche Stelle")}</th></tr></thead><tbody>${rows.map(([label, row]) => `<tr>
     <td>${esc(label)}${row.value !== undefined && row.value !== null ? `: <b>${esc(row.part || valueText(row.value))}</b>` : row.status ? ` <span class="cp-muted">(${esc(word(row.status))})</span>` : ""}</td>
     <td>${row.verdict === "accepted" ? `<span class="cp-chip good">${T("supported", "belegt")}</span>` : row.verdict === "rejected" ? `<span class="cp-chip bad">${T("not supported", "nicht belegt")}</span><br><small class="cp-muted">${esc(row.verdict_reason || "")}</small>` : `<span class="cp-chip wait">${T("not checked", "nicht geprüft")}</span>`}${rate(row.fact ? `fact:${row.fact}` : `document:${row.document}`)}</td>
-    <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${esc(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button><br><small class="cp-muted">${esc(fileName(c.file))}${c.page ? `, ${T("page", "Seite")} ${c.page}` : ""}</small>`).join("<br>") || '<span class="cp-muted">—</span>'}</td></tr>`).join("")}</tbody></table>`;
+    <td>${(row.citations || []).map((c) => `<button class="cp-link" data-cite-file="${raw(c.file)}" data-page="${c.page || ""}">“${esc(c.quote)}”</button><br><small class="cp-muted">${esc(fileName(c.file))}${c.page ? `, ${T("page", "Seite")} ${c.page}` : ""}</small>`).join("<br>") || '<span class="cp-muted">—</span>'}</td></tr>`).join("")}</tbody></table>`;
 }
 
 // The Unterlagen: every document the case needs, the missing ones first, in the same count as the letter and the Prozess
@@ -1406,9 +1567,9 @@ function documentsView() {
     const pd = (proc.documents || []).find((d) => d.id === i.key) || {};
     const [word_, chip] = state(i);
     const origin = i.practice || (pd.knowledge ? practiceNote(pd.knowledge) : i.legal_basis || pd.legal_basis || "");
-    return `<tr data-item="${esc(i.item_id)}"><td><b>${esc((i.label || {}).de || pd.title || i.key)}</b></td>
+    return `<tr data-item="${raw(i.item_id)}"><td><b>${esc((i.label || {}).de || pd.title || i.key)}</b></td>
       <td>${esc(pd.why || "")}${origin ? `<br><small class="cp-muted">${esc(origin)}</small>` : ""}</td>
-      <td><span class="cp-chip ${chip}">${esc(word_)}</span>${i.status === "unusable" && i.reason ? `<br><small class="cp-muted">${esc(clip(i.reason, 160))}</small>` : ""}${gone.has(i.item_id) ? `<br><button class="cp-link cp-quiet-link" data-point-notneeded="${esc(i.key)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
+      <td><span class="cp-chip ${chip}">${esc(word_)}</span>${i.status === "unusable" && i.reason ? `<br><small class="cp-muted">${esc(clip(i.reason, 160))}</small>` : ""}${gone.has(i.item_id) ? `<br><button class="cp-link cp-quiet-link" data-point-notneeded="${raw(i.key)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
       <td>${sourceChips(i.evidence) || '<span class="cp-muted">—</span>'}</td></tr>`;
   }).join("");
   return `${head}<table class="cp-table cp-docs-table"><thead><tr><th>${T("Document", "Unterlage")}</th><th>${T("What for", "Wozu")}</th><th>${T("State", "Stand")}</th><th>${T("Source", "Beleg")}</th></tr></thead><tbody>${rows}</tbody></table>`;
@@ -1429,7 +1590,7 @@ function resultView() {
       <dl class="cp-doc-head" style="padding:0;border:0;grid-template-columns:180px 1fr">${r.case_summary.map((f, i) => `<dt>${esc(f.label)}</dt><dd>${esc(f.text)}${rate(`summary:${i}`)}</dd>`).join("")}</dl></section>` : "";
   // after an update the result checker's fields are the full preparation's: «Stand <Datum>», and its draft is no download (C6)
   const stale = r.stale_since ? ` <span class="cp-stale-chip" title="${esc(T(`Before ${r.stale_since.files} new document(s)`, `Vor ${r.stale_since.files} neuen Dokument(en)`))}">${T("As of", "Stand")} ${dateText(r.stale_since.prepared_at)}</span>` : "";
-  const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run && !r.stale_since ? `<a class="cp-button" href="/api/runs/${esc((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
+  const draft = r.reply && r.reply.clauses && r.reply.clauses.length && S.data.run && !r.stale_since ? `<a class="cp-button" href="/api/runs/${raw((S.data.lastCompleted || S.data.run).id)}/draft.docx">${T("Draft as .docx", "Entwurf als .docx")}</a>` : "";
   const action = { answer: T("Answer: ", "Klären: "), resolve: T("Not met: ", "Nicht erfüllt: "), obtain: T("Obtain: ", "Einholen: ") };
   const docs = ev ? ev.documents.filter((d) => !["suggested", "optional"].includes(d.required)) : [];
   const present = docs.filter((d) => d.status === "present").length, missing = docs.filter((d) => d.status !== "present").length;
@@ -1437,13 +1598,13 @@ function resultView() {
       <h2 class="cp-section" style="margin-top:0">${T("Where the case stands in its process", "Stand im Prozess")}</h2>
       <p>${ev.outcome ? `${T("End of the process", "Prozessende")}: <b>${esc(ev.outcome.title)}</b>` : ev.current ? `${T("Current step", "Aktueller Schritt")}: <b>${esc(ev.current.title)}</b>` : ""}
         ${ev.waiting_for.length ? ` · ${T("waiting for", "wartet auf")}: ${ev.waiting_for.map((w) => esc(w.question)).join("; ")}` : ""}</p>
-      <p><a href="#/case/${esc(S.route.id)}/document_finder">${T(`Document checklist: ${present} present, ${missing} still needed`, `Dokumenten-Checkliste: ${present} vorhanden, ${missing} noch nötig`)}</a></p>
+      <p><a href="#/case/${raw(S.route.id)}/document_finder">${T(`Document checklist: ${present} present, ${missing} still needed`, `Dokumenten-Checkliste: ${present} vorhanden, ${missing} noch nötig`)}</a></p>
       ${ev.next_actions.length ? `<h3 class="cp-section" style="font-size:15px">${T("Next steps", "Nächste Schritte")}</h3><ul>${ev.next_actions.map((a) => `<li>${esc(action[a.kind])}${esc(a.text)}${a.kind === "resolve" ? ` <span class="cp-muted">(${esc(valueText(a.value))})</span>` : ""}</li>`).join("")}</ul>` : ""}</section>` : "";
   const learning = (r.learning || []).length ? `<h2 class="cp-section">${T("What CasePath proposes to learn", "Was CasePath lernen möchte")}</h2>
       <p class="cp-muted">${T("Proposals for the Knowledge base. They shape other cases only after a person approves them.", "Vorschläge für das Wissen. Sie prägen andere Fälle erst, wenn ein Mensch sie freigibt.")}</p>
       <ul>${r.learning.map((l) => `<li><b>${esc(learnAction(l.action))}</b> · ${esc(l.title || l.question || l.note)}${proposalVersion(l) ? ` <span class="cp-kv${l.action === "contradict" ? " add" : ""}">${icon("memory")}${esc(proposalVersion(l))}${l.action === "contradict" ? "" : T(" · waits for release", " · wartet auf Freigabe")}</span>` : ""} <span class="cp-muted">— ${esc(l.reason)}</span></li>`).join("")}</ul>
       <p><a href="#/knowledge">${T("Review in Knowledge", "Im Wissen prüfen")}</a></p>` : "";
-  const report = `<p><a class="cp-button" href="/api/cases/${esc(S.route.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report as .docx", "Fallbericht als .docx")}</a>
+  const report = `<p><a class="cp-button" href="/api/cases/${raw(S.route.id)}/report.docx?lang=${LANG}">${icon("doc")}${T("Case report as .docx", "Fallbericht als .docx")}</a>
     <span class="cp-muted">${T("Everything above with its sources, for the case file.", "Alles hier mit den Fundstellen, für das Dossier.")}</span></p>`;
   return `${ratedRun() ? feedbackLine() : ""}${report}${position}${summary}${deadlines ? `<h2 class="cp-section" style="margin-top:0">${T("Deadlines", "Fristen")}</h2><ul>${deadlines}</ul>` : ""}
     ${(r.open_points || []).length ? `<h2 class="cp-section">${T("Open points", "Offene Punkte")}${stale}</h2><ul>${r.open_points.map((p, i) => `<li>${esc(p)}${trimmed("open_point", String(i))}${rate(`open_point:${i}`)}</li>`).join("")}</ul>` : ""}
@@ -1552,7 +1713,7 @@ function runLine(st) {
     const last = S.events.slice().reverse().find((e) => e.file && e.agent !== "lead" && (!agents || agents.includes(e.agent))) || {};
     const doing = { reader: T("reads", "liest"), claim_reader: T("reads", "liest"), document_finder: T("looks for documents in", "sucht Unterlagen in"),
       source_checker: T("checks the sources in", "prüft die Belege in"), result_checker: T("checks the result against", "prüft das Ergebnis an") }[last.agent] || T("starts on", "beginnt mit");
-    const where = last.file ? `<button class="cp-link" data-cite-file="${esc(last.file)}" data-page="${last.page || last.from_page || ""}">${esc(clip(fileName(last.file), 40))}${last.page || last.from_page ? `, ${T("p.", "S.")} ${last.page || last.from_page}` : ""}</button>` : T("with the files", "mit den Akten");
+    const where = last.file ? `<button class="cp-link" data-cite-file="${raw(last.file)}" data-page="${last.page || last.from_page || ""}">${esc(clip(fileName(last.file), 40))}${last.page || last.from_page ? `, ${T("p.", "S.")} ${last.page || last.from_page}` : ""}</button>` : T("with the files", "mit den Akten");
     const routed = S.events.find((e) => e.kind === "routing.decided");
     const others = (S.workflows || []).filter((w) => !routed || w.id !== routed.workflow);
     const stopping = S.stopping === run.id || S.switching;
@@ -1575,7 +1736,7 @@ function runLine(st) {
       <div class="cp-work-card cp-work-now${enter("work:now")} ${S.finishing ? "done" : ""}"><p class="cp-eyebrow">${S.finishing ? "CasePath" : stopping ? T("Stopping", "Hält an") : esc(verb)}</p>
         <p class="cp-runnow">${S.finishing ? `<span class="cp-work-done">${icon("tick")}</span>${run.kind === "update" ? T("Updated", "Aktualisiert") : T("Prepared", "Fertig vorbereitet")}` : stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …") : where}</p>
         <span class="cp-work-bar" aria-hidden="true"><i></i></span>${arrivalNow(run)}
-        ${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${esc(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}
+        ${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${raw(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}
         <p class="cp-work-foot">${time ? `<span class="cp-muted">${time}</span>` : ""}${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
           <span class="grow"></span><button class="cp-button primary" id="stop-run" ${stopping ? "disabled" : ""}>${T("Stop", "Anhalten")}</button></p></div>
       <div class="cp-work-side"><div class="cp-work-card cp-work-found${enter("work:found")}"><p class="cp-eyebrow">${T("Found so far", "Bisher gefunden")}</p>
@@ -1627,7 +1788,7 @@ const answered = (key) => { const i = item("fact", key); return i && i.value !==
 function decisionButtons(key) {
   const i = item("fact", key) || {}, now = answered(key);
   const label = { "bestätigt": T("Yes", "Ja"), "abgelehnt": T("No", "Nein"), ja: T("Yes", "Ja"), nein: T("No", "Nein"), true: T("Yes", "Ja"), false: T("No", "Nein") };
-  return (i.values || []).filter((v) => v !== "offen").map((v) => `<button class="cp-button cp-small" data-decide="${esc(key)}" data-value="${esc(v)}" aria-pressed="${String(now) === String(v)}">${esc(label[v] || v)}</button>`).join("");
+  return (i.values || []).filter((v) => v !== "offen").map((v) => `<button class="cp-button cp-small" data-decide="${raw(key)}" data-value="${raw(v)}" aria-pressed="${String(now) === String(v)}">${esc(label[v] || v)}</button>`).join("");
 }
 // ---------- Deckung: the cover points, prepared; the decision stays the handler's ----------
 // The cover's own facts (edition, policy ticks, the reason a cover is refused) are set here, not asked as plain questions.
@@ -1644,20 +1805,20 @@ function clauseTag(key, rows, label) {
   if (!rows || !rows.length) return "";
   const cite = label || rows.map((r) => r.cite.replace(/^Art\. /, "")).join(", ");
   const open = S.coverPassage === key;
-  return `<button class="cp-tag cp-law" type="button" data-cover-passage="${esc(key)}" aria-expanded="${open}" title="${esc(rows.map((r) => `${r.cite}: «${r.passage}»`).join(" "))}">${esc(cite)}</button>`
+  return `<button class="cp-tag cp-law" type="button" data-cover-passage="${raw(key)}" aria-expanded="${open}" title="${esc(rows.map((r) => `${r.cite}: «${r.passage}»`).join(" "))}">${esc(cite)}</button>`
     + (open ? rows.map((r) => `<div class="cp-passage">${esc(r.cite)}: «${esc(r.passage)}»</div>`).join("") : "");
 }
 function coverPoint(p) {
   const [mark, cls] = COVER_MARK[p.value] || ["·", ""];
   const values = p.tick ? (item("fact", p.tick) || {}).values || [] : [];
   const pressed = (v) => String(p.tick_value) === String(v === "ja" ? true : v === "nein" ? false : v);
-  const tick = values.length ? `<span class="cp-cover-tick">${values.map((v) => `<button class="cp-chip" data-decide="${esc(p.tick)}" data-value="${esc(v)}" aria-pressed="${pressed(v)}" title="${T("as the policy says", "laut Police")}">${esc(v)}</button>`).join("")}</span>` : "";
+  const tick = values.length ? `<span class="cp-cover-tick">${values.map((v) => `<button class="cp-chip" data-decide="${raw(p.tick)}" data-value="${raw(v)}" aria-pressed="${pressed(v)}" title="${T("as the policy says", "laut Police")}">${esc(v)}</button>`).join("")}</span>` : "";
   const src = (p.evidence || [])[0];
   const line = [p.value === "police_ok" ? "" : p.text, p.aid].filter(Boolean).map(esc).join(" · ");
   const open = S.coverPassage === p.key;
-  return `<li class="cp-cover-point ${cls}" data-item="${esc(p.item_id)}"><span class="cp-cover-mark" title="${esc(p.state_text || "")}">${mark}</span>
+  return `<li class="cp-cover-point ${cls}" data-item="${raw(p.item_id)}"><span class="cp-cover-mark" title="${esc(p.state_text || "")}">${mark}</span>
     <span class="cp-cover-body"><span class="cp-cover-title">${esc(p.title)}</span> ${clauseTag(p.key, p.clauses, (p.legal_basis || "").replace(/^Art\. /, "").replace(/, Art\. /g, ", "))}
-      <span class="cp-cover-line">${line ? `<span class="cp-muted">${line}</span>` : p.value === "police_ok" ? `<span class="cp-muted">${T("as the policy says", "laut Police")}</span>` : ""}${src ? ` <button class="cp-source-chip" data-cite-file="${esc(src.file)}" data-page="${src.page || ""}" title="${esc(src.quote || "")}">${src.page ? `${T("p.", "S.")} ${src.page}` : T("source", "Quelle")}</button>` : ""}${tick}</span>
+      <span class="cp-cover-line">${line ? `<span class="cp-muted">${line}</span>` : p.value === "police_ok" ? `<span class="cp-muted">${T("as the policy says", "laut Police")}</span>` : ""}${src ? ` <button class="cp-source-chip" data-cite-file="${raw(src.file)}" data-page="${src.page || ""}" title="${esc(src.quote || "")}">${src.page ? `${T("p.", "S.")} ${src.page}` : T("source", "Quelle")}</button>` : ""}${tick}</span>
       ${p.note && open ? `<span class="cp-muted cp-cover-note">${esc(p.note)}</span>` : ""}</span></li>`;
 }
 const reasonChips = (attr, codes) => `<span class="cp-reasons">${codes.map((code) => `<button class="cp-chip" ${attr}="${code}">${esc(T(REASONS_EN[code], REASONS[code]))}</button>`).join("")}</span>`;
@@ -1668,7 +1829,7 @@ const reasonChips = (attr, codes) => `<span class="cp-reasons">${codes.map((code
 // always in view. «Der Fall» beside it says what the head does not. What the head says is decided once by the server
 // (screen.py), in the case list's own words.
 const scr = () => (S.data && S.data.screen) || {};
-const isoDay = (v) => String(v || "").replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, "$3.$2.$1");
+const isoDay = (v) => String(tr(v || "")).replace(/\b(\d{4})-(\d{2})-(\d{2})\b/g, "$3.$2.$1");
 function overviewView() {
   const st = caseState();
   const top = runLine(st);
@@ -1679,7 +1840,7 @@ function overviewView() {
 // A source is one quiet chip, its page; what rests on the handler's own entry says so where the chip would stand.
 function sourceChip(e) {
   const at = e && Number.isInteger(e.start) && Number.isInteger(e.end) ? ` data-start="${e.start}" data-end="${e.end}"` : "";  // opens at its passage
-  return e && e.file ? ` <button class="cp-source-chip" data-cite-file="${esc(e.file)}" data-page="${e.page || ""}"${at} title="${esc(e.quote || "")}">${e.page ? `${T("p.", "S.")} ${e.page}` : T("source", "Quelle")}</button>` : "";
+  return e && e.file ? ` <button class="cp-source-chip" data-cite-file="${raw(e.file)}" data-page="${e.page || ""}"${at} title="${esc(e.quote || "")}">${e.page ? `${T("p.", "S.")} ${e.page}` : T("source", "Quelle")}</button>` : "";
 }
 function sourceChips(evidence) {
   const seen = new Set();
@@ -1712,7 +1873,18 @@ function docText(doc) {
 }
 // A part only the handler can write: «[bitte ergänzen: …]», highlighted; the card's button goes to the first one.
 const GAP_RE = /\[bitte ergänzen: [^\]]*\]/g;
-const gapsMarked = (text) => esc(text).replace(GAP_RE, (m) => `<mark class="cp-gap">${m}</mark>`);
+const gapsMarked = (text) => raw(text).replace(GAP_RE, (m) => `<mark class="cp-gap">${m}</mark>`);
+// A letter goes out in the language it is written in. A reader of another language sees it translated, line by line, to
+// read; it is edited in the original («show the original»), and what is copied, approved and sent is the original.
+const readingLetter = () => reading() && !S.letterOriginal;
+const readLines = (text) => String(text || "").split("\n").map((line) => tr(line)).join("\n");
+const letterBlock = (text) => (readingLetter() ? gapsMarked(readLines(text)) : gapsMarked(text));
+function letterLangNote() {
+  if (!reading()) return "";
+  return S.letterOriginal
+    ? `<p class="cp-reading-note">${T("The original, as it goes out", "Das Original, wie es hinausgeht")} · <button class="cp-link cp-quiet-link" id="letter-reading" type="button">${T("read it in English", "auf Englisch lesen")}</button></p>`
+    : `<p class="cp-reading-note">${T("Translated to read · it goes out in German, as written", "Zum Lesen übersetzt · es geht auf Deutsch hinaus, wie geschrieben")} · <button class="cp-link cp-quiet-link" id="letter-original" type="button">${T("show and edit the original", "Original zeigen und bearbeiten")}</button></p>`;
+}
 function gapCount(doc) {
   let text = docText(doc);
   if (doc && doc.main) for (const [orig, now] of Object.entries(S.blockEdits || {})) text = text.split(orig).join(now);
@@ -1725,7 +1897,7 @@ function partialLine(act) {
   const part = act && act.partial;
   if (!part || !(part.received || []).length) return "";
   return `<p class="cp-partial" data-partial><span class="cp-head-label">${T("Received", "Eingegangen")}:</span> ${part.received.map((r) =>
-    `<span class="cp-partial-item">${esc(r.what)} <button class="cp-link cp-quiet-link" data-settle="${esc(r.request)}" data-how="offen" title="${T("It did not come: ask for it again", "Das ist nicht eingegangen: nochmals verlangen")}">${T("still open", "doch offen")}</button></span>`).join(" · ")}</p>`;
+    `<span class="cp-partial-item">${esc(r.what)} <button class="cp-link cp-quiet-link" data-settle="${raw(r.request)}" data-how="offen" title="${T("It did not come: ask for it again", "Das ist nicht eingegangen: nochmals verlangen")}">${T("still open", "doch offen")}</button></span>`).join(" · ")}</p>`;
 }
 function weilLine(act) {
   const sc = scr(), text = sc.weil || (act && act.reason);
@@ -1733,7 +1905,7 @@ function weilLine(act) {
   const src = act && (act.evidence || []).find((e) => e.file);
   const then = (sc.danach || []).length && !(act && act.deadline) ? ` · ${T("then", "danach")}: ${sc.danach.map(esc).join(" · ")}` : "";
   const came = act && act.incoming;
-  const more = S.weilOpen ? `${sourceChip(src)}${came ? ` <button class="cp-link cp-quiet-link" data-decide="eingang_erledigt_bis" data-value="${esc(came.date || isoToday())}">${T("already done", "bereits erledigt")}</button>` : ""}` : "";
+  const more = S.weilOpen ? `${sourceChip(src)}${came ? ` <button class="cp-link cp-quiet-link" data-decide="eingang_erledigt_bis" data-value="${raw(came.date || isoToday())}">${T("already done", "bereits erledigt")}</button>` : ""}` : "";
   const openable = Boolean(src || came || text.length > 90 || then);
   const body = `${T("Because", "Weil")}: ${esc(String(text).replace(/^Weil:?\s*/i, ""))}${then}`;
   return `<p class="cp-weil ${S.weilOpen ? "open" : ""}" data-item="next_action:0">${openable ? `<button class="cp-weil-text" id="weil-open" aria-expanded="${Boolean(S.weilOpen)}">${body}</button>${more}` : `<span class="cp-weil-text">${body}</span>`}</p>`;
@@ -1744,7 +1916,7 @@ function leadLine(lead) {
   const cls = quiet() ? "" : lead.days < 0 ? "past" : lead.urgency === "dringend" ? "late" : lead.days <= 14 ? "soon" : "";
   const more = [lead.basis, lead.rule, lead.missed, lead.by].filter(Boolean);
   const text = `${esc(lead.kind)} <b>${esc(lead.date)}</b> · ${esc(lead.title)} · ${esc(lead.word)}`;
-  return `<p class="cp-lead-frist ${cls} ${S.leadOpen ? "open" : ""}" data-item="${esc(lead.item_id)}">${more.length || lead.source
+  return `<p class="cp-lead-frist ${cls} ${S.leadOpen ? "open" : ""}" data-item="${raw(lead.item_id)}">${more.length || lead.source
     ? `<button class="cp-lead-text" id="lead-open" aria-expanded="${Boolean(S.leadOpen)}">${text}</button>${S.leadOpen ? `<span class="cp-lead-more">${more.map(esc).join(" · ")}${sourceChip(lead.source)}</span>` : ""}`
     : `<span class="cp-lead-text">${text}</span>`}</p>`;
 }
@@ -1767,8 +1939,32 @@ function preparedBy() {
   const read = `${files.length} ${T(files.length === 1 ? "file" : "files", files.length === 1 ? "Datei" : "Dateien")}${pages > 1 ? `, ${pages} ${T("pages", "Seiten")}` : ""} ${T("read", "gelesen")}`;
   const lasted = took >= 1 && took < 180 ? ` · ${Math.round(took)} ${T("min", "Min")}` : "";
   const fresh = S.justFinished === S.route.id;
-  return `<p class="cp-by ${fresh ? "fresh" : ""}" data-prepared-by title="${esc(`${dateText(run.finished_at).slice(0, 10)}${clock ? `, ${clock}` : ""}`)}">${fresh ? icon("tick") : ""}CasePath · ${run.kind === "update" ? T("updated", "aktualisiert") : T("prepared", "vorbereitet")} ${when} · ${read}${lasted}</p>`;
+  const open = fresh || S.trailOpen;
+  return `<p class="cp-by ${fresh ? "fresh" : ""}" data-prepared-by title="${esc(`${dateText(run.finished_at).slice(0, 10)}${clock ? `, ${clock}` : ""}`)}">${fresh ? icon("tick") : ""}<button type="button" class="cp-by-open" id="trail-open" aria-expanded="${open ? "true" : "false"}" title="${T("What CasePath did for this step", "Was CasePath für diesen Schritt getan hat")}">CasePath · ${run.kind === "update" ? T("updated", "aktualisiert") : T("prepared", "vorbereitet")} ${when} · ${read}${lasted}${icon("right")}</button></p>${open ? workTrail(fresh) : ""}`;
 }
+// What CasePath did to get here, as the steps of its work with what each one gave, each leading to where it can be
+// checked: said once, ticked in turn, when it finishes while the reader watches; later one press on the line above.
+function workTrail(fresh) {
+  const id = S.route.id, items = S.data.items || [], files = S.data.files || [];
+  const pages = files.reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 0), 0);
+  const found = items.filter((i) => i.kind === "fact" && i.value !== null && i.value !== undefined && i.value !== "").length;
+  const docs = items.filter((i) => i.kind === "document" && !i.part_of), have = docs.filter((i) => i.status === "present").length;
+  const entries = (S.data.verlauf || []).length || items.filter((i) => i.kind === "entry").length;
+  const dec = decisionsOpen();
+  const draft = S.data.draft || {};
+  const plural = (n, one, many) => (n === 1 ? one : many);
+  const steps = [
+    [`#/case/${id}/claim_reader`, `<b>${files.length}</b> ${T(plural(files.length, "file", "files"), plural(files.length, "Datei", "Dateien"))}${pages > 1 ? `, <b>${pages}</b> ${T("pages", "Seiten")}` : ""} ${T("read", "gelesen")}`],
+    found ? [`#/case/${id}/claim_reader`, `<b>${found}</b> ${T(plural(found, "fact", "facts"), plural(found, "Angabe", "Angaben"))} ${T("found", "gefunden")}`] : null,
+    entries ? [`#/case/${id}/history`, `<b>${entries}</b> ${T(plural(entries, "entry", "entries"), plural(entries, "Eintrag", "Einträge"))} ${T("in the history", "im Verlauf")}`] : null,
+    docs.length ? [`#/case/${id}/document_finder`, `<b>${have}</b> ${T("of", "von")} <b>${docs.length}</b> ${T("documents on file", "Unterlagen liegen vor")}`] : null,
+    draft.text ? [null, T("Letter written", "Brief geschrieben")] : null,
+    dec ? [null, `<b>${dec}</b> ${T(plural(dec, "decision", "decisions"), plural(dec, "Entscheid", "Entscheide"))} ${T("for you", "für Sie")}`] : null,
+  ].filter(Boolean);
+  return `<ol class="cp-trail${fresh ? enter(`trail:${(S.data.prepared_run || {}).id}`) : ""}" data-trail aria-label="${T("What CasePath did", "Was CasePath getan hat")}">${steps.map(([href, text]) =>
+    `<li><span class="cp-trail-tick">${icon("tick")}</span>${href ? `<a href="${href}">${text}</a>` : `<span>${text}</span>`}</li>`).join("")}</ol>`;
+}
+const decisionsOpen = () => (completionOf().decisions || []).length;
 // The action bar answers a change of state (approved, sent, at rest) with a short movement, once, never on a mere re-render.
 // A render that follows within the movement (the copy, the reload after it) carries it on from where it was.
 function barChanged(kind) {
@@ -1783,8 +1979,8 @@ function decisionsStrip(dec, primary) {
   const now = dec ? decisionLine(dec, primary) : "";
   if (taken.length + open.length < 2 && !taken.length) return now;
   const nowWord = dec ? ({ deckung: "Deckung", empfehlung: "Empfehlung", aussichten: "Erfolgsaussichten", vorgehen: "Vorgehen" }[dec.key] || null) : null;
-  const done = taken.map((d) => `<li class="cp-dstep done${enter(`dec:${d.key}:${d.edit || d.at || ""}`)}" data-decided="${esc(d.key)}" title="${esc([d.by, d.at ? dateText(d.at) : ""].filter(Boolean).join(" · "))}"><span class="cp-dmark">${icon("tick")}</span><span class="cp-dname">${esc(d.word)}</span>
-      <span class="cp-dvalue">${esc(d.value)}</span><button class="cp-link cp-quiet-link" type="button" ${d.edit ? `data-decided-undo="${esc(d.edit)}"` : `data-decided-withdraw="${esc(d.key)}"`}>${T("change", "ändern")}</button></li>`);
+  const done = taken.map((d) => `<li class="cp-dstep done${enter(`dec:${d.key}:${d.edit || d.at || ""}`)}" data-decided="${raw(d.key)}" title="${esc([d.by, d.at ? dateText(d.at) : ""].filter(Boolean).join(" · "))}"><span class="cp-dmark">${icon("tick")}</span><span class="cp-dname">${esc(d.word)}</span>
+      <span class="cp-dvalue">${esc(d.value)}</span><button class="cp-link cp-quiet-link" type="button" ${d.edit ? `data-decided-undo="${raw(d.edit)}"` : `data-decided-withdraw="${raw(d.key)}"`}>${T("change", "ändern")}</button></li>`);
   let n = taken.length;
   const rest = open.map((w, i) => {
     n += 1;
@@ -1801,24 +1997,24 @@ const policeOpen = () => (S.data.items || []).filter((i) => i.kind === "cover" &
 function decisionLine(dec, primary) {
   if (!dec) return "";
   const kg = dec.key === "kostennote" ? (S.data.items || []).filter((i) => i.kind === "stage_line" && /^kg-/.test(i.key)) : [];
-  const detail = dec.key === "deckung" ? coverPanel() : kg.length ? kg.map((l) => `<div class="cp-decide-line" data-item="${esc(l.item_id)}">${esc(l.value)}${sourceChips(l.evidence)}</div>`).join("")
+  const detail = dec.key === "deckung" ? coverPanel() : kg.length ? kg.map((l) => `<div class="cp-decide-line" data-item="${raw(l.item_id)}">${esc(l.value)}${sourceChips(l.evidence)}</div>`).join("")
     : dec.key === "empfehlung" ? briefPanel(dec) : dec.key === "aussichten" ? prospectsPanel(dec)
     : (dec.sources || []).length ? `<div>${dec.sources.map((x) => sourceChip(x)).join(" ")}</div>` : dec.source ? `<div>${sourceChip(dec.source)}</div>` : "";
   const pressed = (a) => (a.document ? S.feeAnswer === a.document : a.decline ? answered("deckung") === "abgelehnt" : String(answered(a.decide)) === String(a.value));
   const first = primary ? (dec.answers || []).findIndex((a) => !a.choose) : -1;
   const answer = (a, n) => {
     const cls = `cp-button cp-small${n === first ? " primary" : ""}`;
-    if (a.choose) return `<select class="cp-button cp-small" data-point-choose aria-label="${T("Choose process", "Prozess wählen")}"><option value="">${esc(a.label)} …</option>${(S.workflows || []).map((w) => `<option value="${esc(w.id)}">${esc(w.short_title || w.title)}</option>`).join("")}</select>`;
+    if (a.choose) return `<select class="cp-button cp-small" data-point-choose aria-label="${T("Choose process", "Prozess wählen")}"><option value="">${esc(a.label)} …</option>${(S.workflows || []).map((w) => `<option value="${raw(w.id)}">${esc(w.short_title || w.title)}</option>`).join("")}</select>`;
     if (a.decline) return `<button class="${cls}" data-cover-decline aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
-    if (a.document) return `<button class="${cls}" data-fee-answer="${esc(a.document)}" aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
-    if (a.stance) return `<button class="${cls}" data-stance="${esc(a.stance)}" aria-pressed="${dec.chosen === a.stance}" title="${esc(a.then || "")}">${esc(a.label)}</button>`;
-    if (a.claim) return `<button class="cp-button cp-small" data-claim-settle="${esc(a.claim)}" data-as="${esc(a.as)}">${esc(a.label)}</button>`;  // none preselected: the handler's judgment
+    if (a.document) return `<button class="${cls}" data-fee-answer="${raw(a.document)}" aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
+    if (a.stance) return `<button class="${cls}" data-stance="${raw(a.stance)}" aria-pressed="${dec.chosen === a.stance}" title="${esc(a.then || "")}">${esc(a.label)}</button>`;
+    if (a.claim) return `<button class="cp-button cp-small" data-claim-settle="${raw(a.claim)}" data-as="${raw(a.as)}">${esc(a.label)}</button>`;  // none preselected: the handler's judgment
     if (a.adopt) return `<button class="${cls}" data-rec-adopt>${esc(a.label)}</button>`;
     if (a.change) return `<button class="${cls}" data-rec-change aria-expanded="${Boolean(S.recChange)}">${esc(a.label)}</button>`;
-    return `<button class="${cls}" data-decide="${esc(a.decide)}" data-value="${esc(a.value ?? isoToday())}" aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
+    return `<button class="${cls}" data-decide="${raw(a.decide)}" data-value="${raw(a.value ?? isoToday())}" aria-pressed="${pressed(a)}">${esc(a.label)}</button>`;
   };
   const why = S.coverDecline && dec.key === "deckung" ? `<p class="cp-reasons cp-cover-why"><span class="cp-muted">${T("Which point fails?", "Welcher Punkt ist nicht erfüllt?")}</span>
-      ${(S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary").map((x) => `<button class="cp-chip" data-cover-reason="${esc(x.key)}">${esc(x.title)}</button>`).join("")}<button class="cp-chip" data-cover-reason="anderer Grund">${T("other reason", "anderer Grund")}</button></p>` : "";
+      ${(S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary").map((x) => `<button class="cp-chip" data-cover-reason="${raw(x.key)}">${esc(x.title)}</button>`).join("")}<button class="cp-chip" data-cover-reason="anderer Grund">${T("other reason", "anderer Grund")}</button></p>` : "";
   const premise = dec.key === "deckung" && (brief() || {}).under_premise ? ` <span class="cp-muted cp-ddetail">${T("assessment prepared, subject to cover", "Einschätzung unter Vorbehalt der Deckung")}</span>` : "";
   const question = `<span class="cp-dq">${esc(dec.lapse || dec.question)}</span>${dec.detail ? ` <span class="cp-muted cp-ddetail">${esc(dec.detail)}</span>` : ""}${premise}`;
   // what follows each answer, said before it is given (an offer's three answers); once one is given, only its own line
@@ -1830,7 +2026,7 @@ function decisionLine(dec, primary) {
   const holder = dec.key === "kostennote" ? "next_action:0" : dec.key === "process" ? "point:process" : dec.key === "empfehlung" ? "point:empfehlung"
     : /^claim:/.test(dec.key) ? `point:${dec.key}` : `fact:${dec.key}`;
   const open = (S.decideOpen || (dec.key === "empfehlung" && S.recChange)) && detail;
-  return `<div class="cp-decide" data-item="${esc(holder)}">${detail ? `<button class="cp-decide-q" id="decide-open" aria-expanded="${Boolean(open)}">${question}</button>` : `<span class="cp-decide-q">${question}</span>`}
+  return `<div class="cp-decide" data-item="${raw(holder)}">${detail ? `<button class="cp-decide-q" id="decide-open" aria-expanded="${Boolean(open)}">${question}</button>` : `<span class="cp-decide-q">${question}</span>`}
     <span class="cp-point-actions">${(dec.answers || []).map(answer).join("")}</span>${follows}${open ? `<div class="cp-decide-more">${detail}</div>` : ""}${why}</div>`;
 }
 // The cover check, prepared: the edition and the policy's start, then each point with its clause and source; the policy
@@ -1842,14 +2038,14 @@ function coverPanel() {
   const editions = (item("fact", "avb_ausgabe") || {}).values || [];
   const begin = (item("fact", "police_beginn") || {}).value || "";
   return `<div class="cp-cover-open"><p class="cp-cover-head"><label>${T("Conditions", "AVB")} <select class="cp-cover-select" data-cover-edition aria-label="${T("Edition of the conditions", "Ausgabe der Allgemeinen Bedingungen")}">${editions.map((v) => `<option ${v === sum.edition_value ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>
-      <label>${T("Policy from", "Police ab")} <input type="date" class="cp-cover-select" data-cover-begin value="${esc(begin)}" aria-label="${T("Start of cover according to the policy", "Beginn des Versicherungsschutzes gemäss Police")}"></label></p>
+      <label>${T("Policy from", "Police ab")} <input type="date" class="cp-cover-select" data-cover-begin value="${raw(begin)}" aria-label="${T("Start of cover according to the policy", "Beginn des Versicherungsschutzes gemäss Police")}"></label></p>
     <ol class="cp-cover-points">${points.map(coverPoint).join("")}</ol></div>`;
 }
 // The payout as one line: «✓ Einigung · ✓ Bankverbindung · ● Auszahlung nachfragen · ○ Eingang · ○ Abschluss».
 function progressLine(steps) {
   if (!steps || !steps.length) return "";
   const mark = { done: "✓", now: "●", next: "○" };
-  return `<p class="cp-progress">${steps.map((s) => `<span class="${esc(s.state)}">${mark[s.state] || ""} ${esc(s.label)}</span>`).join(" · ")}</p>`;
+  return `<p class="cp-progress">${steps.map((s) => `<span class="${raw(s.state)}">${mark[s.state] || ""} ${esc(s.label)}</span>`).join(" · ")}</p>`;
 }
 function preparedView(st) {
   const act = item("next_action", "0"), sc = scr(), draft = S.data.draft || {};
@@ -1873,19 +2069,19 @@ function preparedView(st) {
   const f = S.data.follow_up, due = f && f.due;
   const then = act && act.deadline && (sc.danach || []).length ? `<span class="cp-date cp-then" title="${esc(sc.danach.join(" · "))}">${T("then", "danach")}: ${sc.danach.map(esc).join(" · ")}</span>` : "";
   const when = then || (due ? `<span class="cp-date ${daysTo(due) < 0 && !quiet() ? "late" : ""}" ${f.capped ? `title="${esc(T("before the deadline runs out", "vor Fristablauf"))}"` : ""}>${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(due)}</button>
-        <input type="date" id="followup-date" value="${esc(due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1"></span>` : "");
+        <input type="date" id="followup-date" value="${raw(due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1"></span>` : "");
   // before «Freigeben»: the date the Versandpaket will file (counted from the dispatch, the reply date the letter sets, or
   // the handler's own), so the bar, the package, the note and the wait after the dispatch say one date
   const fa = S.data.follow_after_dispatch;
   const faWhy = !fa ? "" : fa.set ? T("set by you", "von Ihnen gesetzt") : fa.respond_by ? T("the reply date the letter sets", "das Antwortdatum im Brief")
     : fa.days ? T(`${fa.days} days after sending, if sent on ${dateText(fa.if_sent)}`, `${fa.days} Tage nach dem Versand, bei Versand am ${dateText(fa.if_sent)}`) : "";
   const whenAfter = then || (fa && fa.due ? `<span class="cp-date" title="${esc(faWhy)}">${T("Follow-up", "Wiedervorlage")} <button class="cp-link" id="followup-show" type="button" title="${T("change", "ändern")}">${dateText(fa.due)}</button>
-        <input type="date" id="followup-date" value="${esc(fa.due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1"></span>` : when);
+        <input type="date" id="followup-date" value="${raw(fa.due)}" aria-label="${T("Follow-up date", "Wiedervorlage")}" tabindex="-1"></span>` : when);
   // a frozen study copy is copied and measured as frozen; any other case goes Freigeben → Brief kopieren → Versandt am
   const asFrozen = (completionOf().bar || {}).kind === "study" || !completionOf().bar;
   const docButton = !text || c ? "" : !asFrozen ? carryButtons(active, { primary: acting && !decisionPrimary, gaps, stale, when, whenAfter })
     : active.main ? `<button class="cp-button ${docPrimary ? "primary" : ""}" id="copy-draft" data-gaps="${gaps}" ${stale ? "disabled" : ""}>${label}</button>`
-    : `<button class="cp-button ${docPrimary ? "primary" : ""}" data-copy-also="${esc(active.kind)}" data-gaps="${gaps}" ${stale ? "disabled" : ""}>${label}</button>`;
+    : `<button class="cp-button ${docPrimary ? "primary" : ""}" data-copy-also="${raw(active.kind)}" data-gaps="${gaps}" ${stale ? "disabled" : ""}>${label}</button>`;
   const stage = ((S.data.evaluation || {}).current || {}).step || "";
   // whom the note is with: the step says it (a step that asks the customer is with the customer, whatever stage the case is at)
   const party = act && act.action === "A2" && draft.form !== "A2_bericht" ? "kunde"
@@ -1915,10 +2111,10 @@ function preparedView(st) {
   const sentShown = resting && S.sentOpen && S.sentOpen.case === S.route.id && S.sentOpen.version === lastSent.version ? S.sentOpen : null;
   const restLine = !resting ? "" : `<p class="cp-rest"><span class="cp-sent">${icon("check")}${esc(lastSent.title ? `${lastSent.title} ` : "")}${T("sent", "versandt am")} ${dateText(went.date)}</span>
       <span class="cp-muted">· ${T("nothing to do until then", "bis dahin nichts zu tun")}</span>
-      ${lastSent.version ? `<button class="cp-link cp-quiet-link" id="sent-open" type="button" data-version="${esc(lastSent.version)}" aria-expanded="${Boolean(sentShown)}">${sentShown ? "▾ " : "▸ "}${T("what went out", "was hinausging")}</button>` : ""}</p>
+      ${lastSent.version ? `<button class="cp-link cp-quiet-link" id="sent-open" type="button" data-version="${raw(lastSent.version)}" aria-expanded="${Boolean(sentShown)}">${sentShown ? "▾ " : "▸ "}${T("what went out", "was hinausging")}</button>` : ""}</p>
     ${sentShown ? sentLetter(sentShown, lastSent.version) : ""}
     <p class="cp-rest-next"><button class="cp-link cp-quiet-link" id="rest-open" type="button" aria-expanded="${!folded}">${folded ? "▸ " : "▾ "}${T("Prepared for then", "Für dann vorbereitet")}: ${esc(nextTitle)}</button></p>`;
-  const tabs = docs.length > 1 || (docs[0] && docs[0].state && docs[0].state !== "entwurf") ? `<div class="cp-doc-tabs" role="tablist" aria-label="${T("What goes out", "Was hinausgeht")}">${docs.map((d) => `<button role="tab" class="cp-doc-tab ${d.state === "versandt" ? "copied" : ""}" data-doc-tab="${esc(d.kind)}" aria-selected="${d.kind === (active || {}).kind}">${esc(d.title)}${tabState(d)}</button>`).join("")}</div>` : "";
+  const tabs = docs.length > 1 || (docs[0] && docs[0].state && docs[0].state !== "entwurf") ? `<div class="cp-doc-tabs" role="tablist" aria-label="${T("What goes out", "Was hinausgeht")}">${docs.map((d) => `<button role="tab" class="cp-doc-tab ${d.state === "versandt" ? "copied" : ""}" data-doc-tab="${raw(d.kind)}" aria-selected="${d.kind === (active || {}).kind}">${esc(d.title)}${tabState(d)}</button>`).join("")}</div>` : "";
   // a call instead of a letter: what the call is about and what to ask stand in the card, and the note is written here
   const call = !text && draft.call && !c ? `<div class="cp-call" data-call>
       <p class="cp-call-head">${T("To settle in the call", "Im Gespräch zu klären")}</p><ol>${(draft.call.questions || []).map((q) => `<li>${esc(q)}</li>`).join("")}</ol></div>` : "";
@@ -1930,14 +2126,15 @@ function preparedView(st) {
   const head = `<section class="cp-card cp-prepared ${sc.urgency === "dringend" && !c ? "urgent" : ""} ${folded ? "cp-resting" : ""}">
     ${folded || c ? "" : preparedBy()}<header class="cp-prep-head">${folded ? `<span class="cp-done-badge${enter("rest")}" aria-hidden="true">${icon("tick")}</span>` : ""}<h2>${esc(title)}</h2>${!c && editable && options.length && !folded ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because`, `Stattdessen: ${esc(S.pickAction.title)}, weil`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
-      : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
+      : options.map((o) => `<button class="cp-chip" data-pick-action="${raw(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
     ${restLine}${resting ? reconcileLine() : ""}`;
   if (folded) return `${head}<footer class="cp-bar cp-carry">${whenAfter || when}<span class="grow"></span>${onward}</footer></section>`;
   return `${head}
     ${c ? "" : `${resting ? "" : weilLine(act)}${resting ? "" : partialLine(act)}${resting ? "" : headBlock()}${leadLine(sc.lead)}${resting ? "" : decisionsStrip(dec, decisionPrimary)}${dec ? "" : progressLine(sc.progress)}${resting ? "" : changesStrip()}`}${tabs}
     ${stale && text ? `<p class="cp-stale-note">${T("Draft from before the new files", "Entwurf vor den neuen Dateien")} <button class="cp-link cp-quiet-link" id="use-anyway" type="button">${T("use anyway", "trotzdem verwenden")}</button></p>` : ""}
     ${c || asFrozen ? "" : conflictsView(active)}
-    <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${esc((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>
+    ${text ? letterLangNote() : ""}
+    <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${raw((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>
     ${asFrozen || c || !text ? "" : handoverLine()}
     <footer class="cp-bar ${asFrozen || c ? "" : "cp-carry"} ${barChanged(c ? "closed" : resting ? "rest" : barKind || "")}">${bar}</footer>
   </section>`;
@@ -1949,11 +2146,11 @@ function alsoView(doc, editable) {
   const control = (key) => {
     const f = item("fact", key) || {}, now = f.value === null || f.value === undefined ? "" : String(f.value);
     return (f.values || []).length
-      ? `<label class="cp-muted">${esc(plainQuestion((f.label || {}).de).replace(/\s*\(.*$/, ""))} <select class="cp-cover-select" data-also-set="${esc(key)}">${f.values.map((v) => `<option ${v === now || (!now && v === f.values[0]) ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`
-      : `<label class="cp-muted">${T("Amount (optional)", "Betrag (freiwillig)")} CHF <input class="cp-cover-select" size="9" data-also-set="${esc(key)}" value="${esc(now)}" placeholder="${T("none", "keiner")}"></label>`;
+      ? `<label class="cp-muted">${esc(plainQuestion((f.label || {}).de).replace(/\s*\(.*$/, ""))} <select class="cp-cover-select" data-also-set="${raw(key)}">${f.values.map((v) => `<option ${v === now || (!now && v === f.values[0]) ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`
+      : `<label class="cp-muted">${T("Amount (optional)", "Betrag (freiwillig)")} CHF <input class="cp-cover-select" size="9" data-also-set="${raw(key)}" value="${raw(now)}" placeholder="${T("none", "keiner")}"></label>`;
   };
   return `${editable && (a.set || []).length ? `<p class="cp-also-set">${a.set.map(control).join(" ")}</p>` : ""}
-    <div class="cp-text cp-also-text" data-seg="also" data-also-text="${esc(doc.kind)}" ${editable ? `data-editable="1" tabindex="0" role="textbox" aria-multiline="true" aria-label="${esc(doc.title)}"` : ""}>${gapsMarked(docText(doc))}</div>`;
+    <div class="cp-text cp-also-text" data-seg="also" data-also-text="${raw(doc.kind)}" ${readingLetter() ? 'data-reading="1"' : editable ? `data-editable="1" tabindex="0" role="textbox" aria-multiline="true" aria-label="${esc(doc.title)}"` : ""}>${letterBlock(docText(doc))}</div>`;
 }
 // The letter's lines are its checklist: a tick is a request, unticking takes the line out at once. A line shows no tag:
 // its reason (why, how often practice asks, the article's passage, its source) opens from the line, by click or keyboard.
@@ -2002,9 +2199,9 @@ function letterView(text, editable) {
   const lastRow = segs.map((s) => Boolean(s.row)).lastIndexOf(true);
   const row = (i, line, extra = false) => {
     const shown = !extra ? line.replace(/^– /, "") : i.kind === "letter_question" ? `${T("Question", "Frage")}: ${i.value}` : i.kind === "hint" ? `${T("Hint", "Hinweis")}: ${i.value}` : label(i);
-    return `<li class="cp-line ${extra ? "cp-offered" : ""} ${S.why === i.item_id ? "open" : ""}" data-item="${esc(i.item_id)}" data-text="${esc(line)}">
-      <input type="checkbox" data-line="${esc(i.item_id)}" ${on(i) ? "checked" : ""} ${editable ? "" : "disabled"} aria-label="${esc(shown)}" aria-describedby="${whyId(i)}">
-      <span class="cp-line-text" data-why="${esc(i.item_id)}">${esc(shown)}</span>${lineWhy(i)}
+    return `<li class="cp-line ${extra ? "cp-offered" : ""} ${S.why === i.item_id ? "open" : ""}" data-item="${raw(i.item_id)}" data-text="${raw(line)}">
+      <input type="checkbox" data-line="${raw(i.item_id)}" ${on(i) ? "checked" : ""} ${editable ? "" : "disabled"} aria-label="${esc(shown)}" aria-describedby="${whyId(i)}">
+      <span class="cp-line-text" data-why="${raw(i.item_id)}">${esc(shown)}</span>${lineWhy(i)}
       ${S.askWhy === i.item_id ? `<div class="cp-why-row"><span class="cp-muted">${T("Left out of this letter. Not needed at all?", "In diesem Brief weggelassen. Gar nicht nötig?")}</span><span class="cp-reasons">
         <button class="cp-chip" data-line-reason="3">${T("not in this case", "in diesem Fall nicht")}</button><button class="cp-chip" data-line-reason="4">${T("never in such cases", "in solchen Fällen nie")}</button></span></div>` : ""}</li>`;
   };
@@ -2012,14 +2209,14 @@ function letterView(text, editable) {
       ${offered.map((i) => row(i, i.kind === "document" ? `– ${label(i)}` : i.value, true)).join("")}</ul></details></li>` : ""}
     <li class="cp-add">${icon("plus")}<input id="add-doc" maxlength="200" placeholder="${T("Add a document", "Unterlage hinzufügen")}" aria-label="${T("Add a document", "Unterlage hinzufügen")}">
       ${S.addedDoc && S.addedDoc.case === S.route.id ? `<span class="cp-added" role="status">${S.addedDoc.said ? esc(S.addedDoc.said)
-        : `${T(`“${esc(S.addedDoc.title)}” is requested.`, `«${esc(S.addedDoc.title)}» wird verlangt.`)} <button class="cp-chip" type="button" data-add-general="${esc(S.addedDoc.edit)}">${T("always in such cases", "in solchen Fällen immer")}</button>`}</span>` : ""}</li>` : "";
+        : `${T(`“${esc(S.addedDoc.title)}” is requested.`, `«${esc(S.addedDoc.title)}» wird verlangt.`)} <button class="cp-chip" type="button" data-add-general="${raw(S.addedDoc.edit)}">${T("always in such cases", "in solchen Fällen immer")}</button>`}</span>` : ""}</li>` : "";
   let n = 0, html = "", list = [];
   const flush = (more = "") => { if (list.length || more) html += `<ul class="cp-checklist" data-seg="list">${list.join("")}${more}</ul>`; list = []; };
   segs.forEach((s, k) => {
     if (s.row) { list.push(row(s.row, s.line)); if (k === lastRow) flush(extra); return; }
     flush();
     const shown = (S.blockEdits || {})[s.text] ?? s.text;
-    html += `<div class="cp-text" data-seg="text" data-orig="${esc(s.text)}" ${editable ? `data-editable="1" tabindex="0" role="textbox" aria-multiline="true" aria-label="${T("Letter text", "Brieftext")}"` : ""} data-block="${n += 1}">${gapsMarked(shown)}</div>`;
+    html += `<div class="cp-text" data-seg="text" data-orig="${raw(s.text)}" ${readingLetter() ? 'data-reading="1"' : editable ? `data-editable="1" tabindex="0" role="textbox" aria-multiline="true" aria-label="${T("Letter text", "Brieftext")}"` : ""} data-block="${n += 1}">${letterBlock(shown)}</div>`;
   });
   flush(lastRow < 0 ? extra : "");
   return html;
@@ -2028,6 +2225,7 @@ function letterView(text, editable) {
 function letterText() {
   return [...document.querySelectorAll("[data-item='letter:0'] [data-seg]")].map((el) => el.dataset.seg === "list"
     ? [...el.querySelectorAll(":scope > li[data-text]")].filter((li) => (li.querySelector("input[data-line]") || {}).checked !== false).map((li) => li.dataset.text).join("\n")
+    : el.dataset.reading ? ((S.blockEdits || {})[el.dataset.orig] ?? el.dataset.orig)  // shown translated: the letter is its original
     : el.innerText.replace(/\n$/, "")).join("\n");
 }
 // ---------- «Der Fall»: what the case is, what is open with whom, by when; nothing the card head says, no decision ----------
@@ -2051,15 +2249,15 @@ function sideQuestions() {
   const b = brief();
   if (b && (b.assessment || b.follow_on) && (b.questions || []).length) return briefSide(b);  // an assessment's questions, the facts that decide it, what is still asked
   const asks = (S.data.items || []).filter((i) => i.kind === "customer_question" && i.value);
-  return asks.length ? `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${asks.map((q) => `<div data-item="${esc(q.item_id)}">«${esc(q.value)}»</div>`).join("")}</dd>` : "";
+  return asks.length ? `<dt>${T("Questions", "Fragen")}</dt><dd class="cp-asks">${asks.map((q) => `<div data-item="${raw(q.item_id)}">«${esc(q.value)}»</div>`).join("")}</dd>` : "";
 }
 function sideAccount() {
   const sc = scr();
   const stand = sc.stand || [];  // the account's lines as the server words them for this screen (screen.account_lines)
   const stageLines = sc.lines || [];  // the stage's short lines, without what the card head states (screen.py)
-  const next = stand.map((l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}${handlerTag(l.handler)}</div>`
-    : `<div class="cp-acct-line open" data-item="${esc(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}${settleButtons(x)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${esc(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
-    .concat(stageLines.map((l) => `<div class="cp-acct-line" data-item="${esc(l.item_id)}">${esc(l.value || "")}${sourceChips(l.evidence)}</div>`)).join("");
+  const next = stand.map((l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${raw(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}${handlerTag(l.handler)}</div>`
+    : `<div class="cp-acct-line open" data-item="${raw(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}${settleButtons(x)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${raw(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
+    .concat(stageLines.map((l) => `<div class="cp-acct-line" data-item="${raw(l.item_id)}">${esc(l.value || "")}${sourceChips(l.evidence)}</div>`)).join("");
   return next ? `<dt>${T("Next", "Als Nächstes")}</dt><dd><div class="cp-acct">${next}</div></dd>` : "";
 }
 // After a correction: what changed in the prepared package, before and after, with its basis, and its undo; after an undo,
@@ -2093,8 +2291,8 @@ function changesStrip() {
   const rows = (S.data.verlauf || []).filter((r) => r.kind === "gesture" && r.undo && !shown.has(r.undo) && !sent.has(r.undo) && String(r.at || "") > cut);
   const last = lastChange();
   if (!rows.length && !last) return "";
-  const list = rows.slice(-4).reverse().map((r) => `<li data-change="${esc(r.undo)}"><span>${esc(clip(r.what, 110))}</span> <button class="cp-link cp-quiet-link" type="button" data-change-undo="${esc(r.undo)}">${T("undo", "rückgängig")}</button></li>`).join("");
-  const more = rows.length > 4 ? `<li class="cp-muted"><a class="cp-quiet-link" href="#/case/${esc(S.route.id)}/history">${T(`and ${rows.length - 4} earlier`, `und ${rows.length - 4} frühere`)}</a></li>` : "";
+  const list = rows.slice(-4).reverse().map((r) => `<li data-change="${raw(r.undo)}"><span>${esc(clip(r.what, 110))}</span> <button class="cp-link cp-quiet-link" type="button" data-change-undo="${raw(r.undo)}">${T("undo", "rückgängig")}</button></li>`).join("");
+  const more = rows.length > 4 ? `<li class="cp-muted"><a class="cp-quiet-link" href="#/case/${raw(S.route.id)}/history">${T(`and ${rows.length - 4} earlier`, `und ${rows.length - 4} frühere`)}</a></li>` : "";
   return `<div class="cp-changes${last ? enter(`chg:${(S.lastEdit && S.lastEdit.edit && S.lastEdit.edit.id) || (S.lastUndo && "undo")}`) : ""}" data-changes>${last}${rows.length ? `<p class="cp-changes-head">${T("Your changes to this step", "Ihre Änderungen an diesem Schritt")} · ${rows.length}</p><ul>${list}${more}</ul>` : ""}</div>`;
 }
 function sideChangeLine() {
@@ -2117,8 +2315,8 @@ function studyCopy() { return Boolean((((S.data || {}).case || {}).intake || {})
 // «erledigt» and «nicht mehr nötig» on an open request of the account (C9): kept and undone like every correction
 function settleButtons(x) {
   if (!x || !x.request || studyCopy() || running()) return "";
-  return ` <span class="cp-settle"><button class="cp-link cp-quiet-link" data-settle="${esc(x.request)}" data-how="erledigt">${T("done", "erledigt")}</button>
-    · <button class="cp-link cp-quiet-link" data-settle="${esc(x.request)}" data-how="nicht_mehr_noetig">${T("no longer needed", "nicht mehr nötig")}</button></span>`;
+  return ` <span class="cp-settle"><button class="cp-link cp-quiet-link" data-settle="${raw(x.request)}" data-how="erledigt">${T("done", "erledigt")}</button>
+    · <button class="cp-link cp-quiet-link" data-settle="${raw(x.request)}" data-how="nicht_mehr_noetig">${T("no longer needed", "nicht mehr nötig")}</button></span>`;
 }
 function sideChanges() {
   return "";  // what changed with the last preparation stands in the card head now (headBlock: «Was sich geändert hat»)
@@ -2149,9 +2347,9 @@ function foldSide() {
 }
 function sideView() {
   const sc = scr();
-  const fristen = (sc.fristen || []).map((d) => `<div class="cp-frist ${quiet() ? "" : d.late ? "late" : d.soon ? "soon" : ""}" data-item="${esc(d.item_id)}" title="${esc([d.basis, d.rule].filter(Boolean).join(" · "))}">${d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : ""}<b>${esc(d.date || d.state)}</b> · ${esc(d.title)}${d.date ? ` <span class="cp-muted">· ${esc(d.state)}</span>` : ""}${d.who ? ` <span class="cp-muted">· ${esc(d.who)}</span>` : ""}${(d.pair || []).length ? `<br><span class="cp-muted">${d.pair.map(esc).join(" · ")}</span>` : ""}${sourceChip(d.source)}</div>`).join("");
-  const docs = sc.missing && !sc.missing_in_letter ? `<dt>${T("Documents", "Unterlagen")}</dt><dd><a class="cp-link cp-quiet-link" href="#/case/${esc(S.route.id)}/document_finder">${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></dd>` : "";
-  const points = (sc.points || []).map((p) => `<div class="cp-point-line ${p.open ? "open" : ""}" data-item="${esc(p.item_id)}"><button class="cp-link cp-point-text" data-key-point="${esc(String(p.item_id).replace(/^key_point:/, ""))}" aria-expanded="${S.keyPoint === String(p.item_id).replace(/^key_point:/, "")}">${esc(p.text)}</button> <span class="cp-muted">· ${esc(p.basis || "")}</span>
+  const fristen = (sc.fristen || []).map((d) => `<div class="cp-frist ${quiet() ? "" : d.late ? "late" : d.soon ? "soon" : ""}" data-item="${raw(d.item_id)}" title="${esc([d.basis, d.rule].filter(Boolean).join(" · "))}">${d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : ""}<b>${esc(d.date || d.state)}</b> · ${esc(d.title)}${d.date ? ` <span class="cp-muted">· ${esc(d.state)}</span>` : ""}${d.who ? ` <span class="cp-muted">· ${esc(d.who)}</span>` : ""}${(d.pair || []).length ? `<br><span class="cp-muted">${d.pair.map(esc).join(" · ")}</span>` : ""}${sourceChip(d.source)}</div>`).join("");
+  const docs = sc.missing && !sc.missing_in_letter ? `<dt>${T("Documents", "Unterlagen")}</dt><dd><a class="cp-link cp-quiet-link" href="#/case/${raw(S.route.id)}/document_finder">${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></dd>` : "";
+  const points = (sc.points || []).map((p) => `<div class="cp-point-line ${p.open ? "open" : ""}" data-item="${raw(p.item_id)}"><button class="cp-link cp-point-text" data-key-point="${raw(String(p.item_id).replace(/^key_point:/, ""))}" aria-expanded="${S.keyPoint === String(p.item_id).replace(/^key_point:/, "")}">${esc(p.text)}</button> <span class="cp-muted">· ${esc(p.basis || "")}</span>
       ${S.keyPoint === String(p.item_id).replace(/^key_point:/, "") ? `<div class="cp-passage">${passages(p.law)}${p.follows ? `<div>${T("Follows", "Folge")}: ${esc(p.follows)}</div>` : ""}${p.check ? `<div>${T("To check", "Zu prüfen")}: ${esc(p.check)}</div>` : ""}</div>` : ""}</div>`).join("");
   const flagged = (S.data.files || []).filter((f) => ((f.extraction || {}).instruction_like || []).length);
   const unread = (S.data.files || []).filter((f) => Object.keys((f.extraction || {}).unread_reasons || {}).length);
@@ -2165,7 +2363,7 @@ function sideView() {
         ${sideAccount()}
         ${docs}
         ${S.data.screen && (fristen || !sc.fristen_elsewhere) ? `<dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen || `<span class="cp-muted">${T("none in the file", "keine in der Akte")}</span>`}</dd>` : ""}
-        ${cover ? `<dt>${T("Cover", "Deckung")}</dt><dd data-item="cover:summary" class="cp-cover-state ${esc(cover.state)}">${esc(cover.text)}</dd>` : ""}
+        ${cover ? `<dt>${T("Cover", "Deckung")}</dt><dd data-item="cover:summary" class="cp-cover-state ${raw(cover.state)}">${esc(cover.text)}</dd>` : ""}
         ${points ? `<dt>${T("Law", "Rechtliches")}</dt><dd>${points}</dd>` : ""}
         ${flagged.length ? `<dt>${T("Note", "Achtung")}</dt><dd>${flagged.map((f) => esc(f.name)).join(", ")} ${T("contains text addressed to an AI; not followed", "enthält Text an die KI; nicht befolgt")}</dd>` : ""}
         ${unread.length ? `<dt>${T("Unread", "Nicht gelesen")}</dt><dd>${unread.map((f) => `${esc(f.name)}: ${Object.keys(f.extraction.unread_reasons).length} ${T("page(s)", "Seite(n)")}`).join("<br>")}</dd>` : ""}
@@ -2182,38 +2380,38 @@ function sideView() {
 // One compact card: what kind, with whom (a name if wanted), the day (today), what was said; and, each behind one tap, one
 // row of what was agreed, what was asked and the next step. It is an entry of the account and counts at once.
 const PARTY_DE = { kunde: "Kundschaft", versicherer: "Protekta", kanzlei: "Kanzlei", gegenpartei: "Gegenpartei", behoerde: "Gericht/Behörde", andere: "Andere" };
-const ENTRY_KINDS = [["telefon", T("Phone", "Telefon")], ["gespraech", T("Conversation", "Gespräch")], ["notiz", T("Note", "Notiz")],
-  ["email", T("E-mail outside the file", "E-Mail ausserhalb der Akte")]];
-const ENTRY_PARTIES = [["kunde", T("customer", "Kundschaft")], ["gegenpartei", T("other side", "Gegenpartei")], ["kanzlei", T("law firm", "Kanzlei")],
-  ["behoerde", T("authority", "Behörde")], ["andere", T("other", "andere")]];
-const ENTRY_PARTS = { agreed: T("Agreed", "Vereinbart"), asked: T("Asked", "Verlangt"), next: T("Next step", "Nächster Schritt") };
+const ENTRY_KINDS = lazy(() => ([["telefon", T("Phone", "Telefon")], ["gespraech", T("Conversation", "Gespräch")], ["notiz", T("Note", "Notiz")],
+  ["email", T("E-mail outside the file", "E-Mail ausserhalb der Akte")]]));
+const ENTRY_PARTIES = lazy(() => ([["kunde", T("customer", "Kundschaft")], ["gegenpartei", T("other side", "Gegenpartei")], ["kanzlei", T("law firm", "Kanzlei")],
+  ["behoerde", T("authority", "Behörde")], ["andere", T("other", "andere")]]));
+const ENTRY_PARTS = lazy(() => ({ agreed: T("Agreed", "Vereinbart"), asked: T("Asked", "Verlangt"), next: T("Next step", "Nächster Schritt") }));
 function entryForm() {
   const d = S.entryDraft || {}, party = d.party || "kunde";
   const part = (k) => d[k] || {};
   const shown = (k) => Boolean((d.open || {})[k] || Object.values(part(k)).some(Boolean));
   const options = (rows, now, blank) => (blank ? `<option value="">${esc(blank)}</option>` : "") + rows.map(([k, label]) => `<option value="${k}" ${k === now ? "selected" : ""}>${esc(label)}</option>`).join("");
-  const whom = (now, blank) => options(ENTRY_PARTIES.concat([["versicherer", T("us (Protekta)", "wir (Protekta)")]]), now, blank);
-  const input = (name, value, attrs) => `<input name="${name}" value="${esc(value || "")}" ${attrs}>`;
-  const row = (k, body) => `<div class="cp-entry-part" data-part="${k}" ${shown(k) ? "" : "hidden"}><span class="cp-entry-part-label">${ENTRY_PARTS[k]}</span>${body}</div>`;
-  return `<form class="cp-entry-form" id="note-form" ${S.entryEdit ? `data-edit="${esc(S.entryEdit)}"` : ""} novalidate>
-    <div class="cp-entry-kinds" role="radiogroup" aria-label="${T("Kind of entry", "Art des Eintrags")}">${ENTRY_KINDS.map(([k, label]) =>
+  const whom = (now, blank) => options(ENTRY_PARTIES().concat([["versicherer", T("us (Protekta)", "wir (Protekta)")]]), now, blank);
+  const input = (name, value, attrs) => `<input name="${name}" value="${raw(value || "")}" ${attrs}>`;
+  const row = (k, body) => `<div class="cp-entry-part" data-part="${k}" ${shown(k) ? "" : "hidden"}><span class="cp-entry-part-label">${ENTRY_PARTS()[k]}</span>${body}</div>`;
+  return `<form class="cp-entry-form" id="note-form" ${S.entryEdit ? `data-edit="${raw(S.entryEdit)}"` : ""} novalidate>
+    <div class="cp-entry-kinds" role="radiogroup" aria-label="${T("Kind of entry", "Art des Eintrags")}">${ENTRY_KINDS().map(([k, label]) =>
       `<label class="cp-entry-kind"><input type="radio" name="kind" value="${k}" ${k === (d.kind || "telefon") ? "checked" : ""}><span>${esc(label)}</span></label>`).join("")}</div>
-    <div class="cp-entry-row"><label>${T("with", "mit")} <select name="party">${options(ENTRY_PARTIES, party)}</select></label>
+    <div class="cp-entry-row"><label>${T("with", "mit")} <select name="party">${options(ENTRY_PARTIES(), party)}</select></label>
       ${input("name", d.name, `maxlength="120" placeholder="${T("name (optional)", "Name (freiwillig)")}" aria-label="Name" class="cp-entry-name"`)}
-      <label>${T("on", "am")} <input type="date" name="date" value="${esc(d.date || isoToday())}" aria-label="${T("Date", "Datum")}"></label></div>
-    <textarea name="said" rows="3" maxlength="2000" placeholder="${T("What was said", "Was besprochen wurde")}" aria-label="${T("What was said", "Was besprochen wurde")}">${esc(d.said || "")}</textarea>
+      <label>${T("on", "am")} <input type="date" name="date" value="${raw(d.date || isoToday())}" aria-label="${T("Date", "Datum")}"></label></div>
+    <textarea name="said" rows="3" maxlength="2000" placeholder="${T("What was said", "Was besprochen wurde")}" aria-label="${T("What was said", "Was besprochen wurde")}">${raw(d.said || "")}</textarea>
     ${row("agreed", `${input("agreed_what", part("agreed").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("agreed: what", "vereinbart: was")}"`)}
       ${input("agreed_amount", part("agreed").amount, `maxlength="40" placeholder="CHF" size="8" aria-label="${T("amount", "Betrag")}"`)}
       <select name="agreed_payer" aria-label="${T("who pays", "wer zahlt")}">${options([["gegenpartei", T("other side pays", "Gegenpartei zahlt")], ["kunde", T("customer pays", "Kundschaft zahlt")],
         ["versicherer", T("we pay", "Protekta zahlt")], ["kanzlei", T("firm pays", "Kanzlei zahlt")], ["andere", T("others pay", "andere zahlen")]], part("agreed").payer || (party === "gegenpartei" ? "gegenpartei" : ""), T("who pays", "wer zahlt"))}</select>
-      <label>${T("by", "bis")} <input type="date" name="agreed_by" value="${esc(part("agreed").by || "")}"></label>`)}
+      <label>${T("by", "bis")} <input type="date" name="agreed_by" value="${raw(part("agreed").by || "")}"></label>`)}
     ${row("asked", `${input("asked_what", part("asked").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("asked: what", "verlangt: was")}"`)}
-      <select name="asked_of" aria-label="${T("of whom", "von wem")}">${options(ENTRY_PARTIES, part("asked").of || party)}</select>
-      <label>${T("by", "bis")} <input type="date" name="asked_by" value="${esc(part("asked").by || "")}"></label>`)}
+      <select name="asked_of" aria-label="${T("of whom", "von wem")}">${options(ENTRY_PARTIES(), part("asked").of || party)}</select>
+      <label>${T("by", "bis")} <input type="date" name="asked_by" value="${raw(part("asked").by || "")}"></label>`)}
     ${row("next", `${input("next_what", part("next").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("next step: what", "nächster Schritt: was")}"`)}
-      <label>${T("by", "bis")} <input type="date" name="next_by" value="${esc(part("next").by || "")}"></label>
+      <label>${T("by", "bis")} <input type="date" name="next_by" value="${raw(part("next").by || "")}"></label>
       <select name="next_who" aria-label="${T("who", "wer")}">${whom(part("next").who || party)}</select>`)}
-    <p class="cp-entry-adds">${Object.keys(ENTRY_PARTS).filter((k) => !shown(k)).map((k) => `<button type="button" class="cp-link cp-quiet-link" data-entry-part="${k}">+ ${ENTRY_PARTS[k]}</button>`).join("")}</p>
+    <p class="cp-entry-adds">${Object.keys(ENTRY_PARTS()).filter((k) => !shown(k)).map((k) => `<button type="button" class="cp-link cp-quiet-link" data-entry-part="${k}">+ ${ENTRY_PARTS()[k]}</button>`).join("")}</p>
     ${S.entryError ? `<p class="cp-error">${esc(S.entryError)}</p>` : ""}
     <span class="cp-entry-actions"><button class="cp-button cp-small">${S.entryEdit ? T("Save change", "Änderung speichern") : T("Save", "Speichern")}</button>
       <button type="button" class="cp-link cp-quiet-link" id="note-cancel">${T("cancel", "abbrechen")}</button></span></form>`;
@@ -2293,12 +2491,12 @@ function historyView() {
   const tag = (r) => r.kind === "report" ? `<span class="cp-entry-tag">${T("Report", "Meldung")}</span> ` : r.phone && r.title !== "Telefon" ? `<span class="cp-entry-tag">${T("Phone", "Telefon")}</span> ` : "";
   const own = (r) => r.handler ? `<br><span class="cp-entry-tag own">${T("entered by", "erfasst von")} ${esc(r.handler.by || T("the case handler", "der Fallbearbeitung"))}</span>${r.waiting
     ? ` <span class="cp-muted">${T("counts once the case is prepared anew", "zählt nach einer vollständigen Vorbereitung")}</span>` : ""}` : "";
-  const tools = (r) => r.handler ? `<div class="cp-entry-tools"><button class="cp-link cp-quiet-link" data-entry-edit="${esc(String(r.key).split(":")[1])}">${T("change", "ändern")}</button>
-      <button class="cp-link cp-quiet-link" data-entry-remove="${esc(String(r.key).split(":")[1])}">${T("remove", "entfernen")}</button></div>`
-    : r.undo ? `<div class="cp-entry-tools"><button class="cp-link cp-quiet-link" data-undo-edit="${esc(r.undo)}">${T("undo", "rückgängig")}</button></div>` : "";
+  const tools = (r) => r.handler ? `<div class="cp-entry-tools"><button class="cp-link cp-quiet-link" data-entry-edit="${raw(String(r.key).split(":")[1])}">${T("change", "ändern")}</button>
+      <button class="cp-link cp-quiet-link" data-entry-remove="${raw(String(r.key).split(":")[1])}">${T("remove", "entfernen")}</button></div>`
+    : r.undo ? `<div class="cp-entry-tools"><button class="cp-link cp-quiet-link" data-undo-edit="${raw(r.undo)}">${T("undo", "rückgängig")}</button></div>` : "";
   const source = (r) => r.kind === "gesture" || r.handler ? "" : (r.evidence || []).some((e) => e.quote) ? sourceChips((r.evidence || []).slice(0, 1))
-    : (r.evidence || [])[0] ? ` <button class="cp-source-chip" data-cite-file="${esc(r.evidence[0].file)}" data-page="">${T("open", "öffnen")}</button>` : "";
-  const line = (r) => `<tr class="${r.open ? "open" : ""} cp-row-${esc(r.kind)}" ${String(r.key).startsWith("entry:") ? `data-item="${esc(r.key)}"` : ""}>
+    : (r.evidence || [])[0] ? ` <button class="cp-source-chip" data-cite-file="${raw(r.evidence[0].file)}" data-page="">${T("open", "öffnen")}</button>` : "";
+  const line = (r) => `<tr class="${r.open ? "open" : ""} cp-row-${raw(r.kind)}" ${String(r.key).startsWith("entry:") ? `data-item="${raw(r.key)}"` : ""}>
       <td>${r.number ?? ""}</td><td class="cp-nowrap">${dateText(r.date)}</td><td class="cp-nowrap">${esc(r.who || "")}</td>
       <td>${tag(r)}<span class="cp-muted">${esc(r.title || "")}</span><br>${esc(r.what || "")}${source(r)}${own(r)}</td>
       <td>${(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;
@@ -2352,9 +2550,9 @@ function unaidedView() {
   return `<section class="cp-card" style="padding:18px 22px;max-width:760px"><h2 class="cp-section" style="margin-top:0">${T("Your own assessment first", "Zuerst Ihre eigene Einschätzung")}</h2>
     <p class="cp-muted">${T("Read the files on the left, then answer three questions. CasePath's result appears afterwards.", "Lesen Sie links die Akten und beantworten Sie dann drei Fragen. Danach erscheint das Ergebnis von CasePath.")}</p>
     <form id="unaided">
-      <label><b>${T("Where does the case stand?", "Wo steht der Fall?")}</b><br><select name="step" class="cp-button"><option value="">—</option>${steps.map((x) => `<option value="${esc(x.id)}">${esc(shortTitle(x.title))}</option>`).join("")}</select></label>
+      <label><b>${T("Where does the case stand?", "Wo steht der Fall?")}</b><br><select name="step" class="cp-button"><option value="">—</option>${steps.map((x) => `<option value="${raw(x.id)}">${esc(shortTitle(x.title))}</option>`).join("")}</select></label>
       <p><b>${T("Which documents would you request now?", "Welche Unterlagen würden Sie jetzt anfordern?")}</b></p>
-      ${docs.map((d) => `<label style="display:block"><input type="checkbox" name="doc" value="${esc(d.id)}"> ${esc(clip(d.title, 90))}</label>`).join("")}
+      ${docs.map((d) => `<label style="display:block"><input type="checkbox" name="doc" value="${raw(d.id)}"> ${esc(clip(d.title, 90))}</label>`).join("")}
       <label style="display:block">${T("Other", "Anderes")}: <input name="doc_other" class="cp-input" style="width:60%"></label>
       <p><b>${T("Next action", "Nächster Schritt")}</b><br><select name="action" class="cp-button"><option value="">—</option>
         <option value="request">${T("Request documents", "Unterlagen anfordern")}</option><option value="answer">${T("Ask the customer a question", "Rückfrage an die Kundschaft")}</option>
@@ -2422,7 +2620,7 @@ function bindOverview() {
   });
   on("[data-copy-also]", "click", (b) => {
     if (Number(b.dataset.gaps || 0) && goToGap()) return;
-    const kind = b.dataset.copyAlso, el = $(`[data-also-text='${CSS.escape(kind)}']`), text = el ? el.innerText : "";
+    const kind = b.dataset.copyAlso, el = $(`[data-also-text='${CSS.escape(kind)}']`), text = !el ? "" : el.dataset.reading ? docText({ kind }) : el.innerText;
     const also = ((S.data.draft || {}).also || []).find((a) => a.kind === kind) || {};
     const lost = (also.required || []).filter((r) => !text.includes(r.marker));
     if (lost.length) { S.message = T("Please complete the letter first.", `Bitte zuerst ergänzen: ${lost.map((r) => r.title).join(", ")}`); S.messageOk = false; renderCase(); return; }
@@ -2621,6 +2819,9 @@ function bindOverview() {
     await api(`/api/cases/${S.route.id}/entries/${b.dataset.entryRemove}`, { method: "DELETE" }).catch((error) => { S.message = error.message; });
     await loadCase();
   });
+  on("#trail-open", "click", () => { S.trailOpen = !S.trailOpen; if (S.justFinished === S.route.id) { S.justFinished = null; S.trailOpen = false; } renderCase(); });
+  on("#letter-original", "click", () => { S.letterOriginal = true; renderCase(); });
+  on("#letter-reading", "click", async () => { if (await saveDraft()) { S.letterOriginal = false; renderCase(); } });
   on("#use-anyway", "click", async () => {  // the handler uses the draft before the new files are read: allowed, and logged
     await caseEvent("letter.unblocked", null, { files: (S.data.arrived || []).map((f) => f.name).slice(0, 20) }).catch(() => {});
     await loadCase();
@@ -2743,7 +2944,7 @@ function showNotices() {
   if (!box) { box = document.createElement("div"); box.id = "cp-notices"; box.className = "cp-notices"; box.setAttribute("role", "status"); document.body.appendChild(box); }
   const word = (d) => d.status === "completed" ? (d.kind === "update" ? T("Updated", "Aktualisiert") : T("Prepared", "Fertig vorbereitet"))
     : d.status === "paused" ? T("Stopped", "Angehalten") : T("Not finished", "Nicht fertig");
-  box.innerHTML = WATCH.done.map((d) => `<a class="cp-notice ${d.status === "completed" ? "" : "warn"}" href="#/case/${esc(d.id)}/overview">${d.status === "completed" ? icon("check") : ""}<b>${word(d)}</b> ${esc(d.name)}</a>`).join("");
+  box.innerHTML = WATCH.done.map((d) => `<a class="cp-notice ${d.status === "completed" ? "" : "warn"}" href="#/case/${raw(d.id)}/overview">${d.status === "completed" ? icon("check") : ""}<b>${word(d)}</b> ${esc(d.name)}</a>`).join("");
 }
 document.addEventListener("visibilitychange", () => { if (!document.hidden) showNotices(); });
 function schedulePoll() {
@@ -2787,7 +2988,7 @@ async function renderCase() {
     main = `${runLine(caseState())}<div class="cp-overview cp-live-overview"><div id="overview-source">${await sourceCard(S.file)}</div><aside class="cp-side">${liveCase()}</aside></div>`;
   } else if (liveView) {
     main = `${live ? liveSpine(live) : spine()}<div class="cp-live"><div>${await sourceCard(S.file)}${factCards()}</div>${livePanel(live)}</div>`;
-  } else if (unaidedPending()) main = `${unaidedView()}<div style="margin-top:22px">${S.file ? `<iframe title="${T("Original file", "Originaldatei")}" src="/api/files/${esc(S.file)}/original" style="width:100%;height:78vh;border:1px solid var(--line)"></iframe>` : ""}</div>`;  // every tab: the original file only
+  } else if (unaidedPending()) main = `${unaidedView()}<div style="margin-top:22px">${S.file ? `<iframe title="${T("Original file", "Originaldatei")}" src="/api/files/${raw(S.file)}/original" style="width:100%;height:78vh;border:1px solid var(--line)"></iframe>` : ""}</div>`;  // every tab: the original file only
   else if (tab === "claim_reader") main = claimView(await sourceCard(S.file));
   else if (tab === "source_checker") main = `${checkerView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
   else if (tab === "document_finder") main = `${documentsView()}${S.overviewSource ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
@@ -2798,7 +2999,9 @@ async function renderCase() {
   // What the handler is typing survives a re-render (a run's progress or a reload redraws the page).
   const typing = [...document.querySelectorAll("#app input[id], #app textarea[id]")].filter((el) => el.value && !["file", "checkbox", "radio"].includes(el.type))
     .map((el) => ({ id: el.id, value: el.value, focus: el === document.activeElement, start: el.selectionStart, end: el.selectionEnd }));
-  $("#app").innerHTML = `${renderRail()}<main class="cp-main">${main}</main>`;
+  const tabIn = S.tabIn && !liveView && S.data; if (S.data) S.tabIn = false;
+  $("#app").innerHTML = `${renderRail()}<main class="cp-main${tabIn ? " cp-tab-in" : ""}">${main}</main>`;
+  glide();
   watchRun(S.data.run, S.data.case);
   showNotices();
   if (MEASURE.on && MEASURE.caseId !== S.route.id) measureTouch();  // the case is on the screen: its measured span begins
@@ -2814,6 +3017,7 @@ async function renderCase() {
   bindRail();
   for (const b of document.querySelectorAll("[data-step]")) b.addEventListener("click", () => { S.step = b.dataset.step; renderCase(); });
   for (const b of document.querySelectorAll("[data-step-file]")) b.addEventListener("click", () => { if (b.dataset.stepFile) { S.file = b.dataset.stepFile; S.follow = !running(); renderCase(); } });
+  for (const b of document.querySelectorAll("#source-lang")) b.addEventListener("click", () => { S.sourceOriginal = !S.sourceOriginal; renderCase(); });
   for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", () => {
     const holder = b.closest("[data-item]");
     caseEvent("source.opened", holder && /^[a-z_]+:/.test(holder.dataset.item) ? holder.dataset.item : null, { file_id: b.dataset.citeFile, page: Number(b.dataset.page) || null }).catch(() => {});
@@ -2889,7 +3093,7 @@ async function renderAuswertung() {
     <td>${c.handling_seconds == null ? "—" : span(c.handling_seconds)}</td><td>${c.sources_opened}</td><td>${c.same_correction_again}</td><td>${span(c.run_seconds)}</td>
     <td>${c.tokens_noncached >= 500 ? `${Math.round(c.tokens_noncached / 1000)}k` : "—"}</td></tr>`).join("");
   const figure = (value, label) => `<div class="cp-figure"><b>${n(value)}</b><span>${label}</span></div>`;
-  $("#app").innerHTML = `<main class="cp-main cp-evaluation"><h1 class="cp-title">${T("Evaluation", "Auswertung")}</h1>
+  $("#app").innerHTML = `<main class="cp-main cp-evaluation${pageIn()}"><h1 class="cp-title">${T("Evaluation", "Auswertung")}</h1>
     <section class="cp-today cp-figures" aria-label="${T("In figures", "In Zahlen")}">
       ${figure(a.total.cases, T("cases", "Fälle"))}${figure(a.total.cases_used, T("worked on", "bearbeitet"))}
       ${figure(a.total.interventions_per_used_case, T("corrections per case worked on", "Eingriffe pro bearbeiteten Fall"))}${figure(a.total.same_correction_again, T("same correction made again", "gleiche Korrektur erneut"))}</section>
@@ -2951,23 +3155,23 @@ async function renderKnowledge() {
       ${k.applies_when_text ? `<span class="cp-muted">${T("Applies when", "Gilt, wenn")}: ${esc(k.applies_when_text)}</span>` : ""}
       <span>${T(`Used ${k.stats.uses} · confirmed ${k.stats.confirmed} · not found ${k.stats.not_found} · contradicted ${k.stats.contradicted}`,
                 `${k.stats.uses}× verwendet · ${k.stats.confirmed}× bestätigt · ${k.stats.not_found}× nicht gefunden · ${k.stats.contradicted}× widersprochen`)}</span>
-      ${(k.evidence || []).filter((e) => e.quote).slice(0, 2).map((e) => `<span class="cp-muted">“${esc(e.quote)}” — <a href="#/case/${esc(e.case_id)}/claim_reader">${esc(caseName(e.case_id))}</a></span>`).join("")}
-      ${seededNote(k) ? `<span class="cp-muted">${esc(seededNote(k))}</span>` : `<span class="cp-muted">${k.origin.kind === "case_edit" ? T("Learned from a case worker’s change in", "Gelernt aus einer Änderung in der Fallbearbeitung, im Fall") : T("Learned by the result checker in", "Gelernt vom Ergebnisprüfer im Fall")} <a href="#/case/${esc(k.origin.case_id)}/process_builder">${esc(caseName(k.origin.case_id))}</a></span>`}
-      ${k.uses.length ? `<span>${T("Cases", "Fälle")}: ${k.uses.map((u) => `<a href="#/case/${esc(u.case_id)}/document_finder">${esc(caseName(u.case_id))}</a> <span class="cp-chip ${u.outcome === "present" ? "good" : u.outcome === "contradicted" ? "bad" : ""}">${esc(word(u.outcome))}</span>`).join(" ")}</span>` : ""}
+      ${(k.evidence || []).filter((e) => e.quote).slice(0, 2).map((e) => `<span class="cp-muted">“${esc(e.quote)}” — <a href="#/case/${raw(e.case_id)}/claim_reader">${esc(caseName(e.case_id))}</a></span>`).join("")}
+      ${seededNote(k) ? `<span class="cp-muted">${esc(seededNote(k))}</span>` : `<span class="cp-muted">${k.origin.kind === "case_edit" ? T("Learned from a case worker’s change in", "Gelernt aus einer Änderung in der Fallbearbeitung, im Fall") : T("Learned by the result checker in", "Gelernt vom Ergebnisprüfer im Fall")} <a href="#/case/${raw(k.origin.case_id)}/process_builder">${esc(caseName(k.origin.case_id))}</a></span>`}
+      ${k.uses.length ? `<span>${T("Cases", "Fälle")}: ${k.uses.map((u) => `<a href="#/case/${raw(u.case_id)}/document_finder">${esc(caseName(u.case_id))}</a> <span class="cp-chip ${u.outcome === "present" ? "good" : u.outcome === "contradicted" ? "bad" : ""}">${esc(word(u.outcome))}</span>`).join(" ")}</span>` : ""}
       <details><summary class="cp-link">${T("History", "Verlauf")}</summary><ul class="cp-log">${k.history.map((h) => `<li><b>v${h.version}</b><span>${esc(changeText(h.change))}${h.by ? ` · ${esc(byWhom(h.by))}` : ""} · ${dateText(h.at)}</span></li>`).join("")}</ul></details>
-      ${review && review.may_review && k.status !== "candidate" ? `<details class="cp-recall" data-recall="${esc(k.ids.join(","))}"><summary class="cp-link">${T("Letters resting on it", "Briefe, die darauf beruhen")}</summary><ul class="cp-log"><li class="cp-muted">…</li></ul></details>` : ""}
+      ${review && review.may_review && k.status !== "candidate" ? `<details class="cp-recall" data-recall="${raw(k.ids.join(","))}"><summary class="cp-link">${T("Letters resting on it", "Briefe, die darauf beruhen")}</summary><ul class="cp-log"><li class="cp-muted">…</li></ul></details>` : ""}
       ${k.status !== "active" && k.status !== "retired" ? replayLine(k, data.knowledge, caseName) : ""}
       <div class="row" style="display:flex;gap:10px">${k.status !== "active" && k.status !== "retired" ? (replayCurrent(k, data.knowledge)
-          ? `<button class="cp-button primary" data-activate="${esc(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>`
-          : `<button class="cp-button primary" data-replay="${esc(k.ids.join(","))}">${T("Replay", "Nachspielen")}</button>`) : ""}
-        ${k.status !== "retired" ? `<button class="cp-button" data-retire="${esc(k.ids.join(","))}">${T("Retire", "Zurückziehen")}</button>` : ""}</div></article>`;
+          ? `<button class="cp-button primary" data-activate="${raw(k.ids.join(","))}">${k.refines ? T("Apply refinement", "Verfeinerung übernehmen") : T("Activate", "Freigeben")}</button>`
+          : `<button class="cp-button primary" data-replay="${raw(k.ids.join(","))}">${T("Replay", "Nachspielen")}</button>`) : ""}
+        ${k.status !== "retired" ? `<button class="cp-button" data-retire="${raw(k.ids.join(","))}">${T("Retire", "Zurückziehen")}</button>` : ""}</div></article>`;
   const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
   const sections = Object.entries(groups).sort(([a], [b]) => a.localeCompare(b, "de")).map(([name, entries]) => {
     const items = Object.values(entries), uses = items.reduce((n, k) => n + k.stats.uses, 0);
     return `<h2 class="cp-section">${esc(name)} <span class="cp-muted">· ${T(`${items.length} items · ${uses} uses`, `${plural(items.length, "Eintrag", "Einträge")} · ${plural(uses, "Verwendung", "Verwendungen")}`)}</span></h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;align-items:start">${items.map(card).join("")}</div>`;
   }).join("");
-  $("#app").innerHTML = `<main class="cp-main"><h1 class="cp-title">${T("Knowledge", "Wissen")}</h1>
+  $("#app").innerHTML = `<main class="cp-main${pageIn()}"><h1 class="cp-title">${T("Knowledge", "Wissen")}</h1>
     ${review && review.may_review ? reviewTable(review) + reviewByUse(byUse) : ""}
     ${review && review.may_review ? `<h2 class="cp-section cp-learned">${T("Learned from cases", "Aus Fällen gelernt")}</h2>` : ""}
     <p class="cp-muted">${T("What CasePath learned from earlier cases and case workers’ changes. Active items shape new cases; candidates are checked as suggestions until a person activates them.",
@@ -2993,7 +3197,7 @@ async function renderKnowledge() {
 // The rows of a recall (GET /api/recall): which case, which letter, approved when and by whom, sent or not.
 function recallRows(rows) {
   if (!rows.length) return `<li class="cp-muted">${T("No approved letter rests on it.", "Kein freigegebener Brief beruht darauf.")}</li>`;
-  return rows.map((r) => `<li><a href="#/case/${esc(r.case)}/overview">${esc(r.reference || r.title || r.case)}</a> <span>${esc(r.letter || r.form || "")} · ${T("approved", "freigegeben")} ${dateText(r.approved_at).slice(0, 10)}${r.approved_by ? ` · ${esc(r.approved_by)}` : ""}
+  return rows.map((r) => `<li><a href="#/case/${raw(r.case)}/overview">${esc(r.reference || r.title || r.case)}</a> <span>${esc(r.letter || r.form || "")} · ${T("approved", "freigegeben")} ${dateText(r.approved_at).slice(0, 10)}${r.approved_by ? ` · ${esc(r.approved_by)}` : ""}
     · ${r.sent.length ? `${T("sent", "versandt")} ${r.sent.map((x) => esc(dateText(x.date))).join(", ")}` : `<b>${T("not sent yet", "noch nicht versandt")}</b>`}</span></li>`).join("");
 }
 
@@ -3001,8 +3205,8 @@ function recallRows(rows) {
 // A jurist opens one area, sees each element in the words the handler or customer will see beside the passage it rests on
 // and its official source, and marks it: geprüft, Änderung nötig …, Frage …. An area whose elements are all geprüft is
 // freigegeben; the handler's screen says so (process/review.py).
-const REVIEW_WORD = { geprueft: T("checked", "geprüft"), aenderung: T("change needed", "Änderung nötig"), frage: T("question", "Frage"),
-                      geaendert: T("changed since review", "geändert seit Prüfung"), offen: T("open", "offen") };
+const REVIEW_WORD = lazy(() => ({ geprueft: T("checked", "geprüft"), aenderung: T("change needed", "Änderung nötig"), frage: T("question", "Frage"),
+                      geaendert: T("changed since review", "geändert seit Prüfung"), offen: T("open", "offen") }));
 const REVIEW_CHIP = { geprueft: "good", aenderung: "bad", frage: "wait", geaendert: "wait" };
 const reviewDay = (at) => dateText(at).slice(0, 10);
 function reviewState(status) {
@@ -3018,7 +3222,7 @@ function reviewByUse(use) {
   if (!use.elements) return `${head}<p class="cp-muted cp-rv-use-none">${T("No letter has been approved yet. A prepared letter is reviewed from its case («This letter: … checked»).", "Noch ist kein Brief freigegeben. Ein vorbereiteter Brief wird aus seinem Fall heraus geprüft («Dieser Brief: … geprüft»).")}</p>`;
   if (!open.length) return `${head}<p class="cp-muted cp-rv-use-none">${T("Every element approved letters rest on is checked.", "Alle Bausteine, auf denen freigegebene Briefe beruhen, sind geprüft.")}</p>`;
   return `${head}<ul class="cp-log cp-rv-use">${open.slice(0, 12).map((r) => `<li><a href="#/knowledge/brief/${encodeURIComponent(r.case)}">${esc(r.title)}</a>
-    <span class="cp-muted">${T(`${r.letters} letter(s), ${r.sent} sent`, `${r.letters} ${r.letters === 1 ? "Brief" : "Briefe"}, davon ${r.sent} versandt`)}${r.state !== "offen" ? ` · ${esc(REVIEW_WORD[r.state] || r.state_text)}` : ""}</span></li>`).join("")}</ul>
+    <span class="cp-muted">${T(`${r.letters} letter(s), ${r.sent} sent`, `${r.letters} ${r.letters === 1 ? "Brief" : "Briefe"}, davon ${r.sent} versandt`)}${r.state !== "offen" ? ` · ${esc(REVIEW_WORD()[r.state] || r.state_text)}` : ""}</span></li>`).join("")}</ul>
     ${open.length > 12 ? `<p class="cp-muted">${T(`and ${open.length - 12} more`, `und ${open.length - 12} weitere`)}</p>` : ""}`;
 }
 function reviewTable(review) {
@@ -3042,25 +3246,25 @@ async function renderReview(id) {
 // A passage as a jurist reads it: the article first, then its words, the official text one click away.
 function lawRow(r, linked) {
   const title = `${r.source || ""}${r.version ? `, ${r.version}` : ""}`;
-  const source = r.url && !linked ? `<a href="${esc(r.url)}" target="_blank" rel="noopener" title="${esc(title)}">${esc(r.link || r.source || "")}</a>` : "";
+  const source = r.url && !linked ? `<a href="${raw(r.url)}" target="_blank" rel="noopener" title="${esc(title)}">${esc(r.link || r.source || "")}</a>` : "";
   return `<div class="cp-rv-passage"><p class="cp-rv-cite"><b>${esc(r.cite)}</b>${source ? ` ${source}` : ""}${r.verified ? "" : ` <span class="cp-flag">${T("not checked against the official text", "nicht am amtlichen Text geprüft")}</span>`}</p>
     <p class="cp-rv-words">«${esc(r.passage)}»</p></div>`;
 }
 function reviewElement(el, may) {
   const m = el.mark, editing = S.reviewing && S.reviewing.key === el.key ? S.reviewing.mark : null;
   const others = el.used_in.filter((t) => t !== S.reviewRow.title);
-  const who = m && el.state !== "offen" ? `<span class="cp-rv-who">${el.state === "geaendert" ? `${T("earlier", "früher")} ${esc(REVIEW_WORD[m.mark])}: ` : ""}${esc(m.reviewer)}, ${reviewDay(m.at)}</span>` : "";
+  const who = m && el.state !== "offen" ? `<span class="cp-rv-who">${el.state === "geaendert" ? `${T("earlier", "früher")} ${esc(REVIEW_WORD()[m.mark])}: ` : ""}${esc(m.reviewer)}, ${reviewDay(m.at)}</span>` : "";
   const said = m && el.state !== "offen" && (m.comment || m.suggestion) ? `<p class="cp-rv-meta">${m.comment ? `«${esc(m.comment)}»` : ""}${m.suggestion ? `${m.comment ? " · " : ""}${T("Wording", "Vorschlag")}: «${esc(m.suggestion)}»` : ""}</p>` : "";
-  const form = editing ? `<form class="cp-rv-form" data-rv-form="${esc(el.key)}" data-mark="${editing}">
+  const form = editing ? `<form class="cp-rv-form" data-rv-form="${raw(el.key)}" data-mark="${editing}">
       <label>${editing === "aenderung" ? T("What must change", "Was zu ändern ist") : T("Your question", "Ihre Frage")}<textarea name="comment" rows="2" maxlength="4000" required></textarea></label>
       ${editing === "aenderung" ? `<label>${T("Proposed wording (optional)", "Vorschlag für den Wortlaut (freiwillig)")}<textarea name="suggestion" rows="2" maxlength="4000"></textarea></label>` : ""}
       <span><button class="cp-button cp-small">${T("Save", "Speichern")}</button> <button type="button" class="cp-link cp-quiet-link" data-rv-cancel>${T("cancel", "abbrechen")}</button></span></form>` : "";
   const actions = may ? `<div class="cp-rv-actions">
-      <button class="cp-button cp-small" data-rv-mark="${esc(el.key)}" aria-pressed="${el.state === "geprueft"}">${T("checked", "geprüft")}</button>
-      <button class="cp-button cp-small" data-rv-open="aenderung" data-key="${esc(el.key)}" aria-pressed="${el.state === "aenderung"}">${T("Change needed …", "Änderung nötig …")}</button>
-      <button class="cp-button cp-small" data-rv-open="frage" data-key="${esc(el.key)}" aria-pressed="${el.state === "frage"}">${T("Question …", "Frage …")}</button>${who}</div>${form}` : who ? `<p class="cp-rv-meta">${who}</p>` : "";
-  return `<article class="cp-rv-el ${el.state}" data-review="${esc(el.key)}">
-    <div class="cp-rv-main"><h3>${esc(el.title)}${el.state !== "offen" ? ` <span class="cp-chip ${REVIEW_CHIP[el.state] || ""}">${esc(REVIEW_WORD[el.state])}</span>` : ""}</h3>
+      <button class="cp-button cp-small" data-rv-mark="${raw(el.key)}" aria-pressed="${el.state === "geprueft"}">${T("checked", "geprüft")}</button>
+      <button class="cp-button cp-small" data-rv-open="aenderung" data-key="${raw(el.key)}" aria-pressed="${el.state === "aenderung"}">${T("Change needed …", "Änderung nötig …")}</button>
+      <button class="cp-button cp-small" data-rv-open="frage" data-key="${raw(el.key)}" aria-pressed="${el.state === "frage"}">${T("Question …", "Frage …")}</button>${who}</div>${form}` : who ? `<p class="cp-rv-meta">${who}</p>` : "";
+  return `<article class="cp-rv-el ${el.state}" data-review="${raw(el.key)}">
+    <div class="cp-rv-main"><h3>${esc(el.title)}${el.state !== "offen" ? ` <span class="cp-chip ${REVIEW_CHIP[el.state] || ""}">${esc(REVIEW_WORD()[el.state])}</span>` : ""}</h3>
       ${el.lines.length ? `<dl class="cp-rv-lines">${el.lines.map((l) => `<dt>${esc(l.label)}</dt><dd${l.pre ? ' class="pre"' : ""}>${esc(l.text)}</dd>`).join("")}</dl>` : ""}
       ${others.length ? `<p class="cp-rv-shared">${T("Also applies to", "Gilt auch für")}: ${esc(others.slice(0, 3).join(", "))}${others.length > 3 ? T(` and ${others.length - 3} more`, ` und ${others.length - 3} weitere`) : ""}</p>` : ""}
       ${el.questions.map((q) => `<p class="cp-rv-q"><b>${T("Open question", "Offene Frage")}</b> ${esc(q)}</p>`).join("")}
@@ -3071,8 +3275,8 @@ function reviewElement(el, may) {
 function drawReview() {
   const d = S.reviewRow, c = d.status.counts, only = Boolean(S.reviewOnlyOpen);
   const groups = d.groups.map((g) => ({ ...g, shown: g.elements.filter((el) => !only || el.state !== "geprueft") })).filter((g) => g.shown.length);
-  $("#app").innerHTML = `<main class="cp-main cp-review">
-    <p class="cp-rv-back">${d.kind === "letter" ? `<a class="cp-link cp-quiet-link" href="#/case/${esc(d.case)}/overview">${T("Back to the case", "Zurück zum Fall")}</a> · ` : ""}<a class="cp-link cp-quiet-link" href="#/knowledge">${T("Legal areas", "Rechtsgebiete")}</a></p>
+  $("#app").innerHTML = `<main class="cp-main cp-review${pageIn()}">
+    <p class="cp-rv-back">${d.kind === "letter" ? `<a class="cp-link cp-quiet-link" href="#/case/${raw(d.case)}/overview">${T("Back to the case", "Zurück zum Fall")}</a> · ` : ""}<a class="cp-link cp-quiet-link" href="#/knowledge">${T("Legal areas", "Rechtsgebiete")}</a></p>
     <h1 class="cp-title">${esc(d.title)}</h1>
     <p class="cp-rv-sub">${esc(d.subtitle || "")} · ${reviewState(d.status)}</p>
     <p class="cp-rv-bar"><span>${T(`${c.total} elements · ${c.geprueft} checked · ${c.offen} open · ${c.aenderung} change needed · ${c.frage} questions`,
@@ -3124,6 +3328,9 @@ async function route() {
   // what arrives is shown arriving, once: another case (from the right when the reader went on), or the list
   if (next.view === "case" && (S.route.view !== "case" || next.id !== S.route.id)) { S.arrive = S.arriveNext ? "next" : "open"; S.barWas = null; }
   if (next.view === "cases" && S.route.view !== "cases") S.listFresh = true;
+  // a tab or a page arrives once: its blocks and rows come in in the order they are read
+  if (next.view === "case" && (next.tab || "overview") !== "overview" && (S.route.view !== "case" || next.id !== S.route.id || next.tab !== S.route.tab)) S.tabIn = true;
+  if (["knowledge", "review", "auswertung"].includes(next.view) && (next.view !== S.route.view || next.id !== S.route.id)) S.pageIn = true;
   if (next.view !== "case" || next.id !== S.justFinished) S.justFinished = null;
   S.arriveNext = false;
   if (next.view !== "case" || next.id !== MEASURE.caseId) measureLeave();  // the case is left: its measured span ends
@@ -3175,7 +3382,7 @@ async function route() {
     if (at >= 0) rows[at].classList.remove("cp-row-on");
     rows[to].classList.add("cp-row-on"); rows[to].scrollIntoView({ block: "nearest" });
   });
-  try { S.canUpload = (await api("/api/health")).uploads !== false; } catch (error) { S.canUpload = true; }
+  try { const health = await api("/api/health"); S.canUpload = health.uploads !== false; S.translateMode = (health.translate || {}).mode || "off"; } catch (error) { S.canUpload = true; }
   window.addEventListener("hashchange", route);
   route();
 })();
@@ -3190,7 +3397,7 @@ function brief() { return (S.data && S.data.assessment) || null; }
 const A_STATE = { beantwortet: ["answered", "beantwortet"], bedingt: ["conditional", "bedingt"], offen: ["open", "offen"], pruefen: ["check the rule", "Zuordnung prüfen"], erledigt: ["settled", "erledigt"] };
 const A_COND = { "erfüllt": "met", "offen": "open", "nicht erfüllt": "not met", "widersprüchlich": "read two ways", "vermutet": "presumed", "nicht geprüft": "not checked" };
 const aValue = (v) => (v === true ? T("yes", "ja") : v === false ? T("no", "nein") : v === null || v === undefined ? "—" : String(v));
-const aChip = (state, label) => `<span class="cp-a-chip s-${esc(String(state).replace(/[^a-zäöü]+/gi, "-"))}">${esc(label || state)}</span>`;
+const aChip = (state, label) => `<span class="cp-a-chip s-${raw(String(state).replace(/[^a-zäöü]+/gi, "-"))}">${esc(label || state)}</span>`;
 const aCond = (state) => aChip(state, T(A_COND[state] || state, state === "widersprüchlich" ? "widersprüchlich gelesen" : state));
 const aQuestionText = (id) => ((((brief() || {}).questions || []).find((q) => q.item_id === id)) || {}).text;
 const aOptionTitle = (id) => ((((brief() || {}).options || []).find((o) => o.id === id)) || {}).title;
@@ -3211,19 +3418,19 @@ function briefSide(b) {
     if (q.state === "bedingt") return q.row === 8 ? `${T("ask", "Rückfrage")}: ${q.reason}` : (q.next || {}).kind === "residual" || /^Belege/.test(q.reason) ? `${T("waits for", "wartet auf")}: ${q.reason}` : q.reason;
     return q.reason;
   };
-  const offers = (q) => q.state === "pruefen" && q.item_id ? (q.offered || []).map((o) => `<button class="cp-chip cp-a-take" data-answer-take="${esc(q.item_id)}" data-point="${esc(o.point)}" ${o.intent ? `data-intent="${esc(o.intent)}"` : ""} title="${esc(o.text)}">${T("take the draft", "Entwurf übernehmen")}${(q.offered || []).length > 1 ? `: ${esc(o.point)}` : ""}</button>`).join("") : "";
-  const questions = (b.questions || []).map((q) => `<div class="cp-a-q" data-item="${esc(q.item_id || `konto:${q.request || ""}`)}">«${esc(q.text)}» ${aChip(q.taken ? "taken" : q.state, states(q))}${sourceChips(q.evidence)}${(q.evidence_in || []).length ? `${sourceChips(q.evidence_in)}` : ""}
+  const offers = (q) => q.state === "pruefen" && q.item_id ? (q.offered || []).map((o) => `<button class="cp-chip cp-a-take" data-answer-take="${raw(q.item_id)}" data-point="${raw(o.point)}" ${o.intent ? `data-intent="${raw(o.intent)}"` : ""} title="${esc(o.text)}">${T("take the draft", "Entwurf übernehmen")}${(q.offered || []).length > 1 ? `: ${esc(o.point)}` : ""}</button>`).join("") : "";
+  const questions = (b.questions || []).map((q) => `<div class="cp-a-q" data-item="${raw(q.item_id || `konto:${q.request || ""}`)}">«${esc(q.text)}» ${aChip(q.taken ? "taken" : q.state, states(q))}${sourceChips(q.evidence)}${(q.evidence_in || []).length ? `${sourceChips(q.evidence_in)}` : ""}
       ${why(q) ? `<div class="cp-a-why">${esc(why(q))}</div>` : ""}${offers(q) ? `<div class="cp-a-offers">${offers(q)}</div>` : ""}</div>`).join("");
   const facts = (b.deciding || []).map((f) => {
     const tag = f.changed === "neu" ? ` <span class="cp-a-tag">${T("new", "neu")}</span>` : f.changed === "korrigiert" ? ` <span class="cp-a-tag own">${T("corrected", "korrigiert")}</span>` : "";
-    const fix = S.aFix === f.fact ? `<span class="cp-a-fix">${(f.values || []).map((v) => `<button class="cp-chip" data-decide="${esc(f.fact)}" data-value="${esc(v === true ? "ja" : v === false ? "nein" : v)}" aria-pressed="${String(v) === String(f.value)}">${esc(aValue(v))}</button>`).join("")}</span>` : "";
-    return `<div class="cp-a-fact" data-item="fact:${esc(f.fact)}">${esc(clip(f.question, 64))} <b>${esc(aValue(f.value))}</b>${f.state !== "erfüllt" ? ` ${aCond(f.state)}` : ""}${tag}${f.read === "einmal gelesen" && !f.changed ? ` <span class="cp-muted">· ${T("read once", "einmal gelesen")}</span>` : ""}${sourceChips(f.evidence)}
-      ${(f.values || []).length ? ` <button class="cp-link cp-quiet-link" data-a-fix="${esc(f.fact)}" aria-expanded="${S.aFix === f.fact}">${T("correct", "ändern")}</button>` : ""}${fix}</div>`;
+    const fix = S.aFix === f.fact ? `<span class="cp-a-fix">${(f.values || []).map((v) => `<button class="cp-chip" data-decide="${raw(f.fact)}" data-value="${raw(v === true ? "ja" : v === false ? "nein" : v)}" aria-pressed="${String(v) === String(f.value)}">${esc(aValue(v))}</button>`).join("")}</span>` : "";
+    return `<div class="cp-a-fact" data-item="fact:${raw(f.fact)}">${esc(clip(f.question, 64))} <b>${esc(aValue(f.value))}</b>${f.state !== "erfüllt" ? ` ${aCond(f.state)}` : ""}${tag}${f.read === "einmal gelesen" && !f.changed ? ` <span class="cp-muted">· ${T("read once", "einmal gelesen")}</span>` : ""}${sourceChips(f.evidence)}
+      ${(f.values || []).length ? ` <button class="cp-link cp-quiet-link" data-a-fix="${raw(f.fact)}" aria-expanded="${S.aFix === f.fact}">${T("correct", "ändern")}</button>` : ""}${fix}</div>`;
   }).join("");
-  const residual = (b.residual || []).filter((r) => r.ticked).map((r) => `<div class="cp-a-ask" data-item="${esc(r.key)}">– ${esc(r.line)}${sourceChips(r.evidence)}${aBlocks(r.blocks)}
+  const residual = (b.residual || []).filter((r) => r.ticked).map((r) => `<div class="cp-a-ask" data-item="${raw(r.key)}">– ${esc(r.line)}${sourceChips(r.evidence)}${aBlocks(r.blocks)}
       ${(r.set_aside || []).map((x) => `<div class="cp-a-why">${T("receipt set aside", "Beleg nicht zugeordnet")}: ${esc(clip(x.expense || "", 40))} · ${esc((x.why || []).join("; "))}${sourceChip({ file: x.file })}</div>`).join("")}</div>`).join("");
-  const facts_asked = (b.asks || []).filter((a) => a.kind === "fact").map((a) => `<div class="cp-a-ask" data-item="${esc(a.key)}">${T("Question", "Frage")}: ${esc(a.what)}${a.decides ? `<div class="cp-a-why">${T("decides", "entscheidet")}: ${esc(clip(a.decides, 90))}</div>` : ""}${aBlocks(a.blocks)}</div>`).join("");
-  const settled = (b.resolved || []).filter((r) => r.key.startsWith("residual:")).map((r) => `<div class="cp-a-ask done" data-item="${esc(r.key)}">✓ ${esc(r.line)} ${T("received", "eingegangen")}${sourceChips(r.by)}${aBlocks(r.blocks)}</div>`).join("");
+  const facts_asked = (b.asks || []).filter((a) => a.kind === "fact").map((a) => `<div class="cp-a-ask" data-item="${raw(a.key)}">${T("Question", "Frage")}: ${esc(a.what)}${a.decides ? `<div class="cp-a-why">${T("decides", "entscheidet")}: ${esc(clip(a.decides, 90))}</div>` : ""}${aBlocks(a.blocks)}</div>`).join("");
+  const settled = (b.resolved || []).filter((r) => r.key.startsWith("residual:")).map((r) => `<div class="cp-a-ask done" data-item="${raw(r.key)}">✓ ${esc(r.line)} ${T("received", "eingegangen")}${sourceChips(r.by)}${aBlocks(r.blocks)}</div>`).join("");
   // the costs claimed, each with its current version beside the passage that states it; an earlier version or a withdrawal
   // stays visible, never as the current claim
   const chf = (v) => `CHF ${Number(v).toFixed(2).replace(/\.00$/, "")}`;
@@ -3240,7 +3447,7 @@ function briefSide(b) {
   const claims = shown.some((c) => c.version > 1 || c.state !== "current" || c.contested || shown.length > 1) || b.follow_on ? shown.map(claimRow).join("") : "";
   // the follow-on: what the arrival settled, what it does not establish, and what was decided before and stands
   const f = b.follow_on;
-  const follow = f ? `${(f.resolved || []).map((r) => `<div class="cp-a-ask done" data-item="${esc(r.key)}">✓ ${esc(r.what)}${r.amount != null ? ` · ${chf(r.amount)}` : ""}${sourceChips(r.by)}
+  const follow = f ? `${(f.resolved || []).map((r) => `<div class="cp-a-ask done" data-item="${raw(r.key)}">✓ ${esc(r.what)}${r.amount != null ? ` · ${chf(r.amount)}` : ""}${sourceChips(r.by)}
         ${r.condition ? `<div class="cp-a-why">${T("settles", "erfüllt")}: ${esc(r.condition)}</div>` : ""}</div>`).join("")}
       ${(f.remains || []).length && f.kind === "documented" ? `<div class="cp-a-why">${T("not established by it", "damit nicht belegt")}: ${esc([...new Set(f.remains.map((r) => r.condition))].join(", "))}</div>` : ""}
       ${(f.stands || []).length ? `<div class="cp-a-why">${T("stands", "gilt weiter")}: ${esc(f.stands.map((x) => (x.what === "Empfehlung übernommen" ? `Empfehlung «${x.value}»` : `${x.what} ${x.value}`)).join(" · "))}</div>` : ""}` : "";
@@ -3261,12 +3468,12 @@ function briefPanel(dec) {
     const groups = {};
     for (const o of dec.options || []) (groups[o.wish] = groups[o.wish] || []).push(o);
     pick = `<div class="cp-rec-pick">${Object.entries(groups).map(([wish, rows]) => `<fieldset><legend>${T("You want", "Sie möchten")} ${esc(wishText[wish] || wish)}</legend>
-        ${rows.map((o) => `<label><input type="radio" name="rec-${esc(wish)}" value="${esc(o.id)}" data-rec-pick ${o.proposed ? "checked" : ""}> ${esc(o.title)} <span class="cp-muted">· ${esc(o.practice)} · ${esc(o.review)}${o.propose ? "" : ` · ${T("selectable only", "nur wählbar")}`}</span></label>`).join("")}</fieldset>`).join("")}
+        ${rows.map((o) => `<label><input type="radio" name="rec-${raw(wish)}" value="${raw(o.id)}" data-rec-pick ${o.proposed ? "checked" : ""}> ${esc(o.title)} <span class="cp-muted">· ${esc(o.practice)} · ${esc(o.review)}${o.propose ? "" : ` · ${T("selectable only", "nur wählbar")}`}</span></label>`).join("")}</fieldset>`).join("")}
       <button class="cp-button cp-small primary" data-rec-confirm>${T("adopt", "übernehmen")}</button></div>`;
   }
   const ways = (b.options || []).filter((o) => o.proposed || o.chosen).map((o) => `<li><b>${esc(o.title)}</b> <span class="cp-muted">· ${esc(o.practice)} · ${esc(o.review)}${reserve(o)}</span>
       ${(b.alternatives || []).filter((a) => a.to === o.id).map((a) => `<div class="cp-a-why">${T("Alternative", "Alternative")}: ${esc(a.title)} · ${esc(a.why || "")} · ${esc(a.practice)}</div>`).join("")}</li>`).join("");
-  const rules = (b.rules || []).filter((r) => !String(r.id).startsWith("punkt:")).map((r) => `<li><b>${esc(r.cite || "")}</b>${(r.law || []).length ? ` <button class="cp-link cp-quiet-link" data-a-law="${esc(r.id)}" aria-expanded="${S.aLaw === r.id}">${T("passage", "Wortlaut")}</button>` : ""}
+  const rules = (b.rules || []).filter((r) => !String(r.id).startsWith("punkt:")).map((r) => `<li><b>${esc(r.cite || "")}</b>${(r.law || []).length ? ` <button class="cp-link cp-quiet-link" data-a-law="${raw(r.id)}" aria-expanded="${S.aLaw === r.id}">${T("passage", "Wortlaut")}</button>` : ""}
       ${S.aLaw === r.id ? passages(r.law) : ""}<ul>${r.conditions.map((c) => `<li>${esc(c.text)}: ${aCond(c.state)}${c.read === "einmal gelesen" ? ` <span class="cp-muted">${T("read once", "einmal gelesen")}</span>` : ""}${sourceChips(c.evidence)}</li>`).join("")}</ul></li>`).join("");
   const changes = (b.changes_if || []).map((c) => esc(clip(c.question || c.title || c.condition || "", 60))).join(" · ");
   return `<div class="cp-brief">${pick}<p class="cp-a-head">${T("Ways", "Wege")}</p><ul class="cp-a-list">${ways}</ul>
@@ -3307,7 +3514,7 @@ document.addEventListener("click", async (e) => {
 // version shown and stores its Versandpaket; «Brief kopieren» copies the approved text (a clipboard that refuses says
 // «Kopieren fehlgeschlagen» and nothing is recorded); «Versandt am» is the handler's confirmation per recipient. A copy is
 // measured (letter.copied with «measure»), never counted as a sending. Nothing is sent from here.
-const CHANNELS = [["email", T("E-mail", "E-Mail")], ["post", T("Post", "Post")], ["portal", T("Portal", "Portal")], ["andere", T("other", "andere")]];
+const CHANNELS = lazy(() => ([["email", T("E-mail", "E-Mail")], ["post", T("Post", "Post")], ["portal", T("Portal", "Portal")], ["andere", T("other", "andere")]]));
 const SHA_EMPTY = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 const newOp = (what) => `${what}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 function completionOf() { return (S.data && S.data.completion) || {}; }
@@ -3320,7 +3527,7 @@ function closingStep(act, text) {
 // A tab says where its document stands: «Entwurf», «freigegeben», «Freigabe veraltet», «versandt am …».
 function tabState(d) {
   if (!d.state || d.state === "entwurf") return "";
-  return ` <span class="cp-tab-state ${esc(d.state)}">${d.state === "versandt" ? icon("tick") : ""}${esc(d.label || "")}</span>`;
+  return ` <span class="cp-tab-state ${raw(d.state)}">${d.state === "versandt" ? icon("tick") : ""}${esc(d.label || "")}</span>`;
 }
 // The case head between «Weil» and the decision: what changed, what it means, an approval that no longer holds, a letter
 // that went out resting on something changed since (screen.head_block). Each line opens its details on a click.
@@ -3341,7 +3548,7 @@ function headBlock() {
       ${open && more.length ? `<span class="cp-head-more">${more.map((x) => esc(isoDay(x))).join("<br>")}</span>` : ""}</p>` : "";
   return `<div class="cp-head" data-head>${newsLine}
     ${h.stale ? line("stale", "", h.stale, h.stale_all, "cp-head-stale") : ""}
-    ${h.reconcile ? `<p class="cp-head-line cp-head-stale"><button class="cp-button cp-small" data-reconcile="${esc(h.reconcile)}" title="${T("The letter stays as sent; a correction would be a letter of its own", "Der Brief bleibt so versandt; eine Korrektur wäre ein eigener Brief")}">${T("Reconciled", "Abgleich erledigt")}</button></p>` : ""}</div>`;
+    ${h.reconcile ? `<p class="cp-head-line cp-head-stale"><button class="cp-button cp-small" data-reconcile="${raw(h.reconcile)}" title="${T("The letter stays as sent; a correction would be a letter of its own", "Der Brief bleibt so versandt; eine Korrektur wäre ein eigener Brief")}">${T("Reconciled", "Abgleich erledigt")}</button></p>` : ""}</div>`;
 }
 function sentLetter(shown, version) {
   if (shown.error) return `<p class="cp-error">${esc(shown.error)}</p>`;
@@ -3349,13 +3556,13 @@ function sentLetter(shown, version) {
   const l = shown.letter, to = [l.to, l.address].filter(Boolean).join(" · ");
   const doc = (title, text) => `<div class="cp-sent-doc"><p class="cp-sent-head">${esc(title)}</p><div class="cp-text">${esc(text)}</div></div>`;
   return `<div class="cp-sent-letter" data-sent-letter><p class="cp-muted">${T("Approved", "Freigegeben")} ${dateText(l.approved_at)}${l.approved_by ? ` · ${esc(l.approved_by)}` : ""}${to ? ` · ${T("to", "an")} ${esc(to)}` : ""}
-      · <a class="cp-link cp-quiet-link" href="/api/cases/${esc(S.route.id)}/actions/${esc(version)}/bundle">${T("dispatch package (.zip)", "Versandpaket (.zip)")}</a></p>
+      · <a class="cp-link cp-quiet-link" href="/api/cases/${raw(S.route.id)}/actions/${raw(version)}/bundle">${T("dispatch package (.zip)", "Versandpaket (.zip)")}</a></p>
     ${doc(l.title || T("Letter", "Brief"), l.text)}${(l.also || []).map((a) => doc(String(a.name || a.kind).replace(/\.docx$/i, ""), a.text)).join("")}</div>`;
 }
 function reconcileLine() {
   const h = scr().head;
   if (!h || !h.reconcile) return "";
-  return `<p class="cp-head-line cp-head-stale cp-rest-reconcile">${esc(h.stale || h.changed || T("Changed after it went out: check that the letter stands as sent.", "Nach dem Versand geändert: prüfen, ob der Brief so stimmt."))} <button class="cp-button cp-small" data-reconcile="${esc(h.reconcile)}" title="${T("The letter stays as sent; a correction would be a letter of its own", "Der Brief bleibt so versandt; eine Korrektur wäre ein eigener Brief")}">${T("Reconciled", "Abgleich erledigt")}</button></p>`;
+  return `<p class="cp-head-line cp-head-stale cp-rest-reconcile">${esc(h.stale || h.changed || T("Changed after it went out: check that the letter stands as sent.", "Nach dem Versand geändert: prüfen, ob der Brief so stimmt."))} <button class="cp-button cp-small" data-reconcile="${raw(h.reconcile)}" title="${T("The letter stays as sent; a correction would be a letter of its own", "Der Brief bleibt so versandt; eine Korrektur wäre ein eigener Brief")}">${T("Reconciled", "Abgleich erledigt")}</button></p>`;
 }
 // A part of the letter the case changed while the handler had edited it: both versions, the handler decides.
 function conflictsView(active) {
@@ -3367,8 +3574,8 @@ function conflictsView(active) {
   return `<div class="cp-conflicts" id="conflicts"><p class="cp-conflict-head">${T("Your text concerned a paragraph that changed: please check", "Ihr Text betraf einen geänderten Absatz: bitte prüfen")}</p>
     ${clashes.map((c) => `<div class="cp-conflict"><div><span class="cp-muted">${T("Mine", "Meine Fassung")}</span><div class="cp-conflict-text">${esc(c.mine)}</div></div>
       <div><span class="cp-muted">${T("New", "Neue Fassung")}</span><div class="cp-conflict-text">${esc(c.new || T("(no longer in the letter)", "(nicht mehr im Brief)"))}</div></div>
-      <span class="cp-point-actions"><button class="cp-button cp-small" data-resolve="${esc(c.part)}" data-form="${esc(form)}" data-keep="mine">${T("keep mine", "meine Fassung behalten")}</button>
-        <button class="cp-button cp-small" data-resolve="${esc(c.part)}" data-form="${esc(form)}" data-keep="new">${T("take the new one", "neue Fassung übernehmen")}</button></span></div>`).join("")}</div>`;
+      <span class="cp-point-actions"><button class="cp-button cp-small" data-resolve="${raw(c.part)}" data-form="${raw(form)}" data-keep="mine">${T("keep mine", "meine Fassung behalten")}</button>
+        <button class="cp-button cp-small" data-resolve="${raw(c.part)}" data-form="${raw(form)}" data-keep="new">${T("take the new one", "neue Fassung übernehmen")}</button></span></div>`).join("")}</div>`;
 }
 // «Versandt am [TT.MM.JJJJ] [E-Mail ▾]», per recipient not yet confirmed: today and the channel of the customer's last
 // message preset, the first day allowed the approval's (or a copy's of the same text).
@@ -3376,9 +3583,9 @@ function dispatchControl(bar, row, primary, named) {
   const many = named || (bar.recipients || []).filter((r) => !r.dispatched).length > 1;
   const day = row.date || isoToday();
   const name = T("Sent on", "Versandt am"), to = many ? ` ${T("to", "an")} ${row.title}` : "";
-  return `<span class="cp-dispatch" data-dispatch-row="${esc(row.to)}">${many ? `<span class="cp-dispatch-to">${esc(row.title)}:</span>` : ""}<button class="cp-button ${primary ? "primary" : ""}" data-dispatch="${esc(row.to)}" data-dispatch-version="${esc(bar.version || "")}" aria-label="${esc(`${name} ${dateText(day)}${to}`)}">${esc(name)}</button>
-    <input type="date" class="cp-dispatch-date" data-dispatch-date="${esc(row.to)}" value="${esc(day)}" max="${esc(row.date || isoToday())}" ${bar.earliest ? `min="${esc(bar.earliest)}"` : ""} aria-label="${T("Day sent", "Versanddatum")}">
-    <select class="cp-dispatch-channel" data-dispatch-channel="${esc(row.to)}" aria-label="${T("Channel", "Kanal")}">${CHANNELS.map(([k, w]) => `<option value="${k}" ${k === (row.channel || bar.channel) ? "selected" : ""}>${esc(w)}</option>`).join("")}</select></span>`;
+  return `<span class="cp-dispatch" data-dispatch-row="${raw(row.to)}">${many ? `<span class="cp-dispatch-to">${esc(row.title)}:</span>` : ""}<button class="cp-button ${primary ? "primary" : ""}" data-dispatch="${raw(row.to)}" data-dispatch-version="${raw(bar.version || "")}" aria-label="${esc(`${name} ${dateText(day)}${to}`)}">${esc(name)}</button>
+    <input type="date" class="cp-dispatch-date" data-dispatch-date="${raw(row.to)}" value="${raw(day)}" max="${raw(row.date || isoToday())}" ${bar.earliest ? `min="${raw(bar.earliest)}"` : ""} aria-label="${T("Day sent", "Versanddatum")}">
+    <select class="cp-dispatch-channel" data-dispatch-channel="${raw(row.to)}" aria-label="${T("Channel", "Kanal")}">${CHANNELS().map(([k, w]) => `<option value="${k}" ${k === (row.channel || bar.channel) ? "selected" : ""}>${esc(w)}</option>`).join("")}</select></span>`;
 }
 // The bar of a letter that can be approved and sent: before approval «Freigeben» (the gaps, an open decision or a clash
 // first); after it «Brief kopieren» for the letter (an enclosure: «Text kopieren» and «als .docx»), then «Versandt am»;
@@ -3410,9 +3617,9 @@ function carryButtons(active, opts) {
   }
   const rows = (bar.recipients || []).filter((r) => !r.dispatched);
   const copied = copiedApproved();
-  const docx = active && !active.main && bar.version ? `<a class="cp-link" href="/api/cases/${esc(id)}/actions/${esc(bar.version)}/docx/${encodeURIComponent(active.kind)}">${T("as .docx", "als .docx")}</a>` : "";
+  const docx = active && !active.main && bar.version ? `<a class="cp-link" href="/api/cases/${raw(id)}/actions/${raw(bar.version)}/docx/${encodeURIComponent(active.kind)}">${T("as .docx", "als .docx")}</a>` : "";
   const packName = T("Download the dispatch package", "Versandpaket herunterladen");
-  const pack = bar.version && (st.approved || {}).bundle ? `<a class="cp-link" id="bundle-download" href="/api/cases/${esc(id)}/actions/${esc(bar.version)}/bundle" aria-label="${packName}" title="${packName}">${T("Package", "Versandpaket")}</a>` : "";
+  const pack = bar.version && (st.approved || {}).bundle ? `<a class="cp-link" id="bundle-download" href="/api/cases/${raw(id)}/actions/${raw(bar.version)}/bundle" aria-label="${packName}" title="${packName}">${T("Package", "Versandpaket")}</a>` : "";
   const note = "";  // «Aktennotiz kopieren» stands in «Der Fall», beside the note it copies
   if (bar.kind === "stale") {
     return `<span class="cp-stale-bar" title="${esc((bar.reasons || []).join(", "))}">${esc(bar.stale)}</span><button class="cp-button ${opts.primary && !heldBlocks ? "primary" : ""}" id="approve" ${heldBlocks ? `disabled title="${esc(heldText)}"` : ""}>${T("Approve again and copy", "Erneut freigeben und kopieren")}</button>${heldBlocks ? heldNote : ""}
@@ -3421,7 +3628,7 @@ function carryButtons(active, opts) {
   }
   if (bar.kind === "dispatch") {
     const copy = !active || active.main ? `<button class="cp-button ${opts.primary && !copied ? "primary" : ""}" id="copy-letter">${S.justCopied === "letter" ? `${icon("tick")}${T("Copied", "Kopiert")}` : T("Copy letter", "Brief kopieren")}</button>`
-      : `<button class="cp-button ${opts.primary && !copied ? "primary" : ""}" data-copy-text="${esc(active.kind)}">${S.justCopied === active.kind ? `${icon("tick")}${T("Copied", "Kopiert")}` : T("Copy text", "Text kopieren")}</button>${docx}`;
+      : `<button class="cp-button ${opts.primary && !copied ? "primary" : ""}" data-copy-text="${raw(active.kind)}">${S.justCopied === active.kind ? `${icon("tick")}${T("Copied", "Kopiert")}` : T("Copy text", "Text kopieren")}</button>${docx}`;
     return `${copy}${failed}${rows.map((r, i) => dispatchControl(bar, r, opts.primary && copied && i === 0)).join("")}${pack}${note}${saving}`;
   }
   if (bar.kind === "dispatched") return `<span class="cp-sent">${icon("check")}${esc(bar.line || "")}</span>${docx}${pack}${opts.when}`;
@@ -3437,13 +3644,13 @@ function handoverLine() {
   const row = (r) => {
     const a = r.address || {}, editing = S.addrEdit === r.to;
     const from = a.source ? T(`from ${a.source.name}: ${a.source.line}`, `aus ${a.source.name}: ${a.source.line}`) : a.set_by ? T(`set by ${a.set_by}`, `eingetragen von ${a.set_by}`) : "";
-    const address = editing ? `<input type="email" class="cp-ho-input" data-ho-input="${esc(r.to)}" value="${esc(S.addrDraft === null || S.addrDraft === undefined ? a.value || "" : S.addrDraft)}" placeholder="name@beispiel.ch" aria-label="${T("Mail address", "E-Mail-Adresse")}">
-        <button class="cp-button cp-small" data-ho-save="${esc(r.to)}">${T("Save", "Speichern")}</button>`
-      : a.value ? `${approved ? `<button class="cp-ho-chip" data-ho-copy="${esc(a.value)}" title="${esc(from)}">${S.hoCopied === a.value ? icon("tick") : ""}${esc(a.value)}</button>` : `<span class="cp-ho-value" title="${esc(from)}">${esc(a.value)}</span>`}
-        <button class="cp-link cp-quiet-link" data-ho-edit="${esc(r.to)}">${T("change", "ändern")}</button>`
-      : `<span class="cp-muted">${T("no address in the file", "keine Adresse in der Akte")}</span> <button class="cp-link cp-quiet-link" data-ho-edit="${esc(r.to)}">${T("enter", "eintragen")}</button>`;
-    const subject = approved ? `<button class="cp-ho-chip" data-ho-copy="${esc(r.subject)}">${S.hoCopied === r.subject ? icon("tick") : ""}${esc(r.subject)}</button>` : `<span class="cp-ho-value">${esc(r.subject)}</span>`;
-    return `<p class="cp-ho-row" data-ho="${esc(r.to)}">${many ? `<b>${esc(r.title)}</b> ` : ""}<span class="cp-ho-label">${T("To", "An")}</span> ${address}
+    const address = editing ? `<input type="email" class="cp-ho-input" data-ho-input="${raw(r.to)}" value="${raw(S.addrDraft === null || S.addrDraft === undefined ? a.value || "" : S.addrDraft)}" placeholder="name@beispiel.ch" aria-label="${T("Mail address", "E-Mail-Adresse")}">
+        <button class="cp-button cp-small" data-ho-save="${raw(r.to)}">${T("Save", "Speichern")}</button>`
+      : a.value ? `${approved ? `<button class="cp-ho-chip" data-ho-copy="${raw(a.value)}" title="${esc(from)}">${S.hoCopied === a.value ? icon("tick") : ""}${esc(a.value)}</button>` : `<span class="cp-ho-value" title="${esc(from)}">${esc(a.value)}</span>`}
+        <button class="cp-link cp-quiet-link" data-ho-edit="${raw(r.to)}">${T("change", "ändern")}</button>`
+      : `<span class="cp-muted">${T("no address in the file", "keine Adresse in der Akte")}</span> <button class="cp-link cp-quiet-link" data-ho-edit="${raw(r.to)}">${T("enter", "eintragen")}</button>`;
+    const subject = approved ? `<button class="cp-ho-chip" data-ho-copy="${raw(r.subject)}">${S.hoCopied === r.subject ? icon("tick") : ""}${esc(r.subject)}</button>` : `<span class="cp-ho-value">${esc(r.subject)}</span>`;
+    return `<p class="cp-ho-row" data-ho="${raw(r.to)}">${many ? `<b>${esc(r.title)}</b> ` : ""}<span class="cp-ho-label">${T("To", "An")}</span> ${address}
       <span class="cp-ho-label">${T("Subject", "Betreff")}</span> ${subject}</p>`;
   };
   return `<div class="cp-handover" data-handover>${rows.map(row).join("")}</div>`;
@@ -3684,8 +3891,8 @@ async function copyNote() {
 }
 // The case list in its groups: what needs the handler's judgment, what is ready to send, what waits, what failed; done
 // folded below. «Fehlgeschlagen» is shown only when a case is in it.
-const BUCKETS = [["urteil", T("Needs your judgment", "Braucht Ihr Urteil")], ["versandbereit", T("Ready to send", "Versandbereit")],
-  ["wartet", T("Waiting", "Wartet")], ["fehlgeschlagen", T("Failed", "Fehlgeschlagen")]];
+const BUCKETS = lazy(() => ([["urteil", T("Needs your judgment", "Braucht Ihr Urteil")], ["versandbereit", T("Ready to send", "Versandbereit")],
+  ["wartet", T("Waiting", "Wartet")], ["fehlgeschlagen", T("Failed", "Fehlgeschlagen")]]));
 function bucketOf(c) { return (c.stand || {}).bucket || (standOf(c) === "closed" ? "erledigt" : "urteil"); }
 // Working through: the cases that need the reader, top to bottom as the list shows them (real cases before the examples,
 // «Braucht Ihr Urteil» before «Versandbereit»). «Nächster Fall» opens the first one not yet passed in this walk, so a case
@@ -3729,7 +3936,7 @@ async function nextCase(fresh) {
   location.hash = next ? `#/case/${next.id}/overview` : "#/cases";
 }
 function bucketTables(rows, table, level) {
-  const out = BUCKETS.map(([key, title]) => {
+  const out = BUCKETS().map(([key, title]) => {
     const own = rows.filter((c) => bucketOf(c) === key);
     if (!own.length) return "";
     return `<h${level} class="cp-bucket ${key}" data-bucket="${key}">${esc(title)} · ${own.length}</h${level}>${table(own)}`;
@@ -3751,8 +3958,8 @@ function autoTitle(u) {
 }
 // Knowledge is approved only after a replay of its current version (HANDLER_BAR L3): each item of a card (the same item
 // seeded for an area and the intake it replaced) has its own; «ändert n von m Fällen», the changes by case, then «Freigeben».
-const KNOWLEDGE_CHANGE = { needs: T("documents", "Unterlagen"), now: T("asked now", "jetzt verlangt"), offered: T("offered", "angeboten"),
-                           later: T("asked later", "später verlangt"), questions: T("questions", "Fragen"), next_action: T("next step", "nächster Schritt") };
+const KNOWLEDGE_CHANGE = lazy(() => ({ needs: T("documents", "Unterlagen"), now: T("asked now", "jetzt verlangt"), offered: T("offered", "angeboten"),
+                           later: T("asked later", "später verlangt"), questions: T("questions", "Fragen"), next_action: T("next step", "nächster Schritt") }));
 // A replay counts for the version it played and, for a refinement, for the version of the item it refines it played on.
 function replayCurrent(k, all) {
   return k.ids.every((id) => {
@@ -3769,7 +3976,7 @@ function replayLine(k, all, caseName) {
   for (const r of replays) for (const row of r.changed || []) changed[row.case] = [...new Set([...(changed[row.case] || []), ...row.changed])];
   const total = Math.max(...replays.map((r) => r.cases || 0)), n = Object.keys(changed).length;
   return `<details class="cp-replay"><summary class="cp-link">${T(`changes ${n} of ${total} cases`, `ändert ${n} von ${total} Fällen`)}</summary>
-    <ul class="cp-log">${Object.entries(changed).map(([id, what]) => `<li><a href="#/case/${esc(id)}/overview">${esc(caseName(id))}</a> <span class="cp-muted">· ${what.map((w) => esc(KNOWLEDGE_CHANGE[w] || w)).join(", ")}</span></li>`).join("")}</ul></details>`;
+    <ul class="cp-log">${Object.entries(changed).map(([id, what]) => `<li><a href="#/case/${raw(id)}/overview">${esc(caseName(id))}</a> <span class="cp-muted">· ${what.map((w) => esc(KNOWLEDGE_CHANGE()[w] || w)).join(", ")}</span></li>`).join("")}</ul></details>`;
 }
 // An update at work says what it reads: «Neu eingegangen: 2 Datei(en) · wird aktualisiert»; one started again after a
 // restart says so («wird fortgesetzt»).
