@@ -152,7 +152,7 @@ function renderTop() {
   }
   const other = LANG === "de" ? "en" : "de";
   $("#top").innerHTML = `${wordmark}<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
-    <div class="cp-top-right">${measureToggle()}${route.view === "case" ? `<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button><a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
+    ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button><a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
       <a class="cp-link" href="?lang=${other}${esc(location.hash)}" lang="${other}">${other.toUpperCase()}</a></div>`;
 }
 // Wissen and Auswertung are for the people named to review the legal content (CASEPATH_REVIEWERS; with none named, for
@@ -207,11 +207,16 @@ function todayPanel(rows, today, since, walkEnd) {
   const events = (since && since.events) || [];
   const day = (iso) => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? "" : `${dateText(iso)} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
   const tick = (since && since.tick) || {};
-  return `<section class="cp-today" data-today aria-label="${T("Today", "Heute")}"><h2>${T("Today", "Heute")} · ${dateText(today)}</h2>
+  // how far the day has come: the cases the reader sent a letter in or closed today, beside those still needing them
+  const done = (since && since.done && since.done.cases) || 0, left = open.filter(needsReader).length;
+  const dayLine = done ? `<p class="cp-day" data-day><span class="cp-day-track" role="img" aria-label="${T(`${done} of ${done + left} done today`, `${done} von ${done + left} heute erledigt`)}"><span class="cp-day-fill" style="width:${Math.max(4, Math.round(100 * done / (done + left)))}%"></span></span>
+      <span><b>${done}</b> ${T("done today", "heute erledigt")} · ${left} ${T("still need you", "brauchen Sie noch")}</span></p>` : "";
+  const weekday = (() => { try { return new Date(`${today}T12:00:00`).toLocaleDateString(LANG === "de" ? "de-CH" : "en-GB", { weekday: "long", day: "numeric", month: "long" }); } catch (error) { return dateText(today); } })();
+  return `<section class="cp-today" data-today aria-label="${T("Today", "Heute")}"><h2>${T("Today", "Heute")} · ${esc(weekday)}</h2>
     <p class="cp-today-counts">${count(n("urteil"), T("need your judgment", "brauchen Ihr Urteil"), "urteil")}${count(n("versandbereit"), T("ready to send", "versandbereit"), "versandbereit")}
       ${count(due, T("due today or overdue", "heute fällig oder überfällig"), "due")}${count(n("wartet"), T("waiting", "warten"), "wartet")}
       ${open.some(needsReader) ? `<button class="cp-button primary cp-walk" id="walk-start" type="button">${T("Go through the cases", "Fälle durchgehen")} ${icon("right")}</button>` : ""}</p>
-    ${walkEnd ? `<p class="cp-walk-end" role="status">${icon("check")}${T("You have been through every case that needs you.", "Sie haben alle Fälle durchgesehen, die Sie brauchen.")}</p>` : ""}
+    ${dayLine}${walkEnd ? `<p class="cp-walk-end" role="status">${icon("tick")}${T("You have been through every case that needs you.", "Sie haben alle Fälle durchgesehen, die Sie brauchen.")}</p>` : ""}
     ${events.length ? `<div class="cp-today-since"><p class="cp-muted">${T("Since your last visit", "Seit Ihrem letzten Besuch")} (${day(since.since)}):</p><ul>${events.slice(0, 6).map((e) =>
       `<li><a href="#/case/${esc(e.case)}/overview">${e.reference ? `<span class="cp-ref">${esc(e.reference)}</span> ` : ""}${esc(e.title || "")}</a> · ${esc(e.what)} <span class="cp-muted">· ${esc(e.by || "")} · ${day(e.at)}</span></li>`).join("")}
       ${events.length + (since.more || 0) > 6 ? `<li class="cp-muted">${T(`and ${events.length + (since.more || 0) - 6} more`, `und ${events.length + (since.more || 0) - 6} weitere`)}</li>` : ""}</ul></div>` : ""}
@@ -260,7 +265,8 @@ async function renderCases() {
       ${anyMine || mineOnly ? `<label class="cp-list-mine"><input type="checkbox" id="list-mine" ${mineOnly ? "checked" : ""}> ${T("Mine", "Meine")}</label>` : ""}
       ${q || mineOnly || only ? `<span class="cp-muted" id="list-count">${ordered.length} ${T("of", "von")} ${cases.cases.length}</span>` : ""}
       ${only ? `<button class="cp-link cp-quiet-link" id="list-all" type="button">${T("show all", "alle zeigen")}</button>` : ""}</div>` : "";
-  $("#app").innerHTML = `<main class="cp-main cp-list"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
+  const arriving = S.listFresh; S.listFresh = false;
+  $("#app").innerHTML = `<main class="cp-main cp-list ${arriving ? "cp-list-in" : ""}"><div class="cp-list-head"><h1 class="cp-title">${T("Cases", "Fälle")}</h1>
       ${S.canUpload === false ? "" : `<span class="cp-list-new">${any ? `<span class="cp-muted">${T("or drop files here", "oder Dateien hierher ziehen")}</span>` : ""}
         <label class="cp-button ${cases.cases.some((c) => needsReader(c) && standOf(c) !== "closed" && (!mineOnly || c.mine)) ? "" : "primary"}">${icon("plus")}${T("New case", "Neuer Fall")}<input type="file" id="new-files" multiple hidden></label></span>`}</div>
     ${todayPanel(cases.cases.filter((c) => !mineOnly || c.mine), today, since, walkEnd)}
@@ -286,6 +292,10 @@ async function renderCases() {
   });
   const all = $("#list-all");
   if (all) all.addEventListener("click", () => { S.listFilter = null; renderCases(); });
+  for (const tr of document.querySelectorAll("table.cp-cases tbody tr")) tr.addEventListener("click", (event) => {
+    if (event.target.closest("a, button, input, select, label") || String(window.getSelection() || "")) return;
+    const a = tr.querySelector("a[href^='#/case/']"); if (a) location.hash = a.getAttribute("href");
+  });
   const search = $("#list-search");
   if (search) {
     search.addEventListener("keydown", (event) => {  // Enter on a single hit opens it
@@ -545,8 +555,9 @@ function olderDocument(segment) {
 function segmentRows(file) {
   const segments = (file.extraction && file.extraction.segments) || [];
   if (!segments.length) return "";
-  return `<ol class="cp-segs" aria-label="${T("Documents in", "Dokumente in")} ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${esc(file.id)}" data-page="${s.first_page}" title="${esc(s.summary || "")}">
-    <span>${esc(s.title || s.kind)}</span><small>${esc([s.kind !== s.title ? s.kind : "", s.date, `${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}`].filter(Boolean).join(" · "))}${olderDocument(s) ? ` · <span class="cp-older">${T("older document", "älteres Dokument")}</span>` : ""}</small></button></li>`).join("")}</ol>`;
+  const unfolded = S.route.tab === "claim_reader" || (S.segsOpen || {})[file.id];
+  return `<details class="cp-segs-fold" data-segs="${esc(file.id)}" ${unfolded ? "open" : ""}><summary>${segments.length} ${T("documents inside", "Dokumente darin")}</summary><ol class="cp-segs" aria-label="${T("Documents in", "Dokumente in")} ${esc(file.name)}">${segments.map((s) => `<li><button class="cp-seg" data-file="${esc(file.id)}" data-page="${s.first_page}" title="${esc(s.summary || "")}">
+    <span>${esc(s.title || s.kind)}</span><small>${esc([s.kind !== s.title ? s.kind : "", s.date, `${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}`].filter(Boolean).join(" · "))}${olderDocument(s) ? ` · <span class="cp-older">${T("older document", "älteres Dokument")}</span>` : ""}</small></button></li>`).join("")}</ol></details>`;
 }
 
 // "anderer Prozess" during a run: Anhalten, choose, Weiter in one gesture.
@@ -1619,7 +1630,8 @@ function overviewView() {
   const st = caseState();
   const top = runLine(st);
   if (!hasPrepared() || (!item("next_action", "0") && !result())) return top;
-  return `${top}<div class="cp-overview">${preparedView(st)}${sideView()}</div>`;
+  const arrive = S.arrive; S.arrive = null;  // once per case opened: the sheet comes in (from the right when the reader went on)
+  return `${top}<div class="cp-overview ${arrive ? `cp-arrive ${arrive === "next" ? "from-right" : ""}` : ""}">${preparedView(st)}${sideView()}</div>`;
 }
 // A source is one quiet chip, its page; what rests on the handler's own entry says so where the chip would stand.
 function sourceChip(e) {
@@ -1697,15 +1709,50 @@ function leadLine(lead) {
 // The decisions of this step as one set: those taken (each with its answer, changed where it stands), the one the card
 // asks now, and those still to come, so the reader knows how many there are before the first click. Shown once the
 // step has more than one decision or one was taken.
-function decisionsStrip(dec) {
+// What CasePath did and when it finished, above the step it prepared: «CasePath · vorbereitet 17.11.2026, 09:13 · 3 Dateien,
+// 22 Seiten gelesen · 6 Min». Said in green, its tick drawn, when the preparation finished while the reader watched.
+function preparedBy() {
+  const run = S.data.prepared_run;
+  if (!run || !run.finished_at || studyCopy()) return "";
+  const files = S.data.files || [], pages = files.reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 0), 0);
+  const took = (Date.parse(run.finished_at) - Date.parse(run.created_at)) / 60000;
+  // when, as a person says it (today with the time, else how many days ago): the exact day and time are the line's title,
+  // so no date stands twice on the screen
+  const done = new Date(run.finished_at), days = Number.isNaN(done.getTime()) ? null : -daysTo(run.finished_at);
+  const clock = Number.isNaN(done.getTime()) ? "" : `${String(done.getHours()).padStart(2, "0")}:${String(done.getMinutes()).padStart(2, "0")}`;
+  const when = days === null ? "" : days <= 0 ? T(`today, ${clock}`, `heute, ${clock}`) : days === 1 ? T("yesterday", "gestern") : T(`${days} days ago`, `vor ${days} Tagen`);
+  const read = `${files.length} ${T(files.length === 1 ? "file" : "files", files.length === 1 ? "Datei" : "Dateien")}${pages > 1 ? `, ${pages} ${T("pages", "Seiten")}` : ""} ${T("read", "gelesen")}`;
+  const lasted = took >= 1 && took < 180 ? ` · ${Math.round(took)} ${T("min", "Min")}` : "";
+  const fresh = S.justFinished === S.route.id;
+  return `<p class="cp-by ${fresh ? "fresh" : ""}" data-prepared-by title="${esc(`${dateText(run.finished_at).slice(0, 10)}${clock ? `, ${clock}` : ""}`)}">${fresh ? icon("tick") : ""}CasePath · ${run.kind === "update" ? T("updated", "aktualisiert") : T("prepared", "vorbereitet")} ${when} · ${read}${lasted}</p>`;
+}
+// The action bar answers a change of state (approved, sent, at rest) with a short movement, once, never on a mere re-render.
+// A render that follows within the movement (the copy, the reload after it) carries it on from where it was.
+function barChanged(kind) {
+  const key = `${S.route.id}|${kind}`, was = S.barWas, now = Date.now();
+  S.barWas = key;
+  if (was && was !== key && was.split("|")[0] === S.route.id) S.barMoved = now;
+  const gone = now - (S.barMoved || 0);
+  return gone < 320 ? `cp-bar-changed" style="--cp-gone:-${gone}ms` : "";
+}
+function decisionsStrip(dec, primary) {
   const st = completionOf(), taken = st.decided || [], open = st.decisions || [];
-  if (taken.length + open.length < 2 && !taken.length) return "";
+  const now = dec ? decisionLine(dec, primary) : "";
+  if (taken.length + open.length < 2 && !taken.length) return now;
   const nowWord = dec ? ({ deckung: "Deckung", empfehlung: "Empfehlung", aussichten: "Erfolgsaussichten", vorgehen: "Vorgehen" }[dec.key] || null) : null;
-  const done = taken.map((d) => `<span class="cp-dstep done" data-decided="${esc(d.key)}" title="${esc([d.by, d.at ? dateText(d.at) : ""].filter(Boolean).join(" · "))}">${icon("check")}${esc(d.word)} <b>${esc(d.value)}</b>
-      <button class="cp-link cp-quiet-link" type="button" ${d.edit ? `data-decided-undo="${esc(d.edit)}"` : `data-decided-withdraw="${esc(d.key)}"`}>${T("change", "ändern")}</button></span>`);
-  const rest = open.map((w, n) => `<span class="cp-dstep ${w === nowWord || (!nowWord && n === 0) ? "now" : "open"}">${esc(w)}</span>`);
+  const done = taken.map((d) => `<li class="cp-dstep done" data-decided="${esc(d.key)}" title="${esc([d.by, d.at ? dateText(d.at) : ""].filter(Boolean).join(" · "))}"><span class="cp-dmark">${icon("tick")}</span><span class="cp-dname">${esc(d.word)}</span>
+      <span class="cp-dvalue">${esc(d.value)}</span><button class="cp-link cp-quiet-link" type="button" ${d.edit ? `data-decided-undo="${esc(d.edit)}"` : `data-decided-withdraw="${esc(d.key)}"`}>${T("change", "ändern")}</button></li>`);
+  let n = taken.length;
+  const rest = open.map((w, i) => {
+    n += 1;
+    const current = dec && (w === nowWord || (!nowWord && i === 0));
+    return current ? `<li class="cp-dstep now"><span class="cp-dmark">${n}</span>${now}</li>`
+      : `<li class="cp-dstep open"><span class="cp-dmark">${n}</span><span class="cp-dname">${esc(w)}</span><span class="cp-dvalue cp-muted">${T("after that", "danach")}</span></li>`;
+  });
+  const shown = dec && !rest.some((r) => r.includes("cp-dstep now")) ? `<li class="cp-dstep now"><span class="cp-dmark">${taken.length + 1}</span>${now}</li>` : "";
   const left = open.length;
-  return `<p class="cp-dsteps" data-decisions aria-label="${T("Decisions of this step", "Entscheide dieses Schritts")}"><span class="cp-dsteps-head">${left ? T(`${left} decision${left > 1 ? "s" : ""} open`, `${left} Entscheid${left > 1 ? "e" : ""} offen`) : T("Decided", "Entschieden")}</span>${[...done, ...rest].join("")}</p>`;
+  return `<section class="cp-dsteps" data-decisions aria-label="${T("Decisions of this step", "Entscheide dieses Schritts")}"><p class="cp-dsteps-head">${T("Your decisions", "Ihre Entscheide")}
+      <span class="cp-muted">· ${left ? T(`${left} open`, `${left} offen`) : T("all taken", "alle getroffen")}</span></p><ol>${[...done, shown, ...rest].join("")}</ol></section>`;
 }
 const policeOpen = () => (S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary" && i.value === "police").length;
 function decisionLine(dec, primary) {
@@ -1729,8 +1776,8 @@ function decisionLine(dec, primary) {
   };
   const why = S.coverDecline && dec.key === "deckung" ? `<p class="cp-reasons cp-cover-why"><span class="cp-muted">${T("Which point fails?", "Welcher Punkt ist nicht erfüllt?")}</span>
       ${(S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary").map((x) => `<button class="cp-chip" data-cover-reason="${esc(x.key)}">${esc(x.title)}</button>`).join("")}<button class="cp-chip" data-cover-reason="anderer Grund">${T("other reason", "anderer Grund")}</button></p>` : "";
-  const premise = dec.key === "deckung" && (brief() || {}).under_premise ? ` <span class="cp-muted">· ${T("assessment prepared, subject to cover", "Einschätzung unter Vorbehalt der Deckung")}</span>` : "";
-  const question = `${esc(dec.lapse || dec.question)}${dec.detail ? ` <span class="cp-muted">· ${esc(dec.detail)}</span>` : ""}${premise}`;
+  const premise = dec.key === "deckung" && (brief() || {}).under_premise ? ` <span class="cp-muted cp-ddetail">${T("assessment prepared, subject to cover", "Einschätzung unter Vorbehalt der Deckung")}</span>` : "";
+  const question = `<span class="cp-dq">${esc(dec.lapse || dec.question)}</span>${dec.detail ? ` <span class="cp-muted cp-ddetail">${esc(dec.detail)}</span>` : ""}${premise}`;
   // what follows each answer, said before it is given (an offer's three answers); once one is given, only its own line
   const thens = (dec.answers || []).filter((a) => a.then && (!dec.chosen || dec.chosen === a.stance));
   // the cover is confirmed as a whole: what only the policy can settle is named before the click, and kept with it
@@ -1837,19 +1884,19 @@ function preparedView(st) {
   const body = text ? (active.main ? letterView(text, editable) : alsoView(active, editable))
     : call || noteHere ? `${call}${noteHere}` : `<p class="cp-muted cp-noletter">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step", "Für diesen Schritt kein Brief"))}</p>`;
   const required = active && active.main && (draft.required || []).length ? `<p class="cp-required">${T("Required", "Pflichtteile")}: ${draft.required.map((r) => `${esc(r.title)} <span class="cp-muted">(${esc(r.basis)})</span>`).join(" · ")}</p>` : "";
-  const head = `<section class="cp-card cp-prepared ${sc.urgency === "dringend" && !c ? "urgent" : ""}">
-    <header class="cp-prep-head"><h2>${esc(title)}</h2>${!c && editable && options.length && !folded ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
+  const head = `<section class="cp-card cp-prepared ${sc.urgency === "dringend" && !c ? "urgent" : ""} ${folded ? "cp-resting" : ""}">
+    ${folded || c ? "" : preparedBy()}<header class="cp-prep-head">${folded ? `<span class="cp-done-badge" aria-hidden="true">${icon("tick")}</span>` : ""}<h2>${esc(title)}</h2>${!c && editable && options.length && !folded ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because`, `Stattdessen: ${esc(S.pickAction.title)}, weil`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
       : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
     ${restLine}${resting ? reconcileLine() : ""}`;
   if (folded) return `${head}<footer class="cp-bar cp-carry">${whenAfter || when}<span class="grow"></span>${onward}</footer></section>`;
   return `${head}
-    ${c ? "" : `${resting ? "" : weilLine(act)}${resting ? "" : partialLine(act)}${resting ? "" : headBlock()}${leadLine(sc.lead)}${resting ? "" : decisionsStrip(dec)}${dec ? decisionLine(dec, decisionPrimary) : progressLine(sc.progress)}${resting ? "" : changesStrip()}`}${tabs}
+    ${c ? "" : `${resting ? "" : weilLine(act)}${resting ? "" : partialLine(act)}${resting ? "" : headBlock()}${leadLine(sc.lead)}${resting ? "" : decisionsStrip(dec, decisionPrimary)}${dec ? "" : progressLine(sc.progress)}${resting ? "" : changesStrip()}`}${tabs}
     ${stale && text ? `<p class="cp-stale-note">${T("Draft from before the new files", "Entwurf vor den neuen Dateien")} <button class="cp-link cp-quiet-link" id="use-anyway" type="button">${T("use anyway", "trotzdem verwenden")}</button></p>` : ""}
     ${c || asFrozen ? "" : conflictsView(active)}
     <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${esc((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>
     ${asFrozen || c || !text ? "" : handoverLine()}
-    <footer class="cp-bar ${asFrozen || c ? "" : "cp-carry"}">${bar}</footer>
+    <footer class="cp-bar ${asFrozen || c ? "" : "cp-carry"} ${barChanged(c ? "closed" : resting ? "rest" : barKind || "")}">${bar}</footer>
   </section>`;
 }
 // A document that goes with the letter (a template for the customer, the cost guarantee, the summary for the firm …):
@@ -1980,7 +2027,9 @@ function sideAccount() {
 // dispatch, each taken back where it stands. It is read from the case's own log, so it is there again after a reload.
 function lastChange() {
   if (S.lastUndo && S.lastUndo.case === S.route.id && !S.lastEdit) return consequencesBlock(S.lastUndo.consequences, T("Undone", "Rückgängig gemacht"), "", S.lastUndo.limits);
-  if (S.lastEdit && !S.lastEdit.op) {
+  // a decision of the step stands in the decisions' own row, with its «ändern»: no second box for it
+  const decided = new Set((completionOf().decided || []).map((d) => d.edit).filter(Boolean));
+  if (S.lastEdit && !S.lastEdit.op && !(S.lastEdit.edit && decided.has(S.lastEdit.edit.id))) {
     const undo = `<button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button>`;
     // what the correction teaches, said where it was made: proposed for similar cases (a reviewer releases it), or only here
     const k = S.lastEdit.knowledge;
@@ -2030,6 +2079,30 @@ function settleButtons(x) {
 }
 function sideChanges() {
   return "";  // what changed with the last preparation stands in the card head now (headBlock: «Was sich geändert hat»)
+}
+// «Der Fall» is read in lines: a section with more than a line or two folds to its name, how many entries it has and
+// how it begins, and opens on a click (kept while the reader stays on the case). Deadlines never fold.
+const SIDE_OPEN = new Set(["Fristen", "Deadlines", "Achtung", "Note", "Nicht gelesen", "Unread"]);
+function foldSide() {
+  const dl = $(".cp-casefacts");
+  if (!dl) return;
+  const open = S.sideOpen || (S.sideOpen = {});
+  for (const dt of [...dl.querySelectorAll(":scope > dt")]) {
+    const dd = dt.nextElementSibling;
+    if (!dd || dd.tagName !== "DD") continue;
+    const key = dt.textContent.trim(), rows = dd.children.length, text = dd.innerText.replace(/\s+/g, " ").trim();
+    if (SIDE_OPEN.has(key) || (rows < 2 && text.length < 110)) continue;
+    const isOpen = Boolean(open[key]);
+    dt.innerHTML = `<button class="cp-fold" type="button" aria-expanded="${isOpen}">${esc(key)}${rows > 1 ? `<span class="cp-fold-n">${rows}</span>` : ""}</button>`;
+    const toggle = () => { open[key] = !isOpen; renderCase(); };
+    dt.querySelector("button").addEventListener("click", toggle);
+    if (isOpen) continue;
+    dd.hidden = true;
+    const first = document.createElement("dd");
+    first.className = "cp-fold-first"; first.textContent = clip(text.replace(/ (Quelle|ändern|neu|bedingt|beantwortet|S\. \d+)(?= |$)/g, ""), 64);
+    first.addEventListener("click", toggle);
+    dd.after(first);
+  }
 }
 function sideView() {
   const sc = scr();
@@ -2549,7 +2622,7 @@ async function loadCase() {
   const id = S.route.id;
   if (S.loadedCase !== id) {  // an opened source, a tab, an opened reason and an unsent edit belong to their case
     Object.assign(S, { overviewSource: false, loadedCase: id, docTab: null, docFor: null, docPicked: false, feeAnswer: null, weilOpen: false, leadOpen: false, decideOpen: false, why: null,
-                       anliegenOpen: false, keyPoint: null, coverOpen: false, coverDecline: false, blockEdits: {}, alsoEdits: {}, askWhy: null, openOffers: false, changing: false, pickAction: null, addedDoc: null });
+                       anliegenOpen: false, keyPoint: null, coverOpen: false, coverDecline: false, blockEdits: {}, alsoEdits: {}, askWhy: null, openOffers: false, changing: false, pickAction: null, addedDoc: null, sideOpen: {}, segsOpen: {} });
   }
   const [data, workflows, knowledge] = await Promise.all([api(`/api/cases/${id}`), S.workflows ? null : api("/api/workflows"), api("/api/knowledge")]);
   if (workflows) S.workflows = workflows.workflows;
@@ -2640,7 +2713,11 @@ function schedulePoll() {
     // a file's reading is saved while the run goes on: show the read text from then on
     run.events.forEach((e) => { if (e.file && e.kind === "reading.saved") delete S.pages[e.file]; });
     S.data.run.status = run.status;
-    if (!["queued", "running"].includes(run.status)) { S.events = []; S.pages = {}; await loadCase(); return; }
+    if (!["queued", "running"].includes(run.status)) {  // finished while the reader watched: the prepared step arrives, and says so
+      S.events = []; S.pages = {};
+      if (run.status === "completed") { S.justFinished = S.route.id; S.arrive = "open"; }
+      await loadCase(); return;
+    }
     const cite = liveCite();
     if (cite && S.follow) S.file = cite.file;
     await renderCase();
@@ -2715,6 +2792,7 @@ async function renderCase() {
     S.onlyOpen = true; S.openParty = b.dataset.openParty; location.hash = `#/case/${S.route.id}/history`; });
   bindEdit();
   bindOverview();
+  foldSide();
   fitCard();
   watchExposure(tab);
   const hit = $("#live-hit"), body = hit && hit.closest(".cp-doc-body");
@@ -2736,7 +2814,7 @@ function fitCard() {
   const el = $(".cp-prepared"), side = $(".cp-overview > .cp-side");
   // the card is at least as tall as the window leaves it (a short letter keeps its bar at the bottom) and grows with its
   // letter; «Der Fall» beside it stays in view and scrolls within that height
-  if (!el || window.innerWidth < 1000) { if (el) el.style.minHeight = ""; if (side) side.style.maxHeight = ""; return; }
+  if (!el || window.innerWidth < 1000 || el.classList.contains("cp-resting")) { if (el) el.style.minHeight = ""; if (side) side.style.maxHeight = el && window.innerWidth >= 1000 ? `${Math.max(400, window.innerHeight - 117)}px` : ""; return; }
   const top = el.parentElement.getBoundingClientRect().top + window.scrollY;  // where the card starts
   const height = Math.max(400, window.innerHeight - top - 26);
   el.style.minHeight = `${height}px`;
@@ -2749,17 +2827,27 @@ window.addEventListener("resize", fitCard);
 async function renderAuswertung() {
   const a = await api("/api/auswertung");
   const n = (v) => (v === null || v === undefined ? "—" : esc(String(v)));
-  const kv = (o) => Object.entries(o || {}).map(([k, v]) => `${esc(k)} ${v}`).join(" · ") || "—";
-  const rows = a.cases.map((c) => `<tr><td><code>${esc(c.case)}</code></td><td>${kv(c.accepted_unchanged)}</td><td>${c.interventions}</td>
-    <td>${kv(c.interventions_by_reason)}</td><td>${n(c.letter_changed_ratio)}</td><td>${c.handling_seconds == null ? "—" : Math.round(c.handling_seconds / 60) + " min"}</td>
-    <td>${c.sources_opened}</td><td>${c.same_correction_again}</td><td>${c.run_seconds == null ? "—" : c.run_seconds + " s"}</td><td>${c.tokens_noncached == null ? "—" : Math.round(c.tokens_noncached / 1000) + "k"}</td></tr>`).join("");
-  $("#app").innerHTML = `<main class="cp-main"><h1 class="cp-title">${T("Evaluation", "Auswertung")}</h1>
-    <p class="cp-muted">${T("From ordinary use, without questionnaires. Content-free: cases appear only as pseudonyms.", "Aus der normalen Arbeit, ohne Fragebogen. Ohne Inhalte: Fälle erscheinen nur als Pseudonyme.")}
-      <a class="cp-link" href="/api/auswertung" download="auswertung.json">${T("Export", "Export")}</a> · <a class="cp-link" href="/api/manifest" download="manifest.json">${T("Manifest", "Manifest")}</a></p>
-    <p>${T("Cases", "Fälle")} ${a.total.cases} · ${T("in use", "genutzt")} ${a.total.cases_used} · ${T("interventions per case", "Eingriffe pro Fall")} ${n(a.total.interventions_per_used_case)} · ${T("same correction again", "gleiche Korrektur erneut")} ${a.total.same_correction_again}</p>
-    <table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Accepted unchanged", "Unverändert übernommen")}</th><th>${T("Interventions", "Eingriffe")}</th><th>${T("Reasons", "Gründe")}</th>
-      <th>${T("Letter changed", "Brief geändert")}</th><th>${T("Handling", "Bearbeitung")}</th><th>${T("Sources opened", "Quellen geöffnet")}</th><th>${T("Same again", "Erneut gleich")}</th><th>${T("Run", "Lauf")}</th><th>Tokens</th></tr></thead>
-      <tbody>${rows || `<tr><td colspan="10" class="cp-muted">${T("No use recorded yet.", "Noch keine Nutzung erfasst.")}</td></tr>`}</tbody></table></main>`;
+  const reason = (k) => (k === "none" ? T("no reason given", "ohne Angabe") : REASONS[k] ? T(REASONS_EN[k], REASONS[k]) : String(k).replace(/_/g, " "));
+  const kv = (o, name = (k) => String(k).replace(/_/g, " ")) => Object.entries(o || {}).map(([k, v]) => `${esc(name(k))} ${v}`).join(" · ") || "—";
+  // a time is said in the unit a person reads, and never where it cannot be one (a seeded case with no real run)
+  const span = (sec) => (sec == null || sec > 86400 || sec < 1 ? "—" : sec >= 90 ? `${Math.round(sec / 60)} ${T("min", "Min")}` : `${Math.round(sec)} s`);
+  // the cases something was done in; the others are one line, not forty rows of zeros
+  const active = a.cases.filter((c) => c.interventions || c.sources_opened || c.same_correction_again || c.handling_seconds != null || c.letter_changed_ratio);
+  const rows = active.map((c) => `<tr><td><code>${esc(c.case)}</code></td><td>${c.interventions}</td><td>${kv(c.interventions_by_reason, reason)}</td><td>${n(c.letter_changed_ratio)}</td>
+    <td>${c.handling_seconds == null ? "—" : span(c.handling_seconds)}</td><td>${c.sources_opened}</td><td>${c.same_correction_again}</td><td>${span(c.run_seconds)}</td>
+    <td>${c.tokens_noncached >= 500 ? `${Math.round(c.tokens_noncached / 1000)}k` : "—"}</td></tr>`).join("");
+  const figure = (value, label) => `<div class="cp-figure"><b>${n(value)}</b><span>${label}</span></div>`;
+  $("#app").innerHTML = `<main class="cp-main cp-evaluation"><h1 class="cp-title">${T("Evaluation", "Auswertung")}</h1>
+    <section class="cp-today cp-figures" aria-label="${T("In figures", "In Zahlen")}">
+      ${figure(a.total.cases, T("cases", "Fälle"))}${figure(a.total.cases_used, T("worked on", "bearbeitet"))}
+      ${figure(a.total.interventions_per_used_case, T("corrections per case worked on", "Eingriffe pro bearbeiteten Fall"))}${figure(a.total.same_correction_again, T("same correction made again", "gleiche Korrektur erneut"))}</section>
+    <p class="cp-muted cp-eval-note">${T("From ordinary use, without questionnaires. Content-free: cases appear only as pseudonyms.", "Aus der normalen Arbeit, ohne Fragebogen. Ohne Inhalte: Fälle erscheinen nur als Pseudonyme.")}
+      <a class="cp-link cp-quiet-link" href="/api/auswertung" download="auswertung.json">${T("Export", "Export")}</a> · <a class="cp-link cp-quiet-link" href="/api/manifest" download="manifest.json">${T("Manifest", "Manifest")}</a></p>
+    <h2 class="cp-section">${T("Cases worked on", "Bearbeitete Fälle")} · ${active.length}</h2>
+    ${active.length ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Corrections", "Eingriffe")}</th><th>${T("Reasons", "Gründe")}</th>
+      <th>${T("Letter changed", "Brief geändert")}</th><th>${T("Handling", "Bearbeitung")}</th><th>${T("Sources opened", "Quellen geöffnet")}</th><th>${T("Same again", "Erneut gleich")}</th><th>${T("Preparation", "Vorbereitung")}</th><th>Tokens</th></tr></thead>
+      <tbody>${rows}</tbody></table>` : `<p class="cp-muted">${T("No use recorded yet.", "Noch keine Nutzung erfasst.")}</p>`}
+    ${a.cases.length > active.length ? `<p class="cp-muted cp-eval-rest">${T(`${a.cases.length - active.length} further cases without any recorded work.`, `${a.cases.length - active.length} weitere Fälle ohne erfasste Arbeit.`)}</p>` : ""}</main>`;
 }
 
 // What the Knowledge items and the areas are called where a handler meets them: never an internal id or an English word.
@@ -2981,6 +3069,11 @@ function bindReview() {
 // ---------- routing ----------
 async function route() {
   const next = parseRoute();
+  // what arrives is shown arriving, once: another case (from the right when the reader went on), or the list
+  if (next.view === "case" && (S.route.view !== "case" || next.id !== S.route.id)) { S.arrive = S.arriveNext ? "next" : "open"; S.barWas = null; }
+  if (next.view === "cases" && S.route.view !== "cases") S.listFresh = true;
+  if (next.view !== "case" || next.id !== S.justFinished) S.justFinished = null;
+  S.arriveNext = false;
   if (next.view !== "case" || next.id !== MEASURE.caseId) measureLeave();  // the case is left: its measured span ends
   if (next.view !== "case" || next.id !== S.route.id) Object.assign(S, { data: null, pages: {}, file: null, step: null, editing: false, lastEdit: null, events: [], follow: true, message: "", shown: new Set(), litKey: null });
   S.route = next;
@@ -3012,6 +3105,23 @@ async function route() {
     try { sessionStorage.setItem("cp-measure", MEASURE.on ? "1" : ""); } catch (error) { /* this session only, in memory */ }
     if (MEASURE.on) measureTouch(); else measureLeave();
     renderTop();
+  });
+  document.addEventListener("keydown", (event) => {
+    const typing = event.target.closest && event.target.closest("input, textarea, select, [contenteditable], [data-editable]");
+    if ((event.ctrlKey || event.metaKey) && event.key === "Enter" && S.route.view === "case") {  // the card's one primary, from the keyboard
+      const b = document.querySelector(".cp-prepared .cp-button.primary:not(:disabled)");
+      if (b) { event.preventDefault(); b.click(); }
+      return;
+    }
+    if (typing || event.ctrlKey || event.metaKey || event.altKey || S.route.view !== "cases") return;
+    const rows = [...document.querySelectorAll("table.cp-cases tbody tr")];
+    if (!rows.length || !["ArrowDown", "ArrowUp", "j", "k", "Enter"].includes(event.key)) return;
+    const at = rows.findIndex((r) => r.classList.contains("cp-row-on"));
+    if (event.key === "Enter") { const a = at >= 0 && rows[at].querySelector("a[href^='#/case/']"); if (a) location.hash = a.getAttribute("href"); return; }
+    event.preventDefault();
+    const to = Math.max(0, Math.min(rows.length - 1, at < 0 ? 0 : at + (["ArrowDown", "j"].includes(event.key) ? 1 : -1)));
+    if (at >= 0) rows[at].classList.remove("cp-row-on");
+    rows[to].classList.add("cp-row-on"); rows[to].scrollIntoView({ block: "nearest" });
   });
   try { S.canUpload = (await api("/api/health")).uploads !== false; } catch (error) { S.canUpload = true; }
   window.addEventListener("hashchange", route);
@@ -3169,9 +3279,15 @@ function headBlock() {
       ? `<button class="cp-head-text" data-head-open="${key}" aria-expanded="${S.headOpen === key}"><span class="cp-head-label">${label}</span> ${esc(text)}</button>`
       : `<span class="cp-head-text"><span class="cp-head-label">${label}</span> ${esc(text)}</span>`}
       ${S.headOpen === key && (more || []).length ? `<span class="cp-head-more">${more.map((x) => esc(isoDay(x))).join("<br>")}</span>` : ""}</p>` : "";
-  const changedMore = (h.changed_all || []).length > 1 || (h.changed_all || [])[0] !== h.changed ? h.changed_all : [];
-  return `<div class="cp-head" data-head>${line("changed", T("What changed:", "Was sich geändert hat:"), h.changed, changedMore)}
-    ${line("meaning", T("What it means:", "Was das bedeutet:"), h.meaning, h.meaning_all)}
+  // one sentence: what the news means for this step; what changed is one click behind it (never two labelled lines to read)
+  const changes = [...new Set([...(h.changed_all || []), h.changed].filter(Boolean))];
+  const news = h.meaning || h.changed || "";
+  const more = h.meaning ? [...changes, ...(h.meaning_all || []).filter((x) => x !== h.meaning)] : changes.filter((x) => x !== h.changed);
+  const open = S.headOpen === "news";
+  const newsLine = news ? `<p class="cp-head-line cp-news ${open ? "open" : ""}" data-news><span class="cp-head-text">${esc(news)}</span>
+      ${more.length ? `<button class="cp-link cp-quiet-link" data-head-open="news" aria-expanded="${open}">${T("what changed", "was sich geändert hat")}</button>` : ""}
+      ${open && more.length ? `<span class="cp-head-more">${more.map((x) => esc(isoDay(x))).join("<br>")}</span>` : ""}</p>` : "";
+  return `<div class="cp-head" data-head>${newsLine}
     ${h.stale ? line("stale", "", h.stale, h.stale_all, "cp-head-stale") : ""}
     ${h.reconcile ? `<p class="cp-head-line cp-head-stale"><button class="cp-button cp-small" data-reconcile="${esc(h.reconcile)}" title="${T("The letter stays as sent; a correction would be a letter of its own", "Der Brief bleibt so versandt; eine Korrektur wäre ein eigener Brief")}">${T("Reconciled", "Abgleich erledigt")}</button></p>` : ""}</div>`;
 }
@@ -3238,7 +3354,7 @@ function carryButtons(active, opts) {
     const blocked = bar.decision ? T(`Decide first: ${bar.decision}`, `Zuerst entscheiden: ${bar.decision}`) : opts.stale ? T("New files are not read yet", "Neue Unterlagen sind noch nicht gelesen.")
       : heldBlocks ? heldText : "";
     const legacy = bar.legacy ? `<span class="cp-muted cp-legacy">${T("copied", "kopiert")} ${dateText(bar.legacy.at)}, ${T("sending not confirmed", "Versand nicht bestätigt")}</span>` : "";
-    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${T("Approve and copy", "Freigeben und kopieren")}</button>${heldNote}${legacy}${saving}${opts.whenAfter || opts.when}`;
+    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${T("Approve and copy", "Freigeben und kopieren")}</button>${blocked && !heldNote ? `<span class="cp-blocked" data-blocked>${esc(blocked)}</span>` : ""}${heldNote}${legacy}${saving}${opts.whenAfter || opts.when}`;
   }
   const rows = (bar.recipients || []).filter((r) => !r.dispatched);
   const copied = copiedApproved();
@@ -3533,12 +3649,20 @@ function walkOrder(cases) {
 function walkMemory() {
   let kept = S.walk;
   try { kept = JSON.parse(sessionStorage.getItem("cp-walk") || "null") || kept; } catch (error) { /* this page only, in memory */ }
-  return { passed: (kept && kept.passed) || [], order: (kept && kept.order) || [] };
+  return { passed: (kept && kept.passed) || [], order: (kept && kept.order) || [], total: (kept && kept.total) || 0 };
+}
+// Where the reader stands in the walk: «3 / 31» beside «Nächster Fall» and a hairline under the top bar.
+function walkPlace(id) {
+  const kept = walkMemory(), order = kept.order, at = order.indexOf(id);
+  if (at < 0 || order.length < 2) return { label: "", bar: "" };
+  const left = order.length - at, total = Math.max(kept.total || 0, left);
+  return { label: `<span class="cp-walk-count" title="${T("cases of this walk still ahead, this one included", "Fälle dieses Durchgangs, die noch vor Ihnen liegen, dieser eingeschlossen")}">${T(`${left} to go`, `noch ${left}`)}</span>`,
+           bar: `<span class="cp-walkbar" style="width:${Math.round(100 * (total - left) / total)}%" aria-hidden="true"></span>` };
 }
 function walkKeep(kept) { S.walk = kept; try { sessionStorage.setItem("cp-walk", JSON.stringify(kept)); } catch (error) { /* this page only, in memory */ } }
 async function nextCase(fresh) {
   const here = S.route.view === "case" ? S.route.id : null;
-  const kept = fresh ? { passed: [], order: [] } : walkMemory();
+  const kept = fresh ? { passed: [], order: [], total: 0 } : walkMemory();
   const passed = [...new Set([...kept.passed, ...(here ? [here] : [])])];
   const order = walkOrder((await api("/api/cases")).cases);
   const open = order.filter((c) => c.id !== here && !passed.includes(c.id));
@@ -3546,8 +3670,9 @@ async function nextCase(fresh) {
   const at = order.findIndex((c) => c.id === here);
   const below = at >= 0 ? order.slice(at + 1).map((c) => c.id) : kept.order.slice(kept.order.indexOf(here) + 1);
   const next = open.find((c) => below.includes(c.id)) || open[0];
-  walkKeep(next ? { passed, order: order.map((c) => c.id) } : { passed: [], order: [] });
+  walkKeep(next ? { passed, order: order.map((c) => c.id), total: kept.total || order.length } : { passed: [], order: [], total: 0 });
   S.walkEnd = !next && !fresh;
+  S.arriveNext = Boolean(next);  // the next case comes in from where the reader is going
   if (!next && S.route.view !== "case") { await route(); return; }
   location.hash = next ? `#/case/${next.id}/overview` : "#/cases";
 }

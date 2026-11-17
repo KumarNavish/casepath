@@ -358,8 +358,9 @@ await step("wait_update", async () => {
   await page.reload(); await sleep(2500);
 }, "warten, bis die Aktualisierung fertig ist");
 await step("read_head", async () => {
-  const head = await page.evaluate(() => document.body.innerText);
-  if (!/Was sich geändert hat/.test(head) || !/Was das bedeutet/.test(head)) lacking("B: the case head «Was sich geändert hat» · «Was das bedeutet» (B14)");
+  // the head is one sentence (what the news means for this step) with «was sich geändert hat» one click behind it
+  const head = await page.evaluate(() => { const n = document.querySelector("[data-news]"); return n ? { text: n.innerText, more: Boolean(n.querySelector("[data-head-open='news']")) } : null; });
+  if (!head || !head.text.trim() || !head.more) lacking("B: the case head says what the news means, with «was sich geändert hat» behind it (B14)");
 }, "den Kopf lesen: was sich geändert hat, was das bedeutet");
 await step("deckung", async () => {
   const onCard = page.locator("[data-decide='deckung'][data-value='bestätigt']");

@@ -902,7 +902,19 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             if run and str(run.get("finished_at") or "") > mark:
                 out.append({**base, "what": "aktualisiert" if run.get("kind") == "update" else "fertig vorbereitet", "by": SYSTEM, "at": run["finished_at"]})
         out.sort(key=lambda x: x["at"], reverse=True)
-        return {"since": mark, "events": out[:30], "more": max(0, len(out) - 30), "tick": dict(tick_state)}
+        # the reader's own day so far: the cases they sent a letter in or closed today (each case once), so the start page
+        # can say how far the day has come beside what is still open
+        from ..process import completion
+        day, sent, closed = completion.swiss_today().isoformat(), set(), set()
+        for r in own:
+            for e in store.list_case_events(r["id"]):
+                if e.get("expert") != who or e.get("kind") not in ("action.dispatched", "case.closed"):
+                    continue
+                at = completion.swiss_day(e.get("at"))
+                if at and str(at)[:10] == day:
+                    (sent if e["kind"] == "action.dispatched" else closed).add(r["id"])
+        return {"since": mark, "events": out[:30], "more": max(0, len(out) - 30), "tick": dict(tick_state),
+                "done": {"day": day, "cases": len(sent | closed), "sent": len(sent), "closed": len(closed)}}
 
     def area_title(process):
         """The area's short name a prepared case's title starts with («Darlehen»)."""

@@ -111,6 +111,21 @@ A fresh-eyes audit of the running product (twelve journeys clicked through on sy
 - **The jurists' state is not said in the handler's word.** «freigegeben» is the handler's approval; the area's state reads «juristisch noch nicht geprüft», and the count of reviewed elements is shown to reviewers only. A letter that is no assessment (a reminder, a status inquiry) lists no answers or recommendations as what it rests on (`completion.relied_elements`).
 - Not built from the audit, said plainly: the Prozess tab and the three-column layout stay; a free-text edit of the letter is saved per part but still has no marker and no «Original wiederherstellen»; a jurist still cannot change wording in the product; the Auswertung still shows no time figure; recipient, subject and letter are still three copies (a mail link was left out on purpose: no dependence on a mail program).
 
+## How it looks and moves (17 November 2026)
+
+The rules the screens are held to, so a later change does not undo them:
+
+- **One thing to do, one accent.** Crimson is the one primary button, the step asked now, and what is late or newly arrived. Everything else is ink on white. No gradients, no decorative colour.
+- **Sheets on a canvas.** The page is a warm grey; what is read or acted on is a white sheet with a soft shadow, never an outlined box inside an outlined box.
+- **Read in order, top to bottom.** On a case: what CasePath did and when it finished (one small line), the step, why (one line), what the news means (one sentence; «was sich geändert hat» opens from it), the decisions as one numbered list, the letter, the action bar.
+- **Secondary things wait folded.** «Der Fall» is a stacked list; a section longer than a line or two folds to its name, how many entries it has and how it begins. A file's documents wait folded under the file (open on the Akte tab). «ändern» and «rückgängig» on a settled row appear when the hand or the keyboard is on that row. Deadlines never fold.
+- **States are words, not capsules.** A status, a source, an answer's state is said in type; only what needs a hand is a button.
+- **Movement marks a change and nothing else.** A case arrives (from the right when the reader went on to it), the action bar answers a change of state, a tick is drawn when something is done, the line that says what CasePath is reading breathes while it reads. Each lasts 0.16 to 0.6 seconds and none plays on a mere re-render; with «reduce motion» set, none plays at all.
+- **CasePath at work and done.** While it reads: the stages in order with the one at work marked, what it reads now, and the reader's own stop. When it finishes while the reader watches, the prepared step arrives and its first line says so in green («CasePath · vorbereitet heute, 09:13 · 3 Dateien, 22 Seiten gelesen · 6 Min»; on later days «vor n Tagen», the exact time in its title); from another case, a quiet notice at the lower right and the count in the tab's title.
+- **The day.** «Heute» is one sheet: four counts that filter the list when pressed, how far the reader's own day has come (cases they sent a letter in or closed today, `GET /api/today` → `done`), and «Fälle durchgehen». In a walk the header says how many cases are still ahead and a hairline under the top bar shows how far through.
+- **Hands on the keyboard.** On the list: arrow keys or j/k move through the rows, Enter opens. On a case: Ctrl+Enter (⌘+Enter) presses the card's one primary button.
+- **«Auswertung»** leads with four figures and lists only the cases something was done in.
+
 ## What each handler gesture teaches
 
 | The handler | CasePath learns | Improves |

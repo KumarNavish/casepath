@@ -104,7 +104,8 @@ async function screen(page, { titles }) {
     // sentences a person would have to read to use the screen (the heuristic of check_simple.mjs): not the case's own
     // content (an item, the letter, the file's text and its documents' list), and a sentence ends after a word, not an
     // initial («N. Kumar», «S. 2»)
-    const letterish = (el) => el.closest("[data-item], pre, .cp-checklist, .cp-letter, .cp-doc-body, .cp-doc-head, .cp-contents, .cp-segs, .cp-source-label");
+    // (.cp-fold-first: how a folded section of «Der Fall» begins, case content one click away, not an instruction)
+    const letterish = (el) => el.closest("[data-item], pre, .cp-checklist, .cp-letter, .cp-doc-body, .cp-doc-head, .cp-contents, .cp-segs, .cp-source-label, .cp-fold-first");
     const blocks = new Set(), w2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     while (w2.nextNode()) {
       const n = w2.currentNode;

@@ -64,7 +64,7 @@ class DecisionSetTests(Episode):
         self.assertEqual(completion.decided({"kind": "A5", "form": "A5", "needs": []}, facts, None, edits=undone), [])
 
     def test_the_screen_shows_the_set_and_names_what_confirming_the_cover_includes(self):
-        strip = SCRIPT[SCRIPT.index("function decisionsStrip(dec)"):SCRIPT.index("function decisionLine(dec, primary)")]
+        strip = SCRIPT[SCRIPT.index("function decisionsStrip(dec, primary)"):SCRIPT.index("function decisionLine(dec, primary)")]
         self.assertIn("st.decided", strip)
         self.assertIn("st.decisions", strip)
         self.assertIn("data-decided-undo", strip)
@@ -210,3 +210,52 @@ class WalkTests(Gate):
         area = SCRIPT[SCRIPT.index("function areaLine(d)"):SCRIPT.index("function markInReview()")]
         self.assertIn('"juristisch noch nicht geprüft"', area)
         self.assertIn("r.of && S.mayReview", area)  # the element count is the reviewers' entry, not every handler's line
+
+
+class DayTests(Gate):
+    """«Heute» says how far the reader's own day has come: the cases they sent a letter in or closed today, each once."""
+
+    def test_the_day_counts_the_readers_own_cases_sent_or_closed_today(self):
+        a, b = self.prepared("Fall A (synthetisch)"), self.prepared("Fall B (synthetisch)")
+        self.assertEqual(self.client.get("/api/today").json()["done"]["cases"], 0)
+        approval = self.approve(a["id"], "op-approve-day")
+        sent = self.client.post(f"/api/cases/{a['id']}/actions/dispatch", json={"version": approval["version"], "date": completion.swiss_today().isoformat(),
+                                                                               "channel": "email", "op_id": "op-dispatch-day"})
+        self.assertEqual(sent.status_code, 200, sent.text)
+        done = self.client.get("/api/today").json()["done"]
+        self.assertEqual((done["cases"], done["sent"], done["closed"], done["day"]), (1, 1, 0, completion.swiss_today().isoformat()))
+        self.assertIn("since.done", SCRIPT)
+        self.assertIn("data-day", SCRIPT)
+
+
+class CraftTests(unittest.TestCase):
+    """How it looks and moves: one accent, sheets on a canvas, movement only where something changed, none on request."""
+
+    def test_motion_is_short_marks_a_change_and_stops_for_readers_who_ask(self):
+        self.assertIn("@media (prefers-reduced-motion: reduce)", STYLE)
+        self.assertIn("function barChanged(kind)", SCRIPT)   # the bar moves when its state changes, never on a mere re-render
+        self.assertIn("S.arrive = S.arriveNext", SCRIPT)     # a case arrives once; from the right when the reader went on
+        self.assertIn("S.listFresh", SCRIPT)                 # the list arrives once per visit, not on every keystroke
+        longest = max(float(x) for x in __import__("re").findall(r"animation: cp-(?:rise|pop|sheet-in|sheet-next|draw|underline)\b[^;]*? (\.\d+)s", STYLE))
+        self.assertLessEqual(longest, 0.6)
+
+    def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
+        self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)
+        self.assertIn('document.querySelector(".cp-prepared .cp-button.primary:not(:disabled)")', SCRIPT)
+        self.assertIn("cp-row-on", STYLE)
+
+    def test_the_walk_shows_where_the_reader_stands(self):
+        self.assertIn("function walkPlace(id)", SCRIPT)
+        self.assertIn(".cp-walkbar", STYLE)
+
+    def test_a_case_at_rest_is_a_compact_sheet(self):
+        self.assertIn("cp-resting", SCRIPT)
+        self.assertIn(".cp-prepared.cp-resting { min-height: 0 !important; }", STYLE)
+
+    def test_what_is_secondary_waits_folded_and_the_step_says_what_casepath_did(self):
+        self.assertIn("function foldSide()", SCRIPT)          # «Der Fall» in lines: long sections fold to a name, a count, a first line
+        self.assertIn('class="cp-segs-fold"', SCRIPT)         # a file's documents wait folded under it
+        self.assertIn("function preparedBy()", SCRIPT)        # what CasePath did and when it finished, above the step
+        self.assertIn("S.justFinished = S.route.id", SCRIPT)  # said in green when it finished while the reader watched
+        self.assertIn('data-head-open="news"', SCRIPT)        # the head is one sentence; what changed opens from it
+        self.assertNotIn("linear-gradient", STYLE[STYLE.index("Craft layer"):])  # no ornament: flat colour, one accent
