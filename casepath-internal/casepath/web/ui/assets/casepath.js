@@ -2153,7 +2153,8 @@ function mountStory() {
   if (kind === "replay" && !events) { dropStory(); return; }
   // a tab's picture is the case's state as it stands; the run's picture is its events in their order
   const model = timed ? null : (TAB_STORY[kind] || (() => null))();
-  if (!timed && !model) { dropStory(); box.hidden = true; return; }
+  // a picture too crowded to read is not shown: the page's own list says it better
+  if (!timed && (!model || model.nodes.length > STORY_NODES)) { dropStory(); box.hidden = true; return; }
   // the stage lives in a layer of its own over the place the page keeps for it: a redraw of the page (every poll while
   // CasePath works) leaves it standing, so its movements are never cut or replayed
   let layer = document.getElementById("cp-story-layer");
@@ -2329,7 +2330,11 @@ function documentsStory() {
   if (!S.data.evaluation || !S.data.screen) return null;
   const docs = (S.data.items || []).filter((i) => i.kind === "document" && !i.part_of);
   if (!docs.length) return null;
-  const k = storyKit(), id = S.route.id, proc = S.data.process || {}, sc = scr(), gone = new Set(sc.missing_ids || []);
+  const every = docs.length, id = S.route.id, proc = S.data.process || {}, sc = scr(), gone = new Set(sc.missing_ids || []);
+  const rank = (i) => (gone.has(i.item_id) ? 0 : i.status === "present" ? 1 : 2);
+  docs.sort((a, b) => rank(a) - rank(b));
+  docs.length = Math.min(docs.length, 12);  // the missing and the found first; the table below holds every one
+  const k = storyKit();
   const pd = (i) => (proc.documents || []).find((d) => d.id === i.key) || {};
   const name = (i) => tr((i.label || {}).de || pd(i).title || i.key);
   const practice = (i) => i.practice || (pd(i).knowledge ? practiceNote(pd(i).knowledge) : "");
@@ -2351,16 +2356,24 @@ function documentsStory() {
     on.map((i) => { const c = (i.evidence || []).find((x) => x.file); return c ? k.edge(`file:${c.file}`, `need:${i.key}`, "cites", c.page ? `${T("p.", "S.")} ${c.page}` : "") : null; }), [...fids, ...on.map((i) => `need:${i.key}`)]);
   const missing = docs.filter((i) => gone.has(i.item_id));
   if (missing.length) k.beat(T(`Missing: ${missing.length}`, `Fehlt: ${missing.length}`), missing.map(name).join(" · "), [], [], missing.map((i) => `need:${i.key}`));
+  if (every > docs.length && k.beats.length) k.beats[k.beats.length - 1].caption.why += ` · ${every - docs.length} ${T("more in the table below", "weitere in der Tabelle unten")}`;
   return k.model([{ id: "files", title: T("In the file", "In der Akte") }, { id: "needs", title: T("The case needs", "Der Fall braucht") }, { id: "why", title: T("Why", "Warum") }], from);
 }
 // Wissen: where each rule came from (a case, a case worker's change, the first request letters of practice), and the
 // cases it was applied in since, in the order it happened: what one case taught reaching the next.
+const STORY_RULES = 8, STORY_CASES = 10, STORY_NODES = 44;  // what one picture holds and stays readable
 function knowledgeStory() {
   const v = S.knowledgeView;
   if (!v || !v.entries.length) return null;
   const k = storyKit(), happened = [], applied = {};
   const name = (e) => tr(e.content.title || e.content.question || e.content.text || "");
-  for (const e of v.entries) {
+  // a picture is read, so it holds what a reader can take in: the rules that came from a case or were applied in one,
+  // the eight that moved last, and the cases they reached last; the list below holds every rule
+  const last = (e) => [e.created_at || "", ...(e.uses || []).map((u) => u.at || "")].sort().pop();
+  const moved = v.entries.filter((e) => (e.uses || []).length || (e.origin || {}).case_id);
+  const drawn = (moved.length ? moved : v.entries).slice().sort((a, b) => String(last(b)).localeCompare(String(last(a)))).slice(0, STORY_RULES);
+  const left = v.entries.length - drawn.length;
+  for (const e of drawn) {
     happened.push({ at: e.created_at || ((e.history || [])[0] || {}).at || "", kind: "learned", e });
     for (const h of (e.history || []).filter((h) => h.version > 1 && /^refined/.test(h.change || ""))) happened.push({ at: h.at || "", kind: "refined", e, h });
     for (const u of e.uses || []) {
@@ -2373,7 +2386,7 @@ function knowledgeStory() {
   }
   happened.push(...Object.values(applied));
   happened.sort((a, b) => String(a.at).localeCompare(String(b.at)) || String(a.case || "").localeCompare(String(b.case || "")));
-  const cases = [...new Set(happened.filter((x) => x.kind === "applied").map((x) => x.case))], shown = new Set(cases.slice(-12));
+  const cases = [...new Set(happened.filter((x) => x.kind === "applied").map((x) => x.case))], shown = new Set(cases.slice(-STORY_CASES));
   const itemNode = (e) => k.node({ id: `k:${e.ids[0]}`, lane: "knowledge", kind: "knowledge", title: name(e), row: e.ids[0],
     sub: `${e.status === "active" ? `v${e.version}` : tr(word(e.status))} · ${T(`used ${e.stats.uses} times`, `${e.stats.uses}× verwendet`)}` });
   let i = 0;
@@ -2399,7 +2412,9 @@ function knowledgeStory() {
       k.beat(`${T("Applied in", "Angewendet in")} ${clip(v.caseName(x.case), 60)}`, `${group.length} ${T(group.length === 1 ? "rule" : "rules", group.length === 1 ? "Regel" : "Regeln")} · ${said}`, [to], group.map((g) => k.edge(itemNode(g.e), to, "learned")), [to, ...group.map((g) => `k:${g.e.ids[0]}`)]);
     }
   }
-  if (cases.length > shown.size && k.beats.length) k.beats[k.beats.length - 1].caption.why += ` · ${cases.length - shown.size} ${T("earlier cases not drawn", "frühere Fälle nicht gezeichnet")}`;
+  const rest = [cases.length > shown.size ? `${cases.length - shown.size} ${T("earlier cases not drawn", "frühere Fälle nicht gezeichnet")}` : "",
+    left > 0 ? `${left} ${T(left === 1 ? "more rule in the list below" : "more rules in the list below", left === 1 ? "weitere Regel in der Liste unten" : "weitere Regeln in der Liste unten")}` : ""].filter(Boolean).join(" · ");
+  if (rest && k.beats.length) k.beats[k.beats.length - 1].caption.why += ` · ${rest}`;
   return k.model([{ id: "from", title: T("Learned from", "Gelernt aus") }, { id: "knowledge", title: T("Knowledge", "Wissen") }, { id: "to", title: T("Applied in", "Angewendet in") }], Math.max(0, k.beats.length - 3));
 }
 // What CasePath did to get here, as the steps of its work with what each one gave, each leading to where it can be

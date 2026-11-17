@@ -304,6 +304,10 @@ class CraftTests(unittest.TestCase):
         self.assertIn(".cp-morph #case-title { view-transition-name: cp-case; }", STYLE)
         # Wissen: where each rule came from and the cases it was applied in since, one moment per case
         self.assertIn('tabPicture("knowledge", 380)', SCRIPT)
+        # a picture holds what a reader can take in: the rules that moved last and the cases they reached; never a crowd
+        self.assertIn("const STORY_RULES = 8, STORY_CASES = 10, STORY_NODES = 44;", SCRIPT)
+        self.assertIn(".slice(0, STORY_RULES);", SCRIPT)
+        self.assertIn("if (!timed && (!model || model.nodes.length > STORY_NODES)) { dropStory(); box.hidden = true; return; }", SCRIPT)
         self.assertIn('group.map((g) => k.edge(itemNode(g.e), to, "learned"))', SCRIPT)
         # the list: a case whose status changed since it was last on screen says what it was before
         self.assertIn("if (seen[c.id] && seen[c.id].text !== now.text) moved[c.id] = seen[c.id];", SCRIPT)
