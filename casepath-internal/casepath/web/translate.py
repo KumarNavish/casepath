@@ -11,9 +11,11 @@ A translation comes from, in this order:
    areas' catalogues and the examples. Numbers and dates are placeholders ({0}, {1} …), so one entry serves every count
    and every day;
 2. what this deployment's model translated before (the store's table «translations», deleted with its case);
-3. the model, where the deployment allows it (CASEPATH_TRANSLATE=model): in the background, a bounded batch at a time,
-   inside a daily token budget (CASEPATH_TRANSLATE_TOKENS). The answer says how many texts are still on their way
-   ("_tr_wait"); the page asks again and the text changes when it is there.
+3. the model, where the deployment allows it (CASEPATH_TRANSLATE=model), and only for what a reader is shown: the page
+   sends the texts it displayed untranslated (POST /api/translate), they are translated in the background, a bounded
+   batch at a time, inside a daily token budget (CASEPATH_TRANSLATE_TOKENS); the answer says how many are still on
+   their way ("_tr_wait"), the page asks again and the text changes when it is there. An API answer by itself never
+   starts a translation: a case holds far more text than a page shows.
 
 Without the model (the default, and every preview) a text the memory does not know stays in its original language.
 """
@@ -186,7 +188,9 @@ class Translator:
 
     def ask(self, lines, language, *, case_id=None, token=None):
         """Queues what the model should translate; returns how many texts are on their way (0: none will come)."""
-        if self.mode != "model" or self.model_factory is None or self.store is None or self.spent() >= self.token_budget:
+        if self.mode != "model" or self.model_factory is None or self.store is None or not lines:
+            return 0
+        if self.spent() + self.estimate(lines[:BATCH_TEXTS]) > self.token_budget:  # the day's ceiling: nothing more is on its way
             return 0
         with self._lock:
             for line in lines:
@@ -196,6 +200,11 @@ class Translator:
                 self._worker = threading.Thread(target=self._work, args=(token,), name="casepath-translate", daemon=True)
                 self._worker.start()
         return waiting
+
+    @staticmethod
+    def estimate(lines):
+        """About what one call for these lines costs in tokens: the lines in, about as much out, the instructions."""
+        return 400 + 2 * min(sum(len(line) for line in lines), BATCH_CHARS) // 3
 
     def _work(self, token):
         try:
@@ -216,7 +225,9 @@ class Translator:
                         continue
                     batch.append((line, case_id))
                     size += len(line)
-            if not batch or self.spent() >= self.token_budget:
+            # a batch is only sent while it fits the day's budget (its cost estimated from its length: the lines in,
+            # about as much out, the instructions), so the ceiling is not passed by the call that reaches it
+            if not batch or self.spent() + self.estimate([line for line, _ in batch]) > self.token_budget:
                 with self._lock:
                     self._queue.clear()
                 return

@@ -436,10 +436,10 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             payload = None
         if isinstance(payload, dict) and "_tr" not in payload:
             row = case_of_path(request.url.path)
-            # a file's pages are translated when the reader asks for a page (POST /api/translate), never a whole file at once
-            pages = request.url.path.endswith("/pages")
+            # what is known is given at once; the model translates only what the page then asks for (POST /api/translate:
+            # the texts it showed untranslated), never a whole answer or a whole file
             await run_in_threadpool(translator.annotate, payload, language, case_id=row["id"] if row else None,
-                                    token=request.headers.get("x-forwarded-access-token"), model=not pages)
+                                    token=request.headers.get("x-forwarded-access-token"), model=False)
             body = json.dumps(payload, ensure_ascii=False).encode()
         return Response(body, status_code=response.status_code, headers=headers, media_type="application/json")
 

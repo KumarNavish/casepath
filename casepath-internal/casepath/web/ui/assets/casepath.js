@@ -53,7 +53,36 @@ function tr(value) {
   if (hit !== undefined) { if (!TR.has(value)) TR.set(value, hit); return hit; }
   TR_NONE.add(value);
   if (TR_MISS && /[A-Za-zÄÖÜäöüß]{3}/.test(value)) TR_MISS.add(value.trim());
+  wantTranslation(value.trim());
   return value;
+}
+// Where the deployment lets the model translate: what the page showed untranslated is asked for, a little later and
+// all at once, and the page is drawn again when it is there. Only what is shown is ever asked, each text once.
+const TR_ASK = new Set(), TR_ASKED = new Set();
+function wantTranslation(text) {
+  if (S.translateMode !== "model" || text.length < 3 || text.length > 700 || TR_ASKED.has(text) || !/[A-Za-zÄÖÜäöüß]{3}/.test(text)) return;
+  if (/^[\w.+-]+@[\w.-]+$|^(case|file|run)_[0-9a-f]+$|\.(eml|msg|pdf|docx?|txt|png|jpe?g)$/i.test(text)) return;  // an address, an id, a file name
+  TR_ASK.add(text);
+  clearTimeout(S.trAskTimer);
+  S.trAskTimer = setTimeout(askTranslations, 500);
+}
+async function askTranslations(again, tries = 0) {
+  if (!reading() || S.translateMode !== "model") { TR_ASK.clear(); return; }
+  const texts = again || [...TR_ASK].slice(0, 300);
+  if (!again) for (const t of texts) { TR_ASK.delete(t); TR_ASKED.add(t); }
+  if (!texts.length) return;
+  const before = TR.size, where = `${S.route.view}:${S.route.id || ""}:${LANG}`;
+  let res;
+  try { res = await api("/api/translate", { method: "POST", body: JSON.stringify({ lang: LANG, texts, ...(S.route.view === "case" ? { case_id: S.route.id } : {}) }) }); }
+  catch (error) { S.trWait = 0; return; }
+  S.trWait = res._tr_wait || 0;
+  if (where !== `${S.route.view}:${S.route.id || ""}:${LANG}`) return;  // the reader went on: what came is kept for the next look
+  if (TR.size !== before || !S.trWait) {  // something arrived, or all of it: the page says it in the reader's language now
+    const typing = document.activeElement && document.activeElement.closest && document.activeElement.closest("input, textarea, [contenteditable='true']");
+    if (!typing) { if (S.route.view === "case") { if (S.data) await renderCase(); } else if (S.route.view === "cases") await renderCases(true); else await route(); } else renderTop();
+  }
+  if (S.trWait && tries < 40) setTimeout(() => askTranslations(texts.filter((t) => !TR.has(t)), tries + 1), 3000);
+  if (TR_ASK.size) { clearTimeout(S.trAskTimer); S.trAskTimer = setTimeout(askTranslations, 500); }
 }
 function learn(body) {
   if (!body || typeof body !== "object" || !body._tr) return;
@@ -1767,6 +1796,18 @@ function runLine(st) {
     const verb = { reader: T("Reading", "Liest"), claim_reader: T("Reading", "Liest"), document_finder: T("Looking for documents", "Sucht Unterlagen"),
       source_checker: T("Checking the sources", "Prüft die Belege"), result_checker: T("Checking the result", "Prüft das Ergebnis") }[last.agent] || T("Starting", "Beginnt");
     const time = left ? T(`about ${left} s to go`, `noch etwa ${left} s`) : over ? T("taking longer than usual", "dauert länger als üblich") : "";
+    if (window.CasePathStory && tabOverviewLive()) {
+      // the work as a picture: the files, what is found in them with the passage it rests on, the process, in the
+      // order CasePath does it; above it what it does now, and the reader's own stop
+      return `<section class="cp-runline cp-work cp-work-story" aria-live="polite" data-work>
+        <div class="cp-work-head ${S.finishing ? "done" : ""}"><div><p class="cp-eyebrow" data-work-verb>${S.finishing ? "CasePath" : stopping ? T("Stopping", "Hält an") : esc(verb)}</p>
+            <p class="cp-runnow">${S.finishing ? `<span class="cp-work-done">${icon("tick")}</span>${run.kind === "update" ? T("Updated", "Aktualisiert") : T("Prepared", "Fertig vorbereitet")}` : stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …") : where}</p></div>
+          <ol class="cp-stages">${cells}</ol>
+          <p class="cp-work-foot">${time ? `<span class="cp-muted" data-work-time>${time}</span>` : ""}${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
+            <button class="cp-button primary" id="stop-run" ${stopping ? "disabled" : ""}>${T("Stop", "Anhalten")}</button></p></div>
+        ${arrivalNow(run)}${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${raw(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}
+        <div class="cp-story" id="story" data-story="live" aria-label="${T("CasePath at work", "CasePath arbeitet")}"></div></section>`;
+    }
     return `<section class="cp-runline cp-work" aria-live="polite" data-work>
       <svg class="cp-work-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M27 50 C 30 50, 31 50, 34 50"/><path d="M66 50 C 69 50, 69 28, 73 28"/><path d="M66 50 C 69 50, 69 74, 73 74"/></svg>
       <div class="cp-work-card cp-work-steps${enter("work:steps")}"><p class="cp-eyebrow">${T("CasePath at work", "CasePath arbeitet")}</p><ol class="cp-stages">${cells}</ol></div>
@@ -1976,8 +2017,138 @@ function preparedBy() {
   const read = `${files.length} ${T(files.length === 1 ? "file" : "files", files.length === 1 ? "Datei" : "Dateien")}${pages > 1 ? `, ${pages} ${T("pages", "Seiten")}` : ""} ${T("read", "gelesen")}`;
   const lasted = took >= 1 && took < 180 ? ` · ${Math.round(took)} ${T("min", "Min")}` : "";
   const fresh = S.justFinished === S.route.id;
-  const open = fresh || S.trailOpen;
+  const open = fresh || S.trailOpen || S.storyOpen === S.route.id;
   return `<p class="cp-by ${fresh ? "fresh" : ""}" data-prepared-by title="${esc(`${dateText(run.finished_at).slice(0, 10)}${clock ? `, ${clock}` : ""}`)}">${fresh ? icon("tick") : ""}<button type="button" class="cp-by-open" id="trail-open" aria-expanded="${open ? "true" : "false"}" title="${T("What CasePath did for this step", "Was CasePath für diesen Schritt getan hat")}">CasePath · ${run.kind === "update" ? T("updated", "aktualisiert") : T("prepared", "vorbereitet")} ${when} · ${read}${lasted}${icon("right")}</button></p>${open ? workTrail(fresh) : ""}`;
+}
+// ---------- the story: the case as a picture that builds itself (assets/story.js draws it) ----------
+// The model is built from the case's real state: its files, the run's events in their order (a fact located with its
+// passage, a document matched, the process placed, the history recorded), the needs the area learned from practice,
+// the letter and the decisions left. Each beat says what happened and on what it rests. Live: the events so far.
+function storyModel(events, live) {
+  const d = S.data, id = S.route.id, items = d.items || [], proc = d.process || {};
+  const nodes = [], edges = [], beats = [], have = new Set(), linked = new Set();
+  const node = (n) => { if (!have.has(n.id)) { have.add(n.id); nodes.push(n); } return n.id; };
+  const edge = (from, to, kind, label) => { const k = `${from}>${to}`; if (have.has(from) && have.has(to) && !linked.has(k)) { linked.add(k); edges.push({ from, to, kind, label }); return [from, to]; } return null; };
+  const beat = (what, why, reveal, drawn, agent) => beats.push({ caption: { what, why: why || "" }, reveal: reveal.filter(Boolean), edges: (drawn || []).filter(Boolean), focus: reveal.filter(Boolean), agent: agent ? AGENT_TITLE[agent] || "" : "" });
+  const label = (i) => tr(T((i.label || {}).en, (i.label || {}).de) || i.key || "");
+  const page = (c) => (c && c.page ? `${T("p.", "S.")} ${c.page}` : "");
+  const quote = (c) => (c && c.quote ? `«${clip(c.quote, 90)}»${c.page ? ` · ${page(c)}` : ""}` : "");
+  const files = d.files || [];
+  for (const f of files) node({ id: `file:${f.id}`, lane: "sources", kind: "file", title: f.name, sub: (f.extraction || {}).pages > 1 ? `${((f.extraction || {}).kept_pages || []).length || f.extraction.pages} ${T("pages", "Seiten")}` : dateText(f.created_at), href: `#/case/${id}/claim_reader` });
+  const pages = files.reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 0), 0);
+  beat(T(files.length === 1 ? "The file arrived" : "The files arrived", files.length === 1 ? "Die Akte ist da" : "Die Dateien sind da"),
+    `${files.length} ${T(files.length === 1 ? "file" : "files", files.length === 1 ? "Datei" : "Dateien")}${pages > 1 ? `, ${pages} ${T("pages", "Seiten")}` : ""}`, files.map((f) => `file:${f.id}`), [], "claim_reader");
+  const factItems = Object.fromEntries(items.filter((i) => i.kind === "fact").map((i) => [i.key, i]));
+  const docItems = Object.fromEntries(items.filter((i) => i.kind === "document" && !i.part_of).map((i) => [i.key, i]));
+  const steps = Object.fromEntries((proc.steps || []).map((s) => [s.id, s]));
+  let shownFacts = 0, lastStep = null;
+  for (const e of events || []) {
+    if (e.kind === "routing.decided" && (e.workflow || e.title)) {
+      beat(T("Legal area recognised", "Rechtsgebiet erkannt"), tr(wfShort(e.workflow, e.title || "")), [], [], e.agent);
+    } else if (e.kind === "record.recorded" && e.entries) {
+      const nid = node({ id: "history", lane: "findings", kind: "entry", title: T("History of the case", "Verlauf des Falls"), sub: `${e.entries} ${T(e.entries === 1 ? "entry" : "entries", e.entries === 1 ? "Eintrag" : "Einträge")}`, href: `#/case/${id}/history` });
+      beat(T("The history is recorded", "Der Verlauf ist festgehalten"), `${e.entries} ${T("documents and entries in order", "Dokumente und Einträge in ihrer Reihenfolge")}`, [nid], [e.cite && edge(`file:${e.cite.file}`, nid, "cites")], e.agent);
+    } else if (e.kind === "fact.located" && e.fact && shownFacts < 16 && !have.has(`fact:${e.fact}`)) {
+      const item = factItems[e.fact], value = e.value ?? (item || {}).value;
+      if (value === null || value === undefined || value === "") continue;
+      shownFacts += 1;
+      const nid = node({ id: `fact:${e.fact}`, lane: "findings", kind: "fact", title: item ? label(item) : tr(questionOf(e.fact)), sub: tr(String(value === true ? T("yes", "ja") : value === false ? T("no", "nein") : value)), state: "done", href: `#/case/${id}/claim_reader` });
+      beat(`${T("Found", "Gefunden")}: ${clip(item ? label(item) : tr(questionOf(e.fact)), 70)}`, quote(e.cite), [nid], [e.cite && edge(`file:${e.cite.file}`, nid, "cites", page(e.cite))], e.agent);
+    } else if (e.kind === "document.recorded" && e.document && !have.has(`need:${e.document}`)) {
+      const item = docItems[e.document], on = e.status === "present";
+      const nid = node({ id: `need:${e.document}`, lane: "findings", kind: "need", title: item ? label(item) : tr(needOf(e.document)), sub: tr((item || {}).practice || ""), state: on ? "present" : "missing", href: `#/case/${id}/document_finder` });
+      beat(`${on ? T("On file", "Liegt vor") : T("Missing", "Fehlt")}: ${clip(item ? label(item) : tr(needOf(e.document)), 70)}`, on ? quote(e.cite) : T("not found in the files", "in den Dateien nicht gefunden"), [nid], [on && e.cite && edge(`file:${e.cite.file}`, nid, "cites", page(e.cite))], e.agent);
+    } else if (e.kind === "process.state" && (e.path || []).length) {
+      const ids = e.path.filter((p) => steps[p.step]).map((p) => node({ id: `step:${p.step}`, lane: "process", kind: "step", title: tr(steps[p.step].title), state: p.state === "passed" ? "done" : p.state === "current" ? "now" : "open", href: `#/case/${id}/process_builder` }));
+      for (const p of e.path) { const n = nodes.find((x) => x.id === `step:${p.step}`); if (n) n.state = p.state === "passed" ? "done" : p.state === "current" ? "now" : "open"; }
+      const now = e.path.find((p) => p.state === "current"), at = now && steps[now.step] ? `step:${now.step}` : ids[ids.length - 1];
+      if (at && at !== lastStep) {
+        const drawn = ids.slice(1).map((to, i) => edge(ids[i], to, "leads"));
+        beat(`${T("Where the case stands", "Wo der Fall steht")}: ${now && steps[now.step] ? tr(steps[now.step].title) : ""}`, T("placed on the area's process", "im Ablauf des Rechtsgebiets eingeordnet"), ids, drawn, e.agent);
+        lastStep = at;
+      }
+    }
+  }
+  if (!live) {
+    // what the run recorded beyond its events' first sixteen findings, and what the case needs that no event named
+    const more = items.filter((i) => i.kind === "fact" && i.value !== null && i.value !== undefined && i.value !== "" && !have.has(`fact:${i.key}`));
+    const kept = more.filter((i) => (i.evidence || []).some((x) => x.file)).slice(0, Math.max(0, 16 - shownFacts));
+    const ids = kept.map((i) => node({ id: `fact:${i.key}`, lane: "findings", kind: "fact", title: label(i), sub: tr(String(i.value)), state: "done", href: `#/case/${id}/claim_reader` }));
+    if (ids.length) beat(T("Further facts with their passages", "Weitere Angaben mit ihren Stellen"), `${ids.length} ${T("more", "weitere")}${more.length > kept.length ? ` · ${more.length - kept.length} ${T("without a passage of their own", "ohne eigene Stelle")}` : ""}`, ids,
+      kept.map((i) => { const c = (i.evidence || []).find((x) => x.file); return edge(`file:${c.file}`, `fact:${i.key}`, "cites", page(c)); }), "source_checker");
+    const needs = Object.values(docItems).filter((i) => !have.has(`need:${i.key}`));
+    const nids = needs.map((i) => node({ id: `need:${i.key}`, lane: "findings", kind: "need", title: label(i), sub: tr(i.practice || ""), state: i.status === "present" ? "present" : "missing", href: `#/case/${id}/document_finder` }));
+    if (nids.length) beat(T("What the case needs", "Was der Fall braucht"), `${needs.filter((i) => i.status === "present").length} ${T("of", "von")} ${needs.length} ${T("on file", "liegen vor")}`, nids,
+      needs.map((i) => { const c = (i.evidence || []).find((x) => x.file); return c ? edge(`file:${c.file}`, `need:${i.key}`, "cites", page(c)) : null; }), "document_finder");
+    const learned = Object.values(docItems).filter((i) => i.practice && have.has(`need:${i.key}`));
+    if (learned.length) {
+      const kid = node({ id: "knowledge", lane: "process", kind: "knowledge", title: T("Knowledge", "Wissen"), sub: T("from closed cases", "aus abgeschlossenen Fällen"), href: "#/knowledge" });
+      beat(T("Asked for because practice shows it", "Verlangt, weil die Praxis es zeigt"), tr(learned[0].practice), [kid], learned.map((i) => edge(kid, `need:${i.key}`, "learned")), "process_builder");
+    }
+    const draft = d.draft || {}, st = completionOf();
+    if (draft.text) {
+      const lid = node({ id: "letter", lane: "outcome", kind: "letter", title: tr(draft.title || T("Letter", "Brief")), sub: tr((scr().title || "")), state: "now", lines: Math.min(14, draft.text.split("\n").filter((l) => l.trim()).length), href: `#/case/${id}/overview` });
+      beat(`${T("Prepared", "Vorbereitet")}: ${tr(scr().title || draft.title || "")}`, tr(String((scr().weil || "")).replace(/^Weil:?\s*/i, "")), [lid], [lastStep && edge(lastStep, lid, "leads")], "result_checker");
+      const taken = (st.decided || []).map((x) => node({ id: `decision:${x.key}`, lane: "outcome", kind: "decision", title: tr(x.word), sub: tr(x.value), state: "done", href: `#/case/${id}/overview` }));
+      const open = (st.decisions || []).map((w) => node({ id: `decision:${w}`, lane: "outcome", kind: "decision", title: tr(w), state: "open", href: `#/case/${id}/overview` }));
+      if (taken.length + open.length) beat(open.length ? T("Left for you to decide", "Für Sie zu entscheiden") : T("Decided", "Entschieden"), open.map((w) => tr(w)).join(" · "), taken.concat(open), taken.concat(open).map((x) => edge(lid, x, "branch")), "lead");
+    }
+  }
+  return { lanes: [{ id: "sources", title: T("File", "Akte") }, { id: "findings", title: T("Found", "Gefunden") }, { id: "process", title: T("Process", "Prozess") }, { id: "outcome", title: T("Result", "Ergebnis") }],
+    nodes, edges, beats, live: Boolean(live),
+    labels: { play: T("Play", "Abspielen"), pause: T("Pause", "Anhalten"), replay: T("Again", "Nochmals"), step: T("Step", "Schritt"), of: T("of", "von"), close: T("Close", "Schliessen"), whole: T("Whole picture", "Ganzes Bild") } };
+}
+// The stage is mounted into its place after a render. While CasePath works the same stage lives on across the polls
+// (it is updated, never redrawn), so nothing replays; a replay opened once is shown at its end when the page redraws.
+const tabOverviewLive = () => S.route.view === "case" && (S.route.tab || "overview") === "overview";
+function mountStory() {
+  const box = document.getElementById("story");
+  if (!box || !window.CasePathStory) { dropStory(); return; }
+  const live = box.dataset.story === "live", run = live ? (S.data.run || {}).id : (S.data.prepared_run || {}).id;
+  const events = live ? S.events : (S.storyEvents || {})[run];
+  if (!live && !events) { dropStory(); return; }
+  // the stage lives in a layer of its own over the place the page keeps for it: a redraw of the page (every poll while
+  // CasePath works) leaves it standing, so its movements are never cut or replayed
+  let layer = document.getElementById("cp-story-layer");
+  if (!layer) { layer = document.createElement("div"); layer.id = "cp-story-layer"; document.body.appendChild(layer); }
+  const key = `${S.route.id}:${run}:${live}:${LANG}`, seen = (S.storySeen = S.storySeen || {});
+  if (!S.story || S.story.key !== key) {
+    dropStory(true);
+    const host = document.createElement("div");
+    host.className = "cp-story-host";
+    layer.appendChild(host);
+    const ctrl = window.CasePathStory.mount(host, storyModel(events, live), { autoplay: !live && !seen[run], start: live || seen[run] ? "last" : "first", height: live ? 360 : 420,
+      onOpen: (n) => { if (n && n.href) location.hash = n.href; } });
+    seen[run] = true;
+    S.story = { ctrl, key, live, run, n: (events || []).length };
+  } else if (live && S.story.n !== events.length) {
+    S.story.n = events.length;
+    S.story.ctrl.update(storyModel(events, true));
+  }
+  placeStory();
+}
+function placeStory() {
+  const box = document.getElementById("story"), layer = document.getElementById("cp-story-layer");
+  if (!box || !layer || !layer.firstElementChild) return;
+  const h = layer.firstElementChild.offsetHeight;
+  if (h && box.style.height !== `${h}px`) box.style.height = `${h}px`;
+  const r = box.getBoundingClientRect();
+  Object.assign(layer.style, { display: "block", top: `${r.top + window.scrollY}px`, left: `${r.left + window.scrollX}px`, width: `${r.width}px` });
+}
+function dropStory(keepLayer) {
+  if (S.story) { try { S.story.ctrl.destroy(); } catch (error) { /* gone with its page */ } S.story = null; }
+  const layer = document.getElementById("cp-story-layer");
+  if (layer) { layer.innerHTML = ""; if (!keepLayer) layer.style.display = "none"; }
+}
+window.addEventListener("resize", placeStory);
+if (window.ResizeObserver) new ResizeObserver(placeStory).observe(document.getElementById("app"));
+async function openStory() {
+  const run = (S.data.prepared_run || {}).id;
+  S.storyOpen = S.storyOpen === S.route.id ? null : S.route.id;
+  if (S.storyOpen && run && !(S.storyEvents || {})[run]) {
+    try { (S.storyEvents = S.storyEvents || {})[run] = (await api(`/api/runs/${run}`)).events || []; } catch (error) { S.storyEvents[run] = []; }
+  }
+  renderCase();
 }
 // What CasePath did to get here, as the steps of its work with what each one gave, each leading to where it can be
 // checked: said once, ticked in turn, when it finishes while the reader watches; later one press on the line above.
@@ -1998,8 +2169,10 @@ function workTrail(fresh) {
     draft.text ? [null, T("Letter written", "Brief geschrieben")] : null,
     dec ? [null, `<b>${dec}</b> ${T(plural(dec, "decision", "decisions"), plural(dec, "Entscheid", "Entscheide"))} ${T("for you", "für Sie")}`] : null,
   ].filter(Boolean);
+  const watch = window.CasePathStory ? `<li class="cp-trail-watch"><button type="button" id="story-open" aria-expanded="${S.storyOpen === id}">${icon("right")}${S.storyOpen === id ? T("Close the picture", "Bild schliessen") : T("Watch how it was prepared", "Ansehen, wie es entstand")}</button></li>` : "";
   return `<ol class="cp-trail${fresh ? enter(`trail:${(S.data.prepared_run || {}).id}`) : ""}" data-trail aria-label="${T("What CasePath did", "Was CasePath getan hat")}">${steps.map(([href, text]) =>
-    `<li><span class="cp-trail-tick">${icon("tick")}</span>${href ? `<a href="${href}">${text}</a>` : `<span>${text}</span>`}</li>`).join("")}</ol>`;
+    `<li><span class="cp-trail-tick">${icon("tick")}</span>${href ? `<a href="${href}">${text}</a>` : `<span>${text}</span>`}</li>`).join("")}${watch}</ol>${
+    S.storyOpen === id && window.CasePathStory ? `<div class="cp-story" id="story" data-story="replay" aria-label="${T("How CasePath prepared this step", "Wie CasePath diesen Schritt vorbereitet hat")}"></div>` : ""}`;
 }
 const decisionsOpen = () => (completionOf().decisions || []).length;
 // The action bar answers a change of state (approved, sent, at rest) with a short movement, once, never on a mere re-render.
@@ -2861,6 +3034,7 @@ function bindOverview() {
     await api(`/api/cases/${S.route.id}/entries/${b.dataset.entryRemove}`, { method: "DELETE" }).catch((error) => { S.message = error.message; });
     await loadCase();
   });
+  on("#story-open", "click", () => { openStory(); });
   on("#other-reference-open", "click", (b) => { S.file = b.dataset.file; location.hash = `#/case/${S.route.id}/claim_reader`; });
   on("#trail-open", "click", () => { S.trailOpen = !S.trailOpen; if (S.justFinished === S.route.id) { S.justFinished = null; S.trailOpen = false; } renderCase(); });
   on("#letter-original", "click", () => { S.letterOriginal = true; renderCase(); });
@@ -3045,8 +3219,10 @@ async function renderCase() {
   const typing = [...document.querySelectorAll("#app input[id], #app textarea[id]")].filter((el) => el.value && !["file", "checkbox", "radio"].includes(el.type))
     .map((el) => ({ id: el.id, value: el.value, focus: el === document.activeElement, start: el.selectionStart, end: el.selectionEnd }));
   const tabIn = S.tabIn && !liveView && S.data; if (S.data) S.tabIn = false;
+
   $("#app").innerHTML = `${renderRail()}<main class="cp-main${tabIn ? " cp-tab-in" : ""}">${main}</main>`;
   glide();
+  mountStory();
   watchRun(S.data.run, S.data.case);
   showNotices();
   if (MEASURE.on && MEASURE.caseId !== S.route.id) measureTouch();  // the case is on the screen: its measured span begins
@@ -3385,6 +3561,7 @@ async function route() {
   S.route = next;
   if (moved) window.scrollTo(0, 0);  // what is opened is read from its top
   renderTop();
+  if (next.view !== "case") dropStory();
   placeAttention(false);
   try {
     if (next.view === "case") { if (S.data) await renderCase(); else await loadCase(); }

@@ -1531,3 +1531,17 @@ mark.cp-hit.chosen, mark#live-hit { animation: cp-mark-pulse .9s var(--ease); }
 @media (max-width: 1100px) { .cp-list-bar { flex-wrap: wrap; } }
 /* the pages for reviewers stand in the same column as the list */
 .cp-main.cp-evaluation, .cp-main.cp-review, .cp-main.cp-knowledge { max-width: 1180px; margin: 0 auto; padding-top: 34px; }
+
+/* ---------- The story: the case as a picture that builds itself (assets/story.js) ---------- */
+.cp-story { min-height: 320px; margin: 4px 0 18px; }
+#cp-story-layer { position: absolute; z-index: 1; display: none; }
+.cp-story-host { width: 100%; }
+.cp-work-story { display: block; padding: 0; background: none; border: 0; }
+.cp-work-story .cp-work-head { display: flex; align-items: center; gap: 20px 28px; flex-wrap: wrap; padding: 4px 2px 14px; }
+.cp-work-story .cp-work-head > div:first-child { flex: 1 1 320px; min-width: 0; }
+.cp-work-story .cp-runnow { font-size: 19px; font-weight: 500; letter-spacing: -.01em; margin: 2px 0 0; }
+.cp-work-story .cp-work-foot { display: flex; align-items: center; gap: 14px; margin: 0; }
+.cp-work-story .cp-stages { flex: none; }
+.cp-trail-watch button { display: inline-flex; align-items: center; gap: 6px; color: var(--crimson) !important; font-weight: 500 !important; }
+.cp-trail-watch .cp-icon { width: 13px; height: 13px; }
+.cp-trail li.cp-trail-watch { border-color: var(--crimson-track, #ecd3da); }

@@ -122,7 +122,7 @@ class ModelTests(unittest.TestCase):
         self.assertIsNone(self.store.translation("en", translate.sha("Die Kundschaft hat geantwortet")))
 
     def test_the_daily_budget_stops_the_model_and_the_memory_alone_never_calls_it(self):
-        t = self.translator(token_budget=100)
+        t = self.translator(token_budget=500)  # a batch is estimated at about 400 tokens and more: one fits, a second would pass the day's ceiling
         t.annotate({"summary": "Erster Satz der Akte"}, "en")
         self.wait(t)
         out = t.annotate({"summary": "Zweiter Satz der Akte"}, "en")  # the budget is spent: nothing is queued
@@ -166,6 +166,35 @@ class RealModelTests(unittest.TestCase):
         rows, tokens = t.translate(lines, "en", model)
         self.assertEqual(rows, ["The customer has replied", "Dear Ms Exempel"])
         self.assertGreater(tokens, 0)
+
+
+class ShownOnlyTests(unittest.TestCase):
+    """The model translates what a page shows and asks for, never a whole answer."""
+
+    def test_an_answer_never_starts_a_translation_and_the_pages_request_does(self):
+        model = FakeModel()
+        folder = tempfile.mkdtemp()
+        app = create_app(load_settings({"CASEPATH_DATA_DIR": folder, "CASEPATH_DEV_USER": "t", "CASEPATH_TRANSLATE": "model"}), model_factory=lambda *a: model)
+        client = TestClient(app)
+        cid = client.post("/api/cases", json={"title": "Ein Fall, den das Gedächtnis nicht kennt"}).json()["id"]
+        got = client.get(f"/api/cases/{cid}", headers={"x-casepath-lang": "en"}).json()
+        self.assertNotIn("_tr_wait", got)
+        self.assertEqual(model.calls, [])  # reading a case costs nothing
+        asked = client.post("/api/translate", json={"lang": "en", "texts": ["Ein Fall, den das Gedächtnis nicht kennt"], "case_id": cid}).json()
+        self.assertEqual(asked["_tr_wait"], 1)
+        for _ in range(100):
+            again = client.post("/api/translate", json={"lang": "en", "texts": ["Ein Fall, den das Gedächtnis nicht kennt"], "case_id": cid}).json()
+            if again["_tr"]:
+                break
+            time.sleep(0.02)
+        self.assertEqual(again["_tr"], {"Ein Fall, den das Gedächtnis nicht kennt": "EN:Ein Fall, den das Gedächtnis nicht kennt"})
+        self.assertEqual(model.calls, [["Ein Fall, den das Gedächtnis nicht kennt"]])
+        self.assertEqual(client.get("/api/health").json()["translate"]["spent_today"], 100)
+
+    def test_the_page_asks_for_what_it_showed_untranslated_each_text_once(self):
+        self.assertIn("function wantTranslation(text)", SCRIPT)
+        self.assertIn('if (S.translateMode !== "model" || text.length < 3 || text.length > 700 || TR_ASKED.has(text)', SCRIPT)
+        self.assertIn('api("/api/translate", { method: "POST"', SCRIPT)
 
 
 class ApiTests(unittest.TestCase):
