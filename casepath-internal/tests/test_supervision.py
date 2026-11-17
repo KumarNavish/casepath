@@ -116,6 +116,10 @@ class CorrectionTests(Gate):
         self.assertIsNone(made["knowledge"])
         view = self.client.get(f"/api/cases/{case['id']}").json()
         self.assertIn("– Wohnungsabnahmeprotokoll", view["draft"]["text"])
+        # what the change moved is said as the line it added, and the log names the document, not the step it was added at
+        letter = next(c for c in made["consequences"]["changes"] if c["what"] == "Brieftext")
+        self.assertEqual((letter["before"], letter["after"]), ([], ["– Wohnungsabnahmeprotokoll"]))
+        self.assertEqual([r["what"] for r in view["verlauf"] if r["kind"] == "gesture"][-1], "Unterlage verlangt: Wohnungsabnahmeprotokoll")
         self.assertEqual([k for k in self.store.list_knowledge() if (k.get("origin") or {}).get("kind") == "case_edit"], [])
 
     def test_said_in_general_afterwards_it_is_proposed_once_and_changes_no_other_case(self):

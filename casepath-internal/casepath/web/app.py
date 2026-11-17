@@ -1727,7 +1727,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
 
     def _consequences(before, after):
         """Each part of the package the correction changed, before and after: lists by what left and what came, the
-        letter's text and the case note by the paragraphs and sentences that changed."""
+        letter's text and the case note by the lines and sentences that changed."""
         out = []
         for key in ("Schritt", "Brief", "Empfänger", "Unterlagen", "Offen", "Wiedervorlage", "Status", "Freigabe"):
             b, a = before.get(key), after.get(key)
@@ -1738,14 +1738,17 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
             else:
                 out.append({"what": key, "before": b, "after": a})
         other_letter = any(c["what"] == "Brief" for c in out)  # another letter altogether: it stands in the card, not as a diff
-        for key, what, split in (("text", "Brieftext", "\n\n"), ("note", "Aktennotiz", ". ")):
-            b, a = [x.strip() for x in before[key].split(split) if x.strip()], [x.strip() for x in after[key].split(split) if x.strip()]
+        # the letter by its lines (a document added to its list is that one line, not the whole paragraph twice)
+        # (the note by its clauses, so one more document in a long sentence is that document)
+        for key, what, split, most in (("text", "Brieftext", r"\n", 10), ("note", "Aktennotiz", r"(?<=[.;]) |, ", 6)):
+            b, a = [x.strip() for x in re.split(split, before[key]) if x.strip()], [x.strip() for x in re.split(split, after[key]) if x.strip()]
             if what == "Brieftext" and other_letter:
                 continue
             if b != a:
-                gone, came = [x for x in b if x not in a][:3], [x for x in a if x not in b][:3]
+                gone, came = [x for x in b if x not in a][:most], [x for x in a if x not in b][:most]
                 shown = {y for c in out for side in (c["before"], c["after"]) for y in (side if isinstance(side, list) else [side]) if y}
-                said = lambda x: any(y in x or x in y for y in shown if isinstance(y, str))
+                bare = lambda t: str(t).lstrip("– ").rstrip(".;:")
+                said = lambda x: any(bare(y) in bare(x) or bare(x) in bare(y) for y in shown if isinstance(y, str))
                 same = what == "Aktennotiz" and all(said(x) for x in gone + came)  # the note says what is shown above: so marked
                 out.append({"what": what, "before": [] if same else gone, "after": [] if same else came, **({"same": True} if same else {})})
         return out

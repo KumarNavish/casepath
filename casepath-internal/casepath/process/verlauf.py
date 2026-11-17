@@ -97,6 +97,12 @@ def gesture(e, items, process, edits, events=()):
     if kind == "item.dismissed":
         return f"Nicht nötig: {_label(items, item_id)}", reason, undo
     if kind == "item.added":
+        # what was added, by its own name (the edit holds it): «Unterlage verlangt: …», not the step it was added at
+        made = next((x for x in edits or () if x.get("id") == e.get("edit_id")), None) or {}
+        named = (made.get("args") or {}).get("title") or (made.get("args") or {}).get("question")
+        said = {"add_document": "Unterlage verlangt", "add_question": "Frage ergänzt", "add_step": "Schritt ergänzt"}.get(made.get("op"))
+        if said and named:
+            return f"{said}: {named}", reason, undo
         return f"Ergänzt: {_label(items, item_id)}" if item_id else "Ergänzt", reason, undo
     if kind == "correction.undone":
         return "Änderung rückgängig gemacht", None, None
