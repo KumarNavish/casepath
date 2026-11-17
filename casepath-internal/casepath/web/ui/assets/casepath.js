@@ -420,6 +420,15 @@ async function renderCases(kept) {
       api(`/api/today${sinceMark ? `?since=${encodeURIComponent(sinceMark)}` : ""}`).catch(() => null)]);
     const imported = got[2].imports ? await api("/api/imports").catch(() => null) : null;
     S.listData = { lang: LANG, got, imported };
+    // a case whose status changed since the list was last on this screen (a letter approved, an answer arrived, a
+    // day passed) says so on its row once: what it was before, beside what it is now
+    const seen = S.listSeen || {}, moved = {};
+    for (const c of got[0].cases || []) {
+      const now = { text: (c.stand || {}).text || "", kind: (c.stand || {}).kind || "" };
+      if (seen[c.id] && seen[c.id].text !== now.text) moved[c.id] = seen[c.id];
+      seen[c.id] = now;
+    }
+    S.listSeen = seen; S.listMoved = moved;
     try { localStorage.setItem("cp-last-visit", new Date().toISOString()); } catch (error) { /* a convenience only */ }
   }
   const [casesGot, workflows, health, since] = S.listData.got, imports = S.listData.imported;
@@ -434,10 +443,12 @@ async function renderCases(kept) {
     const s = standOf(c), due = s === "closed" ? null : c.due, late = due && due.date <= (c.as_of || today) && !c.as_of && !c.historic;
     const next = s === "closed" ? "" : c.next_action ? esc(LANG === "de" && c.next_action.text ? c.next_action.text : T(c.next_action.label.en, c.next_action.label.de))
       : s === "working" ? T("being prepared", "wird vorbereitet") : s === "new" ? T("prepare the case", "Fall vorbereiten") : "";
-    return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}"><td>${c.reference ? `<span class="cp-ref">${esc(c.reference)}</span> ` : ""}<a href="#/case/${raw(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
+    const was = (S.listMoved || {})[c.id], shown = (S.movedShown = S.movedShown || new Set()), fresh = was && !shown.has(`${c.id}:${was.text}`);
+    if (fresh) shown.add(`${c.id}:${was.text}`);
+    return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}${was ? " cp-row-moved" : ""}${fresh ? " cp-row-moved-in" : ""}"><td>${c.reference ? `<span class="cp-ref">${esc(c.reference)}</span> ` : ""}<a href="#/case/${raw(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
       <td>${next || '<span class="cp-muted">—</span>'}</td>
       <td class="cp-nowrap ${late ? "cp-late" : ""}">${due ? `${dateText(due.date)} <span class="cp-due-word">${esc(dueWord(due.word))}</span>` : '<span class="cp-muted">—</span>'}</td>
-      <td><span class="cp-stand ${s}" title="${esc(standText(c))}">${esc(standShort(c))}</span></td></tr>`;
+      <td><span class="cp-stand ${s}" title="${esc(standText(c))}">${esc(standShort(c))}</span>${was && was.text ? `<small class="cp-muted cp-row-was">${T("before", "vorher")}: ${esc(clip(standIn(was.text, was.kind) || was.text, 60))}</small>` : ""}</td></tr>`;
   };
   const table = (rows) => `<table class="cp-table cp-cases"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Next", "Als Nächstes")}</th>
     <th>${T("Due", "Fällig")}</th><th>${T("Status", "Status")}</th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table>`;
@@ -2156,7 +2167,7 @@ function mountStory() {
 // A node pressed opens the real thing: its page, or its row on this page (scrolled to and marked for a moment).
 function openFromStory(n) {
   if (!n) return;
-  const row = n.item && document.querySelector(`[data-item="${CSS.escape(n.item)}"]`);
+  const row = (n.item && document.querySelector(`[data-item="${CSS.escape(n.item)}"]`)) || (n.row && document.querySelector(`[data-story-row="${CSS.escape(n.row)}"]`));
   if (row) { row.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); row.classList.remove("cp-story-hit"); void row.offsetWidth; row.classList.add("cp-story-hit"); return; }
   if (n.file) { S.file = n.file; S.page = n.page || null; location.hash = `#/case/${S.route.id}/claim_reader`; return; }
   if (n.href) location.hash = n.href;
@@ -2187,12 +2198,12 @@ async function openStory() {
 }
 // ---------- the tabs' pictures: the case's state as it stands, drawn by the same engine ----------
 const pictureOff = () => { try { return localStorage.getItem("casepath.picture") === "off"; } catch (error) { return false; } };
-const TAB_STORY = { process: () => processStory(), history: () => historyStory(), documents: () => documentsStory() };
+const TAB_STORY = { process: () => processStory(), history: () => historyStory(), documents: () => documentsStory(), knowledge: () => knowledgeStory() };
 function tabPicture(kind, height) {
   if (!pictureOff()) return `<div class="cp-story cp-story-tab" id="story" data-story="${kind}" data-height="${height}"></div>`;
   return TAB_STORY[kind]() ? `<p class="cp-story-show"><button class="cp-link cp-quiet-link" id="story-show">${T("Show as a picture", "Als Bild zeigen")}</button></p>` : "";
 }
-function setPicture(shown) { try { localStorage.setItem("casepath.picture", shown ? "on" : "off"); } catch (error) { /* this visit only */ } renderCase(); }
+function setPicture(shown) { try { localStorage.setItem("casepath.picture", shown ? "on" : "off"); } catch (error) { /* this visit only */ } if (S.route.view === "knowledge") renderKnowledge(); else renderCase(); }
 const storyLabels = () => ({ play: T("Play", "Abspielen"), pause: T("Pause", "Anhalten"), replay: T("Again", "Nochmals"), step: T("Step", "Schritt"), of: T("of", "von"), close: T("Close", "Schliessen"), whole: T("Whole picture", "Ganzes Bild") });
 function storyKit() {
   const nodes = [], edges = [], beats = [], have = new Set(), linked = new Set();
@@ -2311,6 +2322,55 @@ function documentsStory() {
   const missing = docs.filter((i) => gone.has(i.item_id));
   if (missing.length) k.beat(T(`Missing: ${missing.length}`, `Fehlt: ${missing.length}`), missing.map(name).join(" · "), [], [], missing.map((i) => `need:${i.key}`));
   return k.model([{ id: "files", title: T("In the file", "In der Akte") }, { id: "needs", title: T("The case needs", "Der Fall braucht") }, { id: "why", title: T("Why", "Warum") }], from);
+}
+// Wissen: where each rule came from (a case, a case worker's change, the first request letters of practice), and the
+// cases it was applied in since, in the order it happened: what one case taught reaching the next.
+function knowledgeStory() {
+  const v = S.knowledgeView;
+  if (!v || !v.entries.length) return null;
+  const k = storyKit(), happened = [], applied = {};
+  const name = (e) => tr(e.content.title || e.content.question || e.content.text || "");
+  for (const e of v.entries) {
+    happened.push({ at: e.created_at || ((e.history || [])[0] || {}).at || "", kind: "learned", e });
+    for (const h of (e.history || []).filter((h) => h.version > 1 && /^refined/.test(h.change || ""))) happened.push({ at: h.at || "", kind: "refined", e, h });
+    for (const u of e.uses || []) {
+      // a case takes up its rules in one go: one moment per case, at the time it first did
+      const g = applied[u.case_id] = applied[u.case_id] || { at: u.at || "", case: u.case_id, kind: "applied", parts: new Map() };
+      if (String(u.at || "") < g.at) g.at = u.at || "";
+      if (!g.parts.has(e)) g.parts.set(e, []);
+      g.parts.get(e).push(u);
+    }
+  }
+  happened.push(...Object.values(applied));
+  happened.sort((a, b) => String(a.at).localeCompare(String(b.at)) || String(a.case || "").localeCompare(String(b.case || "")));
+  const cases = [...new Set(happened.filter((x) => x.kind === "applied").map((x) => x.case))], shown = new Set(cases.slice(-12));
+  const itemNode = (e) => k.node({ id: `k:${e.ids[0]}`, lane: "knowledge", kind: "knowledge", title: name(e), row: e.ids[0],
+    sub: `${e.status === "active" ? `v${e.version}` : tr(word(e.status))} · ${T(`used ${e.stats.uses} times`, `${e.stats.uses}× verwendet`)}` });
+  let i = 0;
+  while (i < happened.length) {
+    const x = happened[i];
+    if (x.kind === "learned") {
+      const o = x.e.origin || {}, quote = ((x.e.evidence || []).find((q) => q.quote) || {}).quote;
+      const from = o.case_id ? k.node({ id: `from:${o.case_id}`, lane: "from", kind: "file", title: tr(v.caseName(o.case_id)), sub: o.kind === "case_edit" ? T("a case worker's change", "Änderung der Fallbearbeitung") : T("a prepared case", "ein vorbereiteter Fall"), href: `#/case/${o.case_id}/overview` })
+        : k.node({ id: "from:practice", lane: "from", kind: "file", title: T("First request letters", "Erste Unterlagenanforderungen"), sub: T("practice, counts only", "Praxis, nur Zählungen") });
+      const nid = itemNode(x.e);
+      k.beat(`${T("Learned", "Gelernt")}: ${clip(name(x.e), 70)}`, o.case_id ? `${T("from", "aus")} ${tr(v.caseName(o.case_id))}${quote ? `: «${clip(quote, 90)}»` : ""}` : tr(seededNote(x.e) || byWhom(o.by)), [from, nid], [k.edge(from, nid, "cites")]);
+      i += 1;
+    } else if (x.kind === "refined") {
+      k.beat(`${T("Refined", "Verfeinert")}: ${clip(name(x.e), 60)} · v${x.h.version}`, `${tr(changeText(x.h.change))}${x.h.by ? ` · ${byWhom(x.h.by)}` : ""}`, [], [], [itemNode(x.e)]);
+      i += 1;
+    } else {
+      i += 1;
+      if (!shown.has(x.case)) continue;
+      const group = [...x.parts.keys()].map((e) => ({ e })), uses = [...x.parts.values()].flat(), count = (o) => uses.filter((u) => u.outcome === o).length;
+      const said = [["present", T("on file", "liegt vor")], ["confirmed", T("confirmed", "bestätigt")], ["applied", T("asked for", "verlangt")], ["not_found", T("not found", "nicht gefunden")], ["contradicted", T("contradicted", "widersprochen")]]
+        .filter(([o]) => count(o)).map(([o, w]) => `${count(o)} ${w}`).join(" · ");
+      const to = k.node({ id: `to:${x.case}`, lane: "to", kind: "entry", title: tr(v.caseName(x.case)), sub: said, state: count("contradicted") ? "now" : "", href: `#/case/${x.case}/document_finder` });
+      k.beat(`${T("Applied in", "Angewendet in")} ${clip(v.caseName(x.case), 60)}`, `${group.length} ${T(group.length === 1 ? "rule" : "rules", group.length === 1 ? "Regel" : "Regeln")} · ${said}`, [to], group.map((g) => k.edge(itemNode(g.e), to, "learned")), [to, ...group.map((g) => `k:${g.e.ids[0]}`)]);
+    }
+  }
+  if (cases.length > shown.size && k.beats.length) k.beats[k.beats.length - 1].caption.why += ` · ${cases.length - shown.size} ${T("earlier cases not drawn", "frühere Fälle nicht gezeichnet")}`;
+  return k.model([{ id: "from", title: T("Learned from", "Gelernt aus") }, { id: "knowledge", title: T("Knowledge", "Wissen") }, { id: "to", title: T("Applied in", "Angewendet in") }], Math.max(0, k.beats.length - 3));
 }
 // What CasePath did to get here, as the steps of its work with what each one gave, each leading to where it can be
 // checked: said once, ticked in turn, when it finishes while the reader watches; later one press on the line above.
@@ -3464,6 +3524,30 @@ window.addEventListener("resize", fitCard);
 
 // ---------- knowledge ----------
 // What ordinary use shows, content-free (L4): per case and in total; the export is the same JSON.
+// How the operation runs, in the measures claims handling knows: how long a case waits for its first prepared step,
+// its first letter and its cover decision, how long it takes to close, how old the open cases are. Each figure says how
+// many cases it rests on; the bar of the open cases grows to its shares once.
+function operationsView(o) {
+  if (!o) return "";
+  const time = (sec) => (sec == null ? "—" : sec < 90 ? `${Math.round(sec)} s` : sec < 5400 ? `${Math.round(sec / 60)} ${T("min", "Min")}` : sec < 172800 ? `${Math.round(sec / 3600)} h` : `${Math.round(sec / 86400)} ${T("days", "Tage")}`);
+  const days = (d) => (d == null ? "—" : d < 1 ? time(d * 86400) : `${String(Math.round(d * 10) / 10).replace(".", LANG === "de" ? "," : ".")} ${d === 1 ? T("day", "Tag") : T("days", "Tage")}`);
+  const basis = (m) => (m.cases ? T(`median of ${m.cases} ${m.cases === 1 ? "case" : "cases"}`, `Median aus ${m.cases} ${m.cases === 1 ? "Fall" : "Fällen"}`) : T("no case yet", "noch kein Fall"));
+  const figure = (value, label, m) => `<div class="cp-figure"><b>${esc(value)}</b><span>${label}</span><small class="cp-muted">${basis(m)}</small></div>`;
+  const ages = [["days_0_7", T("up to 7 days", "bis 7 Tage")], ["days_8_30", T("8 to 30 days", "8 bis 30 Tage")], ["days_31_90", T("31 to 90 days", "31 bis 90 Tage")], ["days_over_90", T("over 90 days", "über 90 Tage")]];
+  const open = ages.reduce((n, [k]) => n + (o.aging[k] || 0), 0);
+  const bar = open ? `<div class="cp-ops-bar" role="img" aria-label="${T("Open cases by age", "Offene Fälle nach Alter")}">${ages.map(([k], i) => (o.aging[k] ? `<span class="cp-ops-seg a${i}" style="flex-grow:${o.aging[k]}"></span>` : "")).join("")}</div>
+      <ul class="cp-ops-legend">${ages.map(([k, w], i) => `<li><i class="cp-ops-dot a${i}"></i>${w} <b>${o.aging[k] || 0}</b></li>`).join("")}</ul>` : "";
+  const share = (n, of) => (of ? `${n} ${T("of", "von")} ${of}` : "—");
+  return `<h2 class="cp-section">${T("The operation", "Der Betrieb")}</h2>
+    <section class="cp-today cp-figures cp-ops" aria-label="${T("The operation in figures", "Der Betrieb in Zahlen")}">
+      ${figure(time(o.first_preparation_seconds.median), T("until the first step is prepared", "bis der erste Schritt vorbereitet ist"), o.first_preparation_seconds)}
+      ${figure(days(o.first_letter_days.median), T("until the first letter is sent", "bis zum ersten versandten Brief"), o.first_letter_days)}
+      ${figure(days(o.cover_decision_days.median), T("until cover is decided", "bis zum Deckungsentscheid"), o.cover_decision_days)}
+      ${figure(days(o.cycle_days.median), T("from receipt to closing", "vom Eingang bis zum Abschluss"), o.cycle_days)}</section>
+    <section class="cp-ops-open"><p class="cp-ops-line"><b>${o.open}</b> ${T(o.open === 1 ? "open case" : "open cases", o.open === 1 ? "offener Fall" : "offene Fälle")} <span class="cp-muted">· ${T("by age", "nach Alter")}</span></p>${bar}
+      <p class="cp-muted cp-ops-facts">${T("Last 30 days", "Letzte 30 Tage")}: ${o.opened_30_days} ${T("opened", "eröffnet")} · ${o.closed_30_days} ${T("closed", "abgeschlossen")} · ${T("opened again", "wieder eröffnet")}: ${share(o.reopened, o.closed_ever)}
+        · ${T("letters approved as prepared", "Briefe wie vorbereitet freigegeben")}: ${share(o.letters_approved_as_written, o.letters_approved)} · ${T("cover refused", "Deckung abgelehnt")}: ${share(o.cover_refused, o.cover_decided)}</p></section>`;
+}
 async function renderAuswertung() {
   const a = await api("/api/auswertung");
   const n = (v) => (v === null || v === undefined ? "—" : esc(String(v)));
@@ -3483,6 +3567,7 @@ async function renderAuswertung() {
       ${figure(a.total.interventions_per_used_case, T("corrections per case worked on", "Korrekturen pro bearbeitetem Fall"))}${figure(a.total.same_correction_again, T("same correction repeated", "gleiche Korrektur wiederholt"))}</section>
     <p class="cp-muted cp-eval-note">${T("From ordinary use, without questionnaires. Content-free: cases appear only as pseudonyms.", "Aus der normalen Arbeit, ohne Fragebogen. Ohne Inhalte: Fälle erscheinen nur als Pseudonyme.")}
       <a class="cp-link cp-quiet-link" href="/api/auswertung" download="auswertung.json">${T("Export", "Export")}</a> · <a class="cp-link cp-quiet-link" href="/api/manifest" download="manifest.json">${T("Manifest", "Manifest")}</a></p>
+    ${operationsView(a.operations)}
     <h2 class="cp-section">${T("Cases worked on", "Bearbeitete Fälle")} · ${active.length}</h2>
     ${active.length ? `<table class="cp-table"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Corrections", "Eingriffe")}</th><th>${T("Reasons", "Gründe")}</th>
       <th>${T("Letter changed", "Brief geändert")}</th><th>${T("Handling", "Bearbeitung")}</th><th>${T("Sources opened", "Quellen geöffnet")}</th><th>${T("Repeated", "Wiederholt")}</th><th>${T("Preparation", "Vorbereitung")}</th><th>Tokens</th></tr></thead>
@@ -3531,7 +3616,8 @@ async function renderKnowledge() {
       for (const k of ["uses", "confirmed", "not_found", "contradicted"]) entry.stats[k] += item.stats[k] || 0;
     }
   }
-  const card = (k) => `<article class="cp-card" style="padding:16px 18px;display:grid;gap:8px;align-content:start">
+  S.knowledgeView = { entries: Object.values(groups).flatMap((g) => Object.values(g)), caseName };
+  const card = (k) => `<article class="cp-card" data-story-row="${raw(k.ids[0])}" style="padding:16px 18px;display:grid;gap:8px;align-content:start">
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="cp-chip ${k.status === "active" ? "good" : k.status === "retired" ? "" : "wait"}">${esc(word(k.status))}</span>
         <span class="cp-chip">${esc(word(k.kind))}</span>${k.refines ? "" : `<span class="cp-chip">v${k.version}</span>`}${k.refines ? `<span class="cp-chip wait">${(() => { const t = data.knowledge.find((x) => x.id === k.refines); return t ? T(`refines v${t.version} → v${t.version + 1}`, `verfeinert v${t.version} → v${t.version + 1}`) : T("refinement", "Verfeinerung"); })()}</span>` : ""}
         ${k.review_suggested ? `<span class="cp-chip bad">${T("review suggested: contradicted often", "Prüfung empfohlen: oft widersprochen")}</span>` : ""}</div>
@@ -3556,11 +3642,14 @@ async function renderKnowledge() {
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;align-items:start">${items.map(card).join("")}</div>`;
   }).join("");
   $("#app").innerHTML = `<main class="cp-main cp-knowledge${pageIn()}"><h1 class="cp-title">${T("Knowledge", "Wissen")}</h1>
+    ${sections ? tabPicture("knowledge", 380) : ""}
     ${review && review.may_review ? reviewTable(review) + reviewByUse(byUse) : ""}
     ${review && review.may_review ? `<h2 class="cp-section cp-learned">${T("Learned from cases", "Aus Fällen gelernt")}</h2>` : ""}
     <p class="cp-muted">${T("What CasePath learned from earlier cases and case workers’ changes. Active items shape new cases; candidates are checked as suggestions until a person activates them.",
       "Was CasePath aus früheren Fällen und aus Änderungen der Fallbearbeitung gelernt hat. Freigegebene Einträge prägen neue Fälle; Vorschläge werden nur als Vorschlag geprüft, bis ein Mensch sie freigibt.")}</p>
     ${sections || `<p class="cp-empty">${T("Nothing learned yet. Knowledge appears after cases are prepared or a case worker saves a change for similar cases.", "Noch nichts gelernt. Wissen entsteht, wenn Fälle vorbereitet werden oder eine Änderung für ähnliche Fälle gespeichert wird.")}</p>`}</main>`;
+  mountStory();
+  for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true));
   const each = (ids, path, reason) => Promise.all(ids.split(",").map((id) => api(`/api/knowledge/${id}/${path}`, { method: "POST", body: JSON.stringify({ reason }) })));
   for (const b of document.querySelectorAll("[data-replay]")) b.addEventListener("click", async () => {  // without a model: what this version would change
     b.disabled = true;

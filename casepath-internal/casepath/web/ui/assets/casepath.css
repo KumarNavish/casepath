@@ -1563,3 +1563,23 @@ mark.cp-hit.chosen, mark#live-hit { animation: cp-mark-pulse .9s var(--ease); }
 ::view-transition-group(cp-case) { animation-duration: .42s; animation-timing-function: cubic-bezier(.22, .8, .24, 1); }
 .cp-morph::view-transition-old(root) { animation-duration: .2s; }
 .cp-morph::view-transition-new(root) { animation-duration: .34s; }
+/* The list: a case whose status changed since it was last on screen says what it was before, once. */
+.cp-row-was { display: block; margin-top: 3px; font-size: 12px; }
+.cp-cases tr.cp-row-moved-in td { animation: cp-row-moved 2.4s ease-out 1; }
+.cp-cases tr.cp-row-moved-in .cp-stand { animation: cp-row-now .5s .25s var(--ease) both; }
+@keyframes cp-row-moved { 0%, 28% { background: rgba(130, 7, 42, .06); } 100% { background: transparent; } }
+@keyframes cp-row-now { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .cp-cases tr.cp-row-moved-in td, .cp-cases tr.cp-row-moved-in .cp-stand { animation: none; } }
+/* Auswertung: the operation in figures; the open cases by age as one bar that grows to its shares once. */
+.cp-ops .cp-figure small { display: block; margin-top: 4px; font-size: 12px; }
+.cp-ops-open { margin: 18px 0 30px; max-width: 880px; }
+.cp-ops-line { margin: 0 0 10px; font-size: 15px; }
+.cp-ops-bar { display: flex; gap: 3px; height: 12px; border-radius: 999px; overflow: hidden; transform-origin: left center; }
+.cp-page-in .cp-ops-bar { animation: cp-grow .9s .15s var(--ease) both; }
+.cp-ops-seg { flex: 1 1 0; min-width: 6px; border-radius: 3px; }
+.cp-ops-seg.a0, .cp-ops-dot.a0 { background: #1f6b3a; } .cp-ops-seg.a1, .cp-ops-dot.a1 { background: #1b2a30; }
+.cp-ops-seg.a2, .cp-ops-dot.a2 { background: #8a979c; } .cp-ops-seg.a3, .cp-ops-dot.a3 { background: #82072a; }
+.cp-ops-legend { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 10px 0 12px; padding: 0; list-style: none; font-size: 13px; }
+.cp-ops-legend li { display: flex; align-items: center; gap: 7px; } .cp-ops-dot { width: 8px; height: 8px; border-radius: 50%; }
+.cp-ops-facts { margin: 0; font-size: 13px; line-height: 1.6; }
+@media (prefers-reduced-motion: reduce) { .cp-page-in .cp-ops-bar { animation: none; } }

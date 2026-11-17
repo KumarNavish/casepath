@@ -5,11 +5,12 @@ codes leave the store, and every value passes the scorecard guard. The parity ma
 workflow and Knowledge versions.
 """
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timezone
 
 from .scorecard import guard, hashed
 
 CORRECTIONS = {"item.corrected", "item.dismissed", "item.added"}
+DAY = 86400
 
 
 def _seconds(a, b):
@@ -80,6 +81,83 @@ def case_card(store, case, salt, corrected_before):
             "tokens_noncached": sum((u.get("input_tokens") or 0) - (u.get("cached_tokens") or 0) for u in usage) or None}
 
 
+def _median(values):
+    values = sorted(values)
+    if not values:
+        return None
+    mid = len(values) // 2
+    return values[mid] if len(values) % 2 else (values[mid - 1] + values[mid]) / 2
+
+
+def _span(start, end):
+    """Seconds from one recorded moment to a later one; None where either is missing, the order is impossible (a case
+    seeded with a history older than itself) or both fall in the same second (a case stored together with its history:
+    nothing was waited for, so nothing is measured)."""
+    if not (start and end):
+        return None
+    try:
+        seconds = _seconds(start, end)
+    except ValueError:
+        return None
+    return seconds if seconds >= 1 else None
+
+
+def operations(store, now=None):
+    """How the operation runs, in the measures claims handling knows (docs/SWISS_PRACTICE.md names the source of each):
+    how long a case waits for its first prepared step, its first letter and its cover decision, how long it takes to
+    close, how old the open cases are, what was opened and closed in the last 30 days, how many closed cases were opened
+    again, how often a prepared letter was approved as written, and how many cover decisions refuse. From the cases, the
+    runs and the event log; study copies are left out. Counts and durations only; each median says how many cases it
+    rests on, so a small number is read as one."""
+    now = now or datetime.now(timezone.utc).isoformat(timespec="seconds")
+    cases = [c for c in store.list_cases() if not (c.get("intake") or {}).get("study")]
+    prepared, letter, cover, cycle = [], [], [], []
+    aging = {"days_0_7": 0, "days_8_30": 0, "days_31_90": 0, "days_over_90": 0}
+    opened = closed = reopened = ever_closed = approved = unchanged = decided = refused = still_open = 0
+    for c in cases:
+        created, events = c.get("created_at"), store.list_case_events(c["id"])
+        try:  # a case's age counts from its first second on
+            age = max(0.0, _seconds(created, now)) if created else None
+        except ValueError:
+            age = None
+        opened += 1 if age is not None and age <= 30 * DAY else 0
+        first = _span(created, store.first_prepared(c["id"]))
+        if first is not None:
+            prepared.append(first)
+        sent = next((e["at"] for e in events if e["kind"] == "action.dispatched"), None)
+        if _span(created, sent) is not None:
+            letter.append(_span(created, sent) / DAY)
+        edits = [e for e in store.list_edits(c["id"]) if e.get("op") == "set_fact" and (e.get("args") or {}).get("fact") == "deckung"]
+        if edits:
+            decided += 1
+            refused += 1 if str((edits[-1].get("args") or {}).get("value")) == "abgelehnt" else 0
+            if _span(created, edits[0].get("at")) is not None:
+                cover.append(_span(created, edits[0]["at"]) / DAY)
+        state = [e for e in events if e["kind"] in ("case.closed", "case.reopened")]
+        reopened += sum(1 for e in state if e["kind"] == "case.reopened")
+        ever_closed += 1 if any(e["kind"] == "case.closed" for e in state) else 0
+        if state and state[-1]["kind"] == "case.closed":
+            if _span(created, state[-1]["at"]) is not None:
+                cycle.append(_span(created, state[-1]["at"]) / DAY)
+            closed += 1 if (_span(state[-1]["at"], now) or 0) <= 30 * DAY else 0
+        else:
+            still_open += 1
+            if age is not None:
+                days = age / DAY
+                aging["days_0_7" if days <= 7 else "days_8_30" if days <= 30 else "days_31_90" if days <= 90 else "days_over_90"] += 1
+        for e in events:
+            if e["kind"] == "action.approved" and (e.get("words") or {}).get("total"):
+                approved += 1
+                unchanged += 1 if not e["words"].get("changed") else 0
+    measure = lambda values, digits: {"median": None if not values else round(_median(values), digits), "cases": len(values)}  # noqa: E731
+    return {"cases": len(cases), "open": still_open,
+            "first_preparation_seconds": measure(prepared, 0), "first_letter_days": measure(letter, 1),
+            "cover_decision_days": measure(cover, 1), "cycle_days": measure(cycle, 1),
+            "opened_30_days": opened, "closed_30_days": closed, "closed_ever": ever_closed, "reopened": reopened, "aging": aging,
+            "letters_approved": approved, "letters_approved_as_written": unchanged,
+            "cover_decided": decided, "cover_refused": refused}
+
+
 def auswertung(store, salt, manifest=None):
     cases = sorted(store.list_cases(), key=lambda c: c.get("created_at") or "")
     seen = set()  # a correction made again in a later case, on the same item: what Knowledge should have prevented
@@ -88,4 +166,5 @@ def auswertung(store, salt, manifest=None):
     total = {"cases": len(cards), "cases_used": len(used),
              "interventions_per_used_case": round(sum(c["interventions"] for c in used) / len(used), 2) if used else None,
              "same_correction_again": sum(c["same_correction_again"] for c in cards)}
-    return guard({"format": "casepath.auswertung.v1", "total": total, "cases": cards, **({"manifest_sha256": manifest} if manifest else {})})
+    return guard({"format": "casepath.auswertung.v1", "total": total, "operations": operations(store), "cases": cards,
+                  **({"manifest_sha256": manifest} if manifest else {})})

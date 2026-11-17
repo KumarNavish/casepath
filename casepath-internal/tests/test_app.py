@@ -349,6 +349,10 @@ class AppTests(unittest.TestCase):
         card, = page["cases"]
         self.assertEqual((card["accepted_unchanged"], card["sources_opened"], card["interventions"]), ({"document": 1}, 1, 0))
         self.assertTrue(card["case"].startswith("h_") and case["id"] not in json.dumps(page) and "Namen" not in json.dumps(page))
+        # the operation in the measures claims handling knows: each median with the number of cases it rests on
+        ops = page["operations"]
+        self.assertEqual((ops["cases"], ops["open"], ops["aging"]["days_0_7"], ops["letters_approved"]), (1, 1, 1, 0))
+        self.assertEqual((ops["first_letter_days"], ops["cycle_days"], ops["reopened"], ops["cover_decided"]), ({"median": None, "cases": 0}, {"median": None, "cases": 0}, 0, 0))
         profile = client.get("/api/run-profile").json()
         self.assertEqual((profile["runs"], set(profile["median_seconds"])), (1, {"lesen", "prozess", "fakten", "unterlagen", "pruefung"}))
         self.assertEqual(client.get("/api/run-profile", params={"pages": 3}).json()["band"], "alle")  # fewer than three of that size

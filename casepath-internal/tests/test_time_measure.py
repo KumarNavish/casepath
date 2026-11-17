@@ -8,7 +8,7 @@ from fastapi.testclient import TestClient
 
 from casepath.config import SettingsError, load_settings
 from casepath.process import completion
-from casepath.quality.auswertung import _handling, _letter_change
+from casepath.quality.auswertung import _handling, _letter_change, _median, _span, operations
 from casepath.web.app import create_app
 
 
@@ -76,6 +76,48 @@ class SwitchTests(unittest.TestCase):
         self.assertEqual([e["kind"] for e in store.list_case_events(cid)], ["case.opened", "idle.started", "idle.ended"])
         with self.assertRaises(SettingsError):
             load_settings({"CASEPATH_TIME_MEASURE": "immer"})
+
+
+class OperationsTests(unittest.TestCase):
+    """The operation's measures rest on recorded moments only; an impossible order counts for nothing."""
+
+    class Store:
+        def __init__(self, cases, events, edits, prepared):
+            self.cases, self.events, self.edits, self.prepared = cases, events, edits, prepared
+
+        def list_cases(self):
+            return self.cases
+
+        def list_case_events(self, case_id):
+            return self.events.get(case_id, [])
+
+        def list_edits(self, case_id):
+            return self.edits.get(case_id, [])
+
+        def first_prepared(self, case_id):
+            return self.prepared.get(case_id)
+
+    def test_medians_ages_and_shares(self):
+        at = lambda day, hour=8: f"2026-11-{day:02d}T{hour:02d}:00:00+00:00"  # noqa: E731
+        cases = [{"id": "a", "created_at": at(1)}, {"id": "b", "created_at": at(10)}, {"id": "c", "created_at": "2026-07-01T08:00:00+00:00"},
+                 {"id": "s", "created_at": at(1), "intake": {"study": True}}]
+        events = {"a": [{"kind": "action.approved", "at": at(2), "words": {"total": 120, "changed": 0}}, {"kind": "action.dispatched", "at": at(3)},
+                        {"kind": "case.closed", "at": at(5)}, {"kind": "case.reopened", "at": at(6)}, {"kind": "case.closed", "at": at(9)}],
+                  "b": [{"kind": "action.approved", "at": at(11), "words": {"total": 80, "changed": 12}}, {"kind": "action.dispatched", "at": at(11)}],
+                  "c": [{"kind": "action.dispatched", "at": "2026-06-01T08:00:00+00:00"}]}  # sent before it existed: a seeded history
+        edits = {"a": [{"op": "set_fact", "args": {"fact": "deckung", "value": "bestätigt"}, "at": at(2)}],
+                 "b": [{"op": "set_fact", "args": {"fact": "deckung", "value": "abgelehnt"}, "at": at(12)}]}
+        prepared = {"a": at(1, 9), "b": at(10, 8).replace("08:00:00", "08:04:00")}
+        o = operations(self.Store(cases, events, edits, prepared), now=at(17))
+        self.assertEqual((o["cases"], o["open"]), (3, 2))                                     # the study copy is left out
+        self.assertEqual(o["first_preparation_seconds"], {"median": 1920.0, "cases": 2})      # 60 min and 4 min
+        self.assertEqual(o["first_letter_days"], {"median": 1.5, "cases": 2})                 # 2 days and 1 day; the impossible one counts for nothing
+        self.assertEqual(o["cover_decision_days"], {"median": 1.5, "cases": 2})
+        self.assertEqual(o["cycle_days"], {"median": 8.0, "cases": 1})                        # to the closing that stands
+        self.assertEqual((o["opened_30_days"], o["closed_30_days"], o["closed_ever"], o["reopened"]), (2, 1, 1, 1))
+        self.assertEqual(o["aging"], {"days_0_7": 1, "days_8_30": 0, "days_31_90": 0, "days_over_90": 1})
+        self.assertEqual((o["letters_approved"], o["letters_approved_as_written"], o["cover_decided"], o["cover_refused"]), (2, 1, 2, 1))
+        self.assertEqual((_median([]), _median([3, 1, 2]), _span(at(2), at(1)), _span(None, at(1)), _span(at(1), at(1))), (None, 2, None, None, None))
 
 
 if __name__ == "__main__":

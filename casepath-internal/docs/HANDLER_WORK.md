@@ -139,6 +139,9 @@ The work is shown as a picture that builds itself, drawn from the case's own sta
 - **Prozess**: the way the case came with the facts that took it from step to step, where it stands, what is open there, and the branches from here with what decides them.
 - **Verlauf**: who wrote to whom, a column per party, in the order it happened; a request is joined to its answer and what is open stays marked. The line under it is the case's time.
 - **Unterlagen**: what the case needs and why (what closed cases asked for, what the law asks), what the files hold of it with the page, what is missing.
+- **Wissen**: where each rule came from (a case, a case worker's change, the first request letters of practice) and the cases it was applied in since, one moment per case in the order it happened; a rule's card opens from its node.
+- **The list**: a case whose status changed since the list was last on this screen says what it was before, once, on its row.
+- **Auswertung**: the operation in the measures claims handling knows (docs/SWISS_PRACTICE.md, part C); the open cases by age are one bar that grows to its shares.
 - **A tab's picture** stands as far as the case had come and plays only what is current; when the case changes under the reader's eyes (an entry added, a document arrived) the new part arrives as its own movement. It can be put away with its ✕ and stays away in that browser until «Als Bild zeigen».
 - **List and case**: a case opened from the list grows out of its row (its name travels) and goes back into it.
 

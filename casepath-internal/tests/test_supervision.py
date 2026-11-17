@@ -300,6 +300,12 @@ class CraftTests(unittest.TestCase):
         self.assertIn('localStorage.setItem("casepath.picture", shown ? "on" : "off")', SCRIPT)  # put away once, it stays away until asked for
         self.assertIn('opened.style.viewTransitionName = "cp-case"', SCRIPT)               # a case opened from the list grows out of its row
         self.assertIn(".cp-morph #case-title { view-transition-name: cp-case; }", STYLE)
+        # Wissen: where each rule came from and the cases it was applied in since, one moment per case
+        self.assertIn('tabPicture("knowledge", 380)', SCRIPT)
+        self.assertIn('group.map((g) => k.edge(itemNode(g.e), to, "learned"))', SCRIPT)
+        # the list: a case whose status changed since it was last on screen says what it was before
+        self.assertIn("if (seen[c.id] && seen[c.id].text !== now.text) moved[c.id] = seen[c.id];", SCRIPT)
+        self.assertIn('class="cp-muted cp-row-was"', SCRIPT)
         self.assertIn("if (grew) S.story.ctrl.play();", SCRIPT)                            # a change under the reader's eyes arrives as its own movement
 
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
