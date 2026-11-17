@@ -458,7 +458,9 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
                 "imports": files is not None, "uploads": uploads,
                 # reading in another language: from the shipped memory only, or the model for the rest (and what failed last)
-                "translate": {"mode": settings.translate, "languages": list(translate.LANGUAGES), "error": translator.error},
+                "translate": {"mode": settings.translate, "languages": list(translate.LANGUAGES), "error": translator.error,
+                              # tokens the model spent on translation today, of the day's ceiling (0 without the model)
+                              "spent_today": translator.spent() if settings.translate == "model" else 0, "budget": settings.translate_token_budget},
                 "pdf_text": "pypdf" if importlib.util.find_spec("pypdf") else "builtin",
                 "scanned_pages": "rendered" if importlib.util.find_spec("pypdfium2") and importlib.util.find_spec("PIL") else "embedded images",
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none",

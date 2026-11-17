@@ -233,7 +233,8 @@ class Translator:
     def translate(self, lines, language, model):
         """One call: the lines in, their translations out in the same order (None where the model left one out)."""
         result = model.respond_json(name="translation", instructions=INSTRUCTIONS.format(language=NAMES.get(language, language)),
-                                    input=json.dumps([{"n": n, "t": line} for n, line in enumerate(lines)], ensure_ascii=False),
+                                    # the models take a conversation (a list of turns), never a bare string
+                                    input=[{"role": "user", "content": json.dumps([{"n": n, "t": line} for n, line in enumerate(lines)], ensure_ascii=False)}],
                                     schema=SCHEMA, effort="low")
         got = {row.get("n"): row.get("t") for row in (result.value or {}).get("items", []) if isinstance(row, dict)}
         usage = result.usage or {}

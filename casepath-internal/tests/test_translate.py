@@ -35,7 +35,10 @@ class FakeModel:
         self.calls = []
 
     def respond_json(self, *, name, instructions, input, schema, effort="medium"):
-        rows = json.loads(input)
+        # as the real models take it: a conversation, a list of turns (a bare string failed on the pilot, 17.11.2026)
+        assert isinstance(input, list) and all(isinstance(turn, dict) and turn.get("role") == "user" for turn in input), "input is a list of turns"
+        list(input)  # the Messages model copies the conversation
+        rows = json.loads(input[0]["content"])
         self.calls.append([r["t"] for r in rows])
         return Result({"items": [{"n": r["n"], "t": "EN:" + r["t"]} for r in rows]})
 
@@ -131,6 +134,40 @@ class ModelTests(unittest.TestCase):
         self.assertEqual(len(self.model.calls), 1)
 
 
+class RealModelTests(unittest.TestCase):
+    """The call as the deployed models take it (a fake transport, no network): the Messages model and the chat model."""
+
+    def test_the_messages_model_and_the_chat_model_translate_a_batch(self):
+        import httpx
+        from casepath.agents.anthropic_model import AnthropicMessagesModel
+        from casepath.agents.chat_model import ChatCompletionsModel
+        host = "https://adb-1.2.azuredatabricks.net"
+        asked = []
+
+        def messages(request):
+            body = json.loads(request.content)
+            asked.append(json.loads(body["messages"][0]["content"] if isinstance(body["messages"][0]["content"], str) else body["messages"][0]["content"][0]["text"]))
+            return httpx.Response(200, json={"id": "m", "stop_reason": "tool_use", "content": [{"type": "tool_use", "id": "tu", "name": body["tools"][0]["name"],
+                                  "input": {"items": [{"n": 0, "t": "The customer has replied"}, {"n": 1, "t": "Dear Ms Exempel"}]}}],
+                                  "usage": {"input_tokens": 120, "output_tokens": 30}})
+
+        def chat(request):
+            return httpx.Response(200, json={"id": "c", "choices": [{"finish_reason": "stop", "message": {"role": "assistant", "content": json.dumps(
+                {"items": [{"n": 0, "t": "The customer has replied"}, {"n": 1, "t": "Dear Ms Exempel"}]})}}], "usage": {"prompt_tokens": 100, "completion_tokens": 20, "total_tokens": 120}})
+        t = translate.Translator(None, memory_dir=memory({}))
+        lines = ["Die Kundschaft hat geantwortet", "Sehr geehrte Frau Exempel"]
+        base = {"CASEPATH_MODEL_PROVIDER": "databricks", "DATABRICKS_HOST": host, "CASEPATH_MODEL": "m"}
+        model = AnthropicMessagesModel(load_settings({**base, "CASEPATH_MODEL_API": "messages"}).model, lambda: "t", transport=httpx.MockTransport(messages))
+        rows, tokens = t.translate(lines, "en", model)
+        self.assertEqual(rows, ["The customer has replied", "Dear Ms Exempel"])
+        self.assertEqual(tokens, 150)
+        self.assertEqual(asked[0], [{"n": 0, "t": lines[0]}, {"n": 1, "t": lines[1]}])  # the lines went out as one user turn
+        model = ChatCompletionsModel(load_settings(base).model, lambda: "t", transport=httpx.MockTransport(chat))
+        rows, tokens = t.translate(lines, "en", model)
+        self.assertEqual(rows, ["The customer has replied", "Dear Ms Exempel"])
+        self.assertGreater(tokens, 0)
+
+
 class ApiTests(unittest.TestCase):
     def setUp(self):
         folder = tempfile.mkdtemp()
@@ -152,7 +189,8 @@ class ApiTests(unittest.TestCase):
         self.assertEqual(got["_tr_wait"], 0)  # no model in this deployment: nothing is on its way
         missing = self.client.get("/api/translate/missing").json()
         self.assertIn("Ein Satz, den niemand kennt", [t["text"] for t in missing["texts"]])
-        self.assertEqual(self.client.get("/api/health").json()["translate"]["mode"], "memory")
+        health = self.client.get("/api/health").json()["translate"]
+        self.assertEqual((health["mode"], health["error"], health["spent_today"], health["budget"]), ("memory", None, 0, 300000))
         self.assertEqual(self.client.post("/api/translate", json={"lang": "xx", "texts": []}).status_code, 422)
 
 
