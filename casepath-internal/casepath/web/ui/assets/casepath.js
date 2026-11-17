@@ -639,6 +639,17 @@ function runError(error) {
 const caseName = (c) => c.headline || c.display_title || c.title;
 // The case's reference number and who is responsible for it, in the rail: the number it carries, one its files state
 // (proposed with the file, taken over on a click), or «Referenz eintragen»; the owner and the deputy, changed in place.
+// A file that names another case's reference number and not this case's (a mail dropped on the wrong case): said on
+// the file and above the step, before its content is relied on.
+const otherReference = (fileId) => ((((S.data || {}).case || {}).other_references || []).find((r) => r.file === fileId) || {}).reference || "";
+function otherReferenceNote() {
+  const rows = ((S.data || {}).case || {}).other_references || [];
+  if (!rows.length) return "";
+  const names = rows.slice(0, 3).map((r) => `«${raw(r.name)}» (${raw(r.reference)})`).join(", ");
+  return `<p class="cp-stale-note" data-other-reference-note>${T(`Check: ${names} ${rows.length === 1 ? "names" : "name"} another case's reference. Does it belong here?`,
+    `Bitte prüfen: ${names} ${rows.length === 1 ? "nennt" : "nennen"} die Referenz eines anderen Falls. Gehört das hierher?`)}
+    <button class="cp-link cp-quiet-link" type="button" data-file="${raw(rows[0].file)}" id="other-reference-open">${T("open the file", "Datei öffnen")}</button></p>`;
+}
 function identityLine(c) {
   if ((c.intake || {}).study) return "";
   const p = c.reference_proposed;
@@ -680,7 +691,8 @@ function renderRail() {
   const rows = files.map((f) => `<button class="cp-source" data-file="${raw(f.id)}" aria-current="${S.file === f.id}">${fileIcon(f)}
       <span class="cp-source-label">${esc(f.name)}<small>${f.extraction && f.extraction.attached_to ? `${T("Attached to", "Anhang von")} ${esc(f.extraction.attached_to)}`
         : dateText(f.created_at)}${f.extraction && f.extraction.pages > 1 ? ` · ${(f.extraction.kept_pages || []).length || f.extraction.pages} ${T("pages", "Seiten")}` : ""}</small>
-      ${(f.extraction && (f.extraction.instruction_like || []).length) ? `<span class="cp-warn">${T("Contains text addressed to an AI", "Enthält Text an die KI")}</span>` : ""}</span></button>${segmentRows(f)}`).join("");
+      ${(f.extraction && (f.extraction.instruction_like || []).length) ? `<span class="cp-warn">${T("Contains text addressed to an AI", "Enthält Text an die KI")}</span>` : ""}
+      ${otherReference(f.id) ? `<span class="cp-warn" data-other-reference>${T("Names another case", "Nennt einen anderen Fall")}: ${raw(otherReference(f.id))}</span>` : ""}</span></button>${segmentRows(f)}`).join("");
   return `<aside class="cp-rail" aria-label="${T("Files", "Dateien")}">
     <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(caseName(d.case))}</div>
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
@@ -2158,7 +2170,7 @@ function preparedView(st) {
     ${c ? "" : `${resting ? "" : weilLine(act)}${resting ? "" : partialLine(act)}${resting ? "" : headBlock()}${leadLine(sc.lead)}${resting ? "" : decisionsStrip(dec, decisionPrimary)}${dec ? "" : progressLine(sc.progress)}${resting ? "" : changesStrip()}`}${tabs}
     ${stale && text ? `<p class="cp-stale-note">${T("Draft from before the new files", "Entwurf vor den neuen Dateien")} <button class="cp-link cp-quiet-link" id="use-anyway" type="button">${T("use anyway", "trotzdem verwenden")}</button></p>` : ""}
     ${c || asFrozen ? "" : conflictsView(active)}
-    ${text ? letterLangNote() : ""}
+    ${c || asFrozen ? "" : otherReferenceNote()}${text ? letterLangNote() : ""}
     <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${raw((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>
     ${asFrozen || c || !text ? "" : handoverLine()}
     <footer class="cp-bar ${asFrozen || c ? "" : "cp-carry"} ${barChanged(c ? "closed" : resting ? "rest" : barKind || "")}">${bar}</footer>
@@ -2243,7 +2255,10 @@ function letterView(text, editable) {
     const shown = (S.blockEdits || {})[s.text] ?? s.text;
     html += `<div class="cp-text" data-seg="text" data-orig="${raw(s.text)}" ${readingLetter() ? 'data-reading="1"' : editable ? `data-editable="1" tabindex="0" role="textbox" aria-multiline="true" aria-label="${T("Letter text", "Brieftext")}"` : ""} data-block="${n += 1}">${letterBlock(shown)}</div>`;
   });
-  flush(lastRow < 0 ? extra : "");
+  // «Weitere Vorschläge» and «Unterlage hinzufügen» stand where the letter lists what it asks for (a request, a reminder):
+  // a letter that asks for nothing line by line (an assessment, a status inquiry) would not carry what is added there
+  const asksByLine = /^(A1|A2|A3|request)$/.test(String((S.data.draft || {}).form || "")) || /^(A1|A2|A3|request)$/.test(String((S.data.draft || {}).kind || ""));
+  flush(lastRow < 0 && asksByLine ? extra : "");
   return html;
 }
 // The letter as it will be sent: the edited text blocks and the ticked lines, in order.
@@ -2844,6 +2859,7 @@ function bindOverview() {
     await api(`/api/cases/${S.route.id}/entries/${b.dataset.entryRemove}`, { method: "DELETE" }).catch((error) => { S.message = error.message; });
     await loadCase();
   });
+  on("#other-reference-open", "click", (b) => { S.file = b.dataset.file; location.hash = `#/case/${S.route.id}/claim_reader`; });
   on("#trail-open", "click", () => { S.trailOpen = !S.trailOpen; if (S.justFinished === S.route.id) { S.justFinished = null; S.trailOpen = false; } renderCase(); });
   on("#letter-original", "click", () => { S.letterOriginal = true; renderCase(); });
   on("#letter-reading", "click", async () => { if (await saveDraft()) { S.letterOriginal = false; renderCase(); } });
@@ -3635,7 +3651,9 @@ function carryButtons(active, opts) {
   const heldNote = heldNow ? `<span class="cp-stale-bar" data-held-now>${esc(heldText)}</span>` : "";
   if (bar.kind === "approve" && st.waits) {
     // the case waits for its date: quiet; the follow-up is prepared for then and can be approved earlier, never pressed for
-    return `${sentLine}<span class="cp-waits">${esc(st.waits)}</span><button class="cp-button" id="approve" title="${T("prepared for the follow-up date", "für die Wiedervorlage vorbereitet")}">${T("Approve and copy", "Freigeben und kopieren")}</button>`;
+    // … but not past a decision that is open: what the customer said last is settled first
+    const first = bar.decision ? T(`Decide first: ${bar.decision}`, `Zuerst entscheiden: ${bar.decision}`) : "";
+    return `${sentLine}<span class="cp-waits">${esc(st.waits)}</span><button class="cp-button" id="approve" ${first ? `disabled title="${esc(first)}"` : `title="${T("prepared for the follow-up date", "für die Wiedervorlage vorbereitet")}"`}>${T("Approve and copy", "Freigeben und kopieren")}</button>${first ? `<span class="cp-blocked" data-blocked>${esc(first)}</span>` : ""}`;
   }
   if (bar.kind === "approve") {
     if (opts.gaps) return `${gapsButton}${saving}${opts.whenAfter || opts.when}`;

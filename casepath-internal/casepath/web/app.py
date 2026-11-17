@@ -1076,6 +1076,23 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 return {"value": reference_found[f["id"]], "file": f["id"], "name": f.get("name")}
         return None
 
+    references_in = {}  # file id → every reference number in its name and the start of its text
+
+    def _other_references(case_id, own):
+        """Files of a case that name another reference number and not the case's own: [{file, name, reference}]. A mail
+        dropped on the wrong case is read like any other, so the page says it before its content is relied on."""
+        pattern, out = re.compile(settings.reference_pattern), []
+        for f in store.list_files(case_id):
+            if f["id"] not in references_in:
+                if len(references_in) > 4000:
+                    references_in.clear()
+                text = str((store.get_file(f["id"], with_text=True).get("extraction") or {}).get("text") or "")[:6000]
+                references_in[f["id"]] = sorted({m.group(0) for part in (str(f.get("name") or ""), text) for m in pattern.finditer(part)})
+            found = references_in[f["id"]]
+            if found and own not in found:
+                out.append({"file": f["id"], "name": f.get("name"), "reference": found[0]})
+        return out
+
     def _identity(row, who, with_proposal=False):
         """What identifies a case for the people working on it: its reference number (the one it carries, else one in its
         title), who is responsible for it (its owner, else who created it) and the deputy; ``mine``: the reader is either."""
@@ -1085,6 +1102,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                "mine": who in (owner, row.get("deputy"))}
         if with_proposal and not ref and not (row.get("intake") or {}).get("study"):
             out["reference_proposed"] = _reference_proposal(row["id"])
+        if with_proposal and ref and not (row.get("intake") or {}).get("study"):
+            out["other_references"] = _other_references(row["id"], ref.group(0))
         return out
 
     mail_blocks = {}  # file id → the mail headers in its text (a file's content never changes)

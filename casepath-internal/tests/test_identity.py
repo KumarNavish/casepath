@@ -88,5 +88,33 @@ class IdentityTests(unittest.TestCase):
         self.assertEqual(self.a.get(f"/api/cases/{cid}").json()["case"]["reference"], "S-2026-17")
 
 
+class OtherCaseTests(unittest.TestCase):
+    """A file that names another case's reference number and not this case's is said on the page before it is relied on."""
+
+    def test_a_mail_for_another_case_is_named_and_a_file_of_this_case_is_not(self):
+        import tempfile
+        from fastapi.testclient import TestClient
+        from casepath.config import load_settings
+        from casepath.web.app import create_app
+        with tempfile.TemporaryDirectory() as folder:
+            client = TestClient(create_app(load_settings({"CASEPATH_DATA_DIR": folder, "CASEPATH_DEV_USER": "dev"}), model_factory=lambda: None))
+            cid = client.post("/api/cases", json={"title": "Fall"}).json()["id"]
+            client.put(f"/api/cases/{cid}/identity", json={"reference": "4321.7000.0042"})
+            client.post(f"/api/cases/{cid}/files", files={"file": ("eigene.txt", "Betreff: Schadenfall 4321.7000.0042\nText".encode(), "text/plain")})
+            client.post(f"/api/cases/{cid}/files", files={"file": ("ohne.txt", b"Ein Text ohne Referenz", "text/plain")})
+            self.assertEqual(client.get(f"/api/cases/{cid}").json()["case"]["other_references"], [])
+            other = client.post(f"/api/cases/{cid}/files", files={"file": ("fremd.txt", "Betreff: Schadenfall 4321.7000.0099\nText".encode(), "text/plain")}).json()
+            rows = client.get(f"/api/cases/{cid}").json()["case"]["other_references"]
+            self.assertEqual([(r["name"], r["reference"]) for r in rows], [("fremd.txt", "4321.7000.0099")])
+            self.assertEqual(rows[0]["file"], other["id"])
+
+    def test_the_page_says_it_on_the_file_and_above_the_step(self):
+        from pathlib import Path
+        script = (Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets" / "casepath.js").read_text(encoding="utf-8")
+        self.assertIn("data-other-reference>", script)
+        self.assertIn("function otherReferenceNote()", script)
+        self.assertIn("const first = bar.decision ? T(`Decide first: ${bar.decision}`", script)  # a follow-up is not approved past an open decision
+
+
 if __name__ == "__main__":
     unittest.main()
