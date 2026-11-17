@@ -338,6 +338,30 @@ class AppTests(unittest.TestCase):
         plain = client.post(f"/api/cases/{case['id']}/edits", json={**body, "reason_code": "3", "args": {**body["args"], "title": "Anderes"}}).json()
         self.assertIsNone(plain["knowledge"])  # a correction for this case only stays in the case
 
+    def test_a_list_row_is_worked_out_once_and_again_only_when_its_case_changed(self):
+        from unittest import mock
+        from casepath.web import listing
+        client = self.client()
+        case, file = self.new_case(client, "Fall für die Liste")
+        other, _ = self.new_case(client, "Zweiter Fall")
+        self.run_with(client, case["id"], ScriptedModel(team_script(file["id"])))
+        with mock.patch.object(listing, "stand", wraps=listing.stand) as worked:
+            first = client.get("/api/cases").json()["cases"]
+            self.assertEqual(worked.call_count, 2)                      # both cases, once
+            again = client.get("/api/cases").json()["cases"]
+            client.get("/api/today", params={"since": "2020-01-01T00:00:00Z"})
+            self.assertEqual(worked.call_count, 2)                      # the list again and «Heute»: nothing worked out anew
+            self.assertEqual(first, again)
+            self.assertEqual(client.post(f"/api/cases/{case['id']}/events", json={"kind": "source.opened", "item_id": "document:notice_letter"}).status_code, 201)
+            client.get("/api/cases")
+            self.assertEqual(worked.call_count, 3)                      # an event on one case: that case only
+            client.put(f"/api/cases/{other['id']}/title", json={"title": "Zweiter Fall, umbenannt"})
+            rows = {r["id"]: r for r in client.get("/api/cases").json()["cases"]}
+            self.assertEqual((worked.call_count, rows[other["id"]]["title"]), (4, "Zweiter Fall, umbenannt"))
+            with mock.patch("casepath.process.completion.swiss_today", return_value=__import__("datetime").date(2031, 1, 1)):
+                client.get("/api/cases")
+            self.assertEqual(worked.call_count, 6)                      # another day: dates fall due by time alone, every row anew
+
     def test_the_auswertung_is_content_free_and_the_app_reports_its_manifest(self):
         client = self.client()
         case, file = self.new_case(client, "Auswertung Fall mit Namen")

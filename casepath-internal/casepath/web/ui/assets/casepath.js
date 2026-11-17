@@ -151,6 +151,9 @@ const S = { listMine: listMineStored, me: null, route: {}, data: null, pages: {}
 async function api(path, options = {}) {
   const headers = options.body && !(options.body instanceof FormData) ? { "content-type": "application/json" } : {};
   if (reading()) headers["x-casepath-lang"] = LANG;
+  // anything written may change how a case stands in the list; looking alone (a case opened, a source opened) does not
+  if (options.method && options.method !== "GET" && !path.startsWith("/api/translate")
+    && !(path.endsWith("/events") && /"kind":"(case\.opened|idle\.started|idle\.ended|source\.opened|item\.exposed)"/.test(String(options.body || "")))) S.listStale = true;
   const response = await fetch(path, { ...options, headers });
   const type = response.headers.get("content-type") || "";
   const body = type.includes("json") ? await response.json() : await response.text();
@@ -413,23 +416,41 @@ function todayPanel(rows, today, since, walkEnd, tools) {
 }
 // A filter, a day or a typed search narrows the cases already here at once (kept: true); the list is fetched when it is
 // opened and after anything that changes it.
+// The list's data: the cases, the processes, the service's state and what happened since the reader last looked. Returns
+// whether the cases differ from what the page held.
+async function loadList(sinceMark) {
+  const got = await Promise.all([api("/api/cases"), api("/api/workflows"), api("/api/health"),
+    api(`/api/today${sinceMark ? `?since=${encodeURIComponent(sinceMark)}` : ""}`).catch(() => null)]);
+  const imported = got[2].imports ? await api("/api/imports").catch(() => null) : null;
+  const print = (d) => JSON.stringify([d.got[0], d.got[3] && d.got[3].events, d.got[3] && d.got[3].done, d.imported]);
+  const changed = !S.listData || S.listData.lang !== LANG || print(S.listData) !== print({ got, imported });
+  S.listData = { lang: LANG, got, imported };
+  S.listStale = false;
+  try { localStorage.setItem("cp-last-visit", new Date().toISOString()); } catch (error) { /* a convenience only */ }
+  // a case whose status changed since the list was last on this screen (a letter approved, an answer arrived, a
+  // day passed) says so on its row once: what it was before, beside what it is now
+  const seen = S.listSeen || {}, moved = {};
+  for (const c of got[0].cases || []) {
+    const now = { text: (c.stand || {}).text || "", kind: (c.stand || {}).kind || "" };
+    if (seen[c.id] && seen[c.id].text !== now.text) moved[c.id] = seen[c.id];
+    seen[c.id] = now;
+  }
+  S.listSeen = seen; S.listMoved = moved;
+  return changed;
+}
 async function renderCases(kept) {
   const sinceMark = visitFrom;
-  if (!(kept && S.listData && S.listData.lang === LANG)) {
-    const got = await Promise.all([api("/api/cases"), api("/api/workflows"), api("/api/health"),
-      api(`/api/today${sinceMark ? `?since=${encodeURIComponent(sinceMark)}` : ""}`).catch(() => null)]);
-    const imported = got[2].imports ? await api("/api/imports").catch(() => null) : null;
-    S.listData = { lang: LANG, got, imported };
-    // a case whose status changed since the list was last on this screen (a letter approved, an answer arrived, a
-    // day passed) says so on its row once: what it was before, beside what it is now
-    const seen = S.listSeen || {}, moved = {};
-    for (const c of got[0].cases || []) {
-      const now = { text: (c.stand || {}).text || "", kind: (c.stand || {}).kind || "" };
-      if (seen[c.id] && seen[c.id].text !== now.text) moved[c.id] = seen[c.id];
-      seen[c.id] = now;
-    }
-    S.listSeen = seen; S.listMoved = moved;
-    try { localStorage.setItem("cp-last-visit", new Date().toISOString()); } catch (error) { /* a convenience only */ }
+  const held = S.listData && S.listData.lang === LANG;
+  if (!(kept && held)) {
+    // Back from a case in which nothing was written, the list is there at once as it was and is brought up to date
+    // behind it (redrawn only if something differs); after anything was written it is asked for anew first.
+    if (held && !S.listStale) {
+      loadList(sinceMark).then((changed) => {
+        if (!changed || S.route.view !== "cases") return;
+        const at = document.activeElement, typing = at && at.id === "list-search" ? [at.selectionStart, at.selectionEnd] : null;
+        renderCases(true).then(() => { const el = typing && $("#list-search"); if (el) { el.focus(); try { el.setSelectionRange(typing[0], typing[1]); } catch (error) { /* not a text field */ } } });
+      }).catch(() => {});
+    } else await loadList(sinceMark);
   }
   const [casesGot, workflows, health, since] = S.listData.got, imports = S.listData.imported;
   const cases = { ...casesGot };

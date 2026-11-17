@@ -261,7 +261,9 @@ class CraftTests(unittest.TestCase):
     def test_a_day_of_the_week_pressed_narrows_the_list_to_that_day(self):
         self.assertIn('const only = dayOnly ? (c) => Boolean(c.due && c.due.date === dayOnly', SCRIPT)
         self.assertIn("S.rowsIn = true; renderCases(true);", SCRIPT)    # the rows come in again, the head stays
-        self.assertIn("if (!(kept && S.listData && S.listData.lang === LANG)) {", SCRIPT)  # from the cases already here: at once
+        self.assertIn("const held = S.listData && S.listData.lang === LANG;", SCRIPT)   # from the cases already here: at once
+        self.assertIn("if (held && !S.listStale) {", SCRIPT)                              # back from a case nothing was written in: the list is there, refreshed behind
+        self.assertIn("} else await loadList(sinceMark);", SCRIPT)                        # after anything was written: asked for anew first
 
     def test_what_is_opened_is_read_from_its_top_and_a_menu_stays_on_its_page(self):
         self.assertIn("if (moved) window.scrollTo(0, 0);", SCRIPT)

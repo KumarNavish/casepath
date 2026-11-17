@@ -317,6 +317,23 @@ class CaseStore:
         rows = self._all("select id from runs where case_id=? and status='completed' order by created_at desc, rowid desc limit ?", case_id, limit)
         return [self.get_run(r["id"]) for r in rows]
 
+    def row_versions(self):
+        """What a case's row in the list can change with, as one short string per case: the case itself, its last
+        event, its files, its latest run, its edits (and how many still hold) and the handler's saved letter text; and
+        one string for what every row can change with (the Knowledge base, the jurists' marks). ({case id: str}, str)"""
+        rows = self._all(
+            "select c.id, c.updated_at,"
+            " (select max(seq) from events e where e.case_id=c.id) as ev,"
+            " (select count(*)||':'||coalesce(max(created_at),'') from files f where f.case_id=c.id) as fi,"
+            " (select id||':'||status||':'||coalesce(finished_at,'') from runs r where r.case_id=c.id order by created_at desc, rowid desc limit 1) as ru,"
+            " (select count(*)||':'||coalesce(sum(status='active'),0)||':'||coalesce(max(created_at),'') from case_edits d where d.case_id=c.id) as ed,"
+            " (select count(*)||':'||coalesce(max(at),'') from drafts t where t.case_id=c.id) as dr"
+            " from cases c")
+        shared = self._one("select (select count(*)||':'||coalesce(max(updated_at),'') from knowledge) as k,"
+                           " (select count(*)||':'||coalesce(max(at),'') from reviews) as r")
+        return ({r["id"]: "|".join(str(r[k]) for k in ("updated_at", "ev", "fi", "ru", "ed", "dr")) for r in rows},
+                f"{shared['k']}|{shared['r']}")
+
     def first_prepared(self, case_id):
         """When the case's first preparation finished (None: never prepared)."""
         row = self._one("select finished_at from runs where case_id=? and status='completed' and finished_at is not null"

@@ -121,3 +121,7 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
 2. Grant the service's identity access to the model deployment, and set the credential and, if one is used, the gateway host.
 3. Build the queue consumer around `core.prepare` and the blob reader. Run `tests/test_core.py`'s job through it.
 4. Point the benchmark evaluator at the deployment: `python -m casepath evaluate run <suite> --catalogue <dir> --out <dir> --url <base url> --identity-header <header>` (the identity value in `CASEPATH_EVAL_IDENTITY`). Compare it with the workspace's results using `evaluate compare`. Any regression is listed by case and check.
+
+## The case list stays fast
+
+A row of the list is worked out from the case's whole state, which costs as much as opening the case. With a hundred cases that was 5 to 11 seconds per list on the pilot, and the list is asked for at every return to it (and once more by «Heute»). The server now keeps each row until something it can change with changes: the case, its events, files, runs, edits or saved letter text, the Knowledge base, the jurists' marks, or the day (`store.row_versions`, `case_rows` in `web/app.py`); never longer than ten minutes, so a dependency the key should ever miss corrects itself. The page shows the list at once as it was when the reader comes back from a case in which nothing was written, and brings it up to date behind; after anything was written it asks anew first. Nothing is stored outside the process: a restart works every row out once.

@@ -8,6 +8,7 @@ The browser never receives a model credential.
 """
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
+import copy
 import hashlib
 import os
 import re
@@ -16,6 +17,7 @@ import html
 import json
 import importlib.util
 import threading
+import time
 from dataclasses import replace
 from pathlib import Path
 from typing import Literal
@@ -819,55 +821,77 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         # a case the reader may not open (CASEPATH_CASE_ACCESS «owner») is listed by its number and owner only
         rows = [r if system or may_open(r, who) else {"id": r["id"], "locked": True, "intake": {}, "title": "", "created_at": r["created_at"],
                                             **{k: v for k, v in _identity(r, who).items() if k in ("reference", "owner", "deputy", "mine")}} for r in rows]
+        # A row is worked out from the case's whole state, which costs the same as opening the case; with a hundred cases
+        # that is seconds per list, and the list is asked for at every return to it. So a row is kept until something it
+        # can change with changes: the case, its events, files, runs, edits or saved letter text, the Knowledge base, the
+        # jurists' marks, or the day (dates fall due by time alone). Never longer than ROW_MINUTES, so a dependency this
+        # key should miss is put right by itself.
+        versions, shared = store.row_versions()
+        from ..process import completion as _completion
+        shared = f"{shared}|{_completion.swiss_today().isoformat()}"
+        for stale in [k for k in list(row_memo) if k not in versions]:
+            row_memo.pop(stale, None)
         for row in rows:  # the next date a case is to be looked at: the list sorts by it
             if row.get("locked"):
                 continue
             row.update(_identity(row, who))
-            events = store.list_case_events(row["id"])
-            row["closed"] = any(e["kind"] == "case.closed" for e in events)
-            runs_in = _list_run_inputs(row)
-            completed, case_files = runs_in["run"], runs_in["files"]
-            row["new_files"] = runs_in["new_files"]  # the files its last run did not read
-            cut_day = listing.as_of(case_files)  # a test cut of a historic file: looked at as of its own day, listed apart
-            row["as_of"] = cut_day.isoformat() if cut_day else None
-            # a historic file (a cut, or a whole old file uploaded for testing, or as a person placed it): listed apart, never overdue
-            row["historic"] = historic_file(case_files, row.get("created_at"), events)
-            listed, action, current = [], None, None
-            if completed:
-                try:
-                    current = state(row["id"])
-                    listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events,
-                                         None if (row.get("intake") or {}).get("study") else marks)
-                    action = prepared_action(current, listed, events)[0]
-                    clock = _clock(current, action, listed, store.list_files(row["id"]), store.list_case_events(row["id"]))
-                    row["follow_up"] = clock and clock["due"]
-                    row["overdue_on"] = listing.overdue_day(listed, clock)
-                    row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
-                    row["display_title"] = listing.display_title(row, listed, area_title(current.get("process")),
-                                                                 renamed=any(e["kind"] == "case.renamed" for e in events))
-                    row["headline"] = listing.headline(row, listed, area_title(current.get("process")),
-                                                       renamed=any(e["kind"] == "case.renamed" for e in events))
-                    row["parties"] = listing.parties_line(listed)
-                    contact = next((i for i in listed if i["kind"] == "contact"), None)  # the first contact the insurer promises (cover.py)
-                    row["first_contact"] = contact and {"due": contact["value"], "late": contact.get("late"), "rule": contact.get("rule")}
-                    # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
-                    deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and i.get("direction") != "ab" and i.get("party") != "gegenpartei"
-                                       and not (i.get("account") and i.get("party") not in ("kunde", "versicherer")) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
-                    # The customer's own statutory deadline that set the follow-up before it is what the list shows.
-                    own = own_deadlines(listed, store.list_files(row["id"])) if (clock or {}).get("capped") else []
-                    dates = [own[0]["value"]] if own else [d for d in [row["follow_up"], deadlines[0] if deadlines else None] if d]
-                    row["next_date"] = min(dates) if dates else None
-                    row["next_date_kind"] = None if not dates else "frist" if own or (deadlines and row["next_date"] == deadlines[0]) else "wiedervorlage"
-                except Exception:  # noqa: BLE001  a case that cannot be evaluated still lists
-                    row["follow_up"] = None
-            row.setdefault("display_title", row["title"])
-            row["stand"] = listing.stand(closed=row["closed"], run_status=runs_in["run_status"], new_files=row["new_files"], items=listed,
-                                         follow_up=row.get("follow_up"), events=events, completed_at=(completed or {}).get("created_at"),
-                                         files=case_files, historic=row["historic"], run_kind=runs_in["run_kind"],
-                                         completion=_list_completion(row, current, listed, events, case_files), overdue_on=row.get("overdue_on"))
-            row["due"] = listing.due(listed, row.get("follow_up"), case_files, row["historic"], closed=row["stand"]["kind"] == "closed",
-                                     overdue_on=row.get("overdue_on"))
+            key, kept = (versions.get(row["id"]), shared), row_memo.get(row["id"])
+            if kept and kept[0] == key and time.monotonic() - kept[2] < ROW_MINUTES * 60:
+                row.update(copy.deepcopy(kept[1]))
+                continue
+            before = dict(row)
+            _row_fill(row, marks)
+            row_memo[row["id"]] = (key, copy.deepcopy({k: v for k, v in row.items() if k not in before or before[k] != v}), time.monotonic())
         return rows
+
+    row_memo, ROW_MINUTES = {}, 10  # case id → (what it was worked out from, the row's worked-out fields, when)
+
+    def _row_fill(row, marks):
+        """The worked-out part of a case's row: what comes next, when it is due, how it stands (see case_rows)."""
+        events = store.list_case_events(row["id"])
+        row["closed"] = any(e["kind"] == "case.closed" for e in events)
+        runs_in = _list_run_inputs(row)
+        completed, case_files = runs_in["run"], runs_in["files"]
+        row["new_files"] = runs_in["new_files"]  # the files its last run did not read
+        cut_day = listing.as_of(case_files)  # a test cut of a historic file: looked at as of its own day, listed apart
+        row["as_of"] = cut_day.isoformat() if cut_day else None
+        # a historic file (a cut, or a whole old file uploaded for testing, or as a person placed it): listed apart, never overdue
+        row["historic"] = historic_file(case_files, row.get("created_at"), events)
+        listed, action, current = [], None, None
+        if completed:
+            try:
+                current = state(row["id"])
+                listed = build_items(current, (current["run"] or {}).get("result"), store.list_files(row["id"]), events,
+                                     None if (row.get("intake") or {}).get("study") else marks)
+                action = prepared_action(current, listed, events)[0]
+                clock = _clock(current, action, listed, store.list_files(row["id"]), store.list_case_events(row["id"]))
+                row["follow_up"] = clock and clock["due"]
+                row["overdue_on"] = listing.overdue_day(listed, clock)
+                row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
+                row["display_title"] = listing.display_title(row, listed, area_title(current.get("process")),
+                                                             renamed=any(e["kind"] == "case.renamed" for e in events))
+                row["headline"] = listing.headline(row, listed, area_title(current.get("process")),
+                                                   renamed=any(e["kind"] == "case.renamed" for e in events))
+                row["parties"] = listing.parties_line(listed)
+                contact = next((i for i in listed if i["kind"] == "contact"), None)  # the first contact the insurer promises (cover.py)
+                row["first_contact"] = contact and {"due": contact["value"], "late": contact.get("late"), "rule": contact.get("rule")}
+                # One next date per case: the follow-up or a deadline stored in the file, whichever comes first (point 4).
+                deadlines = sorted(i["value"] for i in listed if i["kind"] == "deadline" and i.get("direction") != "ab" and i.get("party") != "gegenpartei"
+                                   and not (i.get("account") and i.get("party") not in ("kunde", "versicherer")) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(i.get("value") or "")))
+                # The customer's own statutory deadline that set the follow-up before it is what the list shows.
+                own = own_deadlines(listed, store.list_files(row["id"])) if (clock or {}).get("capped") else []
+                dates = [own[0]["value"]] if own else [d for d in [row["follow_up"], deadlines[0] if deadlines else None] if d]
+                row["next_date"] = min(dates) if dates else None
+                row["next_date_kind"] = None if not dates else "frist" if own or (deadlines and row["next_date"] == deadlines[0]) else "wiedervorlage"
+            except Exception:  # noqa: BLE001  a case that cannot be evaluated still lists
+                row["follow_up"] = None
+        row.setdefault("display_title", row["title"])
+        row["stand"] = listing.stand(closed=row["closed"], run_status=runs_in["run_status"], new_files=row["new_files"], items=listed,
+                                     follow_up=row.get("follow_up"), events=events, completed_at=(completed or {}).get("created_at"),
+                                     files=case_files, historic=row["historic"], run_kind=runs_in["run_kind"],
+                                     completion=_list_completion(row, current, listed, events, case_files), overdue_on=row.get("overdue_on"))
+        row["due"] = listing.due(listed, row.get("follow_up"), case_files, row["historic"], closed=row["stand"]["kind"] == "closed",
+                                 overdue_on=row.get("overdue_on"))
 
     # The daily pass: every open case looked at again without a model. What moved by time alone since the pass before (a
     # follow-up fell due, a wait ran out, a deadline came near; nobody touched the case and no run finished) is written
