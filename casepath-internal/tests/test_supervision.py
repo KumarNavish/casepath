@@ -204,6 +204,8 @@ class WalkTests(Gate):
     def test_the_counts_of_today_narrow_the_list(self):
         self.assertIn("data-today-filter", SCRIPT)
         self.assertIn("const LIST_FILTERS", SCRIPT)
+        self.assertIn('class="cp-week"', SCRIPT)   # the working week ahead: what falls due on each of the next five working days
+        self.assertIn("day:", SCRIPT)
         self.assertNotIn("data-today-bucket", SCRIPT)
 
     def test_the_jurists_state_is_not_said_in_the_handlers_word(self):
@@ -256,6 +258,9 @@ class CraftTests(unittest.TestCase):
         self.assertIn("function foldSide()", SCRIPT)          # «Der Fall» in lines: long sections fold to a name, a count, a first line
         self.assertIn('class="cp-segs-fold"', SCRIPT)         # a file's documents wait folded under it
         self.assertIn("function preparedBy()", SCRIPT)        # what CasePath did and when it finished, above the step
-        self.assertIn("S.justFinished = S.route.id", SCRIPT)  # said in green when it finished while the reader watched
+        self.assertIn("S.justFinished = here", SCRIPT)        # said in green when it finished while the reader watched
+        self.assertIn("S.finishing = true", SCRIPT)            # and said for a moment on the stage, every step ticked, before the step arrives
+        self.assertIn('class="cp-runline cp-work"', SCRIPT)    # at work: what it does, what it reads now, what it found so far
+        self.assertIn("function enter(key)", SCRIPT)           # a moment plays once, when it happens, never on a mere refresh
         self.assertIn('data-head-open="news"', SCRIPT)        # the head is one sentence; what changed opens from it
         self.assertNotIn("linear-gradient", STYLE[STYLE.index("Craft layer"):])  # no ornament: flat colour, one accent

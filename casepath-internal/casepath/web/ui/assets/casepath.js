@@ -203,7 +203,14 @@ function todayPanel(rows, today, since, walkEnd) {
   if (!open.length) return "";
   const n = (bucket) => open.filter((c) => bucketOf(c) === bucket).length;
   const due = open.filter((c) => c.due && c.due.date <= today && !c.as_of).length;
-  const count = (k, text, key) => `<button type="button" class="cp-today-count ${k ? "" : "zero"} ${S.listFilter === key ? "on" : ""}" data-today-filter="${key}" aria-pressed="${S.listFilter === key}" ${k || S.listFilter === key ? "" : "disabled"}><b>${k}</b> ${text}</button>`;
+  // the day as one statement, then the list's filters as one control: each names its cases and how many they are
+  const urteil = n("urteil"), ready = n("versandbereit"), waits = n("wartet");
+  const seg = (k, text, key) => { const on = (S.listFilter || "") === key;
+    return `<button type="button" class="cp-filter-item ${on ? "on" : ""}" data-today-filter="${key}" aria-pressed="${on}" ${k || on ? "" : "disabled"}>${text}<b>${k}</b></button>`; };
+  const first = due ? T(`${due} ${due === 1 ? "case is" : "cases are"} due today.`, `${due} ${due === 1 ? "Fall ist" : "Fälle sind"} heute fällig.`)
+    : urteil ? T(`${urteil} ${urteil === 1 ? "case needs" : "cases need"} your judgment.`, `${urteil} ${urteil === 1 ? "Fall braucht" : "Fälle brauchen"} Ihr Urteil.`) : T("Nothing needs you right now.", "Im Moment braucht Sie nichts.");
+  const second = due && urteil ? T(`${urteil} need your judgment.`, `${urteil} brauchen Ihr Urteil.`) : due || urteil ? (due ? "" : T("Nothing is overdue.", "Nichts ist überfällig."))
+    : waits ? T(`${waits} ${waits === 1 ? "case waits" : "cases wait"} for an answer.`, `${waits} ${waits === 1 ? "Fall wartet" : "Fälle warten"} auf Antwort.`) : "";
   const events = (since && since.events) || [];
   const day = (iso) => { const d = new Date(iso); return Number.isNaN(d.getTime()) ? "" : `${dateText(iso)} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
   const tick = (since && since.tick) || {};
@@ -212,11 +219,25 @@ function todayPanel(rows, today, since, walkEnd) {
   const dayLine = done ? `<p class="cp-day" data-day><span class="cp-day-track" role="img" aria-label="${T(`${done} of ${done + left} done today`, `${done} von ${done + left} heute erledigt`)}"><span class="cp-day-fill" style="width:${Math.max(4, Math.round(100 * done / (done + left)))}%"></span></span>
       <span><b>${done}</b> ${T("done today", "heute erledigt")} · ${left} ${T("still need you", "brauchen Sie noch")}</span></p>` : "";
   const weekday = (() => { try { return new Date(`${today}T12:00:00`).toLocaleDateString(LANG === "de" ? "de-CH" : "en-GB", { weekday: "long", day: "numeric", month: "long" }); } catch (error) { return dateText(today); } })();
-  return `<section class="cp-today" data-today aria-label="${T("Today", "Heute")}"><h2>${T("Today", "Heute")} · ${esc(weekday)}</h2>
-    <p class="cp-today-counts">${count(n("urteil"), T("need your judgment", "brauchen Ihr Urteil"), "urteil")}${count(n("versandbereit"), T("ready to send", "versandbereit"), "versandbereit")}
-      ${count(due, T("due today or overdue", "heute fällig oder überfällig"), "due")}${count(n("wartet"), T("waiting", "warten"), "wartet")}
-      ${open.some(needsReader) ? `<button class="cp-button primary cp-walk" id="walk-start" type="button">${T("Go through the cases", "Fälle durchgehen")} ${icon("right")}</button>` : ""}</p>
-    ${dayLine}${walkEnd ? `<p class="cp-walk-end" role="status">${icon("tick")}${T("You have been through every case that needs you.", "Sie haben alle Fälle durchgesehen, die Sie brauchen.")}</p>` : ""}
+  // a greeting by the time of day and the reader's name, then the day in one line
+  const hour = new Date().getHours();
+  const hello = hour < 11 ? T("Good morning", "Guten Morgen") : hour < 17 ? T("Good afternoon", "Guten Tag") : T("Good evening", "Guten Abend");
+  const me = String(S.me || ""), name = me.includes("@") ? me.split("@")[0].split(/[._-]/)[0].replace(/^./, (c) => c.toUpperCase()) : me;
+  // the working week ahead: how many cases fall due on each of the next five working days (today's tile holds what is overdue too)
+  const days = []; for (let d = new Date(`${today}T12:00:00`); days.length < 5; d.setDate(d.getDate() + 1)) if (d.getDay() % 6) days.push(new Date(d));
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const week = days.map((d) => { const key = iso(d) === today ? "due" : `day:${iso(d)}`, k = key === "due" ? due : open.filter((c) => c.due && c.due.date === iso(d) && !c.as_of).length, on = S.listFilter === key;
+    return `<button type="button" class="cp-wday ${iso(d) === today ? "today" : ""} ${on ? "on" : ""}" data-today-filter="${key}" aria-pressed="${on}" ${k || on ? "" : "disabled"} title="${dateText(iso(d))}">
+      <span>${d.toLocaleDateString(LANG === "de" ? "de-CH" : "en-GB", { weekday: "short" }).replace(".", "")}</span><b>${d.getDate()}</b><i>${k ? T(`${k} due`, `${k} fällig`) : "–"}</i></button>`; }).join("");
+  return `<section class="cp-hero" data-today aria-label="${T("Today", "Heute")}">
+    <div class="cp-hero-top"><div class="cp-hero-text"><p class="cp-eyebrow">${esc(weekday)}</p>
+        <h2 class="cp-hero-title">${hello}${name ? `, <em>${esc(name)}</em>` : ""}</h2>
+        <p class="cp-hero-lead">${esc(first)}${second ? ` ${esc(second)}` : ""}</p>
+        ${dayLine}${walkEnd ? `<p class="cp-walk-end" role="status">${icon("tick")}${T("You have been through every case that needs you.", "Sie haben alle Fälle durchgesehen, die Sie brauchen.")}</p>` : ""}</div>
+      <div class="cp-hero-side"><div class="cp-week" role="group" aria-label="${T("Due in the coming days", "Fällig in den nächsten Tagen")}">${week}</div>
+        ${open.some(needsReader) ? `<button class="cp-button primary cp-walk" id="walk-start" type="button">${T("Go through the cases", "Fälle durchgehen")} ${icon("right")}</button>` : ""}</div></div>
+    <div class="cp-filter" role="group" aria-label="${T("Show", "Zeigen")}">${seg(open.length, T("All", "Alle"), "")}${seg(urteil, T("Need your judgment", "Braucht Ihr Urteil"), "urteil")}${seg(due, T("Due today or overdue", "Heute fällig"), "due")}
+      ${seg(ready, T("Ready to send", "Versandbereit"), "versandbereit")}${seg(waits, T("Waiting", "Wartet"), "wartet")}</div>
     ${events.length ? `<div class="cp-today-since"><p class="cp-muted">${T("Since your last visit", "Seit Ihrem letzten Besuch")} (${day(since.since)}):</p><ul>${events.slice(0, 6).map((e) =>
       `<li><a href="#/case/${esc(e.case)}/overview">${e.reference ? `<span class="cp-ref">${esc(e.reference)}</span> ` : ""}${esc(e.title || "")}</a> · ${esc(e.what)} <span class="cp-muted">· ${esc(e.by || "")} · ${day(e.at)}</span></li>`).join("")}
       ${events.length + (since.more || 0) > 6 ? `<li class="cp-muted">${T(`and ${events.length + (since.more || 0) - 6} more`, `und ${events.length + (since.more || 0) - 6} weitere`)}</li>` : ""}</ul></div>` : ""}
@@ -251,7 +272,8 @@ async function renderCases() {
   const hay = (c) => [c.reference, c.headline, c.display_title, c.title, c.parties, (c.next_action || {}).text, standText(c), c.owner, c.deputy].filter(Boolean).join(" ").toLowerCase();
   const lockedRows = cases.cases.filter((c) => c.locked);  // cases of colleagues (need-to-know): the number and the owner only
   cases.cases = cases.cases.filter((c) => !c.locked);
-  const only = LIST_FILTERS[S.listFilter] || null;
+  const dayOnly = /^day:/.test(S.listFilter || "") ? S.listFilter.slice(4) : null;  // a day of the week strip: what falls due then
+  const only = dayOnly ? (c) => Boolean(c.due && c.due.date === dayOnly && !c.as_of && !c.historic && standOf(c) !== "closed") : LIST_FILTERS[S.listFilter] || null;
   const shownCases = cases.cases.filter((c) => (!mineOnly || c.mine) && (!q || q.split(/\s+/).every((w) => hay(c).includes(w))) && (!only || only(c, today)));
   const anyMine = cases.cases.some((c) => c.mine) && cases.cases.some((c) => !c.mine);
   const ordered = orderedCases(shownCases);
@@ -288,7 +310,7 @@ async function renderCases() {
         : `<p class="cp-muted">${T("No files there yet.", "Noch keine Dateien dort.")}</p>`}` : ""}</main>`;
   S.message = "";
   for (const b of document.querySelectorAll("[data-today-filter]")) b.addEventListener("click", () => {  // a count narrows the list to its cases
-    S.listFilter = S.listFilter === b.dataset.todayFilter ? null : b.dataset.todayFilter; renderCases();
+    S.listFilter = !b.dataset.todayFilter || S.listFilter === b.dataset.todayFilter ? null : b.dataset.todayFilter; renderCases();
   });
   const all = $("#list-all");
   if (all) all.addEventListener("click", () => { S.listFilter = null; renderCases(); });
@@ -1517,7 +1539,8 @@ function stageLine() {
   const left = rows.filter((x) => !x.span || x.span.open).reduce((n, x) => n + Math.max(0, x.stage.expect - (x.span ? (now - x.span.start) / 1000 : 0)), 0);
   // a stage that already took longer than usual: no number that would stand still, the line says so instead
   const over = rows.some((x) => x.span && x.span.open && (now - x.span.start) / 1000 > x.stage.expect);
-  const cells = rows.map(({ stage }, i) => `<li class="${i < nowAt ? "done" : i === nowAt ? "now" : ""}">${i < nowAt ? icon("tick") : ""}${T(stage.en, stage.de)}</li>`).join("");
+  if (S.finishing) nowAt = rows.length;  // finished: every stage is ticked for the moment before the prepared step arrives
+  const cells = rows.map(({ stage }, i) => `<li class="${i < nowAt ? `done${enter(`stage:${stage.id}`)}` : i === nowAt ? "now" : ""}">${i < nowAt ? icon("tick") : ""}${T(stage.en, stage.de)}</li>`).join("");
   return { cells, left: known && !over ? Math.max(5, Math.round(left / 5) * 5) : null, over: known && over, agents: (rows[nowAt] || rows[rows.length - 1]).stage.agents };
 }
 function runLine(st) {
@@ -1529,15 +1552,35 @@ function runLine(st) {
     const last = S.events.slice().reverse().find((e) => e.file && e.agent !== "lead" && (!agents || agents.includes(e.agent))) || {};
     const doing = { reader: T("reads", "liest"), claim_reader: T("reads", "liest"), document_finder: T("looks for documents in", "sucht Unterlagen in"),
       source_checker: T("checks the sources in", "prüft die Belege in"), result_checker: T("checks the result against", "prüft das Ergebnis an") }[last.agent] || T("starts on", "beginnt mit");
-    const where = last.file ? `<button class="cp-link" data-cite-file="${esc(last.file)}" data-page="${last.page || last.from_page || ""}">${esc(clip(fileName(last.file), 40))}${last.page || last.from_page ? `, ${T("p.", "S.")} ${last.page || last.from_page}` : ""}</button>` : T("the files", "den Akten");
+    const where = last.file ? `<button class="cp-link" data-cite-file="${esc(last.file)}" data-page="${last.page || last.from_page || ""}">${esc(clip(fileName(last.file), 40))}${last.page || last.from_page ? `, ${T("p.", "S.")} ${last.page || last.from_page}` : ""}</button>` : T("with the files", "mit den Akten");
     const routed = S.events.find((e) => e.kind === "routing.decided");
     const others = (S.workflows || []).filter((w) => !routed || w.id !== routed.workflow);
     const stopping = S.stopping === run.id || S.switching;
-    return wrap(`<ol class="cp-stages">${cells}</ol>${arrivalNow(run)}<p class="cp-runnow">${stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …")
-        : `${T("Now", "Jetzt")}: ${doing} ${where}${left ? ` · ${T("about", "etwa")} ${left} s ${T("to go", "noch")}` : over ? ` · ${T("taking longer than usual", "dauert länger als üblich")}` : ""}`}</p>
-      ${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${esc(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}`,
-      `${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
-      <button class="cp-button primary" id="stop-run" ${stopping ? "disabled" : ""}>${T("Stop", "Anhalten")}</button>`);
+    // what it found so far, counted from its own reports (the same events «Der Fall» below is filled from)
+    const found = { entries: new Set(), facts: new Set(), needs: new Set() };
+    let latest = null;
+    for (const e of S.events) {
+      if (e.kind === "record.recorded") for (const r of e.rows || []) found.entries.add(r.n);
+      if (e.kind === "fact.located" && e.status === "established" && e.value !== undefined) { found.facts.add(e.fact); latest = e; }
+      if (e.kind === "document.recorded") { found.needs.add(e.document); latest = e; }
+    }
+    const count = (n, one, many) => `<div class="cp-work-n ${n ? "" : "none"}"><b class="${n ? enter(`n:${many}:${n}`).trim() : ""}">${n}</b><span>${n === 1 ? one : many}</span></div>`;
+    const finding = latest ? (latest.fact ? `${shortFact(latest.fact)}: ${valueText(latest.value)}` : `${needOf(latest.document)}: ${word(latest.status)}`) : "";
+    const verb = { reader: T("Reading", "Liest"), claim_reader: T("Reading", "Liest"), document_finder: T("Looking for documents", "Sucht Unterlagen"),
+      source_checker: T("Checking the sources", "Prüft die Belege"), result_checker: T("Checking the result", "Prüft das Ergebnis") }[last.agent] || T("Starting", "Beginnt");
+    const time = left ? T(`about ${left} s to go`, `noch etwa ${left} s`) : over ? T("taking longer than usual", "dauert länger als üblich") : "";
+    return `<section class="cp-runline cp-work" aria-live="polite" data-work>
+      <svg class="cp-work-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M27 50 C 30 50, 31 50, 34 50"/><path d="M66 50 C 69 50, 69 28, 73 28"/><path d="M66 50 C 69 50, 69 74, 73 74"/></svg>
+      <div class="cp-work-card cp-work-steps${enter("work:steps")}"><p class="cp-eyebrow">${T("CasePath at work", "CasePath arbeitet")}</p><ol class="cp-stages">${cells}</ol></div>
+      <div class="cp-work-card cp-work-now${enter("work:now")} ${S.finishing ? "done" : ""}"><p class="cp-eyebrow">${S.finishing ? "CasePath" : stopping ? T("Stopping", "Hält an") : esc(verb)}</p>
+        <p class="cp-runnow">${S.finishing ? `<span class="cp-work-done">${icon("tick")}</span>${run.kind === "update" ? T("Updated", "Aktualisiert") : T("Prepared", "Fertig vorbereitet")}` : stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …") : where}</p>
+        <span class="cp-work-bar" aria-hidden="true"><i></i></span>${arrivalNow(run)}
+        ${S.pickProcess ? `<p class="cp-pick">${others.map((w) => `<button class="cp-chip" data-other-process="${esc(w.id)}">${esc(w.short_title || w.title)}</button>`).join("")}</p>` : ""}
+        <p class="cp-work-foot">${time ? `<span class="cp-muted">${time}</span>` : ""}${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
+          <span class="grow"></span><button class="cp-button primary" id="stop-run" ${stopping ? "disabled" : ""}>${T("Stop", "Anhalten")}</button></p></div>
+      <div class="cp-work-side"><div class="cp-work-card cp-work-found${enter("work:found")}"><p class="cp-eyebrow">${T("Found so far", "Bisher gefunden")}</p>
+          <div class="cp-work-ns">${count(found.entries.size, T("entry in the course", "Eintrag im Verlauf"), T("entries in the course", "Einträge im Verlauf"))}${count(found.facts.size, T("fact", "Angabe"), T("facts", "Angaben"))}${count(found.needs.size, T("document", "Unterlage"), T("documents", "Unterlagen"))}</div></div>
+        ${finding ? `<div class="cp-work-card cp-work-last${enter(`last:${finding}`)}"><p class="cp-eyebrow">${T("Latest", "Zuletzt")}</p><p>${esc(clip(finding, 120))}</p></div>` : ""}</div></section>`;
   }
   if (st === "paused") {
     const { cells } = S.events.length ? stageLine() : { cells: "" };
@@ -1740,7 +1783,7 @@ function decisionsStrip(dec, primary) {
   const now = dec ? decisionLine(dec, primary) : "";
   if (taken.length + open.length < 2 && !taken.length) return now;
   const nowWord = dec ? ({ deckung: "Deckung", empfehlung: "Empfehlung", aussichten: "Erfolgsaussichten", vorgehen: "Vorgehen" }[dec.key] || null) : null;
-  const done = taken.map((d) => `<li class="cp-dstep done" data-decided="${esc(d.key)}" title="${esc([d.by, d.at ? dateText(d.at) : ""].filter(Boolean).join(" · "))}"><span class="cp-dmark">${icon("tick")}</span><span class="cp-dname">${esc(d.word)}</span>
+  const done = taken.map((d) => `<li class="cp-dstep done${enter(`dec:${d.key}:${d.edit || d.at || ""}`)}" data-decided="${esc(d.key)}" title="${esc([d.by, d.at ? dateText(d.at) : ""].filter(Boolean).join(" · "))}"><span class="cp-dmark">${icon("tick")}</span><span class="cp-dname">${esc(d.word)}</span>
       <span class="cp-dvalue">${esc(d.value)}</span><button class="cp-link cp-quiet-link" type="button" ${d.edit ? `data-decided-undo="${esc(d.edit)}"` : `data-decided-withdraw="${esc(d.key)}"`}>${T("change", "ändern")}</button></li>`);
   let n = taken.length;
   const rest = open.map((w, i) => {
@@ -1885,7 +1928,7 @@ function preparedView(st) {
     : call || noteHere ? `${call}${noteHere}` : `<p class="cp-muted cp-noletter">${esc(draft.none ? `${T("No draft", "Kein Entwurf")}: ${draft.none}` : T("No letter for this step", "Für diesen Schritt kein Brief"))}</p>`;
   const required = active && active.main && (draft.required || []).length ? `<p class="cp-required">${T("Required", "Pflichtteile")}: ${draft.required.map((r) => `${esc(r.title)} <span class="cp-muted">(${esc(r.basis)})</span>`).join(" · ")}</p>` : "";
   const head = `<section class="cp-card cp-prepared ${sc.urgency === "dringend" && !c ? "urgent" : ""} ${folded ? "cp-resting" : ""}">
-    ${folded || c ? "" : preparedBy()}<header class="cp-prep-head">${folded ? `<span class="cp-done-badge" aria-hidden="true">${icon("tick")}</span>` : ""}<h2>${esc(title)}</h2>${!c && editable && options.length && !folded ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
+    ${folded || c ? "" : preparedBy()}<header class="cp-prep-head">${folded ? `<span class="cp-done-badge${enter("rest")}" aria-hidden="true">${icon("tick")}</span>` : ""}<h2>${esc(title)}</h2>${!c && editable && options.length && !folded ? `<button class="cp-link cp-quiet-link" id="change-action" aria-expanded="${Boolean(S.changing)}">${T("change", "ändern")}</button>` : ""}</header>
     ${S.changing && !c ? `<div class="cp-change-panel">${S.pickAction ? `<span class="cp-muted">${T(`Instead: ${esc(S.pickAction.title)}, because`, `Stattdessen: ${esc(S.pickAction.title)}, weil`)}</span>${reasonChips("data-action-reason", ["1", "2", "5", "6"])}`
       : options.map((o) => `<button class="cp-chip" data-pick-action="${esc(o.kind)}">${esc(o.title)}${o.has_draft ? "" : T(" (no draft)", " (kein Entwurf)")}</button>`).join("")}</div>` : ""}
     ${restLine}${resting ? reconcileLine() : ""}`;
@@ -2052,7 +2095,7 @@ function changesStrip() {
   if (!rows.length && !last) return "";
   const list = rows.slice(-4).reverse().map((r) => `<li data-change="${esc(r.undo)}"><span>${esc(clip(r.what, 110))}</span> <button class="cp-link cp-quiet-link" type="button" data-change-undo="${esc(r.undo)}">${T("undo", "rückgängig")}</button></li>`).join("");
   const more = rows.length > 4 ? `<li class="cp-muted"><a class="cp-quiet-link" href="#/case/${esc(S.route.id)}/history">${T(`and ${rows.length - 4} earlier`, `und ${rows.length - 4} frühere`)}</a></li>` : "";
-  return `<div class="cp-changes" data-changes>${last}${rows.length ? `<p class="cp-changes-head">${T("Your changes to this step", "Ihre Änderungen an diesem Schritt")} · ${rows.length}</p><ul>${list}${more}</ul>` : ""}</div>`;
+  return `<div class="cp-changes${last ? enter(`chg:${(S.lastEdit && S.lastEdit.edit && S.lastEdit.edit.id) || (S.lastUndo && "undo")}`) : ""}" data-changes>${last}${rows.length ? `<p class="cp-changes-head">${T("Your changes to this step", "Ihre Änderungen an diesem Schritt")} · ${rows.length}</p><ul>${list}${more}</ul>` : ""}</div>`;
 }
 function sideChangeLine() {
   const ch = S.data.changes || {}, sc = scr();
@@ -2712,10 +2755,19 @@ function schedulePoll() {
     S.events = S.events.concat(run.events.map((e) => ({ ...e, seen })));
     // a file's reading is saved while the run goes on: show the read text from then on
     run.events.forEach((e) => { if (e.file && e.kind === "reading.saved") delete S.pages[e.file]; });
-    S.data.run.status = run.status;
-    if (!["queued", "running"].includes(run.status)) {  // finished while the reader watched: the prepared step arrives, and says so
+    if (["queued", "running"].includes(run.status)) S.data.run.status = run.status;
+    if (!["queued", "running"].includes(run.status)) {  // finished while the reader watched: said for a moment, then the prepared step arrives
+      const here = S.route.id;
+      if (run.status === "completed" && !reducedMotion()) {
+        S.data.run.status = "running"; S.finishing = true;
+        await renderCase();
+        await new Promise((done) => setTimeout(done, 1100));
+        S.finishing = false;
+        if (S.route.view !== "case" || S.route.id !== here) return;
+      }
+      S.data.run.status = run.status;
       S.events = []; S.pages = {};
-      if (run.status === "completed") { S.justFinished = S.route.id; S.arrive = "open"; }
+      if (run.status === "completed") { S.justFinished = here; S.arrive = "open"; }
       await loadCase(); return;
     }
     const cite = liveCite();
