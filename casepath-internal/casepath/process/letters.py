@@ -451,6 +451,9 @@ def draft(current, listed, events, clock, files, forms, texts=None, held=None, a
     return {"kind": action.get("action"), "form": kind, "title": (forms.get(kind) or {}).get("title"), "to": (forms.get(kind) or {}).get("to"), "text": text, "none": none,
             **({"optional": True} if (forms.get(kind) or {}).get("optional") else {}),  # the step may also end without this letter
             **({"stance": stance, "live": (forms.get(kind) or {}).get("live")} if stance else {}),
+            # the call about an offer: the offer and what to ask, in front of the handler (process/live.py; live cases only)
+            **({"call": live.call_sheet(action.get("incoming"))} if action.get("action") == "A2" and (action.get("incoming") or {}).get("kind") == "angebot"
+               and not ((current.get("case") or {}).get("intake") or {}).get("study") else {}),
             "needs": (forms.get(kind) or {}).get("needs") or [],  # the handler decisions this action waits for
             "required": required(kind),
             # the letter by part (the handler's text is kept per part, completion.merge) and the date it sets the customer

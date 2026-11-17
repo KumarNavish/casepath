@@ -82,7 +82,7 @@ await shot("case-list");
 const list = await measure();
 out.push(`case list: ${list.interactive} interactive elements in view, primary "${list.primaries.join(", ")}" in view ${list.primaryInView}`);
 
-// 2. The main path on case C: open, untick one line, «Freigeben», «Brief kopieren», «Versandt am»
+// 2. The main path on case C: open, untick one line, «Freigeben und kopieren», «Versandt am»
 let clicks = 0;
 dialogs = 0;
 // the case's row: in view, or below more urgent cases of the queue (a scroll of the list, counted apart from the card's)
@@ -115,7 +115,9 @@ if (BEFORE) {
   if (SHOTS) await page2.screenshot({ path: `${SHOTS}/copy-failed-${tag}.png` });
   out.push(`clipboard refused: «Kopieren fehlgeschlagen» shown ${said}, copies recorded ${copiesAfter - copiesBefore}`);
   await denied.close();
-  await click("#copy-letter", "copy"); clicks += 1;
+  // the approval copied the letter with it (one gesture): no click of its own on the main path
+  const copiedWith = (await events(C)).some((e) => e.kind === "letter.copied" && e.measure === true);
+  if (!copiedWith) { await click("#copy-letter", "copy"); clicks += 1; }
   const afterCopy = await measure();
   await click("[data-dispatch]", "sent"); clicks += 1; await sleep(1200);
   const log = await events(C);
@@ -178,9 +180,13 @@ if (!BEFORE) {
   const n0 = (await events(D)).length;
   await click("[data-line]", "untick"); await sleep(600); await click("[data-line-reason='3']", "reason");
   checks.push(["untick with reason", await last("letter.line", (e) => e.included === false && e.reason === "3")]);
-  await page.fill("#add-doc", "Wohnungsabnahmeprotokoll"); await page.keyboard.press("Enter"); await sleep(600); await click("[data-add-doc-reason='4']", "add");
+  // typed and entered, the document is requested at once (no reason asked); «in solchen Fällen immer» is the optional follow-up
+  await page.fill("#add-doc", "Wohnungsabnahmeprotokoll"); await page.keyboard.press("Enter"); await sleep(1500);
   const inLetter = await page.evaluate(() => [...document.querySelectorAll("[data-item='letter:0'] li[data-text]")].some((li) => li.dataset.text.includes("Wohnungsabnahmeprotokoll")));
-  checks.push(["add a document (and it is ticked in the letter: " + inLetter + ")", await last("item.added", (e) => e.reason === "4")]);
+  checks.push(["add a document in one action (and it is ticked in the letter: " + inLetter + ")", inLetter && await last("item.added", (e) => e.reason === "none")]);
+  await click("[data-add-general]", "general"); await sleep(900);
+  const proposed = (await get("/api/knowledge")).knowledge.some((k) => k.status !== "retired" && ((k.content || {}).title || "") === "Wohnungsabnahmeprotokoll");
+  checks.push(["«in solchen Fällen immer» proposes it for similar cases", proposed]);
   // the cover decision is not asked at intake on the card: the Prozess tab holds the stage's decisions
   await page.evaluate((id) => { location.hash = `#/case/${id}/process_builder`; }, D); await sleep(1500);
   await click("[data-decide='deckung'][data-value='bestätigt']", "decide");
@@ -211,7 +217,7 @@ if (!BEFORE) {
     gestures: document.querySelectorAll(".cp-account-table tr.cp-row-gesture").length, entries: document.querySelectorAll(".cp-account-table tr.cp-row-entry").length,
     tables: document.querySelectorAll("main table").length }));
   await shot("verlauf");
-  out.push(`Verlauf: ${verlauf.tables} table, row 1 the report ${/cp-row-report/.test(verlauf.first)}, ${verlauf.gestures} gestures, ${verlauf.entries} entry; «Ihre Änderungen» on the Übersicht ${mine}`);
+  out.push(`Verlauf: ${verlauf.tables} table, row 1 the report ${/cp-row-report/.test(verlauf.first)}, ${verlauf.gestures} gestures, ${verlauf.entries} entry; the reader's changes listed above the letter on the Übersicht ${mine}`);
 }
 out.push(`events refused by the route: ${refused}; page errors: ${pageErrors}`);
 console.log(`${tag}${BEFORE ? " (before)" : ""}\n` + out.join("\n"));

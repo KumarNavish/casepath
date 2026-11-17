@@ -351,6 +351,25 @@ def register(app, store, catalogue, mirror, record, state, user, case_view=None,
         return Response(blob, media_type="application/zip", headers={"Content-Disposition": f'attachment; filename="{name}"',
                                                                      "Cache-Control": "private, no-store"})
 
+    @app.get("/api/cases/{case_id}/actions/{version}/letter")
+    def get_letter(case_id: str, version: str, who=Depends(user)):
+        """What went out, to read in place: the letter of a stored Versandpaket and what was enclosed, as text (the
+        package's own .docx bytes read back, never a fresh rendering), with whom it was approved by and when."""
+        case(case_id)
+        approval, blob = stored(case_id, version)
+        found = versandpaket.member(blob, approval.get("form"))
+        if found is None:
+            raise HTTPException(404, "Dieses Dokument ist nicht im Versandpaket.")
+        text = versandpaket.text_of(found[1])
+        main = next((r for r in approval.get("recipients") or () if approval.get("form") in (r.get("forms") or ())), None) or {}
+        also = []
+        for a in approval.get("also") or ():
+            member = versandpaket.member(blob, a.get("kind"))
+            if member:
+                also.append({"kind": a.get("kind"), "name": member[0], "text": versandpaket.text_of(member[1])})
+        return {"version": version, "title": approval.get("title"), "to": main.get("title") or main.get("to"), "recipient": main.get("recipient"),
+                "address": main.get("address"), "approved_at": approval.get("at"), "approved_by": approval.get("expert"), "text": text, "also": also}
+
     @app.get("/api/cases/{case_id}/actions/{version}/docx/{kind}")
     def get_docx(case_id: str, version: str, kind: str, who=Depends(user)):
         """One document of a stored Versandpaket (the letter's form or an enclosure's kind), as .docx."""

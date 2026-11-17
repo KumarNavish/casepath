@@ -223,7 +223,7 @@ class EntryServiceTests(Service):
 
 
 class VerlaufTests(Service):
-    def test_an_intake_case_shows_its_report_first_then_every_gesture_and_no_ihre_aenderungen(self):
+    def test_an_intake_case_shows_its_report_first_then_every_gesture_and_the_overview_reads_them(self):
         case = self.client.post("/api/cases", json={"title": "Schimmel"}).json()
         self.upload(case["id"], "Meldung.txt", "Im Bad wächst Schimmel.")
         store = self.store
@@ -239,7 +239,8 @@ class VerlaufTests(Service):
                          ["Ist die Versicherungsdeckung gegeben?: bestätigt", "Wiedervorlage gesetzt: 01.12.2026"])
         self.assertTrue(next(r for r in rows if r["kind"] == "gesture")["undo"])  # a decision still in force can be undone here
         script = (Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets" / "casepath.js").read_text()
-        self.assertNotIn("Ihre Änderungen", script)  # every gesture is in the Verlauf, not on the Übersicht
+        # the Übersicht lists the changes still in force above the letter, read from these same Verlauf rows: never a second record
+        self.assertIn('(S.data.verlauf || []).filter((r) => r.kind === "gesture" && r.undo', script)
 
 
 class ItemKindTests(Service):

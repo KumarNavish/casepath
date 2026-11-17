@@ -82,6 +82,8 @@ def gesture(e, items, process, edits, events=()):
         chosen = e["chosen"]
         return ("Aussichten nicht genügend" if chosen == "aussichten_nicht_genuegend"
                 else f"Empfehlung übernommen: {' · '.join(e.get('titles') or chosen)}"), reason, None
+    if kind == "item.corrected" and item_id == "point:empfehlung" and e.get("reason") == "withdrawn":
+        return "Empfehlung zurückgenommen", None, None
     if kind == "item.corrected" and item_id == "next_action:0" and e.get("chosen"):
         title = ((process or {}).get("action_kinds") or {}).get(e["chosen"], {}).get("title") or e["chosen"]
         return f"Andere Handlung gewählt: {title}", reason, None

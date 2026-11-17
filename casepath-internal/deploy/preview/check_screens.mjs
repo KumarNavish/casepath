@@ -140,6 +140,8 @@ async function screen(page, { titles }) {
       headWords: card ? countWords(head) : null, head: head.replace(/\s+/g, " ").trim().slice(0, 400),
       repeats: repeated, text: all, sentences, primaries,
       pageHeight: document.documentElement.scrollHeight, viewHeight: H,
+      // the page scrolls as one document: what must hold on arrival is that the card's action bar is in view
+      barInView: (() => { const b = document.querySelector(".cp-prepared > footer.cp-bar"), r = b && b.getBoundingClientRect(); return b ? r.top >= 0 && r.bottom <= innerHeight + 1 : null; })(),
       title: (document.querySelector(".cp-prepared h2") || {}).innerText || null,
       status: (document.querySelector("[data-status]") || {}).innerText || null,
       missing: missingAttr ? Number(missingAttr.dataset.missing)
@@ -219,8 +221,8 @@ for (const c of cases) {
     actionTitle: ov.title, state, screenshot: `ov-${name}-1440x900.png`,
     overview: { clickable: ov.clickable, clickableCard: ov.clickableCard, clickableList: ov.clickableList, headWords: ov.headWords, head: ov.head,
                 repeats: ov.repeats, internal: [...internal(ov), ...lexicon(more).map((h) => `Mehr · ${h}`)], sentences: ov.sentences,
-                primaries: ov.primaries, pageHeight: ov.pageHeight },
-    small: { clickable: small.clickable, clickableCard: small.clickableCard, primaries: small.primaries, pageHeight: small.pageHeight, viewHeight: small.viewHeight },
+                primaries: ov.primaries, pageHeight: ov.pageHeight, barInView: ov.barInView },
+    small: { clickable: small.clickable, clickableCard: small.clickableCard, primaries: small.primaries, pageHeight: small.pageHeight, viewHeight: small.viewHeight, barInView: small.barInView },
     tabs, agree: { docs: agreeDocs, counts: { uebersicht: ov.missing, unterlagen: tabs.unterlagen.missing, prozess: tabs.prozess.missing },
                    next: agreeNext, listNext, status: agreeStatus, listStatus, cardStatus: ov.status },
     errors: [...pageErrors], refused: refused - refusedBefore });
@@ -293,6 +295,7 @@ report.summary = {
   agreeAll: live.filter((c) => c.agree.docs && c.agree.next && c.agree.status).length,
   pageErrors: sum(live.map((c) => c.errors.length)), refused: sum(live.map((c) => c.refused)),
   scrollAt1440: live.filter((c) => c.overview.pageHeight > 900).length, scrollAt1280: live.filter((c) => c.small.pageHeight > 720).length,
+  barOut1440: live.filter((c) => c.overview.barInView === false).length, barOut1280: live.filter((c) => c.small.barInView === false).length,
   // the assessment and the question back: the gaps a handler still fills («[bitte ergänzen: …]»), in every version a case can produce
   handlerGapsMax: max(report.texts.filter((t) => /^A[45](_|$)/.test(t.kind || "")).map((t) => t.gaps)),
   handlerGapsMedian: median(report.texts.filter((t) => /^A[45](_|$)/.test(t.kind || "")).map((t) => t.gaps)),
@@ -317,7 +320,8 @@ const lines = [`# Screens, measured ${report.at.slice(0, 16)} on ${BASE}`, "",
   `| Screens with exactly one primary in view | ${s.screensWithOnePrimary} of ${s.screensMeasuredForPrimary} |`,
   `| Cases where the tabs and the list agree (documents · next step · status · all) | ${s.agreeDocs} · ${s.agreeNext} · ${s.agreeStatus} · ${s.agreeAll} of ${s.cases} |`,
   `| Page errors · refused events | ${s.pageErrors} · ${s.refused} |`,
-  `| Übersicht taller than the window (1440x900 · 1280x720) | ${s.scrollAt1440} · ${s.scrollAt1280} |`, "",
+  `| Übersicht: the card's action bar out of view on arrival (1440x900 · 1280x720) | ${s.barOut1440} · ${s.barOut1280} |`,
+  `| Übersicht taller than the window, read by scrolling the page (1440x900 · 1280x720) | ${s.scrollAt1440} · ${s.scrollAt1280} |`, "",
   ...(s.urgentTraffic ? [`Urgent traffic case: «${cell(s.urgentTraffic.action)}» · documents: ${s.urgentTraffic.documents.join(", ")} · repeats: ${s.urgentTraffic.repeats.join(", ") || "none"}`, ""] : []),
   "| Case | State | Action | Clickable page / card | Head words | Repeats | Internal (screens) | Sentences | Primary | Docs Ü/U/P | Next | Status | Errors |",
   "|---|---|---|---|---|---|---|---|---|---|---|---|---|",

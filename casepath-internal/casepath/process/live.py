@@ -8,6 +8,7 @@ which the frozen study does not load) and review elements («backbone:live.<form
 """
 import functools
 import json
+import re
 from pathlib import Path
 
 FILE = Path(__file__).parent / "areas" / "live" / "formulare.json"
@@ -62,6 +63,15 @@ def stance_question(incoming, chosen=None):
     own = stances()["angebot"]
     return {"key": "angebot", "question": own["question"], "chosen": (chosen or {}).get("id"), "offer": (incoming or {}).get("date"),
             "answers": [{"label": a["label"], "stance": a["id"], "then": a["then"]} for a in own["answers"]]}
+
+
+def call_sheet(incoming):
+    """What the handler has in front of them for the call about an offer: the offer in the file's words and the questions
+    the answer to the other side depends on (data: stances.angebot.call). None for anything but an offer."""
+    if (incoming or {}).get("kind") != "angebot":
+        return None
+    offer = re.sub(r"\b(\d{4})-(\d{2})-(\d{2})\b", r"\3.\2.\1", str(incoming.get("value") or ""))
+    return {"offer": offer, "questions": list(stances()["angebot"].get("call") or ())}
 
 
 def stance_form(base, chosen, incoming):

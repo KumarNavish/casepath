@@ -1,4 +1,4 @@
-// Browser check on the local preview (make preview): "Unterlage hinzufügen" takes at most two actions and the line is ticked
+// Browser check on the local preview (make preview): "Unterlage hinzufügen" takes one action and the line is ticked
 // at once. Run with the ego-browser runtime against a prepared synthetic case; replace CASE_ID with its id.
 const t = await taskSpace(0); const p = await t.newPage(); const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const CASE_ID = "CASE_ID";  // the prepared synthetic case's id in the preview
@@ -7,7 +7,7 @@ const box = async (sel) => p.evaluate((s) => { const e = document.querySelector(
 let actions = 0;
 const field = await box("#add-doc"); if (!field) { console.log("no add-doc field"); process.exit(0); }
 await p.mouse.click(field.x, field.y); await p.keyboard.type("Wohnungsabnahmeprotokoll"); await p.keyboard.press("Enter"); actions++; await sleep(1500);
-const chip = await box("[data-add-doc-reason]"); await p.mouse.click(chip.x, chip.y); actions++; await sleep(2500);
+await sleep(2500);  // typed and entered: requested at once, no reason asked
 const ticked = await p.evaluate(() => [...document.querySelectorAll(".cp-checklist li.cp-line")].some((li) => li.textContent.includes("Wohnungsabnahmeprotokoll") && (li.querySelector("input[type=checkbox]") || {}).checked));
 const inLetter = await p.evaluate(() => [...document.querySelectorAll("[data-item='letter:0'] li[data-text]")].some((li) => li.dataset.text.includes("Wohnungsabnahmeprotokoll")));
 console.log("actions " + actions + " · ticked in the checklist " + ticked + " · in the letter " + inLetter);

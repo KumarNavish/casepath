@@ -668,6 +668,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         st["fresh"] = bool(prepared) and str(prepared.get("created_at") or "") > latest
         st["premise_now"] = completion.premise(draft, current.get("facts"), assessment, current.get("process")) if draft else {}
         st["decisions"] = completion.open_decisions(draft, current.get("facts"), assessment, current.get("process")) if draft else []
+        # the decisions of this step already taken, so the card shows the whole set at once and each is changed where it stands
+        st["decided"] = completion.decided(draft, current.get("facts"), assessment, store.list_edits(case_id), current.get("process")) if draft and not study else []
         st["study"] = bool(study)
         # what the letter prepared now rests on that a jurist holds, whatever kind of element it is (a frame text, a wording,
         # a prescribed part) and whenever the mark was set: «Änderung nötig» refuses the approval until it is settled; a
@@ -1308,7 +1310,18 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if len(set(wishes)) != len(wishes):
             raise HTTPException(422, "Je Wunsch der Kundschaft ein Weg.")
         event = record(case_id, who, "item.corrected", item_id=assessment.EMPFEHLUNG, chosen=chosen, proposal=list(brief["proposal"]),
-                       reason=body.reason_code or "none")
+                       titles=[titles.get(x, x) for x in chosen], reason=body.reason_code or "none")  # the log names the ways in words
+        return {"event": event}
+
+    @app.delete("/api/cases/{case_id}/recommendation")
+    def withdraw_recommendation(case_id: str, who=Depends(user)):
+        """The adoption of the recommendation taken back: the card asks «Empfehlung» again. Recorded like the adoption
+        itself (the latest decision on the recommendation counts; one without chosen ways adopts nothing)."""
+        from ..process import assessment
+        current, listed, events, marks, brief = _assessed(case_id)
+        if not brief or not brief.get("adopted"):
+            raise HTTPException(409, "Für diesen Schritt ist keine Empfehlung übernommen.")
+        event = record(case_id, who, "item.corrected", item_id=assessment.EMPFEHLUNG, chosen=None, proposal=list(brief.get("proposal") or []), reason="withdrawn")
         return {"event": event}
 
     @app.post("/api/cases/{case_id}/answer", status_code=201)
@@ -1858,6 +1871,26 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                             "changes": _consequences(package_before, _package(get_case(case_id, who)))}
         return {"edit": edit, "diff": change, "knowledge": learned, "recheck": recheck, "evaluation": after["evaluation"], "consequences": consequences,
                 **({"only_here": only_here} if only_here else {})}
+
+    @app.post("/api/edits/{edit_id}/general", status_code=201)
+    def say_in_general(edit_id: str, who=Depends(user)):
+        """«immer so»: a correction already made in a case, said for similar cases afterwards. It is only proposed (a
+        reviewer releases it under «Wissen», after its replay on the stored cases); the case keeps its edit either way.
+        Asked again for the same edit, the proposal already made is returned."""
+        edit = found(store.get_edit, edit_id)
+        if edit["status"] != "active":
+            raise HTTPException(409, "Diese Änderung gilt nicht mehr.")
+        current = state(edit["case_id"])
+        if (current["case"].get("intake") or {}).get("study"):
+            raise HTTPException(409, "Eine Studienkopie bleibt, wie sie eingefroren wurde.")
+        made = next((k for k in store.list_knowledge() if (k.get("origin") or {}).get("edit_id") == edit_id and k.get("status") != "retired"), None)
+        if made:
+            return {"knowledge": made}
+        try:
+            item = kb.from_edit(current["workflow"]["id"], edit, current["process"], by=who)
+        except kb.KnowledgeError:
+            return {"knowledge": None, "only_here": "Gilt in diesem Fall. Als Regel für ähnliche Fälle lässt sich das hier nicht vorschlagen."}
+        return {"knowledge": store.save_knowledge(replayed(item, who, "gilt generell"))}
 
     def _undo_limits(edit):
         """What undoing a correction cannot undo: a letter copied, approved or dispatched since (it went out, or may have,

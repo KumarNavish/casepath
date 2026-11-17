@@ -1,6 +1,6 @@
 {
  "format": "casepath.live-forms/1",
- "version": "2026-11-16.2",
+ "version": "2026-11-17.2",
  "note": "Schreiben für Schritte, für die der Prozess kein Formular hinterlegt («Kein Entwurf»), wo der Inhalt ohne neues Urteil feststeht. Gilt für laufende Fälle; die eingefrorene Studie lädt diese Datei nicht. Nicht juristisch geprüft.",
  "forms": {
   "A12_erledigt": {
@@ -110,6 +110,11 @@
      "then": "Gegenangebot an die Gegenpartei; den Inhalt ergänzen Sie im Schreiben",
      "letter": "A9_gegenangebot"
     }
+   ],
+   "call": [
+    "Nimmt die Kundschaft das Angebot so an, wie es ist?",
+    "Wenn nein: was verlangt sie stattdessen (Betrag, Frist, Bedingungen)?",
+    "Braucht sie Bedenkzeit: bis wann meldet sie sich?"
    ]
   }
  }

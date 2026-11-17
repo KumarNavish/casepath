@@ -312,6 +312,37 @@ def open_decisions(draft, facts, assessment=None, process=None):
     return [w for w in dict.fromkeys(order) if w in out] + [w for w in out if w not in order]
 
 
+DECIDED_WORDS = {"bestätigt": "bestätigt", "abgelehnt": "abgelehnt", True: "ja", False: "nein", "ja": "ja", "nein": "nein"}
+
+
+def decided(draft, facts, assessment=None, edits=(), process=None):
+    """The decisions of this step the handler already took, in the order the card asks them: each with its answer, who
+    gave it and when, and the edit that carries it (undoing that edit asks the decision again). Only the handler's own
+    decisions (a set_fact in force on one of the step's decisions; the recommendation adopted): what a stage settles by
+    itself is no row. With ``open_decisions`` this is the whole set, so the card can show all of it at once."""
+    draft = draft or {}
+    defined = {f["id"] for f in (process or {}).get("facts") or ()} if process else None
+    keys = [f for f in draft.get("needs") or () if defined is None or f in defined]
+    if str(draft.get("kind") or "") == "A5" and str(draft.get("form") or "").startswith("A5"):
+        keys = ["deckung"] + [k for k in keys if k != "deckung"] + ["aussichten"]
+    own = {}
+    for e in edits or ():  # the latest set_fact in force per fact
+        if e.get("op") == "set_fact" and (e.get("status") or "active") == "active" and (e.get("args") or {}).get("fact"):
+            own[e["args"]["fact"]] = e
+    rows = []
+    for key in dict.fromkeys(keys):
+        value, edit = _answered(facts, key), own.get(key)
+        if value is None or edit is None or key not in DECISION_FACTS:
+            continue
+        said = DECIDED_WORDS.get(value, str(value))
+        rows.append({"key": key, "word": DECISION_WORDS.get(key, key), "value": said, "edit": edit.get("id"), "by": edit.get("by"), "at": edit.get("at")})
+    adopted = (assessment or {}).get("adopted")
+    if adopted and adopted.get("valid") and (assessment or {}).get("assessment"):  # a decision of the assessment's own step only
+        at = next((n for n, r in enumerate(rows) if r["key"] == "aussichten"), len(rows))  # the card asks it before the prospects
+        rows.insert(at, {"key": "empfehlung", "word": "Empfehlung", "value": "übernommen", "by": adopted.get("by"), "at": adopted.get("at")})
+    return rows
+
+
 def facts_read(facts, process=None):
     """The case's facts as the assessment reads them: with the area's implications applied where slice A's options file
     gives them («schriftlich gemeldet» ⇒ «gemeldet», options.implied); the case's facts as they are without it. The same
@@ -399,7 +430,7 @@ def relied_elements(draft, assessment=None, process=None, listed=(), events=()):
             own("wortlaut.claim_line")
     if a.get("elements"):
         out += [str(e) for e in a["elements"]]
-    else:
+    elif a.get("assessment"):  # only an assessment states them: a reminder or a status inquiry in the same case rests on none
         for option in a.get("chosen") or () if isinstance(a.get("chosen"), list) else ():
             own(f"empfehlung.{option}")
         if isinstance(a.get("chosen"), list) and len(a["chosen"]) > 1:

@@ -1614,6 +1614,53 @@
     "summary": "Get Docx"
    }
   },
+  "/api/cases/{case_id}/actions/{version}/letter": {
+   "get": {
+    "description": "What went out, to read in place: the letter of a stored Versandpaket and what was enclosed, as text (the\npackage's own .docx bytes read back, never a fresh rendering), with whom it was approved by and when.",
+    "operationId": "get_letter_api_cases__case_id__actions__version__letter_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "version",
+      "required": true,
+      "schema": {
+       "title": "Version",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Get Letter"
+   }
+  },
   "/api/cases/{case_id}/answer": {
    "post": {
     "description": "«übernehmen»: the handler takes the drafted answer to a customer's question (its point, and the intent it\nanswers); the question is then «beantwortet (Fallbearbeitung)» while the point applies. 422 when the point does\nnot apply on the case's facts or the intent is not one of its answers.",
@@ -2591,6 +2638,42 @@
    }
   },
   "/api/cases/{case_id}/recommendation": {
+   "delete": {
+    "description": "The adoption of the recommendation taken back: the card asks «Empfehlung» again. Recorded like the adoption\nitself (the latest decision on the recommendation counts; one without chosen ways adopts nothing).",
+    "operationId": "withdraw_recommendation_api_cases__case_id__recommendation_delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "case_id",
+      "required": true,
+      "schema": {
+       "title": "Case Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Withdraw Recommendation"
+   },
    "post": {
     "description": "«Empfehlung»: the handler adopts the proposed ways («übernehmen») or picks among the ways that hold, one per\nwish («ändern»). The adoption names the proposal it was made on; it lapses when a chosen way no longer holds or the\nproposal changes. The prospects of success are judged on their own (set_fact aussichten, Art. 169 AVO): adopting a\nway judges nothing about them.",
     "operationId": "adopt_recommendation_api_cases__case_id__recommendation_post",
@@ -2977,6 +3060,44 @@
      }
     },
     "summary": "Choose Workflow"
+   }
+  },
+  "/api/edits/{edit_id}/general": {
+   "post": {
+    "description": "«immer so»: a correction already made in a case, said for similar cases afterwards. It is only proposed (a\nreviewer releases it under «Wissen», after its replay on the stored cases); the case keeps its edit either way.\nAsked again for the same edit, the proposal already made is returned.",
+    "operationId": "say_in_general_api_edits__edit_id__general_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "edit_id",
+      "required": true,
+      "schema": {
+       "title": "Edit Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Say In General"
    }
   },
   "/api/edits/{edit_id}/undo": {

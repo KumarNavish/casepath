@@ -282,10 +282,12 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-change{margin-top:12px;padding:8px 12px;border-left:3px solid var(--crimson);background:var(--paper-2, #faf7f5)}
 #unaided label{display:block;margin:8px 0}
 
-/* The Übersicht: the letter card (its lines are the checklist, its action bar always in view) and the case beside it */
+/* The Übersicht: the letter card (its lines are the checklist) and the case beside it. The page scrolls as one document:
+   the letter stands at its full height, and the card's action bar stays at the bottom of the window while the card is in view. */
 .cp-overview{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:20px;align-items:start;max-width:1320px}
 @media (max-width:1000px){.cp-overview{grid-template-columns:minmax(0,1fr)}}
-.cp-prepared{display:flex;flex-direction:column;position:sticky;top:91px;min-height:0;overflow:hidden}
+.cp-prepared{display:flex;flex-direction:column;min-height:0}
+.cp-prepared>footer.cp-bar{position:sticky;bottom:0;z-index:2;border-radius:0 0 8px 8px;box-shadow:0 -6px 10px -8px rgba(0,0,0,.18)}
 .cp-prep-head{display:flex;align-items:baseline;gap:14px;padding:16px 22px 2px}
 .cp-prep-head h2{margin:0;font-size:17.5px;font-weight:700;flex:1}
 .cp-quiet-link{color:var(--ink-2);font-size:13.5px;text-decoration:underline;text-decoration-color:var(--border);text-underline-offset:3px}
@@ -295,7 +297,7 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-change-panel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 22px 8px}
 .cp-change-panel .cp-chip,.cp-pick .cp-chip{cursor:pointer;background:none;font:inherit;font-size:13px}
 .cp-change-panel .cp-chip:hover,.cp-pick .cp-chip:hover{border-color:var(--crimson);color:var(--crimson)}
-.cp-letter{flex:1;min-height:0;overflow:auto;padding:8px 22px 14px;font-size:15px;line-height:1.5;color:var(--ink-doc);border-top:1px solid var(--line)}
+.cp-letter{flex:1;min-height:0;padding:8px 22px 14px;font-size:15px;line-height:1.5;color:var(--ink-doc);border-top:1px solid var(--line)}
 .cp-text{white-space:pre-wrap;overflow-wrap:anywhere;border-radius:4px;padding:1px 4px;margin:0 -4px}
 .cp-text[data-editable]{cursor:text}
 .cp-text[data-editable]:hover{background:#faf8f8}
@@ -320,9 +322,9 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-offered{flex-wrap:wrap}
 .cp-offered .cp-line-text{color:var(--ink-2)}
 .cp-why-row{flex-basis:100%;display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:4px 0 6px 24px;font-size:13px}
-.cp-add{display:flex;align-items:center;gap:8px;color:var(--ink-2);padding:3px 0;min-height:30px}
+.cp-add{display:flex;flex-wrap:wrap;align-items:center;gap:2px 8px;color:var(--ink-2);padding:3px 0;min-height:30px}
 .cp-add .cp-icon{width:16px;height:16px}
-.cp-add input{flex:1;border:0;border-bottom:1px dashed var(--border);background:none;padding:3px 0;font-size:14.5px}
+.cp-add input{flex:1;min-width:200px;border:0;border-bottom:1px dashed var(--border);background:none;padding:3px 0;font-size:14.5px}
 .cp-add input:focus{outline:none;border-bottom-color:var(--crimson)}
 .cp-draftline{margin:16px 0 0;font-size:12.5px;color:var(--ghost)}
 .cp-bar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:12px 22px;border-top:1px solid var(--line);background:var(--bg)}
@@ -596,7 +598,7 @@ button.cp-lead-text:hover{text-decoration:underline;text-decoration-color:var(--
 button.cp-decide-q{cursor:pointer;text-decoration:underline;text-decoration-color:var(--crimson-tint);text-underline-offset:3px}
 .cp-decide-q .cp-muted{font-weight:400}
 .cp-decide .cp-point-actions{margin-left:auto}
-.cp-decide-more{flex-basis:100%;max-height:260px;overflow:auto;background:var(--bg);border-radius:4px;padding:8px 10px;font-size:13.5px}
+.cp-decide-more{flex-basis:100%;background:var(--bg);border-radius:4px;padding:8px 10px;font-size:13.5px}
 .cp-decide-line+.cp-decide-line{margin-top:4px}
 .cp-decide .cp-cover-why{flex-basis:100%}
 .cp-progress{margin:6px 22px 2px;font-size:14px;color:var(--ink-2)}
@@ -688,7 +690,6 @@ mark.cp-hit.chosen{background:var(--crimson-tint);box-shadow:0 0 0 2px var(--cri
 .cp-rec-pick legend{font-weight:600;padding:0;margin-bottom:2px}
 .cp-rec-pick label{display:block;cursor:pointer}
 .cp-rec-pick .cp-button{justify-self:start}
-@media (max-height:760px){.cp-decide-more:has(.cp-brief){max-height:170px}}  /* a short window keeps the letter in view */
 
 /* completion */
 /* the case head: what changed, what it means, an approval that no longer holds, each one line that opens on a click */
@@ -794,12 +795,21 @@ h3.cp-bucket{font-size:14px;margin:12px 0 4px}
 .cp-today{border:1px solid var(--line);border-radius:8px;padding:14px 18px 10px;margin:0 0 18px;max-width:1260px;box-sizing:border-box}
 .cp-today h2{font-size:17px;margin:0 0 8px;font-weight:600}
 .cp-today-counts{display:flex;gap:26px;flex-wrap:wrap;margin:0 0 8px}
-.cp-today-count{text-decoration:none;color:var(--ink);font-size:14.5px}
+.cp-today-count{text-decoration:none;color:var(--ink);font-size:14.5px;background:none;border:0;border-bottom:2px solid transparent;padding:0 0 2px;cursor:pointer}
+.cp-today-count:hover:not(:disabled){border-bottom-color:var(--crimson-tint)}
+.cp-today-count.on{border-bottom-color:var(--crimson)}
+.cp-today-count:disabled{cursor:default}
+#list-all{background:none;border:0;padding:0;cursor:pointer}
 .cp-today-count b{font-size:22px;font-weight:600;margin-right:4px;color:var(--crimson)}
 .cp-today-count.zero b{color:var(--ghost)}
 .cp-today-since ul{margin:2px 0 8px;padding-left:18px;font-size:14px;line-height:1.6}
 .cp-today-since p{margin:6px 0 0;font-size:13.5px}
 .cp-today-note{font-size:12.5px;margin:4px 0 0}
+.cp-today-counts .cp-walk{margin-left:auto;align-self:center}
+.cp-walk-end{margin:0 0 8px;font-size:14px;color:var(--green-ink)}
+.cp-walk-end .cp-icon{width:15px;height:15px;vertical-align:-2px;margin-right:5px}
+#skip-case{background:none;border:0;padding:0;font:inherit;cursor:pointer}
+#skip-case .cp-icon{width:13px;height:13px;vertical-align:-1px}
 
 /* what follows each answer of a decision, said before it is given */
 .cp-decide-then{list-style:none;margin:2px 0 0;padding:0;flex-basis:100%;color:var(--muted);font-size:13px;line-height:1.45}
@@ -813,3 +823,37 @@ h3.cp-bucket{font-size:14px;margin:12px 0 4px}
 .cp-rv-use-head{font-size:14px;margin:18px 0 4px}
 .cp-rv-use li{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap}
 .cp-rv-use-none{margin:2px 0 10px}
+/* what is scrolled to (a gap, a form, a question) lands clear of the bar above and the card's bar below */
+html{scroll-padding-top:104px;scroll-padding-bottom:86px}
+/* the decisions of a step as one set: taken (changeable in place), the one asked now, those to come */
+.cp-dsteps{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:6px 22px 4px;font-size:13.5px;color:var(--ink-2)}
+.cp-dsteps-head{font-weight:600;color:var(--ink)}
+.cp-dstep.done{color:var(--green-ink)}
+.cp-dstep.done .cp-icon{width:14px;height:14px;vertical-align:-2px;margin-right:3px}
+.cp-dstep.done .cp-quiet-link{font-size:12.5px;margin-left:2px;background:none;border:0;padding:0;cursor:pointer}
+.cp-dstep.now{color:var(--crimson);font-weight:600}
+.cp-dstep.now::before{content:"●";font-size:9px;vertical-align:2px;margin-right:5px}
+.cp-dstep.open::before{content:"○";font-size:9px;vertical-align:2px;margin-right:5px}
+.cp-decide-note{flex-basis:100%;margin:2px 0 0;font-size:13px;color:var(--ink-2)}
+/* the reader's own changes to the step, above the letter they change */
+.cp-changes{margin:6px 22px 8px}
+.cp-changes .cp-change{margin-top:0}
+.cp-changes-head{margin:6px 0 2px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.cp-changes ul{list-style:none;margin:0;padding:0;font-size:13.5px;display:grid;gap:2px}
+.cp-changes li button{background:none;border:0;padding:0;cursor:pointer;margin-left:6px}
+.cp-add .cp-added{flex-basis:100%;font-size:13px;color:var(--ink-2);margin-top:2px}
+.cp-add .cp-added .cp-chip{cursor:pointer;background:none;font:inherit;font-size:12.5px;margin-left:4px}
+/* a call instead of a letter: the offer, what to ask, and the note written in the card */
+.cp-call{margin:10px 0 12px;font-size:15px}
+.cp-call-head{margin:0 0 2px;font-size:13.5px;font-weight:600;color:var(--ink-2)}
+.cp-call ol{margin:0;padding-left:20px;line-height:1.6}
+.cp-letter>.cp-entry-form{margin-top:6px}
+.cp-stale-sent{font-size:13px;color:var(--ink-2)}
+#stale-sent{background:none;border:0;padding:0;cursor:pointer}
+.cp-rest-reconcile{margin:4px 22px 6px}
+/* «was hinausging»: the sent letter read in place */
+#sent-open{background:none;border:0;padding:0;cursor:pointer}
+.cp-sent-letter{margin:4px 22px 10px;padding:10px 14px;background:var(--notice);border-radius:6px;font-size:14.5px}
+.cp-sent-letter>.cp-muted{margin:0 0 8px;font-size:13px}
+.cp-sent-head{margin:8px 0 4px;font-weight:600;font-size:13.5px}
+.cp-sent-doc .cp-text{color:var(--ink-doc);line-height:1.5}

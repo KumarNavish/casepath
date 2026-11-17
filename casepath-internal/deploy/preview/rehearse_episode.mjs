@@ -247,7 +247,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const get = async (p) => (await fetch(BASE + p)).json();
 
 // What a click is, by the counting rule above (run in the page)
-const DECISIONS = ["Freigeben", "Erneut freigeben", "übernehmen · Aussichten genügend", "Aussichten nicht genügend", "übernehmen"];
+const DECISIONS = ["Freigeben und kopieren", "Erneut freigeben und kopieren", "übernehmen · Aussichten genügend", "Aussichten nicht genügend", "übernehmen"];
 const CONFIRMATIONS = ["Brief kopieren", "Versandt am", "Aktualisieren", "Erneut aktualisieren", "Versandpaket herunterladen", "Aktennotiz kopieren"];
 function recorder({ decisions, confirmations }) {
   const send = (e) => window.__rehearsal && window.__rehearsal(e);
@@ -394,16 +394,20 @@ await step("edits", async () => {
 }, "den Brief anpassen, wo nötig");
 const textAfter = await letterText();
 await step("freigeben", async () => {
-  const approve = button(/^Freigeben$/);
-  if (await visible(approve)) return click(approve, "approve");
-  lacking("B: «Freigeben» stores the approval and the Versandpaket (B3)");
+  const approve = button(/^Freigeben und kopieren$/);
+  if (await visible(approve)) { await click(approve, "approve"); await sleep(1500); return; }  // the approval copies the letter with it
+  lacking("B: «Freigeben und kopieren» stores the approval and the Versandpaket (B3)");
 }, "freigeben");
 const draftAfter = (await get(`/api/cases/${id}`)).draft || {};  // the approved letter (B), by part
 await step("brief_kopieren", async () => {
-  const copy = button(/^Brief kopieren$/);
-  if (!(await visible(copy))) return lacking("B: «Brief kopieren» after the approval, the letter without a gap (A, B18)");
-  await click(copy, "copy");
-  const copied = ((await get(`/api/cases/${id}/events`)).events || []).some((e) => e.kind === "letter.copied" && e.measure === true);
+  // the letter is on the clipboard with the approval: no gesture of its own; «Brief kopieren» stays for a second copy
+  let copied = ((await get(`/api/cases/${id}/events`)).events || []).some((e) => e.kind === "letter.copied" && e.measure === true);
+  if (!copied) {
+    const copy = button(/^Brief kopieren$/);
+    if (!(await visible(copy))) return lacking("B: the approved letter on the clipboard, or «Brief kopieren» after the approval (A, B18)");
+    await click(copy, "copy");
+    copied = ((await get(`/api/cases/${id}/events`)).events || []).some((e) => e.kind === "letter.copied" && e.measure === true);
+  }
   if (!copied) lacking("B: a copy is recorded for measurement only («measure», B9)");
 }, "Brief kopieren");
 await outside("paste_email", "in die Antwort-E-Mail einfügen");
@@ -424,11 +428,11 @@ await step("open_dispatched_copy", async () => {
 }, "die vor 91 Tagen versandte Kopie von E1 öffnen");
 await step("a7", async () => {
   if (!copyCase) return;
-  for (const [name, what] of [[/^Freigeben$/, "approve"], [/^Brief kopieren$/, "copy"], [/^Versandt am/, "dispatch"]]) {
+  for (const [name, what] of [[/^Freigeben und kopieren$/, "approve"], [/^Versandt am/, "dispatch"]]) {
     const b = button(name);
-    if (await visible(b)) await click(b, what); else return lacking(`B: the status inquiry's «${String(name).slice(2, -2)}» (A7 after silence)`);
+    if (await visible(b)) { await click(b, what); await sleep(1500); } else return lacking(`B: the status inquiry's «${String(name).slice(2, -2)}» (A7 after silence)`);
   }
-}, "Statusanfrage: freigeben, Brief kopieren, Versandt am");
+}, "Statusanfrage: freigeben und kopieren, Versandt am");
 
 // The edits, judged per part: the prepared letter against the approved one (the server's parts once B stores them)
 const pairs = pairParts(partsOf(draftBefore.parts ? draftBefore : null, textBefore), partsOf(draftAfter.parts ? draftAfter : null, textAfter));
