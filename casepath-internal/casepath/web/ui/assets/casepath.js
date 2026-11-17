@@ -1796,12 +1796,17 @@ function runLine(st) {
     const verb = { reader: T("Reading", "Liest"), claim_reader: T("Reading", "Liest"), document_finder: T("Looking for documents", "Sucht Unterlagen"),
       source_checker: T("Checking the sources", "Prüft die Belege"), result_checker: T("Checking the result", "Prüft das Ergebnis") }[last.agent] || T("Starting", "Beginnt");
     const time = left ? T(`about ${left} s to go`, `noch etwa ${left} s`) : over ? T("taking longer than usual", "dauert länger als üblich") : "";
+    // a stage that has not named a file yet still says what it does (never «beginnt mit den Akten» at the last check)
+    const stageAgent = last.agent || (agents || []).find((a) => ["reader", "claim_reader", "document_finder", "source_checker", "result_checker"].includes(a));
+    const stageVerb = { reader: T("Reading", "Liest"), claim_reader: T("Reading", "Liest"), document_finder: T("Looking for documents", "Sucht Unterlagen"),
+      source_checker: T("Checking the sources", "Prüft die Belege"), result_checker: T("Checking the result", "Prüft das Ergebnis") }[stageAgent] || verb;
+    const stageWhere = last.file || !stageAgent ? where : stageAgent === "result_checker" ? T("against the file", "an der Akte") : T("in the files", "in den Akten");
     if (window.CasePathStory && tabOverviewLive()) {
       // the work as a picture: the files, what is found in them with the passage it rests on, the process, in the
       // order CasePath does it; above it what it does now, and the reader's own stop
       return `<section class="cp-runline cp-work cp-work-story" aria-live="polite" data-work>
-        <div class="cp-work-head ${S.finishing ? "done" : ""}"><div><p class="cp-eyebrow" data-work-verb>${S.finishing ? "CasePath" : stopping ? T("Stopping", "Hält an") : esc(verb)}</p>
-            <p class="cp-runnow">${S.finishing ? `<span class="cp-work-done">${icon("tick")}</span>${run.kind === "update" ? T("Updated", "Aktualisiert") : T("Prepared", "Fertig vorbereitet")}` : stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …") : where}</p></div>
+        <div class="cp-work-head ${S.finishing ? "done" : ""}"><div><p class="cp-eyebrow" data-work-verb>${S.finishing ? "CasePath" : stopping ? T("Stopping", "Hält an") : esc(stageVerb)}</p>
+            <p class="cp-runnow">${S.finishing ? `<span class="cp-work-done">${icon("tick")}</span>${run.kind === "update" ? T("Updated", "Aktualisiert") : T("Prepared", "Fertig vorbereitet")}` : stopping ? T("Stopping after this step…", "Hält nach diesem Schritt an …") : stageWhere}</p></div>
           <ol class="cp-stages">${cells}</ol>
           <p class="cp-work-foot">${time ? `<span class="cp-muted" data-work-time>${time}</span>` : ""}${routed ? `<span class="cp-muted">${esc(wfShort(routed.workflow, routed.title))}</span>` : ""}${routed && others.length && !stopping ? `<button class="cp-link cp-quiet-link" id="other-process-open">${T("other process", "anderer Prozess")}</button>` : ""}
             <button class="cp-button primary" id="stop-run" ${stopping ? "disabled" : ""}>${T("Stop", "Anhalten")}</button></p></div>
@@ -2083,7 +2088,8 @@ function storyModel(events, live) {
       kept.map((i) => { const c = (i.evidence || []).find((x) => x.file); return edge(`file:${c.file}`, `fact:${i.key}`, "cites", page(c)); }), "source_checker");
     const needs = Object.values(docItems).filter((i) => !have.has(`need:${i.key}`));
     const nids = needs.map((i) => node({ id: `need:${i.key}`, lane: "findings", kind: "need", title: label(i), sub: tr(i.practice || ""), state: i.status === "present" ? "present" : "missing", href: `#/case/${id}/document_finder` }));
-    if (nids.length) beat(T("What the case needs", "Was der Fall braucht"), `${needs.filter((i) => i.status === "present").length} ${T("of", "von")} ${needs.length} ${T("on file", "liegen vor")}`, nids,
+    const allNeeds = Object.values(docItems);
+    if (nids.length) beat(T("What else the case needs", "Was der Fall sonst braucht"), `${allNeeds.filter((i) => i.status === "present").length} ${T("of", "von")} ${allNeeds.length} ${T("documents on file", "Unterlagen liegen vor")}`, nids,
       needs.map((i) => { const c = (i.evidence || []).find((x) => x.file); return c ? edge(`file:${c.file}`, `need:${i.key}`, "cites", page(c)) : null; }), "document_finder");
     const learned = Object.values(docItems).filter((i) => i.practice && have.has(`need:${i.key}`));
     if (learned.length) {
