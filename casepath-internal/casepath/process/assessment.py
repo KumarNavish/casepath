@@ -414,7 +414,9 @@ def evaluate_questions(state, result, items, events, marks=None, files=None):
     def offer(ids, text):
         out = []
         for pid in ids:
-            row = options.intent(text, options.answers_for(data, [pid])) if data else None
+            rows_of = options.answers_for(data, [pid]) if data else []
+            # what the question asks, else the point's general rule: the whole answer is offered, one press takes it
+            row = (options.intent(text, rows_of) or options.default_for(rows_of)) if data else None
             if row is not None and held(row):
                 continue
             out.append({"point": pid, "intent": (row or {}).get("intent"), "text": render(pid, row)})

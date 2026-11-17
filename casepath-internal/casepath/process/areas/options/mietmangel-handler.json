@@ -1,7 +1,7 @@
 {
  "format": "casepath.options/1",
  "area": "mietmangel-handler",
- "version": "2026-11-16.1",
+ "version": "2026-11-17.3",
  "status": "draft",
  "label": "aus Gesetz und Praxis abgeleitet, noch nicht freigegeben",
  "law": {
@@ -66,7 +66,7 @@
   "will_auszug": "Sie das weiterhin möchten"
  },
  "answers": [
-  {"points": ["hinterlegung"], "intent": "hinterlegen", "stems": ["hinterleg"], "state": "bedingt", "next": {"kind": "discuss"}, "parts": [
+  {"points": ["hinterlegung"], "intent": "hinterlegen", "default": true, "stems": ["hinterleg"], "state": "bedingt", "next": {"kind": "discuss"}, "parts": [
    {"text": "Eine Hinterlegung des Mietzinses setzt voraus, dass Sie der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung des Mangels setzen und ihr dabei androhen, die künftig fällig werdenden Mietzinse bei der vom Kanton bezeichneten Stelle zu hinterlegen, und dass Sie die Hinterlegung nach unbenütztem Ablauf der Frist schriftlich ankündigen", "law": ["law#259g-voll"], "requires": ["schriftlich", "angemessene Frist", "androhen", "künftig fällig", "vom Kanton bezeichneten Stelle", "schriftlich ankündigen"]},
    {"text": "Innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses müssen Sie Ihre Ansprüche bei der Schlichtungsbehörde geltend machen, sonst fallen die hinterlegten Mietzinse der Vermieterschaft zu", "law": ["law#259h-voll"], "requires": ["30 Tagen", "Schlichtungsbehörde"]},
    {"text": "Fehlt eine dieser Voraussetzungen, gilt der Mietzins nicht als bezahlt, und bei einem Zahlungsrückstand kann die Vermieterschaft eine Zahlungsfrist setzen und das Mietverhältnis kündigen", "law": ["law#259g-2", "law#257d-1"], "requires": ["als bezahlt", "rückstand", "zahlungsfrist", "kündig"]},
@@ -80,17 +80,17 @@
    {"text": "Wir empfehlen Ihnen, den Mietzins nicht eigenmächtig zu kürzen oder zurückzubehalten.", "basis": "prudence"},
    {"text": "Bei einem Zahlungsrückstand kann die Vermieterschaft Ihnen eine Zahlungsfrist setzen und das Mietverhältnis kündigen", "law": ["law#257d-1"], "requires": ["rückstand", "zahlungsfrist", "kündig"]},
    {"text": "Eine Herabsetzung verlangen Sie von der Vermieterschaft", "law": ["law#259d"], "requires": ["verlangen", "herabsetzt"]}]},
-  {"points": ["reduktion"], "intent": "herabsetzung", "stems": ["reduktion", "herabsetz", "reduzier", "minderung"], "state": "beantwortet", "parts": [
+  {"points": ["reduktion"], "intent": "herabsetzung", "default": true, "stems": ["reduktion", "herabsetz", "reduzier", "minderung"], "state": "beantwortet", "parts": [
    {"follows": "reduktion", "law": ["law#259d"], "requires": ["herabsetz", "behebung"]},
    {"text": "Die Herabsetzung verlangen Sie von der Vermieterschaft", "law": ["law#259d"], "requires": ["verlangen"]},
    {"text": "Wir empfehlen Ihnen, den Mietzins bis dahin nicht eigenmächtig zu kürzen.", "basis": "prudence"}]},
-  {"points": ["schadenersatz"], "intent": "ersatz", "stems": ["ersetz", "ersatz", "erstatt", "vergüt", "entschädig", "übernimmt", "übernommen"], "state": "bedingt", "next": {"kind": "residual", "option": "schadenersatz"}, "parts": [
+  {"points": ["schadenersatz"], "intent": "ersatz", "default": true, "stems": ["ersetz", "ersatz", "erstatt", "vergüt", "entschädig", "übernimmt", "übernommen"], "state": "bedingt", "next": {"kind": "residual", "option": "schadenersatz"}, "parts": [
    {"text": "Hat Ihnen der Mangel einen Schaden verursacht, muss die Vermieterschaft Ihnen dafür Ersatz leisten, wenn sie nicht beweist, dass sie kein Verschulden trifft", "law": ["law#259e"], "requires": ["schaden", "ersatz", "verschulden"]},
    {"text": "Wir empfehlen Ihnen, die Kosten mit Belegen nachzuweisen; welche uns noch fehlen, steht unten.", "basis": "prudence", "with_residual": true},
    {"text": "Die Belege zu Ihren Kosten liegen uns vor.", "plain": true, "with_documented": true}]},
-  {"points": ["meldung"], "intent": "melden", "stems": ["meld", "rüge", "rügen", "mitteil", "informier"], "state": "beantwortet", "parts": [
+  {"points": ["meldung"], "intent": "melden", "default": true, "stems": ["meld", "rüge", "rügen", "mitteil", "informier"], "state": "beantwortet", "parts": [
    {"follows": "meldung", "law": ["law#257g"], "requires": ["melden"]}]},
-  {"points": ["kuendigung"], "intent": "ausziehen", "stems": ["auszieh", "kündig", "auszug"], "state": "bedingt", "next": {"kind": "discuss"}, "parts": [
+  {"points": ["kuendigung"], "intent": "ausziehen", "default": true, "stems": ["auszieh", "kündig", "auszug"], "state": "bedingt", "next": {"kind": "discuss"}, "parts": [
    {"text": "Fristlos kündigen können Sie nur, wenn die Vermieterschaft den ihr bekannten Mangel nicht innert angemessener Frist beseitigt und er die Tauglichkeit der Wohnung ausschliesst oder erheblich beeinträchtigt", "law": ["law#259b-a"], "requires": ["angemessener frist", "fristlos kündigen", "erheblich beeinträchtigt"]},
    {"text": "Wir empfehlen Ihnen, vor einem Auszug das Vorgehen mit uns zu besprechen.", "basis": "prudence"}]}
  ],

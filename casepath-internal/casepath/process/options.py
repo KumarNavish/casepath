@@ -470,6 +470,14 @@ def intent(question, answers):
     return best[2] if best else None
 
 
+def default_for(answers):
+    """The answer the area marks as a point's general rule (``default``), among answer rows: the one to OFFER for a
+    question the reader placed on that point when no wording of the area matches what it asks. It is offered for the
+    handler to take, never stated by itself; two points with a rule each offer theirs separately."""
+    defaults = [a for a in answers or () if a.get("default") and not a.get("with")]
+    return defaults[0] if len(defaults) == 1 else None
+
+
 # Amounts ------------------------------------------------------------------------------------------------------------
 
 NUMBER = r"\d{1,3}(?:['’]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d{1,2})?"

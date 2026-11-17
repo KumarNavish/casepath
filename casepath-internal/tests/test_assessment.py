@@ -244,8 +244,11 @@ class QuestionTests(unittest.TestCase):
     def test_an_unmatched_intent_is_checked_with_the_rule_sentence_offered(self):
         q = asked("Bekomme ich das Geld für den Strom zurück?", ["schadenersatz"])
         self.assertEqual((q["state"], q["row"], q["reason"]), ("pruefen", 11, "Absicht der Frage unklar"))
-        self.assertEqual(q["offered"][0]["text"], "Für den Schaden aus dem Mangel muss die Vermieterschaft Ersatz leisten, wenn sie nicht beweist, "
-                                                  "dass sie kein Verschulden trifft (Art. 259e OR).")
+        # no wording of the area matches: the point's general rule (the area's ``default`` answer) is offered whole, for one
+        # press to take; it is never stated by itself
+        self.assertEqual((q["offered"][0]["point"], q["offered"][0]["intent"]), ("schadenersatz", "ersatz"))
+        self.assertTrue(q["offered"][0]["text"].startswith("Hat Ihnen der Mangel einen Schaden verursacht, muss die Vermieterschaft Ihnen dafür Ersatz leisten, "
+                                                           "wenn sie nicht beweist, dass sie kein Verschulden trifft (Art. 259e OR)."))
         self.assertIsNone(q["answer"])
 
     def test_an_implied_fact_is_not_asked(self):
