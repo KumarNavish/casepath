@@ -1427,7 +1427,7 @@ function processView() {
   const change = S.lastEdit ? (S.lastEdit.op ? beforeNow() : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>`) : "";
   return `<section class="cp-card cp-process"><header class="cp-process-head"><h1 class="cp-title">${T("Process", "Prozess")}${S.data.process.short_title ? ` <span class="cp-muted">· ${esc(S.data.process.short_title)}</span>` : ""}</h1>
       <button class="cp-link cp-quiet-link" id="edit-open" aria-expanded="${Boolean(S.editing)}">${T("Change for this case", "Für diesen Fall ändern")}</button></header>
-    ${change}${S.editing ? editForm(model.steps[S.step]) : ""}
+    ${change}${S.editing ? editForm(model.steps[S.step]) : tabPicture("process", 340)}
     <ol class="cp-steps">${before}${rows}${end}${ahead}</ol></section>`;
 }
 
@@ -1638,7 +1638,7 @@ function documentsView() {
       <td><span class="cp-chip ${chip}">${esc(word_)}</span>${i.status === "unusable" && i.reason ? `<br><small class="cp-muted">${esc(clip(i.reason, 160))}</small>` : ""}${gone.has(i.item_id) ? `<br><button class="cp-link cp-quiet-link" data-point-notneeded="${raw(i.key)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
       <td>${sourceChips(i.evidence) || '<span class="cp-muted">—</span>'}</td></tr>`;
   }).join("");
-  return `${head}<table class="cp-table cp-docs-table"><thead><tr><th>${T("Document", "Unterlage")}</th><th>${T("What for", "Wozu")}</th><th>${T("State", "Stand")}</th><th>${T("Source", "Beleg")}</th></tr></thead><tbody>${rows}</tbody></table>`;
+  return `${head}${read ? tabPicture("documents", 360) : ""}<table class="cp-table cp-docs-table"><thead><tr><th>${T("Document", "Unterlage")}</th><th>${T("What for", "Wozu")}</th><th>${T("State", "Stand")}</th><th>${T("Source", "Beleg")}</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 // A text the report fitting shortened says so: nothing is cut silently.
@@ -2109,32 +2109,56 @@ const tabOverviewLive = () => S.route.view === "case" && (S.route.tab || "overvi
 function mountStory() {
   const box = document.getElementById("story");
   if (!box || !window.CasePathStory) { dropStory(); return; }
-  const live = box.dataset.story === "live", run = live ? (S.data.run || {}).id : (S.data.prepared_run || {}).id;
+  const kind = box.dataset.story, live = kind === "live", timed = live || kind === "replay";
+  const run = live ? (S.data.run || {}).id : kind === "replay" ? (S.data.prepared_run || {}).id : "";
   const events = live ? S.events : (S.storyEvents || {})[run];
-  if (!live && !events) { dropStory(); return; }
+  if (kind === "replay" && !events) { dropStory(); return; }
+  // a tab's picture is the case's state as it stands; the run's picture is its events in their order
+  const model = timed ? null : (TAB_STORY[kind] || (() => null))();
+  if (!timed && !model) { dropStory(); box.hidden = true; return; }
   // the stage lives in a layer of its own over the place the page keeps for it: a redraw of the page (every poll while
   // CasePath works) leaves it standing, so its movements are never cut or replayed
   let layer = document.getElementById("cp-story-layer");
   if (!layer) { layer = document.createElement("div"); layer.id = "cp-story-layer"; document.body.appendChild(layer); }
-  const key = `${S.route.id}:${run}:${live}:${LANG}`, seen = (S.storySeen = S.storySeen || {});
+  const key = `${S.route.id}:${kind}:${run}:${LANG}`, seen = (S.storySeen = S.storySeen || {}), was = `${S.route.id}:${kind}:${run}`;
+  const sig = timed ? "" : JSON.stringify([model.nodes.map((n) => [n.id, n.state, n.sub]), model.edges.length, model.beats.length]);
   if (!S.story || S.story.key !== key) {
     dropStory(true);
     const host = document.createElement("div");
     host.className = "cp-story-host";
     layer.appendChild(host);
-    const ctrl = window.CasePathStory.mount(host, storyModel(events, live), { autoplay: !live && !seen[run], start: live || seen[run] ? "last" : "first", height: live ? 360 : 460,
-      onOpen: (n) => { if (n && n.href) location.hash = n.href; } });
-    seen[run] = true;
-    S.story = { ctrl, key, live, run, n: (events || []).length };
+    const first = !seen[was];
+    const ctrl = window.CasePathStory.mount(host, timed ? storyModel(events, live) : model, { autoplay: kind === "replay" && first, start: live || !first ? "last" : "first", height: Number(box.dataset.height) || (live ? 360 : 460),
+      onOpen: (n) => openFromStory(n), ...(timed ? {} : { onClose: () => setPicture(false) }) });
+    // a tab's picture stands as far as the case came before and plays what is current: where it is now, what is open, what follows
+    if (!timed && first && model.beats.length) { if (model.from > 0) ctrl.seek(model.from - 1); ctrl.play(); }
+    seen[was] = true;
+    S.story = { ctrl, key, live, run, n: (events || []).length, sig, beats: timed ? 0 : model.beats.length };
   } else if (live && S.story.n !== events.length) {
     S.story.n = events.length;
     S.story.ctrl.update(storyModel(events, true));
+  } else if (!timed && S.story.sig !== sig) {
+    // the case changed under the reader's eyes (an entry added, a document arrived, a step taken): the picture takes it up,
+    // and what is new arrives as its own movement
+    const grew = model.beats.length > S.story.beats;
+    S.story.sig = sig; S.story.beats = model.beats.length;
+    S.story.ctrl.update(model);
+    if (grew) S.story.ctrl.play();
   }
   placeStory();
+}
+// A node pressed opens the real thing: its page, or its row on this page (scrolled to and marked for a moment).
+function openFromStory(n) {
+  if (!n) return;
+  const row = n.item && document.querySelector(`[data-item="${CSS.escape(n.item)}"]`);
+  if (row) { row.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); row.classList.remove("cp-story-hit"); void row.offsetWidth; row.classList.add("cp-story-hit"); return; }
+  if (n.file) { S.file = n.file; S.page = n.page || null; location.hash = `#/case/${S.route.id}/claim_reader`; return; }
+  if (n.href) location.hash = n.href;
 }
 function placeStory() {
   const box = document.getElementById("story"), layer = document.getElementById("cp-story-layer");
   if (!box || !layer || !layer.firstElementChild) return;
+  layer.style.display = "block";   // measured only once it is shown
   const h = layer.firstElementChild.offsetHeight;
   if (h && box.style.height !== `${h}px`) box.style.height = `${h}px`;
   const r = box.getBoundingClientRect();
@@ -2154,6 +2178,133 @@ async function openStory() {
     try { (S.storyEvents = S.storyEvents || {})[run] = (await api(`/api/runs/${run}`)).events || []; } catch (error) { S.storyEvents[run] = []; }
   }
   renderCase();
+}
+// ---------- the tabs' pictures: the case's state as it stands, drawn by the same engine ----------
+const pictureOff = () => { try { return localStorage.getItem("casepath.picture") === "off"; } catch (error) { return false; } };
+const TAB_STORY = { process: () => processStory(), history: () => historyStory(), documents: () => documentsStory() };
+function tabPicture(kind, height) {
+  if (!pictureOff()) return `<div class="cp-story cp-story-tab" id="story" data-story="${kind}" data-height="${height}"></div>`;
+  return TAB_STORY[kind]() ? `<p class="cp-story-show"><button class="cp-link cp-quiet-link" id="story-show">${T("Show as a picture", "Als Bild zeigen")}</button></p>` : "";
+}
+function setPicture(shown) { try { localStorage.setItem("casepath.picture", shown ? "on" : "off"); } catch (error) { /* this visit only */ } renderCase(); }
+const storyLabels = () => ({ play: T("Play", "Abspielen"), pause: T("Pause", "Anhalten"), replay: T("Again", "Nochmals"), step: T("Step", "Schritt"), of: T("of", "von"), close: T("Close", "Schliessen"), whole: T("Whole picture", "Ganzes Bild") });
+function storyKit() {
+  const nodes = [], edges = [], beats = [], have = new Set(), linked = new Set();
+  const node = (n) => { if (!have.has(n.id)) { have.add(n.id); nodes.push(n); } return n.id; };
+  const edge = (from, to, kind, label) => { const k = `${from}>${to}`; if (from !== to && have.has(from) && have.has(to) && !linked.has(k)) { linked.add(k); edges.push({ from, to, kind, label }); return [from, to]; } return null; };
+  const beat = (what, why, reveal, drawn, focus) => beats.push({ caption: { what, why: why || "" }, reveal: (reveal || []).filter(Boolean), edges: (drawn || []).filter(Boolean), focus: (focus || reveal || []).filter(Boolean), agent: "" });
+  return { node, edge, beat, have, beats, model: (lanes, from) => ({ lanes, nodes, edges, beats, live: false, from: from || 0, labels: { ...storyLabels(), close: T("Hide the picture", "Bild ausblenden") } }) };
+}
+// Prozess: the way the case came (each step with the facts that took it on), where it stands, what is open there, and
+// the branches it can take from here with what decides them.
+function processStory() {
+  const g = graphModel();
+  if (!g || S.editing) return null;
+  const k = storyKit(), id = S.route.id, ev = S.data.evaluation, sc = scr(), here = `#/case/${id}/process_builder`;
+  const step = (st, state) => k.node({ id: `step:${st.id}`, lane: "path", kind: "step", title: tr(shortTitle(st.title)), state, item: `step:${st.id}`, href: here });
+  const fact = (fid, open) => { const f = item("fact", fid) || {}, src = (f.evidence || []).find((e) => e.file) || {};
+    return k.node({ id: `fact:${fid}`, lane: "facts", kind: "fact", title: tr(shortFact(fid)), sub: open ? T("open", "offen") : tr(plainValue(f.value)), state: open ? "missing" : "done", item: f.item_id, file: src.file, page: src.page, href: `#/case/${id}/claim_reader` }); };
+  const settled = (fid) => { const f = item("fact", fid); return f && f.value !== null && f.value !== undefined && f.value !== ""; };
+  const onPath = new Set(g.path.map((p) => p.step.id)), order = (S.data.process.steps || []).map((x) => x.id), first = (g.path[0] || {}).step;
+  const behind = first ? (ev.reached || []).filter((x) => !onPath.has(x) && g.steps[x] && order.indexOf(x) < order.indexOf(first.id)).sort((a, b) => order.indexOf(a) - order.indexOf(b)) : [];
+  let prev = null, from = 0;
+  for (const x of behind) { const sid = step(g.steps[x], "done"); k.beat(`${T("Done", "Erledigt")}: ${tr(shortTitle(g.steps[x].title))}`, T("as the file shows", "laut Akte"), [sid], [prev && k.edge(prev, sid, "leads")]); prev = sid; }
+  g.path.forEach((n, i) => {
+    const now = n.state === "current", sid = step(n.step, now ? "now" : "done"), next = g.path[i + 1];
+    const via = next ? (n.step.next || []).find((e) => e.to === next.step.id) : null;
+    const decided = now ? [] : [...new Set(factsIn(via && via.when))].filter(settled).slice(0, 4);
+    const fids = decided.map((f) => fact(f, false));
+    if (now) from = k.beats.length;
+    k.beat(`${now ? T("Now", "Jetzt") : T("Done", "Erledigt")}: ${tr(shortTitle(n.step.title))}`,
+      now ? (sc.title ? `${T("Next", "Als Nächstes")}: ${tr(sc.title)}` : "") : decided.map((f) => `${tr(shortFact(f))}: ${tr(plainValue(item("fact", f).value))}`).join(" · "),
+      [sid, ...fids], [prev && k.edge(prev, sid, "leads"), ...fids.map((f) => k.edge(f, sid, "cites"))]);
+    prev = sid;
+  });
+  const current = g.path.find((p) => p.state === "current") || g.path[g.path.length - 1];
+  if (!current) return null;
+  const at = `step:${current.step.id}`;
+  if (!ev.outcome) {
+    const asked = new Set(["deckung", ...((S.data.draft || {}).needs || [])]);
+    const waiting = (ev.waiting_for || []).filter((w) => !asked.has(w.fact)).slice(0, 5).map((w) => fact(w.fact, true));
+    const docs = sc.missing ? k.node({ id: "docs", lane: "facts", kind: "need", title: T("Documents", "Unterlagen"), sub: T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`), state: "missing", href: `#/case/${id}/document_finder` }) : null;
+    const open = [...waiting, docs].filter(Boolean);
+    if (open.length) k.beat(T("Still open at this step", "An diesem Schritt noch offen"), open.map((x) => (k.have.has(x) && x.startsWith("fact:") ? tr(shortFact(x.slice(5))) : T("Documents", "Unterlagen"))).join(" · "), open, open.map((x) => k.edge(x, at, "cites")), [at, ...open]);
+    const seen = new Set(), ways = (current.step.next || []).filter((e) => g.steps[e.to] && !onPath.has(e.to) && !seen.has(e.to) && seen.add(e.to));
+    const ids = ways.map((e) => k.node({ id: `step:${e.to}`, lane: "next", kind: "step", title: tr(shortTitle(g.steps[e.to].title)), state: "open", href: here }));
+    const rests = [...new Set(ways.flatMap((e) => factsIn(e.when)))].slice(0, 3).map((f) => tr(shortFact(f)));
+    if (ids.length) k.beat(T("Then, depending on the case", "Danach, je nach Fall"), rests.length ? `${T("decided by", "entscheidet sich an")}: ${rests.join(" · ")}` : "", ids, ids.map((x) => k.edge(at, x, "branch")), [at, ...ids]);
+  } else {
+    const oid = k.node({ id: "outcome", lane: "next", kind: "decision", title: tr(ev.outcome.title), state: "done", href: here });
+    k.beat(`${T("End", "Abschluss")}: ${tr(ev.outcome.title)}`, "", [oid], [k.edge(at, oid, "leads")]);
+  }
+  return k.model([{ id: "facts", title: T("Rests on", "Beruht auf") }, { id: "path", title: T("The case's path", "Weg des Falls") }, { id: "next", title: T("Then", "Danach") }], from);
+}
+// Verlauf: who wrote to whom, in the order it happened; a request is joined to its answer, what is open stays marked.
+// The line under the picture is the case's time: drag along it to see the case as it stood then.
+function historyStory() {
+  const all = (S.data.verlauf || []).filter((r) => r.kind !== "gesture" && r.who);
+  if (all.length < 2) return null;
+  const rows = [...all].sort((a, b) => String(a.date || "9999").localeCompare(String(b.date || "9999")) || (a.number || 0) - (b.number || 0));
+  const shown = rows.slice(-30), earlier = rows.length - shown.length;
+  const k = storyKit(), lanes = [], byNo = {};
+  const side = (r) => String(r.who).split("→")[0].trim();
+  for (const r of shown) {
+    const lane = side(r);
+    if (!lanes.some((l) => l.id === lane)) lanes.push({ id: lane, title: tr(lane) });
+    const to = String(r.who).split("→")[1] || "", src = (r.evidence || [])[0] || {};
+    const nid = k.node({ id: `entry:${r.key}`, lane, kind: "entry", title: clip(r.what || r.title || "", 58), sub: `${dateText(r.date) || T("undated", "ohne Datum")} · ${T("to", "an")} ${tr(to.trim())}`, state: r.open ? "now" : "", item: String(r.key).startsWith("entry:") ? r.key : "", file: src.file, page: src.page });
+    if (r.number !== null && r.number !== undefined) byNo[r.number] = nid;
+  }
+  // what the notes say of other entries («beantwortet (Nr. 9)», «zu Nr. 5»): the request and its answer, joined
+  const links = (r) => (r.notes || []).flatMap((n) => [...String(n.text || "").matchAll(/Nr\.\s*(\d+(?:,\s*\d+)*)/g)].flatMap((m) => m[1].split(/,\s*/).map(Number))).filter((n) => byNo[n] && n !== r.number);
+  const at = Object.fromEntries(shown.map((r, i) => [`entry:${r.key}`, i]));
+  shown.forEach((r, i) => {
+    const note = (r.notes || []).find((n) => n.open) || (r.notes || [])[0];
+    k.beat(`${dateText(r.date) || T("undated", "ohne Datum")} · ${tr(r.who)}`, `${clip(r.what || r.title || "", 110)}${note ? ` · ${clip(note.text, 90)}` : ""}${i === 0 && earlier ? ` · ${earlier} ${T("earlier entries in the table", "frühere Einträge in der Tabelle")}` : ""}`, [`entry:${r.key}`]);
+  });
+  // the line runs from the earlier entry to the later one and is drawn when the later one arrives
+  const joined = new Set();
+  shown.forEach((r, i) => links(r).forEach((n) => {
+    const j = at[byNo[n]], a = Math.min(i, j), b = Math.max(i, j), pair = `${a}-${b}`;
+    if (joined.has(pair)) return;
+    joined.add(pair);
+    const e = k.edge(`entry:${shown[a].key}`, `entry:${shown[b].key}`, "leads");
+    if (e) k.beats[b].edges.push(e);
+  }));
+  const open = shown.filter((r) => r.open).map((r) => `entry:${r.key}`);
+  if (open.length) k.beat(T(`Open: ${open.length}`, `Offen: ${open.length}`), shown.filter((r) => r.open).map((r) => clip(((r.notes || []).find((n) => n.open) || {}).text || r.what || "", 70)).join(" · "), [], [], open);
+  const rank = (l) => { const at = Object.values(PARTY_DE).indexOf(l.id); return at < 0 ? 99 : at; };
+  return k.model(lanes.sort((a, b) => rank(a) - rank(b)), Math.max(0, k.beats.length - (open.length ? 3 : 2)));
+}
+// Unterlagen: what this case needs and why (what closed cases taught, what the law asks), what the files hold of it with
+// the passage, and what is missing.
+function documentsStory() {
+  if (!S.data.evaluation || !S.data.screen) return null;
+  const docs = (S.data.items || []).filter((i) => i.kind === "document" && !i.part_of);
+  if (!docs.length) return null;
+  const k = storyKit(), id = S.route.id, proc = S.data.process || {}, sc = scr(), gone = new Set(sc.missing_ids || []);
+  const pd = (i) => (proc.documents || []).find((d) => d.id === i.key) || {};
+  const name = (i) => tr((i.label || {}).de || pd(i).title || i.key);
+  const practice = (i) => i.practice || (pd(i).knowledge ? practiceNote(pd(i).knowledge) : "");
+  const law = (i) => (practice(i) ? "" : i.legal_basis || pd(i).legal_basis || "");
+  const need = (i) => k.node({ id: `need:${i.key}`, lane: "needs", kind: "need", title: name(i), sub: tr(practice(i) || law(i) || ""), state: i.status === "present" ? "present" : gone.has(i.item_id) ? "missing" : "", item: i.item_id });
+  const learned = docs.filter(practice), legal = docs.filter(law), plain = docs.filter((i) => !practice(i) && !law(i));
+  if (learned.length) {
+    const kid = k.node({ id: "knowledge", lane: "why", kind: "knowledge", title: T("Closed cases", "Abgeschlossene Fälle"), sub: T("what practice asked for", "was die Praxis verlangt hat"), href: "#/knowledge" });
+    k.beat(T(`Learned from closed cases: ${learned.length}`, `Aus abgeschlossenen Fällen gelernt: ${learned.length}`), `${name(learned[0])}: ${tr(practice(learned[0]))}`, [kid, ...learned.map(need)], learned.map((i) => k.edge(kid, `need:${i.key}`, "learned")));
+  }
+  if (legal.length) {
+    const lid = k.node({ id: "law", lane: "why", kind: "knowledge", title: T("Law", "Gesetz"), sub: T("what the law asks for", "was das Gesetz verlangt") });
+    k.beat(T(`Asked for by the law: ${legal.length}`, `Vom Gesetz verlangt: ${legal.length}`), legal.slice(0, 3).map((i) => `${name(i)}: ${tr(law(i))}`).join(" · "), [lid, ...legal.map(need)], legal.map((i) => k.edge(lid, `need:${i.key}`, "cites")));
+  }
+  if (plain.length) k.beat(T(`Part of this process: ${plain.length}`, `Gehört zu diesem Prozess: ${plain.length}`), plain.slice(0, 4).map(name).join(" · "), plain.map(need));
+  const from = k.beats.length, files = S.data.files || [], on = docs.filter((i) => i.status === "present");
+  const fids = files.map((f) => k.node({ id: `file:${f.id}`, lane: "files", kind: "file", title: f.name, sub: (f.extraction || {}).pages > 1 ? `${((f.extraction || {}).kept_pages || []).length || f.extraction.pages} ${T("pages", "Seiten")}` : dateText(f.created_at), file: f.id }));
+  k.beat(T(`In the file: ${on.length} of ${docs.length}`, `In der Akte: ${on.length} von ${docs.length}`), on.slice(0, 5).map(name).join(" · "), fids,
+    on.map((i) => { const c = (i.evidence || []).find((x) => x.file); return c ? k.edge(`file:${c.file}`, `need:${i.key}`, "cites", c.page ? `${T("p.", "S.")} ${c.page}` : "") : null; }), [...fids, ...on.map((i) => `need:${i.key}`)]);
+  const missing = docs.filter((i) => gone.has(i.item_id));
+  if (missing.length) k.beat(T(`Missing: ${missing.length}`, `Fehlt: ${missing.length}`), missing.map(name).join(" · "), [], [], missing.map((i) => `need:${i.key}`));
+  return k.model([{ id: "files", title: T("In the file", "In der Akte") }, { id: "needs", title: T("The case needs", "Der Fall braucht") }, { id: "why", title: T("Why", "Warum") }], from);
 }
 // What CasePath did to get here, as the steps of its work with what each one gave, each leading to where it can be
 // checked: said once, ticked in turn, when it finishes while the reader watches; later one press on the line above.
@@ -2725,6 +2876,7 @@ function historyView() {
       <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${party ? esc(T(`only open with ${party}`, `nur Offenes ${({ kunde: "bei der Kundschaft", versicherer: "bei uns", kanzlei: "bei der Kanzlei", gegenpartei: "bei der Gegenpartei", behoerde: "bei Gericht/Behörde" })[party] || ""}`)) : T("only open", "nur Offenes")}</label></header>
     ${S.data.governing_version ? `<p class="cp-muted" title="${esc(`${S.data.run_version} → ${S.data.governing_version}`)}">${T("Process updated since the case was prepared", "Prozess seit der Vorbereitung aktualisiert")}</p>` : ""}
     ${gaps.length ? `<p class="cp-flag cp-account-gap">${gaps.map((g) => esc((g.label || {}).de || g.value)).join(" · ")}</p>` : ""}
+    ${S.onlyOpen || S.entryEdit ? "" : tabPicture("history", 380)}
     <table class="cp-table cp-account-table"><thead><tr><th>${T("No.", "Nr.")}</th><th>${T("Date", "Datum")}</th><th>${T("From → to", "Von → an")}</th><th>${T("What", "Was")}</th><th>${T("Asked, answered, agreed", "Verlangt, beantwortet, vereinbart")}</th></tr></thead>
     <tbody>${rows.map(line).join("") || `<tr><td colspan="5" class="cp-muted">${S.onlyOpen ? T("Nothing open.", "Nichts offen.") : T("Nothing in the file yet.", "Noch nichts in der Akte.")}</td></tr>`}</tbody></table></section>`;
 }
@@ -3236,6 +3388,7 @@ async function renderCase() {
     try { el.value = t.value; } catch (e) { continue; }  // a value the field refuses never stops the page
     if (t.focus) { el.focus(); try { el.setSelectionRange(t.start, t.end); } catch (e) { /* not a text field */ } }
   }
+  for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true));
   keepMotion($("#app"));
   markInReview();
   bindIdentity();
@@ -3562,21 +3715,36 @@ async function route() {
   if (next.view !== "case" || next.id !== S.route.id) Object.assign(S, { data: null, pages: {}, file: null, step: null, editing: false, lastEdit: null, events: [], follow: true, message: "", shown: new Set(), litKey: null });
   const moved = next.view !== S.route.view || next.id !== S.route.id || next.tab !== S.route.tab;
   if (moved) { S.moreOpen = false; S.overviewSource = false; }  // a menu and an opened source belong to the page they were opened on
-  S.route = next;
-  if (moved) window.scrollTo(0, 0);  // what is opened is read from its top
-  renderTop();
-  if (next.view !== "case") dropStory();
-  placeAttention(false);
-  try {
-    if (next.view === "case") { if (S.data) await renderCase(); else await loadCase(); }
-    else if (next.view === "knowledge") await renderKnowledge();
-    else if (next.view === "review") await renderReview(next.id);
-    else if (next.view === "auswertung") await renderAuswertung();
-    else await renderCases();
-  } catch (error) {
-    $("#app").innerHTML = `<main class="cp-main"><p class="cp-error">${esc(error.message)}</p></main>`;
-  }
-  showNotices();
+  // a case opened from the list grows out of its row, and goes back into it: the name travels, the rest changes around it
+  const rowOf = (id) => document.querySelector(`.cp-list a[href^="#/case/${CSS.escape(id)}/"]`);
+  const opened = next.view === "case" && S.route.view === "cases" ? rowOf(next.id) : null, left = next.view === "cases" && S.route.view === "case" ? S.route.id : null;
+  const show = async () => {
+    S.route = next;
+    if (moved) window.scrollTo(0, 0);  // what is opened is read from its top
+    renderTop();
+    if (next.view !== "case") dropStory();
+    placeAttention(false);
+    try {
+      if (next.view === "case") { if (S.data) await renderCase(); else await loadCase(); }
+      else if (next.view === "knowledge") await renderKnowledge();
+      else if (next.view === "review") await renderReview(next.id);
+      else if (next.view === "auswertung") await renderAuswertung();
+      else await renderCases();
+    } catch (error) {
+      $("#app").innerHTML = `<main class="cp-main"><p class="cp-error">${esc(error.message)}</p></main>`;
+    }
+    const back = left && rowOf(left);
+    if (back) back.style.viewTransitionName = "cp-case";
+    showNotices();
+  };
+  if ((opened || left) && document.startViewTransition && !reducedMotion()) {
+    if (opened) opened.style.viewTransitionName = "cp-case";
+    document.documentElement.classList.add("cp-morph");
+    try { await document.startViewTransition(show).finished; } catch (error) { /* a transition cut short: the page is there all the same */ }
+    document.documentElement.classList.remove("cp-morph");
+    const row = left && rowOf(left);
+    if (row) row.style.viewTransitionName = "";
+  } else await show();
 }
 
 (async () => {

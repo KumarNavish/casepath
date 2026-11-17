@@ -130,6 +130,20 @@ The rules the screens are held to, so a later change does not undo them:
 - **Hands on the keyboard.** On the list: arrow keys or j/k move through the rows, Enter opens. On a case: Ctrl+Enter (⌘+Enter) presses the card's one primary button.
 - **«Auswertung»** leads with four figures and lists only the cases something was done in.
 
+## The case as a picture (17 November 2026)
+
+The work is shown as a picture that builds itself, drawn from the case's own state and never from a recording. One engine (`web/ui/assets/story.js`, `story.css`; no library) draws every one of them: cards in lanes, lines between them, a camera that goes to what a moment is about, one sentence saying what happened and one saying on what it rests, and a line under the picture with one mark per moment (press or drag to see the case as it stood then; Space, ←/→, Home/End on the keyboard). A card opens the real thing: the file at its page, the row in the table below, the tab. With «reduce motion» each moment is simply shown.
+
+- **While CasePath works** (Übersicht): the run's events as they arrive. A file comes in, a finding rises from it joined to its passage, a document is found or marked missing, the case is placed on its process. The picture stands in a layer of its own, so the page's redraws never cut a movement, and a run that is ahead is caught up with, never skipped.
+- **How a step was prepared** («Ansehen, wie es entstand» on the prepared step): the same picture replayed from the finished run's events, on to what practice taught, the letter and the decisions left.
+- **Prozess**: the way the case came with the facts that took it from step to step, where it stands, what is open there, and the branches from here with what decides them.
+- **Verlauf**: who wrote to whom, a column per party, in the order it happened; a request is joined to its answer and what is open stays marked. The line under it is the case's time.
+- **Unterlagen**: what the case needs and why (what closed cases asked for, what the law asks), what the files hold of it with the page, what is missing.
+- **A tab's picture** stands as far as the case had come and plays only what is current; when the case changes under the reader's eyes (an entry added, a document arrived) the new part arrives as its own movement. It can be put away with its ✕ and stays away in that browser until «Als Bild zeigen».
+- **List and case**: a case opened from the list grows out of its row (its name travels) and goes back into it.
+
+Rules for a later change: the picture's model is built in `casepath.js` from data the page already holds (`storyModel` from run events; `processStory`, `historyStory`, `documentsStory` from the case), every text goes in as text, nothing in it is staged, and a movement that says nothing is left out.
+
 ## Reading in another language (17 November 2026)
 
 Cases are worked in German. A reader of English switches the page with the control at the right of the header (DE | EN): the page turns in place, where it stands, and the choice is kept in the browser.

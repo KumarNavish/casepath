@@ -1550,3 +1550,16 @@ mark.cp-hit.chosen, mark#live-hit { animation: cp-mark-pulse .9s var(--ease); }
 .cp-work-story .cp-stages { display: flex; flex-direction: row; gap: 4px 18px; flex-wrap: wrap; padding: 0; background: none; }
 .cp-work-story .cp-stages li { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; }
 .cp-work-story .cp-work-head { align-items: center; }
+
+/* A tab's picture: the state of the case as it stands, above the tab's own list. */
+.cp-story-tab { min-height: 0; margin: 6px 0 22px; }
+.cp-story-tab[hidden] { display: none; }
+.cp-story-hit { animation: cp-story-hit 1.6s ease-out 1; }
+@keyframes cp-story-hit { 0%, 35% { background: rgba(130, 7, 42, .07); } 100% { background: transparent; } }
+@media (prefers-reduced-motion: reduce) { .cp-story-hit { animation: none; outline: 2px solid rgba(130, 7, 42, .35); outline-offset: -2px; } }
+.cp-story-show { margin: 2px 0 14px; text-align: right; }
+/* List and case: the case's name travels between its row and its page. */
+.cp-morph #case-title { view-transition-name: cp-case; }
+::view-transition-group(cp-case) { animation-duration: .42s; animation-timing-function: cubic-bezier(.22, .8, .24, 1); }
+.cp-morph::view-transition-old(root) { animation-duration: .2s; }
+.cp-morph::view-transition-new(root) { animation-duration: .34s; }

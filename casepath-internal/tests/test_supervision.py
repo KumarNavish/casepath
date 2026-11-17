@@ -289,7 +289,18 @@ class CraftTests(unittest.TestCase):
         self.assertIn('layer.id = "cp-story-layer"', SCRIPT)
         self.assertIn("S.story.ctrl.update(storyModel(events, true));", SCRIPT)
         self.assertIn('id="story-open"', SCRIPT)
-        self.assertIn("onOpen: (n) => { if (n && n.href) location.hash = n.href; }", SCRIPT)  # a node opens the real thing
+        self.assertIn("onOpen: (n) => openFromStory(n)", SCRIPT)                           # a node opens the real thing: its page or its row
+        # each tab shows its own state with the same engine: the path with what decided it and its branches, the history
+        # as who wrote to whom with a request joined to its answer, the documents with why each is asked and where it is
+        for kind, build in (("process", "processStory"), ("history", "historyStory"), ("documents", "documentsStory")):
+            self.assertIn(f'tabPicture("{kind}", ', SCRIPT)
+            self.assertIn(f"function {build}()", SCRIPT)
+        self.assertIn('ids.map((x) => k.edge(at, x, "branch"))', SCRIPT)                   # the ways on from the current step
+        self.assertIn('learned.map((i) => k.edge(kid, `need:${i.key}`, "learned"))', SCRIPT)  # closed cases → what this case needs
+        self.assertIn('localStorage.setItem("casepath.picture", shown ? "on" : "off")', SCRIPT)  # put away once, it stays away until asked for
+        self.assertIn('opened.style.viewTransitionName = "cp-case"', SCRIPT)               # a case opened from the list grows out of its row
+        self.assertIn(".cp-morph #case-title { view-transition-name: cp-case; }", STYLE)
+        self.assertIn("if (grew) S.story.ctrl.play();", SCRIPT)                            # a change under the reader's eyes arrives as its own movement
 
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
         self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)
