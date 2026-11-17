@@ -1519,3 +1519,15 @@ mark.cp-hit.chosen, mark#live-hit { animation: cp-mark-pulse .9s var(--ease); }
 .cp-list-bar #list-search { width: 260px; }
 .cp-list .cp-today-note { margin: 28px 0 0; font-size: 12.5px; }
 .cp-list-bar { margin-top: 22px; }
+
+/* ---------- From the click-through: nothing reads above the bar, a state on a filled tab is legible, the list's bar stays one line ---------- */
+.cp-top::before { content: ""; position: absolute; left: -21px; right: -21px; top: -14px; height: 14px; background: var(--ground); }
+.cp-doc-tab[aria-selected="true"] .cp-tab-state, .cp-doc-tab[aria-selected="true"] .cp-tab-state.freigegeben, .cp-doc-tab[aria-selected="true"] .cp-tab-state.versandt { color: #cfe8d4; }
+.cp-doc-tab[aria-selected="true"] .cp-tab-state.veraltet { color: #ffc9d4; }
+.cp-list-bar { flex-wrap: nowrap; }
+.cp-list-bar .cp-filter { flex: none; }
+.cp-list-bar .cp-list-tools { flex: 1 1 auto; min-width: 0; justify-content: flex-end; flex-wrap: nowrap; white-space: nowrap; }
+.cp-list-bar #list-search { width: 300px; min-width: 140px; flex: 0 1 300px; }
+@media (max-width: 1100px) { .cp-list-bar { flex-wrap: wrap; } }
+/* the pages for reviewers stand in the same column as the list */
+.cp-main.cp-evaluation, .cp-main.cp-review, .cp-main.cp-knowledge { max-width: 1180px; margin: 0 auto; padding-top: 34px; }
