@@ -2147,7 +2147,9 @@ function preparedView(st) {
   // «was hinausging»: the sent letter read in place (the package's own text), the package itself one link beside it
   const sentShown = resting && S.sentOpen && S.sentOpen.case === S.route.id && S.sentOpen.version === lastSent.version ? S.sentOpen : null;
   const restLine = !resting ? "" : `<p class="cp-rest"><span class="cp-sent">${icon("check")}${esc(lastSent.title ? `${lastSent.title} ` : "")}${T("sent", "versandt am")} ${dateText(went.date)}</span>
-      <span class="cp-muted">· ${T("nothing to do until then", "bis dahin nichts zu tun")}</span>
+      ${((S.data.status || {}).bucket === "urteil" && (S.data.status || {}).text)  // the case waits, yet something in it asks for a look: said here as the rail and the list say it
+        ? `<span class="cp-stand check" data-rest-status>· ${raw(standIn(S.data.status.text, S.data.status.kind))}</span>`
+        : `<span class="cp-muted">· ${T("nothing to do until then", "bis dahin nichts zu tun")}</span>`}
       ${lastSent.version ? `<button class="cp-link cp-quiet-link" id="sent-open" type="button" data-version="${raw(lastSent.version)}" aria-expanded="${Boolean(sentShown)}">${sentShown ? "▾ " : "▸ "}${T("what went out", "was hinausging")}</button>` : ""}</p>
     ${sentShown ? sentLetter(sentShown, lastSent.version) : ""}
     <p class="cp-rest-next"><button class="cp-link cp-quiet-link" id="rest-open" type="button" aria-expanded="${!folded}">${folded ? "▸ " : "▾ "}${T("Prepared for then", "Für dann vorbereitet")}: ${esc(nextTitle)}</button></p>`;
