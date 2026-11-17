@@ -56,6 +56,12 @@ class MemoryTests(unittest.TestCase):
         self.assertEqual(t.known("Entscheid: Erfolgsaussichten", "en"), "Decision: Prospects of success")
         self.assertEqual(t.known("Deckung · Sara Exempel", "en"), "Cover · Sara Exempel")
 
+    def test_a_form_of_address_is_translated_around_any_name(self):
+        t = translate.Translator(None, memory_dir=memory({}))
+        self.assertEqual(t.known("Sehr geehrte Frau Zgraggen", "en"), "Dear Ms Zgraggen")
+        self.assertEqual(t.known("Sehr geehrter Herr von Allmen,", "en"), "Dear Mr von Allmen,")
+        self.assertIsNone(t.known("Frau", "en"))
+
     def test_the_answer_is_not_changed_and_carries_each_translation_beside_it(self):
         t = translate.Translator(None, memory_dir=memory({"Deckung": "Cover", "Sehr geehrte Frau Exempel": "Dear Ms Exempel",
                                                           "Vielen Dank für Ihre Unterlagen.": "Thank you for your documents."}))

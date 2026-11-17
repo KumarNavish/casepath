@@ -36,6 +36,11 @@ WORDING = {"title", "short_title", "label", "headline", "word", "text", "questio
            "meaning", "changed", "detail", "what", "action", "subject", "stand", "status_line", "next", "weil", "name_shown"}
 ROLE_MARK = re.compile(r"\s*\((?:VN|GP)\)")
 FILE = re.compile(r"\.[A-Za-z0-9]{2,5}$")
+# Forms of address around a name, which no memory can list: «Sehr geehrte Frau Muster» → «Dear Ms Muster».
+ADDRESS = {"en": [(re.compile(r"^Sehr geehrte Frau (\S.*?)([,.]?)$"), r"Dear Ms \1\2"), (re.compile(r"^Sehr geehrter Herr (\S.*?)([,.]?)$"), r"Dear Mr \1\2"),
+                  (re.compile(r"^Guten Tag Frau (\S.*?)([,.]?)$"), r"Hello Ms \1\2"), (re.compile(r"^Guten Tag Herr (\S.*?)([,.]?)$"), r"Hello Mr \1\2"),
+                  (re.compile(r"^Liebe Frau (\S.*?)([,.]?)$"), r"Dear Ms \1\2"), (re.compile(r"^Lieber Herr (\S.*?)([,.]?)$"), r"Dear Mr \1\2"),
+                  (re.compile(r"^Frau (\S+ \S+)$"), r"Ms \1"), (re.compile(r"^Herr (\S+ \S+)$"), r"Mr \1")]}
 MEMORY_DIR = Path(__file__).with_name("i18n")
 BATCH_TEXTS, BATCH_CHARS = 40, 6000
 
@@ -123,6 +128,12 @@ class Translator:
             hit = fill(hit, values) if hit is not None else None
         if hit is None and self.store is not None and self.mode != "off":
             hit = self.store.translation(language, sha(line))
+        if hit is None:  # a line that is a form of address around a name: the form is translated, the name stays
+            for form, to in ADDRESS.get(language, ()):
+                m = form.match(line)
+                if m:
+                    hit = m.expand(to)
+                    break
         if hit is None and depth < 2:  # put together from parts («Entscheid: …», «… · …»): each part where it is known
             for sep in (" · ", ": ", "; ", " – "):
                 if sep in line:
