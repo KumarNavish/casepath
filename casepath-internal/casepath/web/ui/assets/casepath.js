@@ -2150,17 +2150,26 @@ function mountStory() {
     // a tab's picture stands as far as the case came before and plays what is current: where it is now, what is open, what follows
     if (!timed && first && model.beats.length) { if (model.from > 0) ctrl.seek(model.from - 1); ctrl.play(); }
     seen[was] = true;
-    S.story = { ctrl, key, live, run, n: (events || []).length, sig, beats: timed ? 0 : model.beats.length };
+    S.story = { ctrl, key, live, run, n: (events || []).length, sig, beats: timed ? 0 : model.beats.length, ids: timed ? [] : model.nodes.map((n) => n.id) };
   } else if (live && S.story.n !== events.length) {
     S.story.n = events.length;
     S.story.ctrl.update(storyModel(events, true));
   } else if (!timed && S.story.sig !== sig) {
     // the case changed under the reader's eyes (an entry added, a document arrived, a step taken): the picture takes it up,
     // and what is new arrives as its own movement
-    const grew = model.beats.length > S.story.beats;
-    S.story.sig = sig; S.story.beats = model.beats.length;
-    S.story.ctrl.update(model);
-    if (grew) S.story.ctrl.play();
+    const ids = new Set(model.nodes.map((n) => n.id)), grew = model.beats.length > S.story.beats;
+    if (S.story.ids.every((id) => ids.has(id)) && model.beats.length >= S.story.beats) {
+      S.story.sig = sig; S.story.beats = model.beats.length; S.story.ids = [...ids];
+      S.story.ctrl.update(model);
+      if (grew) S.story.ctrl.play();
+    } else {
+      // the case went on (a step taken, a decision that changed its way): the picture is drawn again as far as the case
+      // had come and plays where it stands now
+      seen[was] = false;
+      dropStory(true);
+      mountStory();
+      return;
+    }
   }
   placeStory();
 }

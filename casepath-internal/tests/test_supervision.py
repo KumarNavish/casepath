@@ -306,7 +306,8 @@ class CraftTests(unittest.TestCase):
         # the list: a case whose status changed since it was last on screen says what it was before
         self.assertIn("if (seen[c.id] && seen[c.id].text !== now.text) moved[c.id] = seen[c.id];", SCRIPT)
         self.assertIn('class="cp-muted cp-row-was"', SCRIPT)
-        self.assertIn("if (grew) S.story.ctrl.play();", SCRIPT)                            # a change under the reader's eyes arrives as its own movement
+        self.assertIn("if (grew) S.story.ctrl.play();", SCRIPT)
+        self.assertIn("seen[was] = false;", SCRIPT)                                        # a step taken: drawn again up to there, played from where the case stands                            # a change under the reader's eyes arrives as its own movement
 
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
         self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)
