@@ -385,6 +385,14 @@ class CraftTests(unittest.TestCase):
         self.assertIn('table.classList.add("cp-week-hover");', SCRIPT)
         self.assertIn(".cp-cases.cp-week-hover tbody tr:not(.cp-week-hit) { opacity: .32; }", STYLE)
 
+    def test_the_letter_says_what_it_rests_on_without_being_touched(self):
+        src = SCRIPT[SCRIPT.index("function letterSources()"):SCRIPT.index("// The keys, said once where the reader asks for them")]
+        self.assertIn("if (w.length < 4 || have.has(w) || !text.includes(w)) return;", src)   # only what literally stands in the letter
+        self.assertIn('CSS.highlights.set("cp-src", new Highlight(...ranges));', src)          # marked by the browser's highlight
+        self.assertNotIn("body.innerHTML", src)                                                # the editable text is never rewritten
+        self.assertNotIn("api(", src)
+        self.assertIn("::highlight(cp-src) { background-color: #d5e3fd; color: #101215; }", STYLE)
+
     def test_the_process_is_a_flow_with_the_case_on_it(self):
         assets = Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets"
         page = (assets.parent / "index.html").read_text(encoding="utf-8")

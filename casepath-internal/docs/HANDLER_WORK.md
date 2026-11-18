@@ -181,6 +181,12 @@ A file held over a case shows where it belongs before it is let go: on «Unterla
 missing turn blue and say «hier ablegen», and the sidebar's «Unterlagen» lights up on every tab. Dropped anywhere on
 the page the file is added as before; the hint only says what the case is waiting for.
 
+Under a prepared letter one quiet row says what it rests on: the person it is written to, the claim number, the day
+it asks an answer by, each fact of the file whose words stand in it (with its page) and each document it asks for
+(with «Praxis» where closed cases taught the request). A chip under the hand marks its words in the letter, using the
+browser's own highlight so the editable text is never touched; pressed, it opens the passage or «Unterlagen». Only
+what literally stands in the letter is shown; nothing is inferred.
+
 On «Verlauf» the case's time is one band above the table: every dated entry at its day (customer above the line,
 Protekta on it, everyone else below), what is open ringed in red, today marked. A silence of more than forty days is
 drawn short and says how long it really was («7,4 Jahre», «3 Monate»), so an old contract does not press the exchange

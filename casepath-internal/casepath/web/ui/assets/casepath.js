@@ -3764,6 +3764,7 @@ async function renderCase() {
   }
   for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true));
   xRest();
+  letterSources();
   keepMotion($("#app"));
   markInReview();
   bindIdentity();
@@ -4377,6 +4378,39 @@ document.addEventListener("click", (event) => {
   if (cite && !el.closest("a, button")) { S.file = cite.dataset.xFile; S.page = Number(cite.dataset.xPage) || null; S.follow = false; if (S.route.tab === "claim_reader") renderCase(); else location.hash = `#/case/${S.route.id}/claim_reader`; }
 });
 
+// What the letter rests on, said under it: each fact of the file and each document asked for whose words stand in the
+// letter is one small chip with its page. A chip under the hand marks its words in the letter (the browser's own
+// highlight, so the text that can be edited is never touched); pressed, it opens the passage.
+function letterSources() {
+  for (const old of document.querySelectorAll(".cp-lsrc")) old.remove();
+  if (window.CSS && CSS.highlights) CSS.highlights.delete("cp-src");
+  const letter = document.querySelector('.cp-letter[data-item="letter:0"]'), body = letter && letter.querySelector('.cp-text[data-seg="text"]');
+  if (!xOn() || !body || (S.route.tab || "overview") !== "overview") return;
+  const text = body.textContent || "", found = [], have = new Set();
+  const add = (words, label, ev, kind) => { const w = String(words || "").trim(); if (w.length < 4 || have.has(w) || !text.includes(w)) return; have.add(w); const c = (ev || []).find((e) => e.file) || {}; found.push({ w, label, file: c.file || "", page: c.page || "", kind }); };
+  for (const f of xFacts()) { const v = plainValue(f.value); if (/^(ja|nein|yes|no)$/i.test(String(v))) continue;
+    for (const form of [tr(v), dateText(String(f.value))]) add(form, tr((f.label || {}).de || shortFact(f.key)), f.evidence, "fact"); }
+  const gone = new Set(scr().missing_ids || []);
+  for (const d of xDocs().filter((q) => gone.has(q.item_id))) add(tr((d.label || {}).de || ""), d.practice ? tr(d.practice) : T("asked for", "verlangt"), [], "doc");
+  for (const fr of scr().fristen || []) add(fr.date, tr(fr.title), [], "date");
+  // who it is written to, the claim it names and the day it asks an answer by
+  for (const q of (S.data.items || []).filter((i) => i.kind === "party")) { const name = String(q.value || "").trim().split(/\s+/).pop(); add(name, tr((q.label || {}).de || T("party", "Partei")), q.evidence, "fact"); }
+  add(S.data.case.reference, T("claim number", "Schadennummer"), [], "date");
+  const by = (S.data.draft || {}).respond_by; if (by) add(dateText(by), T("answer by", "Antwort bis"), [], "date");
+  if (!found.length) return;
+  found.sort((a, b) => ["fact", "date", "doc"].indexOf(a.kind) - ["fact", "date", "doc"].indexOf(b.kind));
+  const row = document.createElement("p");
+  row.className = "cp-lsrc";
+  row.innerHTML = `<span class="cp-lsrc-head">${T("The letter rests on", "Der Brief stützt sich auf")}</span>${found.slice(0, 8).map((f, i) => `<button type="button" class="cp-lsrc-chip ${f.kind}" style="--i:${i}" data-ls="${i}" title="${raw(f.label)}">${raw(clip(f.w, 34))}<small>${f.page ? `${T("p.", "S.")} ${raw(f.page)}` : f.kind === "doc" ? T("practice", "Praxis") : raw(clip(f.label, 24))}</small></button>`).join("")}`;
+  letter.after(row);
+  const mark = (f) => { if (!(window.CSS && CSS.highlights && window.Highlight)) return; const ranges = [], walk = document.createTreeWalker(body, NodeFilter.SHOW_TEXT);
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) for (let at = n.data.indexOf(f.w); at >= 0; at = n.data.indexOf(f.w, at + f.w.length)) { const r = new Range(); r.setStart(n, at); r.setEnd(n, at + f.w.length); ranges.push(r); }
+    if (ranges.length) CSS.highlights.set("cp-src", new Highlight(...ranges)); };
+  for (const chip of row.querySelectorAll(".cp-lsrc-chip")) { const f = found[Number(chip.dataset.ls)];
+    chip.addEventListener("mouseenter", () => mark(f)); chip.addEventListener("focus", () => mark(f));
+    chip.addEventListener("mouseleave", () => { if (window.CSS && CSS.highlights) CSS.highlights.delete("cp-src"); }); chip.addEventListener("blur", () => { if (window.CSS && CSS.highlights) CSS.highlights.delete("cp-src"); });
+    chip.addEventListener("click", () => { if (f.file) { S.file = f.file; S.page = Number(f.page) || null; S.follow = false; location.hash = `#/case/${S.route.id}/claim_reader`; } else if (f.kind === "doc") location.hash = `#/case/${S.route.id}/document_finder`; }); }
+}
 // The keys, said once where the reader asks for them («?»): what works everywhere, in the list, in a case, in a picture.
 function keysCard(open) {
   const old = document.getElementById("cp-keys");

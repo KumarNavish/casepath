@@ -1879,3 +1879,14 @@ body.dragging .cp-drop { border-color: var(--blue); color: var(--blue); }
 .cp-cases.cp-week-hover tbody tr:not(.cp-week-hit) { opacity: .32; }
 .cp-cases.cp-week-hover tbody tr.cp-week-hit td:first-child { box-shadow: inset 2px 0 0 var(--blue); }
 @media (prefers-reduced-motion: reduce) { .cp-tb-dot { animation: none; } }
+
+/* ---------- What the letter rests on ---------- */
+.cp-lsrc { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 10px 2px 2px; }
+.cp-lsrc-head { font-size: 12px; color: var(--ink-2); margin-right: 4px; }
+.cp-lsrc-chip { display: inline-flex; align-items: baseline; gap: 6px; height: 26px; padding: 0 10px; border: 0; border-radius: 999px; background: #fff; box-shadow: var(--ring); font-size: 12.5px; line-height: 26px; color: var(--ink); cursor: pointer; white-space: nowrap;
+  transition: background-color .15s cubic-bezier(.4,0,.2,1), box-shadow .15s cubic-bezier(.4,0,.2,1); animation: cp-x-in .34s calc(80ms + var(--i, 0) * 40ms) var(--ease) both; }
+.cp-lsrc-chip small { font-size: 11px; color: var(--ink-2); }
+.cp-lsrc-chip:hover, .cp-lsrc-chip:focus-visible { background: var(--blue-tint); box-shadow: 0 0 0 1px var(--blue); outline: 0; }
+.cp-lsrc-chip.doc small { color: var(--green-ink); }
+::highlight(cp-src) { background-color: #d5e3fd; color: #101215; }
+@media (prefers-reduced-motion: reduce) { .cp-lsrc-chip { animation: none; } }
