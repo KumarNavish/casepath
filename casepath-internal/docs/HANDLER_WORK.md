@@ -215,6 +215,35 @@ drawn again. It can be seen large (`v`), panned, and reset to «Wo der Fall steh
 far («Ganzer Prozess») each block says only its name, at a readable size, and a closing is a small flag; the rows come
 back with the closer look. In the page the picture takes the height the window gives (440 to 640 px).
 
+## From the handler's seat (19 November 2026)
+
+A reviewer walked the routine journey on nine example cases as a handler would (list, open, check, decide, approve,
+next) and listed what stood in the way. What was changed on that evidence:
+
+- **One approval, every document seen.** A step that sends several documents (a mandate: letter to the firm, cost
+  approval, summary, information to the customer) was approved with one click while three of them had never been on
+  screen. Now the button leads to each document not yet shown («Weiter: Kostengutsprache · 2 von 4») and approves only
+  when all have been before the reader's eyes.
+- **To whom, before what.** Recipient and subject stand above the letter, not under it; a missing address is said in
+  red there.
+- **A decision where it is announced.** «Deckung» in the sidebar opens its points and offers «Deckung bestätigen» and
+  «Ablehnen …» right there; the same rule as on the step (`decideFact`). What was decided is one quiet line with its
+  way back («Entschieden: Deckung bestätigt · Rückgängig»), not a red block that pushes the letter down.
+- **A passage beside the page.** A source opened from the letter, the card or a table row appears as a panel at the
+  right with its words marked; the page does not scroll and Escape puts the panel away. On «Akte» the document takes
+  the height of the window.
+- **Said once.** The sidebar card shows the case's urgency («überfällig»), not the page title again; «Der Fall» no
+  longer repeats Unterlagen, Fristen and Deckung, which stand in the sidebar; the list has one total; the row under
+  the letter keeps only what opens a passage. The sidebar's parts keep their order.
+- **Red only for what needs a hand.** Ticks, a chosen value and a focused field are ink or blue; a saved change is
+  grey.
+
+Left as they are on purpose: the order of the list (new arrivals before overdue cases, as the server ranks them), the
+line that a step's content is not yet legally reviewed (a jurist should know it), the flow as the first thing on
+«Prozess». Not yet done from that review: the dispatch bar's wording, the Verlauf table's order and repeated request
+lines, the texts of interrupted and failed preparations, and the scope of a cost approval as an open decision (it is
+sent on its default today; that needs a rule, not a restyle).
+
 ## The case in parts, under the hand (18 November 2026)
 
 The sidebar of a prepared case names only the parts a handler acts on or looks up while working it: Deckung, Fristen

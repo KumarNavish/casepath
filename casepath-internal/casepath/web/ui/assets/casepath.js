@@ -260,10 +260,9 @@ function renderNav(wordmark) {
   if (!nav) { nav = document.createElement("aside"); nav.id = "nav"; nav.className = "cp-nav"; document.body.insertBefore(nav, document.body.firstChild); }
   const route = S.route;
   const item = (href, ic, title, on, side) => `<a class="cp-nav-item" href="${href}" ${on ? 'aria-current="page"' : ""}>${icon(ic)}<span>${title}</span>${side ? `<small>${side}</small>` : ""}</a>`;
-  const due = S.listData && S.listData.got && S.listData.got[0] ? (S.listData.got[0].cases || []).length : 0;
   // only what leads somewhere: the list, and outside a case the two pages of those who look after the knowledge
   nav.innerHTML = `${wordmark}
-    <nav aria-label="CasePath">${item("#/cases", "folder", T("Cases", "Fälle"), route.view === "cases", due ? String(due) : "")}
+    <nav aria-label="CasePath">${item("#/cases", "folder", T("Cases", "Fälle"), route.view === "cases", "")}
       ${S.mayReview && route.view !== "case" ? `<h4>${T("Administration", "Verwaltung")}</h4>${item("#/knowledge", "book", T("Knowledge", "Wissen"), route.view === "knowledge" || route.view === "review")}${item("#/auswertung", "chart", T("Evaluation", "Auswertung"), route.view === "auswertung")}` : ""}</nav>`;
   document.documentElement.style.setProperty("--nav-h", `${nav.offsetHeight}px`);
   document.documentElement.classList.toggle("cp-in-case", route.view === "case");
@@ -452,7 +451,6 @@ async function loadList(sinceMark) {
   const print = (d) => JSON.stringify([d.got[0], d.got[3] && d.got[3].events, d.got[3] && d.got[3].done, d.imported]);
   const changed = !S.listData || S.listData.lang !== LANG || print(S.listData) !== print({ got, imported });
   S.listData = { lang: LANG, got, imported };
-  if (changed && S.route.view === "cases") renderTop();   // the sidebar says how many cases there are
   S.listStale = false;
   try { localStorage.setItem("cp-last-visit", new Date().toISOString()); } catch (error) { /* a convenience only */ }
   // a case whose status changed since the list was last on this screen (a letter approved, an answer arrived, a
@@ -801,13 +799,18 @@ function renderRail() {
     <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(caseName(d.case))}</div>
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
       ${identityLine(d.case)}
-      ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text && !(st.kind === "new" && (d.items || []).some((i) => i.kind === "next_action")) ? `<span class="cp-stand ${raw(st.kind || "")}" data-status>${raw(standIn(st.text, st.kind))}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
+      ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text && !(st.kind === "new" && (d.items || []).some((i) => i.kind === "next_action")) ? `${railStand(st)}` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
     ${caseIndex()}
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
     <div class="cp-rail-foot">${unaidedPending() ? "" : moreMenu()}</div>
   </aside>`;
+}
+function railStand(st) {
+  const stand = standIn(st.text, st.kind), title = tr(((S.data.screen || {}).title) || "");
+  const short = title && stand.includes(title) ? (stand.includes(":") ? stand.split(":")[0].trim() : "") : stand;
+  return short ? `<span class="cp-stand ${raw(st.kind || "")}" data-status title="${raw(stand)}">${raw(short)}</span>` : "";
 }
 function moreMenu() {
   const d = S.data, run = d.run, done = S.data.lastCompleted;
@@ -2027,7 +2030,10 @@ function documentsOut() {
   const active = rows.find((d) => d.kind === S.docTab);
   const done = (d) => (d.state ? d.state === "versandt" : d.copied);  // a tab is done once its recipient's dispatch is confirmed
   if (!active || (done(active) && !S.docPicked)) S.docTab = (rows.find((d) => !done(d)) || active || rows[0] || {}).kind || null;
-  return { rows, active: rows.find((d) => d.kind === S.docTab) || null };
+  // what the reader has had before their eyes, per step: an approval covers every document, so each is shown once first
+  const seen = ((S.docSeen = S.docSeen || {})[`${S.route.id}:${step}`] = (S.docSeen[`${S.route.id}:${step}`] || new Set()));
+  if (S.docTab) seen.add(S.docTab);
+  return { rows, active: rows.find((d) => d.kind === S.docTab) || null, unseen: rows.filter((d) => !seen.has(d.kind) && !(d.state && d.state !== "entwurf")) };
 }
 function docText(doc) {
   const draft = S.data.draft || {};
@@ -2282,7 +2288,7 @@ function openFromFlow(t) {
 function actFromFlow(row, action) {
   const [fact, value] = String((action || {}).id || "").split(":");
   if (fact !== "deckung") return;
-  if (value === "bestätigt") { const b = document.querySelector('[data-decide="deckung"][data-value="bestätigt"]'); if (b) b.click(); return; }
+  if (value === "bestätigt") { decideFact("deckung", "bestätigt"); return; }
   // a refusal names the point that fails: the page asks for it where the step stands
   S.coverDecline = true;
   renderCase().then(() => { const why = document.querySelector(".cp-cover-why"); if (why) { why.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); const first = why.querySelector("button, input, select"); if (first) first.focus({ preventScroll: true }); } });
@@ -2823,8 +2829,8 @@ function preparedView(st) {
     ${stale && text ? `<p class="cp-stale-note">${T("Draft from before the new files", "Entwurf vor den neuen Dateien")} <button class="cp-link cp-quiet-link" id="use-anyway" type="button">${T("use anyway", "trotzdem verwenden")}</button></p>` : ""}
     ${c || asFrozen ? "" : conflictsView(active)}
     ${c || asFrozen ? "" : otherReferenceNote()}${text ? letterLangNote() : ""}
-    <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${raw((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>
     ${asFrozen || c || !text ? "" : handoverLine()}
+    <div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0" data-doc="${raw((active || {}).kind || "")}" ${editable && text ? 'data-letter-edit="1"' : ""} ${sc.missing !== undefined ? `data-missing="${sc.missing}"` : ""}>${body}${required}</div>
     <footer class="cp-bar ${asFrozen || c ? "" : "cp-carry"} ${barChanged(c ? "closed" : resting ? "rest" : barKind || "")}">${bar}</footer>
   </section>`;
 }
@@ -2950,7 +2956,7 @@ function sideAccount() {
   const next = stand.map((l) => !l.rows ? `<div class="cp-acct-line ${l.open ? "open" : ""}" data-item="${raw(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span> ${esc(l.value || "")}${sourceChips(l.evidence)}${handlerTag(l.handler)}</div>`
     : `<div class="cp-acct-line open" data-item="${raw(l.item_id)}"><span class="cp-acct-label">${esc((l.label || {}).de || "")}</span>${l.rows.map((x) => `<div class="cp-acct-item">${esc(x.text)}${sourceChips(x.evidence)}${handlerTag(x.handler)}${settleButtons(x)}</div>`).join("")}${l.more ? `<button class="cp-link cp-quiet-link" data-open-party="${raw(l.party)}">… ${l.more} ${T("more", "weitere")}</button>` : ""}</div>`)
     .concat(stageLines.map((l) => `<div class="cp-acct-line" data-item="${raw(l.item_id)}">${esc(l.value || "")}${sourceChips(l.evidence)}</div>`)).join("");
-  return next ? `<dt>${T("Next", "Als Nächstes")}</dt><dd><div class="cp-acct">${next}</div></dd>` : "";
+  return next ? `<dt>${T("Open", "Offen")}</dt><dd><div class="cp-acct">${next}</div></dd>` : "";
 }
 // After a correction: what changed in the prepared package, before and after, with its basis, and its undo; after an undo,
 // what came back and what an undo cannot reach. Otherwise, after an update, how the reply was matched (C7), unless the
@@ -2968,6 +2974,9 @@ function lastChange() {
     const k = S.lastEdit.knowledge;
     const taught = k ? `<p class="cp-change cp-taught">${T("Proposed for similar cases", "Für ähnliche Fälle vorgeschlagen")}${(k.replay || {}).because === "wiederholt" ? T(" (made in several cases)", " (in mehreren Fällen so korrigiert)") : ""}: ${T("a reviewer releases it under Knowledge; until then it changes no other case.", "freigegeben wird es unter «Wissen»; bis dahin ändert es keinen anderen Fall.")}</p>`
       : S.lastEdit.only_here ? `<p class="cp-change cp-taught">${esc(S.lastEdit.only_here)}</p>` : "";
+    // a decision just taken is said in one quiet line with its way back; the long account of a correction is for corrections
+    const e = S.lastEdit.edit || {}, plain = e.op === "set_fact" && e.args && !taught;
+    if (plain) return `<p class="cp-change cp-change-short">${T("Decided", "Entschieden")}: ${esc(e.args.fact === "deckung" ? T("cover", "Deckung") : shortFact(e.args.fact))} <b>${esc(plainValue(e.args.value))}</b> ${undo}</p>`;
     return (S.lastEdit.consequences ? consequencesBlock(S.lastEdit.consequences, T("Changed", "Geändert"), undo)
       : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} ${undo}</p>`) + taught;
   }
@@ -3040,7 +3049,7 @@ function foldSide() {
 function sideView() {
   const sc = scr();
   const fristen = (sc.fristen || []).map((d) => `<div class="cp-frist ${quiet() ? "" : d.late ? "late" : d.soon ? "soon" : ""}" data-item="${raw(d.item_id)}" title="${esc([d.basis, d.rule].filter(Boolean).join(" · "))}">${d.condition ? `<span class="cp-muted">${esc(d.condition)}:</span> ` : ""}<b>${esc(d.date || d.state)}</b> · ${esc(d.title)}${d.date ? ` <span class="cp-muted">· ${esc(d.state)}</span>` : ""}${d.who ? ` <span class="cp-muted">· ${esc(d.who)}</span>` : ""}${(d.pair || []).length ? `<br><span class="cp-muted">${d.pair.map(esc).join(" · ")}</span>` : ""}${sourceChip(d.source)}</div>`).join("");
-  const docs = sc.missing && !sc.missing_in_letter ? `<dt>${T("Documents", "Unterlagen")}</dt><dd><a class="cp-link cp-quiet-link" href="#/case/${raw(S.route.id)}/document_finder">${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></dd>` : "";
+  const docs = sc.missing && !sc.missing_in_letter && !xOn() ? `<dt>${T("Documents", "Unterlagen")}</dt><dd><a class="cp-link cp-quiet-link" href="#/case/${raw(S.route.id)}/document_finder">${T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`)}</a></dd>` : "";
   const points = (sc.points || []).map((p) => `<div class="cp-point-line ${p.open ? "open" : ""}" data-item="${raw(p.item_id)}"><button class="cp-link cp-point-text" data-key-point="${raw(String(p.item_id).replace(/^key_point:/, ""))}" aria-expanded="${S.keyPoint === String(p.item_id).replace(/^key_point:/, "")}">${esc(p.text)}</button> <span class="cp-muted">· ${esc(p.basis || "")}</span>
       ${S.keyPoint === String(p.item_id).replace(/^key_point:/, "") ? `<div class="cp-passage">${passages(p.law)}${p.follows ? `<div>${T("Follows", "Folge")}: ${esc(p.follows)}</div>` : ""}${p.check ? `<div>${T("To check", "Zu prüfen")}: ${esc(p.check)}</div>` : ""}</div>` : ""}</div>`).join("");
   const flagged = (S.data.files || []).filter((f) => ((f.extraction || {}).instruction_like || []).length);
@@ -3054,8 +3063,8 @@ function sideView() {
         <dt>${T("Parties", "Parteien")}</dt><dd data-item="party:0">${partiesHtml() || "—"}</dd>
         ${sideAccount()}
         ${docs}
-        ${S.data.screen && (fristen || !sc.fristen_elsewhere) ? `<dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen || `<span class="cp-muted">${T("none in the file", "keine in der Akte")}</span>`}</dd>` : ""}
-        ${cover ? `<dt>${T("Cover", "Deckung")}</dt><dd data-item="cover:summary" class="cp-cover-state ${raw(cover.state)}">${esc(cover.text)}</dd>` : ""}
+        ${S.data.screen && (fristen || !sc.fristen_elsewhere) && !(xOn() && (sc.fristen || []).length) ? `<dt>${T("Deadlines", "Fristen")}</dt><dd>${fristen || `<span class="cp-muted">${T("none in the file", "keine in der Akte")}</span>`}</dd>` : ""}
+        ${cover && !xOn() ? `<dt>${T("Cover", "Deckung")}</dt><dd data-item="cover:summary" class="cp-cover-state ${raw(cover.state)}">${esc(cover.text)}</dd>` : ""}
         ${points ? `<dt>${T("Law", "Rechtliches")}</dt><dd>${points}</dd>` : ""}
         ${flagged.length ? `<dt>${T("Note", "Achtung")}</dt><dd>${flagged.map((f) => esc(f.name)).join(", ")} ${T("contains text addressed to an AI; not followed", "enthält Text an die KI; nicht befolgt")}</dd>` : ""}
         ${unread.length ? `<dt>${T("Unread", "Nicht gelesen")}</dt><dd>${unread.map((f) => `${esc(f.name)}: ${Object.keys(f.extraction.unread_reasons).length} ${T("page(s)", "Seite(n)")}`).join("<br>")}</dd>` : ""}
@@ -3440,13 +3449,7 @@ function bindOverview() {
       .catch((error) => { S.message = error.message; return S.lastEdit; });
     await loadCase();
   });
-  on("[data-decide]", "click", async (b) => {  // the handler's own decision: one click, no reason asked
-    const police = b.dataset.decide === "deckung" && b.dataset.value === "bestätigt" ? policeOpen() : 0;
-    const note = police ? `${police} ${police === 1 ? "Punkt" : "Punkte"} laut Police, nicht einzeln bestätigt` : "";
-    S.lastEdit = await edit({ op: "set_fact", args: { fact: b.dataset.decide, value: b.dataset.value }, reason: note, reason_code: "none", recheck: false }).catch(() => S.lastEdit);
-    S.decideOpen = false; S.docTab = null;
-    await loadCase();
-  });
+  on("[data-decide]", "click", (b) => decideFact(b.dataset.decide, b.dataset.value));  // the handler's own decision: one click, no reason asked
   on("[data-change-undo]", "click", async (b) => {  // an earlier change taken back where it stands; what came back is shown once
     b.disabled = true;
     const done = await api(`/api/edits/${b.dataset.changeUndo}/undo`, { method: "POST" }).catch((error) => { S.message = error.message; S.messageOk = false; return null; });
@@ -3741,10 +3744,11 @@ async function renderCase() {
   } else if (unaidedPending()) main = `${unaidedView()}<div style="margin-top:22px">${S.file ? `<iframe title="${T("Original file", "Originaldatei")}" src="/api/files/${raw(S.file)}/original" style="width:100%;height:78vh;border:1px solid var(--line)"></iframe>` : ""}</div>`;  // every tab: the original file only
   else if (tab === "claim_reader") main = claimView(await sourceCard(S.file));
   else if (tab === "source_checker") main = `${checkerView()}<div style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>`;
-  else if (tab === "document_finder") main = `${documentsView()}${S.overviewSource ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
+  else if (tab === "document_finder") main = `${documentsView()}${S.overviewSource ? `<div id="overview-source" class="cp-src-float">${srcClose()}${await sourceCard(S.file)}</div>` : ""}`;
   else if (tab === "result_checker") main = resultView();
-  else if (tab === "history") main = `${historyView()}${S.overviewSource ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
-  else if (tab === "overview") main = `${overviewView()}${S.overviewSource || !hasPrepared() ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
+  else if (tab === "history") main = `${historyView()}${S.overviewSource ? `<div id="overview-source" class="cp-src-float">${srcClose()}${await sourceCard(S.file)}</div>` : ""}`;
+  else if (tab === "overview") main = `${overviewView()}${S.overviewSource && hasPrepared() ? `<div id="overview-source" class="cp-src-float">${srcClose()}${await sourceCard(S.file)}</div>`
+    : !hasPrepared() ? `<div id="overview-source" style="margin-top:22px;max-width:760px">${await sourceCard(S.file)}</div>` : ""}`;
   else main = processView();
   // What the handler is typing survives a re-render (a run's progress or a reload redraws the page).
   const typing = [...document.querySelectorAll("#app input[id], #app textarea[id]")].filter((el) => el.value && !["file", "checkbox", "radio"].includes(el.type))
@@ -3777,7 +3781,8 @@ async function renderCase() {
     const holder = b.closest("[data-item]");
     caseEvent("source.opened", holder && /^[a-z_]+:/.test(holder.dataset.item) ? holder.dataset.item : null, { file_id: b.dataset.citeFile, page: Number(b.dataset.page) || null }).catch(() => {});
   });
-  for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", async () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; S.overviewSource = ["overview", "history", "document_finder"].includes(tab); await renderCase(); const box = $("#overview-source"); if (box) box.scrollIntoView({ block: "start", behavior: "smooth" }); });
+  for (const b of document.querySelectorAll("[data-cite-file]")) b.addEventListener("click", async () => { S.file = b.dataset.citeFile; S.page = Number(b.dataset.page) || null; S.overviewSource = ["overview", "history", "document_finder"].includes(tab); S.xPin = null; await renderCase(); const box = $("#overview-source"); if (box && !box.classList.contains("cp-src-float")) box.scrollIntoView({ block: "start", behavior: "smooth" }); });
+  for (const b of document.querySelectorAll("[data-src-close]")) b.addEventListener("click", () => { S.overviewSource = false; renderCase(); });
   for (const b of document.querySelectorAll("[data-rate]")) b.addEventListener("click", () => sendRating(b).catch((error) => { S.message = error.message; renderCase(); }));
   const follow = $("#follow");
   if (follow) follow.addEventListener("click", () => {
@@ -4175,6 +4180,7 @@ async function route() {
     const typing = event.target.closest && event.target.closest("input, textarea, select, [contenteditable], [data-editable]");
     if (event.key === "Escape" && document.getElementById("cp-keys")) { keysCard(false); return; }
     if (event.key === "Escape" && document.getElementById("xstage")) { S.xPin = null; xClear(); return; }
+    if (event.key === "Escape" && document.querySelector("#overview-source.cp-src-float")) { S.overviewSource = false; renderCase(); return; }
     if (!typing && !event.ctrlKey && !event.metaKey && !event.altKey) {
       // the keys that work everywhere: the help, the list, and in a case its tabs, the next case and the large picture
       if (event.key === "?") { event.preventDefault(); keysCard(!document.getElementById("cp-keys")); return; }
@@ -4234,6 +4240,14 @@ document.addEventListener("mouseover", (event) => {
 document.addEventListener("scroll", () => { S.peekRow = null; rowPeekHide(); }, true);
 document.addEventListener("mousedown", () => { S.peekRow = null; rowPeekHide(); });
 
+// A decision that is the handler's, taken with one click wherever it is offered (the step, the flow, the stage).
+async function decideFact(fact, value) {
+  const police = fact === "deckung" && value === "bestätigt" ? policeOpen() : 0;
+  const note = police ? `${police} ${police === 1 ? "Punkt" : "Punkte"} laut Police, nicht einzeln bestätigt` : "";
+  S.lastEdit = await api(`/api/cases/${S.route.id}/edits`, { method: "POST", body: JSON.stringify({ op: "set_fact", args: { fact, value }, reason: note, reason_code: "none", recheck: false }) }).catch(() => S.lastEdit);
+  S.decideOpen = false; S.docTab = null;
+  await loadCase();
+}
 // ---------- the case under the hand: an index in the rail, a stage that answers it ----------
 // Everything CasePath established about a case is named once in the rail, in a few groups. Resting the hand on a name
 // shows that part on the stage at the right, as it stands now (its rows arrive in the order they are read, what is
@@ -4257,21 +4271,20 @@ const X_TOPICS = {
   deckung: { name: () => T("Cover", "Deckung"), show: () => xCover().length > 0, alert: () => !answered("deckung"), side: () => (answered("deckung") ? esc(String(answered("deckung"))) : T("to decide", "zu entscheiden")), stage: () => {
     const pts = xCover(), state = { akte: "done", police: "check", kunde: "ask" }, n = (k) => pts.filter((q) => q.value === k).length;
     return { title: T("Is the case covered?", "Ist der Fall gedeckt?"), tab: "process_builder",
-      line: `${n("akte")} ${T("settled from the file", "aus der Akte geklärt")} · ${n("police")} ${T("to check in the policy", "in der Police zu prüfen")}${n("kunde") ? ` · ${n("kunde")} ${T("asked of the customer", "bei der Kundschaft erfragt")}` : ""}`,
+      line: (() => { const sum = item("cover", "summary"); return sum && sum.value ? esc(String(sum.value).replace(/^Deckung: /, "")) : `${n("akte")} ${T("settled from the file", "aus der Akte geklärt")} · ${n("police")} ${T("to check in the policy", "in der Police zu prüfen")}`; })(),
       body: `${xRows(pts.map((q, i) => xRow(i, state[q.value] || "quiet", esc(q.title || (q.label || {}).de || ""), xPage(q.evidence), esc([q.state_text, q.aid ? clip(q.aid, 110) : ""].filter(Boolean).join(" · ")), xCite(q.evidence))))}
-        <p class="cp-x-foot" style="--i:${pts.length}">${answered("deckung") ? `${T("Decided", "Entschieden")}: <b>${esc(String(answered("deckung")))}</b>${scr().cover && scr().cover.text ? ` <span class="cp-muted">· ${esc(scr().cover.text.replace(/^[^·]*·\s*/, ""))}</span>` : ""}` : T("The decision is yours; it is taken on the step or under «Prozess».", "Der Entscheid liegt bei Ihnen; er fällt beim Schritt oder unter «Prozess».")}</p>` };
+        <p class="cp-x-foot cp-x-decide" style="--i:${pts.length}">${answered("deckung") ? `${T("Decided", "Entschieden")}: <b>${esc(String(answered("deckung")))}</b>`
+          : `<button type="button" class="cp-button cp-small primary" data-x-decide="bestätigt">${T("Confirm cover", "Deckung bestätigen")}</button><button type="button" class="cp-button cp-small" data-x-decide="abgelehnt">${T("Refuse …", "Ablehnen …")}</button>`}</p>` };
   } },
-  fristen: { name: () => T("Deadlines", "Fristen"), show: () => (scr().fristen || []).length > 0, alert: () => (scr().fristen || []).some((f) => f.late || f.soon), side: () => String((scr().fristen || []).length || "–"), stage: () => {
+  fristen: { name: () => T("Deadlines", "Fristen"), show: () => (scr().fristen || []).length > 0, alert: () => (scr().fristen || []).some((f) => f.late || f.soon), side: () => { const fr = scr().fristen || [], dated = fr.filter((f) => f.date).length; return dated ? String(fr.length) : T(`${fr.length} without a date`, `${fr.length} ohne Datum`); }, stage: () => {
     const fr = scr().fristen || [];
     return { title: T("What runs against the clock", "Was an eine Frist gebunden ist"), line: fr.length ? "" : T("No deadline in the file.", "Keine Frist in der Akte."), tab: "overview",
       body: fr.length ? xRows(fr.map((f, i) => xRow(i, f.late ? "late" : f.soon ? "soon" : "date", `<b>${esc(f.date || f.state)}</b> ${esc(f.title)}`, f.date ? esc(f.state) : "", esc([f.condition, f.basis].filter(Boolean).join(" · "))))) : `<p class="cp-x-empty" style="--i:0">${T("CasePath found no deadline the customer or Protekta must meet.", "CasePath hat keine Frist gefunden, die die Kundschaft oder Protekta wahren muss.")}</p>` };
   } },
   angaben: { name: () => T("Facts", "Angaben"), show: () => xFacts().length > 0, side: () => String(xFacts().length), stage: () => {
-    const all = xFacts(), cited = all.filter((f) => (f.evidence || []).some((e) => e.file)), shown = (cited.length ? cited : all).slice(0, 9);
-    return { title: T("What CasePath read in the file", "Was CasePath in der Akte gelesen hat"), tab: "claim_reader",
-      line: T(`${cited.length} of ${all.length} with their passage`, `${cited.length} von ${all.length} mit ihrer Textstelle`),
-      body: `${xRows(shown.map((f, i) => xRow(i, (f.evidence || []).some((e) => e.file) ? "done" : "quiet", `<small class="cp-x-key">${esc(clip((f.label || {}).de || shortFact(f.key), 84))}</small><b>${esc(clip(plainValue(f.value), 90))}</b>`, xPage(f.evidence), "", xCite(f.evidence))))}
-        ${all.length > shown.length ? `<p class="cp-x-foot" style="--i:${shown.length}">${T(`and ${all.length - shown.length} more on «File»`, `und ${all.length - shown.length} weitere unter «Akte»`)}</p>` : ""}` };
+    const all = xFacts(), cited = (f) => (f.evidence || []).some((e) => e.file), shown = all.slice().sort((x, y) => Number(cited(y)) - Number(cited(x))).slice(0, 40);
+    return { title: T("What CasePath read in the file", "Was CasePath in der Akte gelesen hat"), tab: "claim_reader", line: "",
+      body: xRows(shown.map((f, i) => xRow(Math.min(i, 9), cited(f) ? "done" : "quiet", `<small class="cp-x-key">${esc(clip((f.label || {}).de || shortFact(f.key), 84))}</small><b>${esc(clip(plainValue(f.value), 90))}</b>`, xPage(f.evidence), "", xCite(f.evidence)))) };
   } },
   unterlagen: { name: () => T("Documents", "Unterlagen"), show: () => Boolean(S.data.screen) && xDocs().length > 0, alert: () => Boolean(scr().missing), side: () => (scr().missing ? T(`${scr().missing} missing`, `${scr().missing} fehl${scr().missing === 1 ? "t" : "en"}`) : String(xDocs().length)), stage: () => {
     const gone = new Set(scr().missing_ids || []), docs = xDocs().slice().sort((a, b) => (gone.has(a.item_id) ? 0 : a.status === "present" ? 1 : 2) - (gone.has(b.item_id) ? 0 : b.status === "present" ? 1 : 2)).slice(0, 9);
@@ -4292,7 +4305,7 @@ const xOn = () => S.route.view === "case" && S.data && S.data.screen && !running
 function caseIndex() {
   if (!xOn()) return "";
   const keys = X_ORDER.filter((k) => X_TOPICS[k].show()), hand = (k) => (X_TOPICS[k].alert && X_TOPICS[k].alert() ? 0 : 1);
-  const items = keys.slice().sort((a, b) => hand(a) - hand(b)).map((k) => { const t = X_TOPICS[k], side = t.side ? t.side() : "";
+  const items = keys.map((k) => { const t = X_TOPICS[k], side = t.side ? t.side() : "";
     return `<button type="button" class="cp-xitem${hand(k) ? "" : " alert"}" data-x="${k}" aria-pressed="${S.xPin === k}">${icon(X_ICON[k] || "doc")}<b>${t.name()}</b>${side ? `<span>${side}</span>` : ""}</button>`; }).join("");
   return items ? `<nav class="cp-xindex" aria-label="${T("The case at a glance", "Der Fall im Blick")}"><div class="cp-xgroup">${items}</div></nav>` : "";
 }
@@ -4303,7 +4316,7 @@ function xStage(key, pinned) {
   return `<section class="cp-card cp-xstage${pinned ? " pinned" : ""}" data-xstage="${key}"><header><p class="cp-x-eyebrow">${esc(group)} · ${t.name()}</p>
       <span class="cp-x-tools">${st.tab && st.tab !== (S.route.tab || "overview") ? `<a class="cp-link cp-quiet-link" href="#/case/${raw(S.route.id)}/${st.tab}">${T("open", "öffnen")} ${icon("right")}</a>` : ""}${pinned ? `<button type="button" class="cp-x-close" data-x-close aria-label="${T("Close", "Schliessen")}">×</button>` : ""}</span>
       <h3>${st.title}</h3>${st.line ? `<p class="cp-x-line-top">${st.line}</p>` : ""}</header><div class="cp-x-body">${st.body}</div>
-    ${pinned ? "" : `<p class="cp-x-hint">${T("Press the name to keep this here.", "Namen anklicken, damit es stehen bleibt.")}</p>`}</section>`;
+</section>`;
 }
 // The stage takes the place of «Der Fall» on the Übersicht; on the other tabs it stands at the right over the page.
 function xShow(key, pinned) {
@@ -4340,10 +4353,19 @@ document.addEventListener("click", (event) => {
   const item = el.closest(".cp-xitem");
   if (item) { S.xPin = S.xPin === item.dataset.x ? null : item.dataset.x; if (S.xPin) xShow(S.xPin, true); else xShow(item.dataset.x, false); return; }
   if (el.closest("[data-x-close]")) { S.xPin = null; xClear(); return; }
+  if (el.closest("#xstage .cp-x-tools a")) { S.xPin = null; xClear(); return; }   // «öffnen» leads on; the stage does not follow
+  const dx = el.closest("[data-x-decide]");
+  if (dx) {  // the same decision as on the step, by the same rule; a refusal names its point where the step stands
+    S.xPin = null; xClear();
+    if (dx.dataset.xDecide === "bestätigt") decideFact("deckung", "bestätigt");
+    else { S.coverDecline = true; const go = () => renderCase().then(() => { const why = document.querySelector(".cp-cover-why"); if (why) why.scrollIntoView({ block: "center" }); }); if (S.route.tab === "process_builder") go(); else { location.hash = `#/case/${S.route.id}/process_builder`; setTimeout(go, 500); } }
+    return;
+  }
   const cite = el.closest("#xstage [data-x-file]");
   if (cite && !el.closest("a, button")) { S.file = cite.dataset.xFile; S.page = Number(cite.dataset.xPage) || null; S.follow = false; if (S.route.tab === "claim_reader") renderCase(); else location.hash = `#/case/${S.route.id}/claim_reader`; }
 });
 
+const srcClose = () => `<button type="button" class="cp-src-close" data-src-close aria-label="${T("Close the passage", "Textstelle schliessen")}">×</button>`;
 // What the letter rests on, said under it: each fact of the file and each document asked for whose words stand in the
 // letter is one small chip with its page. A chip under the hand marks its words in the letter (the browser's own
 // highlight, so the text that can be edited is never touched); pressed, it opens the passage.
@@ -4363,6 +4385,7 @@ function letterSources() {
   for (const q of (S.data.items || []).filter((i) => i.kind === "party")) { const name = String(q.value || "").trim().split(/\s+/).pop(); add(name, tr((q.label || {}).de || T("party", "Partei")), q.evidence, "fact"); }
   add(S.data.case.reference, T("claim number", "Schadennummer"), [], "date");
   const by = (S.data.draft || {}).respond_by; if (by) add(dateText(by), T("answer by", "Antwort bis"), [], "date");
+  for (let i = found.length - 1; i >= 0; i--) if (!found[i].file && found[i].kind !== "doc") found.splice(i, 1);
   if (!found.length) return;
   found.sort((a, b) => ["fact", "date", "doc"].indexOf(a.kind) - ["fact", "date", "doc"].indexOf(b.kind));
   const row = document.createElement("p");
@@ -4627,7 +4650,7 @@ function carryButtons(active, opts) {
     const blocked = bar.decision ? T(`Decide first: ${bar.decision}`, `Zuerst entscheiden: ${bar.decision}`) : opts.stale ? T("New files are not read yet", "Neue Unterlagen sind noch nicht gelesen.")
       : heldBlocks ? heldText : "";
     const legacy = bar.legacy ? `<span class="cp-muted cp-legacy">${T("copied", "kopiert")} ${dateText(bar.legacy.at)}, ${T("sending not confirmed", "Versand nicht bestätigt")}</span>` : "";
-    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${T("Approve and copy", "Freigeben und kopieren")}</button>${blocked && !heldNote ? `<span class="cp-blocked" data-blocked>${esc(blocked)}</span>` : ""}${heldNote}${legacy}${saving}${opts.whenAfter || opts.when}`;
+    return `<button class="cp-button ${opts.primary && !blocked ? "primary" : ""}" id="approve" ${blocked ? `disabled title="${esc(blocked)}"` : ""}>${approveLabel()}</button>${blocked && !heldNote ? `<span class="cp-blocked" data-blocked>${esc(blocked)}</span>` : ""}${heldNote}${legacy}${saving}${opts.whenAfter || opts.when}`;
   }
   const rows = (bar.recipients || []).filter((r) => !r.dispatched);
   const copied = copiedApproved();
@@ -4662,7 +4685,7 @@ function handoverLine() {
         <button class="cp-button cp-small" data-ho-save="${raw(r.to)}">${T("Save", "Speichern")}</button>`
       : a.value ? `${approved ? `<button class="cp-ho-chip" data-ho-copy="${raw(a.value)}" title="${esc(from)}">${S.hoCopied === a.value ? icon("tick") : ""}${esc(a.value)}</button>` : `<span class="cp-ho-value" title="${esc(from)}">${esc(a.value)}</span>`}
         <button class="cp-link cp-quiet-link" data-ho-edit="${raw(r.to)}">${T("change", "ändern")}</button>`
-      : `<span class="cp-muted">${T("no address in the file", "keine Adresse in der Akte")}</span> <button class="cp-link cp-quiet-link" data-ho-edit="${raw(r.to)}">${T("enter", "eintragen")}</button>`;
+      : `<span class="cp-ho-none">${T("no address in the file", "keine Adresse in der Akte")}</span> <button class="cp-link cp-quiet-link" data-ho-edit="${raw(r.to)}">${T("enter", "eintragen")}</button>`;
     const subject = approved ? `<button class="cp-ho-chip" data-ho-copy="${raw(r.subject)}">${S.hoCopied === r.subject ? icon("tick") : ""}${esc(r.subject)}</button>` : `<span class="cp-ho-value">${esc(r.subject)}</span>`;
     return `<p class="cp-ho-row" data-ho="${raw(r.to)}">${many ? `<b>${esc(r.title)}</b> ` : ""}<span class="cp-ho-label">${T("To", "An")}</span> ${address}
       <span class="cp-ho-label">${T("Subject", "Betreff")}</span> ${subject}</p>`;
@@ -4762,7 +4785,15 @@ function scheduleSave() {
 }
 const inLetter = () => Boolean(document.activeElement && document.activeElement.closest && document.activeElement.closest("[data-item='letter:0']"));
 // «Freigeben»: the text saved first, then the version shown approved; the server says why not, in the handler's words.
+// One approval covers every document of the step. Until each has been shown, the button leads to the next one not yet
+// seen and says so; only then does it approve.
+function approveLabel() {
+  const out = documentsOut(), next = (out.unseen || [])[0];
+  return next && out.rows.length > 1 ? `${T("Next", "Weiter")}: ${esc(clip(next.title, 34))} <span class="cp-approve-n">${out.rows.length - out.unseen.length + 1} ${T("of", "von")} ${out.rows.length}</span>` : T("Approve and copy", "Freigeben und kopieren");
+}
 async function approve() {
+  const out = documentsOut();
+  if (out.rows.length > 1 && (out.unseen || []).length) { S.docTab = out.unseen[0].kind; S.docPicked = true; await renderCase(); const tabs = document.querySelector(".cp-doc-tabs"); if (tabs) tabs.scrollIntoView({ block: "nearest" }); return; }
   if (!(await saveDraft())) { renderCase(); return; }
   const d = S.data.draft || {};
   try {

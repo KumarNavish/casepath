@@ -1924,3 +1924,28 @@ body.dragging .cp-drop { border-color: var(--blue); color: var(--blue); }
 .cp-story-show .cp-link .cp-icon { width: 14px; height: 14px; }
 .cp-rail .cp-caseline { position: relative; }
 .cp-rail .cp-caseline .cp-identity:not(.editing) .cp-link { position: absolute; right: 8px; top: 8px; padding: 0 0 0 10px; background: #fff; }
+
+/* ---------- From the handler's seat (19 November 2026) ---------- */
+/* to whom and about what: the head of the letter, not a line under it */
+.cp-handover { margin: 0 0 8px; padding: 0; border: 0; }
+.cp-ho-row { margin: 0 0 4px; padding: 0 2px; font-size: 13.5px; }
+.cp-ho-none { color: var(--red); font-weight: 500; }
+/* a passage opens beside the page: the letter or the row the reader came from stays where it is */
+#overview-source.cp-src-float { position: fixed; z-index: 32; top: 68px; right: 20px; width: min(560px, 42vw); max-height: calc(100vh - 88px); overflow: auto; margin: 0; padding: 0; border-radius: 16px; background: #fff; box-shadow: var(--ring-lift); animation: cp-x-float .22s var(--ease) both; }
+#overview-source.cp-src-float .cp-doc-body { max-height: none; }
+.cp-src-close { position: sticky; top: 8px; float: right; margin: 8px 8px -30px 0; z-index: 3; width: 26px; height: 26px; border: 0; border-radius: 50%; background: var(--tint); color: var(--ink-2); font-size: 16px; line-height: 1; cursor: pointer; }
+.cp-src-close:hover { background: var(--hair); color: var(--ink); }
+/* the file itself takes the height the window gives */
+.cp-main .cp-doc-body { max-height: calc(100vh - 230px); }
+/* the stage: long lists scroll inside it; a decision offered there is two plain buttons */
+.cp-x-body { max-height: calc(100vh - 300px); overflow: auto; scrollbar-width: thin; }
+.cp-x-decide { display: flex; gap: 8px; align-items: center; padding: 12px 0 8px; }
+/* what was saved is said quietly; red is kept for what needs a hand */
+.cp-change { border-left: 0; border-radius: 10px; background: var(--tint); color: var(--ink-2); padding: 8px 12px; }
+.cp-change .cp-link { color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; margin-left: 8px; }
+input[type="checkbox"], input[type="radio"] { accent-color: var(--ink); }
+.cp-button[aria-pressed="true"], .cp-body .cp-button[aria-pressed="true"] { background: var(--tint); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); font-weight: 500; }
+.cp-chip[aria-pressed="true"], .cp-chip.on { border-color: var(--ink); color: var(--ink); background: var(--tint); }
+.cp-main textarea:focus, .cp-main input[type="text"]:focus, .cp-main input:not([type]):focus { border-color: var(--blue); outline: 0; box-shadow: 0 0 0 3px var(--blue-tint); }
+@media (prefers-reduced-motion: reduce) { #overview-source.cp-src-float { animation: none; } }
+.cp-approve-n { margin-left: 6px; font-size: 12px; font-weight: 400; opacity: .7; }

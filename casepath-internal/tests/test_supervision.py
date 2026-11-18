@@ -350,8 +350,7 @@ class CraftTests(unittest.TestCase):
         # the stage is built from what the page holds and leads to the passage; it decides nothing
         self.assertIn('const cite = el.closest("#xstage [data-x-file]");', SCRIPT)
         stage = SCRIPT[SCRIPT.index("const X_TOPICS = {"):SCRIPT.index("const xOn = ")]
-        self.assertNotIn("data-decide", stage)
-        self.assertNotIn("api(", stage)
+        self.assertNotIn("api(", stage)                                  # built from what the page holds; a decision goes through decideFact
         self.assertIn("aside.cp-side.cp-x-on > :not(#xstage) { display: none; }", STYLE)
         self.assertIn("@media (prefers-reduced-motion: reduce) { .cp-xstage *, #xstage.cp-x-float { animation: none !important; }", STYLE)
 
@@ -374,6 +373,25 @@ class CraftTests(unittest.TestCase):
         before = STYLE[:STYLE.index("The mould (18 November 2026)")]
         literal = [line for line in before.split("\n") if "#82072a" in line.lower() and "--crimson" not in line]
         self.assertEqual(literal, [])
+
+    def test_from_the_handlers_seat(self):
+        # an approval covers every document of the step: each is shown once before the button approves
+        self.assertIn("if (out.rows.length > 1 && (out.unseen || []).length) { S.docTab = out.unseen[0].kind; S.docPicked = true;", SCRIPT)
+        self.assertIn('unseen: rows.filter((d) => !seen.has(d.kind) && !(d.state && d.state !== "entwurf")) };', SCRIPT)
+        # to whom and about what stands above the letter; a missing address is said in red
+        head = SCRIPT.index('${asFrozen || c || !text ? "" : handoverLine()}')
+        self.assertLess(head, SCRIPT.index('<div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0"'))
+        self.assertIn(".cp-ho-none { color: var(--red); font-weight: 500; }", STYLE)
+        # a passage opens beside the page and the page does not move; Escape and the cross put it away
+        self.assertIn('if (box && !box.classList.contains("cp-src-float")) box.scrollIntoView(', SCRIPT)
+        self.assertIn('if (event.key === "Escape" && document.querySelector("#overview-source.cp-src-float")) { S.overviewSource = false; renderCase(); return; }', SCRIPT)
+        # a decision just taken is one quiet line with its way back
+        self.assertIn('if (plain) return `<p class="cp-change cp-change-short">${T("Decided", "Entschieden")}:', SCRIPT)
+        # the sidebar card does not repeat the page's title; «Der Fall» does not repeat the sidebar's parts
+        self.assertIn('const short = title && stand.includes(title) ? (stand.includes(":") ? stand.split(":")[0].trim() : "") : stand;', SCRIPT)
+        self.assertIn('${cover && !xOn() ? `<dt>${T("Cover", "Deckung")}</dt>', SCRIPT)
+        # only what opens a passage is a chip under the letter
+        self.assertIn('if (!found[i].file && found[i].kind !== "doc") found.splice(i, 1);', SCRIPT)
 
     def test_time_is_shown_where_it_matters(self):
         # Verlauf: one band of the case's time; long silences are drawn short and say their length; a dot marks its row
@@ -407,7 +425,9 @@ class CraftTests(unittest.TestCase):
         self.assertIn('if (box.dataset.story === "process" && window.CasePathFlow) { mountFlow(box); return; }', SCRIPT)
         self.assertIn("} else if (S.story.sig !== sig) { S.story.sig = sig; S.story.ctrl.update(model); }", SCRIPT)
         # a decision offered on a block is taken by the page's own control; a refusal asks for its point on the page
-        self.assertIn("""if (value === "bestätigt") { const b = document.querySelector('[data-decide="deckung"][data-value="bestätigt"]'); if (b) b.click(); return; }""", SCRIPT)
+        self.assertIn('if (value === "bestätigt") { decideFact("deckung", "bestätigt"); return; }', SCRIPT)
+        self.assertIn('on("[data-decide]", "click", (b) => decideFact(b.dataset.decide, b.dataset.value));', SCRIPT)   # one rule, wherever it is offered
+        self.assertIn('if (dx.dataset.xDecide === "bestätigt") decideFact("deckung", "bestätigt");', SCRIPT)                # the stage takes it the same way
         self.assertIn("S.coverDecline = true;", SCRIPT[SCRIPT.index("function actFromFlow"):SCRIPT.index("function actFromFlow") + 900])
 
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
