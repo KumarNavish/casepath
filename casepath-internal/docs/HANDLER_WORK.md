@@ -181,6 +181,15 @@ A file held over a case shows where it belongs before it is let go: on «Unterla
 missing turn blue and say «hier ablegen», and the sidebar's «Unterlagen» lights up on every tab. Dropped anywhere on
 the page the file is added as before; the hint only says what the case is waiting for.
 
+On «Verlauf» the case's time is one band above the table: every dated entry at its day (customer above the line,
+Protekta on it, everyone else below), what is open ringed in red, today marked. A silence of more than forty days is
+drawn short and says how long it really was («7,4 Jahre», «3 Monate»), so an old contract does not press the exchange
+into a corner, and the band says how long nothing has happened since the last entry. A dot under the hand names its
+entry and marks its row; pressed, the page goes to the row.
+
+On the case list a day of the week strip shows its cases before anything is pressed: under the hand, the rows due that
+day stay and the others step back; pressing the tile filters as before.
+
 ### Prozess as a flow
 
 The process of a case is a flow on a dotted ground (`web/ui/assets/flow.js`, `flow.css`): each step is a block with

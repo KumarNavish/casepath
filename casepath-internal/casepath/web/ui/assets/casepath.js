@@ -3173,6 +3173,58 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) for (
 // The Verlauf: one table of the case in time order (the server's verlauf.rows): the report as row 1, then every document
 // of the file, every entry the handler made and every gesture the handler made here, each where it happened. A handler's
 // entry is marked as theirs and can be changed or removed; a change that can be undone says so. One filter: only what is open.
+// The case's time as one band: every dated entry at its day, by who wrote (customer above the line, Protekta on it,
+// everyone else below), what is open ringed. A dot under the hand names its entry and marks its row; pressed, the page
+// goes to the row. Gaps show at a glance: where nothing happened for weeks, the band is empty.
+function timeBand() {
+  const rows = (S.data.verlauf || []).filter((r) => r.kind !== "gesture" && /^\d{4}-\d{2}-\d{2}/.test(String(r.date || "")) && (!S.onlyOpen || r.open));
+  if (rows.length < 3) return "";
+  const day = (v) => Date.parse(`${String(v).slice(0, 10)}T12:00:00`), t = rows.map((r) => day(r.date));
+  const from = Math.min(...t), now = day(isoToday()), to = Math.max(...t, quiet() ? 0 : now);
+  // the axis is the case's time with its long silences shortened: a gap of more than forty days is drawn as forty and
+  // says how long it really was, so a contract of years ago does not press the whole exchange into one corner
+  const DAY = 864e5, CAP = 40, MIN = 5, days = [...new Set([...t, ...(quiet() || now < from ? [] : [now])])].sort((x, y) => x - y), eff = new Map([[days[0], 0]]), breaks = [];
+  for (let i = 1; i < days.length; i++) { const gap = (days[i] - days[i - 1]) / DAY, drawn = Math.max(MIN, Math.min(gap, CAP)); eff.set(days[i], eff.get(days[i - 1]) + drawn);
+    if (gap > CAP) breaks.push([eff.get(days[i - 1]) + drawn / 2, gap]); }
+  const total = Math.max(eff.get(days[days.length - 1]), 1), at = (ms) => (100 * (eff.get(ms) || 0) / total).toFixed(2);
+  const long = (d) => (d >= 365 ? T(`${Math.round(d / 36.5) / 10} years`, `${String(Math.round(d / 36.5) / 10).replace(".", ",")} Jahre`) : d >= 60 ? T(`${Math.round(d / 30)} months`, `${Math.round(d / 30)} Monate`) : T(`${Math.round(d)} days`, `${Math.round(d)} Tage`));
+  const marks = breaks.map(([x, d]) => `<i class="cp-tb-break" style="left:${(100 * x / total).toFixed(2)}%"><span>${long(d)}</span></i>`).join("");
+  const lane = (r) => { const w = String(r.who || "").split("→")[0].trim(); return /Kundschaft/.test(w) ? "k" : /Protekta/.test(w) ? "p" : "g"; };
+  const seen = {}, dots = rows.map((r, i) => { const k = `${lane(r)}:${String(r.date).slice(0, 10)}`, n = (seen[k] = (seen[k] || 0) + 1) - 1;
+    return `<button type="button" class="cp-tb-dot ${lane(r)}${r.open ? " open" : ""}" style="left:${at(t[i])}%;--n:${n};--i:${i}" data-tb-no="${raw(r.number ?? "")}" aria-label="${esc(`${dateText(r.date)} · ${r.who || ""} · ${r.what || r.title || ""}`)}" data-tb-tip="${esc(`${dateText(r.date)} · ${r.who || ""}`)}" data-tb-what="${esc(clip(r.what || r.title || "", 90))}"></button>`; }).join("");
+  const today = !quiet() && eff.has(now) ? `<i class="cp-tb-today" style="left:${at(now)}%"><span>${T("today", "heute")}</span></i>` : "";
+  const gap = Math.round((now - Math.max(...t)) / 864e5);
+  return `<div class="cp-timeband" role="group" aria-label="${T("The case over time", "Der Fall in der Zeit")}"><div class="cp-tb-head"><span>${dateText(new Date(from).toISOString().slice(0, 10))}</span>
+      <span class="cp-tb-key"><i class="k"></i>${T("customer", "Kundschaft")}<i class="p"></i>Protekta<i class="g"></i>${T("others", "andere")}</span>
+      <span>${!quiet() && gap > 13 ? T(`${gap} days since the last entry`, `${gap} Tage seit dem letzten Eintrag`) : dateText(new Date(to).toISOString().slice(0, 10))}</span></div>
+    <div class="cp-tb-track">${marks}${today}${dots}</div><p class="cp-tb-tip" id="tb-tip" aria-hidden="true"></p></div>`;
+}
+const tbRow = (no) => (no === "" ? null : [...document.querySelectorAll(".cp-account-table tbody tr")].find((tr) => tr.firstElementChild && tr.firstElementChild.textContent.trim() === String(no)) || null);
+document.addEventListener("mouseover", (event) => {
+  const dot = event.target.closest && event.target.closest(".cp-tb-dot"), tip = document.getElementById("tb-tip");
+  for (const el of document.querySelectorAll(".cp-tb-point")) el.classList.remove("cp-tb-point");
+  if (!tip) return;
+  if (!dot) { tip.classList.remove("on"); return; }
+  tip.innerHTML = `<b>${raw(dot.dataset.tbTip)}</b> ${raw(dot.dataset.tbWhat)}`;
+  tip.style.setProperty("--x", dot.style.left); tip.classList.add("on");
+  const row = tbRow(dot.dataset.tbNo); if (row) row.classList.add("cp-tb-point");
+});
+document.addEventListener("click", (event) => {
+  const dot = event.target.closest && event.target.closest(".cp-tb-dot"), row = dot && tbRow(dot.dataset.tbNo);
+  if (row) { row.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); row.classList.remove("cp-story-hit"); void row.offsetWidth; row.classList.add("cp-story-hit"); }
+});
+// The week under the hand: a day's tile shows its cases in the list before anything is pressed.
+document.addEventListener("mouseover", (event) => {
+  const tile = event.target.closest && event.target.closest(".cp-wday:not(:disabled)"), table = document.querySelector(".cp-cases");
+  if (!table) return;
+  if (!tile) { if (S.weekHover) { S.weekHover = null; table.classList.remove("cp-week-hover"); for (const tr of table.querySelectorAll("tr.cp-week-hit")) tr.classList.remove("cp-week-hit"); } return; }
+  const key = tile.dataset.todayFilter; if (S.weekHover === key) return;
+  S.weekHover = key;
+  const all = ((S.listData && S.listData.got && S.listData.got[0]) || {}).cases || [], today = isoToday();
+  const ids = new Set(all.filter((c) => c.due && c.due.date && !c.as_of && (key === "due" ? c.due.date <= today : `day:${c.due.date}` === key)).map((c) => c.id));
+  table.classList.add("cp-week-hover");
+  for (const tr of table.querySelectorAll("tbody tr")) { const a = tr.querySelector('a[href^="#/case/"]'), id = a ? a.getAttribute("href").split("/")[2] : ""; tr.classList.toggle("cp-week-hit", ids.has(id)); }
+});
 function historyView() {
   const all = S.data.verlauf || [];
   const party = S.onlyOpen && S.openParty;  // «… n weitere» in «Stand»: that party's open items
@@ -3198,7 +3250,7 @@ function historyView() {
       <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${party ? esc(T(`only open with ${party}`, `nur Offenes ${({ kunde: "bei der Kundschaft", versicherer: "bei uns", kanzlei: "bei der Kanzlei", gegenpartei: "bei der Gegenpartei", behoerde: "bei Gericht/Behörde" })[party] || ""}`)) : T("only open", "nur Offenes")}</label></header>
     ${S.data.governing_version ? `<p class="cp-muted" title="${esc(`${S.data.run_version} → ${S.data.governing_version}`)}">${T("Process updated since the case was prepared", "Prozess seit der Vorbereitung aktualisiert")}</p>` : ""}
     ${gaps.length ? `<p class="cp-flag cp-account-gap">${gaps.map((g) => esc((g.label || {}).de || g.value)).join(" · ")}</p>` : ""}
-    ${S.onlyOpen || S.entryEdit ? "" : tabPicture("history", 300)}
+    ${S.onlyOpen || S.entryEdit ? "" : tabPicture("history", 300)}${S.entryEdit ? "" : timeBand()}
     <table class="cp-table cp-account-table"><thead><tr><th>${T("No.", "Nr.")}</th><th>${T("Date", "Datum")}</th><th>${T("From → to", "Von → an")}</th><th>${T("What", "Was")}</th><th>${T("Asked, answered, agreed", "Verlangt, beantwortet, vereinbart")}</th></tr></thead>
     <tbody>${rows.map(line).join("") || `<tr><td colspan="5" class="cp-muted">${S.onlyOpen ? T("Nothing open.", "Nichts offen.") : T("Nothing in the file yet.", "Noch nichts in der Akte.")}</td></tr>`}</tbody></table></section>`;
 }

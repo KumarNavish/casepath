@@ -1851,3 +1851,31 @@ body.dragging .cp-docs-table tr:has(.cp-chip.bad) .cp-chip.bad::after { content:
 html:lang(en) body.dragging .cp-docs-table tr:has(.cp-chip.bad) .cp-chip.bad::after { content: "drop it here"; }
 body.dragging .cp-rail .cp-xitem[data-x="unterlagen"] { background: var(--blue-tint); color: var(--ink); }
 body.dragging .cp-drop { border-color: var(--blue); color: var(--blue); }
+
+/* ---------- The case's time as one band; the week under the hand ---------- */
+.cp-timeband { position: relative; margin: 14px 0 18px; padding: 12px 18px 8px; border-radius: 12px; background: var(--tint); }
+.cp-tb-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 11.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.cp-tb-key { display: inline-flex; align-items: center; gap: 6px; }
+.cp-tb-key i { width: 7px; height: 7px; border-radius: 50%; margin-left: 8px; background: var(--ghost); }
+.cp-tb-key i.k { background: var(--ink); } .cp-tb-key i.p { background: var(--blue); }
+.cp-tb-track { position: relative; height: 66px; margin: 6px 6px 0; }
+.cp-tb-track::before { content: ""; position: absolute; left: -6px; right: -6px; top: 32px; height: 1px; background: var(--ghost-ring); }
+.cp-tb-break { position: absolute; top: 24px; width: 34px; height: 17px; margin-left: -17px; background: var(--tint); }
+.cp-tb-break::before { content: ""; position: absolute; left: 2px; right: 2px; top: 8px; border-top: 1px dashed var(--ghost); }
+.cp-tb-break span { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); font-size: 10.5px; font-style: normal; color: var(--ghost); white-space: nowrap; }
+.cp-tb-today { position: absolute; top: 0; bottom: 12px; width: 1px; background: var(--blue); }
+.cp-tb-today span { position: absolute; top: -3px; right: 4px; font-size: 10.5px; font-style: normal; color: var(--blue); }
+.cp-tb-dot { position: absolute; top: 32px; width: 10px; height: 10px; margin: -5px 0 0 -5px; padding: 0; border: 0; border-radius: 50%; background: var(--blue); cursor: pointer;
+  transform: translateY(calc(var(--n, 0) * -11px)); transition: box-shadow .15s ease; animation: cp-tb-in .36s calc(var(--i, 0) * 22ms) var(--ease) both; }
+.cp-tb-dot.k { top: 16px; background: var(--ink); } .cp-tb-dot.g { top: 48px; background: var(--ghost); transform: translateY(calc(var(--n, 0) * 11px)); }
+.cp-tb-dot.open { background: #fff; box-shadow: inset 0 0 0 2px var(--red); }
+.cp-tb-dot:hover, .cp-tb-dot:focus-visible { box-shadow: 0 0 0 4px rgba(47,111,237,.18); outline: 0; z-index: 2; }
+.cp-tb-dot.open:hover, .cp-tb-dot.open:focus-visible { box-shadow: inset 0 0 0 2px var(--red), 0 0 0 4px rgba(198,36,69,.14); }
+.cp-tb-tip { margin: 2px 0 0; min-height: 19px; font-size: 12.5px; color: var(--ink-2); opacity: 0; transition: opacity .15s ease; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cp-tb-tip.on { opacity: 1; } .cp-tb-tip b { font-weight: 500; color: var(--ink); margin-right: 6px; }
+.cp-account-table tr.cp-tb-point td { background: var(--blue-tint); }
+@keyframes cp-tb-in { from { opacity: 0; transform: translateY(calc(var(--n, 0) * -11px)) scale(.3); } }
+.cp-cases.cp-week-hover tbody tr { transition: opacity .15s ease; }
+.cp-cases.cp-week-hover tbody tr:not(.cp-week-hit) { opacity: .32; }
+.cp-cases.cp-week-hover tbody tr.cp-week-hit td:first-child { box-shadow: inset 2px 0 0 var(--blue); }
+@media (prefers-reduced-motion: reduce) { .cp-tb-dot { animation: none; } }

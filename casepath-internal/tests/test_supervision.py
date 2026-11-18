@@ -373,6 +373,18 @@ class CraftTests(unittest.TestCase):
         literal = [line for line in before.split("\n") if "#82072a" in line.lower() and "--crimson" not in line]
         self.assertEqual(literal, [])
 
+    def test_time_is_shown_where_it_matters(self):
+        # Verlauf: one band of the case's time; long silences are drawn short and say their length; a dot marks its row
+        self.assertIn("const DAY = 864e5, CAP = 40, MIN = 5,", SCRIPT)
+        self.assertIn("if (gap > CAP) breaks.push([eff.get(days[i - 1]) + drawn / 2, gap]); }", SCRIPT)
+        self.assertIn('${S.onlyOpen || S.entryEdit ? "" : tabPicture("history", 300)}${S.entryEdit ? "" : timeBand()}', SCRIPT)
+        self.assertIn('const row = tbRow(dot.dataset.tbNo); if (row) row.classList.add("cp-tb-point");', SCRIPT)
+        band = SCRIPT[SCRIPT.index("function timeBand()"):SCRIPT.index("const tbRow = ")]
+        self.assertNotIn("api(", band)                                   # built from what the page holds
+        # the list: a day of the week under the hand shows its cases; nothing is filtered until it is pressed
+        self.assertIn('table.classList.add("cp-week-hover");', SCRIPT)
+        self.assertIn(".cp-cases.cp-week-hover tbody tr:not(.cp-week-hit) { opacity: .32; }", STYLE)
+
     def test_the_process_is_a_flow_with_the_case_on_it(self):
         assets = Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets"
         page = (assets.parent / "index.html").read_text(encoding="utf-8")
