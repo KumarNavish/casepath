@@ -251,14 +251,6 @@ h2.cp-section { font-size: 16.5px; margin: 26px 0 12px; font-weight: 700; }
 .cp-seg { border: 0; background: none; text-align: left; padding: 5px 8px; border-left: 2px solid var(--line); width: 100%; font-size: 13px; display: grid; }
 .cp-seg:hover { border-left-color: var(--crimson); background: var(--crimson-wash); }
 .cp-seg small { color: var(--ink-2); font-size: 11.5px; }
-.cp-contents { padding: 16px 18px; margin-top: 16px; max-height: 70vh; overflow: auto; }
-.cp-contents h3 { font-size: 13px; margin: 10px 0 4px; color: var(--ink-2); }
-.cp-contents ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.cp-contents .cp-link { display: grid; gap: 2px; text-align: left; font: inherit; font-size: 13.5px; text-decoration: none; padding: 6px 8px; border-left: 2px solid var(--line); width: 100%; }
-.cp-contents .cp-link:hover { border-left-color: var(--crimson); background: var(--crimson-wash); }
-.cp-contents .cp-link span { color: var(--crimson); font-size: 12.5px; }
-.cp-contents .cp-link b { color: var(--ink); font-weight: 600; }
-.cp-contents .cp-link small { color: var(--ink-2); font-size: 12.5px; line-height: 1.45; }
 .cp-rate { display: inline-flex; gap: 3px; margin-left: 8px; vertical-align: middle; }
 .cp-rate button { width: 26px; height: 26px; display: inline-grid; place-items: center; border: 1px solid var(--border); border-radius: 4px; background: var(--bg); color: var(--ghost); cursor: pointer; padding: 0; }
 .cp-rate button .cp-icon { width: 15px; height: 15px; }
@@ -654,7 +646,6 @@ mark.cp-gap{background:var(--yellow);color:inherit;border-radius:2px;padding:0 2
 /* the Akte's brief and the Unterlagen table */
 .cp-brief{padding:16px 18px}
 .cp-brief h2.cp-section:first-child{margin-top:0}
-.cp-contents h2.cp-section{margin-top:0}
 .cp-docs-table{max-width:1180px}
 .cp-docs-table td:first-child{width:30%}
 .cp-step-then{list-style:none;margin:3px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:3px 18px}
@@ -1952,3 +1943,15 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--ink); }
 .cp-cover-select.cp-unset { box-shadow: 0 0 0 1.5px var(--red); border-color: transparent; }
 .cp-me { display: inline-flex; align-items: center; gap: 7px; }
 .cp-me > i { width: 20px; height: 20px; border-radius: 50%; background: var(--tint); color: var(--ink-2); font-style: normal; font-size: 11px; font-weight: 600; display: inline-grid; place-items: center; }
+
+/* ---------- Quiet where nothing is out of the ordinary (18 November 2026) ----------
+   The list's status column speaks only where a case is not simply prepared; what it would have said stays for a screen reader. */
+.cp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* What a bundled file contains is listed once, under the file: its hover is the system's quiet one, and «älteres Dokument»
+   is a remark, not an alarm (red is for what needs the handler). */
+.cp-seg:hover { border-left-color: var(--ink); background: var(--side-2); }
+.cp-segs-fold > summary:hover { color: var(--ink); }
+.cp-seg .cp-older { color: var(--ink-2); font-style: italic; }
+.cp-note-items { list-style: none; margin: 2px 0 0; padding: 0; color: var(--ink-2); }
+.cp-note-items li { padding-left: 12px; position: relative; }
+.cp-note-items li::before { content: ""; position: absolute; left: 2px; top: .72em; width: 4px; height: 1px; background: var(--ghost); }

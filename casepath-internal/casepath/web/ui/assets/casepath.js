@@ -375,11 +375,13 @@ const standText = (c) => standIn((c.stand || {}).text, standOf(c)) || "—";
 // Search folds case and accents, so «larchenweg» finds «Lärchenweg».
 const fold = (text) => String(text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 // In the list the status stands beside «Als Nächstes»: it says only what that column does not («überfällig», not the
-// step's name again); the full wording is its title.
+// step's name again); the full wording is its title. A case that is simply prepared says nothing there: its row and the
+// group it stands in («Zu entscheiden») already do, so the column speaks only where something is out of the ordinary.
 function standShort(c) {
-  const full = standText(c), next = (c.next_action || {}).text;
-  if (LANG !== "de" || !next || !full.includes(next)) return full;
-  return full.replace(next, "").replace(/\s*vorbereitet\s*$/, "").replace(/[:\s]+$/, "").trim() || "vorbereitet";
+  const full = standText(c), de = (c.stand || {}).text || "", next = (c.next_action || {}).text;
+  const rest = next && de.includes(next) ? de.replace(next, "").replace(/\s*vorbereitet\s*$/, "").replace(/[:\s]+$/, "").trim() : null;
+  if (rest === "" || (rest === null && de.trim() === "vorbereitet")) return "";
+  return LANG !== "de" || rest === null ? full : rest;
 }
 // «Heute» narrows the list: a count is a filter (the cases behind it and nothing else), pressed again it shows all.
 const LIST_FILTERS = {
@@ -514,7 +516,7 @@ async function renderCases(kept) {
     return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}${was ? " cp-row-moved" : ""}${fresh ? " cp-row-moved-in" : ""}"><td>${c.reference ? `<span class="cp-ref">${esc(c.reference)}</span> ` : ""}<a href="#/case/${raw(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
       <td class="cp-next">${next || '<span class="cp-muted">—</span>'}${stageTrack(c, s)}${rowPeek(c, s)}</td>
       <td class="cp-nowrap ${late ? "cp-late" : ""}">${due ? `${dateText(due.date)} <span class="cp-due-word">${esc(dueWord(due.word))}</span>` : '<span class="cp-muted">—</span>'}</td>
-      <td><span class="cp-stand ${s}" title="${esc(standText(c))}">${esc(standShort(c))}</span>${was && was.text ? `<small class="cp-muted cp-row-was">${T("before", "vorher")}: ${esc(clip(standIn(was.text, was.kind) || was.text, 60))}</small>` : ""}</td></tr>`;
+      <td>${standShort(c) ? `<span class="cp-stand ${s}" title="${esc(standText(c))}">${esc(standShort(c))}</span>` : `<span class="cp-sr">${esc(standText(c))}</span>`}${was && was.text ? `<small class="cp-muted cp-row-was">${T("before", "vorher")}: ${esc(clip(standIn(was.text, was.kind) || was.text, 60))}</small>` : ""}</td></tr>`;
   };
   const table = (rows) => `<table class="cp-table cp-cases"><thead><tr><th>${T("Case", "Fall")}</th><th>${T("Next", "Als Nächstes")}</th>
     <th>${T("Due", "Fällig")}</th><th>${T("Status", "Status")}</th></tr></thead><tbody>${rows.map(row).join("")}</tbody></table>`;
@@ -772,6 +774,8 @@ function identityLine(c) {
   const who = c.owner ? `${esc(c.owner)}${c.deputy ? ` · ${T("deputy", "Stv.")} ${esc(c.deputy)}` : ""}` : "";
   // one way into the editor: «Referenz eintragen» where there is none, «ändern» otherwise
   const change = c.reference || p ? ` <button class="cp-link cp-quiet-link" id="id-edit" aria-label="${T("Change reference and responsibility", "Referenz und Zuständigkeit ändern")}">${T("change", "ändern")}</button>` : "";
+  // without a reference the owner stands first (the way to enter one shows on hover): no orphaned «·» before the name
+  if (!c.reference && !p) return `<p class="cp-identity">${who ? `<span class="cp-muted">${who}</span> ` : ""}${ref}</p>`;
   return `<p class="cp-identity">${ref}${who ? ` <span class="cp-muted">· ${who}</span>` : ""}${change}</p>`;
 }
 async function saveIdentity(fields) {
@@ -803,7 +807,7 @@ function renderRail() {
     <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(caseName(d.case))}</div>
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
       ${identityLine(d.case)}
-      ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text && !(st.kind === "new" && (d.items || []).some((i) => i.kind === "next_action")) ? `${railStand(st)}` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
+      ${((chips) => (chips.trim() ? `<p class="cp-rail-chips">${chips}</p>` : ""))(`${st.text && !(st.kind === "new" && (d.items || []).some((i) => i.kind === "next_action")) ? railStand(st) : ""}${standAm(d)}`)}${areaLine(d)}</div>
     ${caseIndex()}
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
@@ -812,8 +816,12 @@ function renderRail() {
   </aside>`;
 }
 function railStand(st) {
-  const stand = standIn(st.text, st.kind), title = tr(((S.data.screen || {}).title) || "");
-  const short = title && stand.includes(title) ? (stand.includes(":") ? stand.split(":")[0].trim() : "") : stand;
+  // worked out on the case's own (German) words, so a reader of English gets the same short status («overdue»), not the
+  // step's name again in translation
+  const stand = standIn(st.text, st.kind), de = String(st.text || "").trim(), title = (S.data.screen || {}).title || "";
+  const cut = title && de.includes(title) ? (de.includes(":") ? de.split(":")[0].trim() : "") : de;
+  // a case that is simply prepared says so above its step («CasePath · vorbereitet vor …»): no chip repeats it here
+  const short = String(st.text || "").trim() === "vorbereitet" ? "" : cut === de ? stand : cut ? standIn(cut, st.kind) : "";
   return short ? `<span class="cp-stand ${raw(st.kind || "")}" data-status title="${raw(stand)}">${raw(short)}</span>` : "";
 }
 function moreMenu() {
@@ -1658,6 +1666,7 @@ function memoryChain() {
 
 // ---------- other tabs ----------
 // The Akte: the file itself beside what the case is (request, parties, the order of events), each event's source one click away.
+// What a bundled file contains is listed once, under the file in the case panel (segmentRows), where it also steers the viewer.
 function claimView(card) {
   const r = result(), brief = (r && r.brief) || {}, items = S.data.items || [];
   const summary = items.find((i) => i.kind === "summary" && i.value);
@@ -1671,18 +1680,7 @@ function claimView(card) {
         const c = (t.citations || [])[0];
         return `<div data-item="timeline:${i}"><time>${esc(isoDay(t.date))}</time><span>${c ? `<button class="cp-link" data-cite-file="${raw(c.file)}" data-page="${c.page || ""}" title="${esc(c.quote)}">${esc(t.event)}</button>` : esc(t.event)}${rate(`timeline:${i}`)}</span></div>`;
       }).join("")}</div>` : ""}
-    </section>` : `<p class="cp-empty">${T("Not prepared yet", "Noch nicht vorbereitet")}</p>`}${dossierContents()}</aside></div>`;
-}
-
-// What each bundled file contains, document by document, from the reading step.
-function dossierContents() {
-  const files = (S.data.files || []).filter((f) => ((f.extraction || {}).segments || []).length);
-  if (!files.length) return "";
-  const count = files.reduce((n, f) => n + f.extraction.segments.length, 0);
-  return `<section class="cp-card cp-contents"><h2 class="cp-section">${T(`Contents of the file · ${count} documents`, `Inhalt der Akte · ${count} Dokumente`)}</h2>
-    ${files.map((f) => `${files.length > 1 ? `<h3>${esc(f.name)}</h3>` : ""}<ol>${f.extraction.segments.map((s) => `<li><button class="cp-link" data-cite-file="${raw(f.id)}" data-page="${s.first_page}">
-      <span>${esc([isoDay(s.date), s.kind].filter(Boolean).join(" · "))} <small>${T("p.", "S.")} ${s.first_page}${s.last_page !== s.first_page ? `–${s.last_page}` : ""}</small>${olderDocument(s) ? ` <small class="cp-older">${T("older document", "älteres Dokument")}</small>` : ""}</span>
-      <b>${esc(s.title)}</b>${s.summary ? `<small>${esc(s.summary)}</small>` : ""}</button></li>`).join("")}</ol>`).join("")}</section>`;
+    </section>` : `<p class="cp-empty">${T("Not prepared yet", "Noch nicht vorbereitet")}</p>`}</aside></div>`;
 }
 
 function checkerView() {
@@ -3200,6 +3198,20 @@ function foldNotes(notes) {
   }
   return out.flatMap((x) => (x.items ? (x.items.length < 3 ? x.items : [{ ...x.first, text: LANG === "de" ? `beantwortet: ${x.items.length} Anforderungen aus Nr. ${[...groups.entries()].find(([, g]) => g === x)[0]}` : `answered: ${x.items.length} requests of no. ${[...groups.entries()].find(([, g]) => g === x)[0]}` }]) : [x]));
 }
+// A letter that asked one party for several things, all answered in one reply, says who and where once and lists the
+// things under it; a request still open, asked again or answered elsewhere keeps its own line.
+function foldAsks(notes) {
+  const groups = new Map(), out = [];
+  for (const n of notes) {
+    const m = !n.open && n.kind === "asked" && /^verlangt von (.+?): (.+) · beantwortet \(Nr\. (\d+)\)$/.exec(String(n.text || ""));
+    if (!m) { out.push(n); continue; }
+    const key = `${m[1]}|${m[3]}`;
+    if (!groups.has(key)) { groups.set(key, { of: m[1], no: m[3], notes: [], items: [] }); out.push(groups.get(key)); }
+    groups.get(key).notes.push(n); groups.get(key).items.push(m[2]);
+  }
+  return out.flatMap((x) => (!x.items ? [x] : x.items.length < 3 ? x.notes
+    : [{ kind: "asked", open: false, items: x.items, text: LANG === "de" ? `verlangt von ${x.of} · alle ${x.items.length} beantwortet (Nr. ${x.no})` : `requested · all ${x.items.length} answered (no. ${x.no})` }]));
+}
 // The case's time as one band: every dated entry at its day, by who wrote (customer above the line, the insurer on it,
 // everyone else below), what is open ringed. A dot under the hand names its entry and marks its row; pressed, the page
 // goes to the row. Gaps show at a glance: where nothing happened for weeks, the band is empty.
@@ -3260,7 +3272,9 @@ function historyView() {
   const rows = (S.onlyOpen ? all.filter((r) => r.open && (!party || (r.open_of || []).includes(party))) : all).map((r, i) => [r, i]).sort((a, b) => day(a[0]).localeCompare(day(b[0])) || a[1] - b[1]).map(([r]) => r);
   const gaps = (S.data.items || []).filter((i) => i.kind === "record_gap");
   const docs = all.filter((r) => r.kind !== "gesture").length, done = all.length - docs, open = all.filter((r) => r.open).length;
-  const note = (n) => (n.text ? `<div class="cp-entry-note ${n.open ? "open" : ""} ${n.kind}">${esc(n.text)}</div>` : "");
+  const note = (n) => (n.text ? `<div class="cp-entry-note ${n.open ? "open" : ""} ${n.kind}">${esc(n.text)}${n.items ? `<ul class="cp-note-items">${n.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>` : ""}</div>` : "");
+  // the kind of an entry is said where it says something: «Anderes» says nothing, and the report is already tagged «Meldung»
+  const kindOf = (r) => (!r.title || r.title === "Anderes" || (r.kind === "report" && /^Meldung/.test(r.title)) ? "" : r.title);
   const tag = (r) => r.kind === "report" ? `<span class="cp-entry-tag">${T("Report", "Meldung")}</span> ` : r.phone && r.title !== "Telefon" ? `<span class="cp-entry-tag">${T("Phone", "Telefon")}</span> ` : "";
   const own = (r) => r.handler ? `<br><span class="cp-entry-tag own">${T("entered by", "erfasst von")} ${esc(r.handler.by || T("the case handler", "der Fallbearbeitung"))}</span>${r.waiting
     ? ` <span class="cp-muted">${T("counts once the case is prepared anew", "zählt nach einer vollständigen Vorbereitung")}</span>` : ""}` : "";
@@ -3271,8 +3285,8 @@ function historyView() {
     : (r.evidence || [])[0] ? ` <button class="cp-source-chip" data-cite-file="${raw(r.evidence[0].file)}" data-page="">${T("open", "öffnen")}</button>` : "";
   const line = (r) => `<tr class="${r.open ? "open" : ""} cp-row-${raw(r.kind)}" ${String(r.key).startsWith("entry:") ? `data-item="${raw(r.key)}"` : ""}>
       <td>${r.number ?? ""}</td><td class="cp-nowrap">${dateText(r.date)}</td><td class="cp-nowrap">${esc(r.who || "")}</td>
-      <td>${tag(r)}<span class="cp-muted">${esc(r.title || "")}</span><br>${esc(r.what || "")}${source(r)}${own(r)}</td>
-      <td>${foldNotes(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;
+      <td>${tag(r)}${kindOf(r) ? `<span class="cp-muted">${esc(kindOf(r))}</span>` : ""}${tag(r) || kindOf(r) ? "<br>" : ""}${esc(r.what || "")}${source(r)}${own(r)}</td>
+      <td>${foldAsks(foldNotes(r.notes || [])).map(note).join("")}${tools(r)}</td></tr>`;
   return `${S.entryEdit ? `<section class="cp-card cp-case cp-entry-edit"><h3>${T("Change your entry", "Eigenen Eintrag ändern")}</h3>${entryForm()}</section>` : ""}
     <section class="cp-card cp-account"><header class="cp-account-head"><h2 class="cp-section">${T("History", "Verlauf")}</h2>
       <span class="cp-muted">${docs} ${docs === 1 ? T("document", "Dokument") : T("documents and entries", "Dokumente und Einträge")}${done ? ` · ${done} ${done === 1 ? T("step done here", "Bearbeitung") : T("steps done here", "Bearbeitungen")}` : ""}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>

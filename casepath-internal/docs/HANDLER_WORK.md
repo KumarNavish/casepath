@@ -248,6 +248,24 @@ line that a step's content is not yet legally reviewed (a jurist should know it)
 button by these words). The Verlauf table now runs by day, and a reply that answers several requests of one letter
 says so once («beantwortet: 5 Anforderungen aus Nr. 5»); each request keeps its own line at the letter that made it.
 
+## Quiet where nothing is out of the ordinary (18 November 2026)
+
+A handler reads the same screens many times a day; a word that is the same on every row is read every time and says
+nothing. So:
+
+- **The list's «Status» speaks only where a case is not simply prepared** («überfällig», «neue Unterlagen», «wartet auf
+  Kundschaft bis …», «Vorbereitung fehlgeschlagen»). A prepared case leaves the cell empty: its row («Als Nächstes») and
+  its group («Zu entscheiden») already say it. A screen reader still hears the status.
+- **The case panel does not repeat «vorbereitet»** under the name (the step says «CasePath · vorbereitet vor …»), and an
+  owner without a reference stands without a stray «·».
+- **What a bundled file contains is listed once**, under the file in the case panel, where it also steers the viewer.
+  The second list beside the viewer is gone. Hovering it is the system's quiet hover; «älteres Dokument» is a remark,
+  not red.
+- **Verlauf folds what repeats.** A letter that asked one party for three or more things, all answered by one reply,
+  says «verlangt von der Kundschaft · alle 5 beantwortet (Nr. 9)» once with the things under it. A request that is open,
+  was asked again or was answered elsewhere keeps its own line. An entry's kind is shown where it says something:
+  «Anderes» is left out, and the report is already tagged «Meldung».
+
 ## The case in parts, under the hand (18 November 2026)
 
 The sidebar of a prepared case names only the parts a handler acts on or looks up while working it: Deckung, Fristen

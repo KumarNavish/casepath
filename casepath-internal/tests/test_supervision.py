@@ -391,10 +391,27 @@ class CraftTests(unittest.TestCase):
         # a decision just taken is one quiet line with its way back
         self.assertIn('if (plain) return `<p class="cp-change cp-change-short">${T("Decided", "Entschieden")}:', SCRIPT)
         # the sidebar card does not repeat the page's title; «Der Fall» does not repeat the sidebar's parts
-        self.assertIn('const short = title && stand.includes(title) ? (stand.includes(":") ? stand.split(":")[0].trim() : "") : stand;', SCRIPT)
+        self.assertIn('const cut = title && de.includes(title) ? (de.includes(":") ? de.split(":")[0].trim() : "") : de;', SCRIPT)
         self.assertIn('${cover && !xOn() ? `<dt>${T("Cover", "Deckung")}</dt>', SCRIPT)
         # only what opens a passage is a chip under the letter
         self.assertIn('if (!found[i].file && found[i].kind !== "doc") found.splice(i, 1);', SCRIPT)
+
+    def test_quiet_where_nothing_is_out_of_the_ordinary(self):
+        # the list's status speaks only where a case is not simply prepared; a screen reader still hears it
+        self.assertIn('if (rest === "" || (rest === null && de.trim() === "vorbereitet")) return "";', SCRIPT)
+        self.assertIn('`<span class="cp-sr">${esc(standText(c))}</span>`', SCRIPT)
+        self.assertIn(".cp-sr { position: absolute; width: 1px; height: 1px;", STYLE)
+        # the case panel does not repeat «vorbereitet» under the name, and no «·» stands before an owner without a reference
+        self.assertIn('const short = String(st.text || "").trim() === "vorbereitet" ? "" :', SCRIPT)
+        self.assertIn('if (!c.reference && !p) return `<p class="cp-identity">${who ? `<span class="cp-muted">${who}</span> ` : ""}${ref}</p>`;', SCRIPT)
+        # what a bundled file contains is listed once (under the file), not again beside the viewer
+        self.assertNotIn("dossierContents", SCRIPT)
+        self.assertNotIn(".cp-contents", STYLE)
+        # Verlauf: several requests of one letter answered by one reply are said once with the things under it; an
+        # entry's kind is said only where it says something
+        self.assertIn("return out.flatMap((x) => (!x.items ? [x] : x.items.length < 3 ? x.notes", SCRIPT)
+        self.assertIn('<td>${foldAsks(foldNotes(r.notes || [])).map(note).join("")}${tools(r)}</td></tr>`;', SCRIPT)
+        self.assertIn('const kindOf = (r) => (!r.title || r.title === "Anderes" || (r.kind === "report" && /^Meldung/.test(r.title)) ? "" : r.title);', SCRIPT)
 
     def test_time_is_shown_where_it_matters(self):
         # Verlauf: one band of the case's time; long silences are drawn short and say their length; a dot marks its row
@@ -406,7 +423,7 @@ class CraftTests(unittest.TestCase):
         self.assertNotIn("api(", band)                                   # built from what the page holds
         # a reply that answers several requests of one letter says so once; an open note is never folded
         self.assertIn("const m = !n.open && /^beantwortet: .+ \\(zu Nr\\. (\\d+)\\)$/.exec(String(n.text || \"\"));", SCRIPT)
-        self.assertIn('<td>${foldNotes(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;', SCRIPT)
+        self.assertIn('foldNotes(r.notes || [])', SCRIPT)
         # the list: a day of the week under the hand shows its cases; nothing is filtered until it is pressed
         self.assertIn('table.classList.add("cp-week-hover");', SCRIPT)
         self.assertIn(".cp-cases.cp-week-hover tbody tr:not(.cp-week-hit) { opacity: .32; }", STYLE)
