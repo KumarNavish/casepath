@@ -1949,3 +1949,4 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--ink); }
 .cp-main textarea:focus, .cp-main input[type="text"]:focus, .cp-main input:not([type]):focus { border-color: var(--blue); outline: 0; box-shadow: 0 0 0 3px var(--blue-tint); }
 @media (prefers-reduced-motion: reduce) { #overview-source.cp-src-float { animation: none; } }
 .cp-approve-n { margin-left: 6px; font-size: 12px; font-weight: 400; opacity: .7; }
+.cp-cover-select.cp-unset { box-shadow: 0 0 0 1.5px var(--red); border-color: transparent; }

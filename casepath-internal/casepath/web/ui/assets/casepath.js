@@ -735,7 +735,7 @@ function runError(error) {
   if (/^http_4\d\d$/.test(reason)) return T(`the model service refused the request (${reason.slice(5)})`, `Der Modelldienst hat die Anfrage abgelehnt (${reason.slice(5)})`);
   // anything else is technical: said plainly with a short code for support; the full text stays in the run's record
   const code = reason === "internal" ? (String(error).split(":")[1] || "").trim().replace(/[^A-Za-z0-9_]/g, "").slice(0, 40) : reason.replace(/[^A-Za-z0-9_ -]/g, "").slice(0, 40);
-  return T(`an internal error ended the run${code ? ` (code ${code})` : ""}`, `ein interner Fehler hat den Lauf beendet${code ? ` (Code ${code})` : ""}`);
+  return T(`the preparation was interrupted by an error on our side${code ? ` (for support: ${code})` : ""}`, `die Vorbereitung wurde durch einen Fehler bei uns unterbrochen${code ? ` (für den Support: ${code})` : ""}`);
 }
 
 // ---------- rail ----------
@@ -2844,7 +2844,7 @@ function alsoView(doc, editable) {
   const control = (key) => {
     const f = item("fact", key) || {}, now = f.value === null || f.value === undefined ? "" : String(f.value);
     return (f.values || []).length
-      ? `<label class="cp-muted">${esc(plainQuestion((f.label || {}).de).replace(/\s*\(.*$/, ""))} <select class="cp-cover-select" data-also-set="${raw(key)}">${f.values.map((v) => `<option ${v === now || (!now && v === f.values[0]) ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`
+      ? `<label class="cp-muted">${esc(plainQuestion((f.label || {}).de).replace(/\s*\(.*$/, ""))} <select class="cp-cover-select${now ? "" : " cp-unset"}" data-also-set="${raw(key)}">${now ? "" : `<option value="" selected disabled>${T("please choose", "bitte wählen")}</option>`}${f.values.map((v) => `<option ${v === now ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>`
       : `<label class="cp-muted">${T("Amount (optional)", "Betrag (freiwillig)")} CHF <input class="cp-cover-select" size="9" data-also-set="${raw(key)}" value="${raw(now)}" placeholder="${T("none", "keiner")}"></label>`;
   };
   return `${editable && (a.set || []).length ? `<p class="cp-also-set">${a.set.map(control).join(" ")}</p>` : ""}
@@ -3241,7 +3241,9 @@ document.addEventListener("mouseover", (event) => {
 function historyView() {
   const all = S.data.verlauf || [];
   const party = S.onlyOpen && S.openParty;  // «… n weitere» in «Stand»: that party's open items
-  const rows = S.onlyOpen ? all.filter((r) => r.open && (!party || (r.open_of || []).includes(party))) : all;
+  // the table reads as the case ran: by day, what has no day last, the file's own order within a day
+  const day = (r) => String(r.date || r.at || "9999").slice(0, 10);
+  const rows = (S.onlyOpen ? all.filter((r) => r.open && (!party || (r.open_of || []).includes(party))) : all).map((r, i) => [r, i]).sort((a, b) => day(a[0]).localeCompare(day(b[0])) || a[1] - b[1]).map(([r]) => r);
   const gaps = (S.data.items || []).filter((i) => i.kind === "record_gap");
   const docs = all.filter((r) => r.kind !== "gesture").length, done = all.length - docs, open = all.filter((r) => r.open).length;
   const note = (n) => (n.text ? `<div class="cp-entry-note ${n.open ? "open" : ""} ${n.kind}">${esc(n.text)}</div>` : "");
@@ -4791,13 +4793,20 @@ const inLetter = () => Boolean(document.activeElement && document.activeElement.
 // «Freigeben»: the text saved first, then the version shown approved; the server says why not, in the handler's words.
 // One approval covers every document of the step. Until each has been shown, the button leads to the next one not yet
 // seen and says so; only then does it approve.
+// What a document of the step still asks the handler to choose (the scope of a cost approval): a list with values and
+// none taken yet. It is never sent on a default.
+const unsetChoices = () => ((S.data.draft || {}).also || []).flatMap((a) => (a.set || []).filter((key) => { const f = item("fact", key) || {}; return (f.values || []).length && (f.value === null || f.value === undefined || f.value === ""); })
+  .map((key) => ({ kind: a.kind, key, name: plainQuestion(((item("fact", key) || {}).label || {}).de || key).replace(/\s*\(.*$/, "") })));
 function approveLabel() {
-  const out = documentsOut(), next = (out.unseen || [])[0];
+  const out = documentsOut(), next = (out.unseen || [])[0], pend = unsetChoices()[0];
+  if (!(next && out.rows.length > 1) && pend) return `${T("Choose", "Wählen")}: ${esc(clip(pend.name, 40))}`;
   return next && out.rows.length > 1 ? `${T("Next", "Weiter")}: ${esc(clip(next.title, 34))} <span class="cp-approve-n">${out.rows.length - out.unseen.length + 1} ${T("of", "von")} ${out.rows.length}</span>` : T("Approve and copy", "Freigeben und kopieren");
 }
 async function approve() {
   const out = documentsOut();
   if (out.rows.length > 1 && (out.unseen || []).length) { S.docTab = out.unseen[0].kind; S.docPicked = true; await renderCase(); const tabs = document.querySelector(".cp-doc-tabs"); if (tabs) tabs.scrollIntoView({ block: "nearest" }); return; }
+  const pend = unsetChoices()[0];
+  if (pend) { S.docTab = pend.kind; S.docPicked = true; await renderCase(); const sel = document.querySelector(`[data-also-set="${CSS.escape(pend.key)}"]`); if (sel) { sel.scrollIntoView({ block: "center" }); sel.focus(); } return; }
   if (!(await saveDraft())) { renderCase(); return; }
   const d = S.data.draft || {};
   try {

@@ -378,6 +378,9 @@ class CraftTests(unittest.TestCase):
         # an approval covers every document of the step: each is shown once before the button approves
         self.assertIn("if (out.rows.length > 1 && (out.unseen || []).length) { S.docTab = out.unseen[0].kind; S.docPicked = true;", SCRIPT)
         self.assertIn('unseen: rows.filter((d) => !seen.has(d.kind) && !(d.state && d.state !== "entwurf")) };', SCRIPT)
+        # a choice a document leaves to the handler is never sent on a default: the list starts at «bitte wählen» and the button asks for it
+        self.assertIn('${now ? "" : `<option value="" selected disabled>${T("please choose", "bitte wählen")}</option>`}', SCRIPT)
+        self.assertIn("if (!(next && out.rows.length > 1) && pend) return `${T(\"Choose\", \"Wählen\")}: ${esc(clip(pend.name, 40))}`;", SCRIPT)
         # to whom and about what stands above the letter; a missing address is said in red
         head = SCRIPT.index('${asFrozen || c || !text ? "" : handoverLine()}')
         self.assertLess(head, SCRIPT.index('<div class="cp-letter ${stale ? "cp-stale" : ""}" data-item="letter:0"'))

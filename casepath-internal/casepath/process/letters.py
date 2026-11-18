@@ -355,6 +355,8 @@ def _parts(kind, forms, ctx):
         return None, "für diese Handlung ist kein Formular hinterlegt"
     if form.get("none"):
         return None, form["none"]
+    if "parts" not in form:  # a form that is no letter and does not say why: no draft, never an error for the reader
+        return None, form.get("empty") or "für diese Handlung ist kein Entwurf hinterlegt"
     filled = lambda name: bool(str(ctx.get(name) or "").strip())
     if form.get("asks") and not any(filled(name) for name in form["asks"]):
         return None, form.get("empty") or NOTHING

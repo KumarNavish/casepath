@@ -224,6 +224,10 @@ next) and listed what stood in the way. What was changed on that evidence:
   approval, summary, information to the customer) was approved with one click while three of them had never been on
   screen. Now the button leads to each document not yet shown («Weiter: Kostengutsprache · 2 von 4») and approves only
   when all have been before the reader's eyes.
+- **No default for what is the handler's.** A document that leaves a choice to the handler (the scope of a cost
+  approval to a law firm: aussergerichtlich, or with proceedings) no longer goes out on the first value. The list
+  starts at «bitte wählen», is ringed in red, and the button reads «Wählen: Umfang der Kostengutsprache …» until the
+  choice is made.
 - **To whom, before what.** Recipient and subject stand above the letter, not under it; a missing address is said in
   red there.
 - **A decision where it is announced.** «Deckung» in the sidebar opens its points and offers «Deckung bestätigen» and
@@ -240,9 +244,8 @@ next) and listed what stood in the way. What was changed on that evidence:
 
 Left as they are on purpose: the order of the list (new arrivals before overdue cases, as the server ranks them), the
 line that a step's content is not yet legally reviewed (a jurist should know it), the flow as the first thing on
-«Prozess». Not yet done from that review: the dispatch bar's wording, the Verlauf table's order and repeated request
-lines, the texts of interrupted and failed preparations, and the scope of a cost approval as an open decision (it is
-sent on its default today; that needs a rule, not a restyle).
+«Prozess», and the dispatch button's words «Versandt am» (the study's session protocol and its receipts name the
+button by these words). Not yet done from that review: the Verlauf table's order and its repeated request lines.
 
 ## The case in parts, under the hand (18 November 2026)
 

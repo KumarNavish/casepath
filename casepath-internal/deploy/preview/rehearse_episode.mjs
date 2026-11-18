@@ -397,6 +397,8 @@ const textAfter = await letterText();
 await step("freigeben", async () => {
   // a step with several documents shows each one before it can be approved: the button leads through them first
   for (let i = 0; i < 8 && await visible(button(/^Weiter: /)); i += 1) { await click(button(/^Weiter: /), "open"); await sleep(800); }
+  // a choice a document leaves to the handler (the scope of a cost approval) is made before the approval: the first value here
+  for (let i = 0; i < 4 && await visible(button(/^Wählen: /)); i += 1) { await click(button(/^Wählen: /), "open"); await page.locator("select.cp-unset").first().selectOption({ index: 1 }); await sleep(1800); }
   const approve = button(/^Freigeben und kopieren$/);
   if (await visible(approve)) { await click(approve, "approve"); await sleep(1500); return; }  // the approval copies the letter with it
   lacking("B: «Freigeben und kopieren» stores the approval and the Versandpaket (B3)");
