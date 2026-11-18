@@ -1950,3 +1950,5 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { #overview-source.cp-src-float { animation: none; } }
 .cp-approve-n { margin-left: 6px; font-size: 12px; font-weight: 400; opacity: .7; }
 .cp-cover-select.cp-unset { box-shadow: 0 0 0 1.5px var(--red); border-color: transparent; }
+.cp-me { display: inline-flex; align-items: center; gap: 7px; }
+.cp-me > i { width: 20px; height: 20px; border-radius: 50%; background: var(--tint); color: var(--ink-2); font-style: normal; font-size: 11px; font-weight: 600; display: inline-grid; place-items: center; }

@@ -251,11 +251,12 @@ function renderTop() {
   const other = LANG === "de" ? "en" : "de";
   renderNav(wordmark);
   $("#top").innerHTML = `<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
-    ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button>` : ""}${S.me ? `<span class="cp-me">${esc(S.me)}</span>` : ""}
+    ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button>` : ""}${S.me ? `<span class="cp-me" title="${T("Signed in as", "Angemeldet als")} ${raw(S.me)}"><i aria-hidden="true">${raw(meName().slice(0, 1).toUpperCase())}</i>${raw(meName())}</span>` : ""}
       <button class="cp-keys-open" id="keys-open" type="button" aria-label="${T("Keyboard shortcuts", "Tastenkürzel")}" title="${T("Keyboard shortcuts (?)", "Tastenkürzel (?)")}">?</button>
       ${langSwitch()}</div>`;
   glide();
 }
+const meName = () => { const me = String(S.me || "").trim(), local = me.includes("@") ? me.split("@")[0] : me; return /[A-ZÄÖÜ]/.test(local) && !me.includes("@") ? local : local.split(/[._-]+/).filter(Boolean).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" "); };
 // The sidebar: the product's name, who works, and the ways through the product, always in the same place. In a case the
 // case's own rail (its name, its parts, its files) continues the same column below.
 function renderNav(wordmark) {
@@ -2856,7 +2857,7 @@ function alsoView(doc, editable) {
 function letterLines() {
   const docs = (S.data.items || []).filter((i) => i.kind === "document" && i.ask && i.status !== "present" && !i.part_of);
   const qs = (S.data.items || []).filter((i) => i.kind === "letter_question" || i.kind === "hint");
-  const lines = (S.data.caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
+  const lines = ((S.data || {}).caseEvents || []).filter((e) => e.kind === "letter.line").reduce((m, e) => { m[e.item_id] = e.included; return m; }, {});
   const proposal = (i) => i.ask === "later" || i.ask === "proposed" || (i.kind === "hint" && i.stated_as === "put_to_handler");
   const on = (i) => (proposal(i) ? lines[i.item_id] === true : lines[i.item_id] !== false);
   return { all: docs.concat(qs), on };
@@ -3298,10 +3299,10 @@ function liveCase() {
     <dl class="cp-casefacts">${kept ? `<dt>${T("Course", "Verlauf")}</dt><dd>${entries || waiting}</dd>` : ""}<dt>${T("Facts", "Angaben")}</dt><dd>${facts_ || waiting}</dd>
       ${docs ? `<dt>${T("Documents", "Unterlagen")}</dt><dd>${docs}</dd>` : ""}</dl></section>`;
 }
-function closed() { const last = (S.data.caseEvents || []).filter((e) => e.kind === "case.closed" || e.kind === "case.reopened").pop(); return last && last.kind === "case.closed" ? last : undefined; }
+function closed() { const last = ((S.data || {}).caseEvents || []).filter((e) => e.kind === "case.closed" || e.kind === "case.reopened").pop(); return last && last.kind === "case.closed" ? last : undefined; }
 function unaidedPending() {
   // Own answer first: a case opened "unaided" for this person shows the files and one short form until it is answered.
-  const mine = (S.data.caseEvents || []).filter((e) => e.expert === S.me);
+  const mine = ((S.data || {}).caseEvents || []).filter((e) => e.expert === S.me);
   return mine.some((e) => e.kind === "case.opened" && e.condition === "unaided") && !mine.some((e) => e.kind === "reveal");
 }
 function unaidedView() {
@@ -4807,6 +4808,7 @@ async function approve() {
   if (out.rows.length > 1 && (out.unseen || []).length) { S.docTab = out.unseen[0].kind; S.docPicked = true; await renderCase(); const tabs = document.querySelector(".cp-doc-tabs"); if (tabs) tabs.scrollIntoView({ block: "nearest" }); return; }
   const pend = unsetChoices()[0];
   if (pend) { S.docTab = pend.kind; S.docPicked = true; await renderCase(); const sel = document.querySelector(`[data-also-set="${CSS.escape(pend.key)}"]`); if (sel) { sel.scrollIntoView({ block: "center" }); sel.focus(); } return; }
+  S.docTab = null; S.docPicked = false;   // approved: back to the first document that still has to go out (the letter itself)
   if (!(await saveDraft())) { renderCase(); return; }
   const d = S.data.draft || {};
   try {
@@ -5041,7 +5043,7 @@ function replayLine(k, all, caseName) {
 function arrivalNow(run) {
   if (!run || run.kind !== "update") return "";
   const came = (S.data.arrived || []).length || (S.data.new_files || []).length;
-  const resumed = (S.data.caseEvents || []).some((e) => e.kind === "update.started" && e.run === run.id && e.resumed);
+  const resumed = ((S.data || {}).caseEvents || []).some((e) => e.kind === "update.started" && e.run === run.id && e.resumed);
   return `<p class="cp-runnow cp-arrival-now"><b>${resumed ? T("Update interrupted: the service was restarted", "Aktualisierung unterbrochen: Der Dienst wurde neu gestartet")
     : T(`${came} new ${came === 1 ? "file" : "files"}`, `${came} neue ${came === 1 ? "Datei" : "Dateien"}`)}</b> · ${resumed ? T("continues", "wird fortgesetzt") : T("updating", "wird aktualisiert")}</p>`;
 }
