@@ -348,6 +348,9 @@ class AppTests(unittest.TestCase):
         with mock.patch.object(listing, "stand", wraps=listing.stand) as worked:
             first = client.get("/api/cases").json()["cases"]
             self.assertEqual(worked.call_count, 2)                      # both cases, once
+            prepared = next(r for r in first if r["id"] == case["id"])
+            self.assertEqual((set(prepared["stage"]), prepared["stage"]["at"] >= 1, prepared["stage"]["of"] >= prepared["stage"]["at"], "why" in prepared),
+                             ({"title", "at", "of"}, True, True, True))   # where it stands on its process, and why the next step
             again = client.get("/api/cases").json()["cases"]
             client.get("/api/today", params={"since": "2020-01-01T00:00:00Z"})
             self.assertEqual(worked.call_count, 2)                      # the list again and «Heute»: nothing worked out anew

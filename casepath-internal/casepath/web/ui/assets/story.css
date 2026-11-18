@@ -182,3 +182,10 @@
 .cps-compact .cps-what { font-size: 14.5px; line-height: 21px; }
 .cps-compact .cps-why { font-size: 13px; line-height: 19px; }
 .cps-compact .cps-count { display: none; }
+
+
+/* Lines of a kind the page asked to keep quiet (many of them saying one thing) are drawn while their moment plays and
+   for the card under the hand; at rest the cards speak for themselves. */
+.cps-quiet-learned .cps-e-learned.cps-on:not(.cps-act):not(.cps-rel), .cps-quiet-cites .cps-e-cites.cps-on:not(.cps-act):not(.cps-rel) { opacity: 0; transition: opacity .35s ease; }
+/* Large: the control that puts the picture away belongs to the page, not to the large view. */
+.cps-large .cps-close:not(.cps-big) { display: none; }

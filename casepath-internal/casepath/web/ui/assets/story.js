@@ -17,15 +17,15 @@
   const GAP = { row: 14, step: 26, group: 28, col: 40, lane: 104 };
   // The camera never goes where text blurs (max) or titles stop being readable (min); only the whole picture of a
   // large case may go below min, because showing all of it is its purpose.
-  const CAM = { min: 0.55, max: 1.25, beat: 1.1, whole: 0.2, top: 58, side: 28, bottom: 24 };   // top: the band of lane titles
+  const CAM = { min: 0.55, max: 1.25, beat: 1.1, whole: 0.2, read: 0.8, top: 58, side: 28, bottom: 24 };   // top: the band of lane titles
   const ICON = {
     sheet: "M5 1.5h9.5l6 6V25a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 25V3A1.5 1.5 0 0 1 5 1.5zM14.5 1.5v6h6M7.5 13h9M7.5 17h9M7.5 21h5.5",
     tick: "M3.6 8.5l2.9 2.9 5.9-6.6",
     layers: "M12 4.5l8 4-8 4-8-4zM4 12.5l8 4 8-4M4 16.5l8 4 8-4",
     play: "M8.5 5.6v12.8L19 12z", pause: "M7.5 5.5h3v13h-3zM13.5 5.5h3v13h-3z",
-    replay: "M5.5 12a6.5 6.5 0 1 0 2-4.7M5 4.6v3.6h3.6", whole: "M4 9V5h4M16 5h4v4M20 15v4h-4M8 19H4v-4", close: "M6 6l12 12M18 6L6 18",
+    replay: "M5.5 12a6.5 6.5 0 1 0 2-4.7M5 4.6v3.6h3.6", whole: "M4 9V5h4M16 5h4v4M20 15v4h-4M8 19H4v-4", close: "M6 6l12 12M18 6L6 18", big: "M14 5h5v5M19 5l-6 6M10 19H5v-5M5 19l6-6", small: "M19 10h-5V5M14 10l6-6M5 14h5v5M10 14l-6 6",
   };
-  const LABELS = { play: "Play", pause: "Pause", replay: "Again", step: "Step", of: "of", close: "Close", whole: "Whole picture" };
+  const LABELS = { play: "Play", pause: "Pause", replay: "Again", step: "Step", of: "of", close: "Close", whole: "Whole picture", big: "Large", small: "Back to the page" };
   const LINE_W = [100, 93, 97, 86, 95, 78, 90, 99, 84, 92, 70, 96, 88, 60];
 
   const memory = new Map();      // model signature → beat index: a story mounted again is shown where it was, not replayed
@@ -60,7 +60,7 @@
 
   function mount(host, rawModel, options) {
     if (mounted.has(host)) mounted.get(host).destroy();
-    const opt = Object.assign({ autoplay: true, start: "first", height: 420, compact: false, onOpen: null, onClose: null }, options);
+    const opt = Object.assign({ autoplay: true, start: "first", height: 420, compact: false, onOpen: null, onClose: null, onHover: null, onExpand: null, quiet: [] }, options);
     const abort = new AbortController(), on = { signal: abort.signal };
     const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let M = readModel(rawModel), reduced = motion.matches, dead = false;
@@ -70,7 +70,7 @@
     const last = () => M.beats.length - 1;
 
     // ---------- the fixed parts: stage, world, caption, controls ----------
-    const root = el("div", "cps" + (opt.compact ? " cps-compact" : ""), null, host);
+    const root = el("div", "cps" + (opt.compact ? " cps-compact" : "") + (opt.quiet || []).map((k) => ` cps-quiet-${k}`).join(""), null, host);
     const stage = el("div", "cps-stage", null, root);
     stage.style.height = `${opt.height}px`;
     stage.tabIndex = 0;
@@ -98,6 +98,13 @@
     wholeBtn.type = "button";
     icon("whole", null, "cps-ico", wholeBtn);
     const wholeText = el("span", null, null, wholeBtn);
+    let bigBtn = null, bigIcon = null;
+    if (typeof opt.onExpand === "function") {   // the picture large, over the page, and back
+      bigBtn = el("button", "cps-ghost cps-close cps-big", null, bar);
+      bigBtn.type = "button";
+      bigIcon = icon("big", null, "cps-ico", bigBtn).querySelector("path");
+      bigBtn.addEventListener("click", () => opt.onExpand(), on);
+    }
     let closeBtn = null;
     if (typeof opt.onClose === "function") {
       closeBtn = el("button", "cps-ghost cps-close", null, bar);
@@ -406,6 +413,8 @@
       playBtn.setAttribute("aria-label", L[mode]); playBtn.title = L[mode];
       wholeText.textContent = L.whole;
       if (closeBtn) { closeBtn.setAttribute("aria-label", L.close); closeBtn.title = L.close; }
+      if (bigBtn) { const w = root.classList.contains("cps-large") ? "small" : "big"; bigBtn.setAttribute("aria-label", L[w]); bigBtn.title = L[w]; if (bigIcon) bigIcon.setAttribute("d", ICON[w]); }
+      for (let k = 0; k < tickBox.childNodes.length; k += 1) { const t = ((M.beats[k] || {}).caption || {}).what || ""; if (tickBox.childNodes[k].title !== t) tickBox.childNodes[k].title = t; }
       root.classList.toggle("cps-live", M.live);
       root.classList.toggle("cps-tail", i === n - 1);
     }
@@ -415,11 +424,34 @@
       const next = { x: Math.round(c.x), y: Math.round(c.y), s: c.s }, same = S.cam.set && next.x === S.cam.x && next.y === S.cam.y && next.s === S.cam.s;
       S.cam = Object.assign(next, { set: true });
       if (instant) stage.classList.add("cps-grab");
+      const was = S.camWas || next;
+      S.camWas = next;
+      const headAt = (c, lane) => { const left = c.x + lane.x * c.s; return `translateX(${Math.round(Math.min(Math.max(left, 26), Math.max(left, left + lane.w * c.s - 110)))}px)`; };
+      // A long way is not slid along: the camera steps back until both places are in the frame, then closes in on
+      // the new one, so the reader sees where it is going and how the two lie to each other.
+      for (const a of S.flight || []) { try { a.commitStyles(); } catch (error) { /* not rendered */ } a.cancel(); }
+      S.flight = [];
+      const cx = (c) => (S.vw / 2 - c.x) / c.s, cy = (c) => (S.vh / 2 - c.y) / c.s;
+      const far = Math.hypot((cx(next) - cx(was)), (cy(next) - cy(was))) * Math.min(was.s, next.s);
+      if (!instant && !same && !reduced && world.animate && was !== next && far > 0.42 * S.vw) {
+        const ms = Math.min(Math.min(was.s, next.s) * 0.86, Math.max(wholeCam().s, (S.vw - 2 * CAM.side) / (Math.abs(cx(next) - cx(was)) + S.vw / Math.max(was.s, next.s))));
+        const mid = { s: ms, x: S.vw / 2 - ((cx(was) + cx(next)) / 2) * ms, y: S.vh / 2 - ((cy(was) + cy(next)) / 2) * ms };
+        const tf = (c) => `translate(${Math.round(c.x)}px,${Math.round(c.y)}px) scale(${c.s})`, timing = { duration: 1150, easing: "cubic-bezier(.45,.05,.2,1)" };
+        stage.classList.add("cps-grab");   // the flight is the movement; the property itself changes at once underneath it
+        world.style.transform = tf(next);
+        S.flight.push(world.animate([{ transform: tf(was) }, { transform: tf(mid), offset: 0.46 }, { transform: tf(next) }], timing));
+        for (const lane of lanes) {
+          lane.head.style.transform = headAt(next, lane);
+          S.flight.push(lane.head.animate([{ transform: headAt(was, lane) }, { transform: headAt(mid, lane), offset: 0.46 }, { transform: headAt(next, lane) }], timing));
+        }
+        void stage.offsetWidth; stage.classList.remove("cps-grab");
+        return;
+      }
       if (!same) world.style.transform = `translate(${next.x}px,${next.y}px) scale(${next.s})`;
       // titles move with the camera's own x and scale under the same transition, so they stay above their lane
       // (a lane that reaches out of the frame on the left keeps its title at the frame's edge while it is in view)
       for (const lane of lanes) {
-        const left = next.x + lane.x * next.s, t = `translateX(${Math.round(Math.min(Math.max(left, 26), Math.max(left, left + lane.w * next.s - 110)))}px)`;
+        const t = headAt(next, lane);
         if (lane.head.style.transform !== t) lane.head.style.transform = t;
       }
       if (instant) { void stage.offsetWidth; stage.classList.remove("cps-grab"); }
@@ -457,6 +489,20 @@
       setCam(c, instant);
     }
     function toWhole(instant) { S.view = "whole"; setCam(wholeCam(), instant); }
+    // Where a finished picture rests: on the whole of it while its cards can be read at that size; otherwise on what
+    // its last moment is about (where the case stands now) at a size that can be read. The whole stays one press away.
+    function restCam() {
+      const w = wholeCam();
+      if (w.s >= CAM.read || !M.beats.length) return null;
+      const b = M.beats[last()] || {}, ids = (b.focus || []).concat(b.reveal || []), box = boxOf(ids.length ? ids : [...nodes.keys()].slice(-3), 0);
+      if (!box) return null;
+      // at the size that can be read, as much of the picture as the frame holds: centred on the subject, then moved
+      // so that no side of the frame stands empty while the picture runs out of it on the other
+      const sc = CAM.read, aw = S.vw - 2 * CAM.side, ah = S.vh - CAM.top - CAM.bottom;
+      const place = (centre, size, room, near) => (size * sc <= room ? near + (room - size * sc) / 2 : clamp(near + room / 2 - centre * sc, near + room - size * sc, near));
+      return { s: sc, raw: sc, x: place(box.x + box.w / 2, W, aw, CAM.side), y: place(box.y + box.h / 2, H, ah, CAM.top) };
+    }
+    function toRest(instant) { const c = restCam(); if (!c) { toWhole(instant); return; } S.view = "rest"; setCam(c, instant); }
     // the reader's own zoom, about a point of the stage: never past the caps, never smaller than the whole picture needs
     function zoomed(k, px, py, factor) {
       const s = clamp(k.s * factor, Math.min(CAM.min, wholeCam().s), CAM.max);
@@ -492,7 +538,7 @@
       S.timer = 0;
       if (!S.playing || dead) return;
       if (S.index < last()) { goTo(S.index + 1, "play"); toBeat(S.index, reduced); queue(dwell(S.index)); }
-      else if (!M.live) { S.playing = false; S.rest = true; render(S.index, "keep"); toWhole(reduced); showControls(); remember(); }   // the end: the whole picture, complete
+      else if (!M.live) { S.playing = false; S.rest = true; render(S.index, "keep"); toRest(reduced); showControls(); remember(); }   // the end: the whole picture, complete
       // live and nothing new yet: wait; update() calls on
     }
     function play() {
@@ -523,9 +569,9 @@
         goTo(last(), "jump"); S.playing = true;
         if (beatCam(S.index)) toBeat(S.index, true); else toWhole(true);
       } else if (opt.start === "last" || !M.beats.length) {
-        goTo(last(), "jump", true); toWhole(true);
+        goTo(last(), "jump", true); toRest(true);
       } else if (seen) {   // the same story mounted again: it stands where it stood; if it was playing it plays on
-        goTo(seen.index, "jump", seen.rest); toWhole(true);
+        goTo(seen.index, "jump", seen.rest); if (seen.rest) toRest(true); else toWhole(true);
         if (!seen.rest && seen.index >= 0) toBeat(seen.index, true);
         if (seen.playing && opt.autoplay && seen.index < last()) play();
       } else if (opt.autoplay) { goTo(-1, "jump"); toWhole(true); play(); }
@@ -553,7 +599,7 @@
       buildTimeline();
       render(S.index, "keep");
       showControls();
-      if (S.view === "whole") toWhole(reduced); else if (S.view === "beat") toBeat(S.index, reduced);
+      if (S.view === "whole") toWhole(reduced); else if (S.view === "rest") toRest(reduced); else if (S.view === "beat") toBeat(S.index, reduced);
       // new beats are played one after the other from where the picture stands; nothing else is touched
       if (S.playing && !S.timer && (S.index < last() || (wasLive && !M.live && atTail))) queue(S.index < last() ? 220 : dwell(S.index));
     }
@@ -569,8 +615,9 @@
       mark(rec.el);
       edges.forEach((e) => { if ((e.from === rec.id || e.to === rec.id) && e.g.classList.contains("cps-on")) { mark(e.g); mark(nodes.get(e.from === rec.id ? e.to : e.from).el); } });
     }
-    world.addEventListener("pointerover", (e) => { if (!drag.moved) relate(recOf(e.target)); }, on);
-    world.addEventListener("pointerout", (e) => { if (!recOf(e.relatedTarget)) relate(null); }, on);
+    const tell = (rec) => { if (typeof opt.onHover === "function" && (rec ? rec.id : null) !== S.told) { S.told = rec ? rec.id : null; opt.onHover(rec ? rec.n : null); } };
+    world.addEventListener("pointerover", (e) => { if (!drag.moved) { const r = recOf(e.target); relate(r); tell(r); } }, on);
+    world.addEventListener("pointerout", (e) => { if (!recOf(e.relatedTarget)) { relate(null); tell(null); } }, on);
     world.addEventListener("focusin", (e) => {
       const r = recOf(e.target);
       relate(r);
@@ -652,7 +699,7 @@
       else if (e.key === "ArrowLeft") seek(S.index - 1);
       else if (e.key === "Home") seek(0);
       else if (e.key === "End") seek(last());
-      else if (e.key === "Escape" && closeBtn) opt.onClose();
+      else if (e.key === "Escape" && root.classList.contains("cps-large") && typeof opt.onExpand === "function") opt.onExpand();   // Esc leaves the large view; it never puts the picture away
       else return;
       e.preventDefault();
     }, on);
@@ -665,7 +712,7 @@
       const w = stage.clientWidth, h = stage.clientHeight;
       if (!w || !h || (w === S.vw && h === S.vh)) return;
       S.vw = w; S.vh = h;
-      if (S.view === "whole") toWhole(true); else if (S.view === "beat" && beatCam(S.index)) setCam(beatCam(S.index), true);
+      if (S.view === "whole") toWhole(true); else if (S.view === "rest") toRest(true); else if (S.view === "beat" && beatCam(S.index)) setCam(beatCam(S.index), true);
     });
     resize.observe(stage);
 
@@ -679,7 +726,22 @@
       root.remove();
       if (mounted.get(host) === api) mounted.delete(host);
     }
-    const api = { update, play, pause, seek, whole, destroy };
+    // the page brings a card forward (the row under the reader's hand): its lines and their other ends with it
+    function highlight(id) {
+      if (dead) return;
+      const r = id ? nodes.get(id) : null;
+      relate(r && r.el.classList.contains("cps-on") ? r : null);
+      if (!r || !r.el.classList.contains("cps-on") || S.playing) return;
+      const k = S.cam, out = r.x * k.s + k.x < 0 || r.y * k.s + k.y < CAM.top - 10 || (r.x + r.w) * k.s + k.x > S.vw || (r.y + r.h) * k.s + k.y > S.vh;
+      if (out) { S.view = "free"; setCam(fit(boxOf([r.id], 120), Math.max(k.s, CAM.min), Math.max(k.s, CAM.min)), reduced); }
+    }
+    function setHeight(height, large) {
+      if (dead) return;
+      stage.style.height = `${Math.max(240, Math.round(height))}px`;
+      root.classList.toggle("cps-large", Boolean(large));
+      showControls();
+    }
+    const api = { update, play, pause, seek, whole, rest: () => { if (!dead) toRest(reduced); }, destroy, highlight, resize: setHeight };
     mounted.set(host, api);
     begin();
     return api;

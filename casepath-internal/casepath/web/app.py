@@ -868,6 +868,15 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 row["follow_up"] = clock and clock["due"]
                 row["overdue_on"] = listing.overdue_day(listed, clock)
                 row["next_action"] = action and {"action": action.get("action"), "label": action["label"], "text": listing.next_step(action)}
+                # where the case stands on its process (the step it is at, of the steps that lead on; any closing is the
+                # last place) and the one reason for what comes next, as the case's own page says them
+                at_now = (current.get("evaluation") or {}).get("current") or {}
+                leading = [x["id"] for x in (current.get("process") or {}).get("steps") or () if x.get("next")]
+                ended = (current.get("evaluation") or {}).get("outcome") or {}
+                if at_now.get("step") or ended:
+                    row["stage"] = {"title": at_now.get("title") or ended.get("title"), "of": len(leading) + 1,
+                                    "at": leading.index(at_now["step"]) + 1 if at_now.get("step") in leading else len(leading) + 1}
+                row["why"] = screen.weil(listed, at_now.get("via"))
                 row["display_title"] = listing.display_title(row, listed, area_title(current.get("process")),
                                                              renamed=any(e["kind"] == "case.renamed" for e in events))
                 row["headline"] = listing.headline(row, listed, area_title(current.get("process")),

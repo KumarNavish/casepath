@@ -242,6 +242,7 @@ function renderTop() {
   const other = LANG === "de" ? "en" : "de";
   $("#top").innerHTML = `${wordmark}<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
     ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button><a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
+      <button class="cp-keys-open" id="keys-open" type="button" aria-label="${T("Keyboard shortcuts", "Tastenkürzel")}" title="${T("Keyboard shortcuts (?)", "Tastenkürzel (?)")}">?</button>
       ${langSwitch()}</div>`;
   glide();
 }
@@ -305,6 +306,7 @@ document.addEventListener("click", (event) => {
   if (more && !(event.target.closest && event.target.closest("details.cp-more"))) { more.open = false; S.moreOpen = false; }
 });
 document.addEventListener("keydown", (event) => {  // Esc leaves a menu or a small form without doing anything
+  if (event.key === "Escape" && S.storyBig) { event.preventDefault(); storyBig(false); return; }
   if (event.key !== "Escape" || S.route.view !== "case" || !S.data) return;
   const typing = event.target.closest && event.target.closest("[data-editable], #case-title");
   if (typing) return;
@@ -441,6 +443,21 @@ async function loadList(sinceMark) {
   S.listSeen = seen; S.listMoved = moved;
   return changed;
 }
+// A row's quiet track: how far the case is along its process (the steps that lead on, then its closing), the step it is
+// at marked. And its peek, for the hand that rests on the row or the keyboard that stands on it: the step by name, the
+// one reason for what comes next, the whole status. Nothing here is asked of the server again: the row carries it.
+function stageTrack(c, s) {
+  const st = c.stage;
+  if (!st || !st.of || s === "new") return "";
+  const dots = Array.from({ length: st.of }, (_, i) => `<span class="${i + 1 < st.at || s === "closed" ? "done" : i + 1 === st.at ? "now" : ""}"></span>`).join("");
+  return `<span class="cp-rowtrack" role="img" aria-label="${esc(T(`Step ${st.at} of ${st.of}`, `Schritt ${st.at} von ${st.of}`))}: ${esc(shortTitle(st.title || ""))}">${dots}</span>`;
+}
+function rowPeek(c, s) {
+  const st = c.stage, why = c.why && s !== "closed" ? c.why : "";
+  if (!st && !why) return "";
+  return `<span class="cp-row-peek" aria-hidden="true">${st ? `<span><b>${esc(shortTitle(st.title || ""))}</b> <span class="cp-muted">· ${T(`step ${st.at} of ${st.of}`, `Schritt ${st.at} von ${st.of}`)}</span></span>` : ""}
+    ${why ? `<span class="cp-peek-why"><span class="cp-muted">${T("Because", "Weil")}:</span> ${esc(clip(why, 150))}</span>` : ""}<span class="cp-peek-stand">${esc(standText(c))}</span></span>`;
+}
 async function renderCases(kept) {
   const sinceMark = visitFrom;
   const held = S.listData && S.listData.lang === LANG;
@@ -470,7 +487,7 @@ async function renderCases(kept) {
     const was = (S.listMoved || {})[c.id], shown = (S.movedShown = S.movedShown || new Set()), fresh = was && !shown.has(`${c.id}:${was.text}`);
     if (fresh) shown.add(`${c.id}:${was.text}`);
     return `<tr class="${s === "closed" ? "cp-done" : ""} ${bucketOf(c) === "wartet" ? "cp-quiet-row" : ""}${was ? " cp-row-moved" : ""}${fresh ? " cp-row-moved-in" : ""}"><td>${c.reference ? `<span class="cp-ref">${esc(c.reference)}</span> ` : ""}<a href="#/case/${raw(c.id)}/overview">${esc(c.headline || c.display_title || c.title)}</a>${c.parties ? `<small class="cp-parties">${esc(c.parties)}</small>` : ""}</td>
-      <td>${next || '<span class="cp-muted">—</span>'}</td>
+      <td class="cp-next">${next || '<span class="cp-muted">—</span>'}${stageTrack(c, s)}${rowPeek(c, s)}</td>
       <td class="cp-nowrap ${late ? "cp-late" : ""}">${due ? `${dateText(due.date)} <span class="cp-due-word">${esc(dueWord(due.word))}</span>` : '<span class="cp-muted">—</span>'}</td>
       <td><span class="cp-stand ${s}" title="${esc(standText(c))}">${esc(standShort(c))}</span>${was && was.text ? `<small class="cp-muted cp-row-was">${T("before", "vorher")}: ${esc(clip(standIn(was.text, was.kind) || was.text, 60))}</small>` : ""}</td></tr>`;
   };
@@ -761,7 +778,7 @@ function renderRail() {
     <div class="cp-caseline"><div id="case-title" contenteditable="plaintext-only" role="textbox" aria-label="${T("Name of the case", "Name des Falls")}" title="${T("Rename", "Umbenennen")}">${esc(caseName(d.case))}</div>
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
       ${identityLine(d.case)}
-      ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text ? `<span class="cp-stand ${raw(st.kind || "")}" data-status>${raw(standIn(st.text, st.kind))}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
+      ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text && !(st.kind === "new" && (d.items || []).some((i) => i.kind === "next_action")) ? `<span class="cp-stand ${raw(st.kind || "")}" data-status>${raw(standIn(st.text, st.kind))}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
@@ -1462,7 +1479,7 @@ function processView() {
   const change = S.lastEdit ? (S.lastEdit.op ? beforeNow() : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>`) : "";
   return `<section class="cp-card cp-process"><header class="cp-process-head"><h1 class="cp-title">${T("Process", "Prozess")}${S.data.process.short_title ? ` <span class="cp-muted">· ${esc(S.data.process.short_title)}</span>` : ""}</h1>
       <button class="cp-link cp-quiet-link" id="edit-open" aria-expanded="${Boolean(S.editing)}">${T("Change for this case", "Für diesen Fall ändern")}</button></header>
-    ${change}${S.editing ? editForm(model.steps[S.step]) : tabPicture("process", 340)}
+    ${change}${S.editing ? editForm(model.steps[S.step]) : tabPicture("process", 300)}
     <ol class="cp-steps">${before}${rows}${end}${ahead}</ol></section>`;
 }
 
@@ -1616,7 +1633,7 @@ function claimView(card) {
   const anliegen = (summary && summary.value) || brief.request || "";
   const timeline = brief.timeline || [];
   const parties = partiesHtml();
-  return `${tabPicture("file", 320)}<div class="cp-live"><div>${card}</div><aside>${anliegen || parties || timeline.length ? `<section class="cp-card cp-brief">
+  return `${tabPicture("file", 280)}<div class="cp-live"><div>${card}</div><aside>${anliegen || parties || timeline.length ? `<section class="cp-card cp-brief">
       <h2 class="cp-section">${T("Request", "Anliegen")}</h2><p data-item="summary:0">${esc(anliegen) || "—"}</p>
       ${parties ? `<h2 class="cp-section">${T("Parties", "Parteien")}</h2><p data-item="party:0">${parties}</p>` : ""}
       ${timeline.length ? `<h2 class="cp-section">${T("Timeline", "Chronologie")}</h2><div class="cp-lines">${timeline.map((t, i) => {
@@ -1673,7 +1690,7 @@ function documentsView() {
       <td><span class="cp-chip ${chip}">${esc(word_)}</span>${i.status === "unusable" && i.reason ? `<br><small class="cp-muted">${esc(clip(i.reason, 160))}</small>` : ""}${gone.has(i.item_id) ? `<br><button class="cp-link cp-quiet-link" data-point-notneeded="${raw(i.key)}">${T("not needed", "nicht nötig")}</button>` : ""}</td>
       <td>${sourceChips(i.evidence) || '<span class="cp-muted">—</span>'}</td></tr>`;
   }).join("");
-  return `${head}${read ? tabPicture("documents", 360) : ""}<table class="cp-table cp-docs-table"><thead><tr><th>${T("Document", "Unterlage")}</th><th>${T("What for", "Wozu")}</th><th>${T("State", "Stand")}</th><th>${T("Source", "Beleg")}</th></tr></thead><tbody>${rows}</tbody></table>`;
+  return `${head}${read ? tabPicture("documents", 300) : ""}<table class="cp-table cp-docs-table"><thead><tr><th>${T("Document", "Unterlage")}</th><th>${T("What for", "Wozu")}</th><th>${T("State", "Stand")}</th><th>${T("Source", "Beleg")}</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 // A text the report fitting shortened says so: nothing is cut silently.
@@ -2142,7 +2159,7 @@ function storyModel(events, live) {
   }
   return { lanes: [{ id: "sources", title: T("File", "Akte") }, { id: "findings", title: T("Found", "Gefunden") }, { id: "process", title: T("Process", "Prozess") }, { id: "outcome", title: T("Result", "Ergebnis") }],
     nodes, edges, beats, live: Boolean(live),
-    labels: { play: T("Play", "Abspielen"), pause: T("Pause", "Anhalten"), replay: T("Again", "Nochmals"), step: T("Step", "Schritt"), of: T("of", "von"), close: T("Close", "Schliessen"), whole: T("Whole picture", "Ganzes Bild") } };
+    labels: storyLabels() };
 }
 // The stage is mounted into its place after a render. While CasePath works the same stage lives on across the polls
 // (it is updated, never redrawn), so nothing replays; a replay opened once is shown at its end when the page redraws.
@@ -2171,11 +2188,14 @@ function mountStory() {
     layer.appendChild(host);
     const first = !seen[was];
     const ctrl = window.CasePathStory.mount(host, timed ? storyModel(events, live) : model, { autoplay: kind === "replay" && first, start: live || !first ? "last" : "first", height: Number(box.dataset.height) || (live ? 360 : 460),
-      onOpen: (n) => openFromStory(n), ...(timed ? {} : { onClose: () => setPicture(false) }) });
+      onOpen: (n) => { if (S.storyBig) storyBig(false); openFromStory(n); }, onHover: (n) => pointFromStory(n), onExpand: () => storyBig(!S.storyBig),
+      quiet: kind === "knowledge" || kind === "documents" ? ["learned"] : [],
+      ...(timed ? {} : { onClose: () => { if (S.storyBig) storyBig(false); setPicture(false); } }) });
     // a tab's picture stands as far as the case came before and plays what is current: where it is now, what is open, what follows
     if (!timed && first && model.beats.length) { if (model.from > 0) ctrl.seek(model.from - 1); ctrl.play(); }
     seen[was] = true;
-    S.story = { ctrl, key, live, run, n: (events || []).length, sig, beats: timed ? 0 : model.beats.length, ids: timed ? [] : model.nodes.map((n) => n.id) };
+    S.story = { ctrl, key, live, run, n: (events || []).length, sig, beats: timed ? 0 : model.beats.length, ids: timed ? [] : model.nodes.map((n) => n.id),
+      height: Number(box.dataset.height) || (live ? 360 : 460) };
   } else if (live && S.story.n !== events.length) {
     S.story.n = events.length;
     S.story.ctrl.update(storyModel(events, true));
@@ -2196,7 +2216,41 @@ function mountStory() {
       return;
     }
   }
+  if (!timed) linkStoryRows(model);
   placeStory();
+}
+// The picture and the list under it are one thing seen twice: a card under the hand marks its row, a row under the hand
+// brings its card forward with its lines and what they lead to.
+const rowOfNode = (n) => (n && n.item && document.querySelector(`[data-item="${CSS.escape(n.item)}"]`)) || (n && n.row && document.querySelector(`[data-story-row="${CSS.escape(n.row)}"]`)) || null;
+function pointFromStory(n) {
+  for (const el of document.querySelectorAll(".cp-story-point")) el.classList.remove("cp-story-point");
+  const row = rowOfNode(n);
+  if (row) row.classList.add("cp-story-point");
+}
+function linkStoryRows(model) {
+  for (const n of model.nodes) {
+    const row = rowOfNode(n);
+    if (!row || row.dataset.storyLinked) continue;
+    row.dataset.storyLinked = "1";
+    row.addEventListener("mouseenter", () => { if (S.story) S.story.ctrl.highlight(n.id); });
+    row.addEventListener("mouseleave", () => { if (S.story) S.story.ctrl.highlight(null); });
+    row.addEventListener("focusin", () => { if (S.story) S.story.ctrl.highlight(n.id); });
+    row.addEventListener("focusout", () => { if (S.story) S.story.ctrl.highlight(null); });
+  }
+}
+// The picture large, over the page: the same picture with room to be read, and back with Esc or its own control.
+function storyBig(on) {
+  const layer = document.getElementById("cp-story-layer");
+  if (!layer || !S.story) { S.storyBig = false; return; }
+  S.storyBig = Boolean(on);
+  let back = document.getElementById("cp-story-back");
+  if (on && !back) { back = document.createElement("div"); back.id = "cp-story-back"; back.addEventListener("click", () => storyBig(false)); document.body.appendChild(back); }
+  if (!on && back) back.remove();
+  layer.classList.toggle("cp-story-big", S.storyBig);
+  document.documentElement.classList.toggle("cp-story-open", S.storyBig);
+  S.story.ctrl.resize(on ? Math.max(360, window.innerHeight - 48 - 36 - 150) : S.story.height, on);
+  if (!on) placeStory();
+  setTimeout(() => { if (S.story) S.story.ctrl.rest(); }, 60);
 }
 // A node pressed opens the real thing: its page, or its row on this page (scrolled to and marked for a moment).
 function openFromStory(n) {
@@ -2215,12 +2269,14 @@ function placeStory() {
   const box = document.getElementById("story"), layer = document.getElementById("cp-story-layer");
   if (!box || !layer || !layer.firstElementChild) return;
   layer.style.display = "block";   // measured only once it is shown
+  if (S.storyBig) return;          // large: it stands over the page, not in its place
   const h = layer.firstElementChild.offsetHeight;
   if (h && box.style.height !== `${h}px`) box.style.height = `${h}px`;
   const r = box.getBoundingClientRect();
   Object.assign(layer.style, { display: "block", top: `${r.top + window.scrollY}px`, left: `${r.left + window.scrollX}px`, width: `${r.width}px` });
 }
 function dropStory(keepLayer) {
+  if (S.storyBig) { S.storyBig = false; const back = document.getElementById("cp-story-back"); if (back) back.remove(); document.documentElement.classList.remove("cp-story-open"); const l = document.getElementById("cp-story-layer"); if (l) l.classList.remove("cp-story-big"); }
   if (S.story) { try { S.story.ctrl.destroy(); } catch (error) { /* gone with its page */ } S.story = null; }
   const layer = document.getElementById("cp-story-layer");
   if (layer) { layer.innerHTML = ""; if (!keepLayer) layer.style.display = "none"; }
@@ -2243,7 +2299,7 @@ function tabPicture(kind, height) {
   return TAB_STORY[kind]() ? `<p class="cp-story-show"><button class="cp-link cp-quiet-link" id="story-show">${T("Show as a picture", "Als Bild zeigen")}</button></p>` : "";
 }
 function setPicture(shown) { try { localStorage.setItem("casepath.picture", shown ? "on" : "off"); } catch (error) { /* this visit only */ } if (S.route.view === "knowledge") renderKnowledge(); else renderCase(); }
-const storyLabels = () => ({ play: T("Play", "Abspielen"), pause: T("Pause", "Anhalten"), replay: T("Again", "Nochmals"), step: T("Step", "Schritt"), of: T("of", "von"), close: T("Close", "Schliessen"), whole: T("Whole picture", "Ganzes Bild") });
+const storyLabels = () => ({ big: T("Large", "Gross ansehen"), small: T("Back to the page", "Zurück zur Seite"), play: T("Play", "Abspielen"), pause: T("Pause", "Anhalten"), replay: T("Again", "Nochmals"), step: T("Step", "Schritt"), of: T("of", "von"), close: T("Close", "Schliessen"), whole: T("Whole picture", "Ganzes Bild") });
 function storyKit() {
   const nodes = [], edges = [], beats = [], have = new Set(), linked = new Set();
   const node = (n) => { if (!have.has(n.id)) { have.add(n.id); nodes.push(n); } return n.id; };
@@ -2294,6 +2350,46 @@ function processStory() {
     k.beat(`${T("End", "Abschluss")}: ${tr(ev.outcome.title)}`, "", [oid], [k.edge(at, oid, "leads")]);
   }
   return k.model([{ id: "facts", title: T("Rests on", "Beruht auf") }, { id: "path", title: T("The case's path", "Weg des Falls") }, { id: "next", title: T("Then", "Danach") }], from);
+}
+// Prozess as a flow: every step that leads on is a block (what CasePath prepares there, then each way out of it by its
+// own name with what decides it), every closing a small end piece at the way that leads to it. The way the case came is
+// marked, the block it stands in carries what is open there and the decisions that are the handler's to take.
+function processFlow() {
+  const g = graphModel();
+  if (!g || S.editing) return null;
+  const d = S.data, ev = d.evaluation, proc = d.process, here = new Map(g.path.map((p, i) => [p.step.id, { state: p.state, i }]));
+  const reached = new Set([...(ev.reached || []), ...here.keys()]);
+  const ends = new Set(proc.steps.filter((x) => !(x.next || []).length).map((x) => x.id));
+  const settled = (fid) => { const f = item("fact", fid); return f && f.value !== null && f.value !== undefined && f.value !== ""; };
+  const tone = (x) => ((here.get(x.id) || {}).state === "current" ? "now" : here.has(x.id) || reached.has(x.id) ? "done" : "open");
+  const asked = new Set(["deckung", ...((d.draft || {}).needs || [])]), sc = scr();
+  const blocks = proc.steps.filter((x) => !ends.has(x.id)).map((x) => {
+    const t = tone(x), at = here.get(x.id), next = at ? g.path[at.i + 1] : null, rows = [];
+    if (x.action && x.action.title) rows.push({ id: "action", kind: "action", text: tr(t === "now" && sc.title ? sc.title : x.action.title), sub: T("CasePath prepares", "bereitet CasePath vor"), state: t === "done" ? "done" : t === "now" ? "now" : "open" });
+    if (t === "now" && !ev.outcome) {
+      const cover = item("cover", "summary");
+      if (cover && !["gegenpartei", "mandat", "abwicklung"].includes(x.id)) rows.push({ id: "cover", kind: "decision", text: T("Cover", "Deckung"), sub: tr(String(cover.value || "").replace(/^Deckung: /, "")), state: answered("deckung") ? "done" : "open",
+        value: answered("deckung") ? tr(String(answered("deckung"))) : "", actions: answered("deckung") ? [] : [{ id: "deckung:bestätigt", text: T("confirm", "bestätigen"), primary: true }, { id: "deckung:abgelehnt", text: T("refuse", "ablehnen") }] });
+      for (const w of (ev.waiting_for || []).filter((w) => !asked.has(w.fact)).slice(0, 4)) rows.push({ id: `open:${w.fact}`, kind: "open", text: tr(shortFact(w.fact)), sub: T("open", "offen"), state: "open", item: `fact:${w.fact}` });
+      if (sc.missing) rows.push({ id: "docs", kind: "need", text: T("Documents", "Unterlagen"), sub: T(`${sc.missing} missing`, `${sc.missing} fehl${sc.missing === 1 ? "t" : "en"}`), state: "missing", href: `#/case/${S.route.id}/document_finder` });
+    }
+    let took = false;
+    (x.next || []).forEach((e, i) => {
+      const target = g.steps[e.to];
+      if (!target) return;
+      const facts = [...new Set(factsIn(e.when))], known = facts.filter(settled);
+      // the way the case took: the one to the next step on its path whose facts the file settled (the first such, else the first to it)
+      const taken = !took && next && next.step.id === e.to && (known.length === facts.length || !(x.next || []).some((o, j) => j > i && o.to === e.to));
+      if (taken) took = true;
+      rows.push({ id: `out:${i}`, kind: "outcome", text: tr(e.label || shortTitle(target.title)), state: taken ? "taken" : t === "done" ? "passed" : "possible",
+        sub: known.slice(0, 2).map((f) => `${tr(shortFact(f))}: ${tr(plainValue(item("fact", f).value))}`).join(" · ") || facts.slice(0, 2).map((f) => tr(shortFact(f))).join(" · "),
+        ...(ends.has(e.to) ? { end: { id: e.to, text: tr(shortTitle(target.title)), state: ev.outcome && taken ? "done" : "open" } } : { to: e.to }) });
+    });
+    return { id: x.id, title: tr(shortTitle(x.title)), tone: t, rows, item: `step:${x.id}` };
+  });
+  return { blocks, path: g.path.map((p) => p.step.id).filter((x) => !ends.has(x)), now: (g.path.find((p) => p.state === "current") || {}).step ? g.path.find((p) => p.state === "current").step.id : null,
+    labels: { whole: T("Whole process", "Ganzer Prozess"), here: T("Where the case stands", "Wo der Fall steht"), big: T("Large", "Gross ansehen"), small: T("Back to the page", "Zurück zur Seite"),
+      done: T("done", "erledigt"), now: T("now", "jetzt"), open: T("ahead", "noch offen"), taken: T("the way the case took", "der Weg des Falls") } };
 }
 // Verlauf: who wrote to whom, in the order it happened; a request is joined to its answer, what is open stays marked.
 // The line under the picture is the case's time: drag along it to see the case as it stood then.
@@ -2398,7 +2494,7 @@ function fileStory() {
   }
   const bare = rests.filter((r) => !r.ev), own = bare.filter((r) => r.i.verdict === "set_by_handler").length;
   const quiet = docs.length - cited.length;
-  if (bare.length || quiet) k.beat(bare.length ? T(`Without a passage of their own: ${bare.length}`, `Ohne eigene Stelle in der Akte: ${bare.length}`) : T("Every fact drawn has its passage", "Jede gezeichnete Angabe hat ihre Stelle"),
+  if (bare.length || quiet) k.beat(bare.length ? T(`${bare.length} further facts are derived or decided, not read from a passage`, `${bare.length} weitere Angaben sind abgeleitet oder entschieden, nicht aus einer Textstelle gelesen`) : T("Every fact drawn has its passage", "Jede gezeichnete Angabe hat ihre Stelle"),
     [own ? `${own} ${T(own === 1 ? "is your own decision" : "are your own decisions", own === 1 ? "ist Ihr eigener Entscheid" : "sind Ihre eigenen Entscheide")}` : "",
       quiet ? `${quiet} ${T(quiet === 1 ? "document without a fact taken from it" : "documents without a fact taken from them", quiet === 1 ? "Dokument, aus dem keine Angabe stammt" : "Dokumente, aus denen keine Angabe stammt")}` : ""].filter(Boolean).join(" · "), [], [], cited.map((x) => x.id));
   return k.model([{ id: "docs", title: T("Documents in the file", "Dokumente der Akte") }, { id: "facts", title: T("Taken from them", "Daraus entnommen") }], Math.max(0, k.beats.length - 3));
@@ -3029,7 +3125,7 @@ function historyView() {
       <label class="cp-account-filter"><input type="checkbox" id="only-open" ${S.onlyOpen ? "checked" : ""}> ${party ? esc(T(`only open with ${party}`, `nur Offenes ${({ kunde: "bei der Kundschaft", versicherer: "bei uns", kanzlei: "bei der Kanzlei", gegenpartei: "bei der Gegenpartei", behoerde: "bei Gericht/Behörde" })[party] || ""}`)) : T("only open", "nur Offenes")}</label></header>
     ${S.data.governing_version ? `<p class="cp-muted" title="${esc(`${S.data.run_version} → ${S.data.governing_version}`)}">${T("Process updated since the case was prepared", "Prozess seit der Vorbereitung aktualisiert")}</p>` : ""}
     ${gaps.length ? `<p class="cp-flag cp-account-gap">${gaps.map((g) => esc((g.label || {}).de || g.value)).join(" · ")}</p>` : ""}
-    ${S.onlyOpen || S.entryEdit ? "" : tabPicture("history", 380)}
+    ${S.onlyOpen || S.entryEdit ? "" : tabPicture("history", 300)}
     <table class="cp-table cp-account-table"><thead><tr><th>${T("No.", "Nr.")}</th><th>${T("Date", "Datum")}</th><th>${T("From → to", "Von → an")}</th><th>${T("What", "Was")}</th><th>${T("Asked, answered, agreed", "Verlangt, beantwortet, vereinbart")}</th></tr></thead>
     <tbody>${rows.map(line).join("") || `<tr><td colspan="5" class="cp-muted">${S.onlyOpen ? T("Nothing open.", "Nichts offen.") : T("Nothing in the file yet.", "Noch nichts in der Akte.")}</td></tr>`}</tbody></table></section>`;
 }
@@ -3729,7 +3825,7 @@ async function renderKnowledge() {
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px;align-items:start">${items.map(card).join("")}</div>`;
   }).join("");
   $("#app").innerHTML = `<main class="cp-main cp-knowledge${pageIn()}"><h1 class="cp-title">${T("Knowledge", "Wissen")}</h1>
-    ${sections ? tabPicture("knowledge", 380) : ""}
+    ${sections ? tabPicture("knowledge", 320) : ""}
     ${review && review.may_review ? reviewTable(review) + reviewByUse(byUse) : ""}
     ${review && review.may_review ? `<h2 class="cp-section cp-learned">${T("Learned from cases", "Aus Fällen gelernt")}</h2>` : ""}
     <p class="cp-muted">${T("What CasePath learned from earlier cases and case workers’ changes. Active items shape new cases; candidates are checked as suggestions until a person activates them.",
@@ -3901,6 +3997,7 @@ async function route() {
   const rowOf = (id) => document.querySelector(`.cp-list a[href^="#/case/${CSS.escape(id)}/"]`);
   const opened = next.view === "case" && S.route.view === "cases" ? rowOf(next.id) : null, left = next.view === "cases" && S.route.view === "case" ? S.route.id : null;
   const show = async () => {
+    rowPeekHide(); S.peekRow = null;
     S.route = next;
     if (moved) window.scrollTo(0, 0);  // what is opened is read from its top
     renderTop();
@@ -3944,8 +4041,23 @@ async function route() {
     if (MEASURE.on) measureTouch(); else measureLeave();
     renderTop();
   });
+  document.addEventListener("click", (event) => { if (event.target.closest && event.target.closest("#keys-open")) keysCard(true); });
   document.addEventListener("keydown", (event) => {
     const typing = event.target.closest && event.target.closest("input, textarea, select, [contenteditable], [data-editable]");
+    if (event.key === "Escape" && document.getElementById("cp-keys")) { keysCard(false); return; }
+    if (!typing && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      // the keys that work everywhere: the help, the list, and in a case its tabs, the next case and the large picture
+      if (event.key === "?") { event.preventDefault(); keysCard(!document.getElementById("cp-keys")); return; }
+      if (document.getElementById("cp-keys")) return;
+      if (event.key === "/" && S.route.view === "cases" && $("#list-search")) { event.preventDefault(); $("#list-search").focus(); return; }
+      if (event.key === "v" && S.story && !S.story.live) { event.preventDefault(); storyBig(!S.storyBig); return; }
+      if (S.route.view === "case" && S.data && !S.storyBig) {
+        const tabs = [...document.querySelectorAll("#top .cp-tabs a[href^='#/case/']")];
+        if (/^[1-9]$/.test(event.key) && tabs[Number(event.key) - 1]) { event.preventDefault(); location.hash = tabs[Number(event.key) - 1].getAttribute("href"); return; }
+        if (event.key === "n") { const b = document.querySelector("#next-case:not(:disabled), #skip-case:not(:disabled)"); if (b) { event.preventDefault(); b.click(); } return; }
+        if (event.key === "l") { event.preventDefault(); location.hash = "#/cases"; return; }
+      }
+    }
     if ((event.ctrlKey || event.metaKey) && event.key === "Enter" && S.route.view === "case") {  // the card's one primary, from the keyboard
       const b = document.querySelector(".cp-prepared .cp-button.primary:not(:disabled)");
       if (b) { event.preventDefault(); b.click(); }
@@ -3960,11 +4072,59 @@ async function route() {
     const to = Math.max(0, Math.min(rows.length - 1, at < 0 ? 0 : at + (["ArrowDown", "j"].includes(event.key) ? 1 : -1)));
     if (at >= 0) rows[at].classList.remove("cp-row-on");
     rows[to].classList.add("cp-row-on"); rows[to].scrollIntoView({ block: "nearest" });
+    clearTimeout(S.peekTimer); S.peekTimer = setTimeout(() => rowPeekShow(rows[to]), 160);  // the keyboard's row says its step and its reason too
   });
   try { const health = await api("/api/health"); S.canUpload = health.uploads !== false; S.translateMode = (health.translate || {}).mode || "off"; } catch (error) { S.canUpload = true; }
   window.addEventListener("hashchange", route);
   route();
 })();
+
+// The peek of a list row: one small card under the row the hand rests on (after a moment) or the keyboard stands on.
+// It is filled from what the row already holds, stands over the page, and goes when the hand or the page moves.
+function rowPeekShow(row) {
+  rowPeekHide();
+  const src = row && row.querySelector(".cp-row-peek"), cell = row && row.querySelector("td.cp-next");
+  if (!src || !cell || S.route.view !== "cases") return;
+  const card = document.createElement("div");
+  card.id = "cp-peek";
+  card.innerHTML = src.innerHTML;
+  document.body.appendChild(card);
+  const r = cell.getBoundingClientRect(), below = row.getBoundingClientRect().bottom;
+  const top = below + card.offsetHeight + 12 > window.innerHeight ? row.getBoundingClientRect().top - card.offsetHeight - 6 : below - 4;
+  Object.assign(card.style, { left: `${Math.max(12, Math.min(r.left - 14, window.innerWidth - card.offsetWidth - 12))}px`, top: `${top}px` });
+}
+function rowPeekHide() { clearTimeout(S.peekTimer); const old = document.getElementById("cp-peek"); if (old) old.remove(); }
+document.addEventListener("mouseover", (event) => {
+  const row = event.target.closest && event.target.closest("table.cp-cases tbody tr");
+  if (row === S.peekRow) return;
+  S.peekRow = row || null;
+  rowPeekHide();
+  if (row) S.peekTimer = setTimeout(() => { if (S.peekRow === row && document.contains(row)) rowPeekShow(row); }, 550);
+});
+document.addEventListener("scroll", () => { S.peekRow = null; rowPeekHide(); }, true);
+document.addEventListener("mousedown", () => { S.peekRow = null; rowPeekHide(); });
+
+// The keys, said once where the reader asks for them («?»): what works everywhere, in the list, in a case, in a picture.
+function keysCard(open) {
+  const old = document.getElementById("cp-keys");
+  if (old) old.remove();
+  if (!open) return;
+  const row = (keys, what) => `<li><span>${keys.map((k) => `<kbd>${k}</kbd>`).join(" ")}</span>${what}</li>`;
+  const box = document.createElement("div");
+  box.id = "cp-keys";
+  box.setAttribute("role", "dialog"); box.setAttribute("aria-label", T("Keyboard shortcuts", "Tastenkürzel"));
+  box.innerHTML = `<div class="cp-keys-card"><h2>${T("Keyboard", "Tastatur")}</h2>
+    <div class="cp-keys-cols"><section><h3>${T("In the list", "In der Liste")}</h3><ul>
+        ${row(["J", "K"], T("down and up through the cases", "durch die Fälle, ab und auf"))}${row(["↵"], T("open the case", "Fall öffnen"))}${row(["/"], T("search", "suchen"))}</ul>
+      <h3>${T("Everywhere", "Überall")}</h3><ul>${row(["?"], T("this card", "diese Karte"))}${row(["Esc"], T("close, leave a small form", "schliessen, ein kleines Formular verlassen"))}</ul></section>
+      <section><h3>${T("In a case", "In einem Fall")}</h3><ul>
+        ${row(["1", "…", "5"], T("Overview, File, Process, Documents, History", "Übersicht, Akte, Prozess, Unterlagen, Verlauf"))}${row([T("Ctrl", "Strg"), "↵"], T("the step's main action (approve, copy)", "die Hauptaktion des Schritts (freigeben, kopieren)"))}
+        ${row(["N"], T("next case that needs you", "nächster Fall, der Sie braucht"))}${row(["L"], T("back to the list", "zurück zur Liste"))}</ul>
+      <h3>${T("In a picture", "In einem Bild")}</h3><ul>${row(["V"], T("large, and back", "gross ansehen und zurück"))}${row(["←", "→"], T("one moment back or on (picture in focus)", "ein Moment zurück oder weiter (Bild im Fokus)"))}${row([T("Space", "Leertaste")], T("play, pause", "abspielen, anhalten"))}</ul></section></div>
+    <p class="cp-muted">${T("Keys do nothing while you type in a field.", "Solange Sie in ein Feld schreiben, tun die Tasten nichts.")}</p></div>`;
+  box.addEventListener("click", (event) => { if (event.target === box) keysCard(false); });
+  document.body.appendChild(box);
+}
 
 // Each slice's own functions go in its section below (function declarations: the start above runs after the whole script).
 // ---------- assessment: the decision brief, the customer's questions and the recommendation (Slice A) ----------

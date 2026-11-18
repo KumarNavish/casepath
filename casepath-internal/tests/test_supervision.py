@@ -271,6 +271,18 @@ class CraftTests(unittest.TestCase):
         self.assertIn('if (event.key !== "Escape" || S.route.view !== "case" || !S.data) return;', SCRIPT)  # Esc leaves a menu or a small form
         self.assertIn("const fold = (text) => String(text || \"\").toLowerCase().normalize(\"NFD\")", SCRIPT)  # «larchenweg» finds «Lärchenweg»
 
+    def test_the_keys_are_said_where_the_reader_asks_and_do_nothing_while_typing(self):
+        self.assertIn('if (event.key === "?") { event.preventDefault(); keysCard(!document.getElementById("cp-keys")); return; }', SCRIPT)
+        self.assertIn("if (!typing && !event.ctrlKey && !event.metaKey && !event.altKey) {", SCRIPT)       # never while a field is being written in
+        self.assertIn('if (/^[1-9]$/.test(event.key) && tabs[Number(event.key) - 1])', SCRIPT)            # a case's tabs by their number
+        self.assertIn('id="keys-open"', SCRIPT)                                                           # and a quiet «?» for the hand
+        # the picture and its list are one thing seen twice; the picture can stand large over the page
+        self.assertIn("row.addEventListener(\"mouseenter\", () => { if (S.story) S.story.ctrl.highlight(n.id); });", SCRIPT)
+        self.assertIn("onHover: (n) => pointFromStory(n), onExpand: () => storyBig(!S.storyBig),", SCRIPT)
+        engine = (Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets" / "story.js").read_text(encoding="utf-8")
+        self.assertIn("function toRest(instant)", engine)                       # a finished picture rests where it can be read
+        self.assertIn('root.classList.contains("cps-large") && typeof opt.onExpand === "function") opt.onExpand();', engine)  # Esc leaves the large view, never puts the picture away
+
     def test_the_case_is_shown_as_a_picture_built_from_its_real_state(self):
         assets = Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets"
         engine, look = (assets / "story.js").read_text(encoding="utf-8"), (assets / "story.css").read_text(encoding="utf-8")
@@ -291,7 +303,7 @@ class CraftTests(unittest.TestCase):
         self.assertIn('layer.id = "cp-story-layer"', SCRIPT)
         self.assertIn("S.story.ctrl.update(storyModel(events, true));", SCRIPT)
         self.assertIn('id="story-open"', SCRIPT)
-        self.assertIn("onOpen: (n) => openFromStory(n)", SCRIPT)                           # a node opens the real thing: its page or its row
+        self.assertIn("onOpen: (n) => { if (S.storyBig) storyBig(false); openFromStory(n); }", SCRIPT)                           # a node opens the real thing: its page or its row
         # each tab shows its own state with the same engine: the path with what decided it and its branches, the history
         # as who wrote to whom with a request joined to its answer, the documents with why each is asked and where it is
         for kind, build in (("process", "processStory"), ("history", "historyStory"), ("documents", "documentsStory")):
@@ -303,10 +315,10 @@ class CraftTests(unittest.TestCase):
         self.assertIn('opened.style.viewTransitionName = "cp-case"', SCRIPT)               # a case opened from the list grows out of its row
         self.assertIn(".cp-morph #case-title { view-transition-name: cp-case; }", STYLE)
         # Wissen: where each rule came from and the cases it was applied in since, one moment per case
-        self.assertIn('tabPicture("knowledge", 380)', SCRIPT)
+        self.assertIn('tabPicture("knowledge", 320)', SCRIPT)
         # a picture holds what a reader can take in: the rules that moved last and the cases they reached; never a crowd
         # Akte: the file's documents in the order of their dates and what was taken from each with its passage
-        self.assertIn('tabPicture("file", 320)', SCRIPT)
+        self.assertIn('tabPicture("file", 280)', SCRIPT)
         self.assertIn('shown.map((r) => k.edge(did, `fact:${r.i.key}`, "cites", r.ev.page ? `${T("p.", "S.")} ${r.ev.page}` : ""))', SCRIPT)
         self.assertIn("const STORY_RULES = 8, STORY_CASES = 10, STORY_NODES = 44;", SCRIPT)
         self.assertIn(".slice(0, STORY_RULES);", SCRIPT)
@@ -315,6 +327,9 @@ class CraftTests(unittest.TestCase):
         # the list: a case whose status changed since it was last on screen says what it was before
         self.assertIn("if (seen[c.id] && seen[c.id].text !== now.text) moved[c.id] = seen[c.id];", SCRIPT)
         self.assertIn('class="cp-muted cp-row-was"', SCRIPT)
+        # each row: how far the case is along its process, and a peek with the step and the reason for what comes next
+        self.assertIn('<td class="cp-next">${next || \'<span class="cp-muted">—</span>\'}${stageTrack(c, s)}${rowPeek(c, s)}</td>', SCRIPT)
+        self.assertIn("S.peekTimer = setTimeout(() => rowPeekShow(rows[to]), 160);", SCRIPT)   # the keyboard's row shows it too
         self.assertIn("if (grew) S.story.ctrl.play();", SCRIPT)
         self.assertIn("seen[was] = false;", SCRIPT)                                        # a step taken: drawn again up to there, played from where the case stands                            # a change under the reader's eyes arrives as its own movement
 

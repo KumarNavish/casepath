@@ -1583,3 +1583,40 @@ mark.cp-hit.chosen, mark#live-hit { animation: cp-mark-pulse .9s var(--ease); }
 .cp-ops-legend li { display: flex; align-items: center; gap: 7px; } .cp-ops-dot { width: 8px; height: 8px; border-radius: 50%; }
 .cp-ops-facts { margin: 0; font-size: 13px; line-height: 1.6; }
 @media (prefers-reduced-motion: reduce) { .cp-page-in .cp-ops-bar { animation: none; } }
+/* The picture and its list are one thing seen twice; the picture can stand large over the page. */
+.cp-story-point { box-shadow: inset 3px 0 0 #82072a; background: rgba(130, 7, 42, .035); transition: background .18s ease, box-shadow .18s ease; }
+tr.cp-story-point > td { background: rgba(130, 7, 42, .035); } tr.cp-story-point > td:first-child { box-shadow: inset 3px 0 0 #82072a; }
+#cp-story-back { position: fixed; inset: 0; z-index: 59; background: rgba(255, 255, 255, .86); backdrop-filter: blur(4px); animation: cp-big-back .24s ease both; }
+#cp-story-layer.cp-story-big { position: fixed; top: 24px !important; left: 24px !important; right: 24px; width: auto !important; z-index: 60; padding: 18px 22px 14px; border-radius: 18px;
+  background: #fff; box-shadow: 0 0 0 1px #e3e7e9, 0 40px 90px -40px rgba(16, 23, 26, .4); animation: cp-big-in .34s cubic-bezier(.2, .8, .2, 1) both; }
+html.cp-story-open { overflow: hidden; }
+@keyframes cp-big-in { from { opacity: 0; transform: scale(.975) translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes cp-big-back { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #cp-story-layer.cp-story-big, #cp-story-back { animation: none; } }
+/* The keys: a quiet «?» in the bar, and one card that says them. */
+.cp-keys-open { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #e3e7e9; background: #fff; color: #536167; font: 600 12px/1 Inter, sans-serif; cursor: pointer; transition: border-color .15s ease, color .15s ease; }
+.cp-keys-open:hover, .cp-keys-open:focus-visible { border-color: #1b2a30; color: #10171a; }
+#cp-keys { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; background: rgba(255, 255, 255, .86); backdrop-filter: blur(4px); animation: cp-big-back .2s ease both; }
+.cp-keys-card { width: min(720px, calc(100vw - 48px)); padding: 26px 30px 20px; border-radius: 18px; background: #fff; box-shadow: 0 0 0 1px #e3e7e9, 0 40px 90px -40px rgba(16, 23, 26, .4); animation: cp-big-in .28s cubic-bezier(.2, .8, .2, 1) both; }
+.cp-keys-card h2 { margin: 0 0 14px; font-size: 20px; letter-spacing: -.015em; }
+.cp-keys-card h3 { margin: 14px 0 6px; font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: #8a979c; }
+.cp-keys-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 36px; }
+.cp-keys-card ul { margin: 0; padding: 0; list-style: none; }
+.cp-keys-card li { display: grid; grid-template-columns: 92px 1fr; gap: 12px; align-items: baseline; padding: 5px 0; font-size: 14px; color: #10171a; }
+.cp-keys-card kbd { display: inline-block; min-width: 22px; padding: 2px 6px; border-radius: 6px; border: 1px solid #e3e7e9; border-bottom-width: 2px; background: #f4f6f7; font: 600 12px/1.3 Inter, sans-serif; text-align: center; color: #1b2a30; }
+.cp-keys-card p { margin: 16px 0 0; font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { #cp-keys, .cp-keys-card { animation: none; } }
+/* The greeting: the name in ink. Crimson stays for what is due and what is new. */
+.cp-hero-title em { color: inherit; }
+/* The list: how far each case is along its process, and a peek for the hand that rests on a row. */
+.cp-rowtrack { display: flex; gap: 4px; margin-top: 8px; }
+.cp-rowtrack > span { flex: 0 0 14px; height: 3px; border-radius: 2px; background: #e3e7e9; }
+.cp-rowtrack > span.done { background: #8a979c; } .cp-rowtrack > span.now { background: #1b2a30; }
+.cp-rows-in .cp-rowtrack > span.now, .cp-list-in .cp-rowtrack > span.now { animation: cp-track-now .7s .25s var(--ease) both; }
+@keyframes cp-track-now { from { transform: scaleX(.2); transform-origin: left center; background: #82072a; } }
+.cp-row-peek { display: none; }
+#cp-peek { position: fixed; z-index: 40; width: 380px; max-width: calc(100vw - 24px); padding: 11px 14px 12px; border-radius: 12px; background: #fff; pointer-events: none;
+  box-shadow: 0 0 0 1px #e3e7e9, 0 18px 40px -22px rgba(16, 23, 26, .35); font-size: 13px; line-height: 1.5; color: #10171a; animation: cp-peek-in .16s ease both; }
+#cp-peek > span { display: block; } #cp-peek .cp-peek-stand { color: #536167; }
+@keyframes cp-peek-in { from { opacity: 0; transform: translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { #cp-peek, .cp-rowtrack > span.now { animation: none; } }
