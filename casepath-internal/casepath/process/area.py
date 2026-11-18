@@ -2,7 +2,7 @@
 
 The backbone (areas/backbone.json) is what every legal-protection case shares: the stages, the action kinds A0–A12 and
 which handler decisions each depends on, the handler's decisions (cover, way to proceed), the derived facts, the clock,
-Protekta's letter forms, and what comes in from third parties with the action it calls for (incoming.py). An area module
+the house's letter forms, and what comes in from third parties with the action it calls for (incoming.py). An area module
 (areas/<id>.json) holds only what differs: the routing value, the facts with their customer questions, the documents
 with their legal reason and stage, first hints, statutory deadlines, the legal frame of the assessment letter (A5) and
 of the letter to the other side (A8), and the law it cites. Composition yields an
@@ -25,12 +25,13 @@ from pathlib import Path
 import re
 import sys
 
+from .. import house
 from . import cover, customer_letters, incoming, keypoints
 from .clock import parse_date
 from .workflows import FORMAT, CatalogueError, _check_condition as check_condition, evaluate_condition, validate_workflow
 
 AREA_FORMAT, BACKBONE_FORMAT = "casepath.area/1", "casepath.backbone/1"
-AREAS = Path(__file__).with_name("areas")
+AREAS = house.active().catalogue  # the backbone and the areas of the house (shipped: the folder «areas» beside this file)
 LABELS = {(True, "draft"): "aus Praxis und Gesetz abgeleitet, noch nicht freigegeben",
           (False, "draft"): "aus dem Gesetz abgeleitet, noch nicht freigegeben"}
 MAX_PASSAGE_WORDS = 40
@@ -491,7 +492,8 @@ def open_ended_title(title):
 
 
 def load(path):
-    return json.loads(Path(path).read_text(encoding="utf-8"))
+    """A backbone or an area module as the active house reads it (the shipped ones name the built-in house)."""
+    return house.in_own_name(json.loads(Path(path).read_text(encoding="utf-8")))
 
 
 @functools.lru_cache(maxsize=None)

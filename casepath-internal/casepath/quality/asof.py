@@ -56,6 +56,7 @@ import importlib.util
 import json
 import re
 
+from .. import house
 from ..agents.runner import case_state
 from ..process import account, incoming, letters, workflows
 from ..process.clock import GERMAN_MONTHS, capped, follow_up, parse_date
@@ -103,7 +104,7 @@ class Dating:
     when every one of them is (``known``). ``how[file][page]`` says where its date came from: entry, segment, neighbours
     or None (undated)."""
 
-    def __init__(self, files, entries, insurer_words=("protekta", "rechtsschutz")):
+    def __init__(self, files, entries, insurer_words=house.active().recognised_by):
         self.rules, self.how, self.entry_day, self.pages, self.owner_day = {}, {}, {}, {}, {}
         insurer = lambda sender: account.party_of(sender, default="andere") == account.INSURER or \
             any(w in str(sender or "").lower() for w in insurer_words)
@@ -213,7 +214,7 @@ def rebuild(run, files, t, decisions=(), dating=None):
     t = day(t)
     result = (run or {}).get("result") or {}
     graph = result.get("process") or {}
-    insurer_words = tuple((graph.get("cooperation") or {}).get("insurer") or ("protekta", "rechtsschutz"))
+    insurer_words = tuple((graph.get("cooperation") or {}).get("insurer") or house.active().recognised_by)
     entries = account.entries_of(result)
     dating = dating or Dating(files, entries, insurer_words)
     known_page = lambda c: dating.page_known(c.get("file"), c.get("page"), t)
@@ -349,7 +350,7 @@ class AsOfStore:
 
 
 def forms_of(catalogue, state):
-    """The forms the case view drafts from: its workflow's, else Protekta's (app.prepared_action)."""
+    """The forms the case view drafts from: its workflow's, else the shipped ones (app.prepared_action)."""
     workflow = catalogue.get((state.get("workflow") or {}).get("id") or "") or {}
     return workflow.get("forms") or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS
 

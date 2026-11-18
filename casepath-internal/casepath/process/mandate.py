@@ -19,6 +19,7 @@ claimed lies within the scope, always as a question for the handler, never as a 
 import functools
 import re
 
+from .. import house
 from .clock import as_of, parse_date
 
 MAX_LINES = 46  # one page in the insurer's plain letter style
@@ -228,7 +229,7 @@ def _customer(items):
     return customer([i for i in items if i["kind"] == "party"])
 
 
-FIRM_OR_INSURER = re.compile(r"kanzlei|anwalt|anwält|advokatur|rechtsanw|protekta|rechtsschutz|versicherer|versicherung", re.I)
+FIRM_OR_INSURER = re.compile("kanzlei|anwalt|anwält|advokatur|rechtsanw|" + house.active().named_in("versicherer", "versicherung"), re.I)
 
 
 def role_word(party):
@@ -258,7 +259,7 @@ def letter_context(case, items, files, today=None):
     other, other_role = other_side(items, who)
     value, row = scope(facts)
     amount = amount_text(facts.get("kostengutsprache_betrag"))
-    ref = re.search(r"\d{4}\.\d{4}\.\d{4}", f"{case.get('title', '')} {case.get('intake', '')}")
+    ref = re.search(house.active().claim_number, f"{case.get('title', '')} {case.get('intake', '')}")
     day = today or as_of(files)
     lines = {i["key"]: i for i in items if i["kind"] == "stage_line"}
     claim, given = lines.get("kg-forderung") or {}, lines.get("kg-gutsprache") or {}
@@ -333,7 +334,7 @@ def cost_check(facts, rows, files, open_item, dated=None, graph=None):
     else:
         out.append({"id": "kg-erweiterung", "text": f"Erweiterung der Kostengutsprache: {NOT_IN_FILE}", "citations": []})
     reports = sorted(((parse_date(s.get("date")), f, s) for f, s in _segments(files)
-                      if re.search(r"bericht", str(s.get("kind") or ""), re.I) and not re.search(r"protekta", str(s.get("sender") or ""), re.I)),
+                      if re.search(r"bericht", str(s.get("kind") or ""), re.I) and not re.search(re.escape(house.active().name), str(s.get("sender") or ""), re.I)),
                      key=lambda r: (r[0] is None, r[0]))
     reports = [r for r in reports if r[0]]
     if reports:

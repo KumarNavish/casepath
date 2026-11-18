@@ -14,6 +14,7 @@ import json
 import re
 import zipfile
 
+from .. import house
 from .report import W, _para, _run
 
 FORMAT = "casepath.versandpaket/1"
@@ -163,7 +164,7 @@ def member(blob, kind):
 
 def file_name(case, approved_at):
     """«Versandpaket_<Referenz oder Fall>_<TT.MM.JJJJ>.zip»."""
-    ref = re.search(r"\d{4}\.\d{4}\.\d{4}", f"{(case or {}).get('title', '')} {(case or {}).get('intake', '')}")
+    ref = re.search(house.active().claim_number, f"{(case or {}).get('title', '')} {(case or {}).get('intake', '')}")
     who = ref.group(0) if ref else re.sub(r"[^\w.-]+", "-", str((case or {}).get("title") or (case or {}).get("id") or "Fall"))[:60].strip("-")
     from ..process.completion import swiss_day
     return f"Versandpaket_{who}_{_day(swiss_day(approved_at))}.zip"  # the Swiss day of the approval

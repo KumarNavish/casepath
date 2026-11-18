@@ -1,0 +1,28 @@
+{
+ "format": "casepath.house/1",
+ "id": "beispiel",
+ "name": "Beispiel",
+ "legal_name": "Beispiel Rechtsschutz AG",
+ "recognised_by": ["beispiel", "rechtsschutz"],
+ "claim_number": "B-\\d{6}",
+ "conditions": {
+  "short": "ARB",
+  "name": "Allgemeine Rechtsschutzbedingungen",
+  "name_inflected": "Allgemeinen Rechtsschutzbedingungen",
+  "cover": "../../../casepath/process/areas/cover.json",
+  "texts": "../../../docs/sources/protekta"
+ },
+ "writing": {
+  "case_work": "in German with Swiss spelling (ss, not ß)",
+  "photos": "in German with Swiss spelling (ss, not ß)"
+ },
+ "letters": {
+  "greeting": "Guten Tag",
+  "greeting_ms": "Guten Tag Frau {name}",
+  "greeting_mr": "Guten Tag Herr {name}",
+  "greeting_by_name": "Grüezi {name}",
+  "closing": "Beste Grüsse"
+ },
+ "catalogue": "../../../casepath/process/areas",
+ "knowledge_seed": "../../../casepath/process/knowledge_seed"
+}

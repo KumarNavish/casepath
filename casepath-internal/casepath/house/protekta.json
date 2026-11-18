@@ -1,0 +1,28 @@
+{
+ "format": "casepath.house/1",
+ "id": "protekta",
+ "name": "Protekta",
+ "legal_name": "Protekta Rechtsschutz-Versicherung AG",
+ "recognised_by": ["protekta", "rechtsschutz"],
+ "claim_number": "\\d{4}\\.\\d{4}\\.\\d{4}",
+ "conditions": {
+  "short": "AVB",
+  "name": "Allgemeine Bedingungen",
+  "name_inflected": "Allgemeinen Bedingungen",
+  "cover": "../process/areas/cover.json",
+  "texts": "../../docs/sources/protekta"
+ },
+ "writing": {
+  "case_work": "in the language of the case files, usually German, with Swiss spelling (ss, not ß)",
+  "photos": "in German with Swiss\nspelling (ss, not ß)"
+ },
+ "letters": {
+  "greeting": "Sehr geehrte Damen und Herren",
+  "greeting_ms": "Sehr geehrte Frau {name}",
+  "greeting_mr": "Sehr geehrter Herr {name}",
+  "greeting_by_name": "Guten Tag {name}",
+  "closing": "Freundliche Grüsse"
+ },
+ "catalogue": "../process/areas",
+ "knowledge_seed": "../process/knowledge_seed"
+}

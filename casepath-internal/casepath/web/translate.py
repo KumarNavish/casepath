@@ -26,6 +26,8 @@ import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .. import house
+
 SOURCE = "de"  # the language cases are worked in
 LANGUAGES = ("en",)  # what a reader may switch to
 NUMBER = re.compile(r"\d+(?:[.,:'’/\-]\d+)*")
@@ -110,6 +112,8 @@ class Translator:
         for language in LANGUAGES:
             file = Path(memory_dir or MEMORY_DIR) / f"{language}.json"
             self.memory[language] = json.loads(file.read_text(encoding="utf-8")) if file.exists() else {}
+            if memory_dir is None:  # the shipped memory names the built-in house on both sides
+                self.memory[language] = house.in_own_name(self.memory[language])
         self.missed = {language: {} for language in LANGUAGES}  # text → how often asked (for whoever fills the memory)
         self._lock = threading.Lock()
         self._queue = {}  # (language, text) → case_id

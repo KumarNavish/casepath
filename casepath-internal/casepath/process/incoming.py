@@ -23,6 +23,7 @@ open item that calls for an action follows it («danach»). Model-free.
 """
 import re
 
+from .. import house
 from .clock import parse_date
 from .workflows import CatalogueError, done_actions
 
@@ -154,7 +155,7 @@ def reference(facts, ledger=None, files=None, created=None):
     steps = sorted((d, code) for code, days in done_actions(facts or {}).items() for x in days if (d := parse_date(x)))
     if steps:
         day, code = steps[-1]
-        return {"date": day, "kind": "step", "text": f"vor dem letzten Schritt von Protekta, A{code} vom {day.strftime('%d.%m.%Y')}"}
+        return {"date": day, "kind": "step", "text": f"vor dem letzten Schritt von {house.active().name}, A{code} vom {day.strftime('%d.%m.%Y')}"}
     entries = (ledger or {}).get("entries") or []
     reported = [d for e in entries if e.get("kind") == "meldung" and (d := parse_date(e.get("date")))] or \
         [d for e in entries if e.get("from") == CUSTOMER and e.get("to") == INSURER and (d := parse_date(e.get("date")))]

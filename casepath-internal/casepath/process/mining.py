@@ -5,7 +5,7 @@ Run inside Mobiliar on cases already in the store:
     python -m casepath mining <data-dir> <report-dir>
 
 1. **Each case.** The model reads the case's documents (as split from its dossier) and writes the case's course:
-   dated events with who acted, the documents involved, Protekta's own actions, deadlines and the outcome so far.
+   dated events with who acted, the documents involved, the insurer's own actions, deadlines and the outcome so far.
    Every event must carry a quote found in the files; events without one are dropped.
 2. **Across cases.** The distinct actions are grouped into shared categories. Each category is counted (in how many
    cases), placed in its typical order, and timed in days from the first event.
@@ -20,11 +20,12 @@ from pathlib import Path
 import statistics
 import sys
 
+from .. import house
 from ..read.evidence import Evidence
 from ..agents.schema import arr, choice, obj, text
 
-# The organisation whose own actions are traced is configuration (CASEPATH_ORGANISATION); this is the default.
-DEFAULT_ORGANISATION = "Protekta"
+# The organisation whose own actions are traced is configuration (CASEPATH_ORGANISATION); the house's name is the default.
+DEFAULT_ORGANISATION = house.active().name
 
 
 def actors(organisation=None):

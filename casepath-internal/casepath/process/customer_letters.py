@@ -17,6 +17,7 @@ The insurer's own letter refers to it in one sentence. Model-free.
 from datetime import date, timedelta
 import re
 
+from .. import house
 from .clock import parse_date
 from .workflows import CatalogueError, condition_facts, evaluate_condition, holds_unless_done
 
@@ -26,7 +27,7 @@ KINDS = {"letter", "instruction"}
 SPECIAL = {"absender", "empfaenger", "heute", "frist", "frist_bis"}
 # words that state a legal rule, a right or a duty: a part that holds one needs an article with its passage
 LEGAL = re.compile(r"\b(Art\.|muss|müssen|verpflichtet|Anspruch|berechtigt|Recht auf|nichtig|missbräuchlich|verwirkt|verjährt|gesetzlich)", re.I)
-INSURER = re.compile(r"\b(Protekta|Rechtsschutzversicherung|unsere Versicherte)", re.I)
+INSURER = re.compile(rf"\b({re.escape(house.active().name)}|Rechtsschutzversicherung|unsere Versicherte)", re.I)
 
 
 def filler(what):
@@ -207,19 +208,19 @@ def render(graph, letter, facts, sender, recipient, deadlines, today):
         text = fill(row["text"]).rstrip(".")
         advice.append(f"{text} ({', '.join(basis)})." if basis else f"{text}.")
     if letter.get("kind") == "instruction":
-        head = [f"{letter['title']} (von Ihnen selbst zu erklären; kein Schreiben von Protekta)", ""]
+        head = [f"{letter['title']} (von Ihnen selbst zu erklären; kein Schreiben von {house.active().name})", ""]
         lines = head + [f"– {b}" for b in body] + ["", "Hinweise:"] + [f"– {a}" for a in advice]
         return "\n".join(lines)
     registered = "eingeschrieben" in letter["send"]["text"].lower()
-    lines = [f"Vorlage für Ihr Schreiben an {letter['to']} (in Ihrem eigenen Namen zu senden; kein Schreiben von Protekta)", "",
+    lines = [f"Vorlage für Ihr Schreiben an {letter['to']} (in Ihrem eigenen Namen zu senden; kein Schreiben von {house.active().name})", "",
              own["absender"], filler("Ihre Adresse"), "", own["empfaenger"], filler("Adresse"), "",
              f"{filler('Ort')}, {own['heute']}", ""]
     if registered:
         lines += ["Einschreiben", ""]
-    lines += [f"{fill(letter.get('subject') or letter['title'])}", "", "Sehr geehrte Damen und Herren", ""]
+    lines += [f"{fill(letter.get('subject') or letter['title'])}", "", house.active().letters.greeting, ""]
     for b in body:
         lines += [b, ""]
-    lines += ["Freundliche Grüsse", "", own["absender"], "", "—", "Hinweise zur Vorlage:"] + [f"– {a}" for a in advice]
+    lines += [house.active().letters.closing, "", own["absender"], "", "—", "Hinweise zur Vorlage:"] + [f"– {a}" for a in advice]
     return "\n".join(lines)
 
 

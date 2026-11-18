@@ -12,10 +12,11 @@ marked every part «geprüft» (released()).
 """
 import functools
 import json
-from pathlib import Path
+
+from .. import house
 
 FORM = "A12_deckung"
-FILE = Path(__file__).parent / "areas" / "live" / "deckung.json"
+FILE = house.active().catalogue / "live" / "deckung.json"
 PREFIX = "ablehnung."
 
 
@@ -42,10 +43,11 @@ def point_line(facts):
     reason = (facts or {}).get("deckung_grund")
     point = next((p for p in cover._data()["points"] if p["id"] == reason), None)
     if point is None:
-        return cover.gap("der Punkt der Allgemeinen Bedingungen, der nicht erfüllt ist")
+        return cover.gap(f"der Punkt der {house.active().conditions.name_inflected}, der nicht erfüllt ist")
     ed = cover.edition(facts or {})
     rows = cover.clauses(point.get("clauses") or {}, ed) if ed else []
-    cite = f" ({cover.cite_list(rows)} der Allgemeinen Bedingungen)" if rows else " (Allgemeine Bedingungen)"
+    words = house.active().conditions
+    cite = f" ({cover.cite_list(rows)} der {words.name_inflected})" if rows else f" ({words.name})"
     return f"«{point['title']}»{cite}"
 
 

@@ -53,6 +53,7 @@ import re
 import sys
 import time
 
+from .. import house
 from ..agents.runner import case_state
 from ..process import account, casegraph, letters
 from ..process.workflows import condition_facts, evaluate_condition
@@ -557,7 +558,7 @@ def replay_case(store, catalogue, labels, detail=False):
                 for p in labels["points"]]
     files = store.list_files(case_id, with_text=True)
     graph = (run.get("result") or {}).get("process") or {}
-    dating = asof.Dating(files, account.entries_of(run.get("result")), tuple((graph.get("cooperation") or {}).get("insurer") or ("protekta", "rechtsschutz")))
+    dating = asof.Dating(files, account.entries_of(run.get("result")), tuple((graph.get("cooperation") or {}).get("insurer") or house.active().recognised_by))
     for p in labels["points"]:
         shown, rebuilt = asof.as_of_view(store, catalogue, case_id, p["date"], labels["decisions"], run=run, files=files, dating=dating)
         rebuilt["whole"] = run.get("result") or {}  # the stored run of the whole file: whether a document had an entry at all

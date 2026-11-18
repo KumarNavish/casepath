@@ -43,7 +43,7 @@ def customers(item):
 
 
 def ours(item):
-    """A date the insurer must meet: one the running account holds for Protekta (a reply the customer or a firm asks for)."""
+    """A date the insurer must meet: one the running account holds for the insurer (a reply the customer or a firm asks for)."""
     return item.get("kind") == "deadline" and bool(item.get("account")) and item.get("party") == "versicherer"
 
 

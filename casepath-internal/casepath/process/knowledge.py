@@ -12,6 +12,7 @@ review. A person activates or retires; nothing is deleted.
 """
 from copy import deepcopy
 
+from .. import house
 from ..web.store import new_id, now
 
 KINDS = {"document_need", "question", "step", "note"}
@@ -133,7 +134,7 @@ def from_edit(family, edit, graph, *, by):
     raise KnowledgeError("only added or struck documents, questions and steps can be said in general")
 
 
-SEED_DIR = __import__("pathlib").Path(__file__).with_name("knowledge_seed")
+SEED_DIR = house.active().knowledge_seed  # the knowledge the house starts with (shipped: the folder «knowledge_seed»)
 
 
 def _seed_one(store, spec, item_id, data, path):
@@ -165,7 +166,7 @@ def seed_items(families, directory=SEED_DIR):
 
     out = []
     for path in sorted(__import__("pathlib").Path(directory).glob("*.json")):
-        data = json.loads(path.read_text())
+        data = house.in_own_name(json.loads(path.read_text()))
         for raw in data["items"]:
             for n, family in enumerate([raw["family"]] if isinstance(raw["family"], str) else raw["family"]):
                 if family in families:
@@ -188,7 +189,7 @@ def seed(store, families, directory=SEED_DIR):
 
     added = 0
     for path in sorted(__import__("pathlib").Path(directory).glob("*.json")):
-        data = json.loads(path.read_text())
+        data = house.in_own_name(json.loads(path.read_text()))
         for raw in data["items"]:
             for n, family in enumerate([raw["family"]] if isinstance(raw["family"], str) else raw["family"]):
                 if family in families:  # an item only for a process this catalogue has

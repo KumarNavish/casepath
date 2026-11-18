@@ -28,14 +28,13 @@ Model-free.
 import functools
 import hashlib
 import json
-from pathlib import Path
 import re
 
 from . import area, customer_letters
 from .workflows import CatalogueError, _check_condition as check_condition, evaluate_condition
 
 FORMAT = "casepath.options/1"
-DIR = Path(__file__).with_name("areas") / "options"
+DIR = area.AREAS / "options"
 MAX_PASSAGE_WORDS = 80  # a whole paragraph: a deposit's conditions are one sentence too long for a module's 40 words
 KINDS = ("vorher", "anspruch")
 STATES = ("beantwortet", "bedingt")

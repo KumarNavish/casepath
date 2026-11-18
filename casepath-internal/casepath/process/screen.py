@@ -7,6 +7,7 @@ step; «Der Fall» leaves out what the head states. Model-free.
 """
 import re
 
+from .. import house
 from . import urgent
 from .clock import parse_date
 
@@ -362,17 +363,17 @@ ENTRY_LINE = re.compile(r"^(\d{2}\.\d{2}\.\d{4}|ohne Datum) · (.+?) → (.+?) �
 
 
 def entries_line(entries):
-    """The new entries of the account in one line, as the handler first wants them: what came to Protekta, by sender and
+    """The new entries of the account in one line, as the handler first wants them: what came to the insurer, by sender and
     day («2 Nachrichten der Kundschaft vom 05.09.2026»), then what was forwarded with it; None without entries."""
-    came, forwarded = {}, 0
+    came, forwarded, own = {}, 0, house.active().name
     for line in entries or ():
         m = ENTRY_LINE.match(str(line))
         if not m:
             continue
         day, sender, to = m.groups()
-        if to == "Protekta" and sender != "Protekta":
+        if to == own and sender != own:
             came.setdefault(sender, []).append(day)
-        elif sender != "Protekta":
+        elif sender != own:
             forwarded += 1
     parts = [f"{len(days)} {'Nachricht' if len(days) == 1 else 'Nachrichten'} {FROM_WORDS.get(who, 'von ' + who)} vom "
              + " und ".join(dict.fromkeys(days)) for who, days in came.items()]

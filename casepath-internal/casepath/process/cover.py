@@ -1,8 +1,9 @@
 """The cover decision prepared, and the insurer's letters whose content the law prescribes.
 
-The data is ``areas/cover.json`` (format casepath.cover/1). It holds the cover points in the order a handler checks them,
-each with its clause in each edition of Protekta's general conditions (a verbatim passage of at most 50 words, confirmed
-against the text under docs/sources/protekta by the tests), whether the customer's file or the policy answers it, and
+The data is the house's cover file (its profile's ``conditions.cover``; shipped: ``areas/cover.json``, format
+casepath.cover/1). It holds the cover points in the order a handler checks them, each with its clause in each edition
+of the house's general conditions (a verbatim passage of at most 50 words, confirmed against the stored text of the
+edition, ``conditions.texts``, by the tests), whether the customer's file or the policy answers it, and
 what to look up; the few facts these points add to every area (composed in by area.compose); the forms whose parts are
 required, each part naming its basis; the rule for the end of benefits for lack of cooperation; and the first contact
 the insurer promises publicly.
@@ -22,13 +23,14 @@ from pathlib import Path
 import re
 import sys
 
+from .. import house
 from . import account
 from .clock import as_of, parse_date
 from .workflows import CatalogueError, done_actions
 
 COVER_FORMAT = "casepath.cover/1"
-PATH = Path(__file__).with_name("areas") / "cover.json"
-TEXTS = Path(__file__).resolve().parents[2] / "docs" / "sources" / "protekta"
+PATH = house.active().conditions.cover
+TEXTS = house.active().conditions.texts
 MAX_WORDS = 50
 STATES = {  # state: (counted as, words on the screen)
     "akte": ("akte", "aus der Akte geklärt"), "kein_hinweis": ("akte", "kein Hinweis in der Akte"),
@@ -45,7 +47,7 @@ def gap(what):
 
 @functools.lru_cache(maxsize=None)
 def _data():
-    data = json.loads(PATH.read_text(encoding="utf-8"))
+    data = house.in_own_name(json.loads(PATH.read_text(encoding="utf-8")))
     validate(data)
     return data
 
@@ -199,7 +201,8 @@ def edition(facts):
 def clauses(shorts_by_edition, ed):
     """[{cite, passage, key}] for one edition; for another edition one entry that says the clause is to be checked."""
     if ed is None:
-        return [{"cite": "Ziffer prüfen", "passage": "Andere Ausgabe der Allgemeinen Bedingungen: Ziffer und Wortlaut in der geltenden Ausgabe prüfen.", "key": None}]
+        return [{"cite": "Ziffer prüfen", "key": None,
+                 "passage": f"Andere Ausgabe der {house.active().conditions.name_inflected}: Ziffer und Wortlaut in der geltenden Ausgabe prüfen."}]
     return [{**_data()["avb"][f"{ed}:{s}"], "key": f"{ed}:{s}"} for s in (shorts_by_edition or {}).get(ed, [])]
 
 
@@ -218,7 +221,7 @@ def cite_list(rows):
 def letter_clause(slot, ed):
     """The clause a letter names, by edition; a marked gap for another edition."""
     if ed is None:
-        return gap("Ziffer der Allgemeinen Bedingungen")
+        return gap(f"Ziffer der {house.active().conditions.name_inflected}")
     return cite_list(clauses(_data()["letter_clauses"][slot], ed))
 
 
@@ -268,7 +271,7 @@ def add_working_days(start, n):
 
 # The insurer's own record that the report came in: its receipt or its registration of the claim.
 RECEIPT = re.compile(r"eingangsbest|empfangsbest|registrier|erfasst|dossiereröffnung|eröffnung des dossiers|eingang (?:der|ihrer) (?:schaden)?meldung", re.I)
-INSURER = re.compile(r"protekta|rechtsschutz", re.I)
+INSURER = re.compile(house.active().named_in(), re.I)
 
 
 def report_date(files, created=None):
@@ -504,7 +507,7 @@ def _warning_text(w):
     """«Kanzlei, Schreiben vom 12.03.2025: Belege der Reparaturkosten bis 26.03.2025»."""
     due = f" bis {day_text(parse_date(w['due']))}" if w.get("due") else f" ({w['due_text']})" if w.get("due_text") else ""
     when = f"Schreiben vom {day_text(parse_date(w['date']))}" if w.get("date") else "Schreiben ohne Datum"
-    return f"{'Protekta' if w['own'] else w['by_title']}, {when}: {w.get('what') or 'Aufforderung'}{due}"
+    return f"{house.active().name if w['own'] else w['by_title']}, {when}: {w.get('what') or 'Aufforderung'}{due}"
 
 
 def warning_state(facts, ledger=None):
@@ -515,7 +518,7 @@ def warning_state(facts, ledger=None):
     own = warned(facts, ledger)
     others = [w for w in all_ if not w["own"]]
     lines = ([_warning_text(w) for w in all_ if w["own"]] or ([own[1]] if own else [])) + \
-            [f"{_warning_text(w)} · Aufforderung durch {'die Kanzlei' if w['by'] == 'kanzlei' else w['by_title']}, nicht durch Protekta · ob das genügt: prüfen"
+            [f"{_warning_text(w)} · Aufforderung durch {'die Kanzlei' if w['by'] == 'kanzlei' else w['by_title']}, nicht durch {house.active().name} · ob das genügt: prüfen"
              for w in others]
     evidence = [{"file": c.get("file"), "page": c.get("page"), "quote": c.get("quote")} for w in all_ for c in w["citations"]]
     if own:
@@ -557,7 +560,7 @@ def checks(graph, facts, rows, action, stage, ledger=None):
                          decide="leistungen_einstellen", decided=facts.get("leistungen_einstellen")))
     if kind == "A9" or form == "A9" or (graph and facts.get("eingang_angebot") and stage == "gegenpartei"):
         rows_ = clauses(_data()["letter_clauses"]["vergleich"], ed)
-        out.append(_item("check", "vergleich", "Ein Vergleich braucht die Zustimmung von Protekta", value="hinweis", stated_as="computed",
+        out.append(_item("check", "vergleich", f"Ein Vergleich braucht die Zustimmung von {house.active().name}", value="hinweis", stated_as="computed",
                          evidence=[], text="Vor Abschluss eines Vergleiches muss die Kundschaft oder ihr Anwalt die Zustimmung einholen.",
                          legal_basis=cite_list(rows_), clauses=rows_))
     if kind == "A5" or stage == "beurteilen" or form == "A5_aussichtslos":
@@ -587,12 +590,12 @@ def adjust(planned, facts, stage, ledger=None):
         return planned
     if warned(facts, ledger) is None and facts.get("leistungen_einstellen") is not True:
         others = warning_state(facts, ledger)[0] == "andere"
-        reason = ("vor einer Leistungseinstellung fehlt die schriftliche Aufforderung mit Frist und Androhung der Säumnisfolgen durch Protekta; "
+        reason = (f"vor einer Leistungseinstellung fehlt die schriftliche Aufforderung mit Frist und Androhung der Säumnisfolgen durch {house.active().name}; "
                   "die Akte hat nur eine Aufforderung der Kanzlei (Art. 39 Abs. 2 Ziff. 2 VVG)" if others else
                   "vor einer Leistungseinstellung fehlt in der Akte die schriftliche Aufforderung mit Frist und Androhung der Säumnisfolgen (Art. 39 Abs. 2 Ziff. 2 VVG)")
         return {**rule["demand"], "follow_up": None, "skip_if": None, "demand_for": planned.get("form") or "A12",
                 # why this step, for the card's reason line: the step exists because something is missing
-                "because": "schriftliche Aufforderung mit Androhung durch Protekta fehlt (nur durch die Kanzlei)" if others
+                "because": f"schriftliche Aufforderung mit Androhung durch {house.active().name} fehlt (nur durch die Kanzlei)" if others
                 else "schriftliche Aufforderung mit Androhung fehlt",
                 "reason": f"{planned['reason']}; {reason}" if planned.get("reason") else reason[0].upper() + reason[1:]}
     if planned.get("kind") == "A12" and stage == rule["ending_stage"] and planned.get("form") in (None, "A12") and warned(facts, ledger):
@@ -643,7 +646,7 @@ def letter_context(items):
         "avb_schied": letter_clause("schied", ed),
         "avb_anwalt": letter_clause("anwalt", ed),
         "avb_vergleich": letter_clause("vergleich", ed),
-        "schiedsfrist": _data()["schiedsfrist"].get(ed) if ed else gap("Frist für das Schiedsverfahren gemäss den Allgemeinen Bedingungen"),
+        "schiedsfrist": _data()["schiedsfrist"].get(ed) if ed else gap(f"Frist für das Schiedsverfahren gemäss den {house.active().conditions.name_inflected}"),
         "aussicht_gruende": gap("Begründung, weshalb das Vorgehen keine genügende Aussicht auf Erfolg hat"),
         "aussicht_loesung": gap("die vorgeschlagene Erledigung"),
         "androhung_anlass": anlass,
@@ -653,13 +656,13 @@ def letter_context(items):
 
 def required_for(kind, facts=None):
     """The required parts of one form as the screen checks them before copying: title, marker, basis in words."""
-    ed = edition(facts or {})
+    ed, words = edition(facts or {}), house.active().conditions
     out = []
     for part in required_parts().get(kind, []):
         basis = []
         for ref in part["basis"]:
             source, _, key = ref.partition("#")
-            basis.append(_data()["law"][key]["cite"] if source == "law" else f"{letter_clause(key, ed)} AVB" if ed else "Allgemeine Bedingungen")
+            basis.append(_data()["law"][key]["cite"] if source == "law" else f"{letter_clause(key, ed)} {words.short}" if ed else words.name)
         out.append({"id": part["id"], "title": part["title"], "marker": part["marker"], "basis": "; ".join(basis)})
     return out
 
@@ -727,7 +730,7 @@ def main(argv=None):
         sys.exit(f"cover invalid: {error}")
     avb = confirm_avb()
     print(f"{len(d['points'])} Deckungspunkte: " + "; ".join(f"{p['title']} ({p['source']})" for p in d["points"]))
-    print(f"Allgemeine Bedingungen: {sum(avb.values())} von {len(avb)} Passagen im gespeicherten Text gefunden"
+    print(f"{house.active().conditions.name}: {sum(avb.values())} von {len(avb)} Passagen im gespeicherten Text gefunden"
           + (f"; nicht gefunden: {', '.join(k for k, ok in avb.items() if not ok)}" if not all(avb.values()) else ""))
     if args.sources:
         law, public = confirm_law(args.sources), confirm_public(args.sources)

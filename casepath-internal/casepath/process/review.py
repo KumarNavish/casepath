@@ -32,6 +32,7 @@ import json
 from pathlib import Path
 import re
 
+from .. import house
 from .workflows import CatalogueError
 
 MARKS = {"geprueft": "geprüft", "aenderung": "Änderung nötig", "frage": "Frage"}
@@ -152,10 +153,10 @@ def _refs(row):
 def _template_body(text):
     """A template for the customer's own letter without the frame every template shares (sender, address, place, date,
     greeting): its subject, its parts with their articles and the advice that goes with it."""
-    lines = text.split("\n")
-    if "Sehr geehrte Damen und Herren" not in lines or "Freundliche Grüsse" not in lines:
+    lines, frame = text.split("\n"), house.active().letters
+    if frame.greeting not in lines or frame.closing not in lines:
         return text  # an instruction, not a letter: as it stands
-    start, end = lines.index("Sehr geehrte Damen und Herren"), lines.index("Freundliche Grüsse")
+    start, end = lines.index(frame.greeting), lines.index(frame.closing)
     subject = next((l for l in reversed(lines[:start]) if l.strip()), "")
     advice = lines[lines.index("Hinweise zur Vorlage:"):] if "Hinweise zur Vorlage:" in lines else []
     return "\n".join([f"Betreff: {subject}", ""] + lines[start + 1:end] + advice).strip()
@@ -234,7 +235,7 @@ class Model:
             edition = self.cov["editions"][ed]
             for short in shorts:
                 row = self.cov["avb"][f"{ed}:{short}"]
-                out.append({"cite": f"{row['cite']} AVB {edition['value']}" + (f" ({what})" if what else ""), "passage": row["passage"],
+                out.append({"cite": f"{row['cite']} {house.active().conditions.short} {edition['value']}" + (f" ({what})" if what else ""), "passage": row["passage"],
                             "verified": True, "source": edition["title"], "url": edition.get("url"), "version": None, "link": "Text der Bedingungen"})
         return out
 
@@ -510,11 +511,11 @@ class Model:
                 ("Erste Anforderung", "gefragt; nur angeboten, wo das Gebiet selbst ein Datum fragt, das dafür steht")], f, self._clauses(refs))
         coop, warning = cov["cooperation"], facts["mahnung_androhung"]
         self._add(COVER, "regel.leistungseinstellung", "regeln", "Leistungseinstellung wegen fehlender Mitwirkung", [
-            ("Regel", "Vor einer Einstellung der Leistungen muss eine schriftliche Aufforderung von Protekta mit Frist und Androhung der "
+            ("Regel", f"Vor einer Einstellung der Leistungen muss eine schriftliche Aufforderung von {house.active().name} mit Frist und Androhung der "
                       f"Säumnisfolgen vorliegen. Fehlt sie, bereitet CasePath zuerst diese Aufforderung vor (Frist {coop['demand']['next_in_days']} Tage); "
                       "die Fallbearbeitung kann die Leistungen trotzdem einstellen."),
             ("Als Androhung gelesen", warning["question"]), ("Nicht als Androhung", warning.get("not_this")),
-            ("Aufforderung der Kanzlei", "wird als solche gezeigt, «ob das genügt: prüfen»; sie zählt nicht als Aufforderung von Protekta"),
+            ("Aufforderung der Kanzlei", f"wird als solche gezeigt, «ob das genügt: prüfen»; sie zählt nicht als Aufforderung von {house.active().name}"),
             ("Hinweis", "Ein Nachteil wegen verletzter Obliegenheit tritt nur bei Verschulden und Einfluss auf das Ereignis oder die Leistung ein: "
                         "als Prüfung, nicht als Schluss.")],
             {"cooperation": coop, "fact": warning}, self._cover_law(["vvg-39.2.2", "vvg-45.1"]) + self._slot("mitwirkung"))
@@ -559,12 +560,12 @@ class Model:
         own = lambda file, groups: [{"id": g, "title": GROUPS[g], "keys": [k for k in self.elements if self.elements[k]["file"] == file and self.elements[k]["group"] == g]}
                                     for g in groups]
         self.rows.append({"id": COVER_ROW, "kind": "cover", "title": "Deckungsprüfung", "subtitle": "Deckungspunkte, Zuordnung nach Rechtsgebiet, Regeln",
-                          "label": "aus den Allgemeinen Bedingungen und dem Gesetz abgeleitet, noch nicht freigegeben",
+                          "label": f"aus den {house.active().conditions.name_inflected} und dem Gesetz abgeleitet, noch nicht freigegeben",
                           "groups": [g for g in own(COVER, COVER_GROUPS) if g["keys"]], "questions": []})
         letters = [k for k in self.elements if self.elements[k]["group"] in LETTER_GROUPS]
         self.rows.append({"id": LETTERS_ROW, "kind": "letters", "title": "Schreiben mit vorgeschriebenem Inhalt",
-                          "subtitle": "Pflichtteile nach Gesetz und Allgemeinen Bedingungen",
-                          "label": "aus dem Gesetz und den Allgemeinen Bedingungen abgeleitet, noch nicht freigegeben",
+                          "subtitle": f"Pflichtteile nach Gesetz und {house.active().conditions.name_inflected}",
+                          "label": f"aus dem Gesetz und den {house.active().conditions.name_inflected} abgeleitet, noch nicht freigegeben",
                           "groups": [{"id": g, "title": GROUPS[g], "keys": [k for k in letters if self.elements[k]["group"] == g]} for g in LETTER_GROUPS], "questions": []})
         for row in self.rows:
             for k in self.keys(row):

@@ -1,0 +1,790 @@
+{
+ "_note": "What the case view showed for tests/fixtures/replay/three_phases.json at its first two cuts on the commit before the house profile (4d06f877), as tests/house_probe.py prints it («shown»). The built-in house must still render exactly this. Synthetic: every name and number is invented.",
+ "cuts": {
+  "2025-02-05": {
+   "account": [
+    {
+     "at": null,
+     "date": "2025-02-03",
+     "evidence": [
+      {
+       "file": "file_#",
+       "page": 1,
+       "quote": "Betreff: Schimmel im Schlafzimmer, Seestrasse 8"
+      }
+     ],
+     "key": "entry:1",
+     "kind": "report",
+     "notes": [],
+     "number": 1,
+     "open": false,
+     "open_of": [],
+     "phone": false,
+     "title": "Meldung des Falls",
+     "what": "Meldung: Schimmel im Schlafzimmer seit November 2024",
+     "who": "Kundschaft → Protekta"
+    }
+   ],
+   "file_note": "Eingegangen: Akte Brunner.pdf. Nächster Schritt: Unterlagen und Angaben anfordern. Erwartet: Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen, Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht), Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch); Wiedervorlage 28 Tage nach dem Versand: 05.03.2025 bei Versand am 05.02.2025.",
+   "follow_up": {
+    "due": "2025-02-26",
+    "reference": "2025-02-05",
+    "set_by": null
+   },
+   "letters": {
+    "draft": {
+     "also": [],
+     "conflicts": [],
+     "draft_id": null,
+     "form": "A1",
+     "kind": "A1",
+     "line_parts": [
+      "head",
+      "head",
+      "head",
+      "head",
+      "p0",
+      null,
+      "p1",
+      "p1",
+      "p1",
+      "p1",
+      "p1",
+      null,
+      "p3",
+      "p3",
+      null,
+      "p4",
+      null,
+      "p5",
+      null,
+      "tail",
+      "tail",
+      "tail"
+     ],
+     "needs": [],
+     "none": null,
+     "parts": [
+      {
+       "base": "Unsere Referenz: 2025.0001.0303\n\nGuten Tag Lea Brunner\n",
+       "base_sha256": "04ee560fa76c198fbaf5b1a444b34b259efa2857faf45d2b3e015a4d052b2a31",
+       "edited": false,
+       "part": "head",
+       "saved": null,
+       "text": "Unsere Referenz: 2025.0001.0303\n\nGuten Tag Lea Brunner\n"
+      },
+      {
+       "base": "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz 2025.0001.0303 provisorisch registriert; bitte geben Sie diese bei jeder Mitteilung an.",
+       "base_sha256": "71ba594007a7360e2a3f83046707ca718efa589cf55536c76f63a9f8263d5184",
+       "edited": false,
+       "part": "p0",
+       "saved": null,
+       "text": "Vielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz 2025.0001.0303 provisorisch registriert; bitte geben Sie diese bei jeder Mitteilung an."
+      },
+      {
+       "base": "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n– Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen\n– Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht)\n– Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch), insbesondere Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)\n– allfällige weitere relevante Unterlagen und Informationen.",
+       "base_sha256": "e2384d5e947e63571edd6caf824ae66e7d0ce38c550d3714954ee3bcea53654c",
+       "edited": false,
+       "part": "p1",
+       "saved": null,
+       "text": "Um die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n– Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen\n– Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht)\n– Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch), insbesondere Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)\n– allfällige weitere relevante Unterlagen und Informationen."
+      },
+      {
+       "base": "Betreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:\nEine Mietzinsherabsetzung setzt voraus, dass der Mangel von der Meldung bis zur Behebung belegt werden kann; bitte dokumentieren Sie ihn fortlaufend (z.B. mit Fotos) (Art. 259d OR).",
+       "base_sha256": "bf356b541cfe7f487fc08e662a917ea1920ba7937aad46d22719fe80e7add196",
+       "edited": false,
+       "part": "p3",
+       "saved": null,
+       "text": "Betreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:\nEine Mietzinsherabsetzung setzt voraus, dass der Mangel von der Meldung bis zur Behebung belegt werden kann; bitte dokumentieren Sie ihn fortlaufend (z.B. mit Fotos) (Art. 259d OR)."
+      },
+      {
+       "base": "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.",
+       "base_sha256": "c22a902378c9345852d201430cee7639e46130140f8ee8a09c1d4008422f674d",
+       "edited": false,
+       "part": "p4",
+       "saved": null,
+       "text": "Bitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage."
+      },
+      {
+       "base": "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig.",
+       "base_sha256": "42b8821a3a247fa6ba8906b4fa2d5559b5525f370861588bc1941a7d06ae9611",
+       "edited": false,
+       "part": "p5",
+       "saved": null,
+       "text": "Bis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig."
+      },
+      {
+       "base": "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.\n\nFreundliche Grüsse",
+       "base_sha256": "9ed3b38256b4b20c4472cda5465ac18f4b56ee3efb23f3558a32cf90617cb057",
+       "edited": false,
+       "part": "tail",
+       "saved": null,
+       "text": "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.\n\nFreundliche Grüsse"
+      }
+     ],
+     "recipients": [
+      {
+       "forms": [
+        "A1"
+       ],
+       "recipient": "Guten Tag Lea Brunner · Lea Brunner",
+       "title": "Kundschaft",
+       "titles": {
+        "A1": "Unterlagen und Angaben anfordern"
+       },
+       "to": "kunde"
+      }
+     ],
+     "required": [],
+     "respond_by": null,
+     "saved": {},
+     "tabs": {},
+     "text": "Unsere Referenz: 2025.0001.0303\n\nGuten Tag Lea Brunner\n\nVielen Dank für die Anmeldung Ihres Anliegens. Ihr Dossier ist unter der Referenz 2025.0001.0303 provisorisch registriert; bitte geben Sie diese bei jeder Mitteilung an.\n\nUm die Versicherungsdeckung prüfen und die Sach- und Rechtslage beurteilen zu können, brauchen wir insbesondere noch:\n– Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen\n– Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht)\n– Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch), insbesondere Mängelrüge (schriftliche Meldung des Mangels an Vermieter/Verwaltung)\n– allfällige weitere relevante Unterlagen und Informationen.\n\nBetreffend die geschilderte Situation erlauben wir uns bereits folgende Hinweise:\nEine Mietzinsherabsetzung setzt voraus, dass der Mangel von der Meldung bis zur Behebung belegt werden kann; bitte dokumentieren Sie ihn fortlaufend (z.B. mit Fotos) (Art. 259d OR).\n\nBitte senden Sie uns Kopien oder Scans, keine Originale. Anschliessend informieren wir Sie über das weitere Vorgehen und die Rechtslage.\n\nBis zur definitiven Deckungsprüfung sind Sie selbst für die Einhaltung allfällig laufender Fristen zuständig.\n\nFür Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.\n\nFreundliche Grüsse",
+     "title": "Unterlagen und Angaben anfordern",
+     "to": "Kundschaft",
+     "version": "18faa4c147c0b6df2892f8da35968989f039a874e7c917a95c2fa0430ada70e3"
+    },
+    "for_the_customer": [
+     "Vorlage für Ihr Schreiben an die Vermieterschaft (in Ihrem eigenen Namen zu senden; kein Schreiben von Protekta)\n\nLea Brunner\n[einsetzen: Ihre Adresse]\n\nImmo Seeblick AG\n[einsetzen: Adresse]\n\n[einsetzen: Ort], 05.02.2025\n\nEinschreiben\n\nMängelrüge und Frist zur Beseitigung des Mangels\n\nSehr geehrte Damen und Herren\n\nIch melde Ihnen hiermit folgenden Mangel an der von mir gemieteten Wohnung ([einsetzen: Adresse und Stockwerk der Mietwohnung]): [einsetzen: Beschreibung des Mangels (was, wo, wie stark)]. Der Mangel besteht seit November 2024 (Art. 257g Abs. 1 OR).\n\nIch fordere Sie auf, den Mangel bis 07.03.2025 zu beseitigen (Art. 259b OR).\n\nIch behalte mir vor, ab dem Zeitpunkt, in dem Sie vom Mangel erfahren haben, bis zu seiner Behebung eine Herabsetzung des Mietzinses zu verlangen (Art. 259d OR).\n\nFür eine Besichtigung bin ich unter [einsetzen: Ihre Telefonnummer] erreichbar.\n\nFreundliche Grüsse\n\nLea Brunner\n\n—\nHinweise zur Vorlage:\n– Die Frist im Schreiben (eine angemessene Frist zur Beseitigung, hier 30 Tage) ist auf den 07.03.2025 gesetzt, wenn Sie es heute senden; senden Sie es später, verschieben Sie das Datum entsprechend (Art. 259b OR).\n– Wir empfehlen, das Schreiben eingeschrieben zu senden und eine Kopie aufzubewahren, damit Sie den Tag der Meldung belegen können.\n– Wir empfehlen, den Mietzins bis auf Weiteres vollständig zu bezahlen und eine Hinterlegung zuerst mit uns zu besprechen.\n– Wollen Sie später den Mietzins hinterlegen, müssen Sie der Vermieterschaft dazu schriftlich eine angemessene Frist zur Beseitigung setzen; dieses Schreiben tut das (Art. 259g Abs. 1 OR)."
+    ]
+   },
+   "screen": {
+    "cover": null,
+    "cover_points": [
+     {
+      "label": {
+       "de": "Deckung: 3 aus der Akte geklärt · 6 in der Police prüfen · 1 bei der Kundschaft erfragt",
+       "en": "Deckung: 3 aus der Akte geklärt · 6 in der Police prüfen · 1 bei der Kundschaft erfragt"
+      },
+      "lookup": null,
+      "note": null,
+      "state_text": null,
+      "text": null,
+      "title": null
+     },
+     {
+      "label": {
+       "de": "Ist die Police in Kraft und keine Prämie trotz Mahnung ausstehend?",
+       "en": "Ist die Police in Kraft und keine Prämie trotz Mahnung ausstehend?"
+      },
+      "lookup": "Beginn und Dauer der Police; Prämienausstand nach Mahnung",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Beginn und Dauer der Police; Prämienausstand nach Mahnung",
+      "title": "Police in Kraft, Prämie bezahlt"
+     },
+     {
+      "label": {
+       "de": "Ist die meldende Person (bei Unternehmen: die Firma) in der Police versichert?",
+       "en": "Ist die meldende Person (bei Unternehmen: die Firma) in der Police versichert?"
+      },
+      "lookup": "Name in der Police; Einzelperson oder Mehrpersonenhaushalt",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Name in der Police; Einzelperson oder Mehrpersonenhaushalt",
+      "title": "Versicherte Person"
+     },
+     {
+      "label": {
+       "de": "Ist die Person in einer versicherten Eigenschaft betroffen?",
+       "en": "Ist die Person in einer versicherten Eigenschaft betroffen?"
+      },
+      "lookup": "Tätigkeit des Unternehmens gemäss Police",
+      "note": null,
+      "state_text": "aus der Akte geklärt",
+      "text": "als Mieterin oder Mieter",
+      "title": "Versicherte Eigenschaft"
+     },
+     {
+      "label": {
+       "de": "Fällt der Streit in ein versichertes Rechtsgebiet, und ist dieses in der Police eingeschlossen?",
+       "en": "Fällt der Streit in ein versichertes Rechtsgebiet, und ist dieses in der Police eingeschlossen?"
+      },
+      "lookup": "Eingeschlossene Rechtsgebiete in der Police",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "«Miet- und Pachtrecht» in der Police eingeschlossen?",
+      "title": "Rechtsgebiet versichert"
+     },
+     {
+      "label": {
+       "de": "Sind Ursache und Bedarf nach Rechtsschutz während der Vertragsdauer eingetreten, und lag die Ursache nach der Antragstellung?",
+       "en": "Sind Ursache und Bedarf nach Rechtsschutz während der Vertragsdauer eingetreten, und lag die Ursache nach der Antragstellung?"
+      },
+      "lookup": "Datum des Antrags und Beginn des Versicherungsschutzes",
+      "note": null,
+      "state_text": "bei der Kundschaft erfragt",
+      "text": "Datum der Ursache fehlt: in der ersten Anforderung erfragt",
+      "title": "Ursache nach Antrag und in der Vertragsdauer"
+     },
+     {
+      "label": {
+       "de": "Liegt die Ursache ausserhalb einer Wartefrist?",
+       "en": "Liegt die Ursache ausserhalb einer Wartefrist?"
+      },
+      "lookup": "gemäss Police; allgemein drei Monate",
+      "note": "«Generell gelten beim Abschluss einer Privat-Rechtsschutzversicherung drei Monate Wartefrist.» (Protekta, Privat-Rechtsschutz (Produktseite, nicht die Allgemeinen Bedingungen)); ohne Wartefrist: Schadenersatzrecht, Strafrecht, Patientenrecht, Sozialversicherungsrecht, Privatversicherungsrecht; entfällt bei nahtlosem Wechsel vom Vorversicherer",
+      "state_text": "in der Police prüfen",
+      "text": "gemäss Police; allgemein drei Monate",
+      "title": "Ausserhalb der Wartefrist"
+     },
+     {
+      "label": {
+       "de": "Sind Gerichte oder Behörden im versicherten Gebiet zuständig, gilt dortiges Recht, und kann dort vollstreckt werden?",
+       "en": "Sind Gerichte oder Behörden im versicherten Gebiet zuständig, gilt dortiges Recht, und kann dort vollstreckt werden?"
+      },
+      "lookup": "Örtlicher Geltungsbereich gemäss Police (Schweiz, Europa oder Welt)",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Örtlicher Geltungsbereich gemäss Police (Schweiz, Europa oder Welt)",
+      "title": "Örtlicher Geltungsbereich"
+     },
+     {
+      "label": {
+       "de": "Greift keine Deckungseinschränkung (sachliche, personenbezogene oder für bestimmte Risiken)?",
+       "en": "Greift keine Deckungseinschränkung (sachliche, personenbezogene oder für bestimmte Risiken)?"
+      },
+      "lookup": null,
+      "note": null,
+      "state_text": "kein Hinweis in der Akte",
+      "text": "kein Hinweis auf eine Deckungseinschränkung in der Akte",
+      "title": "Keine Deckungseinschränkung"
+     },
+     {
+      "label": {
+       "de": "Hat die Kundschaft unverzüglich gemeldet und keinen Anwalt beauftragt oder Schritte eingeleitet, bevor Protekta sie genehmigt hat?",
+       "en": "Hat die Kundschaft unverzüglich gemeldet und keinen Anwalt beauftragt oder Schritte eingeleitet, bevor Protekta sie genehmigt hat?"
+      },
+      "lookup": null,
+      "note": null,
+      "state_text": "kein Hinweis in der Akte",
+      "text": "kein Schritt ohne Genehmigung in der Akte",
+      "title": "Melde- und Verhaltenspflichten"
+     },
+     {
+      "label": {
+       "de": "Welche Versicherungssumme, welcher Selbstbehalt und welche Streitwertgrenze gelten?",
+       "en": "Welche Versicherungssumme, welcher Selbstbehalt und welche Streitwertgrenze gelten?"
+      },
+      "lookup": "Versicherungssumme, Selbstbehalt und allfällige Streitwertgrenze gemäss Police",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Versicherungssumme, Selbstbehalt und allfällige Streitwertgrenze gemäss Police",
+      "title": "Summe, Selbstbehalt, Streitwert"
+     }
+    ],
+    "danach": [],
+    "decision": null,
+    "documents": [
+     {
+      "copied": false,
+      "kind": "A1",
+      "label": "Entwurf",
+      "main": true,
+      "state": "entwurf",
+      "title": "Brief an die Kundschaft"
+     }
+    ],
+    "due": {
+     "date": "2025-02-26",
+     "word": "Wiedervorlage"
+    },
+    "fristen": [],
+    "fristen_elsewhere": false,
+    "head": null,
+    "lead": null,
+    "lines": [],
+    "missing": 3,
+    "missing_ids": [
+     "document:mietvertrag",
+     "document:fotos",
+     "document:k-know-seed-mold-korrespondenz--mietmangel-handler"
+    ],
+    "missing_in_letter": true,
+    "points": [
+     {
+      "basis": "Art. 259g Abs. 1 OR",
+      "check": "Frist gesetzt und Hinterlegung schriftlich angedroht und angekündigt? Danach Schlichtungsbehörde innert 30 Tagen",
+      "follows": "Sie können der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung setzen und androhen, künftige Mietzinse bei der vom Kanton bezeichneten Stelle zu hinterlegen; bis dahin ist der Mietzins weiter zu bezahlen.",
+      "item_id": "key_point:hinterlegung",
+      "law": [
+       {
+        "cite": "Art. 259g Abs. 1 OR",
+        "passage": "Verlangt der Mieter einer unbeweglichen Sache vom Vermieter die Beseitigung eines Mangels, so muss er ihm dazu schriftlich eine angemessene Frist setzen",
+        "verified": true
+       },
+       {
+        "cite": "Art. 259h Abs. 1 OR",
+        "passage": "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat.",
+        "verified": true
+       }
+      ],
+      "open": false,
+      "text": "Hinterlegung des Mietzinses: Frist setzen und androhen"
+     }
+    ],
+    "progress": null,
+    "stand": [],
+    "status": "vorbereitet",
+    "status_kind": "prepared",
+    "title": "Unterlagen und Angaben anfordern",
+    "urgency": null,
+    "weil": "Die Meldung ist eingegangen"
+   },
+   "status": {
+    "bucket": "urteil",
+    "date": "2025-02-26",
+    "kind": "prepared",
+    "rank": 4,
+    "text": "vorbereitet"
+   }
+  },
+  "2025-02-15": {
+   "account": [
+    {
+     "at": null,
+     "date": "2025-02-03",
+     "evidence": [
+      {
+       "file": "file_#",
+       "page": 1,
+       "quote": "Betreff: Schimmel im Schlafzimmer, Seestrasse 8"
+      }
+     ],
+     "key": "entry:1",
+     "kind": "report",
+     "notes": [],
+     "number": 1,
+     "open": false,
+     "open_of": [],
+     "phone": false,
+     "title": "Meldung des Falls",
+     "what": "Meldung: Schimmel im Schlafzimmer seit November 2024",
+     "who": "Kundschaft → Protekta"
+    },
+    {
+     "at": null,
+     "date": "2025-02-06",
+     "evidence": [
+      {
+       "file": "file_#",
+       "page": 2,
+       "quote": "Bern, 6. Februar 2025"
+      },
+      {
+       "file": "file_#",
+       "page": 2,
+       "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"
+      }
+     ],
+     "key": "entry:2",
+     "kind": "document",
+     "notes": [
+      {
+       "kind": "asked",
+       "open": true,
+       "text": "verlangt von der Kundschaft: Mietvertrag bis 27.02.2025"
+      },
+      {
+       "kind": "asked",
+       "open": true,
+       "text": "verlangt von der Kundschaft: Mängelrüge an die Verwaltung bis 27.02.2025"
+      },
+      {
+       "kind": "asked",
+       "open": true,
+       "text": "verlangt von der Kundschaft: Fotos des Schimmels bis 27.02.2025"
+      }
+     ],
+     "number": 2,
+     "open": true,
+     "open_of": [
+      "kunde"
+     ],
+     "phone": false,
+     "title": "Anforderung von Unterlagen oder Angaben",
+     "what": "Anforderung Mietvertrag, Mängelrüge und Fotos",
+     "who": "Protekta → Kundschaft"
+    }
+   ],
+   "file_note": "Eingegangen: Akte Brunner.pdf. Offen bei der Kundschaft: Mietvertrag · seit 06.02.2025 · 1× verlangt; Mängelrüge an die Verwaltung · seit 06.02.2025 · 1× verlangt; Fotos des Schimmels · seit 06.02.2025 · 1× verlangt. Letzter Kontakt: 06.02.2025 · Anforderung von Unterlagen oder Angaben an die Kundschaft. Nächster Schritt: Dossier pendent halten mit Frist. Erwartet: Rückmeldung; Antwort erwartet bis 08.03.2025.",
+   "follow_up": {
+    "due": "2025-03-08",
+    "reference": "2025-02-15",
+    "set_by": null
+   },
+   "letters": {
+    "draft": {
+     "also": [],
+     "conflicts": [],
+     "draft_id": null,
+     "form": "A6",
+     "kind": "A6",
+     "line_parts": [
+      "head",
+      "head",
+      "head",
+      "head",
+      "p0",
+      null,
+      "p1",
+      null,
+      "p2",
+      null,
+      "tail",
+      "tail",
+      "tail"
+     ],
+     "needs": [],
+     "none": null,
+     "parts": [
+      {
+       "base": "Unsere Referenz: 2025.0001.0303\n\nGuten Tag Lea Brunner\n",
+       "base_sha256": "04ee560fa76c198fbaf5b1a444b34b259efa2857faf45d2b3e015a4d052b2a31",
+       "edited": false,
+       "part": "head",
+       "saved": null,
+       "text": "Unsere Referenz: 2025.0001.0303\n\nGuten Tag Lea Brunner\n"
+      },
+      {
+       "base": "Vielen Dank für Ihre Nachricht.",
+       "base_sha256": "608db32d5fb135504a3cbb0c332b6817e0b7a399fdcfcdbcbe80d9e4eefbff28",
+       "edited": false,
+       "part": "p0",
+       "saved": null,
+       "text": "Vielen Dank für Ihre Nachricht."
+      },
+      {
+       "base": "Wir halten Ihr Dossier vorerst noch pendent und erwarten die noch fehlenden Unterlagen: Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen, Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht), Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch).",
+       "base_sha256": "9eb74b238a775f84a67d01dbbb8a1e8dd485b82826e88e327848feef18e860da",
+       "edited": false,
+       "part": "p1",
+       "saved": null,
+       "text": "Wir halten Ihr Dossier vorerst noch pendent und erwarten die noch fehlenden Unterlagen: Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen, Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht), Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch)."
+      },
+      {
+       "base": "Ohne Ihre Rückmeldung bis 08.03.2025 gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können.",
+       "base_sha256": "1d2e248ce3bb840183b40ca33573bbe0bf6ed9c19900d9cd54820c7aab60a2ac",
+       "edited": false,
+       "part": "p2",
+       "saved": null,
+       "text": "Ohne Ihre Rückmeldung bis 08.03.2025 gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können."
+      },
+      {
+       "base": "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.\n\nFreundliche Grüsse",
+       "base_sha256": "9ed3b38256b4b20c4472cda5465ac18f4b56ee3efb23f3558a32cf90617cb057",
+       "edited": false,
+       "part": "tail",
+       "saved": null,
+       "text": "Für Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.\n\nFreundliche Grüsse"
+      }
+     ],
+     "recipients": [
+      {
+       "forms": [
+        "A6"
+       ],
+       "recipient": "Guten Tag Lea Brunner · Lea Brunner",
+       "title": "Kundschaft",
+       "titles": {
+        "A6": "Dossier pendent halten mit Frist"
+       },
+       "to": "kunde"
+      }
+     ],
+     "required": [],
+     "respond_by": "2025-03-08",
+     "saved": {},
+     "tabs": {},
+     "text": "Unsere Referenz: 2025.0001.0303\n\nGuten Tag Lea Brunner\n\nVielen Dank für Ihre Nachricht.\n\nWir halten Ihr Dossier vorerst noch pendent und erwarten die noch fehlenden Unterlagen: Mietvertrag inkl. allgemeiner Vertragsbedingungen und nachträglicher Änderungen, Beweismittel zum Mangel (Fotos über die ganze Dauer, Messprotokoll oder Fachbericht), Sämtliche Korrespondenz mit Vermieterschaft/Verwaltung (Briefe, E-Mails, Nachrichten, chronologisch).\n\nOhne Ihre Rückmeldung bis 08.03.2025 gehen wir davon aus, dass sich der Fall erledigt hat, und wir Ihr Dossier daher schliessen können.\n\nFür Ihre Kenntnisnahme und Bemühungen danken wir Ihnen bestens. Bei Fragen stehen wir Ihnen gerne zur Verfügung.\n\nFreundliche Grüsse",
+     "title": "Dossier pendent halten mit Frist",
+     "to": "Kundschaft",
+     "version": "6642e3b190598e38a69da893914865b0f7491e13d5630a625f3bf10391948008"
+    },
+    "for_the_customer": [
+     "Vorlage für Ihr Schreiben an die Vermieterschaft (in Ihrem eigenen Namen zu senden; kein Schreiben von Protekta)\n\nLea Brunner\n[einsetzen: Ihre Adresse]\n\nImmo Seeblick AG\n[einsetzen: Adresse]\n\n[einsetzen: Ort], 15.02.2025\n\nEinschreiben\n\nMängelrüge und Frist zur Beseitigung des Mangels\n\nSehr geehrte Damen und Herren\n\nIch melde Ihnen hiermit folgenden Mangel an der von mir gemieteten Wohnung ([einsetzen: Adresse und Stockwerk der Mietwohnung]): [einsetzen: Beschreibung des Mangels (was, wo, wie stark)]. Der Mangel besteht seit November 2024 (Art. 257g Abs. 1 OR).\n\nIch fordere Sie auf, den Mangel bis 17.03.2025 zu beseitigen (Art. 259b OR).\n\nIch behalte mir vor, ab dem Zeitpunkt, in dem Sie vom Mangel erfahren haben, bis zu seiner Behebung eine Herabsetzung des Mietzinses zu verlangen (Art. 259d OR).\n\nFür eine Besichtigung bin ich unter [einsetzen: Ihre Telefonnummer] erreichbar.\n\nFreundliche Grüsse\n\nLea Brunner\n\n—\nHinweise zur Vorlage:\n– Die Frist im Schreiben (eine angemessene Frist zur Beseitigung, hier 30 Tage) ist auf den 17.03.2025 gesetzt, wenn Sie es heute senden; senden Sie es später, verschieben Sie das Datum entsprechend (Art. 259b OR).\n– Wir empfehlen, das Schreiben eingeschrieben zu senden und eine Kopie aufzubewahren, damit Sie den Tag der Meldung belegen können.\n– Wir empfehlen, den Mietzins bis auf Weiteres vollständig zu bezahlen und eine Hinterlegung zuerst mit uns zu besprechen.\n– Wollen Sie später den Mietzins hinterlegen, müssen Sie der Vermieterschaft dazu schriftlich eine angemessene Frist zur Beseitigung setzen; dieses Schreiben tut das (Art. 259g Abs. 1 OR)."
+    ]
+   },
+   "screen": {
+    "cover": null,
+    "cover_points": [
+     {
+      "label": {
+       "de": "Deckung: 3 aus der Akte geklärt · 6 in der Police prüfen · 1 bei der Kundschaft erfragt",
+       "en": "Deckung: 3 aus der Akte geklärt · 6 in der Police prüfen · 1 bei der Kundschaft erfragt"
+      },
+      "lookup": null,
+      "note": null,
+      "state_text": null,
+      "text": null,
+      "title": null
+     },
+     {
+      "label": {
+       "de": "Ist die Police in Kraft und keine Prämie trotz Mahnung ausstehend?",
+       "en": "Ist die Police in Kraft und keine Prämie trotz Mahnung ausstehend?"
+      },
+      "lookup": "Beginn und Dauer der Police; Prämienausstand nach Mahnung",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Beginn und Dauer der Police; Prämienausstand nach Mahnung",
+      "title": "Police in Kraft, Prämie bezahlt"
+     },
+     {
+      "label": {
+       "de": "Ist die meldende Person (bei Unternehmen: die Firma) in der Police versichert?",
+       "en": "Ist die meldende Person (bei Unternehmen: die Firma) in der Police versichert?"
+      },
+      "lookup": "Name in der Police; Einzelperson oder Mehrpersonenhaushalt",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Name in der Police; Einzelperson oder Mehrpersonenhaushalt",
+      "title": "Versicherte Person"
+     },
+     {
+      "label": {
+       "de": "Ist die Person in einer versicherten Eigenschaft betroffen?",
+       "en": "Ist die Person in einer versicherten Eigenschaft betroffen?"
+      },
+      "lookup": "Tätigkeit des Unternehmens gemäss Police",
+      "note": null,
+      "state_text": "aus der Akte geklärt",
+      "text": "als Mieterin oder Mieter",
+      "title": "Versicherte Eigenschaft"
+     },
+     {
+      "label": {
+       "de": "Fällt der Streit in ein versichertes Rechtsgebiet, und ist dieses in der Police eingeschlossen?",
+       "en": "Fällt der Streit in ein versichertes Rechtsgebiet, und ist dieses in der Police eingeschlossen?"
+      },
+      "lookup": "Eingeschlossene Rechtsgebiete in der Police",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "«Miet- und Pachtrecht» in der Police eingeschlossen?",
+      "title": "Rechtsgebiet versichert"
+     },
+     {
+      "label": {
+       "de": "Sind Ursache und Bedarf nach Rechtsschutz während der Vertragsdauer eingetreten, und lag die Ursache nach der Antragstellung?",
+       "en": "Sind Ursache und Bedarf nach Rechtsschutz während der Vertragsdauer eingetreten, und lag die Ursache nach der Antragstellung?"
+      },
+      "lookup": "Datum des Antrags und Beginn des Versicherungsschutzes",
+      "note": null,
+      "state_text": "bei der Kundschaft erfragt",
+      "text": "Datum der Ursache fehlt: in der ersten Anforderung erfragt",
+      "title": "Ursache nach Antrag und in der Vertragsdauer"
+     },
+     {
+      "label": {
+       "de": "Liegt die Ursache ausserhalb einer Wartefrist?",
+       "en": "Liegt die Ursache ausserhalb einer Wartefrist?"
+      },
+      "lookup": "gemäss Police; allgemein drei Monate",
+      "note": "«Generell gelten beim Abschluss einer Privat-Rechtsschutzversicherung drei Monate Wartefrist.» (Protekta, Privat-Rechtsschutz (Produktseite, nicht die Allgemeinen Bedingungen)); ohne Wartefrist: Schadenersatzrecht, Strafrecht, Patientenrecht, Sozialversicherungsrecht, Privatversicherungsrecht; entfällt bei nahtlosem Wechsel vom Vorversicherer",
+      "state_text": "in der Police prüfen",
+      "text": "gemäss Police; allgemein drei Monate",
+      "title": "Ausserhalb der Wartefrist"
+     },
+     {
+      "label": {
+       "de": "Sind Gerichte oder Behörden im versicherten Gebiet zuständig, gilt dortiges Recht, und kann dort vollstreckt werden?",
+       "en": "Sind Gerichte oder Behörden im versicherten Gebiet zuständig, gilt dortiges Recht, und kann dort vollstreckt werden?"
+      },
+      "lookup": "Örtlicher Geltungsbereich gemäss Police (Schweiz, Europa oder Welt)",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Örtlicher Geltungsbereich gemäss Police (Schweiz, Europa oder Welt)",
+      "title": "Örtlicher Geltungsbereich"
+     },
+     {
+      "label": {
+       "de": "Greift keine Deckungseinschränkung (sachliche, personenbezogene oder für bestimmte Risiken)?",
+       "en": "Greift keine Deckungseinschränkung (sachliche, personenbezogene oder für bestimmte Risiken)?"
+      },
+      "lookup": null,
+      "note": null,
+      "state_text": "kein Hinweis in der Akte",
+      "text": "kein Hinweis auf eine Deckungseinschränkung in der Akte",
+      "title": "Keine Deckungseinschränkung"
+     },
+     {
+      "label": {
+       "de": "Hat die Kundschaft unverzüglich gemeldet und keinen Anwalt beauftragt oder Schritte eingeleitet, bevor Protekta sie genehmigt hat?",
+       "en": "Hat die Kundschaft unverzüglich gemeldet und keinen Anwalt beauftragt oder Schritte eingeleitet, bevor Protekta sie genehmigt hat?"
+      },
+      "lookup": null,
+      "note": null,
+      "state_text": "kein Hinweis in der Akte",
+      "text": "kein Schritt ohne Genehmigung in der Akte",
+      "title": "Melde- und Verhaltenspflichten"
+     },
+     {
+      "label": {
+       "de": "Welche Versicherungssumme, welcher Selbstbehalt und welche Streitwertgrenze gelten?",
+       "en": "Welche Versicherungssumme, welcher Selbstbehalt und welche Streitwertgrenze gelten?"
+      },
+      "lookup": "Versicherungssumme, Selbstbehalt und allfällige Streitwertgrenze gemäss Police",
+      "note": null,
+      "state_text": "in der Police prüfen",
+      "text": "Versicherungssumme, Selbstbehalt und allfällige Streitwertgrenze gemäss Police",
+      "title": "Summe, Selbstbehalt, Streitwert"
+     }
+    ],
+    "danach": [],
+    "decision": null,
+    "documents": [
+     {
+      "copied": false,
+      "kind": "A6",
+      "label": "Entwurf",
+      "main": true,
+      "state": "entwurf",
+      "title": "Brief an die Kundschaft"
+     }
+    ],
+    "due": {
+     "date": "2025-02-27",
+     "word": "Frist"
+    },
+    "fristen": [],
+    "fristen_elsewhere": true,
+    "head": null,
+    "lead": {
+     "basis": null,
+     "by": null,
+     "date": "27.02.2025",
+     "days": 12,
+     "item_id": "deadline:konto-r2.0",
+     "kind": "Frist",
+     "missed": null,
+     "rule": null,
+     "source": {
+      "file": "file_#",
+      "page": 2,
+      "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"
+     },
+     "title": "Mietvertrag",
+     "urgency": null,
+     "word": "noch 12 Tage"
+    },
+    "lines": [],
+    "missing": 3,
+    "missing_ids": [
+     "document:mietvertrag",
+     "document:fotos",
+     "document:k-know-seed-mold-korrespondenz--mietmangel-handler"
+    ],
+    "missing_in_letter": false,
+    "points": [
+     {
+      "basis": "Art. 259d OR",
+      "check": "Tag der Kenntnis der Vermieterschaft, Ausmass der Beeinträchtigung in Prozent, ob der Mangel behoben ist",
+      "follows": "Der Mietzins kann entsprechend der Beeinträchtigung herabgesetzt werden, und zwar von dem Zeitpunkt an, in dem die Vermieterschaft vom Mangel erfahren hat, bis zu seiner Behebung.",
+      "item_id": "key_point:reduktion",
+      "law": [
+       {
+        "cite": "Art. 259d OR",
+        "passage": "so kann der Mieter vom Vermieter verlangen, dass er den Mietzins vom Zeitpunkt, in dem er vom Mangel erfahren hat, bis zur Behebung des Mangels entsprechend herabsetzt.",
+        "verified": true
+       }
+      ],
+      "open": false,
+      "text": "Herabsetzung des Mietzinses ab Kenntnis der Vermieterschaft"
+     },
+     {
+      "basis": "Art. 259g Abs. 1 OR",
+      "check": "Frist gesetzt und Hinterlegung schriftlich angedroht und angekündigt? Danach Schlichtungsbehörde innert 30 Tagen",
+      "follows": "Sie können der Vermieterschaft schriftlich eine angemessene Frist zur Beseitigung setzen und androhen, künftige Mietzinse bei der vom Kanton bezeichneten Stelle zu hinterlegen; bis dahin ist der Mietzins weiter zu bezahlen.",
+      "item_id": "key_point:hinterlegung",
+      "law": [
+       {
+        "cite": "Art. 259g Abs. 1 OR",
+        "passage": "Verlangt der Mieter einer unbeweglichen Sache vom Vermieter die Beseitigung eines Mangels, so muss er ihm dazu schriftlich eine angemessene Frist setzen",
+        "verified": true
+       },
+       {
+        "cite": "Art. 259h Abs. 1 OR",
+        "passage": "Hinterlegte Mietzinse fallen dem Vermieter zu, wenn der Mieter seine Ansprüche gegenüber dem Vermieter nicht innert 30 Tagen seit Fälligkeit des ersten hinterlegten Mietzinses bei der Schlichtungsbehörde geltend gemacht hat.",
+        "verified": true
+       }
+      ],
+      "open": false,
+      "text": "Hinterlegung des Mietzinses: Frist setzen und androhen"
+     }
+    ],
+    "progress": null,
+    "stand": [
+     {
+      "evidence": [
+       {
+        "file": "file_#",
+        "page": 2,
+        "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"
+       },
+       {
+        "file": "file_#",
+        "page": 2,
+        "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"
+       },
+       {
+        "file": "file_#",
+        "page": 2,
+        "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"
+       }
+      ],
+      "item_id": "stand:offen_kunde",
+      "label": {
+       "de": "Offen bei der Kundschaft",
+       "en": "Offen bei der Kundschaft"
+      },
+      "more": 0,
+      "open": true,
+      "party": "kunde",
+      "rows": [
+       {
+        "entries": [
+         2
+        ],
+        "evidence": [
+         {
+          "file": "file_#",
+          "page": 2,
+          "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"
+         }
+        ],
+        "request": "r2.1",
+        "text": "Mängelrüge an die Verwaltung · seit 06.02.2025 · 1× verlangt · bis 27.02.2025"
+       },
+       {
+        "entries": [
+         2
+        ],
+        "evidence": [
+         {
+          "file": "file_#",
+          "page": 2,
+          "quote": "bitten wir Sie um folgende Unterlagen bis 27. Februar 2025"
+         }
+        ],
+        "request": "r2.2",
+        "text": "Fotos des Schimmels · seit 06.02.2025 · 1× verlangt · bis 27.02.2025"
+       }
+      ]
+     }
+    ],
+    "status": "wartet auf Kundschaft bis 08.03.2025",
+    "status_kind": "waiting",
+    "title": "Dossier pendent halten mit Frist",
+    "urgency": null,
+    "weil": null
+   },
+   "status": {
+    "bucket": "wartet",
+    "date": "2025-03-08",
+    "kind": "waiting",
+    "rank": 8,
+    "text": "wartet auf Kundschaft bis 08.03.2025"
+   }
+  }
+ }
+}

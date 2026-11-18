@@ -150,6 +150,9 @@ const raw = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&
 const esc = (value) => raw(tr(value));
 const plain = raw;  // the original, where a local name hides raw()
 const $ = (selector, root = document) => root.querySelector(selector);
+// The insurer this deployment works for (/api/health «house»): its name and how it names its policy conditions. Until
+// the answer is here the built-in house's words stand.
+const HOUSE = { name: "Protekta", conditions: { short: "AVB", name_inflected: "Allgemeinen Bedingungen" } };
 let listMineStored = false;
 try { listMineStored = localStorage.getItem("cp-list-mine") === "1"; } catch (error) { /* storage blocked: the list starts unfiltered */ }
 const S = { listMine: listMineStored, me: null, route: {}, data: null, pages: {}, file: null, page: null, step: null, editing: false, lastEdit: null,
@@ -1779,8 +1782,8 @@ const redacted = (name) => !String(name || "").replace(/[\s.,\-–_[\]()]|geschw
 function seededNote(item) {
   if (!item || !item.origin || item.origin.by !== "build") return "";
   const e = (item.evidence || [])[0];
-  return T(`activated for the pilot · from Protekta’s first request letters${e ? `: ${e.text}` : ""}`,
-           `für den Pilot aktiviert · aus Protektas ersten Unterlagenanforderungen${e ? `: ${e.text}` : ""}`);
+  return T(`activated for the pilot · from ${HOUSE.name}’s first request letters${e ? `: ${e.text}` : ""}`,
+           `für den Pilot aktiviert · aus ${HOUSE.name}s ersten Unterlagenanforderungen${e ? `: ${e.text}` : ""}`);
 }
 const item = (kind, key) => (S.data.items || []).find((i) => i.kind === kind && i.key === key);  // the server's one item list
 // ---------- Übersicht: one question per state, one primary button ----------
@@ -1800,7 +1803,7 @@ function caseState() {
 }
 // A case shows a prepared action only once a preparation finished (or stopped): before that its items hold nothing read.
 const hasPrepared = () => S.data.file_note !== null && S.data.file_note !== undefined || Boolean(S.data.run && S.data.run.status === "paused");
-// "in 6 von 7 Fällen verlangt": a seeded practice rule says how often Protekta asked for it.
+// "in 6 von 7 Fällen verlangt": a seeded practice rule says how often the insurer asked for it.
 function practiceNote(knowledgeId) {
   const k = (S.knowledge || []).find((x) => x.id === knowledgeId);
   const m = /(\d+) von (\d+)/.exec(((k && (k.evidence || [])[0]) || {}).text || "");
@@ -2730,7 +2733,7 @@ function coverPanel() {
   const points = (S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary");
   const editions = (item("fact", "avb_ausgabe") || {}).values || [];
   const begin = (item("fact", "police_beginn") || {}).value || "";
-  return `<div class="cp-cover-open"><p class="cp-cover-head"><label>${T("Conditions", "AVB")} <select class="cp-cover-select" data-cover-edition aria-label="${T("Edition of the conditions", "Ausgabe der Allgemeinen Bedingungen")}">${editions.map((v) => `<option ${v === sum.edition_value ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>
+  return `<div class="cp-cover-open"><p class="cp-cover-head"><label>${T("Conditions", HOUSE.conditions.short)} <select class="cp-cover-select" data-cover-edition aria-label="${T("Edition of the conditions", `Ausgabe der ${HOUSE.conditions.name_inflected}`)}">${editions.map((v) => `<option ${v === sum.edition_value ? "selected" : ""}>${esc(v)}</option>`).join("")}</select></label>
       <label>${T("Policy from", "Police ab")} <input type="date" class="cp-cover-select" data-cover-begin value="${raw(begin)}" aria-label="${T("Start of cover according to the policy", "Beginn des Versicherungsschutzes gemäss Police")}"></label></p>
     <ol class="cp-cover-points">${points.map(coverPoint).join("")}</ol></div>`;
 }
@@ -3080,7 +3083,7 @@ function sideView() {
 // ---------- the handler's own entry: a call, a conversation, a note, an e-mail outside the file ----------
 // One compact card: what kind, with whom (a name if wanted), the day (today), what was said; and, each behind one tap, one
 // row of what was agreed, what was asked and the next step. It is an entry of the account and counts at once.
-const PARTY_DE = { kunde: "Kundschaft", versicherer: "Protekta", kanzlei: "Kanzlei", gegenpartei: "Gegenpartei", behoerde: "Gericht/Behörde", andere: "Andere" };
+const PARTY_DE = { kunde: "Kundschaft", versicherer: HOUSE.name, kanzlei: "Kanzlei", gegenpartei: "Gegenpartei", behoerde: "Gericht/Behörde", andere: "Andere" };
 const ENTRY_KINDS = lazy(() => ([["telefon", T("Phone", "Telefon")], ["gespraech", T("Conversation", "Gespräch")], ["notiz", T("Note", "Notiz")],
   ["email", T("E-mail outside the file", "E-Mail ausserhalb der Akte")]]));
 const ENTRY_PARTIES = lazy(() => ([["kunde", T("customer", "Kundschaft")], ["gegenpartei", T("other side", "Gegenpartei")], ["kanzlei", T("law firm", "Kanzlei")],
@@ -3091,7 +3094,7 @@ function entryForm() {
   const part = (k) => d[k] || {};
   const shown = (k) => Boolean((d.open || {})[k] || Object.values(part(k)).some(Boolean));
   const options = (rows, now, blank) => (blank ? `<option value="">${esc(blank)}</option>` : "") + rows.map(([k, label]) => `<option value="${k}" ${k === now ? "selected" : ""}>${esc(label)}</option>`).join("");
-  const whom = (now, blank) => options(ENTRY_PARTIES().concat([["versicherer", T("us (Protekta)", "wir (Protekta)")]]), now, blank);
+  const whom = (now, blank) => options(ENTRY_PARTIES().concat([["versicherer", T(`us (${HOUSE.name})`, `wir (${HOUSE.name})`)]]), now, blank);
   const input = (name, value, attrs) => `<input name="${name}" value="${raw(value || "")}" ${attrs}>`;
   const row = (k, body) => `<div class="cp-entry-part" data-part="${k}" ${shown(k) ? "" : "hidden"}><span class="cp-entry-part-label">${ENTRY_PARTS()[k]}</span>${body}</div>`;
   return `<form class="cp-entry-form" id="note-form" ${S.entryEdit ? `data-edit="${raw(S.entryEdit)}"` : ""} novalidate>
@@ -3104,7 +3107,7 @@ function entryForm() {
     ${row("agreed", `${input("agreed_what", part("agreed").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("agreed: what", "vereinbart: was")}"`)}
       ${input("agreed_amount", part("agreed").amount, `maxlength="40" placeholder="CHF" size="8" aria-label="${T("amount", "Betrag")}"`)}
       <select name="agreed_payer" aria-label="${T("who pays", "wer zahlt")}">${options([["gegenpartei", T("other side pays", "Gegenpartei zahlt")], ["kunde", T("customer pays", "Kundschaft zahlt")],
-        ["versicherer", T("we pay", "Protekta zahlt")], ["kanzlei", T("firm pays", "Kanzlei zahlt")], ["andere", T("others pay", "andere zahlen")]], part("agreed").payer || (party === "gegenpartei" ? "gegenpartei" : ""), T("who pays", "wer zahlt"))}</select>
+        ["versicherer", T("we pay", `${HOUSE.name} zahlt`)], ["kanzlei", T("firm pays", "Kanzlei zahlt")], ["andere", T("others pay", "andere zahlen")]], part("agreed").payer || (party === "gegenpartei" ? "gegenpartei" : ""), T("who pays", "wer zahlt"))}</select>
       <label>${T("by", "bis")} <input type="date" name="agreed_by" value="${raw(part("agreed").by || "")}"></label>`)}
     ${row("asked", `${input("asked_what", part("asked").what, `maxlength="120" placeholder="${T("what", "was")}" aria-label="${T("asked: what", "verlangt: was")}"`)}
       <select name="asked_of" aria-label="${T("of whom", "von wem")}">${options(ENTRY_PARTIES(), part("asked").of || party)}</select>
@@ -3183,7 +3186,7 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) for (
 // The Verlauf: one table of the case in time order (the server's verlauf.rows): the report as row 1, then every document
 // of the file, every entry the handler made and every gesture the handler made here, each where it happened. A handler's
 // entry is marked as theirs and can be changed or removed; a change that can be undone says so. One filter: only what is open.
-// The case's time as one band: every dated entry at its day, by who wrote (customer above the line, Protekta on it,
+// The case's time as one band: every dated entry at its day, by who wrote (customer above the line, the insurer on it,
 // everyone else below), what is open ringed. A dot under the hand names its entry and marks its row; pressed, the page
 // goes to the row. Gaps show at a glance: where nothing happened for weeks, the band is empty.
 function timeBand() {
@@ -3199,13 +3202,13 @@ function timeBand() {
   const total = Math.max(eff.get(days[days.length - 1]), 1), at = (ms) => (100 * (eff.get(ms) || 0) / total).toFixed(2);
   const long = (d) => (d >= 365 ? T(`${Math.round(d / 36.5) / 10} years`, `${String(Math.round(d / 36.5) / 10).replace(".", ",")} Jahre`) : d >= 60 ? T(`${Math.round(d / 30)} months`, `${Math.round(d / 30)} Monate`) : T(`${Math.round(d)} days`, `${Math.round(d)} Tage`));
   const marks = breaks.map(([x, d]) => `<i class="cp-tb-break" style="left:${(100 * x / total).toFixed(2)}%"><span>${long(d)}</span></i>`).join("");
-  const lane = (r) => { const w = String(r.who || "").split("→")[0].trim(); return /Kundschaft/.test(w) ? "k" : /Protekta/.test(w) ? "p" : "g"; };
+  const lane = (r) => { const w = String(r.who || "").split("→")[0].trim(); return /Kundschaft/.test(w) ? "k" : w.includes(HOUSE.name) ? "p" : "g"; };
   const seen = {}, dots = rows.map((r, i) => { const k = `${lane(r)}:${String(r.date).slice(0, 10)}`, n = (seen[k] = (seen[k] || 0) + 1) - 1;
     return `<button type="button" class="cp-tb-dot ${lane(r)}${r.open ? " open" : ""}" style="left:${at(t[i])}%;--n:${n};--i:${i}" data-tb-no="${raw(r.number ?? "")}" aria-label="${esc(`${dateText(r.date)} · ${r.who || ""} · ${r.what || r.title || ""}`)}" data-tb-tip="${esc(`${dateText(r.date)} · ${r.who || ""}`)}" data-tb-what="${esc(clip(r.what || r.title || "", 90))}"></button>`; }).join("");
   const today = !quiet() && eff.has(now) ? `<i class="cp-tb-today" style="left:${at(now)}%"><span>${T("today", "heute")}</span></i>` : "";
   const gap = Math.round((now - Math.max(...t)) / 864e5);
   return `<div class="cp-timeband" role="group" aria-label="${T("The case over time", "Der Fall in der Zeit")}"><div class="cp-tb-head"><span>${dateText(new Date(from).toISOString().slice(0, 10))}</span>
-      <span class="cp-tb-key"><i class="k"></i>${T("customer", "Kundschaft")}<i class="p"></i>Protekta<i class="g"></i>${T("others", "andere")}</span>
+      <span class="cp-tb-key"><i class="k"></i>${T("customer", "Kundschaft")}<i class="p"></i>${raw(HOUSE.name)}<i class="g"></i>${T("others", "andere")}</span>
       <span>${!quiet() && gap > 13 ? T(`${gap} days since the last entry`, `${gap} Tage seit dem letzten Eintrag`) : dateText(new Date(to).toISOString().slice(0, 10))}</span></div>
     <div class="cp-tb-track">${marks}${today}${dots}</div><p class="cp-tb-tip" id="tb-tip" aria-hidden="true"></p></div>`;
 }
@@ -4210,7 +4213,8 @@ async function route() {
     rows[to].classList.add("cp-row-on"); rows[to].scrollIntoView({ block: "nearest" });
     clearTimeout(S.peekTimer); S.peekTimer = setTimeout(() => rowPeekShow(rows[to]), 160);  // the keyboard's row says its step and its reason too
   });
-  try { const health = await api("/api/health"); S.canUpload = health.uploads !== false; S.translateMode = (health.translate || {}).mode || "off"; } catch (error) { S.canUpload = true; }
+  try { const health = await api("/api/health"); S.canUpload = health.uploads !== false; S.translateMode = (health.translate || {}).mode || "off";
+    if ((health.house || {}).name) { Object.assign(HOUSE, health.house); PARTY_DE.versicherer = HOUSE.name; } } catch (error) { S.canUpload = true; }
   window.addEventListener("hashchange", route);
   route();
 })();
@@ -4279,7 +4283,7 @@ const X_TOPICS = {
   fristen: { name: () => T("Deadlines", "Fristen"), show: () => (scr().fristen || []).length > 0, alert: () => (scr().fristen || []).some((f) => f.late || f.soon), side: () => { const fr = scr().fristen || [], dated = fr.filter((f) => f.date).length; return dated ? String(fr.length) : T(`${fr.length} without a date`, `${fr.length} ohne Datum`); }, stage: () => {
     const fr = scr().fristen || [];
     return { title: T("What runs against the clock", "Was an eine Frist gebunden ist"), line: fr.length ? "" : T("No deadline in the file.", "Keine Frist in der Akte."), tab: "overview",
-      body: fr.length ? xRows(fr.map((f, i) => xRow(i, f.late ? "late" : f.soon ? "soon" : "date", `<b>${esc(f.date || f.state)}</b> ${esc(f.title)}`, f.date ? esc(f.state) : "", esc([f.condition, f.basis].filter(Boolean).join(" · "))))) : `<p class="cp-x-empty" style="--i:0">${T("CasePath found no deadline the customer or Protekta must meet.", "CasePath hat keine Frist gefunden, die die Kundschaft oder Protekta wahren muss.")}</p>` };
+      body: fr.length ? xRows(fr.map((f, i) => xRow(i, f.late ? "late" : f.soon ? "soon" : "date", `<b>${esc(f.date || f.state)}</b> ${esc(f.title)}`, f.date ? esc(f.state) : "", esc([f.condition, f.basis].filter(Boolean).join(" · "))))) : `<p class="cp-x-empty" style="--i:0">${T(`CasePath found no deadline the customer or ${HOUSE.name} must meet.`, `CasePath hat keine Frist gefunden, die die Kundschaft oder ${HOUSE.name} wahren muss.`)}</p>` };
   } },
   angaben: { name: () => T("Facts", "Angaben"), show: () => xFacts().length > 0, side: () => String(xFacts().length), stage: () => {
     const all = xFacts(), cited = (f) => (f.evidence || []).some((e) => e.file), shown = all.slice().sort((x, y) => Number(cited(y)) - Number(cited(x))).slice(0, 40);

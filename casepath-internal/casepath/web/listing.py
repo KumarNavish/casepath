@@ -6,13 +6,14 @@ point is looked at as of its own day and listed apart, so its dates never count 
 from datetime import timedelta
 import re
 
+from .. import house
 from ..process import urgent
 from ..process.clock import parse_date
 from ..process.letters import customer
 
 RUNNING_DAYS = 21  # a customer's deadline or a set date this close is what the row says
 URGENT_DAYS = 3  # this close it is «dringend» (the backbone's urgent.dringend)
-HANDLED_ELSEWHERE = re.compile(r"protekta|rechtsschutz|kanzlei|anwalt|versicherer \(|rechtsschutzversicherung", re.I)
+HANDLED_ELSEWHERE = re.compile(house.active().named_in("kanzlei", "anwalt", r"versicherer \(", "rechtsschutzversicherung"), re.I)
 REDACTED = re.compile(r"geschw|xxx|^[\W_]*$", re.I)
 SALUTATION = re.compile(r"^(Frau|Herr|Fr\.|Hr\.)\s+")
 CLOSING = {"A12_still": "keine Rückmeldung", "A12_mitwirkung": "fehlende Mitwirkung", "A12_mitwirkung_kanzlei": "fehlende Mitwirkung",
@@ -33,7 +34,7 @@ def _name(party):
 # The place or the object of the dispute in the request: an address first, else the first noun phrase that is not a
 # party, a person's wish or the insurer; at most five words, never cut inside a word.
 ADDRESS = re.compile(r"\b[A-ZÄÖÜ][\wäöüß.-]*(?:gasse|strasse|straße|str\.|weg|platz|allee|ring|rain|matte|halde|quai|graben)\s+\d+[a-z]?\b")
-GENERIC = {"hilfe", "unterstützung", "rat", "beratung", "frage", "fragen", "anliegen", "kundschaft", "kunde", "kundin", "versicherung", "protekta",
+GENERIC = {"hilfe", "unterstützung", "rat", "beratung", "frage", "fragen", "anliegen", "kundschaft", "kunde", "kundin", "versicherung", *house.active().name.lower().split(),
            "fall", "sache", "problem", "synthetische", "synthetischer", "akte", "herr", "frau", "guten", "tag", "chf", "heute", "seit", "im", "am",
            "die", "der", "das", "dem", "den", "des", "ein", "eine", "einen", "einem", "einer", "ich", "er", "sie", "es", "wir", "ihr", "mein",
            "meine", "meinen", "sein", "seine", "ihre", "ihren", "unser", "unsere", "nach", "wegen", "weil", "dass", "als", "wenn", "bitte", "sehr",
@@ -294,7 +295,7 @@ def overdue_day(items, follow_up):
 
 
 def due(items, follow_up, files, historic=None, closed=False, today=None, overdue_on=None):
-    """«Fällig» in the case list: the earliest of the open deadlines of the customer or of Protekta (statutory, set by a
+    """«Fällig» in the case list: the earliest of the open deadlines of the customer or of the insurer (statutory, set by a
     court, an authority or the other side, or held by the account), the follow-up and the first contact, with its word.
     ``overdue_on``: the day the wait of a silent case ran out (overdue_day), which stands for the follow-up.
     None for a closed case."""

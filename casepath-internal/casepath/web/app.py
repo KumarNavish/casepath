@@ -38,7 +38,7 @@ from ..process.items import ITEM_KINDS, SCREEN_KINDS, kind_title, build_items, i
 from . import identity, listing, outbox, translate
 from ..agents.azure_model import AzureOpenAIModel, entra_token_provider
 from ..config import load_settings
-from .. import parity
+from .. import house, parity
 from ..parity import source_tree
 from ..read import cut
 from ..read.evidence import Evidence
@@ -459,6 +459,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
     def health():
         return {"status": "ok", "model_configured": settings.model is not None, "workflows": len(catalogue.workflows),
                 "imports": files is not None, "uploads": uploads,
+                # the insurer this deployment works for: the page writes its name where its own texts name the insurer
+                "house": house.active().for_the_page(),
                 # reading in another language: from the shipped memory only, or the model for the rest (and what failed last)
                 "translate": {"mode": settings.translate, "languages": list(translate.LANGUAGES), "error": translator.error,
                               # tokens the model spent on translation today, of the day's ceiling (0 without the model)
@@ -634,7 +636,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         Handlung»), which governs the draft, the date and the case list alike. (action item, options, forms)."""
         action = next((i for i in listed if i["kind"] == "next_action"), None)
         forms = ((catalogue.get((current.get("workflow") or {}).get("id") or "") or {}).get("forms")
-                 or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # Protekta's forms for any workflow
+                 or (catalogue.get("mietmangel-handler") or {}).get("forms") or letters.SEED_FORMS)  # the shipped forms for any workflow
         options = letters.action_options(current.get("process") or {}, current.get("evaluation"), forms) if current.get("process") else []
         picked = letters.chosen_action(events)
         if action and picked and picked != action.get("action"):  # "andere Handlung": the handler's pick governs the draft and the date
@@ -1193,7 +1195,7 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         clock = _clock(current, action, listed, store.list_files(case_id), store.list_case_events(case_id))
         events, files = store.list_case_events(case_id), store.list_files(case_id)
         assessed = _assessment_view(current, completed, listed, files, events, marks)
-        # the next action's letter in Protekta's form, from what the case asserts and what the handler changed
+        # the next action's letter in the house's form, from what the case asserts and what the handler changed
         draft = letters.draft(current, listed, events, clock, files, forms, texts=texts, held=held, assessment=assessed.get("assessment"))
         prepared = store.latest_run(case_id, "completed")
         arrival, run_now = _arrival_view(case_id, current, prepared, files, logged, listed, marks)

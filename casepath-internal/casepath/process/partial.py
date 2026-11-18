@@ -9,9 +9,10 @@ The two sentences are data (areas/live/rueckfrage.json, which the frozen study d
 """
 import functools
 import json
-from pathlib import Path
 
-FILE = Path(__file__).parent / "areas" / "live" / "rueckfrage.json"
+from .. import house
+
+FILE = house.active().catalogue / "live" / "rueckfrage.json"
 PREFIX = "teilantwort."
 
 

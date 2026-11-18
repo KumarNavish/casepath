@@ -3,13 +3,19 @@
 No endpoint, deployment, tenant or credential is stored in this repository.
 The model endpoint must be an Azure OpenAI resource host, so the application
 cannot be pointed at a personal or third-party model provider by accident.
+
+Which insurer CasePath works for is the house (CASEPATH_HOUSE, casepath/house): its profile gives the defaults a
+setting here may still override (the organisation the agents name, the language they write in, how a claim number
+looks), and an incomplete profile is refused when the settings are loaded.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import os
 from pathlib import Path
 from urllib.parse import urlparse
+
+from . import house
 
 AZURE_HOST_SUFFIXES = (".openai.azure.com", ".cognitiveservices.azure.com", ".services.ai.azure.com")
 DATABRICKS_HOST_SUFFIXES = (".azuredatabricks.net",)
@@ -75,8 +81,8 @@ class Settings:
     run_workers: int = 2
     page_image_side: int = 1700
     run_token_budget: int = 4_000_000
-    organisation: str | None = None  # whose case handlers the agents work for (CASEPATH_ORGANISATION); None keeps the default
-    writing_language: str | None = None  # how agents choose the language they write in (CASEPATH_WRITING_LANGUAGE)
+    organisation: str | None = None  # whose case handlers the agents work for (CASEPATH_ORGANISATION); None keeps the house's name
+    writing_language: str | None = None  # how agents choose the language they write in (CASEPATH_WRITING_LANGUAGE); None keeps the house's
     identity_format: str = "plain"
     identity_user_claim: str = "sub"
     identity_roles_claim: str = "roles"
@@ -110,7 +116,8 @@ class Settings:
     translate: str = "memory"
     translate_token_budget: int = 300_000
     mail_subject: str | None = None  # the subject line shown beside a letter (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
-    reference_pattern: str = r"\d{4}\.\d{4}\.\d{4}"  # how a reference number looks in a file (CASEPATH_REFERENCE_PATTERN)
+    # how a reference number looks in a file (CASEPATH_REFERENCE_PATTERN); the house's claim numbers unless set
+    reference_pattern: str = field(default_factory=lambda: house.active().claim_number)
 
 
 def _one_of(value, default, allowed, message):
@@ -134,6 +141,10 @@ def _flag(env, name, default):
 
 def load_settings(env=None):
     env = os.environ if env is None else env
+    try:
+        own = house.active()  # read once per process; a profile that is incomplete stops the start here
+    except house.HouseError as error:
+        raise SettingsError(str(error)) from error
     model = None
     provider = env.get("CASEPATH_MODEL_PROVIDER", "azure_openai").strip().lower() or "azure_openai"
     if provider == "databricks":  # a model in a Databricks workspace; the endpoint is the workspace
@@ -186,7 +197,7 @@ def load_settings(env=None):
         auto_update_max_pages=int(env.get("CASEPATH_AUTO_UPDATE_MAX_PAGES", "20")),
         update_token_budget=int(env.get("CASEPATH_UPDATE_TOKEN_BUDGET", "200000")),
         mail_subject=env.get("CASEPATH_MAIL_SUBJECT") or None,
-        reference_pattern=env.get("CASEPATH_REFERENCE_PATTERN") or r"\d{4}\.\d{4}\.\d{4}",
+        reference_pattern=env.get("CASEPATH_REFERENCE_PATTERN") or own.claim_number,
         organisation=env.get("CASEPATH_ORGANISATION") or None,
         writing_language=env.get("CASEPATH_WRITING_LANGUAGE") or None,
         identity_format=identity_format,

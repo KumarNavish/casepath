@@ -29,6 +29,7 @@ import json
 import re
 import threading
 
+from .. import house
 from ..agents.azure_model import ModelError
 from .evidence import Evidence, complete_segments
 from ..agents.schema import arr, obj, text
@@ -239,9 +240,9 @@ def instruction_like_pages(extraction):
     return [page for page, body in pages if INSTRUCTION_LIKE.search(body)]
 
 
-# Configuration, not code: the language a photo is described in. The default is the internal deployment's; a configured
-# CASEPATH_WRITING_LANGUAGE replaces it.
-PHOTO_WRITING_DEFAULT = "in German with Swiss\nspelling (ss, not ß)"
+# Configuration, not code: the language a photo is described in. The default is the house's (casepath/house); a
+# configured CASEPATH_WRITING_LANGUAGE replaces it.
+PHOTO_WRITING_DEFAULT = house.active().writing.photos
 
 
 def photo_instructions(voice=None):

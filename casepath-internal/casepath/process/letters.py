@@ -1,16 +1,17 @@
 """The handler's letters and the file note, written from the stored result, the item list and the event log alone.
 
-Deterministic: no model. A letter is the form the workflow names for the action kind (Protekta's wording, from the
-development dossiers), filled from what the case asserts and what the handler changed (a line unticked is not asked).
+Deterministic: no model. A letter is the form the workflow names for the action kind (the house's wording; the shipped
+forms are from the development dossiers), filled from what the case asserts and what the handler changed (a line unticked is not asked).
 A form with no draft says why ("kein Entwurf: …").
 """
 import re
 from datetime import date
 
+from .. import house
 from . import area, cover, customer_letters, mandate, review as reviews, settlement, urgent
 from .clock import as_of, parse_date
 
-# Protekta's forms, from the handler's tenancy-defect workflow: the letters of any workflow that brings none of its own.
+# The shipped forms, from the handler's tenancy-defect workflow: the letters of any workflow that brings none of its own.
 SEED_FORMS = area.workflow("mietmangel-handler")["forms"]
 
 
@@ -99,17 +100,19 @@ def customer(parties):
 
 
 def greeting(parties):
-    """The greeting Protekta's letters use: «Sehr geehrte Frau …» / «Sehr geehrter Herr …» when the file states the insured
-    person's salutation and name; «Guten Tag <Vorname Nachname>» when it states the full name without a salutation;
-    otherwise the generic one. A salutation is never guessed from a first name."""
+    """The greeting the house's letters use (its profile's lines; the built-in ones are named here): «Sehr geehrte Frau …» /
+    «Sehr geehrter Herr …» when the file states the insured person's salutation and name; «Guten Tag <Vorname Nachname>»
+    when it states the full name without a salutation; otherwise the generic one. A salutation is never guessed from a
+    first name."""
+    lines = house.active().letters
     p = customer(parties)
     name = str((p or {}).get("value") or (p or {}).get("name") or "").strip()
     m = re.fullmatch(r"(Frau|Herr)\s+(?:[A-ZÄÖÜ][\w.-]*\s+)*([A-ZÄÖÜ][\w-]+)", name)
     if m:
-        return f"Sehr geehrte Frau {m.group(2)}" if m.group(1) == "Frau" else f"Sehr geehrter Herr {m.group(2)}"
+        return (lines.greeting_ms if m.group(1) == "Frau" else lines.greeting_mr).replace("{name}", m.group(2))
     if NAME.fullmatch(name) and not COMPANY.search(name) and "geschw" not in name.lower():
-        return f"Guten Tag {name}"
-    return "Sehr geehrte Damen und Herren"
+        return lines.greeting_by_name.replace("{name}", name)
+    return lines.greeting
 
 
 def statutory(item):
@@ -159,11 +162,11 @@ def _summary(items):
 
 def _reference(case):
     """The case's reference number as a match: the one the case carries (set or confirmed by the handler), else the
-    number («4321.5555.0001») in its title or intake; None without one."""
+    number in its title or intake, as the house's claim numbers look («4321.5555.0001»); None without one."""
     own = str(case.get("reference") or "").strip()
     if own:
         return re.match(r".+", own)
-    return re.search(r"\d{4}\.\d{4}\.\d{4}", f"{case.get('title', '')} {case.get('intake', '')}")
+    return re.search(house.active().claim_number, f"{case.get('title', '')} {case.get('intake', '')}")
 
 
 def _set_dates(items, day):
@@ -172,7 +175,7 @@ def _set_dates(items, day):
 
 
 def context(case, items, events, follow_up, files=(), today=None, evaluation=None, process=None, facts=None, assessment=None):
-    """The placeholders of Protekta's forms: from what the case asserts (``items``), what the handler did (``events``), the
+    """The placeholders of the letter forms: from what the case asserts (``items``), what the handler did (``events``), the
     follow-up date and the files; ``evaluation`` and ``process`` give the first request its list of documents. Three parts
     are each one slice's and are merged last, so none changes the others: what the letter says about the case
     (_context_substance), the contact so far (_context_contact) and the parties (_context_parties). ``facts``: the case's
@@ -238,7 +241,7 @@ def context(case, items, events, follow_up, files=(), today=None, evaluation=Non
         # what was asked and not delivered, in neutral words from the requests ledger with the date first asked; never the
         # firm's own words about its client (they stay in «Der Fall» and the Verlauf)
         "vorenthalten": "\n".join(cover.missing_lines(items, fallback=False)) or gap("was trotz Aufforderung nicht eingegangen ist"),
-        "avb_ziffer": gap("Ziffer der AVB"),
+        "avb_ziffer": gap(f"Ziffer der {house.active().conditions.short}"),
         # the clause by the edition of the conditions that applies, the parts only the handler can write (cover.py)
         **cover.letter_context(items),
         # the mandate package and the fee-note letters (mandate.py), the settlement's letters (settlement.py)
@@ -291,7 +294,7 @@ def _context_substance(case, items, events, files, day, evaluation=None, process
     }
 
 
-INSURER_WORDS = re.compile(r"protekta|rechtsschutz|versicher", re.I)
+INSURER_WORDS = re.compile(house.active().named_in("versicher"), re.I)
 
 
 def _context_contact(case, items, events, files, day, evaluation=None, process=None, facts=None, assessment=None):
@@ -407,7 +410,7 @@ def form_kind(action):
 
 
 def draft(current, listed, events, clock, files, forms, texts=None, held=None, assessment=None):
-    """The prepared action's letter as the case view shows it, in Protekta's form, from what the case asserts and what the
+    """The prepared action's letter as the case view shows it, in the house's form, from what the case asserts and what the
     handler changed: {kind, form, title, to, text, none, needs, required, also}; None without a prepared action or forms.
     ``current``: the case's state (runner.case_state); ``listed``: its items (the next action as prepared_action set it);
     ``clock``: the follow-up; ``texts``: the files with their text where a letter quotes them; ``held``: the jurists' flags
@@ -627,7 +630,7 @@ def action_options(graph, evaluation, forms):
         action = (steps.get(sid) or {}).get("action") or {}
         for kind, days in [(action.get("kind"), action.get("next_in_days")), (action.get("follow_up"), None)] + \
                           [(v.get("kind"), v.get("next_in_days")) for v in action.get("instead", [])]:
-            if kind and kind not in out and kind != "A0":  # the receipt is sent by Protekta's online form, not chosen
+            if kind and kind not in out and kind != "A0":  # the receipt is sent by the insurer's online form, not chosen
                 form = (forms or {}).get(kind) or {}
                 title = form.get("title") or ((graph.get("action_kinds") or {}).get(kind) or {}).get("title") or kind
                 out[kind] = {"kind": kind, "title": title, "next_in_days": days, "has_draft": bool(form) and not form.get("none")}

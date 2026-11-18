@@ -9,9 +9,10 @@ which the frozen study does not load) and review elements («backbone:live.<form
 import functools
 import json
 import re
-from pathlib import Path
 
-FILE = Path(__file__).parent / "areas" / "live" / "formulare.json"
+from .. import house
+
+FILE = house.active().catalogue / "live" / "formulare.json"
 PREFIX = "live."
 
 
@@ -92,7 +93,7 @@ def stance_form(base, chosen, incoming):
 # the key points; code keeps every guard (the intent must belong to a key point the question is tagged with, a negation or
 # a failing point still holds it).
 
-INTENTS = Path(__file__).parent / "areas" / "live" / "absichten.json"
+INTENTS = house.active().catalogue / "live" / "absichten.json"
 NO_INTENT = "none"
 
 

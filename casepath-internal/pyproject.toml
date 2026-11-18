@@ -26,4 +26,4 @@ include = ["casepath*"]
 
 [tool.setuptools.package-data]
 casepath = ["web/ui/*.html", "web/ui/assets/*", "web/ui/assets/fonts/*", "process/knowledge_seed/*.json", "process/areas/*.json",
-            "process/areas/options/*.json", "process/areas/live/*.json", "web/i18n/*.json"]
+            "process/areas/options/*.json", "process/areas/live/*.json", "web/i18n/*.json", "house/*.json"]

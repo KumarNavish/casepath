@@ -12,6 +12,7 @@ import re
 from copy import deepcopy
 from datetime import timedelta
 
+from .. import house
 from . import incoming
 from .clock import as_of, parse_date
 
@@ -80,7 +81,7 @@ class Derived(EditError):
 
 
 # what a derived fact follows from, in the handler's words: where to correct it instead (C9)
-DERIVED_FROM = {"action_A1": "die Schreiben von Protekta im Verlauf", "last_action_A2": "die Telefonnotizen im Verlauf",
+DERIVED_FROM = {"action_A1": f"die Schreiben von {house.active().name} im Verlauf", "last_action_A2": "die Telefonnotizen im Verlauf",
                 "requests_count": "die Anforderungen im Verlauf", "replied_since_request": "die Antworten der Kundschaft im Verlauf",
                 "silent_after_requests": "die Anforderungen mit Frist und die Antworten im Verlauf",
                 "closing_announced": "die Statusanfrage im Verlauf und ihre Frist", "documents_complete": "die Unterlagen (Dokumenten-Checkliste)",
@@ -393,7 +394,7 @@ def mark_partial(evaluation, partial):
     return evaluation
 
 
-COOPERATION = {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": ["protekta", "rechtsschutz"]}
+COOPERATION = {"requests": {"1": 21, "6": 25, "7": 7}, "min_requests": 2, "insurer": list(house.active().recognised_by)}
 
 
 def received_after(files, day, insurer=()):

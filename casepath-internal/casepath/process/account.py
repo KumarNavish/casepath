@@ -28,19 +28,21 @@ A run stored before the account has no entries: nothing here applies, nothing is
 import re
 from datetime import date, timedelta
 
+from .. import house
 from .clock import parse_date
 from .workflows import CatalogueError
 
 PARTIES = ("kunde", "versicherer", "kanzlei", "gegenpartei", "behoerde", "andere")
 INSURER = "versicherer"
-PARTY_TITLES = {"kunde": "Kundschaft", "versicherer": "Protekta", "kanzlei": "Kanzlei", "gegenpartei": "Gegenpartei",
+OWN_NAME = house.active().name  # the insurer as the account writes it: by its own name, without an article
+PARTY_TITLES = {"kunde": "Kundschaft", "versicherer": OWN_NAME, "kanzlei": "Kanzlei", "gegenpartei": "Gegenpartei",
                 "behoerde": "Gericht/Behörde", "andere": "Andere"}
 # who owes, as the «Stand» names them
 AT = {"kunde": "bei der Kundschaft", "versicherer": "bei uns", "kanzlei": "bei der Kanzlei", "gegenpartei": "bei der Gegenpartei",
       "behoerde": "bei Gericht/Behörde", "andere": "bei Dritten"}
-WITH = {"kunde": "der Kundschaft", "versicherer": "Protekta", "kanzlei": "der Kanzlei", "gegenpartei": "der Gegenpartei",
+WITH = {"kunde": "der Kundschaft", "versicherer": OWN_NAME, "kanzlei": "der Kanzlei", "gegenpartei": "der Gegenpartei",
         "behoerde": "Gericht/Behörde", "andere": "Dritten"}
-TO = {"kunde": "die Kundschaft", "versicherer": "Protekta", "kanzlei": "die Kanzlei", "gegenpartei": "die Gegenpartei",  # «an …» (accusative)
+TO = {"kunde": "die Kundschaft", "versicherer": OWN_NAME, "kanzlei": "die Kanzlei", "gegenpartei": "die Gegenpartei",  # «an …» (accusative)
       "behoerde": "Gericht/Behörde", "andere": "Dritte"}
 ELEMENTS = ("asks", "answers", "terms", "paid", "next")
 SHOWN_PER_PARTY = 3  # open items per party in «Stand»; the rest behind «… n weitere», which opens the Verlauf on them
@@ -214,7 +216,7 @@ def with_handler(entries, edits):
 
 def dispatch_entries(edits):
     """The letters the handler confirmed as dispatched, one entry per active «add_dispatch» edit (one per recipient):
-    from Protekta to that recipient on the dispatch day, the record kind and the code of its form (completion.FORM_RECORD:
+    from the insurer to that recipient on the dispatch day, the record kind and the code of its form (completion.FORM_RECORD:
     its own code or none, never its kind's), its title, what it asked (each ask with the judgment it was asked for,
     ``blocks``) and the customer's questions it answered (each naming the customer's entry, so build closes exactly
     those). No quote: its source is the attributed confirmation."""
@@ -277,7 +279,7 @@ def _iso(value):
 PARTY_WORDS = (("gegenpartei", ("gegen", "vermiet", "arbeitgeber", "verwaltung", "opposing", "other side", "schuldner", "gläubiger")),
                ("behoerde", ("gericht", "behörde", "behoerde", "amt", "court", "authority", "schlichtung", "staatsanwalt")),
                ("kanzlei", ("kanzlei", "anwalt", "anwält", "rechtsanw", "law firm", "lawyer", "advokatur")),
-               ("versicherer", ("versicherer", "protekta", "rechtsschutz", "insurer", "versicherung")),
+               ("versicherer", ("versicherer", *house.active().recognised_by, "insurer", "versicherung")),
                ("kunde", ("kund", "versichert", "insured", "customer", "klient", "mandant", "mieter", "arbeitnehmer")))
 PARTY_SHORT = {"vn": "kunde", "gp": "gegenpartei", "ra": "kanzlei", "ak": "kanzlei", "wir": "versicherer", "uns": "versicherer"}
 
@@ -1513,7 +1515,7 @@ def rows(acc, graph=None):
             by = _by(own) + _where(own)
             done = f" · beantwortet (Nr. {nr(r['answered']['n'])})" if r["answered"] and r["entries"][-1] == e["n"] else ""
             if r["entries"][0] == e["n"] and r["by"] == "kunde" and r["of"] == INSURER:
-                text = f"Frage an Protekta: {r['what']}{_where(own)}"
+                text = f"Frage an {OWN_NAME}: {r['what']}{_where(own)}"
             elif r["entries"][0] == e["n"]:
                 text = f"verlangt von {WITH[r['of']]}: {r['what']}{by}"
             else:
@@ -1986,7 +1988,7 @@ def ledger(before, after):
 def ledger_lines(led, acc=None):
     """The update's ledger in the handler's words (C7), the most consequential first: «beantwortet: … (zu Nr. n)»,
     «Antwort ohne Beleg – prüfen: …», «abgelehnt: …», «teilweise: … – offen: …», «zugesagt bis …: …», «neu verlangt: …»
-    (a question of the customer: «Frage an Protekta: …»), «Antwort ohne Zuordnung – prüfen», «n Nachricht(en) der Kundschaft
+    (a question of the customer: «Frage an <the house>: …»), «Antwort ohne Zuordnung – prüfen», «n Nachricht(en) der Kundschaft
     vom …». Numbers as the Verlauf shows them."""
     if not led:
         return []
@@ -2000,7 +2002,7 @@ def ledger_lines(led, acc=None):
     lines += [f"abgelehnt: {r['what']}" for r in led.get("refused") or ()]
     lines += [f"teilweise: {r['what']} – offen: {r['rest']}" for r in led.get("partial") or ()]
     lines += [f"zugesagt bis {day(r['by'])}: {r['what']}" if r.get("by") else f"zugesagt, ohne Datum: {r['what']}" for r in led.get("promised") or ()]
-    lines += [f"Frage an Protekta: {r['what']}" if r["of"] == INSURER else f"neu verlangt: {r['what']}"
+    lines += [f"Frage an {OWN_NAME}: {r['what']}" if r["of"] == INSURER else f"neu verlangt: {r['what']}"
               for r in led.get("opened") or () if r["by"] in OWED_TO_US or r["of"] == INSURER]
     lines += ["Antwort ohne Zuordnung – prüfen" for _ in led.get("unspecified") or ()]
     if led.get("agreement"):

@@ -20,6 +20,7 @@ import json
 import re
 from datetime import date, timedelta
 
+from .. import house
 from . import cover, letters
 from .account import INSURER, PARTIES, PARTY_TITLES, _head
 from .clock import parse_date
@@ -116,7 +117,7 @@ def _party_name(listed, role):
     if role == "gegenpartei":
         fact = next((i.get("value") for i in listed or () if i.get("kind") == "fact" and i.get("key") == "gegenpartei" and i.get("value")), None)
         own = letters.customer(parties)
-        other = next((p for p in parties if p is not own and not re.search(r"kanzlei|anwalt|versicher|protekta|rechtsschutz", f"{label(p)} {p['value']}", re.I)), None)
+        other = next((p for p in parties if p is not own and not re.search("kanzlei|anwalt|versicher|" + house.active().named_in(), f"{label(p)} {p['value']}", re.I)), None)
         return fact or (other or {}).get("value")
     return None
 
@@ -133,7 +134,7 @@ def role_of(form, listed=()):
 def recipient_line(role, listed):
     """The recipient as the version names it: the greeting line and the name the file states («Name nicht in der Akte»)."""
     parties = [i for i in listed or () if i.get("kind") == "party"]
-    greeting = letters.greeting(parties) if role == "kunde" else "Sehr geehrte Damen und Herren"
+    greeting = letters.greeting(parties) if role == "kunde" else house.active().letters.greeting
     return f"{greeting} · {_party_name(listed, role) or 'Name nicht in der Akte'}"
 
 

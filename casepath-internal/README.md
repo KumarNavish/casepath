@@ -47,6 +47,7 @@ casepath/              python -m casepath <command>   (no command: the list)
   process/             workflows, each case's own process, Knowledge; areas/: the handler's backbone and one module per legal area (docs/AREAS.md)
   web/                 API (app.py), case store, sign-in, volume, case report, workspace (ui/)
   quality/             benchmark, evaluator, synthetic cases, content-free scorecards
+  house/               the insurer CasePath works for, as one profile (docs/HOUSE.md)
   config.py            every setting, from the environment
 catalogue/             Protekta's processes as workflows (JSON)          internal copy
 benchmark/             synthetic cases with known answers                internal copy
@@ -55,6 +56,10 @@ docs/                  HANDLER_BAR.md (what done means) · DEPLOYMENT.md · cont
 tests/
 .gitlab-ci.yml         the DSW's pipeline (+ mobi.yaml, renovate.json)   internal copy
 ```
+
+## Another insurer
+
+Out of the box CasePath works for Protekta; nothing needs to be set. Its name, its conditions, its letter lines, its catalogue and its seeded knowledge are named in one profile, `casepath/house/protekta.json`. Another Swiss legal-protection insurer starts CasePath with its own: `CASEPATH_HOUSE=<profile file>`. What a house brings, what every house shares and what is still Protekta's: [docs/HOUSE.md](docs/HOUSE.md).
 
 ## Rules
 

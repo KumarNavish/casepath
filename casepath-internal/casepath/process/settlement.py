@@ -22,6 +22,7 @@ due, paid and their ``citations``, and an IBAN the customer gave); what it state
 from datetime import timedelta
 import re
 
+from .. import house
 from .clock import parse_date
 
 STEPS = (  # (id, kind, title, form, days to the follow-up)
@@ -48,7 +49,7 @@ def _citations(rows, fact):
     return ((rows or {}).get(fact) or {}).get("citations") or []
 
 
-PAYERS = {"kunde": "die Kundschaft", "versicherer": "Protekta", "kanzlei": "die Kanzlei", "behoerde": "Gericht/Behörde"}
+PAYERS = {"kunde": "die Kundschaft", "versicherer": house.active().name, "kanzlei": "die Kanzlei", "behoerde": "Gericht/Behörde"}
 
 
 def from_account(ledger, facts=None):

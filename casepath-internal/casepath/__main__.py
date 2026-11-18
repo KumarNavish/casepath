@@ -35,6 +35,12 @@ DELEGATED = {
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else list(argv)
+    from . import house
+
+    try:  # the insurer CasePath works for (CASEPATH_HOUSE): an incomplete profile stops every command before it starts
+        house.active()
+    except house.HouseError as error:
+        sys.exit(f"house invalid: {error}")
     if argv and argv[0] in DELEGATED:
         module, function, _ = DELEGATED[argv[0]]
         return getattr(importlib.import_module(f"casepath.{module}"), function)(argv[1:])
