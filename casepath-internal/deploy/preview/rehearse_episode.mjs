@@ -395,6 +395,8 @@ await step("edits", async () => {
 }, "den Brief anpassen, wo nötig");
 const textAfter = await letterText();
 await step("freigeben", async () => {
+  // a step with several documents shows each one before it can be approved: the button leads through them first
+  for (let i = 0; i < 8 && await visible(button(/^Weiter: /)); i += 1) { await click(button(/^Weiter: /), "open"); await sleep(800); }
   const approve = button(/^Freigeben und kopieren$/);
   if (await visible(approve)) { await click(approve, "approve"); await sleep(1500); return; }  // the approval copies the letter with it
   lacking("B: «Freigeben und kopieren» stores the approval and the Versandpaket (B3)");
