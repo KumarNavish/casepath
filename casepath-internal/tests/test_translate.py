@@ -122,7 +122,7 @@ class ModelTests(unittest.TestCase):
         self.assertIsNone(self.store.translation("en", translate.sha("Die Kundschaft hat geantwortet")))
 
     def test_the_daily_budget_stops_the_model_and_the_memory_alone_never_calls_it(self):
-        t = self.translator(token_budget=500)  # a batch is estimated at about 400 tokens and more: one fits, a second would pass the day's ceiling
+        t = self.translator(token_budget=800)  # a batch is estimated at about 700 tokens and more: one fits, a second would pass the day's ceiling
         t.annotate({"summary": "Erster Satz der Akte"}, "en")
         self.wait(t)
         out = t.annotate({"summary": "Zweiter Satz der Akte"}, "en")  # the budget is spent: nothing is queued
@@ -233,6 +233,8 @@ class OnceForTheCasesInScopeTests(unittest.TestCase):
         self.assertEqual((count["cases"], count["queued"], count["areas"]), (1, 0, ["mietmangel"]))
         self.assertGreater(count["lines"], 0)
         self.assertGreater(count["estimate_tokens"], 0)
+        # the estimate is set against a measured run: a full batch of case text (40 lines, about 4,600 characters) cost about 5,800 tokens
+        self.assertTrue(5200 <= translate.Translator.estimate(["x" * 116] * 40) <= 6400)
         self.assertEqual(self.model.calls, [])
         started = self.client.post("/api/translate/cases", json={"lang": "en", "dry_run": False}).json()
         self.assertGreater(started["queued"], 0)

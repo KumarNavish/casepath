@@ -140,5 +140,9 @@ A text is translated at most once. What the shipped memory does not know and the
   lines not yet known, and about how many tokens they would take. The same call with `"dry_run": false` queues them
   within the day's budget (`CASEPATH_TRANSLATE_TOKENS`); `GET /api/translate/cases` says how many are still waiting and
   what was spent. Running it again translates only what is new.
+- **What it costs, measured once** (the pilot, 18 November 2026): 12 cases of one legal area held 2,811 lines not yet
+  known; the model took about 144 tokens a line (in and out together, batches of 40). The count before a run is set
+  against that figure. A run that reaches the day's ceiling stops by itself with nothing lost: what is translated is
+  kept, and the same call on a later day (or with a higher `CASEPATH_TRANSLATE_TOKENS`) takes only what is left.
 - Afterwards the deployment can go back to `CASEPATH_TRANSLATE=memory`: nothing more is spent and everything translated
   stays available. For cases that arrive later, run the one call again.

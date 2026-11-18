@@ -221,8 +221,10 @@ class Translator:
 
     @staticmethod
     def estimate(lines):
-        """About what one call for these lines costs in tokens: the lines in, about as much out, the instructions."""
-        return 400 + 2 * min(sum(len(line) for line in lines), BATCH_CHARS) // 3
+        """About what one call for these lines costs in tokens: the instructions, the lines in and about as much out.
+        Set against a measured run (the pilot, 18 November 2026: 790 lines of case text in batches of 40 cost about
+        144 tokens a line, where the first formula said 87), so the count before a run and the day's ceiling are honest."""
+        return 700 + 11 * min(sum(len(line) for line in lines), BATCH_CHARS) // 10
 
     def _work(self, token):
         try:
