@@ -186,7 +186,9 @@ as its value once taken), what is still open, the documents missing, and each wa
 decides it. A way leads by a right-angled line into the next block, or ends in a small pill for a closing. The way the
 case took is drawn in blue; ways still open are grey. The picture is the case's real state: a decision taken on a
 block is taken by the page's own control (one rule for both), and the same picture takes the change up without being
-drawn again. It can be seen large (`v`), panned, and reset to «Wo der Fall steht» or «Ganzer Prozess».
+drawn again. It can be seen large (`v`), panned, and reset to «Wo der Fall steht» or «Ganzer Prozess». Seen from
+far («Ganzer Prozess») each block says only its name, at a readable size, and a closing is a small flag; the rows come
+back with the closer look. In the page the picture takes the height the window gives (440 to 640 px).
 
 ## The case in parts, under the hand (18 November 2026)
 

@@ -492,6 +492,9 @@
     function apply(animate) {
       world.style.transition = animate && !calm() ? "transform .65s cubic-bezier(.4,0,.2,1)" : "none";
       world.style.transform = "translate(" + Math.round(cam.x) + "px," + Math.round(cam.y) + "px) scale(" + cam.s.toFixed(4) + ")";
+      // seen from far, a block says its name at a readable size and keeps its rows for the closer look
+      stage.classList.toggle("cpf-far", cam.s < 0.62);
+      stage.style.setProperty("--cpf-inv", (1 / Math.max(cam.s, 0.2)).toFixed(3));
       ctl.here.setAttribute("aria-pressed", String(mode === "here"));
       ctl.whole.setAttribute("aria-pressed", String(mode === "whole"));
     }

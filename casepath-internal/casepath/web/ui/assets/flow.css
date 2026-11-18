@@ -220,3 +220,16 @@
   .cpf-stage, .cpf-stage *, .cpf-stage *::after { transition: none !important; animation: none !important; }
   .cpf-dash { display: none; }
 }
+
+/* Seen from far (the whole process): each block says its name at a readable size; its rows wait for the closer look. */
+.cpf-far .cpf-body, .cpf-far .cpf-row > .cpf-g, .cpf-far .cpf-row > svg { opacity: 0; }
+.cpf-far .cpf-rows { position: relative; }
+.cpf-far .cpf-band { height: 34px; }
+.cpf-far .cpf-word, .cpf-far .cpf-bandmark { visibility: hidden; }
+.cpf-far .cpf-title { position: absolute; z-index: 3; left: 8px; right: 8px; top: 40px; overflow: visible; white-space: normal; text-overflow: clip;
+  padding: calc(3px * var(--cpf-inv, 1)) calc(5px * var(--cpf-inv, 1)); border-radius: calc(5px * var(--cpf-inv, 1)); background: #fff;
+  font-size: calc(10.5px * var(--cpf-inv, 1)); line-height: 1.2; font-weight: 600; letter-spacing: -.01em; color: var(--cpf-frame-ink); overflow-wrap: anywhere; hyphens: auto; }
+.cpf-far .cpf-block[data-tone="open"] .cpf-title { color: var(--cpf-ink); }
+/* a closing is a small flag from far; its name comes with the closer look */
+.cpf-far .cpf-pill { font-size: 0; }
+.cpf-far .cpf-pill .cpf-g { color: var(--cpf-quiet, #6e7174); }
