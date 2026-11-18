@@ -305,6 +305,9 @@ class CraftTests(unittest.TestCase):
         # Wissen: where each rule came from and the cases it was applied in since, one moment per case
         self.assertIn('tabPicture("knowledge", 380)', SCRIPT)
         # a picture holds what a reader can take in: the rules that moved last and the cases they reached; never a crowd
+        # Akte: the file's documents in the order of their dates and what was taken from each with its passage
+        self.assertIn('tabPicture("file", 320)', SCRIPT)
+        self.assertIn('shown.map((r) => k.edge(did, `fact:${r.i.key}`, "cites", r.ev.page ? `${T("p.", "S.")} ${r.ev.page}` : ""))', SCRIPT)
         self.assertIn("const STORY_RULES = 8, STORY_CASES = 10, STORY_NODES = 44;", SCRIPT)
         self.assertIn(".slice(0, STORY_RULES);", SCRIPT)
         self.assertIn("if (!timed && (!model || model.nodes.length > STORY_NODES)) { dropStory(); box.hidden = true; return; }", SCRIPT)

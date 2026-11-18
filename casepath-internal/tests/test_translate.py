@@ -193,7 +193,9 @@ class ShownOnlyTests(unittest.TestCase):
 
     def test_the_page_asks_for_what_it_showed_untranslated_each_text_once(self):
         self.assertIn("function wantTranslation(text)", SCRIPT)
-        self.assertIn('if (S.translateMode !== "model" || text.length < 3 || text.length > 700 || TR_ASKED.has(text)', SCRIPT)
+        self.assertIn('if (!translates() || text.length < 3 || text.length > 700 || TR_ASKED.has(text)', SCRIPT)
+        # the memory is asked too (at no cost): a name the page shortened itself is known to it; the model only where allowed
+        self.assertIn('const translates = () => S.translateMode === "memory" || S.translateMode === "model";', SCRIPT)
         self.assertIn('api("/api/translate", { method: "POST"', SCRIPT)
 
 

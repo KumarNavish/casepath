@@ -56,18 +56,21 @@ function tr(value) {
   wantTranslation(value.trim());
   return value;
 }
-// Where the deployment lets the model translate: what the page showed untranslated is asked for, a little later and
-// all at once, and the page is drawn again when it is there. Only what is shown is ever asked, each text once.
+// What the page showed untranslated is asked for, a little later and all at once, and the page is drawn again when it
+// is there. Only what is shown is ever asked, each text once. The memory answers at once and costs nothing (a name the
+// page shortened or put together itself is known to it, though no answer of the API carried it); the model is asked
+// only where the deployment lets it translate.
 const TR_ASK = new Set(), TR_ASKED = new Set();
+const translates = () => S.translateMode === "memory" || S.translateMode === "model";
 function wantTranslation(text) {
-  if (S.translateMode !== "model" || text.length < 3 || text.length > 700 || TR_ASKED.has(text) || !/[A-Za-zÄÖÜäöüß]{3}/.test(text)) return;
+  if (!translates() || text.length < 3 || text.length > 700 || TR_ASKED.has(text) || !/[A-Za-zÄÖÜäöüß]{3}/.test(text)) return;
   if (/^[\w.+-]+@[\w.-]+$|^(case|file|run)_[0-9a-f]+$|\.(eml|msg|pdf|docx?|txt|png|jpe?g)$/i.test(text)) return;  // an address, an id, a file name
   TR_ASK.add(text);
   clearTimeout(S.trAskTimer);
   S.trAskTimer = setTimeout(askTranslations, 500);
 }
 async function askTranslations(again, tries = 0) {
-  if (!reading() || S.translateMode !== "model") { TR_ASK.clear(); return; }
+  if (!reading() || !translates()) { TR_ASK.clear(); return; }
   const texts = again || [...TR_ASK].slice(0, 300);
   if (!again) for (const t of texts) { TR_ASK.delete(t); TR_ASKED.add(t); }
   if (!texts.length) return;
@@ -77,7 +80,7 @@ async function askTranslations(again, tries = 0) {
   catch (error) { S.trWait = 0; return; }
   S.trWait = res._tr_wait || 0;
   if (where !== `${S.route.view}:${S.route.id || ""}:${LANG}`) return;  // the reader went on: what came is kept for the next look
-  if (TR.size !== before || !S.trWait) {  // something arrived, or all of it: the page says it in the reader's language now
+  if (TR.size !== before || (!S.trWait && S.translateMode === "model")) {  // something arrived, or all of it: the page says it in the reader's language now
     const typing = document.activeElement && document.activeElement.closest && document.activeElement.closest("input, textarea, [contenteditable='true']");
     if (!typing) { if (S.route.view === "case") { if (S.data) await renderCase(); } else if (S.route.view === "cases") await renderCases(true); else await route(); } else renderTop();
   }
@@ -1613,7 +1616,7 @@ function claimView(card) {
   const anliegen = (summary && summary.value) || brief.request || "";
   const timeline = brief.timeline || [];
   const parties = partiesHtml();
-  return `<div class="cp-live"><div>${card}</div><aside>${anliegen || parties || timeline.length ? `<section class="cp-card cp-brief">
+  return `${tabPicture("file", 320)}<div class="cp-live"><div>${card}</div><aside>${anliegen || parties || timeline.length ? `<section class="cp-card cp-brief">
       <h2 class="cp-section">${T("Request", "Anliegen")}</h2><p data-item="summary:0">${esc(anliegen) || "—"}</p>
       ${parties ? `<h2 class="cp-section">${T("Parties", "Parteien")}</h2><p data-item="party:0">${parties}</p>` : ""}
       ${timeline.length ? `<h2 class="cp-section">${T("Timeline", "Chronologie")}</h2><div class="cp-lines">${timeline.map((t, i) => {
@@ -2200,7 +2203,12 @@ function openFromStory(n) {
   if (!n) return;
   const row = (n.item && document.querySelector(`[data-item="${CSS.escape(n.item)}"]`)) || (n.row && document.querySelector(`[data-story-row="${CSS.escape(n.row)}"]`));
   if (row) { row.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); row.classList.remove("cp-story-hit"); void row.offsetWidth; row.classList.add("cp-story-hit"); return; }
-  if (n.file) { S.file = n.file; S.page = n.page || null; location.hash = `#/case/${S.route.id}/claim_reader`; return; }
+  if (n.file) {  // the page it names: in the reader of this tab, or on «Akte»
+    S.file = n.file; S.page = n.page || null; S.follow = false;
+    if (S.route.tab === "claim_reader") renderCase().then(() => { const card = document.getElementById("source-card") || document.querySelector(".cp-live"); if (card) card.scrollIntoView({ block: "start", behavior: reducedMotion() ? "auto" : "smooth" }); });
+    else location.hash = `#/case/${S.route.id}/claim_reader`;
+    return;
+  }
   if (n.href) location.hash = n.href;
 }
 function placeStory() {
@@ -2229,7 +2237,7 @@ async function openStory() {
 }
 // ---------- the tabs' pictures: the case's state as it stands, drawn by the same engine ----------
 const pictureOff = () => { try { return localStorage.getItem("casepath.picture") === "off"; } catch (error) { return false; } };
-const TAB_STORY = { process: () => processStory(), history: () => historyStory(), documents: () => documentsStory(), knowledge: () => knowledgeStory() };
+const TAB_STORY = { process: () => processStory(), history: () => historyStory(), documents: () => documentsStory(), knowledge: () => knowledgeStory(), file: () => fileStory() };
 function tabPicture(kind, height) {
   if (!pictureOff()) return `<div class="cp-story cp-story-tab" id="story" data-story="${kind}" data-height="${height}"></div>`;
   return TAB_STORY[kind]() ? `<p class="cp-story-show"><button class="cp-link cp-quiet-link" id="story-show">${T("Show as a picture", "Als Bild zeigen")}</button></p>` : "";
@@ -2361,6 +2369,40 @@ function documentsStory() {
 }
 // Wissen: where each rule came from (a case, a case worker's change, the first request letters of practice), and the
 // cases it was applied in since, in the order it happened: what one case taught reaching the next.
+// Akte: the documents the file holds, in the order of their dates, and what was taken from each with its passage; what
+// stands without a passage is said last. A card opens the page it names in the reader below.
+function fileStory() {
+  const d = S.data, files = d.files || [];
+  const facts = (d.items || []).filter((i) => i.kind === "fact" && i.value !== null && i.value !== undefined && i.value !== "" && !i.chat_only);
+  if (!files.length || facts.length < 2 || !d.screen) return null;
+  const k = storyKit(), docs = [];
+  const day = (text) => { const m = String(text || "").match(/^(\d{2})\.(\d{2})\.(\d{4})$/); return m ? `${m[3]}-${m[2]}-${m[1]}` : String(text || "9999"); };
+  for (const f of files) {
+    const segs = (f.extraction || {}).segments || [];
+    if (segs.length) segs.forEach((sg, n) => docs.push({ id: `doc:${f.id}:${n}`, file: f.id, from: sg.first_page || 1, to: sg.last_page || sg.first_page || 1, title: sg.title || sg.kind || f.name, date: sg.date || "",
+      who: [sg.sender, sg.recipient].filter(Boolean).join(" → ") }));
+    else docs.push({ id: `doc:${f.id}`, file: f.id, from: 1, to: 1e9, title: f.name, date: dateText(f.created_at), who: "" });
+  }
+  const docOf = (ev) => docs.find((x) => x.file === ev.file && (!ev.page || (ev.page >= x.from && ev.page <= x.to))) || docs.find((x) => x.file === ev.file);
+  const rests = facts.map((i) => { const ev = (i.evidence || []).find((e) => e.file); return { i, ev, doc: ev ? docOf(ev) : null }; });
+  const count = (x) => rests.filter((r) => r.doc === x).length;
+  const cited = docs.filter(count).sort((a, b) => count(b) - count(a)).slice(0, 10).sort((a, b) => day(a.date).localeCompare(day(b.date)));
+  if (!cited.length) return null;
+  const name = (i) => tr((i.label || {}).de || shortFact(i.key)), pages = (x) => (x.to >= 1e9 ? "" : `${T("p.", "S.")} ${x.from}${x.to > x.from ? `–${x.to}` : ""}`);
+  for (const x of cited) {
+    const mine = rests.filter((r) => r.doc === x), shown = mine.slice(0, 3);
+    const did = k.node({ id: x.id, lane: "docs", kind: "file", title: tr(x.title), sub: [x.date, pages(x)].filter(Boolean).join(" · "), file: x.file, page: x.to >= 1e9 ? null : x.from });
+    const fids = shown.map((r) => k.node({ id: `fact:${r.i.key}`, lane: "facts", kind: "fact", title: clip(name(r.i), 80), sub: tr(plainValue(r.i.value)), state: "done", file: r.ev.file, page: r.ev.page || null }));
+    k.beat(`${x.date ? `${x.date} · ` : ""}${tr(x.title)}`, `${x.who ? `${tr(x.who)} · ` : ""}${mine.length} ${T(mine.length === 1 ? "fact taken from it" : "facts taken from it", mine.length === 1 ? "Angabe daraus" : "Angaben daraus")}${mine.length > shown.length ? ` (${shown.length} ${T("drawn", "gezeichnet")})` : ""}`,
+      [did, ...fids], shown.map((r) => k.edge(did, `fact:${r.i.key}`, "cites", r.ev.page ? `${T("p.", "S.")} ${r.ev.page}` : "")));
+  }
+  const bare = rests.filter((r) => !r.ev), own = bare.filter((r) => r.i.verdict === "set_by_handler").length;
+  const quiet = docs.length - cited.length;
+  if (bare.length || quiet) k.beat(bare.length ? T(`Without a passage of their own: ${bare.length}`, `Ohne eigene Stelle in der Akte: ${bare.length}`) : T("Every fact drawn has its passage", "Jede gezeichnete Angabe hat ihre Stelle"),
+    [own ? `${own} ${T(own === 1 ? "is your own decision" : "are your own decisions", own === 1 ? "ist Ihr eigener Entscheid" : "sind Ihre eigenen Entscheide")}` : "",
+      quiet ? `${quiet} ${T(quiet === 1 ? "document without a fact taken from it" : "documents without a fact taken from them", quiet === 1 ? "Dokument, aus dem keine Angabe stammt" : "Dokumente, aus denen keine Angabe stammt")}` : ""].filter(Boolean).join(" · "), [], [], cited.map((x) => x.id));
+  return k.model([{ id: "docs", title: T("Documents in the file", "Dokumente der Akte") }, { id: "facts", title: T("Taken from them", "Daraus entnommen") }], Math.max(0, k.beats.length - 3));
+}
 const STORY_RULES = 8, STORY_CASES = 10, STORY_NODES = 44;  // what one picture holds and stays readable
 function knowledgeStory() {
   const v = S.knowledgeView;
