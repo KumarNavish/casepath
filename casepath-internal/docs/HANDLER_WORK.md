@@ -153,6 +153,26 @@ The work is shown as a picture that builds itself, drawn from the case's own sta
 
 Rules for a later change: the picture's model is built in `casepath.js` from data the page already holds (`storyModel` from run events; `processStory`, `historyStory`, `documentsStory` from the case), every text goes in as text, nothing in it is staged, and a movement that says nothing is left out.
 
+## The case in parts, under the hand (18 November 2026)
+
+The rail of a prepared case names what CasePath established, once, in three short groups: «Der Fall» (Anliegen,
+Parteien, Deckung, Fristen, Rechtliches), «Belege» (Angaben, Unterlagen, Verlauf) and «CasePath» (Prozess,
+Vorbereitung, Wissen). Beside a name stands the one thing worth knowing before looking (a count, or in crimson what
+needs a hand: «zu entscheiden», «1 fehlt», «2 offen»). A part with nothing to show is not named.
+
+Resting the hand on a name shows that part on a stage at the right, as it stands now: the cover points with what the
+file settled and what the policy must confirm, the facts with their page, the documents with what is missing first, the
+last entries of the correspondence with the open request marked, the process with the ways on from where the case
+stands, what CasePath did to get here, and the rules from closed cases applied to this one. Rows arrive in the order
+they are read and what is settled is ticked as it arrives. On the Übersicht the stage takes the place of «Der Fall» and
+gives it back when the hand leaves; on the other tabs it stands at the right over the page. Pressing a name keeps the
+stage; Escape, the cross or another case puts it away. A row with a passage opens the passage in the Akte; «öffnen»
+leads to the tab the part belongs to.
+
+The stage reads; it decides nothing. A decision is taken where it always was (on the step, or under «Prozess»), so a
+glance can never change a case. It is built in the page from what the page already holds: no request is made, nothing
+is stored, and it is not shown while CasePath works, in the study, or before a case is prepared.
+
 ## Reading in another language (17 November 2026)
 
 Cases are worked in German. A reader of English switches the page with the control at the right of the header (DE | EN): the page turns in place, where it stands, and the choice is kept in the browser.

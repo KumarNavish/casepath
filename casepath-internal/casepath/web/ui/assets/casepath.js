@@ -779,6 +779,7 @@ function renderRail() {
       ${d.case.parties ? `<small class="cp-parties">${esc(d.case.parties)}</small>` : ""}
       ${identityLine(d.case)}
       ${st.text || d.historic ? `<p class="cp-rail-chips">${st.text && !(st.kind === "new" && (d.items || []).some((i) => i.kind === "next_action")) ? `<span class="cp-stand ${raw(st.kind || "")}" data-status>${raw(standIn(st.text, st.kind))}</span>` : ""}${standAm(d)}</p>` : ""}${areaLine(d)}</div>
+    ${caseIndex()}
     <div class="cp-rail-head">${T("Files", "Dateien")}<span>${files.length}</span>${S.canUpload === false || unaidedPending() ? "" : `<label class="cp-link">${icon("plus")}${T("Add", "Hinzufügen")}<input type="file" id="upload" multiple hidden></label>`}</div>
     ${S.message ? `<p class="${S.messageOk ? "cp-muted" : "cp-error"}" style="padding:0 27px" role="status">${esc(S.message)}</p>` : ""}
     ${rows || `<div class="cp-drop" id="drop">${T("Drop the case files here", "Dateien hierher ziehen")}</div>`}
@@ -3638,6 +3639,7 @@ async function renderCase() {
     if (t.focus) { el.focus(); try { el.setSelectionRange(t.start, t.end); } catch (e) { /* not a text field */ } }
   }
   for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true));
+  xRest();
   keepMotion($("#app"));
   markInReview();
   bindIdentity();
@@ -3998,6 +4000,7 @@ async function route() {
   const opened = next.view === "case" && S.route.view === "cases" ? rowOf(next.id) : null, left = next.view === "cases" && S.route.view === "case" ? S.route.id : null;
   const show = async () => {
     rowPeekHide(); S.peekRow = null;
+    if (next.view !== "case" || next.id !== S.route.id) { S.xPin = null; xClear(); }
     S.route = next;
     if (moved) window.scrollTo(0, 0);  // what is opened is read from its top
     renderTop();
@@ -4045,6 +4048,7 @@ async function route() {
   document.addEventListener("keydown", (event) => {
     const typing = event.target.closest && event.target.closest("input, textarea, select, [contenteditable], [data-editable]");
     if (event.key === "Escape" && document.getElementById("cp-keys")) { keysCard(false); return; }
+    if (event.key === "Escape" && document.getElementById("xstage")) { S.xPin = null; xClear(); return; }
     if (!typing && !event.ctrlKey && !event.metaKey && !event.altKey) {
       // the keys that work everywhere: the help, the list, and in a case its tabs, the next case and the large picture
       if (event.key === "?") { event.preventDefault(); keysCard(!document.getElementById("cp-keys")); return; }
@@ -4103,6 +4107,150 @@ document.addEventListener("mouseover", (event) => {
 });
 document.addEventListener("scroll", () => { S.peekRow = null; rowPeekHide(); }, true);
 document.addEventListener("mousedown", () => { S.peekRow = null; rowPeekHide(); });
+
+// ---------- the case under the hand: an index in the rail, a stage that answers it ----------
+// Everything CasePath established about a case is named once in the rail, in a few groups. Resting the hand on a name
+// shows that part on the stage at the right, as it stands now (its rows arrive in the order they are read, what is
+// settled is ticked, what is open is marked); pressing the name keeps it there. The stage is built from what the page
+// already holds; a row opens the passage or the tab it belongs to. Nothing here decides anything: decisions stay where
+// they are taken.
+const xFacts = () => (S.data.items || []).filter((i) => i.kind === "fact" && !i.chat_only && i.value !== null && i.value !== undefined && i.value !== "");
+const xDocs = () => (S.data.items || []).filter((i) => i.kind === "document" && !i.part_of);
+const xCover = () => (S.data.items || []).filter((i) => i.kind === "cover" && i.key !== "summary");
+const xEntries = () => (S.data.verlauf || []).filter((r) => r.kind !== "gesture");
+const xCite = (ev) => { const c = (ev || []).find((e) => e.file); return c ? ` data-x-file="${raw(c.file)}" data-x-page="${c.page || ""}"` : ""; };
+const xPage = (ev) => { const c = (ev || []).find((e) => e.file && e.page); return c ? `<span class="cp-x-page">${T("p.", "S.")} ${c.page}</span>` : ""; };
+const xMark = (state) => `<span class="cp-x-mark ${state}">${state === "done" ? icon("tick") : ""}</span>`;
+const xRow = (i, state, main, side, sub, attrs) => `<li class="cp-x-row ${state || ""}" style="--i:${i}"${attrs || ""}>${xMark(state || "")}<span class="cp-x-main">${main}${sub ? `<small>${sub}</small>` : ""}</span>${side ? `<span class="cp-x-side">${side}</span>` : ""}</li>`;
+const xRows = (rows) => `<ul class="cp-x-rows">${rows.join("")}</ul>`;
+const X_GROUPS = lazy(() => [[T("The case", "Der Fall"), ["anliegen", "parteien", "deckung", "fristen", "rechtliches"]], [T("Evidence", "Belege"), ["angaben", "unterlagen", "verlauf"]], ["CasePath", ["prozess", "vorbereitung", "wissen"]]]);
+// One entry per part: its name, what the rail says beside it (a count, or what needs a hand), and its stage.
+const X_TOPICS = {
+  anliegen: { name: () => T("Request", "Anliegen"), show: () => (S.data.items || []).some((i) => i.kind === "summary" && i.value), stage: () => {
+    const sum = (S.data.items || []).find((i) => i.kind === "summary" && i.value), asks = (S.data.items || []).filter((i) => i.kind === "customer_question");
+    return { title: T("What the customer wants", "Was die Kundschaft will"), line: asks.length ? T(`${asks.length} ${asks.length === 1 ? "question" : "questions"} of the customer`, `${asks.length} ${asks.length === 1 ? "Frage" : "Fragen"} der Kundschaft`) : "", tab: "claim_reader",
+      body: `<blockquote class="cp-x-quote" style="--i:0">${esc(sum.value)}</blockquote>${asks.length ? xRows(asks.map((q, i) => xRow(i + 1, "ask", esc(q.value), xPage(q.evidence), "", xCite(q.evidence)))) : ""}` };
+  } },
+  parteien: { name: () => T("Parties", "Parteien"), show: () => (S.data.items || []).some((i) => i.kind === "party"), side: () => String((S.data.items || []).filter((i) => i.kind === "party").length), stage: () => {
+    const ps = (S.data.items || []).filter((i) => i.kind === "party");
+    return { title: T("Who is involved", "Wer beteiligt ist"), line: "", tab: "claim_reader", body: xRows(ps.map((q, i) => xRow(i, "who", `<b>${esc(q.value)}</b>`, esc((q.label || {}).de || ""), "", xCite(q.evidence)))) };
+  } },
+  deckung: { name: () => T("Cover", "Deckung"), show: () => xCover().length > 0, alert: () => !answered("deckung"), side: () => (answered("deckung") ? esc(String(answered("deckung"))) : T("to decide", "zu entscheiden")), stage: () => {
+    const pts = xCover(), state = { akte: "done", police: "check", kunde: "ask" }, n = (k) => pts.filter((q) => q.value === k).length;
+    return { title: T("Is the case covered?", "Ist der Fall gedeckt?"), tab: "process_builder",
+      line: `${n("akte")} ${T("settled from the file", "aus der Akte geklärt")} · ${n("police")} ${T("to check in the policy", "in der Police zu prüfen")}${n("kunde") ? ` · ${n("kunde")} ${T("asked of the customer", "bei der Kundschaft erfragt")}` : ""}`,
+      body: `${xRows(pts.map((q, i) => xRow(i, state[q.value] || "quiet", esc(q.title || (q.label || {}).de || ""), xPage(q.evidence), esc([q.state_text, q.aid ? clip(q.aid, 110) : ""].filter(Boolean).join(" · ")), xCite(q.evidence))))}
+        <p class="cp-x-foot" style="--i:${pts.length}">${answered("deckung") ? `${T("Decided", "Entschieden")}: <b>${esc(String(answered("deckung")))}</b>${scr().cover && scr().cover.text ? ` <span class="cp-muted">· ${esc(scr().cover.text.replace(/^[^·]*·\s*/, ""))}</span>` : ""}` : T("The decision is yours; it is taken on the step or under «Prozess».", "Der Entscheid liegt bei Ihnen; er fällt beim Schritt oder unter «Prozess».")}</p>` };
+  } },
+  fristen: { name: () => T("Deadlines", "Fristen"), show: () => Boolean(S.data.screen), alert: () => (scr().fristen || []).some((f) => f.late || f.soon), side: () => String((scr().fristen || []).length || "–"), stage: () => {
+    const fr = scr().fristen || [];
+    return { title: T("What runs against the clock", "Was an eine Frist gebunden ist"), line: fr.length ? "" : T("No deadline in the file.", "Keine Frist in der Akte."), tab: "overview",
+      body: fr.length ? xRows(fr.map((f, i) => xRow(i, f.late ? "late" : f.soon ? "soon" : "date", `<b>${esc(f.date || f.state)}</b> ${esc(f.title)}`, f.date ? esc(f.state) : "", esc([f.condition, f.basis].filter(Boolean).join(" · "))))) : `<p class="cp-x-empty" style="--i:0">${T("CasePath found no deadline the customer or Protekta must meet.", "CasePath hat keine Frist gefunden, die die Kundschaft oder Protekta wahren muss.")}</p>` };
+  } },
+  rechtliches: { name: () => T("Law", "Rechtliches"), show: () => (scr().points || []).length > 0, side: () => String((scr().points || []).length), stage: () => {
+    const pts = scr().points || [];
+    return { title: T("The points of law that matter here", "Die Rechtspunkte, auf die es ankommt"), line: "", tab: "overview",
+      body: xRows(pts.map((q, i) => xRow(i, q.open ? "check" : "done", esc(q.text), "", [q.basis ? `<span class="cp-x-basis">${esc(q.basis)}</span>` : "", (q.law || [])[0] ? `«${esc(clip(q.law[0].passage, 150))}»` : ""].filter(Boolean).join(" ")))) };
+  } },
+  angaben: { name: () => T("Facts", "Angaben"), show: () => xFacts().length > 0, side: () => String(xFacts().length), stage: () => {
+    const all = xFacts(), cited = all.filter((f) => (f.evidence || []).some((e) => e.file)), shown = (cited.length ? cited : all).slice(0, 9);
+    return { title: T("What CasePath read in the file", "Was CasePath in der Akte gelesen hat"), tab: "claim_reader",
+      line: T(`${cited.length} of ${all.length} with their passage`, `${cited.length} von ${all.length} mit ihrer Textstelle`),
+      body: `${xRows(shown.map((f, i) => xRow(i, (f.evidence || []).some((e) => e.file) ? "done" : "quiet", `<small class="cp-x-key">${esc(clip((f.label || {}).de || shortFact(f.key), 84))}</small><b>${esc(clip(plainValue(f.value), 90))}</b>`, xPage(f.evidence), "", xCite(f.evidence))))}
+        ${all.length > shown.length ? `<p class="cp-x-foot" style="--i:${shown.length}">${T(`and ${all.length - shown.length} more on «File»`, `und ${all.length - shown.length} weitere unter «Akte»`)}</p>` : ""}` };
+  } },
+  unterlagen: { name: () => T("Documents", "Unterlagen"), show: () => Boolean(S.data.screen) && xDocs().length > 0, alert: () => Boolean(scr().missing), side: () => (scr().missing ? T(`${scr().missing} missing`, `${scr().missing} fehl${scr().missing === 1 ? "t" : "en"}`) : String(xDocs().length)), stage: () => {
+    const gone = new Set(scr().missing_ids || []), docs = xDocs().slice().sort((a, b) => (gone.has(a.item_id) ? 0 : a.status === "present" ? 1 : 2) - (gone.has(b.item_id) ? 0 : b.status === "present" ? 1 : 2)).slice(0, 9);
+    const on = xDocs().filter((q) => q.status === "present").length;
+    return { title: T("What the case needs, and what is there", "Was der Fall braucht und was da ist"), line: T(`${on} of ${xDocs().length} on file`, `${on} von ${xDocs().length} liegen vor`), tab: "document_finder",
+      body: xRows(docs.map((q, i) => xRow(i, gone.has(q.item_id) ? "missing" : q.status === "present" ? "done" : "quiet", esc(clip((q.label || {}).de || q.key, 70)),
+        `${gone.has(q.item_id) ? T("missing", "fehlt") : q.status === "present" ? T("on file", "liegt vor") : T("if needed", "falls nötig")}${xPage(q.evidence)}`, q.practice ? esc(q.practice) : "", xCite(q.evidence)))) };
+  } },
+  verlauf: { name: () => T("History", "Verlauf"), show: () => xEntries().length > 0, alert: () => xEntries().some((r) => r.open), side: () => { const o = xEntries().filter((r) => r.open).length; return o ? T(`${o} open`, `${o} offen`) : String(xEntries().length); }, stage: () => {
+    const all = xEntries().slice().sort((a, b) => String(a.date || "9999").localeCompare(String(b.date || "9999"))), last = all.slice(-6), open = all.filter((r) => r.open).length;
+    return { title: T("Who wrote to whom, lately", "Wer zuletzt wem geschrieben hat"), line: `${all.length} ${T("entries", "Einträge")}${open ? ` · ${open} ${T("open", "offen")}` : ""}`, tab: "history",
+      body: `<ol class="cp-x-line">${last.map((r, i) => { const from = String(r.who || "").split("→")[0].trim(), note = (r.notes || []).find((q) => q.open);
+        return `<li class="${r.open ? "open" : ""}" style="--i:${i}"${xCite(r.evidence)}><span class="cp-x-who" title="${esc(r.who || "")}">${esc((tr(from) || "·").slice(0, 1))}</span><span class="cp-x-entry"><small>${dateText(r.date) || T("undated", "ohne Datum")} · ${esc(r.who || "")}</small>${esc(clip(r.what || r.title || "", 96))}${note ? `<em>${esc(clip(note.text, 90))}</em>` : ""}</span></li>`; }).join("")}</ol>` };
+  } },
+  prozess: { name: () => T("Process", "Prozess"), show: () => Boolean(graphModel()), side: () => { const g = graphModel(), at = g.path.findIndex((q) => q.state === "current"); return at >= 0 ? T(`step ${at + 1}`, `Schritt ${at + 1}`) : ""; }, stage: () => {
+    const g = graphModel(), ev = S.data.evaluation, cur = g.path.find((q) => q.state === "current") || g.path[g.path.length - 1];
+    const ways = ev.outcome ? [] : [...new Map((cur.step.next || []).filter((e) => g.steps[e.to]).map((e) => [e.label || g.steps[e.to].title, e])).values()].slice(0, 6);
+    const rows = g.path.map((q, i) => xRow(i, q.state === "current" ? "now" : "done", `<b>${esc(shortTitle(q.step.title))}</b>`, q.state === "current" ? T("now", "jetzt") : "", q.state === "current" && scr().title ? `${T("Next", "Als Nächstes")}: ${esc(scr().title)}` : ""));
+    return { title: T("Where the case stands", "Wo der Fall steht"), line: ev.outcome ? `${T("Ended", "Abgeschlossen")}: ${esc(ev.outcome.title)}` : T("and the ways on from here", "und wie es von hier weitergehen kann"), tab: "process_builder",
+      body: `${xRows(rows)}${ways.length ? `<ul class="cp-x-ways">${ways.map((e, i) => `<li style="--i:${g.path.length + i}"><span>${esc(e.label || shortTitle(g.steps[e.to].title))}</span><i></i><b>${esc(shortTitle(g.steps[e.to].title))}</b></li>`).join("")}</ul>` : ""}` };
+  } },
+  vorbereitung: { name: () => T("Preparation", "Vorbereitung"), show: () => Boolean(S.data.prepared_run), stage: () => {
+    const d = S.data, files = d.files || [], pages = files.reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 0), 0), docs = xDocs();
+    const did = [[`${files.length} ${T(files.length === 1 ? "file" : "files", files.length === 1 ? "Datei" : "Dateien")}${pages > 1 ? `, ${pages} ${T("pages", "Seiten")}` : ""}`, T("read", "gelesen")], [`${xFacts().length} ${T("facts", "Angaben")}`, T("found", "gefunden")],
+      [`${xEntries().length} ${T("entries", "Einträge")}`, T("put in order", "in ihre Reihenfolge gebracht")], [`${docs.filter((q) => q.status === "present").length} ${T("of", "von")} ${docs.length} ${T("documents", "Unterlagen")}`, T("found on file", "in der Akte gefunden")],
+      ...((d.draft || {}).text ? [[esc(scr().title || T("the letter", "den Brief")), T("prepared", "vorbereitet")]] : [])].filter(([what]) => !/^0 /.test(what));
+    return { title: T("What CasePath did to get here", "Was CasePath dafür getan hat"), line: d.prepared_run.finished_at ? `${T("prepared", "vorbereitet")} ${dateText(d.prepared_run.finished_at)}` : "", tab: "overview",
+      body: `${xRows(did.map(([what, verb], i) => xRow(i, "done", what, verb, "")))}<p class="cp-x-foot" style="--i:${did.length}"><button class="cp-link" data-x-story>${T("Watch how it came about", "Ansehen, wie es entstand")}</button></p>` };
+  } },
+  wissen: { name: () => T("Knowledge", "Wissen"), show: () => xDocs().some((q) => q.practice), side: () => String(xDocs().filter((q) => q.practice).length), stage: () => {
+    const rules = xDocs().filter((q) => q.practice);
+    return { title: T("What closed cases taught, applied here", "Was abgeschlossene Fälle gelehrt haben, hier angewendet"), line: T(`${rules.length} ${rules.length === 1 ? "rule" : "rules"} from practice`, `${rules.length} ${rules.length === 1 ? "Regel" : "Regeln"} aus der Praxis`), tab: "document_finder",
+      body: xRows(rules.map((q, i) => xRow(i, q.status === "present" ? "done" : "quiet", esc(clip((q.label || {}).de || q.key, 70)), "", esc(q.practice)))) };
+  } },
+};
+const xOn = () => S.route.view === "case" && S.data && S.data.screen && !running() && !unaidedPending() && !((S.data.case.intake || {}).study);
+function caseIndex() {
+  if (!xOn()) return "";
+  const groups = X_GROUPS().map(([title, keys]) => {
+    const items = keys.filter((k) => X_TOPICS[k].show()).map((k) => { const t = X_TOPICS[k], side = t.side ? t.side() : "";
+      return `<button type="button" class="cp-xitem${t.alert && t.alert() ? " alert" : ""}" data-x="${k}" aria-pressed="${S.xPin === k}">${t.name()}${side ? `<span>${side}</span>` : ""}</button>`; }).join("");
+    return items ? `<div class="cp-xgroup"><h4>${esc(title)}</h4>${items}</div>` : "";
+  }).join("");
+  return groups ? `<nav class="cp-xindex" aria-label="${T("The case in parts", "Der Fall in Teilen")}">${groups}</nav>` : "";
+}
+function xStage(key, pinned) {
+  const t = X_TOPICS[key], st = t && t.show() ? t.stage() : null;
+  if (!st) return "";
+  const group = (X_GROUPS().find(([, keys]) => keys.includes(key)) || [""])[0];
+  return `<section class="cp-card cp-xstage${pinned ? " pinned" : ""}" data-xstage="${key}"><header><p class="cp-x-eyebrow">${esc(group)} · ${t.name()}</p>
+      <span class="cp-x-tools">${st.tab && st.tab !== (S.route.tab || "overview") ? `<a class="cp-link cp-quiet-link" href="#/case/${raw(S.route.id)}/${st.tab}">${T("open", "öffnen")} ${icon("right")}</a>` : ""}${pinned ? `<button type="button" class="cp-x-close" data-x-close aria-label="${T("Close", "Schliessen")}">×</button>` : ""}</span>
+      <h3>${st.title}</h3>${st.line ? `<p class="cp-x-line-top">${st.line}</p>` : ""}</header><div class="cp-x-body">${st.body}</div>
+    ${pinned ? "" : `<p class="cp-x-hint">${T("Press the name to keep this here.", "Namen anklicken, damit es stehen bleibt.")}</p>`}</section>`;
+}
+// The stage takes the place of «Der Fall» on the Übersicht; on the other tabs it stands at the right over the page.
+function xShow(key, pinned) {
+  clearTimeout(S.xTimer);
+  const html = xOn() ? xStage(key, pinned) : "";
+  if (!html) { xClear(); return; }
+  const side = document.querySelector("aside.cp-side");
+  let host = document.getElementById("xstage");
+  if (!host) { host = document.createElement("div"); host.id = "xstage"; }
+  const home = side || document.body;
+  if (host.parentElement !== home) home.appendChild(host);
+  host.className = side ? "cp-x-inplace" : "cp-x-float";
+  if (host.dataset.shown !== `${key}:${pinned}:${LANG}`) { host.innerHTML = html; host.dataset.shown = `${key}:${pinned}:${LANG}`; }
+  if (side) side.classList.add("cp-x-on");
+  for (const b of document.querySelectorAll(".cp-xitem")) { b.classList.toggle("on", b.dataset.x === key); b.setAttribute("aria-pressed", String(S.xPin === b.dataset.x)); }
+}
+function xClear() {
+  const host = document.getElementById("xstage"), side = document.querySelector("aside.cp-side");
+  if (host) host.remove();
+  if (side) side.classList.remove("cp-x-on");
+  for (const b of document.querySelectorAll(".cp-xitem.on")) b.classList.remove("on");
+}
+const xRest = () => { if (S.xPin && xOn() && X_TOPICS[S.xPin] && X_TOPICS[S.xPin].show()) xShow(S.xPin, true); else xClear(); };
+document.addEventListener("mouseover", (event) => {
+  const item = event.target.closest && event.target.closest(".cp-xitem");
+  if (item) { clearTimeout(S.xTimer); S.xTimer = setTimeout(() => xShow(item.dataset.x, S.xPin === item.dataset.x), document.querySelector("aside.cp-side") ? 70 : 180); return; }
+  if (event.target.closest && (event.target.closest(".cp-xindex") || event.target.closest("#xstage"))) { clearTimeout(S.xTimer); return; }
+  if (document.getElementById("xstage") && !(S.xPin && (document.getElementById("xstage").dataset.shown || "").startsWith(`${S.xPin}:true`))) { clearTimeout(S.xTimer); S.xTimer = setTimeout(xRest, 240); }
+});
+document.addEventListener("focusin", (event) => { const item = event.target.closest && event.target.closest(".cp-xitem"); if (item) xShow(item.dataset.x, S.xPin === item.dataset.x); });
+document.addEventListener("click", (event) => {
+  const el = event.target.closest ? event.target : null;
+  if (!el) return;
+  const item = el.closest(".cp-xitem");
+  if (item) { S.xPin = S.xPin === item.dataset.x ? null : item.dataset.x; if (S.xPin) xShow(S.xPin, true); else xShow(item.dataset.x, false); return; }
+  if (el.closest("[data-x-close]")) { S.xPin = null; xClear(); return; }
+  if (el.closest("[data-x-story]")) { S.xPin = null; xClear(); if ((S.route.tab || "overview") !== "overview") location.hash = `#/case/${S.route.id}/overview`; setTimeout(() => { if (S.storyOpen !== S.route.id) openStory(); }, 350); return; }
+  const cite = el.closest("#xstage [data-x-file]");
+  if (cite && !el.closest("a, button")) { S.file = cite.dataset.xFile; S.page = Number(cite.dataset.xPage) || null; S.follow = false; if (S.route.tab === "claim_reader") renderCase(); else location.hash = `#/case/${S.route.id}/claim_reader`; }
+});
 
 // The keys, said once where the reader asks for them («?»): what works everywhere, in the list, in a case, in a picture.
 function keysCard(open) {

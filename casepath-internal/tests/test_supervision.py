@@ -333,6 +333,26 @@ class CraftTests(unittest.TestCase):
         self.assertIn("if (grew) S.story.ctrl.play();", SCRIPT)
         self.assertIn("seen[was] = false;", SCRIPT)                                        # a step taken: drawn again up to there, played from where the case stands                            # a change under the reader's eyes arrives as its own movement
 
+    def test_the_case_is_named_in_parts_and_each_part_answers_the_hand(self):
+        # the rail names what CasePath established, in three groups; a part with nothing to show is not named
+        self.assertIn('[[T("The case", "Der Fall"), ["anliegen", "parteien", "deckung", "fristen", "rechtliches"]], [T("Evidence", "Belege"), ["angaben", "unterlagen", "verlauf"]], ["CasePath", ["prozess", "vorbereitung", "wissen"]]]', SCRIPT)
+        self.assertIn("const items = keys.filter((k) => X_TOPICS[k].show()).map(", SCRIPT)
+        self.assertIn("    ${caseIndex()}\n", SCRIPT)
+        # not while CasePath works, not in the study, not before anything is prepared
+        self.assertIn('const xOn = () => S.route.view === "case" && S.data && S.data.screen && !running() && !unaidedPending() && !((S.data.case.intake || {}).study);', SCRIPT)
+        # resting the hand shows the part, pressing keeps it, Escape and another case put it away
+        self.assertIn("S.xTimer = setTimeout(() => xShow(item.dataset.x, S.xPin === item.dataset.x)", SCRIPT)
+        self.assertIn("if (item) { S.xPin = S.xPin === item.dataset.x ? null : item.dataset.x;", SCRIPT)
+        self.assertIn('if (event.key === "Escape" && document.getElementById("xstage")) { S.xPin = null; xClear(); return; }', SCRIPT)
+        self.assertIn('if (next.view !== "case" || next.id !== S.route.id) { S.xPin = null; xClear(); }', SCRIPT)
+        # the stage is built from what the page holds and leads to the passage; it decides nothing
+        self.assertIn('const cite = el.closest("#xstage [data-x-file]");', SCRIPT)
+        stage = SCRIPT[SCRIPT.index("const X_TOPICS = {"):SCRIPT.index("const xOn = ")]
+        self.assertNotIn("data-decide", stage)
+        self.assertNotIn("api(", stage)
+        self.assertIn("aside.cp-side.cp-x-on > :not(#xstage) { display: none; }", STYLE)
+        self.assertIn("@media (prefers-reduced-motion: reduce) { .cp-xstage *, #xstage.cp-x-float { animation: none !important; }", STYLE)
+
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
         self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)
         self.assertIn('document.querySelector(".cp-prepared .cp-button.primary:not(:disabled)")', SCRIPT)
