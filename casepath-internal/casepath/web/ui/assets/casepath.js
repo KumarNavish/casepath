@@ -1506,7 +1506,7 @@ function processView() {
   const change = S.lastEdit ? (S.lastEdit.op ? beforeNow() : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>`) : "";
   return `<section class="cp-card cp-process"><header class="cp-process-head"><h1 class="cp-title">${T("Process", "Prozess")}${S.data.process.short_title ? ` <span class="cp-muted">· ${esc(S.data.process.short_title)}</span>` : ""}</h1>
       <button class="cp-link cp-quiet-link" id="edit-open" aria-expanded="${Boolean(S.editing)}">${T("Change for this case", "Für diesen Fall ändern")}</button></header>
-    ${change}${S.editing ? editForm(model.steps[S.step]) : tabPicture("process", window.CasePathFlow ? 440 : 300)}
+    ${change}${S.editing ? editForm(model.steps[S.step]) : tabPicture("process", window.CasePathFlow ? Math.max(440, Math.min(640, window.innerHeight - 330)) : 300)}
     <ol class="cp-steps">${before}${rows}${end}${ahead}</ol></section>`;
 }
 

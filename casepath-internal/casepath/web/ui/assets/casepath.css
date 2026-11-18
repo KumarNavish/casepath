@@ -1839,3 +1839,6 @@ input[type="text"], input[type="search"], input:not([type]), textarea, select { 
 .cp-letter, .cp-sheet { border: 0; box-shadow: var(--ring); border-radius: 14px; }
 .cp-pulse, .cp-walkbar { background: var(--blue); }
 .cp-step.current .cp-step-mark, .cp-step.now .cp-step-mark { color: var(--blue); }
+/* every secondary button keeps its ring, wherever an earlier rule had taken its outline away */
+.cp-body .cp-button:not(.primary):not([aria-pressed="true"]):not(:disabled) { box-shadow: var(--ring); background-color: #fff; }
+.cp-body .cp-button:not(.primary):not([aria-pressed="true"]):hover:not(:disabled) { background-color: #f7f8f8; }
