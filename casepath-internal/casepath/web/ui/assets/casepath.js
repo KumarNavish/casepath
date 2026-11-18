@@ -3187,6 +3187,19 @@ document.addEventListener("visibilitychange", () => { if (document.hidden) for (
 // The Verlauf: one table of the case in time order (the server's verlauf.rows): the report as row 1, then every document
 // of the file, every entry the handler made and every gesture the handler made here, each where it happened. A handler's
 // entry is marked as theirs and can be changed or removed; a change that can be undone says so. One filter: only what is open.
+// A reply that answers several requests of one letter says so once («beantwortet: 5 Anforderungen aus Nr. 5»); each
+// request keeps its own line at the letter that made it, where it also says whether it was answered. One open note is
+// never folded.
+function foldNotes(notes) {
+  const groups = new Map(), out = [];
+  for (const n of notes) {
+    const m = !n.open && /^beantwortet: .+ \(zu Nr\. (\d+)\)$/.exec(String(n.text || ""));
+    if (!m) { out.push(n); continue; }
+    if (!groups.has(m[1])) { groups.set(m[1], { first: n, items: [] }); out.push(groups.get(m[1])); }
+    groups.get(m[1]).items.push(n);
+  }
+  return out.flatMap((x) => (x.items ? (x.items.length < 3 ? x.items : [{ ...x.first, text: LANG === "de" ? `beantwortet: ${x.items.length} Anforderungen aus Nr. ${[...groups.entries()].find(([, g]) => g === x)[0]}` : `answered: ${x.items.length} requests of no. ${[...groups.entries()].find(([, g]) => g === x)[0]}` }]) : [x]));
+}
 // The case's time as one band: every dated entry at its day, by who wrote (customer above the line, the insurer on it,
 // everyone else below), what is open ringed. A dot under the hand names its entry and marks its row; pressed, the page
 // goes to the row. Gaps show at a glance: where nothing happened for weeks, the band is empty.
@@ -3259,7 +3272,7 @@ function historyView() {
   const line = (r) => `<tr class="${r.open ? "open" : ""} cp-row-${raw(r.kind)}" ${String(r.key).startsWith("entry:") ? `data-item="${raw(r.key)}"` : ""}>
       <td>${r.number ?? ""}</td><td class="cp-nowrap">${dateText(r.date)}</td><td class="cp-nowrap">${esc(r.who || "")}</td>
       <td>${tag(r)}<span class="cp-muted">${esc(r.title || "")}</span><br>${esc(r.what || "")}${source(r)}${own(r)}</td>
-      <td>${(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;
+      <td>${foldNotes(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;
   return `${S.entryEdit ? `<section class="cp-card cp-case cp-entry-edit"><h3>${T("Change your entry", "Eigenen Eintrag ändern")}</h3>${entryForm()}</section>` : ""}
     <section class="cp-card cp-account"><header class="cp-account-head"><h2 class="cp-section">${T("History", "Verlauf")}</h2>
       <span class="cp-muted">${docs} ${docs === 1 ? T("document", "Dokument") : T("documents and entries", "Dokumente und Einträge")}${done ? ` · ${done} ${done === 1 ? T("step done here", "Bearbeitung") : T("steps done here", "Bearbeitungen")}` : ""}${open ? ` · ${open} ${T("open", "offen")}` : ""}</span>

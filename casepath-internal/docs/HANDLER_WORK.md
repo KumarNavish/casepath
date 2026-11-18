@@ -245,7 +245,8 @@ next) and listed what stood in the way. What was changed on that evidence:
 Left as they are on purpose: the order of the list (new arrivals before overdue cases, as the server ranks them), the
 line that a step's content is not yet legally reviewed (a jurist should know it), the flow as the first thing on
 «Prozess», and the dispatch button's words «Versandt am» (the study's session protocol and its receipts name the
-button by these words). Not yet done from that review: the Verlauf table's order and its repeated request lines.
+button by these words). The Verlauf table now runs by day, and a reply that answers several requests of one letter
+says so once («beantwortet: 5 Anforderungen aus Nr. 5»); each request keeps its own line at the letter that made it.
 
 ## The case in parts, under the hand (18 November 2026)
 

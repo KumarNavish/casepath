@@ -404,6 +404,9 @@ class CraftTests(unittest.TestCase):
         self.assertIn('const row = tbRow(dot.dataset.tbNo); if (row) row.classList.add("cp-tb-point");', SCRIPT)
         band = SCRIPT[SCRIPT.index("function timeBand()"):SCRIPT.index("const tbRow = ")]
         self.assertNotIn("api(", band)                                   # built from what the page holds
+        # a reply that answers several requests of one letter says so once; an open note is never folded
+        self.assertIn("const m = !n.open && /^beantwortet: .+ \\(zu Nr\\. (\\d+)\\)$/.exec(String(n.text || \"\"));", SCRIPT)
+        self.assertIn('<td>${foldNotes(r.notes || []).map(note).join("")}${tools(r)}</td></tr>`;', SCRIPT)
         # the list: a day of the week under the hand shows its cases; nothing is filtered until it is pressed
         self.assertIn('table.classList.add("cp-week-hover");', SCRIPT)
         self.assertIn(".cp-cases.cp-week-hover tbody tr:not(.cp-week-hit) { opacity: .32; }", STYLE)
