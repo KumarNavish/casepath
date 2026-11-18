@@ -115,6 +115,9 @@ class Settings:
     # (CASEPATH_TRANSLATE_TOKENS); «off», no translation is offered.
     translate: str = "memory"
     translate_token_budget: int = 300_000
+    # Which cases the model may translate for (CASEPATH_TRANSLATE_AREAS: parts of a legal area's id, comma-separated,
+    # e.g. «mietmangel»). Empty: every case. A text is translated once and kept; every later reader gets it from there.
+    translate_areas: tuple = ()
     mail_subject: str | None = None  # the subject line shown beside a letter (CASEPATH_MAIL_SUBJECT: «{referenz} {betreff}»)
     # how a reference number looks in a file (CASEPATH_REFERENCE_PATTERN); the house's claim numbers unless set
     reference_pattern: str = field(default_factory=lambda: house.active().claim_number)
@@ -210,6 +213,7 @@ def load_settings(env=None):
         case_access=_case_access(env.get("CASEPATH_CASE_ACCESS")),
         translate=_one_of(env.get("CASEPATH_TRANSLATE"), "memory", {"off", "memory", "model"}, "CASEPATH_TRANSLATE is off, memory or model"),
         translate_token_budget=max(0, int(env.get("CASEPATH_TRANSLATE_TOKENS", "300000"))),
+        translate_areas=tuple(a.strip().lower() for a in (env.get("CASEPATH_TRANSLATE_AREAS") or "").split(",") if a.strip()),
         time_measure=_one_of(env.get("CASEPATH_TIME_MEASURE"), "off", {"off", "session"}, "CASEPATH_TIME_MEASURE is off or session"),
         tick_minutes=max(0, int(env.get("CASEPATH_TICK_MINUTES", "60"))),
     )

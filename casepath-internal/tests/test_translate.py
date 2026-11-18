@@ -199,6 +199,63 @@ class ShownOnlyTests(unittest.TestCase):
         self.assertIn('api("/api/translate", { method: "POST"', SCRIPT)
 
 
+class OnceForTheCasesInScopeTests(unittest.TestCase):
+    """The model translates for the named legal areas only; ahead of the readers, once, and what it gave is kept."""
+
+    def setUp(self):
+        self.model = FakeModel()
+        self.folder = tempfile.mkdtemp()
+        self.app = create_app(load_settings({"CASEPATH_DATA_DIR": self.folder, "CASEPATH_DEV_USER": "t", "CASEPATH_TRANSLATE": "model",
+                                             "CASEPATH_TRANSLATE_AREAS": "Mietmangel"}), model_factory=lambda *a: self.model)
+        self.client = TestClient(self.app)
+        self.inside = self.client.post("/api/cases", json={"title": "Schimmel im Bad, den kein Gedächtnis kennt"}).json()["id"]
+        self.outside = self.client.post("/api/cases", json={"title": "Ein Arbeitszeugnis, das kein Gedächtnis kennt"}).json()["id"]
+        self.app.state.store.select_workflow(self.inside, "mietmangel-handler", "1", "t")
+        self.app.state.store.select_workflow(self.outside, "arbeitszeugnis", "1", "t")
+
+    def settle(self):
+        for _ in range(200):
+            if not self.client.get("/api/translate/cases").json()["waiting"]:
+                return
+            time.sleep(0.02)
+
+    def test_a_case_outside_the_named_areas_is_never_sent_to_the_model(self):
+        asked = self.client.post("/api/translate", json={"lang": "en", "texts": ["Ein Arbeitszeugnis, das kein Gedächtnis kennt"], "case_id": self.outside}).json()
+        self.assertEqual(asked["_tr_wait"], 0)
+        self.assertEqual(self.client.post("/api/translate", json={"lang": "en", "texts": ["Ein Satz ohne Fall, den niemand kennt"]}).json()["_tr_wait"], 0)
+        self.assertEqual(self.model.calls, [])
+        inside = self.client.post("/api/translate", json={"lang": "en", "texts": ["Schimmel im Bad, den kein Gedächtnis kennt"], "case_id": self.inside}).json()
+        self.assertEqual(inside["_tr_wait"], 1)
+        self.settle()
+
+    def test_counting_costs_nothing_and_translating_ahead_is_done_once(self):
+        count = self.client.post("/api/translate/cases", json={"lang": "en"}).json()      # dry_run is the default
+        self.assertEqual((count["cases"], count["queued"], count["areas"]), (1, 0, ["mietmangel"]))
+        self.assertGreater(count["lines"], 0)
+        self.assertGreater(count["estimate_tokens"], 0)
+        self.assertEqual(self.model.calls, [])
+        started = self.client.post("/api/translate/cases", json={"lang": "en", "dry_run": False}).json()
+        self.assertGreater(started["queued"], 0)
+        self.settle()
+        sent = [line for call in self.model.calls for line in call]
+        self.assertIn("Schimmel im Bad, den kein Gedächtnis kennt", sent)
+        self.assertNotIn("Ein Arbeitszeugnis, das kein Gedächtnis kennt", sent)
+        self.assertEqual(len(sent), len(set(sent)))                                        # each line once
+        again = self.client.post("/api/translate/cases", json={"lang": "en"}).json()
+        self.assertEqual(again["lines"], 0)                                                # kept: nothing is left to translate
+        calls = len(self.model.calls)
+        self.client.post("/api/translate/cases", json={"lang": "en", "dry_run": False})
+        self.settle()
+        self.assertEqual(len(self.model.calls), calls)                                     # and nothing is translated twice
+
+    def test_what_was_translated_once_serves_a_deployment_that_has_the_model_switched_off_again(self):
+        self.client.post("/api/translate/cases", json={"lang": "en", "dry_run": False})
+        self.settle()
+        quiet = TestClient(create_app(load_settings({"CASEPATH_DATA_DIR": self.folder, "CASEPATH_DEV_USER": "t"}), model_factory=lambda: None))
+        got = quiet.get(f"/api/cases/{self.inside}", headers={"x-casepath-lang": "en"}).json()
+        self.assertEqual(got["_tr"].get("Schimmel im Bad, den kein Gedächtnis kennt"), "EN:Schimmel im Bad, den kein Gedächtnis kennt")
+
+
 class ApiTests(unittest.TestCase):
     def setUp(self):
         folder = tempfile.mkdtemp()

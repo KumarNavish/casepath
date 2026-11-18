@@ -1061,6 +1061,23 @@
     "title": "StudyCopyRequest",
     "type": "object"
    },
+   "TranslateCases": {
+    "properties": {
+     "dry_run": {
+      "default": true,
+      "title": "Dry Run",
+      "type": "boolean"
+     },
+     "lang": {
+      "const": "en",
+      "default": "en",
+      "title": "Lang",
+      "type": "string"
+     }
+    },
+    "title": "TranslateCases",
+    "type": "object"
+   },
    "TranslateTexts": {
     "additionalProperties": false,
     "properties": {
@@ -4454,6 +4471,57 @@
      }
     },
     "summary": "Translate Texts"
+   }
+  },
+  "/api/translate/cases": {
+   "get": {
+    "operationId": "translate_cases_state_api_translate_cases_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Translate Cases State"
+   },
+   "post": {
+    "description": "Once, ahead of the readers: what the cases in scope show (the study's cases first) is translated and kept, so\nnobody waits for it and nothing is translated twice. ``dry_run`` (the default) only counts: cases, lines not yet\nknown, and about how many tokens they would cost. Without it the lines are queued within the day's budget.",
+    "operationId": "translate_cases_api_translate_cases_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/TranslateCases"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Translate Cases"
    }
   },
   "/api/translate/missing": {

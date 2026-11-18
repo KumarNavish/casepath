@@ -126,3 +126,19 @@ from: the package, the workflow catalogue, the synthetic cases, `app.yaml` and `
 ## The case list stays fast
 
 A row of the list is worked out from the case's whole state, which costs as much as opening the case. With a hundred cases that was 5 to 11 seconds per list on the pilot, and the list is asked for at every return to it (and once more by «Heute»). The server now keeps each row until something it can change with changes: the case, its events, files, runs, edits or saved letter text, the Knowledge base, the jurists' marks, or the day (`store.row_versions`, `case_rows` in `web/app.py`); never longer than ten minutes, so a dependency the key should ever miss corrects itself. The page shows the list at once as it was when the reader comes back from a case in which nothing was written, and brings it up to date behind; after anything was written it asks anew first. Nothing is stored outside the process: a restart works every row out once.
+
+## Reading in English: translated once, for the cases that need it
+
+A text is translated at most once. What the shipped memory does not know and the model translated is kept in the store
+(table `translations`, removed with its case) and serves every later reader, also after the model is switched off again.
+
+- `CASEPATH_TRANSLATE=model` allows the model; `CASEPATH_TRANSLATE_AREAS` names the legal areas it may translate for
+  (parts of an area's id, comma-separated, e.g. `mietmangel`). Empty means every case. A case outside the named areas
+  is never sent to the model; it is shown with what the memory and the store already hold.
+- **Ahead of the readers, once** (reviewers only):
+  `POST /api/translate/cases {"lang":"en"}` counts and costs nothing: the cases in scope (the study's cases first), the
+  lines not yet known, and about how many tokens they would take. The same call with `"dry_run": false` queues them
+  within the day's budget (`CASEPATH_TRANSLATE_TOKENS`); `GET /api/translate/cases` says how many are still waiting and
+  what was spent. Running it again translates only what is new.
+- Afterwards the deployment can go back to `CASEPATH_TRANSLATE=memory`: nothing more is spent and everything translated
+  stays available. For cases that arrive later, run the one call again.

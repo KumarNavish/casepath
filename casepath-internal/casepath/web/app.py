@@ -464,7 +464,8 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
                 # reading in another language: from the shipped memory only, or the model for the rest (and what failed last)
                 "translate": {"mode": settings.translate, "languages": list(translate.LANGUAGES), "error": translator.error,
                               # tokens the model spent on translation today, of the day's ceiling (0 without the model)
-                              "spent_today": translator.spent() if settings.translate == "model" else 0, "budget": settings.translate_token_budget},
+                              "spent_today": translator.spent() if settings.translate == "model" else 0, "budget": settings.translate_token_budget,
+                              "areas": list(settings.translate_areas)},
                 "pdf_text": "pypdf" if importlib.util.find_spec("pypdf") else "builtin",
                 "scanned_pages": "rendered" if importlib.util.find_spec("pypdfium2") and importlib.util.find_spec("PIL") else "embedded images",
                 "sign_in": f"gateway ({settings.identity_format})" if settings.identity_header else "dev" if settings.dev_user else "none",
@@ -1630,8 +1631,60 @@ def create_app(settings=None, *, model_factory=None, store=None, catalogue=None,
         if body.case_id:
             found(store.get_case, body.case_id)
         payload = {"text": [t[:4000] for t in body.texts]}
-        translator.annotate(payload, body.lang, case_id=body.case_id, token=request.headers.get("x-forwarded-access-token"))
+        translator.annotate(payload, body.lang, case_id=body.case_id, token=request.headers.get("x-forwarded-access-token"),
+                            model=translate_scope(body.case_id))
         return {"_tr": payload.get("_tr", {}), "_tr_wait": payload.get("_tr_wait", 0)}
+
+    def translate_scope(case_id):
+        """Whether the model may translate for this case: every case, or only those of the named legal areas
+        (CASEPATH_TRANSLATE_AREAS). What was translated once is kept and serves every case and every reader."""
+        if not settings.translate_areas:
+            return True
+        row = store.get_case(case_id) if case_id else None
+        return bool(row) and any(a in str(row.get("workflow_id") or "").lower() for a in settings.translate_areas)
+
+    class TranslateCases(BaseModel):
+        lang: Literal["en"] = "en"
+        dry_run: bool = True
+
+    @app.post("/api/translate/cases")
+    def translate_cases(body: TranslateCases, request: Request, who=Depends(user)):
+        """Once, ahead of the readers: what the cases in scope show (the study's cases first) is translated and kept, so
+        nobody waits for it and nothing is translated twice. ``dry_run`` (the default) only counts: cases, lines not yet
+        known, and about how many tokens they would cost. Without it the lines are queued within the day's budget."""
+        reviewer(who)
+        rows = [r for r in store.list_cases() if translate_scope(r["id"])]
+        rows.sort(key=lambda r: 0 if (r.get("intake") or {}).get("study") else 1)
+        lines, first, skipped = [], {}, 0
+        for row in rows:
+            try:
+                view = get_case(row["id"], who)
+            except Exception:  # noqa: BLE001  a case that cannot be shown now is left out and counted
+                skipped += 1
+                continue
+            for line in translator.pending(view if isinstance(view, dict) else {}, body.lang):
+                if line not in first:
+                    first[line] = row["id"]
+                    lines.append(line)
+        estimate = sum(translator.estimate(lines[i:i + 40]) for i in range(0, len(lines), 40))
+        answer = {"cases": len(rows), "study": sum(1 for r in rows if (r.get("intake") or {}).get("study")), "skipped": skipped,
+                  "lines": len(lines), "estimate_tokens": estimate, "mode": settings.translate, "areas": list(settings.translate_areas),
+                  "spent_today": translator.spent() if settings.translate == "model" else 0, "budget": settings.translate_token_budget}
+        if body.dry_run or settings.translate != "model":
+            return {**answer, "queued": 0}
+        token, queued = request.headers.get("x-forwarded-access-token"), 0
+        by_case = {}
+        for line in lines:
+            by_case.setdefault(first[line], []).append(line)
+        for case_id, batch in by_case.items():
+            queued = translator.ask(batch, body.lang, case_id=case_id, token=token) or queued
+        return {**answer, "queued": queued}
+
+    @app.get("/api/translate/cases")
+    def translate_cases_state(who=Depends(user)):
+        reviewer(who)
+        return {"waiting": translator.waiting(), "error": translator.error, "mode": settings.translate, "areas": list(settings.translate_areas),
+                "spent_today": translator.spent() if settings.translate == "model" else 0, "budget": settings.translate_token_budget}
 
     @app.get("/api/translate/missing")
     def translate_missing(lang: str = "en", who=Depends(user)):

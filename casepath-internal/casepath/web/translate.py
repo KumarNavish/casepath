@@ -186,6 +186,20 @@ class Translator:
                 payload["_tr_wait"] = queued
         return payload
 
+    def pending(self, payload, language):
+        """The lines of an answer a reader would see untranslated and that are worth translating, each once."""
+        out = []
+        for text, worth in texts(payload):
+            for line in (text.split("\n") if "\n" in text else (text,)):
+                line = line.strip()
+                if worth and wording(line) and line not in out and self.known(line, language) is None:
+                    out.append(line)
+        return out
+
+    def waiting(self):
+        with self._lock:
+            return len(self._queue)
+
     # ---- the model, in the background ----
     def spent(self):
         return self.store.translation_spent(datetime.now(timezone.utc).date().isoformat()) if self.store is not None else 0
