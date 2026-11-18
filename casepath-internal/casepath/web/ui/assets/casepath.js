@@ -455,6 +455,7 @@ async function loadList(sinceMark) {
   const print = (d) => JSON.stringify([d.got[0], d.got[3] && d.got[3].events, d.got[3] && d.got[3].done, d.imported]);
   const changed = !S.listData || S.listData.lang !== LANG || print(S.listData) !== print({ got, imported });
   S.listData = { lang: LANG, got, imported };
+  if (changed && S.route.view === "cases") renderTop();   // the sidebar says how many cases there are
   S.listStale = false;
   try { localStorage.setItem("cp-last-visit", new Date().toISOString()); } catch (error) { /* a convenience only */ }
   // a case whose status changed since the list was last on this screen (a letter approved, an answer arrived, a
