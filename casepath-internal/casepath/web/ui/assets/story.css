@@ -1,9 +1,9 @@
 /* CasePath story engine (assets/story.js). Every class starts with cps-. The choreography is here: story.js only
    switches classes (cps-on: in the picture, cps-act: the subject of the current beat, cps-enter: arriving now). */
 .cps {
-  --cps-ink: var(--ink, #10171a); --cps-quiet: var(--ink-2, #536167); --cps-ghost: var(--ghost, #8a979c); --cps-ring: #c9d1d4;
-  --cps-hair: #e3e7e9; --cps-pale: #f4f6f7; --cps-deep: var(--deep, #1b2a30); --cps-crimson: var(--crimson, #82072a);
-  --cps-green: #1f6b3a; --cps-green-tint: #edf5ee;
+  --cps-ink: var(--ink, #10171a); --cps-quiet: var(--ink-2, #536167); --cps-ghost: var(--ghost, #8a979c); --cps-ring: #cfd2d4;
+  --cps-hair: #e2e4e5; --cps-pale: #f3f4f4; --cps-deep: var(--deep, #1b2a30); --cps-crimson: var(--blue, #2f6fed);
+  --cps-green: #2c6b22; --cps-green-tint: #e7f6e2;
   --cps-ease: cubic-bezier(.2, .8, .2, 1);      /* arrivals: quick out, long settle */
   --cps-cam: cubic-bezier(.5, .02, .16, 1);     /* the camera: slow to leave, slow to arrive */
   --cps-cam-ms: 820ms;
@@ -15,7 +15,7 @@
 
 /* ----- the stage: a viewport on a dotted ground; the world moves in it ----- */
 .cps-stage { position: relative; overflow: hidden; border: 1px solid var(--cps-hair); border-radius: 16px; cursor: grab; touch-action: pan-y;
-  user-select: none; -webkit-user-select: none; background-color: #f9fafb; background-image: radial-gradient(circle, #d5dcdf 1px, transparent 1.2px); background-size: 18px 18px; }
+  user-select: none; -webkit-user-select: none; background-color: #f6f7f7; background-image: radial-gradient(circle, #d9dcdd 1px, transparent 1.2px); background-size: 18px 18px; }
 .cps-stage:focus-visible { outline: 2px solid var(--cps-crimson); outline-offset: 2px; }
 .cps-stage.cps-drag { cursor: grabbing; }
 .cps-world { position: absolute; left: 0; top: 0; transform-origin: 0 0; transition: transform var(--cps-cam-ms) var(--cps-cam); }
@@ -49,8 +49,8 @@
   font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* the subject of the beat, and everything before it at a quieter weight */
-.cps-act .cps-card { border-color: rgba(130, 7, 42, .55); transform: scale(1.02);
-  box-shadow: 0 0 0 3px rgba(130, 7, 42, .06), 0 1px 3px rgba(16, 23, 26, .05), 0 12px 24px -16px rgba(16, 23, 26, .32); }
+.cps-act .cps-card { border-color: rgba(47, 111, 237, .55); transform: scale(1.02);
+  box-shadow: 0 0 0 3px rgba(47, 111, 237, .06), 0 1px 3px rgba(16, 23, 26, .05), 0 12px 24px -16px rgba(16, 23, 26, .32); }
 .cps-has-act .cps-node:not(.cps-act) .cps-card { box-shadow: none; }
 .cps-has-act .cps-node:not(.cps-act) .cps-body, .cps-has-act .cps-node:not(.cps-act) .cps-mark, .cps-has-act .cps-node:not(.cps-act) .cps-sheet { opacity: .68; }
 .cps-mark, .cps-sheet { transition: opacity .45s ease; }
@@ -73,7 +73,7 @@
 .cps-tick path { stroke-dasharray: 16; }
 [data-state="present"] .cps-mark, [data-state="done"] .cps-mark { border-color: var(--cps-green); background: var(--cps-green-tint); }
 [data-state="present"] .cps-tick, [data-state="done"] .cps-tick { opacity: 1; }
-[data-state="missing"] .cps-mark { border-color: var(--cps-crimson); border-style: dashed; }
+[data-state="missing"] .cps-mark { border-color: var(--red, #c62445); border-style: dashed; }
 .cps-ratio { flex: none; width: 34px; height: 4px; border-radius: 2px; background: var(--cps-hair); overflow: hidden; }
 .cps-ratio i { display: block; height: 100%; border-radius: 2px; background: var(--cps-quiet); transform-origin: 0 50%; transform: scaleX(var(--cps-r, 0)); }
 /* a step on the path, a decision, an entry: round marks */
@@ -154,7 +154,7 @@
 .cps-bar button:focus-visible, .cps-timeline:focus-visible { outline: 2px solid var(--cps-crimson); outline-offset: 2px; }
 .cps-ico { width: 18px; height: 18px; fill: currentColor; stroke: none; flex: none; }
 .cps-play { flex: none; display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 0; border-radius: 50%; background: var(--cps-deep); color: #fff; transition: transform .14s var(--cps-ease), background .16s ease; }
-.cps-play:hover { background: #0f1a1e; }
+.cps-play:hover { background: #2a2e33; }
 .cps-play:active { transform: scale(.94); }
 .cps-play[data-mode="replay"] .cps-ico, .cps-ghost .cps-ico { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .cps-timeline { position: relative; flex: 1; min-width: 80px; height: 32px; border-radius: 8px; cursor: pointer; touch-action: none; }
@@ -166,7 +166,7 @@
   transition: transform .25s var(--cps-ease), background .25s ease, box-shadow .25s ease; }
 .cps-tick-mark:hover::after { transform: scale(1.35); }
 .cps-tick-mark.cps-past::after { background: var(--cps-deep); box-shadow: none; }
-.cps-tick-mark.cps-now::after { background: var(--cps-crimson); box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(130, 7, 42, .35); transform: scale(1.3); }
+.cps-tick-mark.cps-now::after { background: var(--cps-crimson); box-shadow: 0 0 0 3px #fff, 0 0 0 4px rgba(47, 111, 237, .35); transform: scale(1.3); }
 .cps-dense .cps-tick-mark::after { width: 2px; height: 9px; margin-left: -1px; border-radius: 1px; }
 .cps-count { flex: none; min-width: 108px; text-align: right; font-size: 12.5px; color: var(--cps-quiet); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .cps-ghost { flex: none; display: inline-flex; align-items: center; gap: 7px; height: 32px; padding: 0 13px 0 11px; border: 1px solid var(--cps-hair); border-radius: 999px; background: #fff; color: var(--cps-quiet); font-size: 12.5px; white-space: nowrap;

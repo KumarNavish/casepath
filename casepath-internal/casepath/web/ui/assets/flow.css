@@ -1,0 +1,222 @@
+/* CasePath process-flow canvas (flow.js). Every class starts with cpf-.
+   The look follows the product's system: ink and hairlines on a pale dotted ground; a block is a frame in the colour of
+   its state around a white card of rows. Blue means one thing: where the case stands and the way it took.
+   Green = done, grey = ahead, red = something is missing. */
+
+.cpf-stage {
+  --cpf-ink: #101215; --cpf-quiet: #6e7174; --cpf-ghost: #9a9da1; --cpf-hair: #e2e4e5; --cpf-tray: #f3f4f4;
+  --cpf-ground: #f4f4f4; --cpf-line: #cfd2d4; --cpf-line-dim: #e3e5e6;
+  --cpf-blue: #2f6fed; --cpf-blue-ink: #1f4fbf; --cpf-blue-frame: #cfdffb;
+  --cpf-green-ink: #2c6b22; --cpf-green-frame: #cfe9d4; --cpf-green-tint: #e7f6e2;
+  --cpf-red: #c62445; --cpf-red-frame: #f5c8d3; --cpf-grey-frame: #dfe2e3;
+  --cpf-ring: 0 0 0 .5px rgba(16, 18, 21, .125), 0 1px 1px rgba(0, 0, 0, .04);
+  position: relative; height: 420px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--cpf-hair); border-radius: 16px; background: #fff;
+  font: 400 13.5px/18px "Inter", system-ui, sans-serif; letter-spacing: .008em; color: var(--cpf-ink);
+  -webkit-user-select: none; user-select: none;
+}
+.cpf-stage *, .cpf-stage *::after { box-sizing: border-box; }
+.cpf-stage:focus-visible, .cpf-stage :focus-visible { outline: 2px solid var(--cpf-blue); outline-offset: 2px; }
+
+/* The view onto the world; under it the foot, a place of its own for the key and the controls. */
+.cpf-view {
+  position: relative; flex: 1; min-height: 0; overflow: hidden; overflow: clip;
+  background: var(--cpf-ground); touch-action: none; cursor: grab;
+}
+.cpf-drag .cpf-view { cursor: grabbing; }
+.cpf-drag .cpf-world { will-change: transform; }
+.cpf-foot {
+  flex: none; height: 40px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 0 6px 0 14px; border-top: 1px solid var(--cpf-hair); background: #fff;
+}
+
+/* The world: moved and scaled as one. The dotted ground and the one SVG of all connectors lie under the blocks. */
+.cpf-world { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+.cpf-ground {
+  position: absolute; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='1' cy='1' r='1' fill='%23d9dcdd'/%3E%3C/svg%3E");
+}
+.cpf-lines { position: absolute; overflow: visible; pointer-events: none; }
+
+/* Connectors: the way the case took in blue, ways still possible out of «now» in mid grey, everything else pale. */
+.cpf-line { fill: none; stroke: var(--cpf-line); stroke-width: 1.5; stroke-linecap: round; transition: stroke .25s; }
+.cpf-arrow {
+  fill: var(--cpf-line); stroke: var(--cpf-line); stroke-width: 1; stroke-linejoin: round;
+  transition: fill .25s, stroke .25s;
+}
+.cpf-way[data-way="possible"] .cpf-line { stroke: var(--cpf-ghost); }
+.cpf-way[data-way="possible"] .cpf-arrow { fill: var(--cpf-ghost); stroke: var(--cpf-ghost); }
+.cpf-way[data-way="taken"] .cpf-line { stroke: var(--cpf-blue); }
+.cpf-way[data-way="taken"] .cpf-arrow { fill: var(--cpf-blue); stroke: var(--cpf-blue); }
+.cpf-way.cpf-wait .cpf-line { stroke: var(--cpf-line); }
+.cpf-way.cpf-wait .cpf-arrow { fill: var(--cpf-line); stroke: var(--cpf-line); }
+/* the travelling dash: one short lighter stretch that moves slowly along the last way the case took
+   (flow.js sets its length) */
+.cpf-dash {
+  fill: none; stroke: #fff; stroke-width: 2.25; stroke-linecap: round; opacity: .72;
+  animation: cpf-travel 3s linear infinite;
+}
+@keyframes cpf-travel { from { stroke-dashoffset: 9; } to { stroke-dashoffset: calc(-1px * var(--cpf-len)); } }
+
+/* Block: the colour of its state is its whole frame; the title sits in the top of the frame, the rows in a white
+   card inside it. */
+.cpf-block {
+  --cpf-frame: var(--cpf-grey-frame); --cpf-frame-ink: var(--cpf-ink);
+  position: absolute; left: 0; top: 0; width: 300px; padding: 0 4px 4px; border-radius: 12px;
+  background: var(--cpf-frame); cursor: default; transition: opacity .2s, background-color .4s;
+}
+.cpf-block[data-tone="done"] { --cpf-frame: var(--cpf-green-frame); --cpf-frame-ink: var(--cpf-green-ink); }
+.cpf-block[data-tone="now"] { --cpf-frame: var(--cpf-blue-frame); --cpf-frame-ink: var(--cpf-blue-ink); }
+.cpf-block[data-tone="hand"] { --cpf-frame: var(--cpf-red-frame); --cpf-frame-ink: var(--cpf-red); }
+.cpf-glide .cpf-block, .cpf-glide .cpf-pill {
+  transition: opacity .2s, background-color .4s, transform .35s cubic-bezier(.4, 0, .2, 1);
+}
+.cpf-band {
+  height: 34px; display: flex; align-items: center; gap: 6px; padding: 0 8px 0 6px; color: var(--cpf-frame-ink);
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: color .4s;
+}
+.cpf-bandmark { display: flex; flex: none; }
+.cpf-title { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.cpf-word { flex: none; font-size: 11.5px; font-weight: 510; }
+.cpf-band:hover .cpf-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.cpf-rows { border-radius: 9px; background: #fff; transition: box-shadow .4s; }
+.cpf-rows:empty { display: none; }
+/* where the case stands: the card outlined in blue, and a very faint ring that breathes slowly (opacity only) */
+.cpf-block[data-tone="now"] .cpf-rows { box-shadow: 0 0 0 1.5px var(--cpf-blue); }
+.cpf-block[data-tone="now"]::after {
+  content: ""; position: absolute; inset: 0; border-radius: 12px; box-shadow: 0 0 0 4px rgba(47, 111, 237, .13);
+  pointer-events: none; animation: cpf-breathe 4s ease-in-out infinite;
+}
+@keyframes cpf-breathe { 0%, 100% { opacity: .2; } 50% { opacity: 1; } }
+
+/* Rows: mark, text, what decides it; hairlines between them. */
+.cpf-row { position: relative; padding: 10px 12px 10px 9px; border-bottom: 1px solid var(--cpf-hair); }
+.cpf-row:first-child { border-radius: 9px 9px 0 0; }
+.cpf-row:last-child { border-bottom: 0; border-radius: 0 0 9px 9px; }
+.cpf-row:only-child { border-radius: 9px; }
+.cpf-body { display: grid; grid-template-columns: 16px minmax(0, 1fr); column-gap: 8px; }
+.cpf-body > * { grid-column: 2; }
+.cpf-body > .cpf-g { grid-column: 1; margin-top: 1px; }
+.cpf-head { display: flex; align-items: flex-start; gap: 8px; min-height: 18px; }
+.cpf-text { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.cpf-sub { margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--cpf-quiet); overflow-wrap: anywhere; }
+.cpf-value {
+  flex: none; margin: -1px 0; padding: 1px 8px; border-radius: 999px; background: var(--cpf-green-tint);
+  color: var(--cpf-green-ink); font-size: 12px; font-weight: 510;
+}
+.cpf-acts { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 2px; }
+.cpf-act {
+  height: 26px; padding: 0 12px; border: 0; border-radius: 999px; background: #fff; color: var(--cpf-ink);
+  box-shadow: 0 0 0 1px var(--cpf-hair); font: 510 12px/1 "Inter", system-ui, sans-serif; letter-spacing: .008em;
+  cursor: pointer; transition: background-color .15s, box-shadow .15s;
+}
+.cpf-act:hover { background: var(--cpf-tray); }
+.cpf-act.cpf-primary { background: var(--cpf-ink); box-shadow: none; color: #fff; }
+.cpf-act.cpf-primary:hover { background: #2a2d31; }
+.cpf-opens { cursor: pointer; }
+.cpf-opens:hover, .cpf-row.cpf-hot { background: #fafafa; }
+.cpf-opens:hover .cpf-text { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.cpf-enter { animation: cpf-enter .45s ease-out both; }
+@keyframes cpf-enter { from { opacity: 0; transform: translateY(-4px); } }
+
+/* Marks: a tick for done, a filled dot for now, a hollow ring for open, a dashed red ring for missing. */
+.cpf-g {
+  width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.cpf-g-dot { fill: currentColor; stroke: none; }
+.cpf-row .cpf-g { color: var(--cpf-ghost); transition: color .4s; }
+.cpf-row .cpf-g-tick { color: var(--cpf-green-ink); }
+.cpf-row .cpf-g-dot { color: var(--cpf-blue); }
+.cpf-row .cpf-g-miss, .cpf-band .cpf-g-miss { color: var(--cpf-red); stroke-dasharray: 2.5 2.4; }
+.cpf-row[data-kind="need"] .cpf-sub { color: var(--cpf-red); }
+/* a way the case did not take recedes; the way it took stands out */
+.cpf-row[data-state="passed"] .cpf-text { color: var(--cpf-quiet); }
+.cpf-row[data-state="passed"] .cpf-sub { color: var(--cpf-ghost); }
+.cpf-row[data-state="taken"] .cpf-text { font-weight: 600; }
+.cpf-row[data-state="taken"] .cpf-g-way { color: var(--cpf-blue); }
+.cpf-row[data-way="possible"] .cpf-g-way, .cpf-row.cpf-hot .cpf-g-way { color: var(--cpf-ink); }
+
+/* Ports: a small tab of the frame's colour on the block's right edge, carrying a white 9 px dot with a ring;
+   the dot is filled blue where the case went out. */
+.cpf-port {
+  position: absolute; left: calc(100% + 1.5px); top: 9px; width: 12.5px; height: 20px; border-radius: 0 7px 7px 0;
+  background: var(--cpf-frame); transition: background-color .4s;
+}
+.cpf-port::after {
+  content: ""; position: absolute; left: 1.5px; top: 5.5px; width: 9px; height: 9px; border-radius: 50%;
+  background: #fff; border: 1.5px solid var(--cpf-ghost); transition: background-color .4s, border-color .4s;
+}
+.cpf-row[data-way="possible"] .cpf-port::after { border-color: var(--cpf-quiet); }
+.cpf-row[data-way="taken"] .cpf-port::after { background: var(--cpf-blue); border-color: var(--cpf-blue); }
+.cpf-row.cpf-wait .cpf-port::after { background: #fff; border-color: var(--cpf-ghost); }
+.cpf-row.cpf-hot .cpf-port::after { background: var(--cpf-ink); border-color: var(--cpf-ink); }
+
+/* End pills: a way that closes the case. */
+.cpf-pill {
+  position: absolute; left: 0; top: 0; height: 26px; display: inline-flex; align-items: center; gap: 5px;
+  padding: 0 12px 0 7px; border: 0; border-radius: 999px; background: #fff; box-shadow: var(--cpf-ring);
+  color: var(--cpf-quiet); white-space: nowrap; cursor: pointer;
+  font: 400 12.5px/1 "Inter", system-ui, sans-serif; letter-spacing: .008em; transition: opacity .2s, color .2s;
+}
+.cpf-pill .cpf-g { color: var(--cpf-ghost); }
+.cpf-pill[data-way="possible"], .cpf-pill[data-way="taken"], .cpf-pill:hover, .cpf-pill.cpf-hot { color: var(--cpf-ink); }
+.cpf-pill[data-way="possible"] .cpf-g, .cpf-pill.cpf-hot .cpf-g { color: var(--cpf-quiet); }
+.cpf-pill[data-state="done"] .cpf-g { color: var(--cpf-green-ink); }
+
+/* Brought forward (hover, highlight): its ways in ink, the rest dimmed. */
+.cpf-focus .cpf-block:not(.cpf-hot):not(.cpf-near), .cpf-focus .cpf-pill:not(.cpf-hot) { opacity: .42; }
+.cpf-focus .cpf-way:not(.cpf-hot) .cpf-line { stroke: var(--cpf-line-dim); }
+.cpf-focus .cpf-way:not(.cpf-hot) .cpf-arrow { fill: var(--cpf-line-dim); stroke: var(--cpf-line-dim); }
+.cpf-focus .cpf-way.cpf-hot:not([data-way="taken"]) .cpf-line { stroke: var(--cpf-ink); }
+.cpf-focus .cpf-way.cpf-hot:not([data-way="taken"]) .cpf-arrow { fill: var(--cpf-ink); stroke: var(--cpf-ink); }
+.cpf-focus .cpf-dash { display: none; }
+
+/* While the path is walked, what the case has not reached yet waits in pale. */
+.cpf-block.cpf-wait .cpf-row .cpf-g { color: var(--cpf-ghost); }
+
+/* A decision just taken (update): the buttons fade out in their place, the value fades in, the tick is drawn. */
+.cpf-leave { pointer-events: none; animation: cpf-leave .3s ease-out both; }
+.cpf-decided .cpf-value { animation: cpf-arrive .35s .15s ease-out both; }
+.cpf-decided .cpf-g-tick path { stroke-dasharray: 13; animation: cpf-tick .45s .15s ease-out both; }
+@keyframes cpf-leave { to { opacity: 0; } }
+@keyframes cpf-arrive { from { opacity: 0; } }
+@keyframes cpf-tick { from { stroke-dashoffset: 13; } to { stroke-dashoffset: 0; } }
+
+/* The foot: the key to the tones on the left; on the right the camera as a segmented control, and expand. */
+.cpf-legend {
+  display: flex; align-items: center; gap: 14px; min-width: 0; overflow: hidden;
+  color: var(--cpf-quiet); font-size: 12px;
+}
+.cpf-key { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.cpf-key-now .cpf-g, .cpf-key-taken .cpf-g { color: var(--cpf-blue); }
+.cpf-key-done .cpf-g { color: var(--cpf-green-ink); }
+.cpf-key-open .cpf-g { color: var(--cpf-ghost); }
+.cpf-narrow .cpf-legend { visibility: hidden; }
+.cpf-controls { flex: none; display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.cpf-seg { display: flex; gap: 2px; padding: 2px; border-radius: 9px; background: var(--cpf-tray); }
+.cpf-ctl {
+  height: 24px; display: inline-flex; align-items: center; gap: 4px; padding: 0 10px; border: 0; border-radius: 7px;
+  background: none; color: var(--cpf-quiet); white-space: nowrap; cursor: pointer;
+  font: 510 12.5px/1 "Inter", system-ui, sans-serif; letter-spacing: .008em;
+  transition: color .15s, background-color .15s;
+}
+.cpf-ctl:hover { color: var(--cpf-ink); }
+.cpf-ctl[aria-pressed="true"] { background: #fff; color: var(--cpf-ink); box-shadow: var(--cpf-ring); }
+.cpf-ctl-here { padding-left: 5px; }
+.cpf-ctl-here .cpf-g { color: var(--cpf-blue); }
+.cpf-ctl-expand {
+  width: 28px; height: 28px; padding: 0; justify-content: center; border-radius: 8px; background: #fff;
+  box-shadow: var(--cpf-ring);
+}
+
+/* Shown over the page. */
+.cpf-stage.cpf-large {
+  box-shadow: 0 0 0 .5px rgba(16, 18, 21, .125), 0 4px 8px -6px rgba(16, 18, 21, .08), 0 22px 44px -18px rgba(16, 18, 21, .22);
+}
+
+/* No motion where none is wanted: every state simply shows. */
+@media (prefers-reduced-motion: reduce) {
+  .cpf-stage, .cpf-stage *, .cpf-stage *::after { transition: none !important; animation: none !important; }
+  .cpf-dash { display: none; }
+}

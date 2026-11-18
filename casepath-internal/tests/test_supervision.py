@@ -353,6 +353,39 @@ class CraftTests(unittest.TestCase):
         self.assertIn("aside.cp-side.cp-x-on > :not(#xstage) { display: none; }", STYLE)
         self.assertIn("@media (prefers-reduced-motion: reduce) { .cp-xstage *, #xstage.cp-x-float { animation: none !important; }", STYLE)
 
+    def test_one_calm_system_holds_every_screen(self):
+        # the sidebar: the product's name, who works, the ways through the product; the case's rail continues it
+        self.assertIn('if (!nav) { nav = document.createElement("aside"); nav.id = "nav"; nav.className = "cp-nav"; document.body.insertBefore(nav, document.body.firstChild); }', SCRIPT)
+        self.assertIn('document.documentElement.style.setProperty("--nav-h", `${nav.offsetHeight}px`);', SCRIPT)
+        self.assertIn('$("#top").innerHTML = `<nav class="cp-tabs"', SCRIPT)      # the top bar holds the page's own views and tools only
+        # the palette is said once, as tokens; the sidebar is light; red is for what needs a hand, blue for what is current
+        self.assertIn("--ink: #101215; --ink-doc: #1c1f23; --ink-2: #6e7174;", STYLE)
+        self.assertIn("--side: #f7f8f8; --side-2: #eceeef; --side-ink: #101215;", STYLE)
+        self.assertIn("--blue: #2f6fed; --blue-tint: #e8f0fe; --red: #c62445;", STYLE)
+        # a card is a hairline ring, a choice among few one tray with the chosen part in white, the main button ink
+        self.assertIn("--ring: 0 0 0 .5px rgba(16,18,21,.125), 0 1px 1px rgba(0,0,0,.04), 0 2px 4px -2px rgba(16,18,21,.06);", STYLE)
+        self.assertIn('.cp-tab[aria-current="page"], .cp-tab.working { background: #fff; color: var(--ink); font-weight: 500; box-shadow: var(--ring); }', STYLE)
+        self.assertIn(".cp-button.primary { background: var(--ink); color: #fff; font-weight: 500; box-shadow: none; border: 0; }", STYLE)
+        # nothing written before the mould keeps a colour of its own
+        before = STYLE[:STYLE.index("The mould (18 November 2026)")]
+        literal = [line for line in before.split("\n") if "#82072a" in line.lower() and "--crimson" not in line]
+        self.assertEqual(literal, [])
+
+    def test_the_process_is_a_flow_with_the_case_on_it(self):
+        assets = Path(__file__).parents[1] / "casepath" / "web" / "ui" / "assets"
+        page = (assets.parent / "index.html").read_text(encoding="utf-8")
+        flow = (assets / "flow.js").read_text(encoding="utf-8")
+        self.assertIn('<script src="/assets/flow.js" defer></script>', page)
+        self.assertIn('<link rel="stylesheet" href="/assets/flow.css">', page)
+        self.assertIn("window.CasePathFlow = { mount: mount };", flow)
+        self.assertNotIn("innerHTML", flow.replace('innerHTML = ""', ""))       # every text of a case is inserted as text
+        # the page hands it the case's real state and keeps one instance across redraws
+        self.assertIn('if (box.dataset.story === "process" && window.CasePathFlow) { mountFlow(box); return; }', SCRIPT)
+        self.assertIn("} else if (S.story.sig !== sig) { S.story.sig = sig; S.story.ctrl.update(model); }", SCRIPT)
+        # a decision offered on a block is taken by the page's own control; a refusal asks for its point on the page
+        self.assertIn("""if (value === "bestätigt") { const b = document.querySelector('[data-decide="deckung"][data-value="bestätigt"]'); if (b) b.click(); return; }""", SCRIPT)
+        self.assertIn("S.coverDecline = true;", SCRIPT[SCRIPT.index("function actFromFlow"):SCRIPT.index("function actFromFlow") + 900])
+
     def test_the_keyboard_walks_the_list_and_takes_the_cards_one_primary(self):
         self.assertIn('["ArrowDown", "ArrowUp", "j", "k", "Enter"]', SCRIPT)
         self.assertIn('document.querySelector(".cp-prepared .cp-button.primary:not(:disabled)")', SCRIPT)

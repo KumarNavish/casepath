@@ -121,6 +121,12 @@ const ICONS = {
   shield: '<path d="M12 3 5 6v5.5c0 4.3 3 7.7 7 9.5 4-1.8 7-5.2 7-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/>',
   nodes: '<circle cx="12" cy="5.5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 8v3.5M6 15.5V13.5h12v2M12 11.5v2"/>',
   folder: '<path d="M3.5 6.5h6l2 2h9v10.5h-17z"/>',
+  chart: '<path d="M4.5 19.5h15M7.5 16v-5M12 16V6.5M16.5 16v-7.5"/>',
+  people: '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3.2 2.7-5 5.5-5s4.9 1.8 5.5 5M15.5 5.8a3 3 0 0 1 0 5.4M17.5 14.3c1.6.7 2.6 2.3 3 4.7"/>',
+  clock: '<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>',
+  book: '<path d="M4.5 5.5c2.5-.8 5-.8 7.5.5v13c-2.5-1.3-5-1.3-7.5-.5zM19.5 5.5c-2.5-.8-5-.8-7.5.5v13c2.5-1.3 5-1.3 7.5-.5z"/>',
+  list: '<path d="M8.5 7h11M8.5 12h11M8.5 17h11M4.5 7h.01M4.5 12h.01M4.5 17h.01"/>',
+  spark: '<path d="M12 4.5l1.7 4.8 4.8 1.7-4.8 1.7L12 17.5l-1.7-4.8L5.5 11l4.8-1.7z"/>',
   check: '<circle cx="12" cy="12" r="8.5"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/>',
   tick: '<path d="m6.5 12.5 3.6 3.6 7.4-8"/>',
   pencil: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
@@ -230,21 +236,40 @@ const wfShort = (id, fallback) => { const w = (S.workflows || []).find((x) => x.
 // ---------- top bar ----------
 function renderTop() {
   const route = S.route;
-  const wordmark = `<a class="cp-wordmark" href="#/cases"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M22 6.5A10 10 0 1 0 22 21.5" fill="none" stroke="#82072a" stroke-width="4.5" stroke-linecap="round"/></svg>CasePath</a>`;
+  const wordmark = `<a class="cp-wordmark" href="#/cases"><svg viewBox="0 0 28 28" aria-hidden="true"><path d="M22 6.5A10 10 0 1 0 22 21.5" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/></svg>CasePath</a>`;
   let tabs;
   if (route.view === "case") {
     tabs = [["overview", T("Overview", "Übersicht"), "check"], ["claim_reader", T("File", "Akte"), "doc"], ["process_builder", T("Process", "Prozess"), "nodes"],
             ["document_finder", T("Documents", "Unterlagen"), "folder"], ["history", T("History", "Verlauf"), "memory"]].map(([id, title, ic]) => `<a class="cp-tab" href="#/case/${raw(route.id)}/${id}"
       ${route.tab === id ? 'aria-current="page"' : ""} data-tab="${id}">${icon(ic)}${title}</a>`).join("");
   } else {
-    tabs = `<a class="cp-tab" href="#/cases" ${route.view === "cases" ? 'aria-current="page"' : ""}>${icon("folder")}${T("Cases", "Fälle")}</a>`;
+    // a page that is one view says its name; the ways between pages are the sidebar's
+    const [href, name, ic] = route.view === "auswertung" ? ["#/auswertung", T("Evaluation", "Auswertung"), "chart"] : route.view === "knowledge" || route.view === "review" ? ["#/knowledge", T("Knowledge", "Wissen"), "book"] : ["#/cases", T("Cases", "Fälle"), "folder"];
+    tabs = `<a class="cp-tab" href="${href}" aria-current="page">${icon(ic)}${name}</a>`;
   }
   const other = LANG === "de" ? "en" : "de";
-  $("#top").innerHTML = `${wordmark}<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
-    ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button><a class="cp-link" href="#/cases">${T("Cases", "Fälle")}</a>` : adminMenu(route)}<span>${esc(S.me || "")}</span>
+  renderNav(wordmark);
+  $("#top").innerHTML = `<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
+    ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button>` : ""}
       <button class="cp-keys-open" id="keys-open" type="button" aria-label="${T("Keyboard shortcuts", "Tastenkürzel")}" title="${T("Keyboard shortcuts (?)", "Tastenkürzel (?)")}">?</button>
       ${langSwitch()}</div>`;
   glide();
+}
+// The sidebar: the product's name, who works, and the ways through the product, always in the same place. In a case the
+// case's own rail (its name, its parts, its files) continues the same column below.
+function renderNav(wordmark) {
+  let nav = document.getElementById("nav");
+  if (!nav) { nav = document.createElement("aside"); nav.id = "nav"; nav.className = "cp-nav"; document.body.insertBefore(nav, document.body.firstChild); }
+  const route = S.route, me = String(S.me || "").trim();
+  const item = (href, ic, title, on, side) => `<a class="cp-nav-item" href="${href}" ${on ? 'aria-current="page"' : ""}>${icon(ic)}<span>${title}</span>${side ? `<small>${side}</small>` : ""}</a>`;
+  const due = S.listData && S.listData.got && S.listData.got[0] ? (S.listData.got[0].cases || []).length : 0;
+  nav.innerHTML = `${wordmark}
+    ${me ? `<div class="cp-nav-who"><span class="cp-nav-avatar" aria-hidden="true">${raw(me.replace(/^[^A-Za-zÄÖÜ]*/, "").slice(0, 1).toUpperCase() || "·")}</span><span class="cp-nav-name">${esc(me)}</span></div>` : ""}
+    <nav aria-label="${T("CasePath", "CasePath")}"><h4>${T("Work", "Arbeit")}</h4>
+      ${item("#/cases", "folder", T("Cases", "Fälle"), route.view === "cases", due ? String(due) : "")}
+      ${S.mayReview ? `<h4>${T("Administration", "Verwaltung")}</h4>${item("#/knowledge", "book", T("Knowledge", "Wissen"), route.view === "knowledge" || route.view === "review")}${item("#/auswertung", "chart", T("Evaluation", "Auswertung"), route.view === "auswertung")}` : ""}</nav>`;
+  document.documentElement.style.setProperty("--nav-h", `${nav.offsetHeight}px`);
+  document.documentElement.classList.toggle("cp-in-case", route.view === "case");
 }
 // One control, one fill: when the choice changes, the fill slides from the old choice to the new one (the tabs, the
 // list's filter, the letters of a step). Called after a render; where nothing moved, nothing plays.
@@ -1480,7 +1505,7 @@ function processView() {
   const change = S.lastEdit ? (S.lastEdit.op ? beforeNow() : `<p class="cp-change">${esc(changeLine(S.lastEdit.diff))} <button class="cp-link" id="undo">${T("Undo", "Rückgängig")}</button></p>`) : "";
   return `<section class="cp-card cp-process"><header class="cp-process-head"><h1 class="cp-title">${T("Process", "Prozess")}${S.data.process.short_title ? ` <span class="cp-muted">· ${esc(S.data.process.short_title)}</span>` : ""}</h1>
       <button class="cp-link cp-quiet-link" id="edit-open" aria-expanded="${Boolean(S.editing)}">${T("Change for this case", "Für diesen Fall ändern")}</button></header>
-    ${change}${S.editing ? editForm(model.steps[S.step]) : tabPicture("process", 300)}
+    ${change}${S.editing ? editForm(model.steps[S.step]) : tabPicture("process", window.CasePathFlow ? 440 : 300)}
     <ol class="cp-steps">${before}${rows}${end}${ahead}</ol></section>`;
 }
 
@@ -2168,6 +2193,7 @@ const tabOverviewLive = () => S.route.view === "case" && (S.route.tab || "overvi
 function mountStory() {
   const box = document.getElementById("story");
   if (!box || !window.CasePathStory) { dropStory(); return; }
+  if (box.dataset.story === "process" && window.CasePathFlow) { mountFlow(box); return; }
   const kind = box.dataset.story, live = kind === "live", timed = live || kind === "replay";
   const run = live ? (S.data.run || {}).id : kind === "replay" ? (S.data.prepared_run || {}).id : "";
   const events = live ? S.events : (S.storyEvents || {})[run];
@@ -2220,6 +2246,49 @@ function mountStory() {
   if (!timed) linkStoryRows(model);
   placeStory();
 }
+// Prozess is drawn as a flow: every step a block with what CasePath prepares there, what is the handler's to decide,
+// what is open, and each way out by its own name leading to the step or the closing it ends in. The case is on it: the
+// way it took, where it stands, the ways still open. It lives in the same layer as the other pictures, so it stays
+// standing across redraws and takes up a change (a decision taken, a step on) as a change, never as a new drawing.
+function mountFlow(box) {
+  const model = processFlow();
+  if (!model || !model.blocks.length) { dropStory(); box.hidden = true; return; }
+  let layer = document.getElementById("cp-story-layer");
+  if (!layer) { layer = document.createElement("div"); layer.id = "cp-story-layer"; document.body.appendChild(layer); }
+  const key = `${S.route.id}:flow:${LANG}`, was = `${S.route.id}:flow`, seen = (S.storySeen = S.storySeen || {}), height = Number(box.dataset.height) || 440;
+  const sig = JSON.stringify([model.now, model.path, model.blocks.map((b) => [b.id, b.tone, b.title, b.rows.map((r) => [r.id, r.state, r.value || "", r.text, r.sub || "", (r.actions || []).length])])]);
+  if (!S.story || S.story.key !== key) {
+    dropStory(true);
+    const host = document.createElement("div");
+    host.className = "cp-story-host";
+    layer.appendChild(host);
+    const flow = window.CasePathFlow.mount(host, model, { height, autoplay: !seen[was], onExpand: () => storyBig(!S.storyBig),
+      onHover: (b) => pointFromStory(b && b.item ? { item: b.item } : null),
+      onOpen: (t) => { if (S.storyBig) storyBig(false); openFromFlow(t || {}); },
+      onAction: (row, action) => { if (S.storyBig) storyBig(false); actFromFlow(row, action); } });
+    seen[was] = true;
+    // the page speaks to every picture the same way
+    S.story = { key, sig, height, live: false, run: "", flow: true, ctrl: { update: (m) => flow.update(m), destroy: () => flow.destroy(), highlight: (id) => flow.highlight(id || null),
+      resize: (h, large) => flow.resize(h, large), rest: () => flow.here(), play: () => {}, pause: () => {}, seek: () => {} } };
+  } else if (S.story.sig !== sig) { S.story.sig = sig; S.story.ctrl.update(model); }
+  linkStoryRows({ nodes: model.blocks });
+  placeStory();
+}
+// What is pressed on the flow opens where it lives on the page: a step its row, a point its fact, the documents their tab.
+function openFromFlow(t) {
+  const row = t.row || {}, end = t.end || row.end;
+  if (row.href && !t.end) { location.hash = row.href; return; }
+  openFromStory({ item: end ? `step:${end.id}` : row.item || (t.block || {}).item || "" });
+}
+// A decision offered on the flow is taken exactly as on the page: by the page's own control, so one rule holds for both.
+function actFromFlow(row, action) {
+  const [fact, value] = String((action || {}).id || "").split(":");
+  if (fact !== "deckung") return;
+  if (value === "bestätigt") { const b = document.querySelector('[data-decide="deckung"][data-value="bestätigt"]'); if (b) b.click(); return; }
+  // a refusal names the point that fails: the page asks for it where the step stands
+  S.coverDecline = true;
+  renderCase().then(() => { const why = document.querySelector(".cp-cover-why"); if (why) { why.scrollIntoView({ block: "center", behavior: reducedMotion() ? "auto" : "smooth" }); const first = why.querySelector("button, input, select"); if (first) first.focus({ preventScroll: true }); } });
+}
 // The picture and the list under it are one thing seen twice: a card under the hand marks its row, a row under the hand
 // brings its card forward with its lines and what they lead to.
 const rowOfNode = (n) => (n && n.item && document.querySelector(`[data-item="${CSS.escape(n.item)}"]`)) || (n && n.row && document.querySelector(`[data-story-row="${CSS.escape(n.row)}"]`)) || null;
@@ -2249,7 +2318,8 @@ function storyBig(on) {
   if (!on && back) back.remove();
   layer.classList.toggle("cp-story-big", S.storyBig);
   document.documentElement.classList.toggle("cp-story-open", S.storyBig);
-  S.story.ctrl.resize(on ? Math.max(360, window.innerHeight - 48 - 36 - 150) : S.story.height, on);
+  // the flow has no caption and no time line under it: the whole height is its own
+  S.story.ctrl.resize(on ? Math.max(360, window.innerHeight - 48 - 36 - (S.story.flow ? 12 : 150)) : S.story.height, on);
   if (!on) placeStory();
   setTimeout(() => { if (S.story) S.story.ctrl.rest(); }, 60);
 }
@@ -3073,7 +3143,8 @@ function changeLine(diff) {
   if (diff.documents_added.length) parts.push(T(`${diff.documents_added.length} document(s) now needed`, `${diff.documents_added.length} Unterlage(n) jetzt nötig`));
   if (diff.documents_removed.length) parts.push(T(`${diff.documents_removed.length} document(s) no longer needed`, `${diff.documents_removed.length} Unterlage(n) nicht mehr nötig`));
   if (diff.documents_changed.length) parts.push(T(`${diff.documents_changed.length} document(s) changed`, `${diff.documents_changed.length} Unterlage(n) geändert`));
-  return `${T("Changed", "Geändert")}: ${parts.join("; ") || T("nothing else moved", "sonst nichts verschoben")}`;
+  // a decision that moves nothing else is said as that, not as a change with an empty list
+  return parts.length ? `${T("Changed", "Geändert")}: ${parts.join("; ")}` : T("Saved. Nothing else in the process moved.", "Gespeichert. Am Prozess hat sich sonst nichts verschoben.");
 }
 const EXPOSURE = { observer: null, since: {}, view: null };
 function flushExposure(key, el) {
@@ -4193,12 +4264,13 @@ const X_TOPICS = {
       body: xRows(rules.map((q, i) => xRow(i, q.status === "present" ? "done" : "quiet", esc(clip((q.label || {}).de || q.key, 70)), "", esc(q.practice)))) };
   } },
 };
+const X_ICON = { anliegen: "mail", parteien: "people", deckung: "shield", fristen: "clock", rechtliches: "law", angaben: "list", unterlagen: "folder", verlauf: "memory", prozess: "nodes", vorbereitung: "spark", wissen: "book" };
 const xOn = () => S.route.view === "case" && S.data && S.data.screen && !running() && !unaidedPending() && !((S.data.case.intake || {}).study);
 function caseIndex() {
   if (!xOn()) return "";
   const groups = X_GROUPS().map(([title, keys]) => {
     const items = keys.filter((k) => X_TOPICS[k].show()).map((k) => { const t = X_TOPICS[k], side = t.side ? t.side() : "";
-      return `<button type="button" class="cp-xitem${t.alert && t.alert() ? " alert" : ""}" data-x="${k}" aria-pressed="${S.xPin === k}">${t.name()}${side ? `<span>${side}</span>` : ""}</button>`; }).join("");
+      return `<button type="button" class="cp-xitem${t.alert && t.alert() ? " alert" : ""}" data-x="${k}" aria-pressed="${S.xPin === k}">${icon(X_ICON[k] || "doc")}<b>${t.name()}</b>${side ? `<span>${side}</span>` : ""}</button>`; }).join("");
     return items ? `<div class="cp-xgroup"><h4>${esc(title)}</h4>${items}</div>` : "";
   }).join("");
   return groups ? `<nav class="cp-xindex" aria-label="${T("The case in parts", "Der Fall in Teilen")}">${groups}</nav>` : "";

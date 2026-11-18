@@ -153,6 +153,41 @@ The work is shown as a picture that builds itself, drawn from the case's own sta
 
 Rules for a later change: the picture's model is built in `casepath.js` from data the page already holds (`storyModel` from run events; `processStory`, `historyStory`, `documentsStory` from the case), every text goes in as text, nothing in it is staged, and a movement that says nothing is left out.
 
+## One calm system for every screen (18 November 2026)
+
+Every screen is drawn from one small system, taken from the best current product design for work of this kind and held
+to it strictly, because calm comes from sameness: the reader learns one look and then only reads content.
+
+- **Layout.** A light sidebar at the left holds the product's name, who works, and the ways through the product
+  (Fälle; for reviewers Wissen and Auswertung). In a case the same column continues with the case (its name, parties
+  and state in one card), its parts (Der Fall, Belege, CasePath) and its files. The page beside it is white. Its top
+  bar holds only that page's own views as one segmented control, and its tools at the right.
+- **Colour.** Ink `#101215`, quiet text `#6e7174`, hairline `#e2e4e5`, pale tray `#f3f4f4`, white. Three signals and no
+  others: blue `#2f6fed` for what is current and what leads on (where the case stands, the way it took, focus), green
+  for what is done, red `#c62445` for what needs a hand (missing, overdue, to decide). The main button is ink, never a
+  colour.
+- **Shapes.** A card is white with a hairline ring (half a pixel of ink at an eighth strength and a one-pixel soft
+  shadow), radius 12 to 14; nothing has a heavy border or a tinted fill. A choice among few is one pale tray with the
+  chosen part in white. A button is a pill, 36 px high (30 px small). A list inside a card sits in the pale tray.
+- **Type.** Inter; titles at weight 510 with tight spacing (−0.022 em); text 14.5 px; small labels 11.5 to 13 px in the
+  quiet grey; figures tabular.
+- **Motion.** 150 ms on colour for anything under the hand; 300 to 400 ms with an ease-out for what arrives; rows in
+  the order they are read; the pictures move only to show a change of the case.
+
+The values live once, as tokens at the head of the last block of `web/ui/assets/casepath.css`; the pictures
+(`story.css`, `flow.css`) read the same tokens. A colour written anywhere else is a defect; a test holds that.
+
+### Prozess as a flow
+
+The process of a case is a flow on a dotted ground (`web/ui/assets/flow.js`, `flow.css`): each step is a block with
+its name in a coloured band (green done, blue where the case stands, grey ahead) and, inside, its rows: what CasePath
+prepares there, the decision that is the handler's (offered on the block as two small buttons while it is open, shown
+as its value once taken), what is still open, the documents missing, and each way out by its own name with what
+decides it. A way leads by a right-angled line into the next block, or ends in a small pill for a closing. The way the
+case took is drawn in blue; ways still open are grey. The picture is the case's real state: a decision taken on a
+block is taken by the page's own control (one rule for both), and the same picture takes the change up without being
+drawn again. It can be seen large (`v`), panned, and reset to «Wo der Fall steht» or «Ganzer Prozess».
+
 ## The case in parts, under the hand (18 November 2026)
 
 The rail of a prepared case names what CasePath established, once, in three short groups: «Der Fall» (Anliegen,
