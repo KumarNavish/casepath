@@ -1842,3 +1842,12 @@ input[type="text"], input[type="search"], input:not([type]), textarea, select { 
 /* every secondary button keeps its ring, wherever an earlier rule had taken its outline away */
 .cp-body .cp-button:not(.primary):not([aria-pressed="true"]):not(:disabled) { box-shadow: var(--ring); background-color: #fff; }
 .cp-body .cp-button:not(.primary):not([aria-pressed="true"]):hover:not(:disabled) { background-color: #f7f8f8; }
+
+/* A file held over a case: the documents still missing say where it belongs; dropped anywhere on the page it is added. */
+body.dragging .cp-docs-table tr:has(.cp-chip.bad) td { background: var(--blue-tint); transition: background-color .15s ease; }
+body.dragging .cp-docs-table tr:has(.cp-chip.bad) td:first-child { box-shadow: inset 2px 0 0 var(--blue); }
+body.dragging .cp-docs-table tr:has(.cp-chip.bad) .cp-chip.bad { color: var(--blue); border-color: var(--blue); background: #fff; font-size: 0; }
+body.dragging .cp-docs-table tr:has(.cp-chip.bad) .cp-chip.bad::after { content: "hier ablegen"; font-size: 12.5px; }
+html:lang(en) body.dragging .cp-docs-table tr:has(.cp-chip.bad) .cp-chip.bad::after { content: "drop it here"; }
+body.dragging .cp-rail .cp-xitem[data-x="unterlagen"] { background: var(--blue-tint); color: var(--ink); }
+body.dragging .cp-drop { border-color: var(--blue); color: var(--blue); }

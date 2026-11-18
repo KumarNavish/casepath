@@ -177,6 +177,10 @@ to it strictly, because calm comes from sameness: the reader learns one look and
 The values live once, as tokens at the head of the last block of `web/ui/assets/casepath.css`; the pictures
 (`story.css`, `flow.css`) read the same tokens. A colour written anywhere else is a defect; a test holds that.
 
+A file held over a case shows where it belongs before it is let go: on «Unterlagen» the rows of the documents still
+missing turn blue and say «hier ablegen», and the sidebar's «Unterlagen» lights up on every tab. Dropped anywhere on
+the page the file is added as before; the hint only says what the case is waiting for.
+
 ### Prozess as a flow
 
 The process of a case is a flow on a dotted ground (`web/ui/assets/flow.js`, `flow.css`): each step is a block with

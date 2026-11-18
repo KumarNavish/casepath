@@ -366,6 +366,8 @@ class CraftTests(unittest.TestCase):
         self.assertIn("--ring: 0 0 0 .5px rgba(16,18,21,.125), 0 1px 1px rgba(0,0,0,.04), 0 2px 4px -2px rgba(16,18,21,.06);", STYLE)
         self.assertIn('.cp-tab[aria-current="page"], .cp-tab.working { background: #fff; color: var(--ink); font-weight: 500; box-shadow: var(--ring); }', STYLE)
         self.assertIn(".cp-button.primary { background: var(--ink); color: #fff; font-weight: 500; box-shadow: none; border: 0; }", STYLE)
+        # a file held over a case: what is missing says where it belongs
+        self.assertIn('body.dragging .cp-docs-table tr:has(.cp-chip.bad) .cp-chip.bad::after { content: "hier ablegen"; font-size: 12.5px; }', STYLE)
         # nothing written before the mould keeps a colour of its own
         before = STYLE[:STYLE.index("The mould (18 November 2026)")]
         literal = [line for line in before.split("\n") if "#82072a" in line.lower() and "--crimson" not in line]
