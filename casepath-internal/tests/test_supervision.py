@@ -311,7 +311,8 @@ class CraftTests(unittest.TestCase):
             self.assertIn(f"function {build}()", SCRIPT)
         self.assertIn('ids.map((x) => k.edge(at, x, "branch"))', SCRIPT)                   # the ways on from the current step
         self.assertIn('learned.map((i) => k.edge(kid, `need:${i.key}`, "learned"))', SCRIPT)  # closed cases → what this case needs
-        self.assertIn('localStorage.setItem("casepath.picture", shown ? "on" : "off")', SCRIPT)  # put away once, it stays away until asked for
+        self.assertIn('localStorage.setItem(`casepath.picture.${kind}`, shown ? "on" : "off")', SCRIPT)  # put away once, it stays away until asked for
+        self.assertIn('const PICTURE_ASKED = new Set(["file", "documents", "history"]);', SCRIPT)          # where a table does the work, the picture waits
         self.assertIn('opened.style.viewTransitionName = "cp-case"', SCRIPT)               # a case opened from the list grows out of its row
         self.assertIn(".cp-morph #case-title { view-transition-name: cp-case; }", STYLE)
         # Wissen: where each rule came from and the cases it was applied in since, one moment per case
@@ -335,8 +336,9 @@ class CraftTests(unittest.TestCase):
 
     def test_the_case_is_named_in_parts_and_each_part_answers_the_hand(self):
         # the rail names what CasePath established, in three groups; a part with nothing to show is not named
-        self.assertIn('[[T("The case", "Der Fall"), ["anliegen", "parteien", "deckung", "fristen", "rechtliches"]], [T("Evidence", "Belege"), ["angaben", "unterlagen", "verlauf"]], ["CasePath", ["prozess", "vorbereitung", "wissen"]]]', SCRIPT)
-        self.assertIn("const items = keys.filter((k) => X_TOPICS[k].show()).map(", SCRIPT)
+        self.assertIn('const X_ORDER = ["deckung", "fristen", "unterlagen", "verlauf", "angaben"];', SCRIPT)   # only what a handler acts on or looks up
+        self.assertIn("const keys = X_ORDER.filter((k) => X_TOPICS[k].show()), hand = (k) => (X_TOPICS[k].alert && X_TOPICS[k].alert() ? 0 : 1);", SCRIPT)
+        self.assertIn("fristen: { name: () => T(\"Deadlines\", \"Fristen\"), show: () => (scr().fristen || []).length > 0,", SCRIPT)   # nothing to say, not named
         self.assertIn("    ${caseIndex()}\n", SCRIPT)
         # not while CasePath works, not in the study, not before anything is prepared
         self.assertIn('const xOn = () => S.route.view === "case" && S.data && S.data.screen && !running() && !unaidedPending() && !((S.data.case.intake || {}).study);', SCRIPT)

@@ -158,9 +158,10 @@ Rules for a later change: the picture's model is built in `casepath.js` from dat
 Every screen is drawn from one small system, taken from the best current product design for work of this kind and held
 to it strictly, because calm comes from sameness: the reader learns one look and then only reads content.
 
-- **Layout.** A light sidebar at the left holds the product's name, who works, and the ways through the product
-  (Fälle; for reviewers Wissen and Auswertung). In a case the same column continues with the case (its name, parties
-  and state in one card), its parts (Der Fall, Belege, CasePath) and its files. The page beside it is white. Its top
+- **Layout.** A light sidebar at the left holds the product's name and the way back to the list (outside a case, for
+  reviewers, also Wissen and Auswertung). In a case the same column continues with the case (its name, parties and
+  state in one card), the few parts that need or serve the handler, and its files. Nothing stands there that does not
+  lead somewhere or say something about this case now. The page beside it is white. Its top
   bar holds only that page's own views as one segmented control, and its tools at the right.
 - **Colour.** Ink `#101215`, quiet text `#6e7174`, hairline `#e2e4e5`, pale tray `#f3f4f4`, white. Three signals and no
   others: blue `#2f6fed` for what is current and what leads on (where the case stands, the way it took, focus), green
@@ -196,6 +197,11 @@ entry and marks its row; pressed, the page goes to the row.
 On the case list a day of the week strip shows its cases before anything is pressed: under the hand, the rows due that
 day stay and the others step back; pressing the tile filters as before.
 
+**Pictures where they earn their place.** The process is shown as a flow by itself, because a flow is the best way
+to see a process. On Akte, Unterlagen and Verlauf the reader, the table and the time band do the work, so the picture
+waits behind one quiet line («Als Bild zeigen») and comes when asked for; the choice is kept per page. The case list
+starts with the work: the day in one compact block, then the cases.
+
 ### Prozess as a flow
 
 The process of a case is a flow on a dotted ground (`web/ui/assets/flow.js`, `flow.css`): each step is a block with
@@ -211,15 +217,16 @@ back with the closer look. In the page the picture takes the height the window g
 
 ## The case in parts, under the hand (18 November 2026)
 
-The rail of a prepared case names what CasePath established, once, in three short groups: «Der Fall» (Anliegen,
-Parteien, Deckung, Fristen, Rechtliches), «Belege» (Angaben, Unterlagen, Verlauf) and «CasePath» (Prozess,
-Vorbereitung, Wissen). Beside a name stands the one thing worth knowing before looking (a count, or in crimson what
-needs a hand: «zu entscheiden», «1 fehlt», «2 offen»). A part with nothing to show is not named.
+The sidebar of a prepared case names only the parts a handler acts on or looks up while working it: Deckung, Fristen
+(only when the file has one), Unterlagen, Verlauf and Angaben, with what needs a hand first. Beside a name stands the
+one thing worth knowing before looking (a count, or in red what needs a hand: «zu entscheiden», «1 fehlt», «2 offen»).
+What the page already says (the request, the parties, the points of law, the process on its own tab) is not named a
+second time; an earlier version listed eleven parts in three groups and was cut back on 19 November because most of it
+repeated the page.
 
 Resting the hand on a name shows that part on a stage at the right, as it stands now: the cover points with what the
-file settled and what the policy must confirm, the facts with their page, the documents with what is missing first, the
-last entries of the correspondence with the open request marked, the process with the ways on from where the case
-stands, what CasePath did to get here, and the rules from closed cases applied to this one. Rows arrive in the order
+file settled and what the policy must confirm, the deadlines, the documents with what is missing first, the last
+entries of the correspondence with the open request marked, and the facts with their page. Rows arrive in the order
 they are read and what is settled is ticked as it arrives. On the Übersicht the stage takes the place of «Der Fall» and
 gives it back when the hand leaves; on the other tabs it stands at the right over the page. Pressing a name keeps the
 stage; Escape, the cross or another case puts it away. A row with a passage opens the passage in the Akte; «öffnen»

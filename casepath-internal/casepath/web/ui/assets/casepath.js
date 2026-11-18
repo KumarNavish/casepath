@@ -122,11 +122,9 @@ const ICONS = {
   nodes: '<circle cx="12" cy="5.5" r="2.5"/><circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M12 8v3.5M6 15.5V13.5h12v2M12 11.5v2"/>',
   folder: '<path d="M3.5 6.5h6l2 2h9v10.5h-17z"/>',
   chart: '<path d="M4.5 19.5h15M7.5 16v-5M12 16V6.5M16.5 16v-7.5"/>',
-  people: '<circle cx="9" cy="8.5" r="3"/><path d="M3.5 19c.6-3.2 2.7-5 5.5-5s4.9 1.8 5.5 5M15.5 5.8a3 3 0 0 1 0 5.4M17.5 14.3c1.6.7 2.6 2.3 3 4.7"/>',
   clock: '<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>',
   book: '<path d="M4.5 5.5c2.5-.8 5-.8 7.5.5v13c-2.5-1.3-5-1.3-7.5-.5zM19.5 5.5c-2.5-.8-5-.8-7.5.5v13c2.5-1.3 5-1.3 7.5-.5z"/>',
   list: '<path d="M8.5 7h11M8.5 12h11M8.5 17h11M4.5 7h.01M4.5 12h.01M4.5 17h.01"/>',
-  spark: '<path d="M12 4.5l1.7 4.8 4.8 1.7-4.8 1.7L12 17.5l-1.7-4.8L5.5 11l4.8-1.7z"/>',
   check: '<circle cx="12" cy="12" r="8.5"/><path d="m8.2 12.3 2.6 2.6 5-5.4"/>',
   tick: '<path d="m6.5 12.5 3.6 3.6 7.4-8"/>',
   pencil: '<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
@@ -250,7 +248,7 @@ function renderTop() {
   const other = LANG === "de" ? "en" : "de";
   renderNav(wordmark);
   $("#top").innerHTML = `<nav class="cp-tabs" aria-label="${T("Views", "Ansichten")}">${tabs}</nav>
-    ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button>` : ""}
+    ${route.view === "case" ? walkPlace(route.id).bar : ""}<div class="cp-top-right">${measureToggle()}${route.view === "case" ? `${walkPlace(route.id).label}<button class="cp-link" id="skip-case" type="button" title="${T("the next case that needs you, in the list's order", "der nächste Fall, der Sie braucht, in der Reihenfolge der Liste")}">${T("Next case", "Nächster Fall")} ${icon("right")}</button>` : ""}${S.me ? `<span class="cp-me">${esc(S.me)}</span>` : ""}
       <button class="cp-keys-open" id="keys-open" type="button" aria-label="${T("Keyboard shortcuts", "Tastenkürzel")}" title="${T("Keyboard shortcuts (?)", "Tastenkürzel (?)")}">?</button>
       ${langSwitch()}</div>`;
   glide();
@@ -260,14 +258,13 @@ function renderTop() {
 function renderNav(wordmark) {
   let nav = document.getElementById("nav");
   if (!nav) { nav = document.createElement("aside"); nav.id = "nav"; nav.className = "cp-nav"; document.body.insertBefore(nav, document.body.firstChild); }
-  const route = S.route, me = String(S.me || "").trim();
+  const route = S.route;
   const item = (href, ic, title, on, side) => `<a class="cp-nav-item" href="${href}" ${on ? 'aria-current="page"' : ""}>${icon(ic)}<span>${title}</span>${side ? `<small>${side}</small>` : ""}</a>`;
   const due = S.listData && S.listData.got && S.listData.got[0] ? (S.listData.got[0].cases || []).length : 0;
+  // only what leads somewhere: the list, and outside a case the two pages of those who look after the knowledge
   nav.innerHTML = `${wordmark}
-    ${me ? `<div class="cp-nav-who"><span class="cp-nav-avatar" aria-hidden="true">${raw(me.replace(/^[^A-Za-zÄÖÜ]*/, "").slice(0, 1).toUpperCase() || "·")}</span><span class="cp-nav-name">${esc(me)}</span></div>` : ""}
-    <nav aria-label="${T("CasePath", "CasePath")}"><h4>${T("Work", "Arbeit")}</h4>
-      ${item("#/cases", "folder", T("Cases", "Fälle"), route.view === "cases", due ? String(due) : "")}
-      ${S.mayReview ? `<h4>${T("Administration", "Verwaltung")}</h4>${item("#/knowledge", "book", T("Knowledge", "Wissen"), route.view === "knowledge" || route.view === "review")}${item("#/auswertung", "chart", T("Evaluation", "Auswertung"), route.view === "auswertung")}` : ""}</nav>`;
+    <nav aria-label="CasePath">${item("#/cases", "folder", T("Cases", "Fälle"), route.view === "cases", due ? String(due) : "")}
+      ${S.mayReview && route.view !== "case" ? `<h4>${T("Administration", "Verwaltung")}</h4>${item("#/knowledge", "book", T("Knowledge", "Wissen"), route.view === "knowledge" || route.view === "review")}${item("#/auswertung", "chart", T("Evaluation", "Auswertung"), route.view === "auswertung")}` : ""}</nav>`;
   document.documentElement.style.setProperty("--nav-h", `${nav.offsetHeight}px`);
   document.documentElement.classList.toggle("cp-in-case", route.view === "case");
 }
@@ -2218,7 +2215,7 @@ function mountStory() {
     const ctrl = window.CasePathStory.mount(host, timed ? storyModel(events, live) : model, { autoplay: kind === "replay" && first, start: live || !first ? "last" : "first", height: Number(box.dataset.height) || (live ? 360 : 460),
       onOpen: (n) => { if (S.storyBig) storyBig(false); openFromStory(n); }, onHover: (n) => pointFromStory(n), onExpand: () => storyBig(!S.storyBig),
       quiet: kind === "knowledge" || kind === "documents" ? ["learned"] : [],
-      ...(timed ? {} : { onClose: () => { if (S.storyBig) storyBig(false); setPicture(false); } }) });
+      ...(timed ? {} : { onClose: () => { if (S.storyBig) storyBig(false); setPicture(false, kind); } }) });
     // a tab's picture stands as far as the case came before and plays what is current: where it is now, what is open, what follows
     if (!timed && first && model.beats.length) { if (model.from > 0) ctrl.seek(model.from - 1); ctrl.play(); }
     seen[was] = true;
@@ -2364,13 +2361,17 @@ async function openStory() {
   renderCase();
 }
 // ---------- the tabs' pictures: the case's state as it stands, drawn by the same engine ----------
-const pictureOff = () => { try { return localStorage.getItem("casepath.picture") === "off"; } catch (error) { return false; } };
+// A picture stands by itself where it is the best way to see the thing (the process as a flow, the knowledge as it
+// travels). Where a table or the reader does the work (Akte, Unterlagen, Verlauf) it waits behind one quiet line and
+// comes when asked for; the choice is kept per page.
+const PICTURE_ASKED = new Set(["file", "documents", "history"]);
+const pictureOff = (kind) => { try { const v = localStorage.getItem(`casepath.picture.${kind}`); return v ? v === "off" : PICTURE_ASKED.has(kind); } catch (error) { return PICTURE_ASKED.has(kind); } };
 const TAB_STORY = { process: () => processStory(), history: () => historyStory(), documents: () => documentsStory(), knowledge: () => knowledgeStory(), file: () => fileStory() };
 function tabPicture(kind, height) {
-  if (!pictureOff()) return `<div class="cp-story cp-story-tab" id="story" data-story="${kind}" data-height="${height}"></div>`;
-  return TAB_STORY[kind]() ? `<p class="cp-story-show"><button class="cp-link cp-quiet-link" id="story-show">${T("Show as a picture", "Als Bild zeigen")}</button></p>` : "";
+  if (!pictureOff(kind)) return `<div class="cp-story cp-story-tab" id="story" data-story="${kind}" data-height="${height}"></div>`;
+  return TAB_STORY[kind]() ? `<p class="cp-story-show"><button class="cp-link cp-quiet-link" id="story-show" data-kind="${kind}">${icon("nodes")}${T("Show as a picture", "Als Bild zeigen")}</button></p>` : "";
 }
-function setPicture(shown) { try { localStorage.setItem("casepath.picture", shown ? "on" : "off"); } catch (error) { /* this visit only */ } if (S.route.view === "knowledge") renderKnowledge(); else renderCase(); }
+function setPicture(shown, kind) { try { localStorage.setItem(`casepath.picture.${kind}`, shown ? "on" : "off"); } catch (error) { /* this visit only */ } if (S.route.view === "knowledge") renderKnowledge(); else renderCase(); }
 const storyLabels = () => ({ big: T("Large", "Gross ansehen"), small: T("Back to the page", "Zurück zur Seite"), play: T("Play", "Abspielen"), pause: T("Pause", "Anhalten"), replay: T("Again", "Nochmals"), step: T("Step", "Schritt"), of: T("of", "von"), close: T("Close", "Schliessen"), whole: T("Whole picture", "Ganzes Bild") });
 function storyKit() {
   const nodes = [], edges = [], beats = [], have = new Set(), linked = new Set();
@@ -3762,7 +3763,7 @@ async function renderCase() {
     try { el.value = t.value; } catch (e) { continue; }  // a value the field refuses never stops the page
     if (t.focus) { el.focus(); try { el.setSelectionRange(t.start, t.end); } catch (e) { /* not a text field */ } }
   }
-  for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true));
+  for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true, b.dataset.kind));
   xRest();
   letterSources();
   keepMotion($("#app"));
@@ -3959,7 +3960,7 @@ async function renderKnowledge() {
       "Was CasePath aus früheren Fällen und aus Änderungen der Fallbearbeitung gelernt hat. Freigegebene Einträge prägen neue Fälle; Vorschläge werden nur als Vorschlag geprüft, bis ein Mensch sie freigibt.")}</p>
     ${sections || `<p class="cp-empty">${T("Nothing learned yet. Knowledge appears after cases are prepared or a case worker saves a change for similar cases.", "Noch nichts gelernt. Wissen entsteht, wenn Fälle vorbereitet werden oder eine Änderung für ähnliche Fälle gespeichert wird.")}</p>`}</main>`;
   mountStory();
-  for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true));
+  for (const b of document.querySelectorAll("#story-show")) b.addEventListener("click", () => setPicture(true, b.dataset.kind));
   const each = (ids, path, reason) => Promise.all(ids.split(",").map((id) => api(`/api/knowledge/${id}/${path}`, { method: "POST", body: JSON.stringify({ reason }) })));
   for (const b of document.querySelectorAll("[data-replay]")) b.addEventListener("click", async () => {  // without a model: what this version would change
     b.disabled = true;
@@ -4248,18 +4249,11 @@ const xPage = (ev) => { const c = (ev || []).find((e) => e.file && e.page); retu
 const xMark = (state) => `<span class="cp-x-mark ${state}">${state === "done" ? icon("tick") : ""}</span>`;
 const xRow = (i, state, main, side, sub, attrs) => `<li class="cp-x-row ${state || ""}" style="--i:${i}"${attrs || ""}>${xMark(state || "")}<span class="cp-x-main">${main}${sub ? `<small>${sub}</small>` : ""}</span>${side ? `<span class="cp-x-side">${side}</span>` : ""}</li>`;
 const xRows = (rows) => `<ul class="cp-x-rows">${rows.join("")}</ul>`;
-const X_GROUPS = lazy(() => [[T("The case", "Der Fall"), ["anliegen", "parteien", "deckung", "fristen", "rechtliches"]], [T("Evidence", "Belege"), ["angaben", "unterlagen", "verlauf"]], ["CasePath", ["prozess", "vorbereitung", "wissen"]]]);
+// In the sidebar stand only the parts a handler acts on or looks up while working a case; what the page already says
+// (the request, the parties, the points of law, the process on its own tab) is not named again.
+const X_ORDER = ["deckung", "fristen", "unterlagen", "verlauf", "angaben"];
 // One entry per part: its name, what the rail says beside it (a count, or what needs a hand), and its stage.
 const X_TOPICS = {
-  anliegen: { name: () => T("Request", "Anliegen"), show: () => (S.data.items || []).some((i) => i.kind === "summary" && i.value), stage: () => {
-    const sum = (S.data.items || []).find((i) => i.kind === "summary" && i.value), asks = (S.data.items || []).filter((i) => i.kind === "customer_question");
-    return { title: T("What the customer wants", "Was die Kundschaft will"), line: asks.length ? T(`${asks.length} ${asks.length === 1 ? "question" : "questions"} of the customer`, `${asks.length} ${asks.length === 1 ? "Frage" : "Fragen"} der Kundschaft`) : "", tab: "claim_reader",
-      body: `<blockquote class="cp-x-quote" style="--i:0">${esc(sum.value)}</blockquote>${asks.length ? xRows(asks.map((q, i) => xRow(i + 1, "ask", esc(q.value), xPage(q.evidence), "", xCite(q.evidence)))) : ""}` };
-  } },
-  parteien: { name: () => T("Parties", "Parteien"), show: () => (S.data.items || []).some((i) => i.kind === "party"), side: () => String((S.data.items || []).filter((i) => i.kind === "party").length), stage: () => {
-    const ps = (S.data.items || []).filter((i) => i.kind === "party");
-    return { title: T("Who is involved", "Wer beteiligt ist"), line: "", tab: "claim_reader", body: xRows(ps.map((q, i) => xRow(i, "who", `<b>${esc(q.value)}</b>`, esc((q.label || {}).de || ""), "", xCite(q.evidence)))) };
-  } },
   deckung: { name: () => T("Cover", "Deckung"), show: () => xCover().length > 0, alert: () => !answered("deckung"), side: () => (answered("deckung") ? esc(String(answered("deckung"))) : T("to decide", "zu entscheiden")), stage: () => {
     const pts = xCover(), state = { akte: "done", police: "check", kunde: "ask" }, n = (k) => pts.filter((q) => q.value === k).length;
     return { title: T("Is the case covered?", "Ist der Fall gedeckt?"), tab: "process_builder",
@@ -4267,15 +4261,10 @@ const X_TOPICS = {
       body: `${xRows(pts.map((q, i) => xRow(i, state[q.value] || "quiet", esc(q.title || (q.label || {}).de || ""), xPage(q.evidence), esc([q.state_text, q.aid ? clip(q.aid, 110) : ""].filter(Boolean).join(" · ")), xCite(q.evidence))))}
         <p class="cp-x-foot" style="--i:${pts.length}">${answered("deckung") ? `${T("Decided", "Entschieden")}: <b>${esc(String(answered("deckung")))}</b>${scr().cover && scr().cover.text ? ` <span class="cp-muted">· ${esc(scr().cover.text.replace(/^[^·]*·\s*/, ""))}</span>` : ""}` : T("The decision is yours; it is taken on the step or under «Prozess».", "Der Entscheid liegt bei Ihnen; er fällt beim Schritt oder unter «Prozess».")}</p>` };
   } },
-  fristen: { name: () => T("Deadlines", "Fristen"), show: () => Boolean(S.data.screen), alert: () => (scr().fristen || []).some((f) => f.late || f.soon), side: () => String((scr().fristen || []).length || "–"), stage: () => {
+  fristen: { name: () => T("Deadlines", "Fristen"), show: () => (scr().fristen || []).length > 0, alert: () => (scr().fristen || []).some((f) => f.late || f.soon), side: () => String((scr().fristen || []).length || "–"), stage: () => {
     const fr = scr().fristen || [];
     return { title: T("What runs against the clock", "Was an eine Frist gebunden ist"), line: fr.length ? "" : T("No deadline in the file.", "Keine Frist in der Akte."), tab: "overview",
       body: fr.length ? xRows(fr.map((f, i) => xRow(i, f.late ? "late" : f.soon ? "soon" : "date", `<b>${esc(f.date || f.state)}</b> ${esc(f.title)}`, f.date ? esc(f.state) : "", esc([f.condition, f.basis].filter(Boolean).join(" · "))))) : `<p class="cp-x-empty" style="--i:0">${T("CasePath found no deadline the customer or Protekta must meet.", "CasePath hat keine Frist gefunden, die die Kundschaft oder Protekta wahren muss.")}</p>` };
-  } },
-  rechtliches: { name: () => T("Law", "Rechtliches"), show: () => (scr().points || []).length > 0, side: () => String((scr().points || []).length), stage: () => {
-    const pts = scr().points || [];
-    return { title: T("The points of law that matter here", "Die Rechtspunkte, auf die es ankommt"), line: "", tab: "overview",
-      body: xRows(pts.map((q, i) => xRow(i, q.open ? "check" : "done", esc(q.text), "", [q.basis ? `<span class="cp-x-basis">${esc(q.basis)}</span>` : "", (q.law || [])[0] ? `«${esc(clip(q.law[0].passage, 150))}»` : ""].filter(Boolean).join(" ")))) };
   } },
   angaben: { name: () => T("Facts", "Angaben"), show: () => xFacts().length > 0, side: () => String(xFacts().length), stage: () => {
     const all = xFacts(), cited = all.filter((f) => (f.evidence || []).some((e) => e.file)), shown = (cited.length ? cited : all).slice(0, 9);
@@ -4297,42 +4286,20 @@ const X_TOPICS = {
       body: `<ol class="cp-x-line">${last.map((r, i) => { const from = String(r.who || "").split("→")[0].trim(), note = (r.notes || []).find((q) => q.open);
         return `<li class="${r.open ? "open" : ""}" style="--i:${i}"${xCite(r.evidence)}><span class="cp-x-who" title="${esc(r.who || "")}">${esc((tr(from) || "·").slice(0, 1))}</span><span class="cp-x-entry"><small>${dateText(r.date) || T("undated", "ohne Datum")} · ${esc(r.who || "")}</small>${esc(clip(r.what || r.title || "", 96))}${note ? `<em>${esc(clip(note.text, 90))}</em>` : ""}</span></li>`; }).join("")}</ol>` };
   } },
-  prozess: { name: () => T("Process", "Prozess"), show: () => Boolean(graphModel()), side: () => { const g = graphModel(), at = g.path.findIndex((q) => q.state === "current"); return at >= 0 ? T(`step ${at + 1}`, `Schritt ${at + 1}`) : ""; }, stage: () => {
-    const g = graphModel(), ev = S.data.evaluation, cur = g.path.find((q) => q.state === "current") || g.path[g.path.length - 1];
-    const ways = ev.outcome ? [] : [...new Map((cur.step.next || []).filter((e) => g.steps[e.to]).map((e) => [e.label || g.steps[e.to].title, e])).values()].slice(0, 6);
-    const rows = g.path.map((q, i) => xRow(i, q.state === "current" ? "now" : "done", `<b>${esc(shortTitle(q.step.title))}</b>`, q.state === "current" ? T("now", "jetzt") : "", q.state === "current" && scr().title ? `${T("Next", "Als Nächstes")}: ${esc(scr().title)}` : ""));
-    return { title: T("Where the case stands", "Wo der Fall steht"), line: ev.outcome ? `${T("Ended", "Abgeschlossen")}: ${esc(ev.outcome.title)}` : T("and the ways on from here", "und wie es von hier weitergehen kann"), tab: "process_builder",
-      body: `${xRows(rows)}${ways.length ? `<ul class="cp-x-ways">${ways.map((e, i) => `<li style="--i:${g.path.length + i}"><span>${esc(e.label || shortTitle(g.steps[e.to].title))}</span><i></i><b>${esc(shortTitle(g.steps[e.to].title))}</b></li>`).join("")}</ul>` : ""}` };
-  } },
-  vorbereitung: { name: () => T("Preparation", "Vorbereitung"), show: () => Boolean(S.data.prepared_run), stage: () => {
-    const d = S.data, files = d.files || [], pages = files.reduce((n, f) => n + (((f.extraction || {}).kept_pages || []).length || (f.extraction || {}).pages || 0), 0), docs = xDocs();
-    const did = [[`${files.length} ${T(files.length === 1 ? "file" : "files", files.length === 1 ? "Datei" : "Dateien")}${pages > 1 ? `, ${pages} ${T("pages", "Seiten")}` : ""}`, T("read", "gelesen")], [`${xFacts().length} ${T("facts", "Angaben")}`, T("found", "gefunden")],
-      [`${xEntries().length} ${T("entries", "Einträge")}`, T("put in order", "in ihre Reihenfolge gebracht")], [`${docs.filter((q) => q.status === "present").length} ${T("of", "von")} ${docs.length} ${T("documents", "Unterlagen")}`, T("found on file", "in der Akte gefunden")],
-      ...((d.draft || {}).text ? [[esc(scr().title || T("the letter", "den Brief")), T("prepared", "vorbereitet")]] : [])].filter(([what]) => !/^0 /.test(what));
-    return { title: T("What CasePath did to get here", "Was CasePath dafür getan hat"), line: d.prepared_run.finished_at ? `${T("prepared", "vorbereitet")} ${dateText(d.prepared_run.finished_at)}` : "", tab: "overview",
-      body: `${xRows(did.map(([what, verb], i) => xRow(i, "done", what, verb, "")))}<p class="cp-x-foot" style="--i:${did.length}"><button class="cp-link" data-x-story>${T("Watch how it came about", "Ansehen, wie es entstand")}</button></p>` };
-  } },
-  wissen: { name: () => T("Knowledge", "Wissen"), show: () => xDocs().some((q) => q.practice), side: () => String(xDocs().filter((q) => q.practice).length), stage: () => {
-    const rules = xDocs().filter((q) => q.practice);
-    return { title: T("What closed cases taught, applied here", "Was abgeschlossene Fälle gelehrt haben, hier angewendet"), line: T(`${rules.length} ${rules.length === 1 ? "rule" : "rules"} from practice`, `${rules.length} ${rules.length === 1 ? "Regel" : "Regeln"} aus der Praxis`), tab: "document_finder",
-      body: xRows(rules.map((q, i) => xRow(i, q.status === "present" ? "done" : "quiet", esc(clip((q.label || {}).de || q.key, 70)), "", esc(q.practice)))) };
-  } },
 };
-const X_ICON = { anliegen: "mail", parteien: "people", deckung: "shield", fristen: "clock", rechtliches: "law", angaben: "list", unterlagen: "folder", verlauf: "memory", prozess: "nodes", vorbereitung: "spark", wissen: "book" };
+const X_ICON = { deckung: "shield", fristen: "clock", angaben: "list", unterlagen: "folder", verlauf: "memory" };
 const xOn = () => S.route.view === "case" && S.data && S.data.screen && !running() && !unaidedPending() && !((S.data.case.intake || {}).study);
 function caseIndex() {
   if (!xOn()) return "";
-  const groups = X_GROUPS().map(([title, keys]) => {
-    const items = keys.filter((k) => X_TOPICS[k].show()).map((k) => { const t = X_TOPICS[k], side = t.side ? t.side() : "";
-      return `<button type="button" class="cp-xitem${t.alert && t.alert() ? " alert" : ""}" data-x="${k}" aria-pressed="${S.xPin === k}">${icon(X_ICON[k] || "doc")}<b>${t.name()}</b>${side ? `<span>${side}</span>` : ""}</button>`; }).join("");
-    return items ? `<div class="cp-xgroup"><h4>${esc(title)}</h4>${items}</div>` : "";
-  }).join("");
-  return groups ? `<nav class="cp-xindex" aria-label="${T("The case in parts", "Der Fall in Teilen")}">${groups}</nav>` : "";
+  const keys = X_ORDER.filter((k) => X_TOPICS[k].show()), hand = (k) => (X_TOPICS[k].alert && X_TOPICS[k].alert() ? 0 : 1);
+  const items = keys.slice().sort((a, b) => hand(a) - hand(b)).map((k) => { const t = X_TOPICS[k], side = t.side ? t.side() : "";
+    return `<button type="button" class="cp-xitem${hand(k) ? "" : " alert"}" data-x="${k}" aria-pressed="${S.xPin === k}">${icon(X_ICON[k] || "doc")}<b>${t.name()}</b>${side ? `<span>${side}</span>` : ""}</button>`; }).join("");
+  return items ? `<nav class="cp-xindex" aria-label="${T("The case at a glance", "Der Fall im Blick")}"><div class="cp-xgroup">${items}</div></nav>` : "";
 }
 function xStage(key, pinned) {
   const t = X_TOPICS[key], st = t && t.show() ? t.stage() : null;
   if (!st) return "";
-  const group = (X_GROUPS().find(([, keys]) => keys.includes(key)) || [""])[0];
+  const group = T("At a glance", "Im Blick");
   return `<section class="cp-card cp-xstage${pinned ? " pinned" : ""}" data-xstage="${key}"><header><p class="cp-x-eyebrow">${esc(group)} · ${t.name()}</p>
       <span class="cp-x-tools">${st.tab && st.tab !== (S.route.tab || "overview") ? `<a class="cp-link cp-quiet-link" href="#/case/${raw(S.route.id)}/${st.tab}">${T("open", "öffnen")} ${icon("right")}</a>` : ""}${pinned ? `<button type="button" class="cp-x-close" data-x-close aria-label="${T("Close", "Schliessen")}">×</button>` : ""}</span>
       <h3>${st.title}</h3>${st.line ? `<p class="cp-x-line-top">${st.line}</p>` : ""}</header><div class="cp-x-body">${st.body}</div>
@@ -4373,7 +4340,6 @@ document.addEventListener("click", (event) => {
   const item = el.closest(".cp-xitem");
   if (item) { S.xPin = S.xPin === item.dataset.x ? null : item.dataset.x; if (S.xPin) xShow(S.xPin, true); else xShow(item.dataset.x, false); return; }
   if (el.closest("[data-x-close]")) { S.xPin = null; xClear(); return; }
-  if (el.closest("[data-x-story]")) { S.xPin = null; xClear(); if ((S.route.tab || "overview") !== "overview") location.hash = `#/case/${S.route.id}/overview`; setTimeout(() => { if (S.storyOpen !== S.route.id) openStory(); }, 350); return; }
   const cite = el.closest("#xstage [data-x-file]");
   if (cite && !el.closest("a, button")) { S.file = cite.dataset.xFile; S.page = Number(cite.dataset.xPage) || null; S.follow = false; if (S.route.tab === "claim_reader") renderCase(); else location.hash = `#/case/${S.route.id}/claim_reader`; }
 });
